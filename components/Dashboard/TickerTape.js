@@ -42,7 +42,6 @@ const TickerTape = () => {
               },
             ],
             showSymbolLogo: true,
-            colorTheme: 'dark',
             isTransparent: true,
             displayMode: 'adaptive',
             locale: 'en',
@@ -56,7 +55,7 @@ const TickerTape = () => {
 
   return (
     <WebView
-      style={{backgroundColor: '#171717', flex: 1}}
+      style={{flex: 1}}
       source={{html: htmlContent, originWhitelist: ['*']}}
     />
   );

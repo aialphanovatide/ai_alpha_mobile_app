@@ -1,7 +1,7 @@
-import React from "react";
-import { WebView } from "react-native-webview";
+import React from 'react';
+import {WebView} from 'react-native-webview';
 
-const TradingViewChart = ({ symbol, widgetId, width, height }) => {
+const TradingViewChart = ({symbol, widgetId, width, height}) => {
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -13,18 +13,18 @@ const TradingViewChart = ({ symbol, widgetId, width, height }) => {
         <div id="tradingview_chart_${widgetId}"></div>
         <script type="text/javascript">
           new TradingView.widget(${JSON.stringify({
-            interval: "60",
+            interval: '60',
             width: width,
             height: height,
             symbol: symbol,
-            timezone: "Etc/UTC",
-            theme: "dark",
-            style: "1",
-            locale: "en",
+            timezone: 'Etc/UTC',
+            theme: 'light',
+            style: '1',
+            locale: 'en',
             enable_publishing: false,
             hide_side_toolbar: false,
             allow_symbol_change: true,
-            container_id: `tradingview_chart_${widgetId}`
+            container_id: `tradingview_chart_${widgetId}`,
           })});
         </script>
       </body>
@@ -32,8 +32,9 @@ const TradingViewChart = ({ symbol, widgetId, width, height }) => {
   `;
 
   return (
-    <WebView style={{backgroundColor: '#171717'}}
-      source={{ html: htmlContent, originWhitelist: '[*]' }}
+    <WebView
+      style={{backgroundColor: '#EFEFEF'}}
+      source={{html: htmlContent, originWhitelist: '[*]'}}
     />
   );
 };

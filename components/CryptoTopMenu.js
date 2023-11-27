@@ -1,17 +1,23 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {
   ScrollView,
   FlatList,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
+import Icon from './Icon';
 
-const CryptoTopMenu = ({cryptocurrencies, currentHomeSection, setCurrentHomeSection, setSubMenuOptions, subOptions}) => {
-
+const CryptoTopMenu = ({
+  cryptocurrencies,
+  currentHomeSection,
+  setCurrentHomeSection,
+  setSubMenuOptions,
+  subOptions,
+}) => {
   const handleMenuPress = crypto => {
     setCurrentHomeSection(crypto);
-    setSubMenuOptions(subOptions[crypto])
+    setSubMenuOptions(subOptions[crypto]);
   };
 
   return (
@@ -21,12 +27,22 @@ const CryptoTopMenu = ({cryptocurrencies, currentHomeSection, setCurrentHomeSect
           {cryptocurrencies.map(crypto => (
             <TouchableOpacity
               key={crypto}
-              style={[
-                styles.menuItem
-              ]}
+              style={[styles.menuItem]}
               onPress={() => handleMenuPress(crypto)}>
-              <View style={[styles.circle, currentHomeSection === crypto && styles.selectedItem]}>
-                <Text style={styles.circleText}>{crypto}</Text>
+              <View
+                style={[
+                  styles.circle,
+                  currentHomeSection === crypto && styles.selectedItem,
+                ]}>
+                {(crypto === 'BTC' || crypto === 'ETH') && (
+                  <Icon
+                    width={40}
+                    height={40}
+                    svg={'./resources/bitcoing.svg'}></Icon>
+                )}
+                {crypto !== 'BTC' && crypto !== 'ETH' && (
+                  <Text style={styles.circleText}>{crypto}</Text>
+                )}
               </View>
             </TouchableOpacity>
           ))}
@@ -37,16 +53,16 @@ const CryptoTopMenu = ({cryptocurrencies, currentHomeSection, setCurrentHomeSect
 };
 
 const styles = StyleSheet.create({
-  container: {
+  menuContainer: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#2c3e50',
-    paddingVertical: 10,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
+    backgroundColor: '#DDE1E2',
+    paddingVertical: 15,
+    // position: 'absolute',
+    // top: 0,
+    // left: 0,
+    // right: 0,
   },
   menuItem: {
     marginHorizontal: 10,
@@ -55,12 +71,18 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#3498db',
+    backgroundColor: '#B8BBBC',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  image: {
+    flex: 1,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
   circleText: {
-    color: 'white',
+    color: '#F7F7F7',
     fontWeight: 'bold',
   },
   arrowContainer: {
@@ -73,7 +95,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   selectedItem: {
-    backgroundColor: '#FF8515',
+    backgroundColor: '#F7931A',
+    color: '#F7F7F7',
   },
 });
 

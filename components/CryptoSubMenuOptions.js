@@ -16,7 +16,13 @@ const CryptoSubMenuOptions = ({
             mainCoinsOption === option && styles.selectedItem,
           ]}
           onPress={() => handleSubMenuOptionPress(option)}>
-          <Text style={styles.menuText}>{option}</Text>
+          <Text
+            style={[
+              styles.menuText,
+              mainCoinsOption === option && styles.selectedText,
+            ]}>
+            {option}
+          </Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -26,20 +32,27 @@ const CryptoSubMenuOptions = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    width: '100%', // Ocupa el 100% del ancho de la pantalla
-    paddingVertical: 10,
+    width: '100%',
+    paddingVertical: 5,
   },
   menuItem: {
-    flex: 1, // Ocupa el espacio disponible
-    paddingVertical: 8,
+    flex: 1,
+    marginHorizontal: 5,
+    paddingVertical: 4,
     paddingHorizontal: 16,
-    backgroundColor: '#3498db',
+    backgroundColor: '#DDE1E2',
+    borderWidth: 2,
+    borderColor: '#F7F7F7',
+    borderRadius: 5,
   },
   selectedItem: {
-    backgroundColor: '#2c3e50',
+    backgroundColor: '#F7F7F7',
   },
   menuText: {
-    color: 'white',
+    color: '#F7F7F7',
+  },
+  selectedText: {
+    color: '#B8BBBC',
     fontWeight: 'bold',
   },
 });
