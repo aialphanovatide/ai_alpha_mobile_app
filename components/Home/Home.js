@@ -13,6 +13,7 @@ import NonFundamentalCoin from '../Sections/NonFundamentalCoin';
 // This component is the main "bus" of all the sections. It's the default section that renders when the app is loaded.
 
 const Home = () => {
+
   // Device height and width control
   const {height, width} = Dimensions.get('window');
   // Main sections and packages for the main top menu
@@ -69,6 +70,7 @@ const Home = () => {
   };
 
   return (
+    
     <ScrollView
       style={{
         backgroundColor: '#DDE1E2',
@@ -127,76 +129,9 @@ const Home = () => {
                 height: 40,
                 // marginTop: 20,
               }}>
-              <TickerTape />
+              {/* <TickerTape /> */}
             </View>
-            <View
-              style={{
-                backgroundColor: '#DDE1E2',
-                width,
-                height: 400,
-                marginRight: 'auto',
-                marginLeft: 'auto',
-              }}>
-              <Text
-                style={{
-                  marginTop: 5,
-                  padding: 2.5,
-                  color: '#5E6466',
-                  fontWeight: 'bold',
-                  fontSize: 18,
-                }}>
-                Top Stories
-              </Text>
-              <View
-                style={{
-                  alignItems: 'start',
-                  justifyContent: 'start',
-                  flex: 1,
-                  backgroundColor: '#EFEFEF',
-                }}>
-                <View
-                  style={{
-                    width: 200,
-                    height: '100%',
-                    flexDirection: 'column',
-                  }}>
-                  <View
-                    style={{
-                      flex: 1,
-                      height: 33,
-                      borderBottomWidth: 1,
-                      borderColor: '#A5ABAC',
-                    }}></View>
-                  <View
-                    style={{
-                      flex: 1,
-                      height: 33,
-                      borderBottomWidth: 1,
-                      borderColor: '#A5ABAC',
-                    }}></View>
-                  <View
-                    style={{
-                      flex: 1,
-                      height: 33,
-                      borderBottomWidth: 1,
-                      borderColor: '#A5ABAC',
-                    }}></View>
-                </View>
-              </View>
-            </View>
-            <View
-              style={{
-                backgroundColor: '#EFEFEF',
-                width,
-                height: 100,
-                marginTop: 10,
-                marginRight: 'auto',
-                marginLeft: 'auto',
-              }}>
-              <Text style={{marginTop: 5, padding: 2.5, color: '#5F6466', fontWeight: 'bold', fontSize: 18}}>
-                Analysis
-              </Text>
-            </View>
+          
             <View
               style={{
                 backgroundColor: '#EFEFEF',

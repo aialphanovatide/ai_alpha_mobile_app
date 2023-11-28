@@ -34,15 +34,15 @@ const CryptoTopMenu = ({
                   styles.circle,
                   currentHomeSection === crypto && styles.selectedItem,
                 ]}>
-                {(crypto === 'BTC' || crypto === 'ETH') && (
+                {/* {(crypto === 'BTC' || crypto === 'ETH') && (
                   <Icon
                     width={40}
                     height={40}
                     svg={'./resources/bitcoing.svg'}></Icon>
-                )}
-                {crypto !== 'BTC' && crypto !== 'ETH' && (
+                )} */}
+                {/* {crypto !== 'BTC' && crypto !== 'ETH' && ( */}
                   <Text style={styles.circleText}>{crypto}</Text>
-                )}
+                {/* )} */}
               </View>
             </TouchableOpacity>
           ))}
