@@ -1,11 +1,8 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-import {
-  ScrollView,
-  GestureHandlerRootView,
-} from 'react-native-gesture-handler';
-// import Icon from './Icon';
+import {ScrollView, GestureHandlerRootView} from 'react-native-gesture-handler';
+import Icon from './Icon';
 import styles from './CryptoTopStyles';
 
 const CryptoTopMenu = ({
@@ -24,25 +21,27 @@ const CryptoTopMenu = ({
     <GestureHandlerRootView style={{flex: 1}}>
       <View style={styles.menuContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {cryptocurrencies.map(crypto => (
+          {cryptocurrencies.map(cryptocurrency => (
             <TouchableOpacity
-              key={crypto}
+              key={cryptocurrency.crypto}
               style={[styles.menuItem]}
-              onPress={() => handleMenuPress(crypto)}>
+              onPress={() => handleMenuPress(cryptocurrency.crypto)}>
               <View
                 style={[
                   styles.circle,
-                  currentHomeSection === crypto && styles.selectedItem,
+                  currentHomeSection === cryptocurrency.crypto && styles.selectedItem,
                 ]}>
-                {/* {(crypto === 'BTC' || crypto === 'ETH') && (
+                {(cryptocurrency.crypto === 'BTC' || cryptocurrency.crypto === 'ETH') && (cryptocurrency.icon !== null) && (
                   <Icon
                     width={40}
                     height={40}
-                    svg={'./resources/bitcoing.svg'}></Icon>
-                )} */}
-                {/* {crypto !== 'BTC' && crypto !== 'ETH' && ( */}
-                  <Text style={styles.circleText}>{crypto}</Text>
-                {/* )} */}
+                    xml={cryptocurrency.icon}
+                    isCurrent={cryptocurrency.crypto === currentHomeSection}
+                    ></Icon>
+                )}
+                {cryptocurrency.crypto !== 'BTC' && cryptocurrency.crypto !== 'ETH' && (
+                  <Text style={styles.circleText}>{cryptocurrency.crypto}</Text>
+                )}
               </View>
             </TouchableOpacity>
           ))}

@@ -7,10 +7,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#DDE1E2',
     paddingVertical: 15,
-    // position: 'absolute',
-    // top: 0,
-    // left: 0,
-    // right: 0,
   },
   menuItem: {
     marginHorizontal: 10,
