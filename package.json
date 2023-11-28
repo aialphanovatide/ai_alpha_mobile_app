@@ -12,9 +12,11 @@
   "dependencies": {
     "react": "18.2.0",
     "react-native": "0.72.7",
+    "react-native-asset": "^2.1.1",
     "react-native-gesture-handler": "^2.14.0",
     "react-native-svg": "^14.0.0",
     "react-native-swiper": "^1.6.0",
+    "react-native-vector-icons": "^10.0.2",
     "react-native-webview": "^13.6.3"
   },
   "devDependencies": {

@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {View, Text} from 'react-native';
 import New from './New';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import styles from './NewsStyles';
 
 const newsMock = [
   {
@@ -74,11 +75,11 @@ const News = ({currentHomeSection}) => {
               key={item.title}
               onPress={() => loadNewData(item)}>
               <View style={styles.newsItem}>
-                <View style={styles.newsDescription}>
+                <View style={styles.descriptionContainer}>
                   <Text style={styles.descriptionText}>{item.title}</Text>
                   {/* <Text style={styles.descriptionText}>{item.description}</Text> */}
                 </View>
-                <View style={styles.newsImage}>
+                <View style={styles.imagePreview}>
                   <Text>{item.image}</Text>
                 </View>
               </View>
@@ -89,50 +90,4 @@ const News = ({currentHomeSection}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 10,
-    backgroundColor: 'transparent',
-  },
-  sectionTitle: {
-    marginBottom: 10,
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#5F6466',
-  },
-  newsItem: {
-    flexDirection: 'row',
-    marginBottom: 10,
-    paddingVertical: 30,
-    paddingHorizontal: 15,
-    backgroundColor: '#D9D9D9',
-    borderColor: '#EFEFEF',
-    borderWidth: 1,
-    borderRadius: 8,
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  newsDescription: {
-    flex: 1,
-    height: '50%',
-    overflow: 'hidden',
-  },
-  newsImage: {
-    width: 80,
-    height: 80,
-    marginLeft: 15,
-    borderWidth: 1,
-    borderColor: '#EFEFEF',
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  descriptionText: {
-    color: '#242427',
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
-});
 export default News;
