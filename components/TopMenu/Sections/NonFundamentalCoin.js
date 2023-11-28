@@ -1,8 +1,8 @@
 import React from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import TickerTape from '../PricesBar/TickerTape';
-import TopTenGainers from '../TopTenGainers/TopTenGainers';
+import TickerTape from '../../Home/Tickertape/TickerTape';
+import TopTenGainers from '../../Home/TopTenGainers/TopTenGainers';
 import styles from './CoinStyles.js';
 // This component renders when one of the Non-Fundamental packages are touched. Here is the information about the currency and displays along with a submenu that lets to select one of the cryptos that the package include.
 const NonFundamentalCoin = ({currentHomeSection}) => {

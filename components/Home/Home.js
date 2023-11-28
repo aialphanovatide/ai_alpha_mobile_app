@@ -2,13 +2,13 @@
 import {React, useEffect, useState} from 'react';
 import {View, Dimensions, Text, TouchableOpacity} from 'react-native';
 import CryptoTopMenu from '../TopMenu/CryptoTopMenu';
-import TickerTape from '../PricesBar/TickerTape';
+import TickerTape from './Tickertape/TickerTape';
 import {ScrollView} from 'react-native-gesture-handler';
-import CoinSubMenu from '../CoinSubMenu/CoinSubMenu';
-import CryptoSubMenuOptions from '../CryptoSubMenu/CryptoSubMenuOptions';
-import Coin from '../Sections/Coin';
-import TopTenGainers from '../TopTenGainers/TopTenGainers';
-import NonFundamentalCoin from '../Sections/NonFundamentalCoin';
+import CoinSubMenu from '../TopMenu/CoinSubMenu/CoinSubMenu';
+import CryptoSubMenuOptions from '../TopMenu/CryptoSubMenu/CryptoSubMenuOptions';
+import Coin from '../TopMenu/Sections/Coin';
+import TopTenGainers from './TopTenGainers/TopTenGainers';
+import NonFundamentalCoin from '../TopMenu/Sections/NonFundamentalCoin';
 import styles from './HomeStyles';
 
 // Mock of each crypto, this should be separated in a new file

@@ -1,7 +1,6 @@
-// TickerTape.js
-
 import React from 'react';
-import {WebView} from 'react-native-webview';
+import { View, StyleSheet } from 'react-native';
+import AutoHeightWebView from 'react-native-autoheight-webview';
 
 const TickerTape = () => {
   const htmlContent = `
@@ -54,11 +53,23 @@ const TickerTape = () => {
   `;
 
   return (
-    <WebView
-      style={{flex: 1}}
-      source={{html: htmlContent, originWhitelist: ['*']}}
-    />
+    <View style={styles.container}>
+      <AutoHeightWebView
+        style={styles.webview}
+        source={{ html: htmlContent, baseUrl: '' }}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  webview: {
+    flex: 1,
+    width: 600,
+  },
+});
 
 export default TickerTape;

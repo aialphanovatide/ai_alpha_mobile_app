@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   circle: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 5,
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   },
   activeText: {
     color: 'orange',
+    fontWeight: 'bold'
   },
 });
 
