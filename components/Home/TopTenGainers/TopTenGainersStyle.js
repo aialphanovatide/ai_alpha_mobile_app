@@ -1,27 +1,31 @@
 /* eslint-disable prettier/prettier */
-
-const {StyleSheet} = require('react-native');
+import {Dimensions, StyleSheet} from 'react-native';
+const {width} = Dimensions.get('window'); 
+const responsiveFontSize = width * 0.04;
 
 const styles = StyleSheet.create({
   topTenGainersContainer: {
     height: 400,
-    marginTop: 20,
+    width,
+    marginVertical: 40,
     marginHorizontal: 10,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: 'transparent',
   },
   topTenGainersTitle: {
     marginLeft: 10,
     padding: 10,
-    color: '#5E6466',
-    fontSize: 18,
+    color: '#282828',
+    fontSize: responsiveFontSize,
     fontWeight: 'bold',
   },
   table: {
+    paddingTop: 10,
+    backgroundColor: '#EFEFEF',
     borderWidth: 1,
     borderColor: '#EFEFEF',
   },
   row: {
-    height: 100,
+    height: 80,
     display: 'flex',
     flexDirection: 'row',
     borderBottomWidth: 2,
@@ -37,9 +41,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 25,
-    // borderColor: '#B8BBBC',
-    // borderWidth: 1,
-    // backgroundColor: '#B8BBBC',
   },
   coinLogo: {
     width: '100%',

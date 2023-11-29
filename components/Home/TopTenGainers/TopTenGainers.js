@@ -57,20 +57,20 @@ const TopTenGainers = () => {
   }, []);
 
   return (
-    <View style={[styles.topTenGainersContainer, width]}>
-      <ScrollView>
-        <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>
-        {loading ? (
-          <Loader />
-        ) : (
+    <View style={styles.topTenGainersContainer}>
+      <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ScrollView>
           <View style={styles.table}>
             {topTenCoins.length > 0 &&
               topTenCoins.map((coin, index) => (
                 <Item key={index} coin={coin} position={index + 1} />
               ))}
           </View>
-        )}
-      </ScrollView>
+        </ScrollView>
+      )}
     </View>
   );
 };

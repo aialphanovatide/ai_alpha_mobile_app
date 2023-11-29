@@ -6,6 +6,8 @@ import TopStories from './TopStories/topStories';
 import Analysis from './Analysis/analysis';
 import { TopMenuContext } from '../../context/topMenuContext';
 import MainSection from '../TopMenu/Section/section';
+import TopTenGainers from './TopTenGainers/TopTenGainers';
+import PriceAction from './PriceAction/PriceAction';
 
 const Home = () => {
 
@@ -23,6 +25,8 @@ const Home = () => {
        <TickerTape />
        <TopStories/>
        <Analysis/>
+       <TopTenGainers />
+       <PriceAction />
  
      </ScrollView> : <MainSection />
   );

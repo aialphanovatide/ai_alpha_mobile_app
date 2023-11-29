@@ -1,26 +1,34 @@
 /* eslint-disable prettier/prettier */
-import {StyleSheet} from 'react-native';
-
+import {StyleSheet, Dimensions} from 'react-native';
+const {width} = Dimensions.get('window');
+const responsiveFontSize = width * 0.04;
 const styles = StyleSheet.create({
   priceActionContainer: {
-    height: '600',
+    height: '500',
+    width,
     marginHorizontal: 10,
     marginVertical: 40,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
   },
   title: {
     marginLeft: 10,
     padding: 10,
     color: '#5E6466',
-    fontSize: 18,
+    fontSize: responsiveFontSize,
     fontWeight: 'bold',
   },
   tableContainer: {
-    height: '100%',
+    height: 'auto',
+    flex: 1,
+    marginVertical: 10,
+    backgroundColor: '#EFEFEF',
     borderWidth: 1,
     borderColor: '#ddd',
-    marginVertical: 10,
     overflow: 'hidden',
+  },
+  tableScrollView: {
+    height: '100%',
   },
   headerRow: {
     flexDirection: 'row',
@@ -30,7 +38,8 @@ const styles = StyleSheet.create({
   logoContainer: {
     width: 20,
     height: 20,
-    marginTop: 10,
+    marginTop: 5,
+    marginLeft: 5,
     borderRadius: 10,
     overflow: 'hidden',
     alignItems: 'center',
@@ -59,8 +68,6 @@ const styles = StyleSheet.create({
   dataCell: {
     flex: 1,
     padding: 5,
-    // borderBottomWidth: 2,
-    // borderBottomColor: '#B8BBBC',
     color: '#242427',
     fontSize: 10,
     textAlign: 'center',

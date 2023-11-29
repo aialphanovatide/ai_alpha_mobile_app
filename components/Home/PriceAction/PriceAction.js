@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Dimensions, Image} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import styles from './PriceActionStyles';
 import priceActionService from '../../../services/PriceActionService';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -49,7 +49,6 @@ const TableItem = ({index, coin}) => {
 };
 
 const PriceAction = () => {
-  const {height, width} = Dimensions.get('window');
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -68,17 +67,17 @@ const PriceAction = () => {
   }, []);
 
   return (
-    <View style={[styles.priceActionContainer, width]}>
+    <View style={[styles.priceActionContainer]}>
       <Text style={styles.title}>Price action</Text>
       {loading ? (
         <Loader />
       ) : (
         <View style={styles.tableContainer}>
-          <ScrollView>
+          <ScrollView style={styles.tableScrollView}>
             {/* Encabezados de columnas */}
             <View style={styles.headerRow}>
               <Text style={styles.headerCell}>Asset</Text>
-              <Text style={styles.headerCell}>Price</Text>
+              <Text style={styles.headerCell}>Price{'(USD)'}</Text>
               <Text style={styles.headerCell}>MKT Cap</Text>
               <Text style={styles.headerCell}>24H</Text>
               <Text style={styles.headerCell}>7D</Text>

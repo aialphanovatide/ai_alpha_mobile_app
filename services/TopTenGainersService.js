@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/*
 const categories = [
   'cryptocurrency',
   'layer-1',
@@ -47,7 +48,7 @@ const coins_to_fetch = [
   'fet',
   'rndr',
 ];
-
+*/
 // Función para obtener información de los 10 coins con mayor valor en el Precio actual del mercado
 async function getTop10Coins() {
   const top10CoinsInfo = [];
@@ -55,7 +56,6 @@ async function getTop10Coins() {
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin%2Cethereum%2Ccosmos%2Cpolkadot%2Cquant-network%2Ccardano%2Csolana%2Cavalanche-2%2Cnear%2Cfantom%2Ckaspa%2Cstellar%2Calgorand%2Cripple%2Clido-dao%2Crocket-pool%2Cfrax-share%2Cmatic-network%2Carbitrum%2Coptimism%2Cchainlink%2Capi3%2Cband-protocol%2Cdydx%2Cgmx%2Cvelo%2Cuniswap%2Csushi%2Cpancakeswap-token%2Caave%2Cpendle%2C1inch%2Cocean-protocol%2Cfetch-ai%2Crender-token&order=price_desc&per_page=10&page=1&sparkline=false&price_change_percentage='24h'&locale=en&precision=2`,
   );
   const data = await response.json();
-  console.log(data);
   if (data.length > 0) {
     for (let i = 0; i < data.length; i++) {
       const coin = data[i];
@@ -69,7 +69,6 @@ async function getTop10Coins() {
       top10CoinsInfo.push(coinInfo);
     }
   }
-  console.log(top10CoinsInfo);
   return top10CoinsInfo;
 }
 
