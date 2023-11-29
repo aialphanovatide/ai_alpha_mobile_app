@@ -72,6 +72,9 @@ const styles = StyleSheet.create({
   greenNumber: {
     color: '#8EED1A',
   },
+  redNumber: {
+    color: '#FF799F'
+  }
 });
 
 export default styles;
