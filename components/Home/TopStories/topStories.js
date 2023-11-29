@@ -1,84 +1,44 @@
-import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { Accordion, List } from 'react-native-paper';
+import * as React from 'react';
+import { List } from 'react-native-paper';
+import StoryItem from './Storyitem/storyItem';
+import styles from './topStoriesStyles'
+import { Image } from 'react-native';
 
-const TopStoriesAccordion = ({ data }) => {
-  const [expanded, setExpanded] = useState(0);
+const TopStories = () => {
 
-  const handlePress = (index) => {
-    setExpanded(expanded === index ? null : index);
-  };
+  const [expanded, setExpanded] = React.useState(false);
+  const handlePress = () => setExpanded(!expanded);
+
+  const stories = [
+    { id: 1, 
+      title: 'Bitcoin Whales Withdraw $1 Billion from Exchanges as Ethereum and XRP Gain Attention', 
+      description: '- Around 25,000 BTC, worth nearly $1 billion, has been withdrawn from crypto exchange wallets in the last two weeks. - High-net-worth traders have been accumulating Ethereum for nine consecutive days, signaling a possible upcoming rally. - XRP whales have purchased around 11 million XRP, worth roughly $6.82 million, in the past week.', 
+      image: 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg' },
+    { id: 2, 
+      title: 'Bitcoin Whales Withdraw $1 Billion from Exchanges as Ethereum and XRP Gain Attention', 
+      description: '- Around 25,000 BTC, worth nearly $1 billion, has been withdrawn from crypto exchange wallets in the last two weeks. - High-net-worth traders have been accumulating Ethereum for nine consecutive days, signaling a possible upcoming rally. - XRP whales have purchased around 11 million XRP, worth roughly $6.82 million, in the past week.', 
+      image: 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg' },
+    { id: 3, 
+      title: 'Bitcoin Whales Withdraw $1 Billion from Exchanges as Ethereum and XRP Gain Attention', 
+      description: '- Around 25,000 BTC, worth nearly $1 billion, has been withdrawn from crypto exchange wallets in the last two weeks. - High-net-worth traders have been accumulating Ethereum for nine consecutive days, signaling a possible upcoming rally. - XRP whales have purchased around 11 million XRP, worth roughly $6.82 million, in the past week.', 
+      image: 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg' },
+  ];
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Top Stories</Text>
-      </View>
-      <Accordion.Section title="" style={styles.accordionSection}>
-        {data.map((item, index) => (
-          <Accordion.Item
-            key={index}
-            expanded={expanded === index}
-            onPress={() => handlePress(index)}
-          >
-            <Accordion.Summary>
-              <View style={styles.itemContainer}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.itemTitle}>{item.title}</Text>
-                  <Text style={styles.itemSummary}>{item.summary}</Text>
-                </View>
-                <Image source={{ uri: item.image }} style={styles.itemImage} />
-              </View>
-            </Accordion.Summary>
-            <Accordion.Details>
-              {/* Additional details if needed */}
-            </Accordion.Details>
-          </Accordion.Item>
+    <List.Section title="Top Stories" titleStyle={styles.mainTitle}>
+      <List.Accordion
+        titleStyle={styles.titleStyles}
+        title={stories[0].title}
+        description={stories[0].description}
+        left={() => <Image source={{ uri: stories[0].image }} style={styles.imageStyle} />}
+        expanded={expanded}
+        onPress={handlePress}>
+        {stories.map((story) => (
+          <StoryItem key={story.id} title={story.title} description={story.description} image={story.image} />
         ))}
-      </Accordion.Section>
-    </ScrollView>
+      </List.Accordion>
+    </List.Section>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
-  },
-  header: {
-    backgroundColor: 'gray',
-    padding: 10,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  accordionSection: {
-    marginTop: '10%',
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  textContainer: {
-    flex: 1,
-    marginLeft: 10,
-  },
-  itemTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  itemSummary: {
-    fontSize: 14,
-    marginTop: 5,
-  },
-  itemImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 5,
-  },
-});
-
-export default TopStoriesAccordion;
+export default TopStories;

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Swiper from 'react-native-swiper';
-import TradingViewChart from '../../../Home/Tickertape/TradingViewChart';
+import TradingViewChart from '../../../../Home/Tickertape/TradingViewChart';
 
 const Slider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

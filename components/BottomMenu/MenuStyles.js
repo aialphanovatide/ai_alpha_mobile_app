@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#fff',
     paddingBottom: 10,
-    marginTop: 4
   },
   menuButton: {
     alignItems: 'center',
@@ -22,9 +21,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 5,
+    marginTop: 5,
   },
   activeCircle: {
-    backgroundColor: 'orange',
+    backgroundColor: '#FC5404',
+    elevation: 0,
   },
   buttonText: {
     color: '#282828',
