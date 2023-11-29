@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   topTenGainersContainer: {
     height: 400,
     marginTop: 20,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     backgroundColor: '#EFEFEF',
   },
   topTenGainersTitle: {
@@ -29,18 +29,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
-  coinLogo: {
-    width: 70,
-    height: 70,
-    marginRight: 30,
+  logoContainer: {
+    width: 50,
+    height: 50,
+    marginRight: 25,
     alignSelf: 'flex-start',
     alignItems: 'center',
-    borderRadius: 35,
-    borderColor: '#B8BBBC',
-    borderWidth: 1,
     justifyContent: 'center',
-    color: '#fff',
-    backgroundColor: '#B8BBBC',
+    borderRadius: 25,
+    // borderColor: '#B8BBBC',
+    // borderWidth: 1,
+    // backgroundColor: '#B8BBBC',
+  },
+  coinLogo: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 25,
   },
   coinDataContainer: {
     width: 100,
@@ -50,6 +54,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  coinPosition: {
+    marginRight: 10,
+    paddingLeft: 5,
+    paddingVertical: 10,
+    color: '#242427',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
   coinData: {
     color: '#242427',
   },
@@ -58,8 +71,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   coinNumbersContainer: {
-    width: 100,
-    marginLeft: '25%',
+    width: 'auto',
+    marginLeft: '20%',
     paddingHorizontal: 20,
     paddingVertical: 5,
     alignItems: 'flex-end',
@@ -68,6 +81,7 @@ const styles = StyleSheet.create({
   coinNumber: {
     textAlign: 'right',
     color: '#B8BBBC',
+    fontWeight: 'bold',
   },
   greenNumber: {
     color: '#8EED1A',

@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {Dimensions, View, Text} from 'react-native';
+import {Dimensions, View, Text, Image} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import styles from './TopTenGainersStyle.js';
-import {Image} from 'react-native-svg';
 import topTenGainersService from '../../../services/TopTenGainersService.js';
+import Loader from '../Loader/Loader.js';
 
 const {height, width} = Dimensions.get('window');
 
@@ -13,21 +13,25 @@ const {height, width} = Dimensions.get('window');
 const Item = ({position, coin}) => {
   return (
     <View key={position} style={[styles.row, width]}>
-      <View style={styles.coinLogo}>
-        <Image href={coin.image} />
+      <Text style={styles.coinPosition}>{position}</Text>
+      <View style={styles.logoContainer}>
+        <Image style={[styles.coinLogo]} source={{uri: coin.image}} />
       </View>
       <View styles={styles.coinDataContainer}>
         <Text style={[styles.coinName, styles.coinData]}>{coin.name}</Text>
-        <Text style={styles.coinData}>Coin data</Text>
+        <Text style={styles.coinData}>{coin.symbol.toUpperCase()}</Text>
       </View>
       <View style={styles.coinNumbersContainer}>
         <Text style={styles.coinNumber}>${coin.currentPrice}</Text>
         <Text
           style={[
             styles.coinNumber,
-            coin.priceChange24H >= 0 ? styles.greenNumber : styles.redNumber,
+            coin.priceChange24H &&
+              (coin.priceChange24H >= 0
+                ? styles.greenNumber
+                : styles.redNumber),
           ]}>
-          {coin.priceChange24H >= 0 ? '+' : '-' + coin.priceChange24H}
+          {coin.priceChange24H && coin.priceChange24H.toFixed(2)}%
         </Text>
       </View>
     </View>
@@ -36,6 +40,7 @@ const Item = ({position, coin}) => {
 
 const TopTenGainers = () => {
   const [topTenCoins, setTopTenCoins] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTopTenCoins = async () => {
@@ -44,6 +49,8 @@ const TopTenGainers = () => {
         setTopTenCoins(data);
       } catch (error) {
         console.error('Error fetching top 10 coins:', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchTopTenCoins();
@@ -53,12 +60,16 @@ const TopTenGainers = () => {
     <View style={[styles.topTenGainersContainer, width]}>
       <ScrollView>
         <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>
-        <View style={styles.table}>
-          {topTenCoins.length > 0 &&
-            topTenCoins.map((coin, index) => (
-              <Item key={index} coin={coin} position={index + 1} />
-            ))}
-        </View>
+        {loading ? (
+          <Loader />
+        ) : (
+          <View style={styles.table}>
+            {topTenCoins.length > 0 &&
+              topTenCoins.map((coin, index) => (
+                <Item key={index} coin={coin} position={index + 1} />
+              ))}
+          </View>
+        )}
       </ScrollView>
     </View>
   );
