@@ -76,14 +76,18 @@ const PriceAction = () => {
           {/* Encabezados de columnas */}
           <View style={styles.headerRow}>
             <Text style={styles.headerCell}>Asset</Text>
-            <Text style={styles.headerCell}>Price{'(USD)'}</Text>
+            <Text style={styles.headerCell}>Price{' (USD)'}</Text>
             <Text style={styles.headerCell}>MKT Cap</Text>
             <Text style={styles.headerCell}>24H</Text>
             <Text style={styles.headerCell}>7D</Text>
             <Text style={styles.headerCell}>30D</Text>
             <Text style={styles.headerCell}>1Y</Text>
           </View>
-          <ScrollView style={styles.tableScrollView}>
+          <ScrollView
+            style={styles.tableScrollView}
+            bounces={false}
+            alwaysBounceVertical={false}
+            showsVerticalScrollIndicator={false}>
             {/* Datos de la tabla */}
             {coins.map((coin, index) => (
               <TableItem key={index} coin={coin} />
