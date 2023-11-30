@@ -10,19 +10,28 @@ import { TopMenuContextProvider } from './context/topMenuContext';
 
 const App = () => {
   const { height, width } = useDimensions();
-  const isSuscribed = false;
 
-  return isSuscribed ? (
+  return (
     <GestureHandlerRootView style={{ flex: 1, height, width }}>
-      <TopMenuContextProvider>
-        <TopMenu />
-        <Home />
-        <BottomMenu />
-      </TopMenuContextProvider>
-    </GestureHandlerRootView>
-  ) : (
-    <Subscription />
-  );
+    <TopMenuContextProvider>
+      <TopMenu />
+      <Home />
+      <BottomMenu />
+    </TopMenuContextProvider>
+  </GestureHandlerRootView>
+  )
+
+  // return isSuscribed ? (
+  //   <GestureHandlerRootView style={{ flex: 1, height, width }}>
+  //     <TopMenuContextProvider>
+  //       <TopMenu />
+  //       <Home />
+  //       <BottomMenu />
+  //     </TopMenuContextProvider>
+  //   </GestureHandlerRootView>
+  // ) : (
+  //   <Subscription />
+  // );
 };
 
 export default App;
