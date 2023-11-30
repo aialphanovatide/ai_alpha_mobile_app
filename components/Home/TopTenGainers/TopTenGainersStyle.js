@@ -7,13 +7,13 @@ const styles = StyleSheet.create({
   topTenGainersContainer: {
     height: 400,
     width,
-    marginVertical: 40,
-    marginHorizontal: 10,
+    paddingHorizontal: 10,
+    marginVertical: 20,
     backgroundColor: 'transparent',
   },
   topTenGainersTitle: {
-    marginLeft: 10,
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
     color: '#282828',
     fontSize: responsiveFontSize,
     fontWeight: 'bold',
