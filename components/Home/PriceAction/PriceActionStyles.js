@@ -4,11 +4,11 @@ const {width} = Dimensions.get('window');
 const responsiveFontSize = width * 0.04;
 const styles = StyleSheet.create({
   priceActionContainer: {
-    height: '500',
+    height: 'auto',
     width,
     marginVertical: 15,
+    paddingBottom: 30,
     paddingHorizontal: 10,
-    backgroundColor: 'transparent',
     overflow: 'hidden',
   },
   title: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   tableContainer: {
-    height: '100%',
+    height: 500,
     marginVertical: 10,
     backgroundColor: '#EFEFEF',
     borderWidth: 1,

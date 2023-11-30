@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     borderColor: '#EFEFEF',
   },
   row: {
+    width: '100%',
     height: 80,
     display: 'flex',
     flexDirection: 'row',
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   coinDataContainer: {
-    width: 100,
+    flex: 1,
     marginTop: 20,
     marginRight: 30,
     textAlign: 'center',
@@ -72,8 +73,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   coinNumbersContainer: {
-    width: 'auto',
-    marginLeft: '20%',
+    position: 'relative',
+    right: 0,
+    top: 0,
+    flex: 1,
+    marginLeft: 20,
     paddingHorizontal: 20,
     paddingVertical: 5,
     alignItems: 'flex-end',
