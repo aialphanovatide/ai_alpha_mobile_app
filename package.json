@@ -17,6 +17,7 @@
     "react-native-autoheight-webview": "^1.6.5",
     "react-native-charts-wrapper": "^0.6.0",
     "react-native-gesture-handler": "^2.14.0",
+    "react-native-iap": "^12.11.0",
     "react-native-paper": "^5.11.3",
     "react-native-svg": "^14.0.0",
     "react-native-swiper": "^1.6.0",
