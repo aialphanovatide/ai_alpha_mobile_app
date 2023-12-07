@@ -1,5 +1,5 @@
 const menuData = [
-    { id: 1, icon: 'BTC', subMenuOptions: null, isActive: true },
+    { id: 1, icon: 'BTC', subMenuOptions: null, isActive: false },
     { id: 2, icon: 'ETH', subMenuOptions: null, isActive: true },
     {
       id: 3,
