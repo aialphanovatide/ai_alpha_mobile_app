@@ -1,70 +1,118 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, Button, Alert } from 'react-native';
-import {
-  requestSubscription,
-  initConnection,
-  endConnection,
-  finishTransaction,
-  purchaseUpdatedListener,
-  purchaseErrorListener,
-} from 'react-native-iap';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, Button, Alert, Platform } from 'react-native';
+import * as IAP from 'react-native-iap';
 
-const subscriptionProductId = "testsubscription1";
+const iosProductID = 'testsubscription2';
+const items = Platform.select({
+  ios:{skus: "testsubscription1"}
+})
 
 const Subscription = () => {
+  const [products, setProducts] = useState([]);
+  const [purchased, setPurchased] = useState(false);
+/*
   useEffect(() => {
-    let purchaseUpdateSub;
-    let purchaseErrorSub;
-
     const initIAP = async () => {
       try {
-        await initConnection();
-        purchaseUpdateSub = purchaseUpdatedListener(async (purchase) => {
-          if (purchase.transactionReceipt) {
-            await finishTransaction(purchase);
-            Alert.alert('Purchase Successful', 'Subscription activated.');
-          }
-        });
-        purchaseErrorSub = purchaseErrorListener((error) => {
-          Alert.alert('Purchase Error', error.message);
-        });
+        console.log('Fetching all subscriptions...');
+        const allSubscriptions = await IAP.getSubscriptions({ skus: ["testsubscription1", "testsubscription2"] });
+        console.log('All available subscriptions:', allSubscriptions);
       } catch (error) {
-        Alert.alert('IAP Error', error.message);
+        console.error('Error fetching subscriptions:', error);
       }
+      
     };
 
     initIAP();
 
     return () => {
-      if (purchaseUpdateSub) {
-        purchaseUpdateSub.remove();
-      }
-      if (purchaseErrorSub) {
-        purchaseErrorSub.remove();
-      }
-      endConnection();
+      console.log('Ending IAP connection');
+      IAP.endConnection();
     };
   }, []);
-
-  const handleSubscription = useCallback(async () => {
+*/
+useEffect(() => {
+  const fetchSubscriptions = async () => {
     try {
-      // Call requestSubscription with an object containing the sku
-      await requestSubscription({ sku: subscriptionProductId });
-    } catch (err) {
-      console.warn('Request subscription error', err);
-      Alert.alert('Subscription Error', err.message);
+      console.log("Initializing IAP connection...");
+      await IAP.initConnection();
+      console.log("Connected to store");
+
+      console.log("Fetching subscriptions with:", items);
+      IAP.getProducts(items).then((res) => {
+        console.log("Got subscriptions", res);
+        setProducts(res);
+      }).catch((error) => {
+        console.error("Error finding purchases", error);
+      });
+    } catch (error) {
+      console.error("Error initializing IAP:", error);
     }
-  }, []);
-  
+  };
+
+  fetchSubscriptions();
+
+  return () => {
+    console.log("Ending IAP connection");
+    IAP.endConnection();
+  };
+}, []);
+
+  /*const handleSubscription = async () => {
+    try {
+      console.log('Handling subscription...');
+      console.log(`iOS SKU for subscription: ${iosProductID}`);
+
+      const subscriptionResult = await IAP.requestSubscription(iosProductID);
+      console.log('Subscription request result:', subscriptionResult);
+
+      setPurchased(true);
+      Alert.alert('Purchase Successful', 'You have successfully subscribed.');
+    } catch (err) {
+      console.error('Purchase error:', err);
+      console.log('Error details:', err.message);
+      Alert.alert('Purchase Error', err.message);
+    }
+  };*/
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>
-        Subscribe to our Service!
-      </Text>
-      <Button title="Subscribe Now" onPress={handleSubscription} />
+    <View style={styles.container}>
+      {purchased ? (
+        <Text style={styles.text}>You are subscribed!</Text>
+      ) : (
+        <>
+          {products.length > 0 ? (
+            products.map((product, index) => (
+              <View key={index} style={styles.productContainer}>
+                <Text style={styles.text}>{product.title}</Text>
+                <Text style={styles.text}>{product.localizedPrice}</Text>
+                <Button title="Subscribe Now" onPress={handleSubscription} />
+              </View>
+            ))
+          ) : (
+            <Text style={styles.text}>Fetching products, please wait...</Text>
+          )}
+        </>
+      )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  productContainer: {
+    marginBottom: 10,
+  },
+  text: {
+    color: 'white',
+    fontSize: 20,
+    marginBottom: 10,
+  },
+});
 
 export default Subscription;
