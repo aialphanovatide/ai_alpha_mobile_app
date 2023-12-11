@@ -22,7 +22,7 @@ const AnalysisItem = ({id, sectionName, component, handleItemTouch}) => {
         <Icon name={'circle'} size={20} />
         <Text style={styles.itemText}>{sectionName}</Text>
         <View style={styles.rateValueContainer}>
-          <Text>0.00%</Text>
+          {/* <Text>0.00%</Text> */}
           <Icon name={'chevron-right'} size={14} />
         </View>
       </View>

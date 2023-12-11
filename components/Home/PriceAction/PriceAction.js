@@ -14,7 +14,7 @@ const ColumnSelector = ({options, selectedOption, onSelect}) => {
           <Text
             style={[
               styles.selectorOption,
-              (selectedOption.value === option.value) && styles.selectedOption,
+              selectedOption.value === option.value && styles.selectedOption,
             ]}>
             {option.label}
           </Text>

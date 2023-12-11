@@ -10,35 +10,36 @@ const FearAndGreedIndex = ({indexValue}) => {
     {range: [61, 80], label: 'Greed', color: '#32cd32'},
     {range: [81, 100], label: 'Extreme greed', color: '#008000'},
   ];
-  const [currentValue, setCurrentValue] = useState(fearAndGreedValues[2]);
+
+  const [date, setDate] = useState(null);
 
   useEffect(() => {
-    fearAndGreedValues.forEach(obj => {
-      if (indexValue >= obj.range[0] && indexValue <= obj.range[1]) {
-        setCurrentValue(obj);
-      }
-    });
-  }, [indexValue]);
+    const actualDate = getFormattedDate();
+    setDate(actualDate);
+  }, []);
+
+  const getFormattedDate = () => {
+    const actualDate = new Date();
+    const yyyy = actualDate.getFullYear();
+    const mm = String(actualDate.getMonth() + 1);
+    const dd = String(actualDate.getDate()).padStart(2, '0');
+
+    return `${yyyy}-${mm}-${dd}`;
+  };
 
   return (
-    <View style={styles.container}>
-      {/* <Speedometer
-        value={indexValue}
-        totalValue={100}
-        size={300}
-        showIndicator
-        showLabels
-        labelFormatter={number => `${number} %`}
-        internalColor={currentValue && currentValue.color}
-        innerColor={'#F7F7F7'}
-        indicatorColor={"#777777"}
-      />
-      <Text style={[styles.indexNumber, {color: currentValue.color}]}>
-        {indexValue}
-      </Text>
-      <Text style={styles.label}>{currentValue && currentValue.label}</Text> */}
-      <Image style={styles.widget} source={{uri:'https://alternative.me/crypto/fear-and-greed-index.png'}} alt='Latest Crypto Fear & Greed Index' fadeDuration={500}/>
-    </View>
+    date && (
+      <View style={styles.container}>
+        <Image
+          style={styles.widget}
+          source={{
+            uri: `https://alternative.me/images/fng/crypto-fear-and-greed-index-${date}.png`,
+          }}
+          alt="Latest Crypto Fear & Greed Index"
+          fadeDuration={500}
+        />
+      </View>
+    )
   );
 };
 
