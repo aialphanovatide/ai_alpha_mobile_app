@@ -20,7 +20,6 @@
     "react": "18.2.0",
     "react-native": "0.72.7",
     "react-native-autoheight-webview": "^1.6.5",
-    "react-native-charts-wrapper": "^0.6.0",
     "react-native-dotenv": "^3.4.9",
     "react-native-gesture-handler": "^2.14.0",
     "react-native-paper": "^5.11.3",
@@ -29,7 +28,10 @@
     "react-native-svg": "^14.0.0",
     "react-native-swiper": "^1.6.0",
     "react-native-vector-icons": "^10.0.2",
-    "react-native-webview": "^13.6.3"
+    "react-native-webview": "^13.6.3",
+    "victory": "^36.7.0",
+    "victory-native": "^36.7.0",
+    "victory-zoom-container": "^36.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

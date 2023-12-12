@@ -17,6 +17,7 @@ const MenuItem = ({ option, onPress, isActive }) => (
       <Icon
         name={option.icon}
         size={23}
+        color={isActive?'#FC5404' : '#282828'}
       />
     </View>
     <Text style={[styles.buttonText, isActive && styles.activeText]}>
@@ -28,7 +29,7 @@ const MenuItem = ({ option, onPress, isActive }) => (
 const BottomMenu = () => {
   const [currentSection, setCurrentSection] = useState('Home');
 
-  const handleMenuPress = (section) => {
+  const handleMenuPress = (section) => {  
     setCurrentSection(section);
   };
 

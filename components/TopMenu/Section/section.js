@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TopMenuContext } from '../../../context/topMenuContext';
-import CryptoChart from './Charts/chart';
+import CandlestickChart from './Charts/chart';
 
 const MainSection = () => {
 
@@ -9,8 +9,8 @@ const MainSection = () => {
 
   return (
     <View style={styles.container}>
-      <Text>{sharedData.data}</Text>
-      {/* <CryptoChart symbol={'BTCUSDT'} interval={'1m'} resistances={[38000, 38700]} supports={[37000]}/> */}
+      {/* <Text>{sharedData.data}</Text> */}
+      <CandlestickChart symbol={'BTCUSDT'} interval={'30m'}/>
     </View>
   );
 };
@@ -19,13 +19,13 @@ const MainSection = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'top',
     alignItems: 'center',
   },
   text: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'black',
+    color: '#282828',
   },
 });
 

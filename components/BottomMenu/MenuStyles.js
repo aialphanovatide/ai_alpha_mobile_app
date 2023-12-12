@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   activeCircle: {
-    backgroundColor: '#FC5404',
     elevation: 0,
   },
   buttonText: {
