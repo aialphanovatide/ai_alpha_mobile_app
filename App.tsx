@@ -17,8 +17,8 @@ export default App;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // This ensures that the SafeAreaView takes up the entire screen
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, // Additional padding for Android
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? 0 : StatusBar.currentHeight,
     backgroundColor: '#242427',
   },
 });
