@@ -58,12 +58,6 @@ const SocialSignInButton = () => {
         type="GOOGLE"
         disabled={user !== null}
       />
-      <GoogleSigninButton
-        style={{width: 300, height: 70}}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={() => signInWithGoogle()}
-      />
       <CustomButton
         text="Sign Up with Facebook"
         onPress={onSignInFacebook}
