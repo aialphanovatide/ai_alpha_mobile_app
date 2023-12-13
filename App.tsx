@@ -1,36 +1,27 @@
 import React from 'react';
-import useDimensions from './hooks/useDimensions';
-import BottomMenu from './components/BottomMenu/Menu';
-import Home from './components/Home/Home';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import TopMenu from './components/TopMenu/topmenu';
+import Navigation from './navigation/Navigation';
+import {SafeAreaView, StyleSheet, StatusBar, Platform} from 'react-native';
+
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import { TopMenuContextProvider } from './context/topMenuContext';
-import Subscription from './components/Subscriptions/Subscription';
 
 const App = () => {
-  const { height, width } = useDimensions();
-
   return (
-    <GestureHandlerRootView style={{ flex: 1, height, width }}>
-    <TopMenuContextProvider>
-      <TopMenu />
-      <Home />
-      <BottomMenu />
-    </TopMenuContextProvider>
-  </GestureHandlerRootView>
-  )
-
-  // return isSuscribed ? (
-  //   <GestureHandlerRootView style={{ flex: 1, height, width }}>
-  //     <TopMenuContextProvider>
-  //       <TopMenu />
-  //       <Home />
-  //       <BottomMenu />
-  //     </TopMenuContextProvider>
-  //   </GestureHandlerRootView>
-  // ) : (
-  //   <Subscription />
-  // );
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+       <TopMenuContextProvider>
+           <Navigation />
+       </TopMenuContextProvider>
+    </SafeAreaView>
+  );
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? 0 : StatusBar.currentHeight,
+    backgroundColor: '#242427',
+  },
+});

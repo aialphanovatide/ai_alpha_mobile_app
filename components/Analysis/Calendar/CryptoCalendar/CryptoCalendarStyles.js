@@ -1,0 +1,118 @@
+import {Dimensions, StyleSheet} from 'react-native';
+
+const {width, height} = Dimensions.get('window');
+const responsiveFontSize = width * 0.04;
+const styles = StyleSheet.create({
+  cryptoCalendarTitle: {
+    paddingVertical: 2.5,
+    paddingHorizontal: 15,
+    color: '#5F6466',
+    fontSize: responsiveFontSize * 0.85,
+  },
+  container: {
+    flex: 1,
+    width: width - 20,
+  },
+  contentCenter: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  calendarItem: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    marginHorizontal: 5,
+    marginVertical: 5,
+    padding: 10,
+    backgroundColor: '#F7F7F7',
+  },
+  itemIconContainer: {
+    width: 45,
+    height: 45,
+    marginRight: '5%',
+  },
+  itemIconImage: {
+    width: '90%',
+    height: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 2.5,
+    marginVertical: 2,
+    borderRadius: 27.5,
+  },
+  coinName: {
+    color: '#5F6466',
+    fontSize: responsiveFontSize * 0.75,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  itemInfo: {
+    fontSize: responsiveFontSize * 0.8,
+    color: '#D9D9D9',
+    marginHorizontal: 2.5,
+  },
+  topDataRow: {
+    flexDirection: 'row',
+    marginBottom: 2.5,
+  },
+  date: {
+    flexDirection: 'row',
+    marginLeft: width * 0.05,
+  },
+  partnerShip: {
+    flexDirection: 'row',
+    marginHorizontal: width * 0.05,
+  },
+  itemTitle: {
+    paddingVertical: 10,
+    marginHorizontal: width * 0.05,
+    fontSize: responsiveFontSize,
+    color: '#5F6466',
+    fontWeight: 'bold',
+  },
+  dataColumn: {
+    width: '90%',
+  },
+  cryptoFilter: {
+    flex: 1,
+    flexDirection: 'row',
+    margin: 10,
+    backgroundColor: '#D9D9D9',
+    borderRadius: 5,
+  },
+  cryptoItem: {
+    width: width * 0.125,
+    margin: 5,
+    padding: 2.5,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  activeCryptoItem: {
+    backgroundColor: '#F7F7F7',
+  },
+  cryptoName: {
+    fontSize: responsiveFontSize * 0.8,
+    color: '#5F6466',
+    textAlign: 'center',
+  },
+  messageContainer: {
+    width: '80%',
+    marginVertical: 20,
+    marginHorizontal: 'auto',
+    alignSelf: 'center',
+    borderRadius: 10,
+    borderColor: '#5F6466',
+    borderWidth: 2,
+  },
+  emptyEventsMessage: {
+    textAlign: 'center',
+    padding: 10,
+    color: '#5F6466',
+    fontSize: responsiveFontSize * 0.9,
+    fontWeight: 'bold'
+  }
+});
+
+export default styles;

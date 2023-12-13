@@ -50,11 +50,10 @@ const styles = StyleSheet.create({
   },
   headerCell: {
     flex: 1,
-    padding: 2.5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#B8BBBC',
+    marginHorizontal: 5,
+    padding: 5,
     fontWeight: 'bold',
-    fontSize: 10,
+    fontSize: responsiveFontSize * 0.7,
     color: '#5F6466',
     textAlign: 'center',
     verticalAlign: 'middle',
@@ -68,15 +67,33 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     color: '#242427',
-    fontSize: 10,
+    fontSize: responsiveFontSize * 0.75,
     textAlign: 'center',
     verticalAlign: 'middle',
   },
   greenNumber: {
-    color: '#8EED1A',
+    color: '#3ADF00',
   },
   redNumber: {
-    color: '#FF799F',
+    color: '#EB1F1F',
+  },
+  selectorContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    padding: 5,
+    justifyContent: 'space-evenly',
+  },
+  selectorOption: {
+    padding: 2,
+    color: '#5F6466',
+    fontSize: responsiveFontSize * 0.7,
+    borderRadius: 2.5,
+  },
+  selectedOption: {
+    backgroundColor: '#F7F7F7',
+    fontWeight: 'bold',
+    borderColor: '#5F6466',
+    borderWidth: 1,
   },
 });
 

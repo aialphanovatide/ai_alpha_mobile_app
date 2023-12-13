@@ -4,7 +4,7 @@ import { View, Text, Image} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import styles from './TopTenGainersStyle.js';
 import topTenGainersService from '../../../services/TopTenGainersService.js';
-import Loader from '../Loader/Loader.js';
+import Loader from '../../Loader/Loader.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
@@ -41,17 +41,17 @@ const TopTenGainers = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTopTenCoins = async () => {
-      try {
-        const data = await topTenGainersService.getTop10Coins();
-        setTopTenCoins(data);
-      } catch (error) {
-        console.error('Error fetching top 10 coins:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTopTenCoins();
+    // const fetchTopTenCoins = async () => {
+    //   try {
+    //     const data = await topTenGainersService.getTop10Coins();
+    //     setTopTenCoins(data);
+    //   } catch (error) {
+    //     console.error('Error fetching top 10 coins:', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    // fetchTopTenCoins();
   }, []);
 
   return (

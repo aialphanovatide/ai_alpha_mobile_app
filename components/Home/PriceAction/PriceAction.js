@@ -1,11 +1,30 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styles from './PriceActionStyles';
+import priceActionMock from './priceActionMock';
 import priceActionService from '../../../services/PriceActionService';
 import {ScrollView} from 'react-native-gesture-handler';
-import Loader from '../Loader/Loader';
+import Loader from '../../Loader/Loader';
 
-const TableItem = ({index, coin}) => {
+const ColumnSelector = ({options, selectedOption, onSelect}) => {
+  return (
+    <View style={styles.selectorContainer}>
+      {options.map(option => (
+        <TouchableOpacity key={option.value} onPress={() => onSelect(option)}>
+          <Text
+            style={[
+              styles.selectorOption,
+              selectedOption.value === option.value && styles.selectedOption,
+            ]}>
+            {option.label}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+};
+
+const TableItem = ({index, coin, selectedColumn}) => {
   return (
     <View key={index} style={styles.dataRow}>
       <View style={styles.logoContainer}>
@@ -13,9 +32,6 @@ const TableItem = ({index, coin}) => {
       </View>
       <Text style={styles.dataCell}>{coin.symbol.toUpperCase()}</Text>
       <Text style={styles.dataCell}>${coin.currentPrice}</Text>
-      <Text style={styles.dataCell}>
-        ${coin.marketCap ? coin.marketCap.toFixed(2) : 0.0}M
-      </Text>
       <Text
         style={[
           styles.dataCell,
@@ -26,44 +42,53 @@ const TableItem = ({index, coin}) => {
       <Text
         style={[
           styles.dataCell,
-          coin.price_change_7D >= 0 ? styles.greenNumber : styles.redNumber,
+          coin[selectedColumn.value] >= 0
+            ? styles.greenNumber
+            : styles.redNumber,
         ]}>
-        {coin.price_change_7D ? coin.price_change_7D.toFixed(2) : 0.0}%
-      </Text>
-      <Text
-        style={[
-          styles.dataCell,
-          coin.price_change_30D >= 0 ? styles.greenNumber : styles.redNumber,
-        ]}>
-        {coin.price_change_30D ? coin.price_change_30D.toFixed(2) : 0.0}%
-      </Text>
-      <Text
-        style={[
-          styles.dataCell,
-          coin.price_change_1Y >= 0 ? styles.greenNumber : styles.redNumber,
-        ]}>
-        {coin.price_change_1Y ? coin.price_change_1Y.toFixed(2) : 0.0}%
+        {coin[selectedColumn.value]
+          ? coin[selectedColumn.value].toFixed(2)
+          : 0.0}
+        %
       </Text>
     </View>
   );
 };
 
 const PriceAction = () => {
+  const columns = [
+    {
+      label: '7D',
+      value: 'price_change_7D',
+    },
+    {
+      label: '30D',
+      value: 'price_change_30D',
+    },
+    {
+      label: '1Y',
+      value: 'price_change_1Y',
+    },
+  ];
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedColumn, setSelectedColumn] = useState(columns[0]);
 
   useEffect(() => {
-    const fetchCoinsData = async () => {
-      try {
-        const data = await priceActionService.getAllCoinsInfo();
-        setCoins(data);
-      } catch (error) {
-        console.error('Error fetching coins data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCoinsData();
+    setCoins(priceActionMock);
+    setLoading(false);
+    // const fetchCoinsData = async () => {
+    //   try {
+    //     const data = await priceActionService.getAllCoinsInfo();
+    //     console.log(data);
+    //     setCoins(data);
+    //   } catch (error) {
+    //     console.error('Error fetching coins data:', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    // fetchCoinsData();
   }, []);
 
   return (
@@ -77,11 +102,12 @@ const PriceAction = () => {
           <View style={styles.headerRow}>
             <Text style={styles.headerCell}>Asset</Text>
             <Text style={styles.headerCell}>Price{' (USD)'}</Text>
-            <Text style={styles.headerCell}>MKT Cap</Text>
             <Text style={styles.headerCell}>24H</Text>
-            <Text style={styles.headerCell}>7D</Text>
-            <Text style={styles.headerCell}>30D</Text>
-            <Text style={styles.headerCell}>1Y</Text>
+            <ColumnSelector
+              options={columns}
+              selectedOption={selectedColumn}
+              onSelect={setSelectedColumn}
+            />
           </View>
           <ScrollView
             style={styles.tableScrollView}
@@ -90,7 +116,11 @@ const PriceAction = () => {
             showsVerticalScrollIndicator={false}>
             {/* Datos de la tabla */}
             {coins.map((coin, index) => (
-              <TableItem key={index} coin={coin} />
+              <TableItem
+                key={index}
+                coin={coin}
+                selectedColumn={selectedColumn}
+              />
             ))}
           </ScrollView>
         </View>
