@@ -4,7 +4,7 @@ import styles from './FearAndGreedStyles';
 import BackButton from '../BackButton/BackButton';
 import FearAndGreedIndex from './FearAndGreedIndex';
 import fearAndGreedService from '../../../services/FearAndGreedServices';
-import Loader from '../../Home/Loader/Loader';
+import Loader from '../../Loader/Loader';
 
 const FearAndGreed = ({handleReturn}) => {
   useEffect(() => {

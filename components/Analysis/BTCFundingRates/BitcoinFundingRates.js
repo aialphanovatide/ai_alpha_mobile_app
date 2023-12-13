@@ -3,7 +3,7 @@ import {View, Text, Image, ScrollView} from 'react-native';
 import styles from './BTCFRStyles';
 import BackButton from '../BackButton/BackButton';
 import FundingRatesServices from '../../../services/FundingRatesServices';
-import Loader from '../../Home/Loader/Loader';
+import Loader from '../../Loader/Loader';
 
 const TableHeaderCell = ({obj}) => {
   return (

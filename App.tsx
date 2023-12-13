@@ -1,14 +1,17 @@
-import {React} from 'react';
+import React from 'react';
 import Navigation from './navigation/Navigation';
 import {SafeAreaView, StyleSheet, StatusBar, Platform} from 'react-native';
 
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { TopMenuContextProvider } from './context/topMenuContext';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <Navigation />
+       <TopMenuContextProvider>
+           <Navigation />
+       </TopMenuContextProvider>
     </SafeAreaView>
   );
 };

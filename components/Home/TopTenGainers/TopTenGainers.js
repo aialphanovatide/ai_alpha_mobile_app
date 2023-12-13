@@ -4,7 +4,7 @@ import { View, Text, Image} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import styles from './TopTenGainersStyle.js';
 import topTenGainersService from '../../../services/TopTenGainersService.js';
-import Loader from '../Loader/Loader.js';
+import Loader from '../../Loader/Loader.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 

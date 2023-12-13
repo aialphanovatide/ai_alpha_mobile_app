@@ -4,7 +4,7 @@ import styles from './PriceActionStyles';
 import priceActionMock from './priceActionMock';
 import priceActionService from '../../../services/PriceActionService';
 import {ScrollView} from 'react-native-gesture-handler';
-import Loader from '../Loader/Loader';
+import Loader from '../../Loader/Loader';
 
 const ColumnSelector = ({options, selectedOption, onSelect}) => {
   return (

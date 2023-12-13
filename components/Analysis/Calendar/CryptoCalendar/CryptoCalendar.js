@@ -3,9 +3,9 @@ import {View, Text, ScrollView, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './CryptoCalendarStyles';
 import calendarService from '../../../../services/CalendarService';
-import Loader from '../../../Home/Loader/Loader';
+import Loader from '../../../Loader/Loader';
 import CryptoFilter from './CryptoFilter';
-import menuData from '../../../TopMenu/menuData';
+import menuData from '../../../Home/Topmenu/mainMenu/menuData';
 import calendarCryptos from './calendarCryptos';
 
 const CalendarItem = ({event, coin}) => {
