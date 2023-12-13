@@ -2,7 +2,7 @@ import {Text, View, TouchableOpacity, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './VAMStyles';
-import Loader from '../../../../../Home/Loader/Loader';
+import Loader from '../../../../../../../Loader/Loader';
 
 const MechanismsMenuItem = ({item, activeOption, handleOptionChange}) => {
   return (
