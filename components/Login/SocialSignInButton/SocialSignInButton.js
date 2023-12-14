@@ -7,13 +7,14 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {useNavigation} from '@react-navigation/native';
 
-import {GOOGLE_CLIENT_ID} from '@env';
+import {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_IOS_ID} from '@env';
 
 const SocialSignInButton = () => {
   const [user, setUser] = useState(null);
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: GOOGLE_CLIENT_ID,
+      iosClientId: GOOGLE_CLIENT_IOS_ID
     });
   }, []);
   const navigation = useNavigation();

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Navigation from './navigation/Navigation';
 import {SafeAreaView, StyleSheet, StatusBar, Platform} from 'react-native';
 import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import { TopMenuContextProvider } from './context/topMenuContext';
+import { IOS_API_KEY, ANDROID_API_KEY, ENTITLEMENT_ID} from '@env';
+import PaywallScreen from './components/Login/Screens/PaywallScreen/PaywallScreen';
 
 const App = () => {
   useEffect(() => {
