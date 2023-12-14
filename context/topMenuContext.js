@@ -4,14 +4,14 @@ const TopMenuContext = createContext();
 
 const TopMenuContextProvider = ({ children }) => {
   
-    const [sharedData, setSharedData] = useState({'active': false, data: 'charts'});
+  const [activeCoin, setActiveCoin] = useState({});
 
-  const updateSharedData = (newValue) => {
-    setSharedData(newValue);
+  const updateActiveCoin = (newValue) => {
+    setActiveCoin(newValue);
   };
 
   return (
-    <TopMenuContext.Provider value={{ sharedData, updateSharedData }}>
+    <TopMenuContext.Provider value={{ activeCoin, updateActiveCoin }}>
       {children}
     </TopMenuContext.Provider>
   );

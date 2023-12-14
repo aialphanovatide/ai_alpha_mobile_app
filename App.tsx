@@ -1,14 +1,9 @@
-import {React, useEffect} from 'react';
+import React from 'react';
 import Navigation from './navigation/Navigation';
 import {SafeAreaView, StyleSheet, StatusBar, Platform} from 'react-native';
 import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import PaywallScreen from './components/Login/Screens/PaywallScreen/PaywallScreen';
-import { IOS_API_KEY, ANDROID_API_KEY, ENTITLEMENT_ID} from '@env';
-import Router from './src/navigation/Router';
-import { API_KEY } from './src/constants';
 import { TopMenuContextProvider } from './context/topMenuContext';
-
 
 const App = () => {
   useEffect(() => {
@@ -23,10 +18,12 @@ const App = () => {
 
 
   return (
-    <>
-      <StatusBar barStyle="light-content" />
-      <Router />
-    </>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+       <TopMenuContextProvider>
+           <Navigation />
+       </TopMenuContextProvider>
+    </SafeAreaView>
   );
 };
 
@@ -35,7 +32,7 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === 'android' ? 0 : StatusBar.currentHeight,
     backgroundColor: '#242427',
   },
 });
