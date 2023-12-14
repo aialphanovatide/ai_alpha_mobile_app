@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   dataTitle: {
     color: '#5F6466',
-    fontSize: responsiveFontSize,
+    fontSize: responsiveFontSize * 0.95,
     fontWeight: 'bold',
     padding: 5,
   },

@@ -87,16 +87,16 @@ const Fundamentals = ({}) => {
           content={
             <Competitors
               options={[
-                {name: 'Type of token', icon: ''},
-                {name: 'Circulating Supply', icon: ''},
+                {name: 'Type of token', icon: 'dot-circle-o'},
+                {name: 'Circulating Supply', icon: 'arrow-circle-o-down'},
                 {name: 'Current Market Cap', icon: ''},
                 {name: 'TVL', icon: ''},
-                {name: 'Daily Active Users', icon: ''},
-                {name: 'Transaction Fees', icon: ''},
-                {name: 'Transaction Speed', icon: ''},
-                {name: 'Inflation Rate', icon: ''},
-                {name: 'APR', icon: ''},
-                {name: 'Active Developers', icon: ''},
+                {name: 'Daily Active Users', icon: 'user'},
+                {name: 'Transaction Fees', icon: 'dollar'},
+                {name: 'Transaction Speed', icon: 'clock-o'},
+                {name: 'Inflation Rate', icon: 'thermometer-empty'},
+                {name: 'APR', icon: 'calculator'},
+                {name: 'Active Developers', icon: 'desktop'},
                 {name: 'Revenue', icon: ''},
               ]}
             />

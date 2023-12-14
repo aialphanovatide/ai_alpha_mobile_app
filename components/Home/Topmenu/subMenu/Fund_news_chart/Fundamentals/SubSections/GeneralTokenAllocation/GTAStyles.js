@@ -1,15 +1,16 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 
+const {width} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   rowContainer: {
     flexDirection: 'row',
     padding: 20,
     backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   strong: {
     fontWeight: 'bold',
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
   circleDataContainer: {
     padding: 10,
     marginVertical: 25,
-  }
+  },
 });
 
 export default styles;

@@ -1,11 +1,12 @@
 import {StyleSheet, Dimensions} from 'react-native';
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 const responsiveFontSize = width * 0.04;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: 20,
+    width,
+    paddingHorizontal: 10,
+    marginBottom: 600,
   },
   title: {
     marginVertical: 20,
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize,
   },
   subSectionContent: {
+    flex: 1,
     marginBottom: 20,
     padding: 10,
     backgroundColor: '#EFEBEF',
