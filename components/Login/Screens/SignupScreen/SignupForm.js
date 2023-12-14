@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, Image, StyleSheet, useWindowDimensions, ScrollView, Text, Linking, TouchableOpacity } from 'react-native';
 import Logo from '../../../../assets/images/AIAlphalogonew.png'
+import GreenTick from '../../../../assets/images/greenTick.png';
 import CustomInput from '../../CustomInput/CustomInput';
 import CustomButton from '../../CustomButton';
 import Separator from '../../CustomButton/Separator';
@@ -30,6 +31,7 @@ const SignupForm = () => {
     const [passwordRepeat, setPasswordRepeat] = useState();
     const navigation = useNavigation();
     const [isFormValid, setIsFormValid] = useState(false);
+    const [signupSuccessful, setSignupSuccessful] = useState(false);
 
     const validateForm = () => {
         const formIsValid =
@@ -70,8 +72,12 @@ const SignupForm = () => {
             });
     
             console.log('Signup successful', response.data);
-            // Navigate to confirm screen or sign in screen
-            navigation.navigate('Confirm');
+            setSignupSuccessful(true);
+
+            // Navigate to login screen after 2 seconds
+            setTimeout(() => {
+                navigation.navigate('SignIn');
+            }, 2000);
         } catch (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
@@ -89,6 +95,14 @@ const SignupForm = () => {
             }
         }
     };
+    if (signupSuccessful) {
+        return (
+            <View style={styles.successContainer}>
+                <Image source={GreenTick} style={styles.tickImage} />
+                <Text style={styles.successText}>Sign Up Successful</Text>
+            </View>
+        );
+    }
     
 
     return (
@@ -186,6 +200,22 @@ const styles = StyleSheet.create({
     termsButton: {
         color: '#fc5505',
         fontSize: 10,
+    },
+    successContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#242427',
+    },
+    successText: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: 'white',
+    },
+    tickImage: {
+        width: 120, // Adjust the size as needed
+        height: 88, // Adjust the size as needed
+        marginBottom: 10,
     },
 });
 

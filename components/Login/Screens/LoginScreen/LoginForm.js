@@ -20,14 +20,13 @@ const LoginForm = () => {
 
     const onSignInPressed = async () => {
         try {
-            // Use Auth0 to authenticate the user
             const credentials = await auth0.auth.passwordRealm({
                 username: username,
                 password: password,
-                realm: 'Username-Password-Authentication', // Adjust based on your Auth0 configuration
+                realm: 'Username-Password-Authentication',
             });
             console.log('Logged in with Auth0:', credentials);
-            setError(''); // Clear any previous errors
+            setError('');
             navigation.navigate('HomeScreen');
         } catch (error) {
             console.log('Failed to log in with Auth0:', error);
