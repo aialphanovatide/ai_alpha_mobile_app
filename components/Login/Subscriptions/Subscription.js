@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Button, Alert, Platform } from 'react-native';
-import * as IAP from 'react-native-iap';
-
-const iosProductID = 'testsubscription2';
-const items = Platform.select({
-  ios:{skus: "testsubscription1"}
-})
 
 const Subscription = () => {
-  const [products, setProducts] = useState([]);
-  const [purchased, setPurchased] = useState(false);
+
 /*
   useEffect(() => {
     const initIAP = async () => {
@@ -31,32 +24,6 @@ const Subscription = () => {
     };
   }, []);
 */
-useEffect(() => {
-  const fetchSubscriptions = async () => {
-    try {
-      console.log("Initializing IAP connection...");
-      await IAP.initConnection();
-      console.log("Connected to store");
-
-      console.log("Fetching subscriptions with:", items);
-      IAP.getProducts(items).then((res) => {
-        console.log("Got subscriptions", res);
-        setProducts(res);
-      }).catch((error) => {
-        console.error("Error finding purchases", error);
-      });
-    } catch (error) {
-      console.error("Error initializing IAP:", error);
-    }
-  };
-
-  fetchSubscriptions();
-
-  return () => {
-    console.log("Ending IAP connection");
-    IAP.endConnection();
-  };
-}, []);
 
   /*const handleSubscription = async () => {
     try {
@@ -77,23 +44,7 @@ useEffect(() => {
 
   return (
     <View style={styles.container}>
-      {purchased ? (
-        <Text style={styles.text}>You are subscribed!</Text>
-      ) : (
-        <>
-          {products.length > 0 ? (
-            products.map((product, index) => (
-              <View key={index} style={styles.productContainer}>
-                <Text style={styles.text}>{product.title}</Text>
-                <Text style={styles.text}>{product.localizedPrice}</Text>
-                <Button title="Subscribe Now" onPress={handleSubscription} />
-              </View>
-            ))
-          ) : (
-            <Text style={styles.text}>Fetching products, please wait...</Text>
-          )}
-        </>
-      )}
+      <Text>Abc</Text>
     </View>
   );
 };

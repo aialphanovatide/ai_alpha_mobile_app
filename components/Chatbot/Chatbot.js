@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 
- const Alerts = () => {
+ const Chatbot = () => {
    
    return (
      <View>
-         <Text>Alerts Tab</Text>
+         <Text>Chatbot Tab</Text>
      </View>
    );
  };
  
- export default Alerts;
+ export default Chatbot;
  
