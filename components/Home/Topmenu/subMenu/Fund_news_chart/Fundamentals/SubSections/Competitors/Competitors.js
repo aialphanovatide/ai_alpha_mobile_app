@@ -6,7 +6,7 @@ import TypeOfToken from './CompetitorSections/TypeOfToken/TypeOfToken';
 import CompetitorSection from './CompetitorSections/CompetitorSection';
 import CirculatingSupply from './CompetitorSections/CirculatingSupply/CirculatingSupply';
 import DailyActiveUsers from './DailyActiveUsers';
-
+import TransactionFees from './CompetitorSections/TransactionFees/TransactionFees';
 
 const MenuItem = ({item, activeOption, handleOptionChange}) => {
   return (
@@ -64,6 +64,7 @@ const Competitors = () => {
       tvl: 26.6,
       color: '#F9638F',
       tps: [11.14],
+      fee: 1.3,
     },
     {
       crypto: 'Solana',
@@ -76,6 +77,7 @@ const Competitors = () => {
       tvl: 0.67,
       color: '#3ADF00',
       tps: [65000],
+      fee: 0.01,
     },
     {
       crypto: 'Cardano',
@@ -88,6 +90,7 @@ const Competitors = () => {
       tvl: 0.25,
       color: '#F9B208',
       tps: [1000],
+      fee: 0.07,
     },
     {
       crypto: 'Avalanche',
@@ -100,6 +103,7 @@ const Competitors = () => {
       tvl: 3,
       color: '#F8E405',
       tps: [4500, 6500],
+      fee: 0.96,
     },
   ];
 
@@ -124,10 +128,16 @@ const Competitors = () => {
       component: <TotalValueLocked cryptos={cryptosData} />,
       icon: '',
     },
-    {name: 'Current Market Cap', component: <></>, icon: ''},
-    {name: 'TVL', component: <></>, icon: ''},
-    {name: 'Daily Active Users', component: <DailyActiveUsers cryptos={cryptosData}/>, icon: 'user'},
-    {name: 'Transaction Fees', component: <></>, icon: 'dollar'},
+    {
+      name: 'Daily Active Users',
+      component: <DailyActiveUsers cryptos={cryptosData} />,
+      icon: 'user',
+    },
+    {
+      name: 'Transaction Fees',
+      component: <TransactionFees cryptos={cryptosData} />,
+      icon: 'dollar',
+    },
     {
       name: 'Transaction Speed',
       component: <TransactionSpeed cryptos={cryptosData} />,
