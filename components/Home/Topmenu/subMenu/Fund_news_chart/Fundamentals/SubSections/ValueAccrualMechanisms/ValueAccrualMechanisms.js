@@ -12,7 +12,7 @@ const MechanismsMenuItem = ({item, activeOption, handleOptionChange}) => {
           style={styles.itemIcon}
           name={item.icon}
           size={15}
-          color={activeOption.name === item.name ? 'orange' : 'gray'}
+          color={activeOption.name === item.name ? '#FB6822' : '#B8BBBC'}
         />
         <Text
           style={[
@@ -47,12 +47,13 @@ const ContentItem = ({data}) => {
       <Text style={styles.dataTitle}>{data.title}</Text>
       <View style={styles.dataRow}>
         <View style={styles.imageContainer}>
-          {/* <Image
-          style={styles.dataImage}
-          alt={data.name}
-          source={{uri: data.image}}
-        /> */}
-          <Text>Image</Text>
+          <Image
+            style={styles.dataImage}
+            alt={data.name}
+            source={data.image}
+            resizeMode={'contain'}
+          />
+          {/* <Text>Image</Text> */}
         </View>
         <Text style={styles.dataText}>{data.text}</Text>
       </View>

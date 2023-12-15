@@ -14,7 +14,12 @@ const CustomButton = ({onPress, text, type="PRIMARY", disabled}) => { //By defau
         logo = <FacebookLogo style={styles.logo} />;
     }
     return (
-        <Pressable onPress={onPress} disabled={disabled} style={[styles.container, styles[`container_${type}`], disabled && styles.disabled]}>
+        <Pressable onPress={onPress} disabled={disabled} style={({ pressed }) => [
+            styles.container,
+            styles[`container_${type}`],
+            disabled && styles.disabled,
+            pressed && styles.pressed // Style for when the button is pressed
+        ]}>
             <View style={styles.buttonContent}>
                 {logo}
                 <Text style={[styles.text, styles[`text_${type}`]]}>{text}</Text>
@@ -30,6 +35,9 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         borderRadius: 5,
         alignItems:'center'
+    },
+    pressed: {
+        opacity: 0.75, // Adjust the opacity as per your preference
     },
     buttonContent: {
         flexDirection: 'row',

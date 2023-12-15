@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -15,19 +15,27 @@ import CustomInput from '../../CustomInput/CustomInput';
 import CustomButton from '../../CustomButton/CustomButton';
 import Separator from '../../CustomButton/Separator';
 import SocialSignInButton from '../../SocialSignInButton';
-import {useNavigation} from '@react-navigation/native';
-import auth0 from '../../auth0.js'; // Import your Auth0 configuration
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import auth0 from '../../auth0.js';
+import Purchases from 'react-native-purchases';
 
-const LoginForm = () => {
+const LoginForm = ({ route }) => {
   const {height} = useWindowDimensions();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const navigation = useNavigation();
-  const [error, setError] = useState(''); // New state for storing the error message
+  const [error, setError] = useState('');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setUsername('');
+      setPassword('');
+      setError('');
+    }, [])
+  );
 
   const onSignInPressed = async () => {
     try {
-      // Use Auth0 to authenticate the user
       const credentials = await auth0.auth.passwordRealm({
         username: username,
         password: password,
@@ -41,6 +49,7 @@ const LoginForm = () => {
       setError('Email or Password are incorrect');
     }
   };
+  //const onGoogleSignInPressed
 
   const onForgotPasswordPressed = () => {
     navigation.navigate('ForgotPassword');
@@ -50,11 +59,8 @@ const LoginForm = () => {
     navigation.navigate('SignUp');
   };
 
-  const onTermsPressed = () => {
-    console.warn('Terms and Conditions');
-  };
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollview}>
       <View style={styles.root}>
         <Image
           source={Logo}
@@ -109,6 +115,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#242427',
     padding: 20,
+  },
+  scrollview: {
+    backgroundColor: '#242427',
   },
   logo: {
     marginTop: 10,

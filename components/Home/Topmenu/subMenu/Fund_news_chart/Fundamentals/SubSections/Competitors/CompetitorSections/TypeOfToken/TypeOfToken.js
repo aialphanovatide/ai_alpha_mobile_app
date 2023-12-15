@@ -1,4 +1,4 @@
-import {Text, View, TouchableOpacity, Button, Touchable} from 'react-native';
+import {Text, View, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import styles from './TypeOfTokenStyles';
 
@@ -7,8 +7,11 @@ const TokenItem = ({token}) => {
     <View style={styles.tokenContainer}>
       <View style={styles.row}>
         <View style={styles.tokenImageContainer}>
-          {/* <Image></Image> */}
-          <Text style={styles.tokenImage}>{token.image}</Text>
+          <Image
+            style={styles.tokenImage}
+            source={token.image}
+            resizeMode={'contain'}
+          />
         </View>
         <Text style={styles.tokenName}>{token.crypto}</Text>
       </View>

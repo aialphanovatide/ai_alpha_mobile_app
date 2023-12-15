@@ -9,7 +9,7 @@ const GeneralTokenAllocation = () => {
     {title: 'Institutions', percentage: 22, color: '#FC5404'},
     {title: 'Miners', percentage: 21, color: '#F98404'},
     {title: 'ETH Foundation', percentage: 17, color: '#F9B208'},
-    {title: 'Retail Investors', percentage: 6, color: '#F8E405'},
+    {title: 'Retail Investors', percentage: 14, color: '#F8E405'},
   ];
   return (
     <View style={styles.container}>

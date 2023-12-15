@@ -4,6 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
 import Analysis from '../../Analysis/Analysis';
+import Account from '../../Account/Account';
+import Chatbot from '../../Chatbot/Chatbot';
+import Alerts from '../../Alerts/Alerts';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
@@ -41,7 +44,7 @@ const HomeScreen = () => {
         />
         <Tab.Screen
           name="Alerts"
-          component={Analysis}
+          component={Alerts}
           options={{
             tabBarLabel: 'Alerts',
             tabBarLabelStyle: { marginBottom: 10 },
@@ -52,7 +55,7 @@ const HomeScreen = () => {
         />
         <Tab.Screen
           name="Chatbot"
-          component={Analysis}
+          component={Chatbot}
           options={{
             tabBarLabel: 'Chatbot',
             tabBarLabelStyle: { marginBottom: 10 },
@@ -75,7 +78,7 @@ const HomeScreen = () => {
         />
         <Tab.Screen
           name="Account"
-          component={Analysis}
+          component={Account}
           options={{
             tabBarLabel: 'Account',
             tabBarLabelStyle: { marginBottom: 10 },

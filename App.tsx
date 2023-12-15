@@ -1,11 +1,15 @@
-import React, {useEffect} from 'react';
+import {React, useEffect} from 'react';
 import Navigation from './navigation/Navigation';
 import {SafeAreaView, StyleSheet, StatusBar, Platform} from 'react-native';
 import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import { TopMenuContextProvider } from './context/topMenuContext';
-import { IOS_API_KEY, ANDROID_API_KEY, ENTITLEMENT_ID} from '@env';
 import PaywallScreen from './components/Login/Screens/PaywallScreen/PaywallScreen';
+import { IOS_API_KEY, ANDROID_API_KEY} from '@env';
+import { ENTITLEMENT_ID } from './src/constants';
+import Router from './src/navigation/Router';
+import { API_KEY } from './src/constants';
+import { TopMenuContextProvider } from './context/topMenuContext';
+import { UserProvider } from './context/UserContext';
 
 const App = () => {
   useEffect(() => {
@@ -17,15 +21,32 @@ const App = () => {
     }
   }, []);
   console.log("Entitlement id: ",ENTITLEMENT_ID)
+  
+  const showUserSubscriptionData = async () => {
+    try {
+      //const purchaseMade = await Purchases.purchasePackage(purchasePackage);
+      const customerInfo = await Purchases.getCustomerInfo();
+
+      if(typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== "undefined"){
+        console.log("User is pro");
+      }
+      console.log("Customer info:", customerInfo);
+    } catch (error) {
+      console.error("Error purchasing package:", error);
+    }
+  };
+  showUserSubscriptionData();
 
 
   return (
+    <UserProvider>
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
        <TopMenuContextProvider>
            <Navigation />
        </TopMenuContextProvider>
     </SafeAreaView>
+    </UserProvider>
   );
 };
 
@@ -38,23 +59,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#242427',
   },
 });
-
-/*
-import React from 'react';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import { TopMenuContextProvider } from './context/topMenuContext';
-
-const App = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-       <TopMenuContextProvider>
-           <Navigation />
-       </TopMenuContextProvider>
-    </SafeAreaView>
-  );
-};
-
-export default App;
-
-*/

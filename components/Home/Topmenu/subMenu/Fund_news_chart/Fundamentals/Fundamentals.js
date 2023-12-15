@@ -53,12 +53,12 @@ const Fundamentals = ({}) => {
                   content: [
                     {
                       title: 'Staking',
-                      image: '',
+                      image: require('../../../../../../assets/Staking.png'),
                       text: '4% to 5% per annum',
                     },
                     {
                       title: 'Fee Burning',
-                      image: '',
+                      image: require('../../../../../../assets/FeeBurning.png'),
                       text: 'Potential for deflationary pressure on the circulating supply',
                     },
                   ],
@@ -68,12 +68,12 @@ const Fundamentals = ({}) => {
                   content: [
                     {
                       title: 'Staking',
-                      image: '',
+                      image: require('../../../../../../assets/Staking.png'),
                       text: 'Similar to other Proof-to-Stake cryptocurrencies',
                     },
                     {
                       title: 'Fee Burning',
-                      image: '',
+                      image: require('../../../../../../assets/FeeBurning.png'),
                       text: 'Unique to Ethereum',
                     },
                   ],

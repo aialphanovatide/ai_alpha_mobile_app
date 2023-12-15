@@ -8,7 +8,10 @@ import Separator from '../../CustomButton/Separator';
 import SocialSignInButton from '../../SocialSignInButton';
 import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
-
+import { API_KEY, ANDROID_API_KEY} from '@env';
+import Purchases from 'react-native-purchases';
+import { ENTITLEMENT_ID } from '../../../../src/constants';
+import { useUser } from '../../../../context/UserContext';
 const onTermsPressed =()=> {
     const url = "https://aialpha.ai/termsofservice";
     
@@ -31,6 +34,7 @@ const SignupForm = () => {
     const [passwordRepeat, setPasswordRepeat] = useState();
     const navigation = useNavigation();
     const [isFormValid, setIsFormValid] = useState(false);
+    const { setUserEmail } = useUser();
     const [signupSuccessful, setSignupSuccessful] = useState(false);
 
     const validateForm = () => {
@@ -43,58 +47,55 @@ const SignupForm = () => {
         setIsFormValid(formIsValid);
     };
     useEffect(() => {
-        // This effect will re-validate the form every time the inputs change
+        // Re-validate the form every time the inputs change
         const formIsValid = username && email && password && password === passwordRepeat;
         setIsFormValid(formIsValid);
     }, [username, email, password, passwordRepeat]);
 
     const onSignInPressed =()=> {
-        //validate user logic missing
         navigation.navigate('SignIn');
     }
     const onRegisterPressed = async () => {
-        // Check if the passwords match
-        if (password !== passwordRepeat) {
-            alert("Passwords do not match");
-            return;
+
+        const purchaserInfo = await Purchases.getCustomerInfo();
+        if (typeof purchaserInfo.entitlements.active[ENTITLEMENT_ID] !== "undefined"){
+          console.log("Passed")
+        }else{
+          navigation.navigate("PaywallScreen");
         }
     
-        // Continue with the signup process
         try {
             const response = await axios.post('https://dev-kqugsqvoounaylft.us.auth0.com/dbconnections/signup', {
                 client_id: 'Rr0xvkmUdxACllY2wFPq9k6CFRnq01CO',
                 email: email,
                 password: password,
-                connection: 'Username-Password-Authentication', // Update this to your Auth0 Database connection name
-                user_metadata: { // Adding user_metadata object with username
+                connection: 'Username-Password-Authentication',
+                user_metadata: {
                     username: username,
                 },
             });
     
             console.log('Signup successful', response.data);
+            setUserEmail(email);
             setSignupSuccessful(true);
 
-            // Navigate to login screen after 2 seconds
-            setTimeout(() => {
+            /*setTimeout(() => {
                 navigation.navigate('SignIn');
-            }, 2000);
+            }, 2000);*/
         } catch (error) {
             if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
                 console.error('Signup error', error.response.data);
                 alert('Signup failed: ' + error.response.data.error_description || error.response.data.message);
             } else if (error.request) {
-                // The request was made but no response was received
                 console.error('Signup error', error.request);
                 alert('No response received.');
             } else {
-                // Something happened in setting up the request that triggered an Error
                 console.error('Error', error.message);
                 alert('Error: ' + error.message);
             }
         }
     };
+    /*
     if (signupSuccessful) {
         return (
             <View style={styles.successContainer}>
@@ -103,10 +104,10 @@ const SignupForm = () => {
             </View>
         );
     }
-    
+    */
 
     return (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollview}>
         <View style={styles.root}>
         <Image source={Logo} style={[styles.logo, {height: height*0.3}]} resizeMode='contain'/>
             <View style={styles.inputContainer}>
@@ -152,6 +153,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor:'#242427',
         padding: 20,
+    },
+    scrollview: {
+        backgroundColor: '#242427',
     },
     logo: {
         margin:0,
