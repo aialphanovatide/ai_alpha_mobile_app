@@ -5,6 +5,8 @@ import styles from './CompetitorsStyles';
 import TypeOfToken from './CompetitorSections/TypeOfToken/TypeOfToken';
 import CompetitorSection from './CompetitorSections/CompetitorSection';
 import CirculatingSupply from './CompetitorSections/CirculatingSupply/CirculatingSupply';
+import DailyActiveUsers from './DailyActiveUsers';
+
 
 const MenuItem = ({item, activeOption, handleOptionChange}) => {
   return (
@@ -94,7 +96,7 @@ const Competitors = () => {
     },
     {name: 'Current Market Cap', component: <></>, icon: ''},
     {name: 'TVL', component: <></>, icon: ''},
-    {name: 'Daily Active Users', component: <></>, icon: 'user'},
+    {name: 'Daily Active Users', component: <DailyActiveUsers cryptos={cryptosData}/>, icon: 'user'},
     {name: 'Transaction Fees', component: <></>, icon: 'dollar'},
     {name: 'Transaction Speed', component: <></>, icon: 'clock-o'},
     {name: 'Inflation Rate', component: <></>, icon: 'thermometer-empty'},
