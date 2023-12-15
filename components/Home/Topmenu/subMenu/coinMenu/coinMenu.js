@@ -7,7 +7,7 @@ import CoinMenuCategories from '../coinMenuCategories/subMenu';
 const CoinMenu = ({subCoins, activeTab, setActiveTab, activeSubCoin, setActiveSubCoin}) => {
 
 
-  if (subCoins === null){
+  if (subCoins.length === 1){
      return (
       <CoinMenuCategories activeTab={activeTab} setActiveTab={setActiveTab}/>
      )
@@ -18,16 +18,16 @@ const CoinMenu = ({subCoins, activeTab, setActiveTab, activeSubCoin, setActiveSu
     <View style={styles.subMenu}>
       {subCoins?.length > 0 && subCoins.map((coin) => (
         <TouchableOpacity
-          key={coin.id}
+          key={coin.bot_id}
           style={[
             styles.subMenuButton,
-            activeSubCoin === coin.coin && styles.activeButton,
+            activeSubCoin === coin.bot_name && styles.activeButton,
           ]}
-          onPress={() => setActiveSubCoin(coin.coin)}
+          onPress={() => setActiveSubCoin(coin.bot_name)}
         >
           <View style={styles.buttonContainer}>
-          <Image source={{ uri: coin.imageUri }} style={styles.buttonImage} />
-          <Text style={[styles.buttonText, activeSubCoin === coin.coin && styles.activeButtonText]}>{coin.coin}</Text>
+          <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/512/3393/3393948.png' }} style={styles.buttonImage} />
+          <Text style={[styles.buttonText, activeSubCoin === coin.bot_name && styles.activeButtonText]}>{coin.bot_name}</Text>
         </View>
         </TouchableOpacity>
       ))}

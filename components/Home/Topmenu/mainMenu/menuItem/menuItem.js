@@ -6,18 +6,21 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const MenuItem = ({ onPress, icon, category, isActive }) => {
   return (
     <TouchableOpacity
-      style={[styles.button, !isActive && styles.disabledButton]}
+      style={styles.buttonContainer}
       onPress={isActive ? () => onPress(category) : null}
       disabled={!isActive}
     >
-      <View style={styles.iconContainer}>
+      <View style={[styles.button, !isActive && styles.disabledButton]}>
         {!isActive && (
-          <View style={styles.lockIcon}>
-            <Icon name="lock" size={25} color="gray"/>
+         <View style={styles.lockIcon}>
+            <Icon name="lock" size={25} color="white"/>
           </View>
         )}
-        <Text style={[styles.buttonText, !isActive && styles.buttonTextDisable]}>{icon}</Text>
       </View>
+      <Text 
+      numberOfLines={1}
+      ellipsizeMode="tail"
+      style={styles.buttonText}>{icon}</Text>
     </TouchableOpacity>
   );
 };

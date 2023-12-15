@@ -7,6 +7,9 @@ import CompetitorSection from './CompetitorSections/CompetitorSection';
 import CirculatingSupply from './CompetitorSections/CirculatingSupply/CirculatingSupply';
 import DailyActiveUsers from './DailyActiveUsers';
 import TransactionFees from './CompetitorSections/TransactionFees/TransactionFees';
+import CurrentMarketCap from './CompetitorSections/CurrentMarketCap/CurrentMarketCap';
+import TotalValueLocked from './CompetitorSections/TVL/Tvl';
+import TransactionSpeed from './CompetitorSections/TransactionSpeed/TransactionSpeed';
 
 const MenuItem = ({item, activeOption, handleOptionChange}) => {
   return (

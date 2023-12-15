@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     marginRight: 8, 
   },
   buttonText: {
-    color: 'gray'
+    color: 'gray',
+    textTransform: 'uppercase'
   },
   activeButtonText: {
     color: '#fff',

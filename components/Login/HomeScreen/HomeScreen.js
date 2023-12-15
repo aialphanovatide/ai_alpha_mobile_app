@@ -6,7 +6,7 @@ import Home from '../../Home/Home';
 import Analysis from '../../Analysis/Analysis';
 import Account from '../../Account/Account';
 import Chatbot from '../../Chatbot/Chatbot';
-import Alerts from '../../Alerts/Alerts';
+import Alerts from '../../Alerts/alerts';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
@@ -99,38 +99,5 @@ export default HomeScreen;
 
 
 
-// OLD CODE CHANGED BY DAVID//
-
-
-// import React, {useState} from 'react';
-// import { Dimensions} from 'react-native';
-// import {GestureHandlerRootView} from 'react-native-gesture-handler';
-// import {TopMenuContextProvider} from '../../../context/topMenuContext';
-// import BottomMenu from '../../BottomMenu/Menu';
-// import Home from '../../Home/Home';
-// import Analysis from '../../Analysis/Analysis';
-
-// const HomeScreen = () => {
-//   const {height, width} = Dimensions.get('window');
-//   const [currentSection, setCurrentSection] = useState('Home');
-
-//   return (
-//     <GestureHandlerRootView style={{flex: 1, height, width}}>
-//       <TopMenuContextProvider>
-//         {currentSection === 'Home' && (
-//           <>
-//             <Home />
-//           </>
-//         )}
-//         {currentSection === 'Analysis' && <Analysis />}
-//         <BottomMenu
-//           currentSection={currentSection}
-//           setCurrentSection={setCurrentSection}
-//         />
-//       </TopMenuContextProvider>
-//     </GestureHandlerRootView>
-//   );
-// };
-// export default HomeScreen;
 
 

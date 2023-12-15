@@ -7,9 +7,9 @@ import { StyleSheet } from 'react-native';
 import Chart from './chart';
 import RsButton from './S&RButtons';
 import Alerts from './alerts/alerts';
-import AlertDetails from './alerts/alertDetails';
+import AlertListComponent from './alerts';
 
-const CandlestickChart = ({ symbol, interval }) => {
+const CandlestickChart = ({ symbol, interval, coinBot }) => {
 
   const [selectedInterval, setSelectedInterval] = useState(interval);
   const [lastPrice, setLastPrice] = useState(undefined);
@@ -20,7 +20,7 @@ const CandlestickChart = ({ symbol, interval }) => {
   const [activeButtons, setActiveButtons] = useState([]);
 
 
-  const [activeAlertOption, setActiveAlertOption] = useState('Today');
+  const [activeAlertOption, setActiveAlertOption] = useState('this week');
 
   async function fetchChartData() {
     try {
@@ -66,15 +66,20 @@ const CandlestickChart = ({ symbol, interval }) => {
     }
   };
 
-  console.log()
 
   return (
 
-    <ScrollView>
+    <ScrollView 
+    style={styles.scroll} 
+    // keyboardShouldPersistTaps="handled" 
+    showsVerticalScrollIndicator={true}>
+
       <CandlestickDetails coin={symbol} lastPrice={lastPrice} />
       <TimeframeSelector  
         selectedInterval={selectedInterval}
         changeInterval={changeInterval}/>
+      
+   
       <RsButton activeButtons={activeButtons} setActiveButtons={setActiveButtons}/>
       <Chart 
       chartData={chartData} 
@@ -87,7 +92,7 @@ const CandlestickChart = ({ symbol, interval }) => {
       activeAlertOption={activeAlertOption}
       setActiveButtons={setActiveAlertOption} />
 
-      <AlertDetails activeAlertOption={activeAlertOption}/>
+      <AlertListComponent timeframe={activeAlertOption} botName={coinBot}/>
 
     </ScrollView>
   );
@@ -98,7 +103,8 @@ export default CandlestickChart;
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // alignItems: 'center',
-    // justifyContent: 'top',
+  },
+  scroll: {
+    width: '100%',
   },
 });

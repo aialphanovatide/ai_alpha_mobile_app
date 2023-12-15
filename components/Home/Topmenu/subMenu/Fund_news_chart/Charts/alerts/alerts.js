@@ -1,5 +1,3 @@
-// AlertMenu.js
-
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
@@ -8,39 +6,20 @@ const AlertMenu = ({ activeAlertOption, setActiveButtons }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Alerts</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={() => setActiveButtons('Today')}
-          style={[
-            styles.button,
-            activeAlertOption === 'Today' ? styles.activeButton : null,
-          ]}
-        >
-          <Text style={activeAlertOption === 'Today' ? styles.activeText : styles.inactiveText}>
-            Today
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setActiveButtons('This Week')}
-          style={[
-            styles.button,
-            activeAlertOption === 'This Week' ? styles.activeButton : null,
-          ]}
-        >
-          <Text style={activeAlertOption === 'This Week' ? styles.activeText : styles.inactiveText}>
-            This Week
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setActiveButtons('Last Week')}
-          style={[
-            styles.button,
-            activeAlertOption === 'Last Week' ? styles.activeButton : null,
-          ]}
-        >
-          <Text style={activeAlertOption === 'Last Week' ? styles.activeText : styles.inactiveText}>
-            Last Week
-          </Text>
-        </TouchableOpacity>
+        {['today', 'this week', 'last week'].map((option) => (
+          <TouchableOpacity
+            key={option}
+            onPress={() => setActiveButtons(option)}
+            style={[
+              styles.button,
+              activeAlertOption === option ? styles.activeButton : null,
+            ]}
+          >
+            <Text style={activeAlertOption === option ? styles.activeText : styles.inactiveText}>
+              {option}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
     </View>
   );
@@ -48,12 +27,14 @@ const AlertMenu = ({ activeAlertOption, setActiveButtons }) => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   buttonContainer: {
@@ -64,6 +45,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 18,
     backgroundColor: 'gray',
+    marginHorizontal: 5,
   },
   activeButton: {
     backgroundColor: 'white',

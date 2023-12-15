@@ -15,8 +15,6 @@ const Home = () => {
   const { activeCoin } = useContext(TopMenuContext);
   const hasProperties = Object.keys(activeCoin).length > 0;
 
-  console.log('hasProperties: ', hasProperties)
-
   return (
     <View>
       <TopMenu />
