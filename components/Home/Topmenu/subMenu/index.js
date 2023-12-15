@@ -35,10 +35,8 @@ const SubMenu = () => {
       />
 
       {/* Add fundamentals and news here */}
-      {activeTab === 'Charts' ? (
+      {activeTab === 'Charts' && (
         <CandlestickChart interval={'1h'} symbol={`${coinToShowInChart}USDT`} />
-      ) : (
-        <Text>{activeTab}</Text>
       )}
       {activeTab === 'Fundamentals' && <Fundamentals />}
     </View>

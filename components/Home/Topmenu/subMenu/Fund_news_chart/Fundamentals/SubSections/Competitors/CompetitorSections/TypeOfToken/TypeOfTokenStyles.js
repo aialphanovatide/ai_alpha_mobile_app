@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tokenImage: {
-    color: '#242427',
+    flex: 1,
   },
   tokenName: {
     color: '#5F6466',

@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import React from 'react';
 import styles from './CirculatingSupplyStyles';
 
@@ -7,7 +7,11 @@ const CirculatingSupplyItem = ({item}) => {
     <View>
       <View style={styles.row}>
         <View style={styles.logoContainer}>
-          <Text>{item.image}</Text>
+          <Image
+            style={styles.image}
+            source={item.image}
+            resizeMode={'contain'}
+          />
         </View>
         <Text style={styles.itemName}>{item.crypto}</Text>
       </View>

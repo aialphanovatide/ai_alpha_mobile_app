@@ -27,6 +27,11 @@ const styles = StyleSheet.create({
     padding: 5,
     color: '#B8BBBC',
     textAlign: 'center',
+    fontSize: responsiveFontSize * 0.9,
+  },
+  activeItem: {
+    color: '#FB6822',
+    fontWeight: 'bold',
   },
   competitorSection: {
     flex: 1,
