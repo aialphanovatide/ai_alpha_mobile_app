@@ -5,6 +5,7 @@ import styles from './CompetitorsStyles';
 import TypeOfToken from './CompetitorSections/TypeOfToken/TypeOfToken';
 import CompetitorSection from './CompetitorSections/CompetitorSection';
 import CirculatingSupply from './CompetitorSections/CirculatingSupply/CirculatingSupply';
+import DailyActiveUsers from './DailyActiveUsers';
 import CurrentMarketCap from './CompetitorSections/CurrentMarketCap/CurrentMarketCap';
 import TotalValueLocked from './CompetitorSections/TVL/Tvl';
 import TransactionSpeed from './CompetitorSections/TransactionSpeed/TransactionSpeed';
@@ -125,7 +126,7 @@ const Competitors = () => {
       component: <TotalValueLocked cryptos={cryptosData} />,
       icon: '',
     },
-    {name: 'Daily Active Users', component: <></>, icon: 'user'},
+    {name: 'Daily Active Users', component: <DailyActiveUsers cryptos={cryptosData}/>, icon: 'user'},
     {name: 'Transaction Fees', component: <></>, icon: 'dollar'},
     {
       name: 'Transaction Speed',

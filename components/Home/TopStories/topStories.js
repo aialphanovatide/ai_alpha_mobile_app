@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { List } from 'react-native-paper';
 import StoryItem from './Storyitem/storyItem';
-import styles from './topStoriesStyles'
+import styles from './topStoriesStyles';
 import { Image } from 'react-native';
 import { getService } from '../../../services/aiAlphaApi';
 

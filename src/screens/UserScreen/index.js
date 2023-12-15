@@ -1,8 +1,3 @@
-/**
- * @file User Screen.
- * @author Vadim Savin
- */
-
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { ENTITLEMENT_ID } from '../../constants';
