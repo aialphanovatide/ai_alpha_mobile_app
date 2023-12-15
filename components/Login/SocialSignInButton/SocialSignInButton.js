@@ -14,7 +14,7 @@ const SocialSignInButton = () => {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: GOOGLE_CLIENT_ID,
-      iosClientId: GOOGLE_CLIENT_IOS_ID
+      iosClientId: GOOGLE_CLIENT_IOS_ID,
     });
   }, []);
   const navigation = useNavigation();
@@ -51,22 +51,22 @@ const SocialSignInButton = () => {
     }
   };
 
-  const onSignInFacebook = () => {
-    console.warn('Facebook');
-  };
+  // const onSignInFacebook = () => {
+  //   console.warn('Facebook');
+  // };
   return (
     <>
       <CustomButton
-        text="Sign Up with Google"
+        text="Sign In with Google"
         onPress={() => signInWithGoogle()}
         type="GOOGLE"
         disabled={user !== null}
       />
-      <CustomButton
+      {/* <CustomButton
         text="Sign Up with Facebook"
         onPress={onSignInFacebook}
         type="FACEBOOK"
-      />
+      /> */}
     </>
   );
 };

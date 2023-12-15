@@ -56,6 +56,9 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize * 0.85,
     fontWeight: 'bold',
   },
+  image: {
+    flex: 1,
+  },
   dataContainer: {
     flex: 1,
     padding: 10,
