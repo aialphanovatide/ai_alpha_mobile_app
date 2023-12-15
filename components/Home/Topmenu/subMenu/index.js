@@ -10,19 +10,14 @@ const SubMenu = () => {
   const [activeTab, setActiveTab] = useState('Charts');
 
   useEffect(() => {
-    if (activeCoin.subMenuOptions && activeCoin.subMenuOptions.length > 0) {
-      setActiveSubCoin(activeCoin.subMenuOptions[0].coin);
+    if (activeCoin.coin_bots && activeCoin.coin_bots.length >= 1) {
+      setActiveSubCoin(activeCoin.coin_bots[0].bot_name);
     }
   }, [activeCoin]);
 
   const [activeSubCoin, setActiveSubCoin] = useState(
-    activeCoin.subMenuOptions && activeCoin.subMenuOptions[0].coin,
+    activeCoin.coin_bots && activeCoin.coin_bots[0].bot_name,
   );
-
-  const coinToShowInChart =
-    activeCoin.subMenuOptions === null ? activeCoin.icon : activeSubCoin;
-  console.log('activeSubCoin: ', activeSubCoin);
-  console.log('activeTab: ', activeTab);
 
   return (
     <View style={styles.container}>
@@ -31,15 +26,11 @@ const SubMenu = () => {
         setActiveTab={setActiveTab}
         activeSubCoin={activeSubCoin}
         setActiveSubCoin={setActiveSubCoin}
-        subCoins={activeCoin.subMenuOptions}
+        subCoins={activeCoin.coin_bots}
       />
 
       {/* Add fundamentals and news here */}
-      {activeTab === 'Charts' ? (
-        <CandlestickChart interval={'1h'} symbol={`${coinToShowInChart}USDT`} />
-      ) : (
-        <Text>{activeTab}</Text>
-      )}
+      {activeTab === 'Charts' && <CandlestickChart interval={'1h'} coinBot={activeSubCoin} symbol={`${activeSubCoin}USDT`} />}
       {activeTab === 'Fundamentals' && <Fundamentals />}
     </View>
   );
@@ -47,6 +38,7 @@ const SubMenu = () => {
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingTop: 10,

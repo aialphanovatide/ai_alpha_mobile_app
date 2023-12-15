@@ -15,9 +15,13 @@ const CandlestickDetails = ({ coin, lastPrice }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
+    // borderColor: 'dark',
+    // borderWidth: 1,
+    paddingVertical: 10,
   },
   subContainer: {
     flexDirection: 'row',
@@ -25,15 +29,14 @@ const styles = StyleSheet.create({
   },
   label: {
     textTransform: 'uppercase',
-    paddingVertical: 20,
+
     fontSize: 15,
     fontWeight: 'bold'
   },
   lastPrice: {
     textTransform: 'uppercase',
-    paddingVertical: 20,
-    paddingHorizontal: 10,
     fontSize: 15,
+    marginLeft: 10,
     fontWeight: 'bold'
   },
 });
