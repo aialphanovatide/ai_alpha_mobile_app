@@ -35,8 +35,21 @@ import {SafeAreaView, StyleSheet, StatusBar, Platform} from 'react-native';
 
 import React from 'react';
 import { TopMenuContextProvider } from './context/topMenuContext';
+// import { IOS_API_KEY, ANDROID_API_KEY, ENTITLEMENT_ID} from '@env';
+import PaywallScreen from './components/Login/Screens/PaywallScreen/PaywallScreen';
 
 const App = () => {
+  // useEffect(() => {
+  //   Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
+  //   if (Platform.OS === 'ios') {
+  //     Purchases.configure({ apiKey: IOS_API_KEY });
+  //   } else if (Platform.OS === 'android') {
+  //     Purchases.configure({ apiKey: ANDROID_API_KEY });
+  //   }
+  // }, []);
+  // console.log("Entitlement id: ",ENTITLEMENT_ID)
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />

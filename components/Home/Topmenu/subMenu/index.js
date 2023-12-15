@@ -4,6 +4,7 @@ import {TopMenuContext} from '../../../../context/topMenuContext';
 import CoinMenu from './coinMenu/coinMenu';
 import CandlestickChart from './Fund_news_chart/Charts';
 import Fundamentals from './Fund_news_chart/Fundamentals/Fundamentals';
+import NewsComponent from './Fund_news_chart/News';
 
 const SubMenu = () => {
   const {activeCoin} = useContext(TopMenuContext);
@@ -30,8 +31,11 @@ const SubMenu = () => {
       />
 
       {/* Add fundamentals and news here */}
-      {activeTab === 'Charts' && <CandlestickChart interval={'1h'} coinBot={activeSubCoin} symbol={`${activeSubCoin}USDT`} />}
+      {activeTab === 'Charts' && (
+        <CandlestickChart interval={'1h'} symbol={`${activeSubCoin}USDT`} coinBot={activeSubCoin} />
+      )}
       {activeTab === 'Fundamentals' && <Fundamentals />}
+      {activeTab === 'News' && <NewsComponent  botname={activeSubCoin}/>}
     </View>
   );
 };

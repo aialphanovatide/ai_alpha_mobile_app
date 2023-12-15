@@ -3,7 +3,6 @@ import { List } from 'react-native-paper';
 import StoryItem from './Storyitem/storyItem';
 import styles from './topStoriesStyles'
 import { Image } from 'react-native';
-import { TopMenuContext } from '../../../context/topMenuContext';
 import { getService } from '../../../services/aiAlphaApi';
 
 const TopStories = () => {

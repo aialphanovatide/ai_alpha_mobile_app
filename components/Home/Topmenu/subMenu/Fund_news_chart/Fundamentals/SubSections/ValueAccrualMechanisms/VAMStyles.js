@@ -45,7 +45,9 @@ const styles = StyleSheet.create({
     height: 80,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#D9D9D9'
+  },
+  dataImage: {
+    flex: 1,
   },
   dataText: {
     flex: 1,

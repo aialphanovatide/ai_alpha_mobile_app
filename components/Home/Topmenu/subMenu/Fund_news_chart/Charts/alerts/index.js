@@ -13,14 +13,12 @@ const AlertListComponent = ({ botName, timeframe }) => {
       dateOption: timeframe,
     };
 
-    console.log(requestBody)
+
   
     useEffect(() => {
       const fetchAlerts = async () => {
         try {
           const response = await postService('/api/get/alerts', requestBody);
-
-          console.log('response: ', response)
           
           if (response.message && response.message.startsWith("No alerts found")) {
             setAlerts([]);
