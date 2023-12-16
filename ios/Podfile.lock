@@ -548,7 +548,7 @@ PODS:
     - React-Core
   - RNSVG (14.1.0):
     - React-Core
-  - RNVectorIcons (10.0.2):
+  - RNVectorIcons (10.0.3):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - SimpleKeychain (1.1.0)
@@ -855,7 +855,7 @@ SPEC CHECKSUMS:
   RNPurchases: 6460a884756442e75b2d25a1d7e58cd39ebbffe6
   RNScreens: 3c5b9f4a9dcde752466854b6109b79c0e205dad3
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
-  RNVectorIcons: 23b6e11af4aaf104d169b1b0afa7e5cf96c676ce
+  RNVectorIcons: 64e6a523ac30a3241efa9baf1ffbcc5e76ff747a
   SimpleKeychain: f8707c8e97b38c6a6e687b17732afc9bcef06439
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7

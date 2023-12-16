@@ -5,24 +5,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>ai_alpha_mobile_app</string>
+	<string>AI Alpha</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>GIDClientID</key>
-	<string>http://518802377703-qhmmcp0nek5ml396l2pbkve8dm5k9fsd.apps.googleusercontent.com</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-  	<dict>
-    	<key>CFBundleURLSchemes</key>
-    	<array>
-      	<string>com.googleusercontent.apps.518802377703-qhmmcp0nek5ml396l2pbkve8dm5k9fsd</string>
-    	</array>
-  	</dict>
-	</array>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
@@ -31,8 +20,19 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.518802377703-qhmmcp0nek5ml396l2pbkve8dm5k9fsd</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>GIDClientID</key>
+	<string>http://518802377703-qhmmcp0nek5ml396l2pbkve8dm5k9fsd.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -49,7 +49,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>/Users/tinchomengo/Desktop/AIAlphaLogo.jpeg</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

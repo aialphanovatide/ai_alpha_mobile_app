@@ -18,12 +18,15 @@ import SocialSignInButton from '../../SocialSignInButton';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import auth0 from '../../auth0.js';
 import Purchases from 'react-native-purchases';
+import { useUser } from '../../../../context/UserContext';
+
 
 const LoginForm = ({ route }) => {
   const {height} = useWindowDimensions();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const navigation = useNavigation();
+  const { setUserEmail } = useUser();
   const [error, setError] = useState('');
 
   useFocusEffect(
@@ -42,6 +45,9 @@ const LoginForm = ({ route }) => {
         realm: 'Username-Password-Authentication', 
       });
       console.log('Logged in with Auth0:', credentials);
+      console.log("Setting user email on login");
+      setUserEmail(username);
+      console.log("Finished setup user email on login");
       setError(''); 
       navigation.navigate('HomeScreen');
     } catch (error) {

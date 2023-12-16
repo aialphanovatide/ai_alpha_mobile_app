@@ -12,6 +12,7 @@ import { API_KEY, ANDROID_API_KEY} from '@env';
 import Purchases from 'react-native-purchases';
 import { ENTITLEMENT_ID } from '../../../../src/constants';
 import { useUser } from '../../../../context/UserContext';
+
 const onTermsPressed =()=> {
     const url = "https://aialpha.ai/termsofservice";
     
