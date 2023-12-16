@@ -6,7 +6,7 @@ import Home from '../../Home/Home';
 import Analysis from '../../Analysis/Analysis';
 import Account from '../../Account/Account';
 import Chatbot from '../../Chatbot/Chatbot';
-import Alerts from '../../Alerts/alerts';
+import Alerts from '../../Alerts/Alerts';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 

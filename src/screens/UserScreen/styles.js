@@ -1,8 +1,3 @@
-/**
- * @file User Screen styles.
- * @author Vadim Savin
- */
-
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({

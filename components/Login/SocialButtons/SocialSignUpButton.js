@@ -9,7 +9,7 @@ import {useNavigation} from '@react-navigation/native';
 import auth0 from '../auth0';
 import {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_IOS_ID} from '@env';
 
-const SocialSignInButton = () => {
+const SocialSignUpButton = () => {
   const [user, setUser] = useState(null);
   useEffect(() => {
     GoogleSignin.configure({
@@ -18,7 +18,7 @@ const SocialSignInButton = () => {
     });
   }, []);
   const navigation = useNavigation();
-  const signInWithGoogle = async () => {
+  const signUpWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
@@ -37,7 +37,6 @@ const SocialSignInButton = () => {
       navigation.navigate('HomeScreen');
     } catch (error) {
       console.error('Authentication error:', error);
-      // Handle errors here
     }
   };
 
@@ -57,8 +56,8 @@ const SocialSignInButton = () => {
   return (
     <>
       <CustomButton
-        text="Sign In with Google"
-        onPress={() => signInWithGoogle()}
+        text="Sign Up with Google"
+        onPress={() => signUpWithGoogle()}
         type="GOOGLE"
         disabled={user !== null}
       />
@@ -71,4 +70,4 @@ const SocialSignInButton = () => {
   );
 };
 
-export default SocialSignInButton;
+export default SocialSignUpButton;

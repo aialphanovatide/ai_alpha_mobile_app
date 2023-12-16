@@ -5,7 +5,7 @@ import GreenTick from '../../../../assets/images/greenTick.png';
 import CustomInput from '../../CustomInput/CustomInput';
 import CustomButton from '../../CustomButton';
 import Separator from '../../CustomButton/Separator';
-import SocialSignInButton from '../../SocialSignInButton';
+import SocialSignUpButton from '../../SocialButtons/SocialSignUpButton';
 import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
 import { API_KEY, ANDROID_API_KEY} from '@env';
@@ -135,7 +135,7 @@ const SignupForm = () => {
             </View>
             <CustomButton text="Register" onPress={onRegisterPressed} disabled={!isFormValid}/>
             <Separator />
-            <SocialSignInButton />
+            <SocialSignUpButton />
             <View style={styles.loginContainer}>
                     <Text style={styles.loginText}>Already have an account? </Text>
                     <TouchableOpacity onPress={onSignInPressed}>
