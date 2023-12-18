@@ -8,6 +8,7 @@ import GeneralTokenAllocation from './SubSections/GeneralTokenAllocation/General
 import VestingSchedule from './SubSections/VestingSchedule/VestingSchedule';
 import ValueAccrualMechanisms from './SubSections/ValueAccrualMechanisms/ValueAccrualMechanisms';
 import Competitors from './SubSections/Competitors/Competitors';
+import RevenueModel from './SubSections/RevenueModel/RevenueModel';
 
 const Fundamentals = ({}) => {
   return (
@@ -37,15 +38,23 @@ const Fundamentals = ({}) => {
         />
         <SubSection
           subtitle={'Vesting Schedules'}
-          content={<VestingSchedule year={2024} tokens={49999992} />}
+          content={
+            <VestingSchedule year={2024} tokens={49999992} crypto={'ETH'} />
+          }
         />
         <SubSection
           subtitle={'Value Accrual Mechanisms'}
           content={
             <ValueAccrualMechanisms
               options={[
-                {name: 'Benefits', icon: 'dollar'},
-                {name: 'USP', icon: 'star'},
+                {
+                  name: 'Benefits',
+                  icon: require('../../../../../../assets/images/fundamentals/benefits.png'),
+                },
+                {
+                  name: 'USP',
+                  icon: require('../../../../../../assets/images/fundamentals/usp.png'),
+                },
               ]}
               contentData={[
                 {
@@ -82,22 +91,28 @@ const Fundamentals = ({}) => {
             />
           }
         />
+        <SubSection subtitle={'Competitors'} content={<Competitors />} />
         <SubSection
-          subtitle={'Competitors'}
+          subtitle={'Revenue Model'}
           content={
-            <Competitors
+            <RevenueModel
               options={[
-                {name: 'Type of token', icon: 'dot-circle-o'},
-                {name: 'Circulating Supply', icon: 'arrow-circle-o-down'},
-                {name: 'Current Market Cap', icon: ''},
-                {name: 'TVL', icon: ''},
-                {name: 'Daily Active Users', icon: 'user'},
-                {name: 'Transaction Fees', icon: 'dollar'},
-                {name: 'Transaction Speed', icon: 'clock-o'},
-                {name: 'Inflation Rate', icon: 'thermometer-empty'},
-                {name: 'APR', icon: 'calculator'},
-                {name: 'Active Developers', icon: 'desktop'},
-                {name: 'Revenue', icon: ''},
+                {
+                  name: 'Transaction Fees',
+                  color: '#FC5404',
+                  values: [
+                    {year: 2022, percentage: 75},
+                    {year: 2023, percentage: 65},
+                  ],
+                },
+                {
+                  name: 'Ether Burning',
+                  color: '#F9B208',
+                  values: [
+                    {year: 2022, percentage: 25},
+                    {year: 2023, percentage: 30},
+                  ],
+                },
               ]}
             />
           }

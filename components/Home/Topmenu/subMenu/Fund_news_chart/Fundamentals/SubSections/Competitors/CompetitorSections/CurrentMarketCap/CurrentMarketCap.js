@@ -1,6 +1,6 @@
 import {Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {VictoryChart, VictoryBar} from 'victory-native';
+import React from 'react';
+import {VictoryChart, VictoryBar, VictoryTooltip} from 'victory-native';
 import styles from './ChartStyles';
 
 const CurrentMarketCap = ({cryptos}) => {
@@ -14,9 +14,11 @@ const CurrentMarketCap = ({cryptos}) => {
           domainPadding={{x: 1, y: 20}}
           data={cryptos.map(crypto => ({
             x: crypto.symbol,
-            y: crypto.marketCap,
+            y: crypto.marketCap[0],
+            label: ` $${crypto.marketCap[1]} `,
           }))}
-          labels={cryptos.map(crypto => `$${crypto.marketCap}b`)}
+          labels={({datum}) => datum.label}
+          labelComponent={<VictoryTooltip renderInPortal={false} />}
         />
       </VictoryChart>
     </View>

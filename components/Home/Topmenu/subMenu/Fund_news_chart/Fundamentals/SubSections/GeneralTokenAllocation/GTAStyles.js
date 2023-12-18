@@ -1,24 +1,40 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
 const {width} = Dimensions.get('window');
+const responsiveFontSize = width * 0.04;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  rowContainer: {
     flexDirection: 'row',
-    padding: 20,
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
+    backgroundColor: '#EFEFEF',
     alignItems: 'center',
+    justifyContent: 'center'
+  },
+  circleChartContainer: {
+    paddingVertical: 20
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  tokenSelector: {
+    width: 20,
+    height: 20,
+    margin: 5,
+    borderRadius: 5,
+    overflow: 'hidden',
   },
   strong: {
     fontWeight: 'bold',
   },
-  selectedValue: {marginLeft: 20, justifyContent: 'center'},
   circleDataContainer: {
     padding: 10,
-    marginVertical: 25,
+    marginVertical: 20,
+  },
+  currentTokenPercentage: {
+    padding: 10,
+    textAlign: 'center',
+    fontSize: responsiveFontSize * 1.3,
+    fontWeight: 'bold',
   },
 });
 

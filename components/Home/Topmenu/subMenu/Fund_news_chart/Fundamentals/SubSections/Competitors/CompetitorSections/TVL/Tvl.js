@@ -1,7 +1,7 @@
 import {Image, View} from 'react-native';
 import React from 'react';
 import styles from '../CurrentMarketCap/ChartStyles';
-import {VictoryChart, VictoryBar} from 'victory-native';
+import {VictoryChart, VictoryBar, VictoryTooltip} from 'victory-native';
 
 const TotalValueLocked = ({cryptos}) => {
   return (
@@ -15,8 +15,10 @@ const TotalValueLocked = ({cryptos}) => {
           data={cryptos.map(crypto => ({
             x: crypto.symbol,
             y: crypto.tvl,
+            label: ` $${crypto.tvl}b `,
           }))}
-          labels={cryptos.map(crypto => `$${crypto.tvl}b`)}
+          labels={({datum}) => datum.label}
+          labelComponent={<VictoryTooltip renderInPortal={false} />}
         />
       </VictoryChart>
     </View>

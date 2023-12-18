@@ -5,6 +5,7 @@ const responsiveFontSize = width * 0.04;
 
 const styles = StyleSheet.create({
   imageContainer: {
+    position: 'relative',
     width: width * 0.6,
     height: 80,
     margin: 10,
@@ -13,7 +14,6 @@ const styles = StyleSheet.create({
   },
   dollarImage: {
     flex: 1,
-    opacity: 0.65
   },
   graphsContainer: {
     marginVertical: 10,
@@ -37,6 +37,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: responsiveFontSize * 0.9,
     textAlign: 'center',
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    opacity: 0.5
   },
 });
 

@@ -30,14 +30,34 @@ const styles = StyleSheet.create({
   yearText: {
     marginHorizontal: 5,
     color: '#ffffff',
-    fontSize: responsiveFontSize * 0.8
+    fontSize: responsiveFontSize * 0.8,
   },
   bigText: {
     padding: 12.5,
     fontSize: responsiveFontSize * 1.5,
     color: '#000000',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
+  unlockIconContainer: {
+    width: 25,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  unlockIcon: {
+    flex: 1,
+    tintColor: '#4D4D4D',
+  },
+  calendarIconContainer: {
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  calendarIcon: {
+    flex: 1,
+    tintColor: '#FFFFFF',
+  },
 });
 
 export default styles;

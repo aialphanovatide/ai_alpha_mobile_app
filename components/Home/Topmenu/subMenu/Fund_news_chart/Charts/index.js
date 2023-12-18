@@ -6,8 +6,8 @@ import CandlestickDetails from './candleDetails';
 import { StyleSheet } from 'react-native';
 import Chart from './chart';
 import RsButton from './S&RButtons';
-import Alerts from './alerts/alerts';
-import AlertListComponent from './alerts';
+import Alerts from './alerts/AlertMenu';
+import AlertListComponent from './alerts/AlertListComponent';
 
 const CandlestickChart = ({ symbol, interval, coinBot }) => {
 

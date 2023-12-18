@@ -40,19 +40,19 @@ const TopTenGainers = () => {
   const [topTenCoins, setTopTenCoins] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-     const fetchTopTenCoins = async () => {
-       try {
-         const data = await topTenGainersService.getTop10Coins();
-         setTopTenCoins(data);
-       } catch (error) {
-         console.error('Error fetching top 10 coins:', error);
-       } finally {
-         setLoading(false);
-       }
-     };
-     fetchTopTenCoins();
-  }, []);
+  // useEffect(() => {
+  //    const fetchTopTenCoins = async () => {
+  //      try {
+  //        const data = await topTenGainersService.getTop10Coins();
+  //        setTopTenCoins(data);
+  //      } catch (error) {
+  //        console.error('Error fetching top 10 coins:', error);
+  //      } finally {
+  //        setLoading(false);
+  //      }
+  //    };
+  //    fetchTopTenCoins();
+  // }, []);
 
   return (
     <View style={styles.topTenGainersContainer}>

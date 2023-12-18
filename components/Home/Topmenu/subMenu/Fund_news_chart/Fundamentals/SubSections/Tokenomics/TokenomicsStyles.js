@@ -1,6 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-
 const {width} = Dimensions.get('window');
 const responsiveFontSize = width * 0.04;
 
@@ -27,16 +26,31 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   // Tokenomics styles
+  tokenItemsContainer: {
+    backgroundColor: '#EFEFEF',
+  },
   tokenItem: {
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginVertical: 5,
-    backgroundColor: '#FFFFFF',
     borderRadius: 5,
   },
   tokenRow: {
     marginVertical: 2.5,
     flexDirection: 'row',
+  },
+  numberTitles: {
+    flex: 1,
+    position: 'relative',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  alignRight: {
+    right: 5,
+  },
+  alignLeft: {
+    left: 5,
+    color: '#F98404'
   },
   tokenName: {
     width: '20%',
@@ -48,8 +62,8 @@ const styles = StyleSheet.create({
     verticalAlign: 'middle',
   },
   text: {
-    color: '#5F6466'
-  }
+    color: '#5F6466',
+  },
 });
 
 export default styles;
