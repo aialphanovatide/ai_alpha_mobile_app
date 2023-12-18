@@ -1,6 +1,5 @@
 import {React, useState, useEffect} from 'react';
 import {View, Text, ScrollView, Image} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './CryptoCalendarStyles';
 import calendarService from '../../../../services/CalendarService';
 import Loader from '../../../Loader/Loader';
@@ -12,18 +11,22 @@ const CalendarItem = ({event, coin}) => {
   return (
     <View style={styles.calendarItem}>
       <View style={styles.itemIconContainer}>
-        {/* <Icon name="bitcoin" size={30} /> */}
         <Image style={styles.itemIconImage} source={{uri: coin.image_64}} />
         <Text style={styles.coinName}>{coin.symbol}</Text>
       </View>
       <View style={styles.dataColumn}>
         <View style={styles.topDataRow}>
           <View style={styles.partnerShip}>
-            <Icon style={styles.itemInfo} name={'circle'} size={15} />
             <Text style={styles.itemInfo}>Partnership</Text>
           </View>
           <View style={styles.date}>
-            <Icon style={styles.itemInfo} name={'clock-o'} size={15} />
+            <View style={styles.timeIconContainer}>
+              <Image
+                style={styles.timeIcon}
+                resizeMode={'contain'}
+                source={require('../../../../assets/images/fundamentals/competitors/tspeed.png')}
+              />
+            </View>
             <Text style={styles.itemInfo}>{event.date_start}</Text>
           </View>
         </View>

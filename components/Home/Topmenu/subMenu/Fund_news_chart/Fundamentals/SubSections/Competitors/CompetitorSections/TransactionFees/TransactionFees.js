@@ -10,31 +10,31 @@ const DollarGraphs = ({value, color}) => {
     const decimalValue = value - intValue;
     for (let i = 0; i < intValue; i++) {
       images.push(
-        <View style={[styles.imageContainer, {backgroundColor: color}]}>
+        <View key={`image_${i}`} style={styles.imageContainer}>
           <Image
-            key={value + i}
             style={styles.dollarImage}
             source={require('../../../../../../../../../../assets/dollar.png')}
           />
+          <View style={[styles.overlay, {backgroundColor: color}]}></View>
         </View>,
       );
     }
     if (decimalValue > 0) {
       images.push(
-        <View
-          style={[
-            styles.imageContainer,
-            ,
-            {
-              height: 80 * decimalValue,
-              backgroundColor: color,
-            },
-          ]}>
+        <View key={`${value}decimal`} style={styles.imageContainer}>
           <Image
-            key={`${value}decimal`}
             style={styles.dollarImage}
             source={require('../../../../../../../../../../assets/dollar.png')}
           />
+          <View
+            style={[
+              styles.overlay,
+              ,
+              {
+                height: 80 * decimalValue,
+                backgroundColor: color,
+              },
+            ]}></View>
         </View>,
       );
     }

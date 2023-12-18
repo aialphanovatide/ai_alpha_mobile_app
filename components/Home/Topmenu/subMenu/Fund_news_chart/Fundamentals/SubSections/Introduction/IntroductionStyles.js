@@ -13,7 +13,11 @@ const styles = StyleSheet.create({
   },
   strong: {
     fontWeight: 'bold',
-  }
+  },
+  textSymbol: {
+    fontSize: responsiveFontSize,
+    color: '#8EED1A',
+  },
 });
 
 export default styles;
