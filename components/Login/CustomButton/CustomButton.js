@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Button, Image, StyleSheet, useWindowDimensions, Pressable } from 'react-native';
+import { View, TextInput, Text, Button, Image, StyleSheet, useWindowDimensions, Pressable, Appearance } from 'react-native';
 import GoogleLogo from './GoogleLogo';
 import FacebookLogo from './FacebookLogo';
 
 
 const CustomButton = ({onPress, text, type="PRIMARY", disabled}) => { //By default the button type is primary
     let logo = null;
+    const colorScheme = Appearance.getColorScheme();
 
     if (type === "GOOGLE") {
         logo = <GoogleLogo style={styles.logo} />;
@@ -18,11 +19,11 @@ const CustomButton = ({onPress, text, type="PRIMARY", disabled}) => { //By defau
             styles.container,
             styles[`container_${type}`],
             disabled && styles.disabled,
-            pressed && styles.pressed // Style for when the button is pressed
+            pressed && styles.pressed
         ]}>
             <View style={styles.buttonContent}>
                 {logo}
-                <Text style={[styles.text, styles[`text_${type}`]]}>{text}</Text>
+                <Text style={[styles.text, type === 'GOOGLE' && { color: colorScheme === 'dark' ? 'white' : 'black' },styles[`text_${type}`]]}>{text}</Text>
             </View>
         </Pressable>
     );
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     pressed: {
-        opacity: 0.75, // Adjust the opacity as per your preference
+        opacity: 0.75,
     },
     buttonContent: {
         flexDirection: 'row',
@@ -50,7 +51,6 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     disabled: {
-        // Style for disabled button, e.g., lowering the opacity
         opacity: 0.5,
     },
     container_PRIMARY:{
@@ -80,9 +80,11 @@ const styles = StyleSheet.create({
 
     },
     text:{
-        color:'white',
         fontWeight:'bold',
         fontSize:15,
+    },
+    text_PRIMARY: {
+        color: 'white',
     },
     text_TERTIARY:{
         color:'#fc5505'

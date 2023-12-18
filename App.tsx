@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import Navigation from './navigation/Navigation';
-import {SafeAreaView, StyleSheet, StatusBar, Platform} from 'react-native';
+import {SafeAreaView, StyleSheet, StatusBar, Platform, Appearance} from 'react-native';
 import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import PaywallScreen from './components/Login/Screens/PaywallScreen/PaywallScreen';
@@ -13,6 +13,7 @@ import { UserProvider } from './context/UserContext';
 
 const App = () => {
 
+  const colorScheme = Appearance.getColorScheme();
 
    useEffect(() => {
      Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
@@ -44,7 +45,7 @@ const App = () => {
 
   return (
     <UserProvider>
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#242427' : 'white' }]}>
       <StatusBar barStyle="dark-content" />
        <TopMenuContextProvider>
            <Navigation />

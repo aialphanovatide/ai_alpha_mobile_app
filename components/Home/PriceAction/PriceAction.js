@@ -73,7 +73,7 @@ const PriceAction = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedColumn, setSelectedColumn] = useState(columns[0]);
-
+/*
   useEffect(() => {
     //setCoins(priceActionMock);
     //setLoading(false);
@@ -90,7 +90,7 @@ const PriceAction = () => {
      };
      fetchCoinsData();
   }, []);
-
+*/
   return (
     <View style={[styles.priceActionContainer]}>
       <Text style={styles.title}>Price action</Text>
