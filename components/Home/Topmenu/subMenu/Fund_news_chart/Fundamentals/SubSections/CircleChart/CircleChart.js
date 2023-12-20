@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
 import Pie from 'react-native-pie';
 import styles from '../GeneralTokenAllocation/GTAStyles';
 
 const CircleChart = ({data}) => {
   return (
-    <View style={styles.rowContainer}>
+    <View style={styles.circleChartContainer}>
       <Pie
         radius={80}
         innerRadius={60}
@@ -15,17 +15,6 @@ const CircleChart = ({data}) => {
         backgroundColor="#ffffff"
         dividerSize={10}
       />
-
-      <View style={styles.circleDataContainer}>
-        {data.map((sector, index) => (
-          <TouchableOpacity key={index}>
-            <Text style={{color: sector.color}}>
-              <Text style={styles.strong}>{sector.title}:</Text>{' '}
-              {sector.percentage}%
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
     </View>
   );
 };

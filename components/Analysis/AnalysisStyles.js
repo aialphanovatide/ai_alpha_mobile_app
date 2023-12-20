@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   itemContainer: {
+    position: 'relative',
     width: '90%',
     display: 'flex',
     flexDirection: 'row',
@@ -22,6 +23,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     padding: 15,
     backgroundColor: '#F7F7F7',
+  },
+  analysisIconContainer: {
+    width: 30,
+    height: 30,
+    marginHorizontal: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },  
+  analysisIcon: {
+    flex: 1,
+    tintColor: '#5F6466'
   },
   itemText: {
     width: '60%',
@@ -31,10 +43,21 @@ const styles = StyleSheet.create({
     color: '#5F6466',
   },
   rateValueContainer: {
+    position: 'absolute',
+    right: 15,
     flex: 1,
     flexDirection: 'row',
-    alignSelf: 'flex-end',
-    marginLeft: '20%',
+    alignSelf: 'center',
+  },
+  rightArrowContainer: {
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rightArrow: {
+    flex: 1,
+    tintColor: '#B8BBBC'
   },
   analysisTitle: {
     marginHorizontal: 25,

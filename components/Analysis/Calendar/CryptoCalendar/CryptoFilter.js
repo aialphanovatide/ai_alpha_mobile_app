@@ -7,11 +7,14 @@ const CryptoItem = ({option, active, handleOptionTouch}) => {
   return (
     <TouchableOpacity onPress={() => handleOptionTouch(option)}>
       <View style={[styles.cryptoItem, active && styles.activeCryptoItem]}>
-        {/* <View style={styles.cryptoIconContainer}> */}
-        {/* <Image style={styles.cryptoIcon} source={{uri: option.imageUri}} /> */}
-        {/* </View> */}
-        {/* TODO - Change to display the icon of every option */}
-        <Icon name="bitcoin" size={20} />
+        <View style={styles.cryptoIconContainer}>
+          {/* TODO - Change to display the icon of every option */}
+          <Image
+            style={styles.cryptoIcon}
+            source={require('../../../../assets/bitcoin.png')}
+            resizeMode={'contain'}
+          />
+        </View>
         <Text style={styles.cryptoName}>{option.icon}</Text>
       </View>
     </TouchableOpacity>
@@ -21,7 +24,10 @@ const CryptoItem = ({option, active, handleOptionTouch}) => {
 const CryptoFilter = ({options, currentFilter, handleOptionTouch}) => {
   return (
     <View style={styles.cryptoFilter}>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} bounces={false}>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        bounces={false}>
         {options.map(option => (
           <CryptoItem
             key={option.id}

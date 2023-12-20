@@ -4,23 +4,39 @@ const {width} = Dimensions.get('window');
 const responsiveFontSize = width * 0.04;
 
 const styles = StyleSheet.create({
+  container: {
+    width: width - 30,
+    alignSelf: 'center',
+    backgroundColor: '#EFEFEF',
+  },
+
   menuItemContainer: {
-    width: 150,
+    width: width * 0.45,
     margin: 5,
-    padding: 10,
-    backgroundColor: '#ffffff',
-    alignItems: 'center'
+    backgroundColor: '#F7F7F7',
+    alignItems: 'center',
   },
   menuContainer: {
+    width: '100%',
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   menuItemName: {
     marginVertical: 5,
     color: '#B8BBBC',
     textAlign: 'center',
+  },
+  iconContainer: {
+    width: 20,
+    height: 20,
+    margin: 5,
+    alignSelf: 'center',
+  },
+  itemIcon: {
+    flex: 1,
+    tintColor: '#B8BBBC',
   },
   activeItem: {
     color: '#FB6822',
@@ -38,7 +54,7 @@ const styles = StyleSheet.create({
   dataRow: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F7F7F7',
   },
   imageContainer: {
     width: 80,
@@ -51,6 +67,7 @@ const styles = StyleSheet.create({
   },
   dataText: {
     flex: 1,
+    padding: 10,
     margin: 10,
     color: '#242427',
     fontSize: responsiveFontSize * 0.85,

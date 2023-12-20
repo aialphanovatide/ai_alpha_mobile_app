@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Image, StyleSheet, useWindowDimensions, ScrollView, Text, Linking, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, Image, StyleSheet, useWindowDimensions, Appearance,ScrollView, Text, Linking, TouchableOpacity } from 'react-native';
 import Logo from '../../../../assets/images/AIAlphalogonew.png'
 import GreenTick from '../../../../assets/images/greenTick.png';
 import CustomInput from '../../CustomInput/CustomInput';
@@ -37,6 +37,7 @@ const SignupForm = () => {
     const [isFormValid, setIsFormValid] = useState(false);
     const { setUserEmail } = useUser();
     const [signupSuccessful, setSignupSuccessful] = useState(false);
+    const colorScheme = Appearance.getColorScheme();
 
     const validateForm = () => {
         const formIsValid =
@@ -108,8 +109,8 @@ const SignupForm = () => {
     */
 
     return (
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollview}>
-        <View style={styles.root}>
+        <ScrollView style={[styles.scrollview, { backgroundColor: colorScheme === 'dark' ? '#242427' : 'white' }]} showsVerticalScrollIndicator={false}>
+        <View style={[styles.root, { backgroundColor: colorScheme === 'dark' ? '#242427' : 'white' }]}>
         <Image source={Logo} style={[styles.logo, {height: height*0.3}]} resizeMode='contain'/>
             <View style={styles.inputContainer}>
                 <Text style={styles.title}>Username</Text>
@@ -128,7 +129,7 @@ const SignupForm = () => {
                 <CustomInput placeholder='' value={passwordRepeat} setValue={setPasswordRepeat} secureTextEntry={true}/>
             </View>
             <View style={styles.termsContainer}>
-                    <Text style={styles.termsText}>By registering you agree to our </Text>
+                    <Text style={[styles.termsText, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>By registering you agree to our </Text>
                     <TouchableOpacity onPress={onTermsPressed}>
                         <Text style={styles.termsButton}>Terms and Conditions</Text>
                     </TouchableOpacity>
@@ -137,7 +138,7 @@ const SignupForm = () => {
             <Separator />
             <SocialSignUpButton />
             <View style={styles.loginContainer}>
-                    <Text style={styles.loginText}>Already have an account? </Text>
+                    <Text style={[styles.loginText, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>Already have an account? </Text>
                     <TouchableOpacity onPress={onSignInPressed}>
                         <Text style={styles.loginButton}>Log In</Text>
                     </TouchableOpacity>
@@ -218,13 +219,10 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     tickImage: {
-        width: 120, // Adjust the size as needed
-        height: 88, // Adjust the size as needed
+        width: 120,
+        height: 88,
         marginBottom: 10,
     },
 });
-
-
-
 
 export default SignupForm;

@@ -8,12 +8,16 @@ const MechanismsMenuItem = ({item, activeOption, handleOptionChange}) => {
   return (
     <TouchableOpacity onPress={() => handleOptionChange(item)}>
       <View style={styles.menuItemContainer}>
-        <Icon
-          style={styles.itemIcon}
-          name={item.icon}
-          size={15}
-          color={activeOption.name === item.name ? '#FB6822' : '#B8BBBC'}
-        />
+        <View style={styles.iconContainer}>
+          <Image
+            style={[
+              styles.itemIcon,
+              activeOption.name === item.name && {tintColor: '#FB6822'},
+            ]}
+            resizeMode={'contain'}
+            source={item.icon}
+          />
+        </View>
         <Text
           style={[
             styles.menuItemName,
@@ -53,7 +57,6 @@ const ContentItem = ({data}) => {
             source={data.image}
             resizeMode={'contain'}
           />
-          {/* <Text>Image</Text> */}
         </View>
         <Text style={styles.dataText}>{data.text}</Text>
       </View>

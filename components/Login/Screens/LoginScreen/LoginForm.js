@@ -9,6 +9,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
+  Appearance,
 } from 'react-native';
 import Logo from '../../../../assets/images/AIAlphalogonew.png';
 import CustomInput from '../../CustomInput/CustomInput';
@@ -28,6 +29,8 @@ const LoginForm = ({ route }) => {
   const navigation = useNavigation();
   const { setUserEmail } = useUser();
   const [error, setError] = useState('');
+  const colorScheme = Appearance.getColorScheme();
+
 
   useFocusEffect(
     React.useCallback(() => {
@@ -55,7 +58,6 @@ const LoginForm = ({ route }) => {
       setError('Email or Password are incorrect');
     }
   };
-  //const onGoogleSignInPressed
 
   const onForgotPasswordPressed = () => {
     navigation.navigate('ForgotPassword');
@@ -66,8 +68,8 @@ const LoginForm = ({ route }) => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollview}>
-      <View style={styles.root}>
+    <ScrollView style={[styles.scrollview, { backgroundColor: colorScheme === 'dark' ? '#242427' : 'white' }]} showsVerticalScrollIndicator={false}>
+      <View style={[styles.root, { backgroundColor: colorScheme === 'dark' ? '#242427' : 'white' }]}>
         <Image
           source={Logo}
           style={[styles.logo, {height: height * 0.3}]}
@@ -97,7 +99,7 @@ const LoginForm = ({ route }) => {
             secureTextEntry={true}
           />
         </View>
-        <CustomButton text="Sign In" onPress={onSignInPressed} />
+        <CustomButton text="Sign In" onPress={onSignInPressed} type="PRIMARY"/>
         <Separator />
         <SocialSignInButton />
         <CustomButton
@@ -106,7 +108,7 @@ const LoginForm = ({ route }) => {
           type="TERTIARY"
         />
         <View style={styles.signUpContainer}>
-          <Text style={styles.signUpText}>Don't have an account? </Text>
+          <Text style={[styles.signUpText, { color: colorScheme === 'dark' ? 'white' : 'black' }]}>Don't have an account? </Text>
           <TouchableOpacity onPress={onSignUpPressed}>
             <Text style={styles.signUpButton}>Sign Up</Text>
           </TouchableOpacity>
@@ -119,11 +121,11 @@ const LoginForm = ({ route }) => {
 const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
-    backgroundColor: '#242427',
+    //backgroundColor: colorScheme === 'dark' ? '#242427' : 'white',
     padding: 20,
   },
   scrollview: {
-    backgroundColor: '#242427',
+    //backgroundColor: colorScheme === 'dark' ? '#242427' : 'white',
   },
   logo: {
     marginTop: 10,
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
   errorLabel: {
     color: 'red',
     fontSize: 12,
-    marginLeft: 8, // Adjust the spacing as needed
+    marginLeft: 8,
   },
   inputContainer: {
     alignSelf: 'stretch',
@@ -156,8 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 5,
   },
-  signUpText: {
-    color: 'white',
+  signUpText:{
   },
   signUpButton: {
     color: '#fc5505',
