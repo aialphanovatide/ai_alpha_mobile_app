@@ -17,32 +17,32 @@ const App = () => {
 
   const colorScheme = Appearance.getColorScheme();
 
-  //  useEffect(() => {
-  //    Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
-  //    if (Platform.OS === 'ios') {
-  //      Purchases.configure({ apiKey: IOS_API_KEY });
-  //    } else if (Platform.OS === 'android') {
-  //      Purchases.configure({ apiKey: ANDROID_API_KEY });
-  //    }
-  //  }, []);
+    useEffect(() => {
+      Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
+     if (Platform.OS === 'ios') {
+        Purchases.configure({ apiKey: API_KEY });
+      } else if (Platform.OS === 'android') {
+        Purchases.configure({ apiKey: ANDROID_API_KEY });
+      }
+    }, []);
 
 
-  //  console.log("Entitlement id: ",ENTITLEMENT_ID)
+    console.log("Entitlement id: ",ENTITLEMENT_ID)
   
-  //  const showUserSubscriptionData = async () => {
-  //    try {
-  //      //const purchaseMade = await Purchases.purchasePackage(purchasePackage);
-  //      const customerInfo = await Purchases.getCustomerInfo();
+    const showUserSubscriptionData = async () => {
+    try {
+        //const purchaseMade = await Purchases.purchasePackage(purchasePackage);
+        const customerInfo = await Purchases.getCustomerInfo();
 
-  //      if(typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== "undefined"){
-  //        console.log("User is pro");
-  //      }
-  //      console.log("Customer info:", customerInfo);
-  //    } catch (error) {
-  //      console.error("Error purchasing package:", error);
-  //    }
-  //  };
-  //  showUserSubscriptionData();
+        if(typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== "undefined"){
+          console.log("User is pro");
+        }
+        console.log("Customer info:", customerInfo);
+      } catch (error) {
+        console.error("Error purchasing package:", error);
+      }
+    };
+    showUserSubscriptionData();
 
 
   return (

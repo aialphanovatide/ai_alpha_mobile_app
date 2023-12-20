@@ -72,6 +72,7 @@ import { useUser } from '../../context/UserContext';
        <Text style={{ color: subscriptionActive ? 'green' : 'red' ,marginBottom:100}}>
          {subscriptionActive ? 'Active' : 'Not Active'}
        </Text>
+       <CustomButton text="Delete Account" onPress={() => navigation.navigate('DeleteAccountScreen')} />
 
  
        {/* You should always give users the option to restore purchases to connect their purchase to their current app user ID */}

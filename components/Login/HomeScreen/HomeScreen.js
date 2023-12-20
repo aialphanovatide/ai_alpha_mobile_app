@@ -13,6 +13,7 @@ import Alerts from '../../Alerts/Alerts';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Image, View} from 'react-native';
 import styles from './HomeScreenStyles';
+import DeleteAccountForm from '../DeleteUserForm';
 
 const Tab = createBottomTabNavigator();
 

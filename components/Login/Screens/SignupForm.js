@@ -58,17 +58,20 @@ const SignupForm = () => {
         navigation.navigate('SignIn');
     }
     const onRegisterPressed = async () => {
-
+        console.log("Here!")
         const purchaserInfo = await Purchases.getCustomerInfo();
+        console.log("After Here!")
         if (typeof purchaserInfo.entitlements.active[ENTITLEMENT_ID] !== "undefined"){
           console.log("Passed")
         }else{
+            console.log("not passed")
           navigation.navigate("PaywallScreen");
         }
     
         try {
-            const response = await axios.post('https://dev-kqugsqvoounaylft.us.auth0.com/dbconnections/signup', {
-                client_id: 'Rr0xvkmUdxACllY2wFPq9k6CFRnq01CO',
+            console.log("Before Signup")
+            const response = await axios.post('https://dev-zoejuo0jssw5jiid.us.auth0.com/dbconnections/signup', {
+                client_id: 'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg',
                 email: email,
                 password: password,
                 connection: 'Username-Password-Authentication',
