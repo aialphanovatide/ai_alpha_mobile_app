@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Image, StyleSheet, useWindowDimensions, ScrollView, Text, TouchableOpacity } from 'react-native';
-import CustomButton from '../../CustomButton';
-import CustomInput from '../../CustomInput/CustomInput';
+import CustomButton from '../CustomButton/CustomButton';
+import CustomInput from '../CustomInput/CustomInput';
 import { useNavigation } from '@react-navigation/core';
-import GreenTick from '../../../../assets/images/greenTick.png';
-import auth0 from '../../auth0.js';
+import GreenTick from '../../../assets/images/greenTick.png';
+import auth0 from '../auth0.js';
 
 
 

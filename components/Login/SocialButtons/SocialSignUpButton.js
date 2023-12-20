@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import CustomButton from '../CustomButton';
+import CustomButton from '../CustomButton/CustomButton';
 import {
   GoogleSignin,
   statusCodes,

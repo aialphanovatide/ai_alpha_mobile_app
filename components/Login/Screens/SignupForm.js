@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, Image, StyleSheet, useWindowDimensions, Appearance,ScrollView, Text, Linking, TouchableOpacity } from 'react-native';
-import Logo from '../../../../assets/images/AIAlphalogonew.png'
-import GreenTick from '../../../../assets/images/greenTick.png';
-import CustomInput from '../../CustomInput/CustomInput';
-import CustomButton from '../../CustomButton';
-import Separator from '../../CustomButton/Separator';
-import SocialSignUpButton from '../../SocialButtons/SocialSignUpButton';
+import Logo from '../../../assets/images/AIAlphalogonew.png'
+import GreenTick from '../../../assets/images/greenTick.png';
+import CustomInput from '../CustomInput/CustomInput';
+import CustomButton from '../CustomButton/CustomButton';
+import Separator from '../CustomButton/Separator';
+import SocialSignUpButton from '../SocialButtons/SocialSignUpButton';
 import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
 import { API_KEY, ANDROID_API_KEY} from '@env';
 import Purchases from 'react-native-purchases';
-import { ENTITLEMENT_ID } from '../../../../src/constants';
-import { useUser } from '../../../../context/UserContext';
+import { ENTITLEMENT_ID } from '../../../src/constants';
+import { useUser } from '../../../context/UserContext';
 
 const onTermsPressed =()=> {
     const url = "https://aialpha.ai/termsofservice";

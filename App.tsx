@@ -3,7 +3,7 @@ import Navigation from './navigation/Navigation';
 import {SafeAreaView, StyleSheet, StatusBar, Platform, Appearance} from 'react-native';
 import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import PaywallScreen from './components/Login/Screens/PaywallScreen/PaywallScreen';
+import PaywallScreen from './components/Login/Screens/PaywallScreen';
 import { IOS_API_KEY, ANDROID_API_KEY} from '@env';
 import { ENTITLEMENT_ID } from './src/constants';
 import Router from './src/navigation/Router';

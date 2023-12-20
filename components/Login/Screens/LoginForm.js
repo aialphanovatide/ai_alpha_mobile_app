@@ -11,15 +11,15 @@ import {
   TouchableOpacity,
   Appearance,
 } from 'react-native';
-import Logo from '../../../../assets/images/AIAlphalogonew.png';
-import CustomInput from '../../CustomInput/CustomInput';
-import CustomButton from '../../CustomButton/CustomButton';
-import Separator from '../../CustomButton/Separator';
-import SocialSignInButton from '../../SocialButtons/SocialSignInButton';
+import Logo from '../../../assets/images/AIAlphalogonew.png';
+import CustomInput from '../CustomInput/CustomInput';
+import CustomButton from '../CustomButton/CustomButton';
+import Separator from '../CustomButton/Separator';
+import SocialSignInButton from '../SocialButtons/SocialSignInButton';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
-import auth0 from '../../auth0.js';
+import auth0 from '../auth0.js';
 import Purchases from 'react-native-purchases';
-import { useUser } from '../../../../context/UserContext';
+import { useUser } from '../../../context/UserContext';
 
 
 const LoginForm = ({ route }) => {

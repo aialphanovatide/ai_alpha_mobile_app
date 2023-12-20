@@ -4,7 +4,7 @@ import { ENTITLEMENT_ID } from '../../src/constants';
 import { LoginForm, LogoutButton, RestorePurchasesButton } from '../../src/components';
 import styles from './styles.js';
 import Purchases from 'react-native-purchases';
-import CustomButton from '../Login/CustomButton';
+import CustomButton from '../Login/CustomButton/CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import auth0 from '../Login/auth0';
 import { useUser } from '../../context/UserContext';
