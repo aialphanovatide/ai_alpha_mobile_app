@@ -6,8 +6,8 @@ import CandlestickDetails from './candleDetails';
 import { StyleSheet } from 'react-native';
 import Chart from './chart';
 import RsButton from './S&RButtons';
-import Alerts from './alerts/alerts';
-import AlertListComponent from './alerts';
+import AlertMenu from './alerts/AlertMenu';
+import AlertListComponent from './alerts/AlertListComponent';
 
 const CandlestickChart = ({ symbol, interval, coinBot }) => {
 
@@ -88,9 +88,7 @@ const CandlestickChart = ({ symbol, interval, coinBot }) => {
       activeButtons={activeButtons}
       resistanceLevels={resistanceLevels}/>
 
-      <Alerts 
-      activeAlertOption={activeAlertOption}
-      setActiveButtons={setActiveAlertOption} />
+      <AlertMenu activeAlertOption={activeAlertOption} setActiveButtons={setActiveAlertOption} />
 
       <AlertListComponent timeframe={activeAlertOption} botName={coinBot}/>
 
