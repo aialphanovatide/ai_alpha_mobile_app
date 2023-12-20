@@ -4,12 +4,14 @@ import {SafeAreaView, StyleSheet, StatusBar, Platform, Appearance} from 'react-n
 import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import PaywallScreen from './components/Login/Screens/PaywallScreen/PaywallScreen';
- import { IOS_API_KEY, ANDROID_API_KEY} from '@env';
+import { IOS_API_KEY, ANDROID_API_KEY} from '@env';
 import { ENTITLEMENT_ID } from './src/constants';
 import Router from './src/navigation/Router';
 import { API_KEY } from './src/constants';
 import { TopMenuContextProvider } from './context/topMenuContext';
 import { UserProvider } from './context/UserContext';
+import topTenGainersService from './services/TopTenGainersService';
+
 
 const App = () => {
 
@@ -18,7 +20,7 @@ const App = () => {
    useEffect(() => {
      Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
      if (Platform.OS === 'ios') {
-       Purchases.configure({ apiKey: IOS_API_KEY });
+       Purchases.configure({ apiKey: API_KEY });
      } else if (Platform.OS === 'android') {
        Purchases.configure({ apiKey: ANDROID_API_KEY });
      }

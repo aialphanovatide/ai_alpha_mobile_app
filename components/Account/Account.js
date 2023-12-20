@@ -62,8 +62,8 @@ import { useUser } from '../../context/UserContext';
    return (
      <ScrollView>
      <View style={styles.page}>
-       <Text style={styles.headline}>Current User Identifier</Text>
-       <Text style={styles.userIdentifier}>{userId}</Text>
+       {/*<Text style={styles.headline}>Current User Identifier</Text>
+       <Text style={styles.userIdentifier}>{userId}</Text>*/}
        <Text style={styles.headline}>User Email</Text>
         <Text style={styles.userIdentifier}>{userEmail || 'Email not available'}</Text>
        <Text style={styles.headline}>Subscription Name</Text>

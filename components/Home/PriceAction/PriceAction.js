@@ -73,24 +73,24 @@ const PriceAction = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedColumn, setSelectedColumn] = useState(columns[0]);
-/*
+
   useEffect(() => {
     setCoins(priceActionMock);
     setLoading(false);
-    //  const fetchCoinsData = async () => {
-    //    try {
-    //      const data = await priceActionService.getAllCoinsInfo();
-    //      console.log(data);
-    //      setCoins(data);
-    //    } catch (error) {
-    //      console.error('Error fetching coins data:', error);
-    //    } finally {
-    //      setLoading(false);
-    //    }
-    //  };
-    //  fetchCoinsData();
+      const fetchCoinsData = async () => {
+        try {
+          const data = await priceActionService.getAllCoinsInfo();
+          console.log(data);
+          setCoins(data);
+        } catch (error) {
+          console.error('Error fetching coins data:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchCoinsData();
   }, []);
-*/
+
   return (
     <View style={[styles.priceActionContainer]}>
       <Text style={styles.title}>Price action</Text>

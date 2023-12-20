@@ -30,7 +30,7 @@ target 'ai_alpha_mobile_app' do
   config = use_native_modules!
   # Flags change depending on the env values.
   flags = get_default_flags()
-
+  pod 'react-native-config/Extension', :path => '../node_modules/react-native-config'
 
 
   use_react_native!(
