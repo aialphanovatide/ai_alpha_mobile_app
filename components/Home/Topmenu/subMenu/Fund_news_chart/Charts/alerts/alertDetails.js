@@ -9,7 +9,7 @@ const AlertDetails = ({ message, price, timeframe }) => {
         <Text style={styles.subtitle}>{message}</Text>
       </View>
       <View style={styles.rightContent}>
-        <Text style={styles.rightTitle}>${price}</Text>
+        <Text style={styles.rightTitle}>{price}</Text>
       </View>
     </View>
   );
