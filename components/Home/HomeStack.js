@@ -8,11 +8,12 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import CandlestickChart from './Topmenu/subMenu/Fund_news_chart/Charts';
 import NewsComponent from './Topmenu/subMenu/Fund_news_chart/News';
 import {TopMenuContext} from '../../context/topMenuContext';
-import {Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
 const SubMenuStack = createMaterialTopTabNavigator();
+const NewsStack = createNativeStackNavigator();
 
 const ChartScreen = () => {
   return (
@@ -22,16 +23,38 @@ const ChartScreen = () => {
   );
 };
 
-const NewsScreen = () => {
+// Change this with the respective newsArticle component, remember to receive the props like its done below, obtaining it from the route prop.
+const NewsArticle = ({route}) => {
+  const item = route.params.item;
   return (
-    <View>
-      <Text>News</Text>
-    </View>
+    <ScrollView>
+      <Text>Title: {item.title}</Text>
+      <Text>News id:{item.article_id}</Text>
+      <Text>Summary: {item.summary}</Text>
+    </ScrollView>
   );
 };
+
+const NewsScreen = () => {
+  const {activeSubCoin} = useContext(TopMenuContext);
+  return (
+    <NewsStack.Navigator
+      initialRouteName="NewsMain"
+      backBehavior={'none'}
+      screenOptions={{headerShown: false}}>
+      {/* Replace NewsMain with NewsComponent */}
+      <NewsStack.Screen
+        name="NewsMain"
+        component={NewsComponent}
+        initialParams={{botname: activeSubCoin}}
+      />
+      <NewsStack.Screen name="NewsArticle" component={NewsArticle} />
+    </NewsStack.Navigator>
+  );
+};
+
 const SubMenuScreen = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
-  console.log('activeSubCoin: ', activeSubCoin);
   return (
     <SubMenuStack.Navigator
       initialRouteName="Charts"
@@ -59,22 +82,16 @@ const SubMenuScreen = () => {
       <SubMenuStack.Screen name="Fundamentals" component={Fundamentals} />
       <SubMenuStack.Screen
         name="Charts"
-        // component={CandlestickChart}
-        // initialParams={{
-        //   interval: '1h',
-        //   symbol: `${activeSubCoin}USDT`,
-        //   coinBot: activeSubCoin,
-        // }}
+        component={CandlestickChart}
+        initialParams={{
+          interval: '1h',
+          symbol: `${activeSubCoin}USDT`,
+          coinBot: activeSubCoin,
+        }}
         // Replace the component prop with the correct component, passing the props that it needs with the initialParams prop, structuring it the way that is right before this comment. I tried to do it the way that was before but throws an error with the request so you may fix that.
-        component={ChartScreen}
+        // component={ChartScreen}
       />
-      <SubMenuStack.Screen
-        name="News"
-        // component={NewsComponent}
-        // initialParams={{botname: activeSubCoin}}
-        // Replace the component prop with the correct component, passing the props that it needs with the initialParams prop, structuring it the way that is right before this comment. I tried to do it the way that was before but throws an error with the request so you may fix that.
-        component={NewsScreen}
-      />
+      <SubMenuStack.Screen name="News" component={NewsScreen} />
     </SubMenuStack.Navigator>
   );
 };

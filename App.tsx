@@ -8,12 +8,12 @@ import {
   Appearance,
 } from 'react-native';
 import Purchases from 'react-native-purchases';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import PaywallScreen from './components/Login/Screens/PaywallScreen/PaywallScreen';
+// import {GoogleSignin} from '@react-native-google-signin/google-signin';
+// import PaywallScreen from './components/Login/Screens/PaywallScreen/PaywallScreen';
 import {IOS_API_KEY, ANDROID_API_KEY} from '@env';
 import {ENTITLEMENT_ID} from './src/constants';
-import Router from './src/navigation/Router';
-import {API_KEY} from './src/constants';
+// import Router from './src/navigation/Router';
+// import {API_KEY} from './src/constants';
 import {TopMenuContextProvider} from './context/topMenuContext';
 import {UserProvider} from './context/UserContext';
 import {CategoriesContextProvider} from './context/categoriesContext';

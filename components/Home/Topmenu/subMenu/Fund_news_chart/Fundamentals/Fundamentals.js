@@ -95,7 +95,7 @@ const Fundamentals = ({}) => {
           }
         />
         <SubSection subtitle={'Competitors'} content={<Competitors />} />
-        {/*<SubSection
+        <SubSection
           subtitle={'Revenue Model'}
           content={
             <RevenueModel

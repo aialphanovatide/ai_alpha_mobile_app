@@ -3,6 +3,7 @@ import {List} from 'react-native-paper';
 import styles from '../topStoriesStyles';
 
 const StoryItem = ({
+  item,
   title,
   description,
   image,
@@ -16,7 +17,7 @@ const StoryItem = ({
       left={() => <Image source={{uri: image}} style={styles.imageStyle} />}
       titleStyle={styles.titleStyles}
       onPress={() =>
-        handleStoryRedirect({title, description, image, coinBotId})
+        handleStoryRedirect({item, coinBotId})
       }
     />
   );

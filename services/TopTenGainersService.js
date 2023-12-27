@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import Config from 'react-native-config';
+// import Config from 'react-native-config';
 //import {COINGECKO_API_KEY} from '@env';
 import {COINGECKO_API_KEY} from "../src/constants"
 /*
