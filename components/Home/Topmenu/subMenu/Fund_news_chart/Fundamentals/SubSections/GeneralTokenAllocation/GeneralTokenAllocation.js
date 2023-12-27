@@ -31,11 +31,11 @@ const GeneralTokenData = ({data, currentToken, handleTokenChange}) => {
 
 const GeneralTokenAllocation = () => {
   const chartData = [
-    {title: 'Exchanges', percentage: 26, color: '#FC0404'},
-    {title: 'Institutions', percentage: 22, color: '#FC5404'},
-    {title: 'Miners', percentage: 21, color: '#F98404'},
-    {title: 'ETH Foundation', percentage: 17, color: '#F9B208'},
-    {title: 'Retail Investors', percentage: 14, color: '#F8E405'},
+    {title: 'Exchanges', percentage: 26, color: '#399AEA'},
+    {title: 'Institutions', percentage: 22, color: '#20CBDD'},
+    {title: 'Miners', percentage: 21, color: '#C539B4'},
+    {title: 'ETH Foundation', percentage: 17, color: '#FF3BC3'},
+    {title: 'Retail Investors', percentage: 14, color: '#FFC53D'},
   ];
   const [currentToken, setCurrentToken] = useState(null);
 
@@ -45,7 +45,7 @@ const GeneralTokenAllocation = () => {
 
   return (
     <View style={styles.container}>
-      <CircleChart data={chartData} />
+      <CircleChart data={chartData} dividerSize={10}/>
       <GeneralTokenData
         currentToken={currentToken}
         data={chartData}

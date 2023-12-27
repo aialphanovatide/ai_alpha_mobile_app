@@ -13,6 +13,7 @@ import Alerts from '../../Alerts/Alerts';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Image, View} from 'react-native';
 import styles from './HomeScreenStyles';
+import HomeStackScreen from '../../Home/HomeStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -51,7 +52,7 @@ const HomeScreen = () => {
               updateActiveCoin({});
             },
           }}
-          component={Home}
+          component={HomeStackScreen}
           options={{
             tabBarLabel: 'Home',
             tabBarLabelStyle: {marginBottom: 10},

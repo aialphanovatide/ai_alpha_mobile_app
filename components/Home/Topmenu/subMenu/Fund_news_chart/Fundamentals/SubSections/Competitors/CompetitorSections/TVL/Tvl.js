@@ -8,7 +8,11 @@ const TotalValueLocked = ({cryptos}) => {
     <View style={styles.chartContainer}>
       <VictoryChart>
         <VictoryBar
-          style={styles.chart}
+          style={{
+            data: {
+              fill: ({datum}) => datum.color,
+            },
+          }}
           alignment={'middle'}
           domain={{x: [0, 5], y: [0, 30]}}
           domainPadding={{x: 1, y: 3}}
@@ -16,6 +20,7 @@ const TotalValueLocked = ({cryptos}) => {
             x: crypto.symbol,
             y: crypto.tvl,
             label: ` $${crypto.tvl}b `,
+            color: crypto.color,
           }))}
           labels={({datum}) => datum.label}
           labelComponent={<VictoryTooltip renderInPortal={false} />}

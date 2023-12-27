@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   tableScrollView: {
+    flex: 1,
     height: '100%',
   },
   headerRow: {
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     padding: 5,
     fontWeight: 'bold',
-    fontSize: responsiveFontSize * 0.7,
+    fontSize: responsiveFontSize * 0.9,
     color: '#5F6466',
     textAlign: 'center',
     verticalAlign: 'middle',
@@ -66,6 +67,7 @@ const styles = StyleSheet.create({
   dataCell: {
     flex: 1,
     padding: 5,
+    marginRight: 20,
     color: '#242427',
     fontSize: responsiveFontSize * 0.75,
     textAlign: 'center',
@@ -77,24 +79,40 @@ const styles = StyleSheet.create({
   redNumber: {
     color: '#EB1F1F',
   },
-  selectorContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    padding: 5,
-    justifyContent: 'space-evenly',
+  displayNone: {
+    display: 'none',
   },
-  selectorOption: {
-    padding: 2,
-    color: '#5F6466',
-    fontSize: responsiveFontSize * 0.7,
-    borderRadius: 2.5,
-  },
-  selectedOption: {
-    backgroundColor: '#F7F7F7',
-    fontWeight: 'bold',
-    borderColor: '#5F6466',
+  categoriesContainer: {
+    height: '15%',
+    backgroundColor: '#EFEFEF',
+    overflow: 'hidden',
     borderWidth: 1,
+    borderColor: '#B8BBBC',
   },
+  category: {
+    marginHorizontal: 10,
+    color: '#B8BBBC',
+  },
+  active: {
+    backgroundColor: '#F7F7F7',
+  },
+  activeText: {
+    fontWeight: 'bold',
+    color: '#242427',
+  },
+  categoriesTitle: {
+    flex: 1,
+    paddingTop: 5,
+    fontWeight: 'bold',
+    fontSize: responsiveFontSize * 0.9,
+    color: '#5F6466',
+    textAlign: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#B8BBBC',
+  },
+  row: {
+    flexDirection: 'row',
+  }
 });
 
 export default styles;

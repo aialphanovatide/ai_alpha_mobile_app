@@ -56,11 +56,6 @@ async function getAllCoinsInfo() {
         currentPrice: coin.current_price,
         marketCap: coin.market_cap / 1000000,
         price_change_24H: coin.price_change_percentage_24h_in_currency,
-        price_change_7D: coin.price_change_percentage_7d_in_currency,
-        price_change_30D: coin.price_change_percentage_30d_in_currency,
-        price_change_1Y: coin.price_change_percentage_1y_in_currency
-          ? coin.price_change_percentage_1y_in_currency
-          : 0.0,
       };
       coinsInfo.push(coinInfo);
     }

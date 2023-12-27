@@ -8,7 +8,11 @@ const CurrentMarketCap = ({cryptos}) => {
     <View style={styles.chartContainer}>
       <VictoryChart>
         <VictoryBar
-          style={styles.chart}
+          style={{
+            data: {
+              fill: ({datum}) => datum.color,
+            },
+          }}
           alignment={'middle'}
           domain={{x: [0, 5], y: [0, 260]}}
           domainPadding={{x: 1, y: 20}}
@@ -16,6 +20,7 @@ const CurrentMarketCap = ({cryptos}) => {
             x: crypto.symbol,
             y: crypto.marketCap[0],
             label: ` $${crypto.marketCap[1]} `,
+            color: crypto.color,
           }))}
           labels={({datum}) => datum.label}
           labelComponent={<VictoryTooltip renderInPortal={false} />}

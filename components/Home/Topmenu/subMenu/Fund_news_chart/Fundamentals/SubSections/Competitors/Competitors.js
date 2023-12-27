@@ -13,6 +13,7 @@ import TransactionSpeed from './CompetitorSections/TransactionSpeed/TransactionS
 import Apr from './CompetitorSections/APR/Apr';
 import Revenue from './CompetitorSections/Revenue/Revenue';
 import ActiveDevelopers from './CompetitorSections/ActiveDevelopers/ActiveDevelopers';
+import InflationRate from './CompetitorSections/InflationRate/InflationRate';
 
 const MenuItem = ({item, activeOption, handleOptionChange}) => {
   return (
@@ -70,12 +71,16 @@ const Competitors = () => {
       inflationary: false,
       marketCap: [250.3, 250331978.508],
       tvl: 26.6,
-      color: '#F9638F',
+      color: '#399AEA',
       tps: [11.14],
       fee: 1.3,
       apr: 4.44,
       revenue: 2.48,
       activeDevs: 162.87,
+      inflationRate: [
+        {year: 2022, value: 4.5},
+        {year: 2023, value: -0.16},
+      ],
     },
     {
       crypto: 'Solana',
@@ -86,12 +91,16 @@ const Competitors = () => {
       inflationary: null,
       marketCap: [25.7, 25696025.115],
       tvl: 0.67,
-      color: '#3ADF00',
+      color: '#20CBDD',
       tps: [65000],
       fee: 0.01,
       apr: 8.69,
       revenue: 0.019,
       activeDevs: 82.57,
+      inflationRate: [
+        {year: 2022, value: 8},
+        {year: 2023, value: 7},
+      ],
     },
     {
       crypto: 'Cardano',
@@ -102,12 +111,16 @@ const Competitors = () => {
       inflationary: true,
       marketCap: [13.4, 13412098.765],
       tvl: 0.25,
-      color: '#F9B208',
+      color: '#895EF6',
       tps: [1000],
       fee: 0.07,
       apr: 6.94,
       revenue: 0.16,
       activeDevs: 166.8,
+      inflationRate: [
+        {year: 2022, value: 4.72},
+        {year: 2023, value: 2.58},
+      ],
     },
     {
       crypto: 'Avalanche',
@@ -118,12 +131,13 @@ const Competitors = () => {
       inflationary: false,
       marketCap: [7.9, 7974837.865],
       tvl: 3,
-      color: '#F8E405',
+      color: '#C539B4',
       tps: [4500, 6500],
       fee: 0.96,
       apr: 3.14,
       revenue: 0.033,
       activeDevs: 47.17,
+      inflationRate: null,
     },
   ];
 
@@ -165,7 +179,7 @@ const Competitors = () => {
     },
     {
       name: 'Inflation Rate',
-      component: <></>,
+      component: <InflationRate cryptos={cryptosData}/>,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/inflationrate.png'),
     },
     {

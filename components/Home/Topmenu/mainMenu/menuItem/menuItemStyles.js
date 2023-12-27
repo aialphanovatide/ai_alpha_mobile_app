@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
   },
+  imageIcon: {
+    flex: 1,
+  }
 });
 
 
