@@ -1,8 +1,3 @@
-/**
- * @file Paywall Screen.
- * @author Vadim Savin
- */
-
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Alert } from 'react-native';
 import { PackageItem } from '../../components';

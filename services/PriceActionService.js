@@ -1,4 +1,5 @@
-import {COINGECKO_API_KEY} from '@env';
+//import {COINGECKO_API_KEY} from '@env';
+import {COINGECKO_API_KEY} from "../src/constants"
 // Funcion para obtener información de todos los coins
 /*
 const coins_to_fetch = [

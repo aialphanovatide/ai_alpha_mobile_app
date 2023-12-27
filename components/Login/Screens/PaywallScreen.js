@@ -3,7 +3,7 @@ import { View, TextInput, Button, Image, StyleSheet, FlatList, ScrollView, Text,
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles.js';
 import Purchases from 'react-native-purchases';
-import SubscriptionSelector from '../../Subscriptions/SubscriptionSelector.js';
+import SubscriptionSelector from '../Subscriptions/SubscriptionSelector.js';
 
 const PaywallScreen = () => {
     const [packages, setPackages] = useState([]);

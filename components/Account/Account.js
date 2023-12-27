@@ -4,7 +4,7 @@ import { ENTITLEMENT_ID } from '../../src/constants';
 import { LoginForm, LogoutButton, RestorePurchasesButton } from '../../src/components';
 import styles from './styles.js';
 import Purchases from 'react-native-purchases';
-import CustomButton from '../Login/CustomButton';
+import CustomButton from '../Login/CustomButton/CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import auth0 from '../Login/auth0';
 import { useUser } from '../../context/UserContext';
@@ -62,8 +62,8 @@ import { useUser } from '../../context/UserContext';
    return (
      <ScrollView>
      <View style={styles.page}>
-       <Text style={styles.headline}>Current User Identifier</Text>
-       <Text style={styles.userIdentifier}>{userId}</Text>
+       {/*<Text style={styles.headline}>Current User Identifier</Text>
+       <Text style={styles.userIdentifier}>{userId}</Text>*/}
        <Text style={styles.headline}>User Email</Text>
         <Text style={styles.userIdentifier}>{userEmail || 'Email not available'}</Text>
        <Text style={styles.headline}>Subscription Name</Text>
@@ -72,6 +72,7 @@ import { useUser } from '../../context/UserContext';
        <Text style={{ color: subscriptionActive ? 'green' : 'red' ,marginBottom:100}}>
          {subscriptionActive ? 'Active' : 'Not Active'}
        </Text>
+       <CustomButton text="Delete Account" onPress={() => navigation.navigate('DeleteAccountScreen')} />
 
  
        {/* You should always give users the option to restore purchases to connect their purchase to their current app user ID */}

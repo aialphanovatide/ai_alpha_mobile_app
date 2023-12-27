@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import CustomButton from '../CustomButton';
+import CustomButton from '../CustomButton/CustomButton';
 import {
   GoogleSignin,
   statusCodes,
@@ -11,14 +11,16 @@ import {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_IOS_ID} from '@env';
 
 const SocialSignUpButton = () => {
   const [user, setUser] = useState(null);
+  /*
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: GOOGLE_CLIENT_ID,
+      //webClientId: GOOGLE_CLIENT_ID,
       iosClientId: GOOGLE_CLIENT_IOS_ID,
     });
-  }, []);
+  }, []);*/
   const navigation = useNavigation();
   const signUpWithGoogle = async () => {
+    /*
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
@@ -38,6 +40,7 @@ const SocialSignUpButton = () => {
     } catch (error) {
       console.error('Authentication error:', error);
     }
+    */
   };
 
   const isSignedIn = async () => {
