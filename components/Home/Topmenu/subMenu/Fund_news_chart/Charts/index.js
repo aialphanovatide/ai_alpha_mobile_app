@@ -10,7 +10,9 @@ import AlertMenu from './alerts/AlertMenu';
 import AlertListComponent from './alerts/AlertListComponent';
 
 const CandlestickChart = ({route}) => {
-  const {symbol, interval, coinBot} = route.params;
+  const {interval, symbol, coinBot} =
+    route.params.screen === 'Charts' ? route.params.params : route.params;
+
   const [selectedInterval, setSelectedInterval] = useState(interval);
   const [lastPrice, setLastPrice] = useState(undefined);
   const [resistanceLevels, setResistanceLevels] = useState([

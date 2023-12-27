@@ -55,6 +55,7 @@ const NewsScreen = () => {
 
 const SubMenuScreen = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
+
   return (
     <SubMenuStack.Navigator
       initialRouteName="Charts"
@@ -97,6 +98,12 @@ const SubMenuScreen = () => {
 };
 
 const TopmenuScreen = () => {
+  const {activeSubCoin, activeCoin} = useContext(TopMenuContext);
+  const [forceUpdate, setForceUpdate] = useState(false);
+
+  useEffect(() => {
+    setForceUpdate(prevState => !prevState);
+  }, [activeSubCoin, activeCoin]);
   return (
     <TopmenuStack.Navigator
       initialRouteName={'SubMenuScreen'}
@@ -104,7 +111,11 @@ const TopmenuScreen = () => {
       screenOptions={{
         header: () => <SubMenu />,
       }}>
-      <TopmenuStack.Screen name="SubMenuScreen" component={SubMenuScreen} />
+      <TopmenuStack.Screen
+        name="SubMenuScreen"
+        component={SubMenuScreen}
+        key={forceUpdate}
+      />
     </TopmenuStack.Navigator>
   );
 };

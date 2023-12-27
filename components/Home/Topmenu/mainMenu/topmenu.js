@@ -14,10 +14,18 @@ const TopMenu = () => {
 
   const handleButtonPress = category => {
     updateActiveCoin(category);
-    if (category.coin_bots && category.coin_bots.length >= 1) {
-      updateActiveSubCoin(category.coin_bots[0].bot_name);
-    }
-    navigation.navigate('TopMenuScreen');
+    updateActiveSubCoin(category.coin_bots[0].bot_name);
+    navigation.navigate('TopMenuScreen', {
+      screen: 'SubMenuScreen',
+      params: {
+        screen: 'Charts',
+        params: {
+          interval: '1h',
+          symbol: `${category.coin_bots[0].bot_name}USDT`,
+          coinBot: category.coin_bots[0].bot_name,
+        },
+      },
+    });
   };
 
   return (
