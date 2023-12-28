@@ -52,16 +52,31 @@ const styles = StyleSheet.create({
     marginHorizontal: 2.5,
   },
   topDataRow: {
+    position: 'relative',
+    paddingVertical: 5,
+    marginVertical: 10,
+    marginHorizontal: 20,
     flexDirection: 'row',
-    marginBottom: 2.5,
   },
   date: {
+    position: 'absolute',
+    right: 5,
     flexDirection: 'row',
-    marginLeft: width * 0.05,
   },
   partnerShip: {
+    position: 'absolute',
+    left: 5,
     flexDirection: 'row',
-    marginHorizontal: width * 0.05,
+  },
+  timeIconContainer: {
+    width: 25,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  timeIcon: {
+    flex: 1,
+    tintColor: '#D9D9D9',
   },
   itemTitle: {
     paddingVertical: 10,
@@ -89,6 +104,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     overflow: 'hidden',
   },
+  cryptoIconContainer: {
+    width: 25,
+    height: 25,
+    margin: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cryptoIcon: {
+    flex: 1,
+  },
   activeCryptoItem: {
     backgroundColor: '#F7F7F7',
   },
@@ -111,8 +136,8 @@ const styles = StyleSheet.create({
     padding: 10,
     color: '#5F6466',
     fontSize: responsiveFontSize * 0.9,
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 });
 
 export default styles;

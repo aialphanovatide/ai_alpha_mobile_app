@@ -19,11 +19,11 @@ const PackageItem = ({ purchasePackage, setIsPurchasing }) => {
 
       if (typeof purchaseMade.customerInfo.entitlements.active[ENTITLEMENT_ID] !== "undefined"){
         console.log("User is pro");
-        navigation.goBack();
+        navigation.navigate('SignIn');
       }
       console.log("Customer info:", customerInfo);
     } catch (error) {
-      console.error("Error purchasing package:", error);
+      console.log("Error purchasing package:", error);
       Alert.alert("Purchase Error", "There was an error completing your purchase.");
     }
   };

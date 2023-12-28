@@ -2,36 +2,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import Speedometer from './Speedometer/Speedometer';
 import styles from './TransactionSpeedStyles';
-
-const CryptosSelector = ({cryptos, activeCrypto, handleActiveCryptoChange}) => {
-  return (
-    <View style={styles.selectorContainer}>
-      {cryptos.map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          onPress={() => handleActiveCryptoChange(item)}>
-          <View
-            style={[
-              styles.selectorItem,
-              {borderColor: item.color},
-              activeCrypto.crypto === item.crypto && styles.activeItem,
-              activeCrypto.crypto === item.crypto && {
-                backgroundColor: item.color,
-              },
-            ]}>
-            <Text
-              style={[
-                styles.itemText,
-                activeCrypto.crypto === item.crypto && styles.activeText,
-              ]}>
-              {item.crypto}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      ))}
-    </View>
-  );
-};
+import CryptosSelector from '../../CryptoSelector/CryptosSelector';
 
 const TransactionSpeed = ({cryptos}) => {
   const [activeCrypto, setActiveCrypto] = useState(cryptos[0]);

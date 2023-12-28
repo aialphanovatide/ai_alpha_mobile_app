@@ -1,8 +1,3 @@
-/**
- * @file Paywall Screen.
- * @author Vadim Savin
- */
-
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Alert } from 'react-native';
 import { PackageItem } from '../../components';
@@ -21,13 +16,12 @@ const PaywallScreen = () => {
 
   // TODO Fetch all packages from RevenueCat
 
-  const header = () => <Text style={styles.text}>Magic Weather Premium</Text>;
+  const header = () => <Text style={styles.text}></Text>;
 
   const footer = () => {
     return (
       <Text style={styles.text}>
-        Don't forget to add your subscription terms and conditions. Read more about this here:
-        https://www.revenuecat.com/blog/schedule-2-section-3-8-b
+        
       </Text>
     );
   };

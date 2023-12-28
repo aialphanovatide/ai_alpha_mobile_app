@@ -1,16 +1,21 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
-const NewsItem = ({ item, onPress }) => {
+const NewsItem = ({item, onPress}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={() => onPress(item)}>
       <Image
-        source={{ uri: 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg' }}
+        source={{
+          uri: 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+        }}
         style={styles.image}
       />
       <View style={styles.textContainer}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.summary}>{`${item.summary.substring(0, 100)}...`}</Text>
+        <Text style={styles.summary}>{`${item.summary.substring(
+          0,
+          100,
+        )}...`}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -18,12 +23,13 @@ const NewsItem = ({ item, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
     marginVertical: 10,
     backgroundColor: 'white',
     borderRadius: 5,
-    width: '100%',
-    elevation: 2, 
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
     width: 50,

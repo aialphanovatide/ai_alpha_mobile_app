@@ -1,29 +1,35 @@
 import {React, useContext, useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
 import styles from './AnalysisStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Calendar from './Calendar/Calendar';
 import FearAndGreed from './FearAndGreed/FearAndGreed';
 import ChartSection from './ChartSection/ChartSection';
 import BitcoinFundingRates from './BTCFundingRates/BitcoinFundingRates';
-const AnalysisItem = ({id, sectionName, component, handleItemTouch}) => {
+const AnalysisItem = ({id, sectionName, component, handleItemTouch, icon}) => {
   return (
     <TouchableOpacity onPress={() => handleItemTouch(id)}>
       <View
         style={[
           id === 'calendar' ? styles.emphasizedItem : styles.itemContainer,
         ]}>
-        <Icon name={'circle'} size={20} />
+        <View style={styles.analysisIconContainer}>
+          <Image
+            style={styles.analysisIcon}
+            source={icon}
+            resizeMode={'contain'}
+          />
+        </View>
         <Text style={styles.itemText}>{sectionName}</Text>
         <View style={styles.rateValueContainer}>
           {/* <Text>0.00%</Text> */}
-          <Icon name={'chevron-right'} size={14} />
+          <View style={styles.rightArrowContainer}>
+            <Image
+              style={styles.rightArrow}
+              source={require('../../assets/images/analysis/right-arrow.png')}
+              resizeMode={'contain'}
+            />
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -36,6 +42,7 @@ const Analysis = () => {
       id: 'calendar',
       sectionName: 'Calendar',
       component: <Calendar handleReturn={handleReturn} />,
+      icon: require('../../assets/images/analysis/calendar.png'),
     },
     {
       id: 'btcFunding',
@@ -46,10 +53,26 @@ const Analysis = () => {
           handlePercentageUpdate={handlePercentageUpdate}
         />
       ),
+      icon: require('../../assets/images/analysis/btcfr.png'),
     },
-    {id: 'btcDominance', sectionName: 'BTC Dominance Chart', component: <></>},
-    {id: 'ethBtc', sectionName: 'ETH/BTC', component: <></>},
-    {id: 'total3', sectionName: 'TOTAL 3', component: <></>},
+    {
+      id: 'btcDominance',
+      sectionName: 'BTC Dominance Chart',
+      component: <></>,
+      icon: require('../../assets/images/analysis/btc-dom.png'),
+    },
+    {
+      id: 'ethBtc',
+      sectionName: 'ETH/BTC',
+      component: <></>,
+      icon: require('../../assets/images/analysis/ethbtc.png'),
+    },
+    {
+      id: 'total3',
+      sectionName: 'TOTAL 3',
+      component: <></>,
+      icon: require('../../assets/images/analysis/total3.png'),
+    },
     {
       id: 'dxyChart',
       sectionName: 'DXY Chart',
@@ -61,6 +84,7 @@ const Analysis = () => {
           handleReturn={handleReturn}
         />
       ),
+      icon: require('../../assets/images/analysis/dxy.png'),
     },
     {
       id: 'goldChart',
@@ -73,6 +97,7 @@ const Analysis = () => {
           handleReturn={handleReturn}
         />
       ),
+      icon: require('../../assets/images/analysis/gold.png'),
     },
     {
       id: 'spChart',
@@ -85,11 +110,13 @@ const Analysis = () => {
           handleReturn={handleReturn}
         />
       ),
+      icon: require('../../assets/images/analysis/sp500.png'),
     },
     {
       id: 'fearAndGreed',
       sectionName: 'Fear And Greed',
       component: <FearAndGreed handleReturn={handleReturn} />,
+      icon: require('../../assets/images/analysis/fandg.png'),
     },
   ];
   const [currentSection, setCurrentSection] = useState(null);
@@ -140,6 +167,7 @@ const Analysis = () => {
               id={section.id}
               sectionName={section.sectionName}
               component={section.component}
+              icon={section.icon}
             />
           ))}
         {currentSection && currentSection.component}

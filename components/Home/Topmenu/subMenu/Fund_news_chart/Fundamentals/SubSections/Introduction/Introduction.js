@@ -8,7 +8,7 @@ const Introduction = ({description, dataItems}) => {
       <View style={styles.dataContainer}>
         {dataItems.map((item, index) => (
           <Text key={index} style={styles.introText}>
-            <Text>🟢</Text>
+            <Text style={styles.textSymbol}>★</Text>
             {item.text}
           </Text>
         ))}

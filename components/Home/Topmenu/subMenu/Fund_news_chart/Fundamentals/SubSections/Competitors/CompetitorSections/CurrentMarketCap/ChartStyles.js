@@ -5,9 +5,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F7F7F7',
   },
-  chart: {
-    data: {fill: '#FB6822'},
-  },
 });
 
 export default styles;

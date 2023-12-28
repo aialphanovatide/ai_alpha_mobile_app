@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   tokenImageContainer: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F7F7',
   },
   tokenButtonText: {
-    padding: 20,
+    padding: 10,
     textAlign: 'center',
     color: '#5F6466',
   },

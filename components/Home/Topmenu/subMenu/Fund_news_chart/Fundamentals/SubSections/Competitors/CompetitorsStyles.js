@@ -23,6 +23,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  iconContainer: {
+    width: 15,
+    height: 15,
+    margin: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  itemIcon: {
+    flex: 1,
+    tintColor: '#B8BBBC',
+  },
   menuItemName: {
     padding: 5,
     color: '#B8BBBC',

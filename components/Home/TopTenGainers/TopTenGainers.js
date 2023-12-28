@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import { View, Text, Image} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import styles from './TopTenGainersStyle.js';
 import topTenGainersService from '../../../services/TopTenGainersService.js';
@@ -39,21 +39,21 @@ const Item = ({position, coin}) => {
 const TopTenGainers = () => {
   const [topTenCoins, setTopTenCoins] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  /*
   useEffect(() => {
-    // const fetchTopTenCoins = async () => {
-    //   try {
-    //     const data = await topTenGainersService.getTop10Coins();
-    //     setTopTenCoins(data);
-    //   } catch (error) {
-    //     console.error('Error fetching top 10 coins:', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // fetchTopTenCoins();
+    const fetchTopTenCoins = async () => {
+      try {
+        const data = await topTenGainersService.getTop10Coins();
+        setTopTenCoins(data);
+      } catch (error) {
+        console.error('Error fetching top 10 coins:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTopTenCoins();
   }, []);
-
+  */
   return (
     <View style={styles.topTenGainersContainer}>
       <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>
@@ -61,9 +61,7 @@ const TopTenGainers = () => {
         <Loader />
       ) : (
         <ScrollView>
-          <View
-            style={styles.table}
-            showsVerticalScrollIndicator={false}>
+          <View style={styles.table} showsVerticalScrollIndicator={false}>
             {topTenCoins.length > 0 &&
               topTenCoins.map((coin, index) => (
                 <Item key={index} coin={coin} position={index + 1} />

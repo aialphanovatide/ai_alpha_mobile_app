@@ -189,8 +189,7 @@ const TickerTape = ({coins}) => {
       <AutoHeightWebView
         style={styles.webview}
         source={{html: htmlContent, baseUrl: ''}}
-        onShouldStartLoadWithRequest={event => false}
-        pointerEvents={'none'}
+
       />
     </View>
   );
