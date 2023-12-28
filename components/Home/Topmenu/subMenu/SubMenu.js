@@ -3,11 +3,25 @@ import {View, Text, StyleSheet} from 'react-native';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import CoinMenu from './coinMenu/coinMenu';
 import {CategoriesContext} from '../../../../context/categoriesContext';
+import {useNavigation} from '@react-navigation/native';
 
 const SubMenu = ({coinBotId = null}) => {
   const {activeCoin, activeSubCoin, updateActiveSubCoin} =
     useContext(TopMenuContext);
   const {categories} = useContext(CategoriesContext);
+  const navigation = useNavigation();
+
+  const handleCoinPress = coin => {
+    updateActiveSubCoin(coin);
+    navigation.navigate('SubMenuScreen', {
+      screen: 'Charts',
+      params: {
+        interval: '1h',
+        symbol: `${coin}USDT`,
+        coinBot: coin,
+      },
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -16,7 +30,7 @@ const SubMenu = ({coinBotId = null}) => {
         activeCoin.coin_bots.length >= 1 && (
           <CoinMenu
             activeSubCoin={activeSubCoin}
-            updateActiveSubCoin={updateActiveSubCoin}
+            handleCoinPress={handleCoinPress}
             subCoins={activeCoin.coin_bots}
           />
         )}

@@ -54,7 +54,6 @@ const TopStories = () => {
       try {
         const data = await getService(`/api/get/allTopStories`);
         setTopStories(data);
-        console.log(data);
       } catch (error) {
         console.error('Error fetching top stories:', error.message);
       }

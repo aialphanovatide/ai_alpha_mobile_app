@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {postService} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
+import {TopMenuContext} from '../../../../../../context/topMenuContext';
 const {width, height} = Dimensions.get('window');
 
 const responsiveFontSize = width * 0.04;
@@ -19,6 +20,9 @@ const NewsComponent = ({route}) => {
   const {botname} = route.params;
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
+  const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
+
+  useEffect(() => {}, [activeCoin, activeSubCoin]);
 
   const requestBody = {
     botName: botname,

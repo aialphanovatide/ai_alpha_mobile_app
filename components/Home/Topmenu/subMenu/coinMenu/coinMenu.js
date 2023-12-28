@@ -2,7 +2,7 @@ import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import styles from './coinMenuStyles';
 
-const CoinMenu = ({subCoins, activeSubCoin, updateActiveSubCoin}) => {
+const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
   return subCoins?.length > 1 ? (
     <View style={styles.menu}>
       <View style={styles.subMenu}>
@@ -15,7 +15,7 @@ const CoinMenu = ({subCoins, activeSubCoin, updateActiveSubCoin}) => {
             ]}
             onPress={() => {
               console.log('activeSubcoin: ', coin.bot_name);
-              updateActiveSubCoin(coin.bot_name);
+              handleCoinPress(coin.bot_name);
             }}>
             <View style={styles.buttonContainer}>
               <Image
