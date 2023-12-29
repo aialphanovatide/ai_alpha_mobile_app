@@ -49,11 +49,30 @@ const InflationRate = ({cryptos}) => {
   ];
 
   const inflationValues = [
-    {values: [0, 2], color: '#52DD8D'},
-    {values: [2, 4], color: '#20CBDD'},
-    {values: [4, 6], color: '#FFB822'},
-    {values: [6, 8], color: '#F7734B'},
-    {values: [8, 10], color: '#EA0052'},
+    {
+      values: [0],
+      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-0.png'),
+    },
+    {
+      values: [0, 2],
+      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-2.png'),
+    },
+    {
+      values: [2, 4],
+      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-4.png'),
+    },
+    {
+      values: [4, 6],
+      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-6.png'),
+    },
+    {
+      values: [6, 8],
+      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-8.png'),
+    },
+    {
+      values: [8, 10],
+      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-10.png'),
+    },
   ];
 
   const [activeYear, setActiveYear] = useState(null);
@@ -75,6 +94,17 @@ const InflationRate = ({cryptos}) => {
       return rate ? rate.value : 0;
     } else {
       return 0;
+    }
+  };
+
+  const findImageByInflationRate = rate => {
+    if (rate <= 0) {
+      return inflationValues[0].image;
+    } else {
+      let selectedImage = inflationValues.find(
+        obj => rate > obj.values[0] && rate <= obj.values[1],
+      );
+      return selectedImage.image;
     }
   };
 
@@ -101,7 +131,13 @@ const InflationRate = ({cryptos}) => {
           <Image
             style={styles.inflationImage}
             resizeMode={'contain'}
-            source={require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-empty.png')}
+            source={
+              activeYear && activeCrypto
+                ? findImageByInflationRate(
+                    findInflationRateByYear(activeYear, activeCrypto),
+                  )
+                : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-empty.png')
+            }
           />
         </View>
       </View>

@@ -12,18 +12,18 @@ import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
-const {width, height} = Dimensions.get('window');
-
-const responsiveFontSize = width * 0.04;
+import styles from './NewsStyles.js';
 
 const NewsComponent = ({route}) => {
-  const {botname} = route.params;
+  // let {botname} = route.params
+  //   ? route.params
+  //   : activeCoin.coin_bots[0].bot_name;
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
   const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
-
-  useEffect(() => {}, [activeCoin, activeSubCoin]);
-
+  const [botname, setBotname] = useState(
+    route.params ? route.params.botname : activeSubCoin.bot_name,
+  );
   const requestBody = {
     botName: botname,
   };
@@ -33,6 +33,10 @@ const NewsComponent = ({route}) => {
       item: item,
     });
   };
+
+  useEffect(() => {
+    setBotname(activeSubCoin || activeCoin.coin_bots[0].bot_name);
+  }, [activeCoin, activeSubCoin]);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -59,42 +63,15 @@ const NewsComponent = ({route}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>News</Text>
-      {news ? (
-        <FlatList
-          data={news}
-          keyExtractor={item => item.article_id}
-          renderItem={({item}) => <NewsItem item={item} onPress={onPress} />}
-        />
-      ) : (
-        <Loader />
-      )}
-      {/* {news ? (
-        news.map(item => (
-          <NewsItem
-            key={item.article_id}
-            item={item}
-            onPress={() => onPress(item)}
-          />
-        ))
-      ) : (
-        <Loader />
-      )} */}
+
+      <FlatList
+        data={news}
+        ListEmptyComponent={<Loader />}
+        keyExtractor={item => item.article_id}
+        renderItem={({item}) => <NewsItem item={item} onPress={onPress} />}
+      />
     </SafeAreaView>
   );
 };
 
 export default NewsComponent;
-
-const styles = StyleSheet.create({
-  container: {
-    width,
-    marginVertical: 10,
-    paddingHorizontal: 20,
-  },
-  title: {
-    marginVertical: 20,
-    fontWeight: 'bold',
-    color: '#282828',
-    fontSize: responsiveFontSize * 1.2,
-  },
-});

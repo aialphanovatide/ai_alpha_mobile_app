@@ -8,11 +8,12 @@ const styles = StyleSheet.create({
     width: '90%',
     display: 'flex',
     flexDirection: 'row',
+    backgroundColor: '#C4CADA'
   },
   menuItem: {
     width: '50%',
     height: 20,
-    backgroundColor: '#B8BBBC',
+    backgroundColor: 'transparent',
     marginHorizontal: 2,
     borderRadius: 2.5,
     overflow: 'hidden',
@@ -24,10 +25,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   activeItem: {
-    backgroundColor: '#898C8D',
+    backgroundColor: '#F6F7FB',
+    borderColor: '#C4CADA',
+    borderWidth: 2,
+    borderRadius: 5,
   },
   activeText: {
     fontWeight: 'bold',
+    color: '#959BB2'
   },
 });
 

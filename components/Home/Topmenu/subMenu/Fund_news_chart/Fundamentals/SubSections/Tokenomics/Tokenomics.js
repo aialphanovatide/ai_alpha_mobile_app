@@ -50,14 +50,29 @@ const TokenItem = ({item}) => {
 const HorizontalProgressBar = ({maxValue, value}) => {
   const percentage = maxValue === Infinity ? 65 : (value / maxValue) * 100;
 
+  function formatNumber(value) {
+    const suffixes = ['', 'thousand', 'million', 'billion', 'trillion'];
+
+    const formatRecursive = (num, suffixIndex) => {
+      if (num < 1000 || suffixIndex === suffixes.length - 1) {
+        return (
+          num.toFixed(2).replace(/\.00$/, '') + ' ' + suffixes[suffixIndex]
+        );
+      } else {
+        return formatRecursive(num / 1000, suffixIndex + 1);
+      }
+    };
+
+    return formatRecursive(value, 0);
+  }
   return (
     <View style={styles.progressBarContainer}>
       <View style={[styles.progressBar, {width: `${percentage}%`}]} />
       <Text style={styles.progressBarValue}>{`${
         maxValue === Infinity
-          ? value
-          : value + ' (' + Math.round(percentage) + ')%'
-      } / ${maxValue === Infinity ? '∞' : maxValue}`}</Text>
+          ? formatNumber(value)
+          : formatNumber(value) + ' (' + Math.round(percentage) + ')%'
+      } / ${maxValue === Infinity ? '∞' : formatNumber(maxValue)}`}</Text>
     </View>
   );
 };

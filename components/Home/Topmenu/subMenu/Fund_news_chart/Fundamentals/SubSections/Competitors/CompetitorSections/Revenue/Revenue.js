@@ -20,7 +20,6 @@ const RevenueGraphReferences = ({cryptos}) => {
 const Revenue = ({cryptos}) => {
   return (
     <View>
-      <RevenueGraphReferences cryptos={cryptos} />
       <View style={styles.chartContainer}>
         <VictoryChart>
           <VictoryBar
@@ -48,6 +47,7 @@ const Revenue = ({cryptos}) => {
           />
         </VictoryChart>
       </View>
+      <RevenueGraphReferences cryptos={cryptos} />
     </View>
   );
 };

@@ -5,7 +5,7 @@ const responsiveFontSize = width * 0.04;
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: '#D9D9D9',
+    backgroundColor: '#E7EAF1',
   },
   analysisContainer: {
     flex: 1,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 15,
     padding: 15,
-    backgroundColor: '#F7F7F7',
+    backgroundColor: '#F6F7FB',
   },
   analysisIconContainer: {
     width: 30,
@@ -33,14 +33,14 @@ const styles = StyleSheet.create({
   },  
   analysisIcon: {
     flex: 1,
-    tintColor: '#5F6466'
+    tintColor: '#242427'
   },
   itemText: {
     width: '60%',
     paddingHorizontal: 10,
     fontWeight: 'bold',
     fontSize: responsiveFontSize,
-    color: '#5F6466',
+    color: '#242427',
   },
   rateValueContainer: {
     position: 'absolute',
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     fontSize: responsiveFontSize * 1.5,
     fontWeight: 'bold',
+    color: '#424455'
   },
   emphasizedItem: {
     width: '90%',

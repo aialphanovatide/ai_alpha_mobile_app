@@ -1,21 +1,21 @@
 import React from 'react';
 import {Image, Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import styles from './CryptoCalendarStyles';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 const CryptoItem = ({option, active, handleOptionTouch}) => {
   return (
     <TouchableOpacity onPress={() => handleOptionTouch(option)}>
       <View style={[styles.cryptoItem, active && styles.activeCryptoItem]}>
         <View style={styles.cryptoIconContainer}>
-          {/* TODO - Change to display the icon of every option */}
           <Image
             style={styles.cryptoIcon}
-            source={require('../../../../assets/bitcoin.png')}
+            source={option.iconImage}
             resizeMode={'contain'}
           />
         </View>
-        <Text style={styles.cryptoName}>{option.icon}</Text>
+        <Text style={[styles.cryptoName, active && styles.activeCryptoName]}>
+          {option.icon}
+        </Text>
       </View>
     </TouchableOpacity>
   );

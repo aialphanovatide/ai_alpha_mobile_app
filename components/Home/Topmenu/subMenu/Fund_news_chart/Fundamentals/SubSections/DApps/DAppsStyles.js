@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     tintColor: '#EFEFEF',
   },
   mainImageContainer: {
-    height: 250,
+    height: 300,
     marginVertical: 20,
     justifyContent: 'center',
     alignItems: 'center',

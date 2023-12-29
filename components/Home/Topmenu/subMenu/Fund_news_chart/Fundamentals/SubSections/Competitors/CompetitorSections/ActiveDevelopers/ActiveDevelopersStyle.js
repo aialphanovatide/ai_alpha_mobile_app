@@ -5,11 +5,11 @@ const responsiveFontSize = width * 0.04;
 
 const styles = StyleSheet.create({
   logoContainer: {
-    width: 35,
-    height: 35,
+    width: 30,
+    height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 25,
+    borderRadius: 15,
     overflow: 'hidden',
   },
   itemContainer: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   itemName: {
     color: '#5F6466',
     marginHorizontal: 10,
-    fontSize: responsiveFontSize * 0.85,
+    fontSize: responsiveFontSize * 0.875,
   },
   image: {
     flex: 1,

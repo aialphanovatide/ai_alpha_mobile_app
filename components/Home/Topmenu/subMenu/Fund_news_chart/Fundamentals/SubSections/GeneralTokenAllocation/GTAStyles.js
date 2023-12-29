@@ -36,6 +36,9 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize * 1.3,
     fontWeight: 'bold',
   },
+  displayNone: {
+    display: 'none'
+  }
 });
 
 export default styles;

@@ -36,7 +36,7 @@ const TransactionSpeed = ({cryptos}) => {
       <Speedometer
         outerColor={'#DDE1E2'}
         internalColor={activeCrypto.color}
-        innerColor={'#EFEBEF'}
+        innerColor={'#F6F7FB'}
         totalValue={getMaxTpsValue(cryptos)}
         value={activeCrypto.tps[activeCrypto.tps.length - 1]}
         indicatorColor={'#4D4D4D'}

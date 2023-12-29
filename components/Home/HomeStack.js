@@ -6,34 +6,17 @@ import TopMenu from './Topmenu/mainMenu/topmenu';
 import SubMenu from './Topmenu/subMenu/SubMenu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import CandlestickChart from './Topmenu/subMenu/Fund_news_chart/Charts';
-import NewsComponent from './Topmenu/subMenu/Fund_news_chart/News';
+import NewsComponent from './Topmenu/subMenu/Fund_news_chart/News/NewsComponent.js';
 import {TopMenuContext} from '../../context/topMenuContext';
-import {ScrollView, Text, View} from 'react-native';
+import {Dimensions} from 'react-native';
+import NewsArticle from './Topmenu/subMenu/Fund_news_chart/News/NewsArticle';
 
+const {width} = Dimensions.get('window');
+const responsiveFontSize = width * 0.04;
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
 const SubMenuStack = createMaterialTopTabNavigator();
 const NewsStack = createNativeStackNavigator();
-
-const ChartScreen = () => {
-  return (
-    <View>
-      <Text>Charts</Text>
-    </View>
-  );
-};
-
-// Change this with the respective newsArticle component, remember to receive the props like its done below, obtaining it from the route prop.
-const NewsArticle = ({route}) => {
-  const item = route.params.item;
-  return (
-    <ScrollView>
-      <Text>Title: {item.title}</Text>
-      <Text>News id:{item.article_id}</Text>
-      <Text>Summary: {item.summary}</Text>
-    </ScrollView>
-  );
-};
 
 const NewsScreen = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
@@ -64,21 +47,22 @@ const SubMenuScreen = () => {
         swipeEnabled: false,
         tabBarShowLabel: true,
         tabBarShowIcon: true,
-        tabBarActiveTintColor: '#E6007A',
         tabBarLabelStyle: {
-          fontSize: 13,
+          fontSize: responsiveFontSize * 0.8,
           fontWeight: 'bold',
+          color: '#F7F7F7',
         },
         tabBarStyle: {
-          backgroundColor: '#F7F7F7',
+          backgroundColor: '#C4CADA',
           borderRadius: 5,
         },
         tabBarIndicatorStyle: {
-          backgroundColor: '#E6007A',
-          height: 4,
+          backgroundColor: '#F1F1F140',
+          height: '100%',
         },
-        tabBarGap: 10,
-        tabBarPressColor: '#E6007A10',
+        tabBarGap: 5,
+        tabBarPressColor: 'transparent',
+        tabBarActiveTintColor: '#959BB2'
       }}>
       <SubMenuStack.Screen name="Fundamentals" component={Fundamentals} />
       <SubMenuStack.Screen

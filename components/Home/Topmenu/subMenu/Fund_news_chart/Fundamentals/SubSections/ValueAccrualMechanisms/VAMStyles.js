@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
   container: {
     width: width - 30,
     alignSelf: 'center',
-    backgroundColor: '#EFEFEF',
   },
 
   menuItemContainer: {
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   dataTitle: {
-    color: '#5F6466',
+    color: '#424455',
     fontSize: responsiveFontSize * 0.95,
     fontWeight: 'bold',
     padding: 5,
@@ -54,7 +53,6 @@ const styles = StyleSheet.create({
   dataRow: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#F7F7F7',
   },
   imageContainer: {
     width: 80,

@@ -19,12 +19,15 @@ const GeneralTokenData = ({data, currentToken, handleTokenChange}) => {
           </Text>
         </TouchableOpacity>
       ))}
-      {currentToken && (
-        <Text
-          style={[{color: currentToken.color}, styles.currentTokenPercentage]}>
-          {` ${currentToken.percentage}% `}
-        </Text>
-      )}
+      <Text
+        style={
+          currentToken && [
+            {color: currentToken.color},
+            styles.currentTokenPercentage,
+          ]
+        }>
+        {currentToken ? ` ${currentToken.percentage}% ` : ''}
+      </Text>
     </View>
   );
 };
@@ -45,7 +48,7 @@ const GeneralTokenAllocation = () => {
 
   return (
     <View style={styles.container}>
-      <CircleChart data={chartData} dividerSize={10}/>
+      <CircleChart data={chartData} dividerSize={5} />
       <GeneralTokenData
         currentToken={currentToken}
         data={chartData}

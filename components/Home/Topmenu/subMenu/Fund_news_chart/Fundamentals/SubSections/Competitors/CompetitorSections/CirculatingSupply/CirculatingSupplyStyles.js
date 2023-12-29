@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   progressBar: {
-    height: 20,
+    height: 15,
     width: '100%',
     backgroundColor: '#e0e0e0',
     marginTop: 5,
@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
   labelRight: {
     flex: 1,
     textAlign: 'right',
-    fontSize: responsiveFontSize * 0.75,
+    fontSize: responsiveFontSize * 0.825,
     color: '#B8BBBC',
   },
   labelLeft: {
     textAlign: 'left',
-    fontSize: responsiveFontSize * 0.75,
+    fontSize: responsiveFontSize * 0.825,
     color: '#F98404',
   },
   labelBottom: {
@@ -42,18 +42,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoContainer: {
-    width: 50,
-    height: 50,
+    width: 30,
+    height: 30,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',
-    borderRadius: 25,
+    borderRadius: 15,
     overflow: 'hidden',
   },
   itemName: {
     color: '#5F6466',
     marginHorizontal: 10,
-    fontSize: responsiveFontSize * 0.85,
+    fontSize: responsiveFontSize * 0.9,
     fontWeight: 'bold',
   },
   image: {

@@ -17,7 +17,7 @@ const StoryItem = ({
       left={() => <Image source={{uri: image}} style={styles.imageStyle} />}
       titleStyle={styles.titleStyles}
       onPress={() =>
-        handleStoryRedirect({item, coinBotId})
+        handleStoryRedirect(item, coinBotId)
       }
     />
   );

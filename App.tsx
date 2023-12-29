@@ -54,7 +54,7 @@ const App = () => {
       <SafeAreaView
         style={[
           styles.container,
-          {backgroundColor: colorScheme === 'dark' ? '#242427' : 'white'},
+          {backgroundColor: colorScheme === 'dark' ? '#242427' : '#E7EAF1'},
         ]}>
         <StatusBar barStyle="dark-content" />
         <CategoriesContextProvider>

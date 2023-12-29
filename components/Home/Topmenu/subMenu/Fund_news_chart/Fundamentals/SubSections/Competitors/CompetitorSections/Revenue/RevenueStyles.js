@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F7F7',
   },
   selectorContainer: {
-    marginVertical: 20,
+    marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

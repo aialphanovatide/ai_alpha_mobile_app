@@ -1,11 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, Text} from 'react-native';
 import MenuItem from './menuItem/menuItem';
 import styles from './topmenuStyles';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import {useNavigation} from '@react-navigation/core';
 import {CategoriesContext} from '../../../../context/categoriesContext';
-import Loader from '../../../Loader/Loader';
 
 const TopMenu = () => {
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
@@ -42,7 +41,9 @@ const TopMenu = () => {
             />
           ))
         ) : (
-          <Loader />
+          <View style={styles.loadingMessage}>
+            <Text style={styles.text}>Loading...</Text>
+          </View>
         )}
       </ScrollView>
     </View>

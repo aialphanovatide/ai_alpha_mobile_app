@@ -6,12 +6,13 @@ const styles = StyleSheet.create({
   cryptoCalendarTitle: {
     paddingVertical: 2.5,
     paddingHorizontal: 15,
-    color: '#5F6466',
+    color: '#424445',
     fontSize: responsiveFontSize * 0.85,
   },
   container: {
     flex: 1,
     width: width - 20,
+    backgroundColor: '#F6F7FB',
   },
   contentCenter: {
     alignItems: 'center',
@@ -24,10 +25,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginVertical: 5,
     padding: 10,
-    backgroundColor: '#F7F7F7',
+    backgroundColor: '#FFFFFF',
   },
   itemIconContainer: {
-    width: 45,
+    width: 60,
     height: 45,
     marginRight: '5%',
   },
@@ -92,12 +93,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     margin: 10,
-    backgroundColor: '#D9D9D9',
+    paddingVertical: 5,
+    backgroundColor: '#C4CADA',
     borderRadius: 5,
   },
   cryptoItem: {
     width: width * 0.125,
-    margin: 5,
+    marginVertical: 2.5,
+    marginHorizontal: 5,
     padding: 2.5,
     borderRadius: 5,
     alignItems: 'center',
@@ -105,8 +108,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   cryptoIconContainer: {
-    width: 25,
-    height: 25,
+    width: 35,
+    height: 35,
     margin: 5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -117,9 +120,12 @@ const styles = StyleSheet.create({
   activeCryptoItem: {
     backgroundColor: '#F7F7F7',
   },
-  cryptoName: {
-    fontSize: responsiveFontSize * 0.8,
+  activeCryptoName: {
     color: '#5F6466',
+  },
+  cryptoName: {
+    fontSize: responsiveFontSize * 0.7,
+    color: '#F6F7FB',
     textAlign: 'center',
   },
   messageContainer: {

@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tokenName: {
-    color: '#5F6466',
+    color: '#242427',
     marginHorizontal: 10,
-    fontSize: responsiveFontSize * 0.85,
+    fontSize: responsiveFontSize * 0.9,
     fontWeight: 'bold',
   },
   buttonContainer: {
@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
   tokenButtonText: {
     padding: 10,
     textAlign: 'center',
-    color: '#5F6466',
+    color: '#242427',
+    fontSize: responsiveFontSize * 0.825
   },
 });
 

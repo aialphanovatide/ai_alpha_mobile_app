@@ -12,12 +12,11 @@ const Home = () => {
   const {activeCoin} = useContext(TopMenuContext);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <ScrollView
         bounces={false}
         alwaysBounceVertical={false}
-        showsVerticalScrollIndicator={false}
-        style={styles.container}>
+        showsVerticalScrollIndicator={false}>
         <TickerTape />
         <TopStories />
         <Analysis />

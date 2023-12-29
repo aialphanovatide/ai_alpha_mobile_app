@@ -37,20 +37,24 @@ const Apr = ({cryptos}) => {
         activeCrypto={activeOption}
         handleActiveCryptoChange={handleActiveOptionChange}
       />
+      <View
+        style={[
+          styles.activeOptionContainer,
+          activeOption && {borderColor: activeOption.color},
+        ]}>
+        <Text
+          style={[
+            styles.activeOptionValue,
+            activeOption && {color: activeOption.color},
+          ]}>
+          {`${activeOption ? activeOption.apr : 0.0}%`}
+        </Text>
+      </View>
       <View style={styles.graphsContainer}>
         <Graph
           value={activeOption ? activeOption.apr : 0}
           color={activeOption ? activeOption.color : null}
         />
-        <View
-          style={[
-            styles.activeOptionContainer,
-            activeOption && {borderColor: activeOption.color},
-          ]}>
-          <Text style={[styles.activeOptionValue, activeOption && {color: activeOption.color}]}>
-            {`${activeOption ? activeOption.apr : 0.0}%`}
-          </Text>
-        </View>
       </View>
     </View>
   );

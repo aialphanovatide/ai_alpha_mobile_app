@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   title: {
     paddingHorizontal: 10,
     fontWeight: 'bold',
-    color: '#282828',
+    color: '#424455',
     fontSize: responsiveFontSize * 1.5,
   },
   calendarContent: {
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingVertical: 2.5,
     paddingHorizontal: 15,
-    color: '#5F6466',
+    color: '#424455',
     fontSize: responsiveFontSize * 1.2,
     fontWeight: 'bold',
   }

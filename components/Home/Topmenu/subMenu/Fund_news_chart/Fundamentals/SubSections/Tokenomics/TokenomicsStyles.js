@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     right: 5,
   },
   alignLeft: {
-    left: 5,
+    left: 70,
     color: '#F98404'
   },
   tokenName: {
@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
     verticalAlign: 'middle',
   },
   text: {
-    color: '#5F6466',
+    color: '#242427',
+    fontSize: responsiveFontSize * 0.925
   },
 });
 

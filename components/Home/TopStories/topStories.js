@@ -31,7 +31,7 @@ const TopStories = () => {
   };
 
   // This function handles the story redirect when clicking over one, first, finds the category/coin and the subCoin coin bot that belongs to it, after that, updates the active coin and subcoin with its values and after that navigates to the new section. If any param is needed, just include it in the second params object below, which are the params passed to the news screen. This handler is passed to every story item, and it is called on the onPress event.
-  const handleStoryRedirect = ({item, coinBotId}) => {
+  const handleStoryRedirect = (story, coinBotId) => {
     let {category, coinBot} = findCoinById(categories, coinBotId);
     updateActiveCoin(category);
     updateActiveSubCoin(coinBot.bot_name);
@@ -42,7 +42,12 @@ const TopStories = () => {
         params: {
           screen: 'NewsArticle',
           params: {
-            item: item,
+            item: {
+              title: story.summary.slice(0, 100),
+              summary: story.summary,
+              images: story.images,
+              date: story.story_date,
+            },
           },
         },
       },
