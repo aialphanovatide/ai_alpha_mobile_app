@@ -8,7 +8,8 @@ import CustomButton from '../Login/CustomButton/CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import auth0 from '../Login/auth0';
 import { useUser } from '../../context/UserContext';
- 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
  const Account = ({ route}) => {
    const [isAnonymous, setIsAnonymous] = useState(true);
    const [userId, setUserId] = useState(null);
@@ -34,16 +35,22 @@ import { useUser } from '../../context/UserContext';
     navigation.navigate('SignIn', { resetForm: () => {
       setUsername('');
       setPassword('');
+      setUserEmail(null);
     }});
   };
    const handleLogout = async () => {
     try {
+      await AsyncStorage.removeItem('accessToken');
+      await AsyncStorage.removeItem('refreshToken');
+      await AsyncStorage.removeItem('userEmail');
       resetLoginForm();
       navigation.navigate('SignIn', { resetForm: true });
     } catch (e) {
       console.error("Logout failed",e);
     }
   };
+
+
  
   useEffect(() => {
     if (route.params?.userEmail) {

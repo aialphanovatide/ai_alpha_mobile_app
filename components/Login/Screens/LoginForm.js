@@ -1,4 +1,9 @@
 import React, {useState, useEffect} from 'react';
+//var rnSecureStorage = require("rn-secure-storage");
+//import secureLocalStorage from "react-secure-storage";
+import rnSecureStorage from "rn-secure-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   View,
   TextInput,
@@ -20,6 +25,10 @@ import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import auth0 from '../auth0.js';
 import Purchases from 'react-native-purchases';
 import { useUser } from '../../../context/UserContext';
+import { useUserId } from '../../../context/UserIdContext';
+import jwtDecode from 'jwt-decode';
+import { decode as base64decode } from 'base-64';
+
 
 
 const LoginForm = ({ route }) => {
@@ -28,6 +37,7 @@ const LoginForm = ({ route }) => {
   const [password, setPassword] = useState();
   const navigation = useNavigation();
   const { setUserEmail } = useUser();
+  const { setUserId } = useUserId();
   const [error, setError] = useState('');
   const colorScheme = Appearance.getColorScheme();
 
@@ -40,24 +50,71 @@ const LoginForm = ({ route }) => {
     }, [])
   );
 
+  useEffect(() => {
+    const checkToken = async () => {
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      const refreshToken = await AsyncStorage.getItem('refreshToken');
+      const userEmail = await AsyncStorage.getItem('userEmail');
+  
+      if (accessToken && refreshToken) {
+        setUserEmail(userEmail);
+        navigation.navigate('HomeScreen');
+      } else {
+        navigation.navigate('LoginScreen');
+      }
+    };
+  
+    checkToken();
+  }, []);
+  
+  function decodeJwt(token) {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(base64decode(base64));
+      return payload;
+    } catch (error) {
+      console.error('Failed to decode JWT:', error);
+      return null;
+    }
+  }
+
   const onSignInPressed = async () => {
     try {
+      console.log('jwtDecode:', jwtDecode);
+
       const credentials = await auth0.auth.passwordRealm({
         username: username,
         password: password,
-        realm: 'Username-Password-Authentication', 
+        realm: 'Username-Password-Authentication',
+        scope: 'openid profile email offline_access',
       });
-      console.log('Logged in with Auth0:', credentials);
-      console.log("Setting user email on login");
-      setUserEmail(username);
-      console.log("Finished setup user email on login");
-      setError(''); 
-      navigation.navigate('HomeScreen');
-    } catch (error) {
-      console.log('Failed to log in with Auth0:', error);
-      setError('Email or Password are incorrect');
+  
+      
+    console.log('Logged in with Auth0:', credentials);
+
+    if (credentials.idToken) {
+      const decodedToken = decodeJwt(credentials.idToken);
+      console.log("Decoded token: ", decodedToken);
+      if (decodedToken) {
+        const userId = decodedToken.sub;
+        console.log("User ID:", userId);
+
+        await AsyncStorage.setItem('accessToken', credentials.accessToken);
+        await AsyncStorage.setItem('refreshToken', credentials.refreshToken);
+        await AsyncStorage.setItem('userEmail', username); 
+        
+        setUserEmail(username);
+        setUserId(userId);
+
+        navigation.navigate('HomeScreen');
+      }
     }
-  };
+  } catch (error) {
+    console.log('Failed to log in with Auth0:', error);
+    setError('Email or Password are incorrect');
+  }
+};
 
   const onForgotPasswordPressed = () => {
     navigation.navigate('ForgotPassword');
@@ -65,6 +122,12 @@ const LoginForm = ({ route }) => {
 
   const onSignUpPressed = () => {
     navigation.navigate('SignUp');
+  };
+
+  const logout = async () => {
+    await AsyncStorage.removeItem('accessToken');
+    await AsyncStorage.removeItem('refreshToken');
+    navigation.navigate('LoginScreen'); // Navigate to the login screen
   };
 
   return (

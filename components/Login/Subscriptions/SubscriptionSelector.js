@@ -23,7 +23,7 @@ const SubscriptionSelector = ({ purchasePackage, setIsPurchasing }) => {
       }
       console.log("Customer info:", customerInfo);
     } catch (error) {
-      console.error("Error purchasing package:", error);
+      console.log("Error purchasing package:", error);
       Alert.alert("Purchase Error", "There was an error completing your purchase.");
     }
   };

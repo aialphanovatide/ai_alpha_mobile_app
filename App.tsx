@@ -11,6 +11,7 @@ import { API_KEY } from './src/constants';
 import { TopMenuContextProvider } from './context/topMenuContext';
 import { UserProvider } from './context/UserContext';
 import topTenGainersService from './services/TopTenGainersService';
+import { UserIdProvider } from './context/UserIdContext';
 
 
 const App = () => {
@@ -39,7 +40,7 @@ const App = () => {
         }
         console.log("Customer info:", customerInfo);
       } catch (error) {
-        console.error("Error purchasing package:", error);
+        console.log("Error purchasing package:", error);
       }
     };
     showUserSubscriptionData();
@@ -47,12 +48,14 @@ const App = () => {
 
   return (
     <UserProvider>
+    <UserIdProvider>
     <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#242427' : 'white' }]}>
       <StatusBar barStyle="dark-content" />
        <TopMenuContextProvider>
            <Navigation />
        </TopMenuContextProvider>
     </SafeAreaView>
+    </UserIdProvider>
     </UserProvider>
   );
 };

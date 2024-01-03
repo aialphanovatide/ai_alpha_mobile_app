@@ -80,7 +80,7 @@ const PriceAction = () => {
       const fetchCoinsData = async () => {
         try {
           const data = await priceActionService.getAllCoinsInfo();
-          console.log(data);
+          //console.log(data);
           setCoins(data);
         } catch (error) {
           console.error('Error fetching coins data:', error);
