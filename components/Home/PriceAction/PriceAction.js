@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import styles from './PriceActionStyles';
 import priceActionMock from './priceActionMock';
 import priceActionService from '../../../services/PriceActionService';
 import {ScrollView} from 'react-native-gesture-handler';
 import Loader from '../../Loader/Loader';
 import menuData from '../Topmenu/mainMenu/menuData';
+import usePriceActionStyles from './PriceActionStyles';
 
 const CategorySelector = ({
   categories,
   activeCategory,
   handleActiveCoins,
   coins,
+  styles
 }) => {
   return (
     <View style={styles.categoriesContainer}>
@@ -40,10 +41,9 @@ const CategorySelector = ({
   );
 };
 
-const TableItem = ({index, coin, isActive}) => {
+const TableItem = ({index, coin, isActive, styles}) => {
   return (
     <View key={index} style={isActive ? styles.dataRow : styles.displayNone}>
-      <Text style={styles.dataCell}>{''}</Text>
       <View style={styles.logoContainer}>
         <Image style={styles.coinLogo} source={{uri: coin.image}} />
       </View>
@@ -61,6 +61,7 @@ const TableItem = ({index, coin, isActive}) => {
 };
 
 const PriceAction = () => {
+  const styles = usePriceActionStyles();
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState(menuData);
@@ -121,6 +122,7 @@ const PriceAction = () => {
             categories={categories}
             activeCategory={activeCategory}
             handleActiveCoins={handleActiveCoins}
+            styles={styles}
           />
           <View style={styles.headerRow}>
             <Text style={styles.headerCell}>Asset</Text>
@@ -140,6 +142,7 @@ const PriceAction = () => {
                   key={index}
                   coin={coin}
                   isActive={activeCoins.includes(coin)}
+                  styles={styles}
                 />
               ))}
           </View>

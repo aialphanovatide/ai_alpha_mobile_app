@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {List} from 'react-native-paper';
 import StoryItem from './Storyitem/storyItem';
-import styles from './topStoriesStyles';
+import useTopStoriesStyles from './topStoriesStyles';
 import {Image} from 'react-native';
 import {getService} from '../../../services/aiAlphaApi';
 import {useNavigation} from '@react-navigation/core';
@@ -9,6 +9,7 @@ import {TopMenuContext} from '../../../context/topMenuContext';
 import {CategoriesContext} from '../../../context/categoriesContext';
 
 const TopStories = () => {
+  const styles = useTopStoriesStyles();
   const [expanded, setExpanded] = useState(false);
   const handlePress = () => setExpanded(!expanded);
   const [topStories, setTopStories] = useState([]);
@@ -72,9 +73,11 @@ const TopStories = () => {
   return (
     <List.Section title="Top Stories" titleStyle={styles.mainTitle}>
       <List.Accordion
+        style={styles.storyItem}
         titleStyle={styles.titleStyles}
         title={stories ? stories[0].summary : 'Loading'}
         description={stories ? stories[0].summary : 'Loading'}
+        descriptionStyle={styles.description}
         left={() => (
           <Image
             source={{

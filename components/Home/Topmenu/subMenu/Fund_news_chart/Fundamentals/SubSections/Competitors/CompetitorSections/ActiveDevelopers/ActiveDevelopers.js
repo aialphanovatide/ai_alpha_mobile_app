@@ -1,8 +1,8 @@
 import {Image, Text, View} from 'react-native';
 import React from 'react';
-import styles from './ActiveDevelopersStyle';
+import useActiveDevelopersStyles from './ActiveDevelopersStyle';
 
-const generateActiveDevs = value => {
+const generateActiveDevs = (value, styles) => {
   const images = [];
   const quantity = Math.ceil(value / 50);
 
@@ -21,7 +21,7 @@ const generateActiveDevs = value => {
   return images;
 };
 
-const ActiveDevsItem = ({item}) => {
+const ActiveDevsItem = ({item, styles}) => {
   return (
     <View style={styles.itemContainer}>
       <View style={styles.row}>
@@ -35,7 +35,7 @@ const ActiveDevsItem = ({item}) => {
         <Text style={styles.itemName}>{item.crypto}</Text>
       </View>
       <View style={styles.activeDevsContainer}>
-        {generateActiveDevs(item.activeDevs)}
+        {generateActiveDevs(item.activeDevs, styles)}
         <Text style={styles.activeDevsValue}>{item.activeDevs}</Text>
       </View>
     </View>
@@ -43,10 +43,11 @@ const ActiveDevsItem = ({item}) => {
 };
 
 const ActiveDevelopers = ({cryptos}) => {
+  const styles = useActiveDevelopersStyles();
   return (
     <View>
       {cryptos.map((item, index) => (
-        <ActiveDevsItem key={index} item={item} />
+        <ActiveDevsItem key={index} item={item} styles={styles} />
       ))}
     </View>
   );

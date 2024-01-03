@@ -1,9 +1,10 @@
 import {Text, View, TouchableOpacity, Image} from 'react-native';
-import React, {useState} from 'react';
-import styles from './InflationRateStyles';
+import React, {useContext, useState} from 'react';
 import CryptosSelector from '../../CryptoSelector/CryptosSelector';
+import useInflationRateStyles from './InflationRateStyles';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
-const SelectorItem = ({year, activeYear, handleYearChange}) => {
+const SelectorItem = ({year, activeYear, handleYearChange, styles}) => {
   return (
     <TouchableOpacity
       style={[
@@ -22,7 +23,7 @@ const SelectorItem = ({year, activeYear, handleYearChange}) => {
   );
 };
 
-const YearSelector = ({years, activeYear, handleYearChange}) => {
+const YearSelector = ({years, activeYear, handleYearChange, styles}) => {
   return (
     <View style={styles.yearSelectorContainer}>
       {years &&
@@ -32,6 +33,7 @@ const YearSelector = ({years, activeYear, handleYearChange}) => {
             key={year.year}
             activeYear={activeYear}
             handleYearChange={handleYearChange}
+            styles={styles}
           />
         ))}
     </View>
@@ -39,6 +41,8 @@ const YearSelector = ({years, activeYear, handleYearChange}) => {
 };
 
 const InflationRate = ({cryptos}) => {
+  const {isDarkMode} = useContext(AppThemeContext);
+  const styles = useInflationRateStyles();
   const years = [
     {
       year: 2022,
@@ -47,36 +51,47 @@ const InflationRate = ({cryptos}) => {
       year: 2023,
     },
   ];
-
   const inflationValues = [
     {
       values: [0],
-      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-0.png'),
+      image: isDarkMode
+        ? require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-0-dark.png')
+        : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-0.png'),
     },
     {
       values: [0, 2],
-      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-2.png'),
+      image: isDarkMode
+        ? require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-2-dark.png')
+        : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-2.png'),
     },
     {
       values: [2, 4],
-      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-4.png'),
+      image: isDarkMode
+        ? require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-4-dark.png')
+        : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-4.png'),
     },
     {
       values: [4, 6],
-      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-6.png'),
+      image: isDarkMode
+        ? require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-6-dark.png')
+        : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-6.png'),
     },
     {
       values: [6, 8],
-      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-8.png'),
+      image: isDarkMode
+        ? require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-8-dark.png')
+        : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-8.png'),
     },
     {
       values: [8, 10],
-      image: require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-10.png'),
+      image: isDarkMode
+        ? require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-10-dark.png')
+        : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-10.png'),
     },
   ];
 
-  const [activeYear, setActiveYear] = useState(null);
-  const [activeCrypto, setActiveCrypto] = useState(null);
+  const [activeYear, setActiveYear] = useState(2022);
+  const [activeCrypto, setActiveCrypto] = useState(cryptos[0]);
   const [currentPercentage, setCurrentPercentage] = useState(null);
 
   const handleYearChange = year => {
@@ -114,6 +129,7 @@ const InflationRate = ({cryptos}) => {
         years={years}
         activeYear={activeYear}
         handleYearChange={handleYearChange}
+        styles={styles}
       />
       <CryptosSelector
         cryptos={cryptos}
@@ -136,7 +152,9 @@ const InflationRate = ({cryptos}) => {
                 ? findImageByInflationRate(
                     findInflationRateByYear(activeYear, activeCrypto),
                   )
-                : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-empty.png')
+                : isDarkMode
+                ? require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-0-dark.png')
+                : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-0.png')
             }
           />
         </View>

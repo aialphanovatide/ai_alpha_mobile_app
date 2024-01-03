@@ -1,12 +1,14 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import {View, Text} from 'react-native';
+import React, {useContext, useState} from 'react';
 import Speedometer from './Speedometer/Speedometer';
-import styles from './TransactionSpeedStyles';
 import CryptosSelector from '../../CryptoSelector/CryptosSelector';
+import useTransactionSpeedStyles from './TransactionSpeedStyles';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
 const TransactionSpeed = ({cryptos}) => {
+  const {theme} = useContext(AppThemeContext);
   const [activeCrypto, setActiveCrypto] = useState(cryptos[0]);
-
+  const styles = useTransactionSpeedStyles();
   const handleActiveCryptoChange = crypto => {
     setActiveCrypto(crypto);
   };
@@ -34,12 +36,12 @@ const TransactionSpeed = ({cryptos}) => {
         {`${activeCrypto.tps[activeCrypto.tps.length - 1]} TPS`}
       </Text>
       <Speedometer
-        outerColor={'#DDE1E2'}
+        outerColor={theme.graphSecondaryColor}
         internalColor={activeCrypto.color}
-        innerColor={'#F6F7FB'}
+        innerColor={theme.boxesBackgroundColor}
         totalValue={getMaxTpsValue(cryptos)}
         value={activeCrypto.tps[activeCrypto.tps.length - 1]}
-        indicatorColor={'#4D4D4D'}
+        indicatorColor={theme.indicatorColor}
         showIndicator={true}
       />
     </View>

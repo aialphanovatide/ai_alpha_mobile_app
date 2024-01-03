@@ -1,6 +1,5 @@
 import {Text, View, ScrollView, SafeAreaView} from 'react-native';
-import React from 'react';
-import styles from './FundamentalsStyles';
+import React, {useContext} from 'react';
 import SubSection from './SubSections/SubSection';
 import Introduction from './SubSections/Introduction/Introduction';
 import Tokenomics from './SubSections/Tokenomics/Tokenomics';
@@ -12,10 +11,14 @@ import RevenueModel from './SubSections/RevenueModel/RevenueModel';
 import Hacks from './SubSections/Hacks/Hacks';
 import Upgrades from './SubSections/UpgradesSection/Upgrades';
 import DApps from './SubSections/DApps/DApps';
+import useFundamentalsStyles from './FundamentalsStyles';
+import {AppThemeContext} from '../../../../../../context/themeContext';
 
 const Fundamentals = ({}) => {
+  const {isDarkMode} = useContext(AppThemeContext);
+  const styles = useFundamentalsStyles();
   return (
-    <ScrollView nestedScrollEnabled={true}>
+    <ScrollView nestedScrollEnabled={true} style={styles.backgroundColor}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Fundamentals</Text>
         <SubSection
@@ -65,12 +68,16 @@ const Fundamentals = ({}) => {
                   content: [
                     {
                       title: 'Staking',
-                      image: require('../../../../../../assets/Staking.png'),
+                      image: isDarkMode
+                        ? require('../../../../../../assets/images/fundamentals/vam/StakingDark.png')
+                        : require('../../../../../../assets/Staking.png'),
                       text: '4% to 5% per annum',
                     },
                     {
                       title: 'Fee Burning',
-                      image: require('../../../../../../assets/FeeBurning.png'),
+                      image: isDarkMode
+                        ? require('../../../../../../assets/images/fundamentals/vam/FeeBurningDark.png')
+                        : require('../../../../../../assets/FeeBurning.png'),
                       text: 'Potential for deflationary pressure on the circulating supply',
                     },
                   ],
@@ -80,12 +87,16 @@ const Fundamentals = ({}) => {
                   content: [
                     {
                       title: 'Staking',
-                      image: require('../../../../../../assets/Staking.png'),
+                      image: isDarkMode
+                        ? require('../../../../../../assets/images/fundamentals/vam/StakingDark.png')
+                        : require('../../../../../../assets/Staking.png'),
                       text: 'Similar to other Proof-to-Stake cryptocurrencies',
                     },
                     {
                       title: 'Fee Burning',
-                      image: require('../../../../../../assets/FeeBurning.png'),
+                      image: isDarkMode
+                        ? require('../../../../../../assets/images/fundamentals/vam/FeeBurningDark.png')
+                        : require('../../../../../../assets/FeeBurning.png'),
                       text: 'Unique to Ethereum',
                     },
                   ],

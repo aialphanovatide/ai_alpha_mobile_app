@@ -1,9 +1,10 @@
 import {Image, ScrollView, Text, View} from 'react-native';
 import React from 'react';
-import styles from './NewsStyles';
 import BackButton from '../../../../../Analysis/BackButton/BackButton';
+import useNewsStyles from './NewsStyles';
 
 const NewsArticle = ({route, navigation}) => {
+  const styles = useNewsStyles();
   const item = route.params.item;
   console.log(item);
 
@@ -12,7 +13,7 @@ const NewsArticle = ({route, navigation}) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.backgroundColor}>
       <BackButton handleReturn={handleReturn} />
       <View style={styles.article}>
         <Image

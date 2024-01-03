@@ -1,12 +1,21 @@
 import {React, useContext, useState, useEffect} from 'react';
 import {View, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
-import styles from './AnalysisStyles';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Calendar from './Calendar/Calendar';
 import FearAndGreed from './FearAndGreed/FearAndGreed';
 import ChartSection from './ChartSection/ChartSection';
 import BitcoinFundingRates from './BTCFundingRates/BitcoinFundingRates';
-const AnalysisItem = ({id, sectionName, component, handleItemTouch, icon}) => {
+import useAnalysisStyles from './AnalysisStyles';
+import EthBtcChart from './EthBtcChart/EthBtcChart';
+import BtcDominance from './BtcDominance/BtcDominance';
+import Total3 from './Total3Chart/Total3';
+const AnalysisItem = ({
+  id,
+  sectionName,
+  component,
+  handleItemTouch,
+  icon,
+  styles,
+}) => {
   return (
     <TouchableOpacity onPress={() => handleItemTouch(id)}>
       <View
@@ -37,6 +46,7 @@ const AnalysisItem = ({id, sectionName, component, handleItemTouch, icon}) => {
 };
 
 const Analysis = () => {
+  const styles = useAnalysisStyles();
   const sections = [
     {
       id: 'calendar',
@@ -58,19 +68,19 @@ const Analysis = () => {
     {
       id: 'btcDominance',
       sectionName: 'BTC Dominance Chart',
-      component: <></>,
+      component: <BtcDominance handleReturn={handleReturn} />,
       icon: require('../../assets/images/analysis/btc-dom.png'),
     },
     {
       id: 'ethBtc',
       sectionName: 'ETH/BTC',
-      component: <></>,
+      component: <EthBtcChart handleReturn={handleReturn} />,
       icon: require('../../assets/images/analysis/ethbtc.png'),
     },
     {
       id: 'total3',
       sectionName: 'TOTAL 3',
-      component: <></>,
+      component: <Total3 handleReturn={handleReturn} />,
       icon: require('../../assets/images/analysis/total3.png'),
     },
     {
@@ -168,6 +178,7 @@ const Analysis = () => {
               sectionName={section.sectionName}
               component={section.component}
               icon={section.icon}
+              styles={styles}
             />
           ))}
         {currentSection && currentSection.component}

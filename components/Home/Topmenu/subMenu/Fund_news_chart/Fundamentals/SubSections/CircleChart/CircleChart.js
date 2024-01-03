@@ -1,9 +1,8 @@
 import React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Pie from 'react-native-pie';
-import styles from '../GeneralTokenAllocation/GTAStyles';
 
-const CircleChart = ({data, dividerSize}) => {
+const CircleChart = ({data, dividerSize, backgroundColor}) => {
   return (
     <View style={styles.circleChartContainer}>
       <Pie
@@ -15,11 +14,17 @@ const CircleChart = ({data, dividerSize}) => {
             color: sector.color,
           };
         })}
-        backgroundColor="#ffffff"
+        backgroundColor={backgroundColor}
         dividerSize={dividerSize}
       />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  circleChartContainer: {
+    marginVertical: 30,
+  },
+});
 
 export default CircleChart;

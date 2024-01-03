@@ -1,23 +1,14 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  Dimensions,
-  SafeAreaView,
-} from 'react-native';
+import {Text, FlatList, SafeAreaView} from 'react-native';
 import {postService} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
-import styles from './NewsStyles.js';
+import useNewsStyles from './NewsStyles';
 
 const NewsComponent = ({route}) => {
-  // let {botname} = route.params
-  //   ? route.params
-  //   : activeCoin.coin_bots[0].bot_name;
+  const styles = useNewsStyles();
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
   const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
@@ -61,7 +52,7 @@ const NewsComponent = ({route}) => {
   }, [botname]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, styles.backgroundColor]}>
       <Text style={styles.title}>News</Text>
 
       <FlatList

@@ -1,10 +1,10 @@
-import React from 'react';
-import {View, ScrollView} from 'react-native';
-import {WebView} from 'react-native-webview';
+import React, {useContext} from 'react';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import styles from './TVEconomicCalendarStyles.js';
+import {AppThemeContext} from '../../../../context/themeContext.js';
 
 const TVEconomicCalendar = ({width, height}) => {
+  const {isDarkMode} = useContext(AppThemeContext);
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -20,8 +20,8 @@ const TVEconomicCalendar = ({width, height}) => {
             script.async = 'true';
             script.src= 'https://s3.tradingview.com/external-embedding/embed-widget-events.js';
             script.innerHTML = JSON.stringify({
-                colorTheme: "light",
-                isTransparent: false,
+              isTransparent: ${isDarkMode ? 'false' : 'true'},
+              ${isDarkMode ? "colorTheme:'dark'," : ''}
                 width: '100%',
                 height: '100%',
                 locale: "en",

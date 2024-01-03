@@ -1,16 +1,17 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useContext} from 'react';
+import {View} from 'react-native';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import CoinMenu from './coinMenu/coinMenu';
 import {CategoriesContext} from '../../../../context/categoriesContext';
 import {useNavigation} from '@react-navigation/native';
+import useSubMenuStyles from './SubMenuStyles';
 
 const SubMenu = ({coinBotId = null}) => {
   const {activeCoin, activeSubCoin, updateActiveSubCoin} =
     useContext(TopMenuContext);
-  const {categories} = useContext(CategoriesContext);
   const navigation = useNavigation();
-
+  const styles = useSubMenuStyles();
+  
   const handleCoinPress = coin => {
     updateActiveSubCoin(coin);
     navigation.navigate('SubMenuScreen', {
@@ -37,14 +38,5 @@ const SubMenu = ({coinBotId = null}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 10,
-  },
-});
 
 export default SubMenu;

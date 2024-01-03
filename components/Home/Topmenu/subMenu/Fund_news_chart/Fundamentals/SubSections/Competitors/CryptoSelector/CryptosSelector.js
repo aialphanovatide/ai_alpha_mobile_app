@@ -1,8 +1,9 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-import styles from './CryptosSelectorStyles';
+import useCryptoSelectorStyles from './CryptosSelectorStyles';
 
 const CryptosSelector = ({cryptos, activeCrypto, handleActiveCryptoChange}) => {
+  const styles = useCryptoSelectorStyles();
   return (
     <View style={styles.selectorContainer}>
       {cryptos.map((item, index) => (

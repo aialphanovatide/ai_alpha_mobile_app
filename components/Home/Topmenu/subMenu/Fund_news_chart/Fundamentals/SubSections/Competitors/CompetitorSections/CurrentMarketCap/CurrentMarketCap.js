@@ -1,9 +1,11 @@
 import {Text, View} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {VictoryChart, VictoryBar, VictoryTooltip} from 'victory-native';
-import styles from './ChartStyles';
+import useChartStyles from './ChartStyles';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
 const CurrentMarketCap = ({cryptos}) => {
+  const styles = useChartStyles();
   return (
     <View style={styles.chartContainer}>
       <VictoryChart>

@@ -1,12 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View, ScrollView, Text} from 'react-native';
 import MenuItem from './menuItem/menuItem';
-import styles from './topmenuStyles';
+import useTopMenuStyles from './topmenuStyles';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import {useNavigation} from '@react-navigation/core';
 import {CategoriesContext} from '../../../../context/categoriesContext';
 
 const TopMenu = () => {
+  const styles = useTopMenuStyles();
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const {categories} = useContext(CategoriesContext);
   const navigation = useNavigation();

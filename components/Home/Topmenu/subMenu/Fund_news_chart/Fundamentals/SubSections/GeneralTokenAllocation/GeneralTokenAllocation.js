@@ -1,9 +1,10 @@
 import {Text, View, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import styles from './GTAStyles';
+import React, {useContext, useState} from 'react';
 import CircleChart from '../CircleChart/CircleChart';
+import useGTAStyles from './GTAStyles';
+import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
-const GeneralTokenData = ({data, currentToken, handleTokenChange}) => {
+const GeneralTokenData = ({data, currentToken, handleTokenChange, styles}) => {
   return (
     <View style={styles.circleDataContainer}>
       {data.map((sector, index) => (
@@ -33,6 +34,7 @@ const GeneralTokenData = ({data, currentToken, handleTokenChange}) => {
 };
 
 const GeneralTokenAllocation = () => {
+  const styles = useGTAStyles();
   const chartData = [
     {title: 'Exchanges', percentage: 26, color: '#399AEA'},
     {title: 'Institutions', percentage: 22, color: '#20CBDD'},
@@ -40,19 +42,24 @@ const GeneralTokenAllocation = () => {
     {title: 'ETH Foundation', percentage: 17, color: '#FF3BC3'},
     {title: 'Retail Investors', percentage: 14, color: '#FFC53D'},
   ];
-  const [currentToken, setCurrentToken] = useState(null);
-
+  const [currentToken, setCurrentToken] = useState(chartData[0]);
+  const {theme} = useContext(AppThemeContext);
   const handleTokenChange = token => {
     setCurrentToken(token);
   };
 
   return (
     <View style={styles.container}>
-      <CircleChart data={chartData} dividerSize={5} />
+      <CircleChart
+        data={chartData}
+        dividerSize={5}
+        backgroundColor={theme.boxesBackgroundColor}
+      />
       <GeneralTokenData
         currentToken={currentToken}
         data={chartData}
         handleTokenChange={handleTokenChange}
+        styles={styles}
       />
     </View>
   );

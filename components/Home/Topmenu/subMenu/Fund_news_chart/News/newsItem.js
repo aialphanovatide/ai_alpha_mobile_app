@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import styles from './NewsStyles';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import useNewsStyles from './NewsStyles';
 
 const NewsItem = ({item, onPress}) => {
+  const styles = useNewsStyles();
   return (
     <TouchableOpacity
       style={styles.itemContainer}

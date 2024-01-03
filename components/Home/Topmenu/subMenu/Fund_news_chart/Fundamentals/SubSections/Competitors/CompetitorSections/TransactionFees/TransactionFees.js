@@ -1,9 +1,11 @@
 import {Image, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import CryptosSelector from '../../CryptoSelector/CryptosSelector';
-import styles from './TransactionFeesStyles';
+import useTransactionFeeStyles from './TransactionFeesStyles';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
-const DollarGraphs = ({value, color}) => {
+const DollarGraphs = ({value, color, styles}) => {
+  const {isDarkMode} = useContext(AppThemeContext);
   const images = [];
   if (value !== 0) {
     const intValue = Math.floor(value);
@@ -13,7 +15,11 @@ const DollarGraphs = ({value, color}) => {
         <View key={`image_${i}`} style={styles.imageContainer}>
           <Image
             style={styles.dollarImage}
-            source={require('../../../../../../../../../../assets/dollar.png')}
+            source={
+              isDarkMode
+                ? require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar-dark.png')
+                : require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar.png')
+            }
           />
           <View style={[styles.overlay, {backgroundColor: color}]}></View>
         </View>,
@@ -24,7 +30,11 @@ const DollarGraphs = ({value, color}) => {
         <View key={`${value}decimal`} style={styles.imageContainer}>
           <Image
             style={styles.dollarImage}
-            source={require('../../../../../../../../../../assets/dollar.png')}
+            source={
+              isDarkMode
+                ? require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar-dark.png')
+                : require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar.png')
+            }
           />
           <View
             style={[
@@ -43,7 +53,11 @@ const DollarGraphs = ({value, color}) => {
       <Image
         key={'zero'}
         style={styles.dollarImage}
-        source={require('../../../../../../../../../../assets/dollar.png')}
+        source={
+          isDarkMode
+            ? require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar-dark.png')
+            : require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar.png')
+        }
       />,
     );
   }
@@ -52,7 +66,8 @@ const DollarGraphs = ({value, color}) => {
 };
 
 const TransactionFees = ({cryptos}) => {
-  const [activeOption, setActiveOption] = useState(null);
+  const styles = useTransactionFeeStyles();
+  const [activeOption, setActiveOption] = useState(cryptos[0]);
 
   const handleActiveOptionChange = option => {
     setActiveOption(option);
@@ -74,6 +89,7 @@ const TransactionFees = ({cryptos}) => {
         <DollarGraphs
           value={activeOption ? activeOption.fee : 0}
           color={activeOption ? activeOption.color : null}
+          styles={styles}
         />
       </View>
     </View>

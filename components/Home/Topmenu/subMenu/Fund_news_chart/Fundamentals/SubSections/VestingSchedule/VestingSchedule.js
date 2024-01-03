@@ -1,9 +1,9 @@
 import {Image, Text, View} from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from './VestingSchedulesStyles';
+import useVestingShedulesStyles from './VestingSchedulesStyles';
 
 const VestingSchedule = ({year, tokens, crypto}) => {
+  const styles = useVestingShedulesStyles();
   return (
     <View>
       <View style={styles.rowContainer}>
@@ -21,7 +21,11 @@ const VestingSchedule = ({year, tokens, crypto}) => {
       <View style={styles.tokenDataContainer}>
         <View style={styles.yearContainer}>
           <View style={styles.calendarIconContainer}>
-            <Image style={styles.calendarIcon} resizeMode={'contain'} source={require('../../../../../../../../assets/images/fundamentals/calendar.png')}/>
+            <Image
+              style={styles.calendarIcon}
+              resizeMode={'contain'}
+              source={require('../../../../../../../../assets/images/fundamentals/calendar.png')}
+            />
           </View>
           <Text style={styles.yearText}>Year {year}</Text>
         </View>

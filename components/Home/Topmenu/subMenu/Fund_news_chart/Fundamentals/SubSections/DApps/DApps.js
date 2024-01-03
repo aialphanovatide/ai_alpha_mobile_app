@@ -1,11 +1,12 @@
 import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-import styles from './DAppsStyles';
+import useDappsStyles from './DAppsStyles';
 
 const ProtocolSelector = ({
   protocols,
   handleActiveProtocol,
   activeProtocol,
+  styles,
 }) => {
   return (
     <ScrollView
@@ -32,6 +33,7 @@ const ProtocolSelector = ({
 };
 
 const DApps = ({protocols}) => {
+  const styles = useDappsStyles();
   const [activeProtocol, setActiveProtocol] = useState(protocols[0]);
 
   const handleActiveProtocol = protocol => {
@@ -44,10 +46,11 @@ const DApps = ({protocols}) => {
         <Image
           style={styles.mainImage}
           resizeMode={'contain'}
-          source={require('../../../../../../../../assets/images/fundamentals/dApps/dapps.jpg')}
+          source={require('../../../../../../../../assets/images/fundamentals/dApps/dapps.png')}
         />
       </View>
       <ProtocolSelector
+        styles={styles}
         protocols={protocols}
         handleActiveProtocol={handleActiveProtocol}
         activeProtocol={activeProtocol}

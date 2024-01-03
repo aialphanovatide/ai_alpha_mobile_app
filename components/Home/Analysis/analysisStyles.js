@@ -1,26 +1,36 @@
-import {  StyleSheet, Dimensions } from 'react-native';
+import {useContext} from 'react';
+import {StyleSheet, Dimensions} from 'react-native';
+import {AppThemeContext} from '../../../context/themeContext';
 
-const { width } = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
-
-const styles = StyleSheet.create({
+const useHomeAnalysisStyles = () => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = StyleSheet.create({
     mainTitle: {
       fontWeight: 'bold',
-      color: '#282828',
-      fontSize: responsiveFontSize
+      color: theme.titleColor,
+      fontSize: theme.titleFontSize,
     },
     titleStyles: {
       fontWeight: 'bold',
-      color: '#282828',
-      marginBottom: 2
+      color: theme.titleColor,
+      fontSize: theme.responsiveFontSize,
+      marginBottom: 2,
     },
     imageStyle: {
-      width: 50, 
+      width: 50,
       height: 50,
       borderRadius: 5,
-      marginLeft: 10
+      marginLeft: 10,
+    },
+    item: {
+      backgroundColor: theme.boxesBackgroundColor,
+    },
+    description: {
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.textColor
     }
   });
+  return styles;
+};
 
-
-  export default styles;
+export default useHomeAnalysisStyles;

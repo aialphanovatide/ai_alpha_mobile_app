@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
-import styles from './TimelineStyles';
+import {View, Text, ScrollView} from 'react-native';
 import Loader from '../../../../../../../../Loader/Loader';
+import useTimelineStyles from './TimelineStyles';
 
 const Timeline = ({events}) => {
+  const styles = useTimelineStyles();
   return (
     <ScrollView style={styles.timelineContainer} nestedScrollEnabled={true}>
       {events ? (

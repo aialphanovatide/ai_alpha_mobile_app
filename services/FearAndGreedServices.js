@@ -20,14 +20,15 @@ async function getFearAndGreedIndex() {
 
 async function getFearAndGreedFullData() {
   try {
-    const response = await fetch('https://api.alternative.me/fng/?date_format=us');
+    const response = await fetch(
+      'https://api.alternative.me/fng/?date_format=us',
+    );
 
     const data = await response.json();
 
     console.log(data);
 
-    return data
-
+    return data;
   } catch (error) {
     console.error('Error trying to get data of fear and greed index: ', error);
     return [];
@@ -43,12 +44,10 @@ async function getFearAndGreedFullData() {
   
   main();
   */
-  
+
 const fearAndGreedService = {
-    getFearAndGreedIndex,
-    getFearAndGreedFullData,
+  getFearAndGreedIndex,
+  getFearAndGreedFullData,
 };
 
 export default fearAndGreedService;
-
-

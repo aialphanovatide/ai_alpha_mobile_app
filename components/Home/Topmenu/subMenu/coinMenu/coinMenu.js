@@ -1,8 +1,10 @@
 import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
-import styles from './coinMenuStyles';
+import useCoinMenuStyles from './coinMenuStyles';
+
 
 const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
+  const styles = useCoinMenuStyles();
   return subCoins?.length > 1 ? (
     <View style={styles.menu}>
       <View style={styles.subMenu}>

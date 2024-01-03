@@ -10,9 +10,8 @@ import NewsComponent from './Topmenu/subMenu/Fund_news_chart/News/NewsComponent.
 import {TopMenuContext} from '../../context/topMenuContext';
 import {Dimensions} from 'react-native';
 import NewsArticle from './Topmenu/subMenu/Fund_news_chart/News/NewsArticle';
+import {AppThemeContext} from '../../context/themeContext';
 
-const {width} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
 const SubMenuStack = createMaterialTopTabNavigator();
@@ -38,31 +37,35 @@ const NewsScreen = () => {
 
 const SubMenuScreen = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
-
+  const {theme} = useContext(AppThemeContext);
   return (
     <SubMenuStack.Navigator
       initialRouteName="Charts"
       backBehavior={'none'}
+      style={{backgroundColor: theme.mainBackgroundColor}}
       screenOptions={{
         swipeEnabled: false,
         tabBarShowLabel: true,
-        tabBarShowIcon: true,
+        tabBarShowIcon: false,
         tabBarLabelStyle: {
-          fontSize: responsiveFontSize * 0.8,
+          fontSize: theme.responsiveFontSize * 0.75,
           fontWeight: 'bold',
-          color: '#F7F7F7',
+          color: theme.subMenuTextColor,
         },
         tabBarStyle: {
-          backgroundColor: '#C4CADA',
+          height: '8%',
+          marginVertical: 2.5,
+          marginHorizontal: 5,
+          backgroundColor: theme.subMenuBgColor,
           borderRadius: 5,
         },
         tabBarIndicatorStyle: {
-          backgroundColor: '#F1F1F140',
+          backgroundColor: '#42444550',
           height: '100%',
         },
         tabBarGap: 5,
         tabBarPressColor: 'transparent',
-        tabBarActiveTintColor: '#959BB2'
+        tabBarActiveTintColor: '#959BB260',
       }}>
       <SubMenuStack.Screen name="Fundamentals" component={Fundamentals} />
       <SubMenuStack.Screen
@@ -84,6 +87,7 @@ const SubMenuScreen = () => {
 const TopmenuScreen = () => {
   const {activeSubCoin, activeCoin} = useContext(TopMenuContext);
   const [forceUpdate, setForceUpdate] = useState(false);
+  const {theme} = useContext(AppThemeContext);
 
   useEffect(() => {
     setForceUpdate(prevState => !prevState);
@@ -94,6 +98,9 @@ const TopmenuScreen = () => {
       backBehavior="initialRoute"
       screenOptions={{
         header: () => <SubMenu />,
+        headerStyle: {
+          backgroundColor: theme.mainBackgroundColor,
+        },
       }}>
       <TopmenuStack.Screen
         name="SubMenuScreen"

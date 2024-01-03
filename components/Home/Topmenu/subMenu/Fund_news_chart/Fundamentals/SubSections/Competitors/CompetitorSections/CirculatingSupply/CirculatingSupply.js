@@ -1,8 +1,8 @@
 import {Image, Text, View} from 'react-native';
 import React from 'react';
-import styles from './CirculatingSupplyStyles';
+import useCirculatingSupplyStyles from './CirculatingSupplyStyles';
 
-const CirculatingSupplyItem = ({item}) => {
+const CirculatingSupplyItem = ({item, styles}) => {
   return (
     <View>
       <View style={styles.row}>
@@ -26,13 +26,14 @@ const CirculatingSupplyItem = ({item}) => {
         <ProgressBar
           maxValue={item.maxValue}
           percentageValue={item.percentageValue}
+          styles={styles}
         />
       </View>
     </View>
   );
 };
 
-const ProgressBar = ({maxValue, percentageValue}) => {
+const ProgressBar = ({maxValue, percentageValue, styles}) => {
   // TODO - Change this to receive the value and max value in numbers, and obtain the percentage from that values, also create a function to format the top-label that shows the max value, depending on if it is millions or billions, or even infinite.
   return (
     <View style={styles.progressBarContainer}>
@@ -52,6 +53,8 @@ const ProgressBar = ({maxValue, percentageValue}) => {
 };
 
 const CirculatingSupply = ({cryptos}) => {
+  const styles = useCirculatingSupplyStyles();
+
   return (
     <View>
       <View style={styles.row}>
@@ -60,7 +63,7 @@ const CirculatingSupply = ({cryptos}) => {
       </View>
       <View style={styles.itemsContainer}>
         {cryptos.map((item, index) => (
-          <CirculatingSupplyItem item={item} key={index} />
+          <CirculatingSupplyItem item={item} key={index} styles={styles} />
         ))}
       </View>
     </View>

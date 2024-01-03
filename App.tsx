@@ -17,6 +17,7 @@ import {ENTITLEMENT_ID} from './src/constants';
 import {TopMenuContextProvider} from './context/topMenuContext';
 import {UserProvider} from './context/UserContext';
 import {CategoriesContextProvider} from './context/categoriesContext';
+import {AppThemeProvider} from './context/themeContext';
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
@@ -57,11 +58,13 @@ const App = () => {
           {backgroundColor: colorScheme === 'dark' ? '#242427' : '#E7EAF1'},
         ]}>
         <StatusBar barStyle="dark-content" />
-        <CategoriesContextProvider>
-          <TopMenuContextProvider>
-            <Navigation />
-          </TopMenuContextProvider>
-        </CategoriesContextProvider>
+        <AppThemeProvider>
+          <CategoriesContextProvider>
+            <TopMenuContextProvider>
+              <Navigation />
+            </TopMenuContextProvider>
+          </CategoriesContextProvider>
+        </AppThemeProvider>
       </SafeAreaView>
     </UserProvider>
   );

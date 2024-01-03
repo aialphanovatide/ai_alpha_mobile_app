@@ -1,9 +1,10 @@
-import {Image, View} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
-import styles from '../CurrentMarketCap/ChartStyles';
 import {VictoryChart, VictoryBar, VictoryTooltip} from 'victory-native';
+import useChartStyles from '../CurrentMarketCap/ChartStyles';
 
 const TotalValueLocked = ({cryptos}) => {
+  const styles = useChartStyles();
   return (
     <View style={styles.chartContainer}>
       <VictoryChart>

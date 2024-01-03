@@ -1,10 +1,14 @@
 import {Text, View, TouchableOpacity, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from './VAMStyles';
 import Loader from '../../../../../../../Loader/Loader';
+import useVAMStyles from './VAMStyles';
 
-const MechanismsMenuItem = ({item, activeOption, handleOptionChange}) => {
+const MechanismsMenuItem = ({
+  item,
+  activeOption,
+  handleOptionChange,
+  styles,
+}) => {
   return (
     <TouchableOpacity onPress={() => handleOptionChange(item)}>
       <View style={styles.menuItemContainer}>
@@ -12,7 +16,7 @@ const MechanismsMenuItem = ({item, activeOption, handleOptionChange}) => {
           <Image
             style={[
               styles.itemIcon,
-              activeOption.name === item.name && {tintColor: '#FB6822'},
+              activeOption.name === item.name && {tintColor: '#F98404'},
             ]}
             resizeMode={'contain'}
             source={item.icon}
@@ -30,7 +34,12 @@ const MechanismsMenuItem = ({item, activeOption, handleOptionChange}) => {
   );
 };
 
-const MechanismsMenu = ({options, activeOption, handleOptionChange}) => {
+const MechanismsMenu = ({
+  options,
+  activeOption,
+  handleOptionChange,
+  styles,
+}) => {
   return (
     <View style={styles.menuContainer}>
       {options.map((item, index) => (
@@ -39,13 +48,14 @@ const MechanismsMenu = ({options, activeOption, handleOptionChange}) => {
           item={item}
           activeOption={activeOption}
           handleOptionChange={handleOptionChange}
+          styles={styles}
         />
       ))}
     </View>
   );
 };
 
-const ContentItem = ({data}) => {
+const ContentItem = ({data, styles}) => {
   return (
     <View style={styles.dataContainer}>
       <Text style={styles.dataTitle}>{data.title}</Text>
@@ -65,6 +75,7 @@ const ContentItem = ({data}) => {
 };
 
 const ValueAccrualMechanisms = ({options, contentData}) => {
+  const styles = useVAMStyles();
   const [activeOption, setActiveOption] = useState(options[0]);
   const [filteredData, setFilteredData] = useState(null);
 
@@ -97,11 +108,12 @@ const ValueAccrualMechanisms = ({options, contentData}) => {
             options={options}
             handleOptionChange={handleOptionChange}
             activeOption={activeOption}
+            styles={styles}
           />
           <View style={styles.content}>
             {filteredData &&
               filteredData.map((data, index) => (
-                <ContentItem data={data} key={index} />
+                <ContentItem data={data} key={index} styles={styles} />
               ))}
           </View>
         </View>
