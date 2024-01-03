@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-import styles from './SubMenuStyles';
+import useCalendarSubMenuStyles from './SubMenuStyles';
 
-const SubMenuItem = ({selectedInterval, intervalData, handlePress}) => {
+const SubMenuItem = ({selectedInterval, intervalData, handlePress, styles}) => {
   return (
     <TouchableOpacity
       style={[
@@ -22,17 +22,20 @@ const SubMenuItem = ({selectedInterval, intervalData, handlePress}) => {
 };
 
 const SubMenu = ({Intervals, handlePress, selectedInterval}) => {
+  const styles = useCalendarSubMenuStyles();
   return (
     <View style={styles.menuContainer}>
       <SubMenuItem
         intervalData={Intervals.today}
         selectedInterval={selectedInterval}
         handlePress={handlePress}
+        styles={styles}
       />
       <SubMenuItem
         intervalData={Intervals.thisWeek}
         selectedInterval={selectedInterval}
         handlePress={handlePress}
+        styles={styles}
       />
     </View>
   );

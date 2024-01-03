@@ -1,24 +1,27 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {useContext} from 'react';
+import {StyleSheet} from 'react-native';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
-const {width} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
+const useTransactionSpeedStyles = () => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    activeCryptoValue: {
+      marginVertical: 15,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      color: theme.textColor,
+      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize * 0.9,
+      borderWidth: 2,
+      borderColor: theme.textColor,
+    },
+  });
+  return styles;
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  activeCryptoValue: {
-    marginVertical: 15,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    color: '#5F6466',
-    fontWeight: 'bold',
-    fontSize: responsiveFontSize * 0.9,
-    borderWidth: 2,
-    borderColor: '#5F6466',
-  },
-});
-
-export default styles;
+export default useTransactionSpeedStyles;

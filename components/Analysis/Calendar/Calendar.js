@@ -1,10 +1,10 @@
 import {React, useState} from 'react';
 import {View, Text, ScrollView} from 'react-native';
-import styles from './CalendarStyles.js';
 import CryptoCalendar from './CryptoCalendar/CryptoCalendar.js';
 import TVEconomicCalendar from './MacroEconomicsCalendar/TVEconomicCalendar.js';
 import BackButton from '../BackButton/BackButton.js';
 import SubMenu from './SubMenu/SubMenu.js';
+import useCalendarStyles from './CalendarStyles.js';
 
 const Intervals = {
   today: {
@@ -25,6 +25,7 @@ const Calendar = ({handleReturn}) => {
   const [economicSelectedInterval, setEconomicSelectedInterval] = useState(
     Intervals.today,
   );
+  const styles = useCalendarStyles();
 
   const handleCryptoPress = interval => {
     setCryptoSelectedInterval(interval);

@@ -1,23 +1,26 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {useContext} from 'react';
+import {StyleSheet} from 'react-native';
+import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
-const {width} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
+const useIntroductionStyles = () => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = StyleSheet.create({
+    introText: {
+      fontSize: theme.responsiveFontSize * 0.9,
+      color: theme.textColor,
+    },
+    dataContainer: {
+      margin: 5,
+    },
+    strong: {
+      fontWeight: 'bold',
+    },
+    textSymbol: {
+      fontSize: theme.responsiveFontSize,
+      color: '#8EED1A',
+    },
+  });
+  return styles;
+};
 
-const styles = StyleSheet.create({
-  introText: {
-    fontSize: responsiveFontSize * 0.9,
-    color: '#242427',
-  },
-  dataContainer: {
-    margin: 5,
-  },
-  strong: {
-    fontWeight: 'bold',
-  },
-  textSymbol: {
-    fontSize: responsiveFontSize,
-    color: '#8EED1A',
-  },
-});
-
-export default styles;
+export default useIntroductionStyles;

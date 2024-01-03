@@ -3,10 +3,9 @@ import {Text, View} from 'react-native';
 import BackButton from '../BackButton/BackButton';
 import styles from './ChartSectionStyles';
 import NewTvChart from '../Charts/NewTvChart';
+import AdvancedTvChart from '../Charts/AdvancedTvChart';
 
 const ChartSection = ({title, symbol, widgetId, handleReturn}) => {
-
-
   return (
     <View style={styles.mainSection}>
       <BackButton handleReturn={handleReturn} />
@@ -17,7 +16,18 @@ const ChartSection = ({title, symbol, widgetId, handleReturn}) => {
         width={400}
         height={500}
       /> */}
-      <NewTvChart symbol={symbol} widgetId={widgetId} width={350} height={500}/>
+      {/* <NewTvChart
+        symbol={symbol}
+        widgetId={widgetId}
+        width={350}
+        height={500}
+      /> */}
+      <AdvancedTvChart
+        symbol={symbol}
+        widgetId={widgetId}
+        width={350}
+        height={500}
+      />
     </View>
   );
 };

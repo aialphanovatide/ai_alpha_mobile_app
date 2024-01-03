@@ -1,9 +1,10 @@
 import {Text, View} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {VictoryAxis, VictoryBar, VictoryChart} from 'victory-native';
-import styles from './RevenueStyles';
+import useRevenueStyles from './RevenueStyles';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
-const RevenueGraphReferences = ({cryptos}) => {
+const RevenueGraphReferences = ({cryptos, styles}) => {
   return (
     <View style={styles.selectorContainer}>
       {cryptos.map((item, index) => (
@@ -18,15 +19,21 @@ const RevenueGraphReferences = ({cryptos}) => {
 };
 
 const Revenue = ({cryptos}) => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = useRevenueStyles();
   return (
     <View>
-      <RevenueGraphReferences cryptos={cryptos} />
       <View style={styles.chartContainer}>
         <VictoryChart>
           <VictoryBar
+            width={600}
+            height={500}
             style={{
               data: {
                 fill: ({datum}) => datum.color || '#FB6822',
+              },
+              labels: {
+                fill: theme.textColor,
               },
             }}
             alignment={'end'}
@@ -40,13 +47,14 @@ const Revenue = ({cryptos}) => {
           />
           <VictoryAxis
             style={{
-              axis: {stroke: 'none'},
+              axis: {stroke: theme.graphSecondaryColor, size: 1},
               ticks: {stroke: 'none'},
               tickLabels: {fill: 'none'},
               grid: {stroke: 'none'},
             }}
           />
         </VictoryChart>
+        <RevenueGraphReferences cryptos={cryptos} styles={styles} />
       </View>
     </View>
   );

@@ -1,6 +1,12 @@
 import React, {useEffect} from 'react';
 import Navigation from './navigation/Navigation';
-import {SafeAreaView, StyleSheet, StatusBar, Platform, Appearance} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  StatusBar,
+  Platform,
+  Appearance,
+} from 'react-native';
 import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import PaywallScreen from './components/Login/Screens/PaywallScreen';
@@ -12,28 +18,27 @@ import { TopMenuContextProvider } from './context/topMenuContext';
 import { UserProvider } from './context/UserContext';
 import topTenGainersService from './services/TopTenGainersService';
 import { UserIdProvider } from './context/UserIdContext';
-
+import {CategoriesContextProvider} from './context/categoriesContext';
+import {AppThemeProvider} from './context/themeContext';
 
 const App = () => {
-
   const colorScheme = Appearance.getColorScheme();
 
-    useEffect(() => {
-      Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
-     if (Platform.OS === 'ios') {
-        Purchases.configure({ apiKey: API_KEY });
-      } else if (Platform.OS === 'android') {
-        Purchases.configure({ apiKey: ANDROID_API_KEY });
-      }
-    }, []);
+  useEffect(() => {
+    Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
+    if (Platform.OS === 'ios') {
+      Purchases.configure({apiKey: IOS_API_KEY});
+    } else if (Platform.OS === 'android') {
+      Purchases.configure({apiKey: ANDROID_API_KEY});
+    }
+  }, []);
 
+  console.log('Entitlement id: ', ENTITLEMENT_ID);
 
-    console.log("Entitlement id: ",ENTITLEMENT_ID)
-  
-    const showUserSubscriptionData = async () => {
+  const showUserSubscriptionData = async () => {
     try {
-        //const purchaseMade = await Purchases.purchasePackage(purchasePackage);
-        const customerInfo = await Purchases.getCustomerInfo();
+      //const purchaseMade = await Purchases.purchasePackage(purchasePackage);
+      const customerInfo = await Purchases.getCustomerInfo();
 
         if(typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== "undefined"){
           console.log("User is pro");
@@ -42,27 +47,31 @@ const App = () => {
       } catch (error) {
         console.log("Error purchasing package:", error);
       }
-    };
-    showUserSubscriptionData();
 
+  };
+  showUserSubscriptionData();
 
   return (
-    <UserProvider>
     <UserIdProvider>
-    <SafeAreaView style={[styles.container, { backgroundColor: colorScheme === 'dark' ? '#242427' : 'white' }]}>
-      <StatusBar barStyle="dark-content" />
-       <TopMenuContextProvider>
-           <Navigation />
-       </TopMenuContextProvider>
-    </SafeAreaView>
+      <SafeAreaView
+        style={[
+          styles.container,
+          {backgroundColor: colorScheme === 'dark' ? '#242427' : '#E7EAF1'},
+        ]}>
+        <StatusBar barStyle="dark-content" />
+        <AppThemeProvider>
+          <CategoriesContextProvider>
+            <TopMenuContextProvider>
+              <Navigation />
+            </TopMenuContextProvider>
+          </CategoriesContextProvider>
+        </AppThemeProvider>
+      </SafeAreaView>
     </UserIdProvider>
-    </UserProvider>
   );
 };
 
 export default App;
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -71,4 +80,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#242427',
   },
 });
-

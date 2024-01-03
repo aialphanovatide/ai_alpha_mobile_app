@@ -1,7 +1,8 @@
 import {Text, View} from 'react-native';
 import React from 'react';
-import styles from './IntroductionStyles';
+import useIntroductionStyles from './IntroductionStyles';
 const Introduction = ({description, dataItems}) => {
+  const styles = useIntroductionStyles();
   return (
     <View>
       <Text style={styles.introText}>{description}</Text>

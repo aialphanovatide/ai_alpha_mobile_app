@@ -1,13 +1,16 @@
+import {useContext} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
-const styles = StyleSheet.create({
-  chartContainer: {
-    flex: 1,
-    backgroundColor: '#F7F7F7',
-  },
-  chart: {
-    data: {fill: '#FB6822'},
-  },
-});
+const useChartStyles = () => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = StyleSheet.create({
+    chartContainer: {
+      flex: 1,
+      backgroundColor: theme.secondaryBoxesBgColor,
+    },
+  });
+  return styles;
+};
 
-export default styles;
+export default useChartStyles;

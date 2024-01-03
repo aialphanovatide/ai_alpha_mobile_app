@@ -10,10 +10,10 @@ import Analysis from '../../Analysis/Analysis';
 import Account from '../../Account/Account';
 import Chatbot from '../../Chatbot/Chatbot';
 import Alerts from '../../Alerts/Alerts';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {Image, View} from 'react-native';
 import styles from './HomeScreenStyles';
-import DeleteAccountForm from '../DeleteUserForm';
+import HomeStackScreen from '../../Home/HomeStack';
+import {AppThemeContext} from '../../../context/themeContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,19 +31,26 @@ const MenuIcon = ({color, iconSource}) => {
 
 const HomeScreen = () => {
   const {updateActiveCoin} = useContext(TopMenuContext);
-
+  const {theme} = useContext(AppThemeContext);
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
+    <GestureHandlerRootView style={{flex: 1,}}>
       <Tab.Navigator
         initialRouteName={Home}
         screenOptions={{
           headerShown: false,
           tabBarStyle: {
-            height: 65,
+            height: 70,
             justifyContent: 'center',
             alignItems: 'center',
+            backgroundColor: theme.navbarBgColor,
+            border: 'none',
           },
-          tabBarActiveTintColor: '#FC5404',
+          tabBarActiveTintColor: theme.activeOrange,
+          tabBarLabelStyle: {
+            marginBottom: 10,
+            fontSize: theme.responsiveFontSize * 0.8,
+            fontWeight: 'bold',
+          },
         }}>
         <Tab.Screen
           name="Home"
@@ -52,15 +59,17 @@ const HomeScreen = () => {
               updateActiveCoin({});
             },
           }}
-          component={Home}
+          component={HomeStackScreen}
           options={{
             tabBarLabel: 'Home',
-            tabBarLabelStyle: {marginBottom: 10},
-            tabBarIcon: ({color, size}) => (
-              // <Icon name="home" color={color} size={size} />
+            tabBarIcon: ({focused, color, size}) => (
               <MenuIcon
                 color={color}
-                iconSource={require('../../../assets/images/bottomMenu/home.png')}
+                iconSource={
+                  focused
+                    ? require('../../../assets/images/bottomMenu/home-active.png')
+                    : require('../../../assets/images/bottomMenu/home.png')
+                }
               />
             ),
           }}
@@ -70,12 +79,14 @@ const HomeScreen = () => {
           component={Alerts}
           options={{
             tabBarLabel: 'Alerts',
-            tabBarLabelStyle: {marginBottom: 10},
-            tabBarIcon: ({color, size}) => (
-              // <Icon name="bell-o" color={color} size={size} />
+            tabBarIcon: ({focused, color, size}) => (
               <MenuIcon
                 color={color}
-                iconSource={require('../../../assets/images/bottomMenu/alerts.png')}
+                iconSource={
+                  focused
+                    ? require('../../../assets/images/bottomMenu/alerts-active.png')
+                    : require('../../../assets/images/bottomMenu/alerts.png')
+                }
               />
             ),
           }}
@@ -85,12 +96,14 @@ const HomeScreen = () => {
           component={Chatbot}
           options={{
             tabBarLabel: 'Chatbot',
-            tabBarLabelStyle: {marginBottom: 10},
-            tabBarIcon: ({color, size}) => (
-              // <Icon name="comment" color={color} size={size} />
+            tabBarIcon: ({focused, color, size}) => (
               <MenuIcon
                 color={color}
-                iconSource={require('../../../assets/images/bottomMenu/chatbot.png')}
+                iconSource={
+                  focused
+                    ? require('../../../assets/images/bottomMenu/chatbot-active.png')
+                    : require('../../../assets/images/bottomMenu/chatbot.png')
+                }
               />
             ),
           }}
@@ -101,12 +114,14 @@ const HomeScreen = () => {
           component={Analysis}
           options={{
             tabBarLabel: 'Analysis',
-            tabBarLabelStyle: {marginBottom: 10},
-            tabBarIcon: ({color, size}) => (
-              // <Icon name="bar-chart" color={color} size={size} />
+            tabBarIcon: ({focused, color, size}) => (
               <MenuIcon
                 color={color}
-                iconSource={require('../../../assets/images/bottomMenu/analysis.png')}
+                iconSource={
+                  focused
+                    ? require('../../../assets/images/bottomMenu/analysis-active.png')
+                    : require('../../../assets/images/bottomMenu/analysis.png')
+                }
               />
             ),
           }}
@@ -116,12 +131,14 @@ const HomeScreen = () => {
           component={Account}
           options={{
             tabBarLabel: 'Account',
-            tabBarLabelStyle: {marginBottom: 10},
-            tabBarIcon: ({color, size}) => (
-              // <Icon name="user" color={color} size={size} />
+            tabBarIcon: ({focused, color, size}) => (
               <MenuIcon
                 color={color}
-                iconSource={require('../../../assets/images/bottomMenu/account.png')}
+                iconSource={
+                  focused
+                    ? require('../../../assets/images/bottomMenu/account-active.png')
+                    : require('../../../assets/images/bottomMenu/account.png')
+                }
               />
             ),
           }}

@@ -4,10 +4,8 @@ const {height, width} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    minHeight: 800,
     paddingVertical: 20,
-  },
-  widget: {
-    width: width - 20,
   },
 });
 

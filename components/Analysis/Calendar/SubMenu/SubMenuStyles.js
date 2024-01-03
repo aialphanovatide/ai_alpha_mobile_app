@@ -1,34 +1,43 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {useContext} from 'react';
+import {AppThemeContext} from '../../../../context/themeContext';
 
-const {width} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
-const styles = StyleSheet.create({
-  menuContainer: {
-    alignSelf: 'center',
-    width: '90%',
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  menuItem: {
-    width: '50%',
-    height: 20,
-    backgroundColor: '#B8BBBC',
-    marginHorizontal: 2,
-    borderRadius: 2.5,
-    overflow: 'hidden',
-  },
-  menuItemText: {
-    textAlign: 'center',
-    fontSize: responsiveFontSize * 0.75,
-    color: '#F7F7F7',
-    fontWeight: 'bold',
-  },
-  activeItem: {
-    backgroundColor: '#898C8D',
-  },
-  activeText: {
-    fontWeight: 'bold',
-  },
-});
+const useCalendarSubMenuStyles = () => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = StyleSheet.create({
+    menuContainer: {
+      alignSelf: 'center',
+      width: '90%',
+      display: 'flex',
+      flexDirection: 'row',
+      backgroundColor: theme.subMenuBgColor,
+    },
+    menuItem: {
+      width: '50%',
+      height: 20,
+      backgroundColor: 'transparent',
+      marginHorizontal: 2,
+      borderRadius: 2.5,
+      overflow: 'hidden',
+    },
+    menuItemText: {
+      textAlign: 'center',
+      fontSize: theme.responsiveFontSize * 0.75,
+      color: theme.subMenuTextColor,
+      fontWeight: 'bold',
+    },
+    activeItem: {
+      backgroundColor: theme.activeWhite,
+      borderColor: theme.subMenuBgColor,
+      borderWidth: 2,
+      borderRadius: 5,
+    },
+    activeText: {
+      fontWeight: 'bold',
+      color: theme.filterTextColor,
+    },
+  });
+  return styles;
+};
 
-export default styles;
+export default useCalendarSubMenuStyles;

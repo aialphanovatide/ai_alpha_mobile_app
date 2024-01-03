@@ -1,13 +1,62 @@
 import {React, useState, useEffect} from 'react';
 import {View, Text, ScrollView, Image} from 'react-native';
-import styles from './CryptoCalendarStyles';
 import calendarService from '../../../../services/CalendarService';
 import Loader from '../../../Loader/Loader';
 import CryptoFilter from './CryptoFilter';
 import menuData from '../../../Home/Topmenu/mainMenu/menuData';
 import calendarCryptos from './calendarCryptos';
+import useCryptoCalendarStyles from './CryptoCalendarStyles';
 
-const CalendarItem = ({event, coin}) => {
+const eventTags = [
+  {
+    id: '5',
+    name: 'Branding',
+  },
+  {
+    id: '6',
+    name: 'Burning',
+  },
+  {
+    id: '7',
+    name: 'Conference',
+  },
+  {
+    id: '22',
+    name: 'DAO',
+  },
+  {
+    id: '4',
+    name: 'Earning',
+  },
+  {
+    id: '10',
+    name: 'Hard Fork',
+  },
+  {
+    id: '24',
+    name: 'Lock & Unlock',
+  },
+  {
+    id: '14',
+    name: 'Partnership',
+  },
+  {
+    id: '19',
+    name: 'Update',
+  },
+];
+
+const CalendarItem = ({event, coin, styles}) => {
+  const findTagStringById = (ids, tags) => {
+    let foundTags = [];
+
+    tags.forEach(tag => {
+      if (ids.includes(tag.id)) {
+        foundTags.push(tag.name);
+      }
+    });
+    return foundTags;
+  };
   return (
     <View style={styles.calendarItem}>
       <View style={styles.itemIconContainer}>
@@ -16,8 +65,10 @@ const CalendarItem = ({event, coin}) => {
       </View>
       <View style={styles.dataColumn}>
         <View style={styles.topDataRow}>
-          <View style={styles.partnerShip}>
-            <Text style={styles.itemInfo}>Partnership</Text>
+          <View style={styles.tags}>
+            <Text style={styles.itemInfo}>
+              {findTagStringById(event.tags, eventTags).join(', ')}
+            </Text>
           </View>
           <View style={styles.date}>
             <View style={styles.timeIconContainer}>
@@ -42,6 +93,7 @@ const CryptoCalendar = ({selectedInterval}) => {
   const [loading, setLoading] = useState(true);
   const [options, setOptions] = useState([]);
   const [currentFilter, setCurrentFilter] = useState(null);
+  const styles = useCryptoCalendarStyles();
 
   useEffect(() => {
     setOptions(menuData);
@@ -106,12 +158,6 @@ const CryptoCalendar = ({selectedInterval}) => {
       return filteredCoins.includes(parseInt(event.coin_id));
     });
 
-    console.log(
-      'filter coins: ',
-      filteredCoins,
-      'filtered events :',
-      filteredEvents,
-    );
     return filteredEvents;
   };
 
@@ -132,7 +178,7 @@ const CryptoCalendar = ({selectedInterval}) => {
             {events.length === 0 ? (
               <View style={styles.messageContainer}>
                 <Text style={styles.emptyEventsMessage}>
-                  There aren't events for the selected coin...
+                  No events were found...
                 </Text>
               </View>
             ) : (
@@ -141,6 +187,7 @@ const CryptoCalendar = ({selectedInterval}) => {
                   key={index}
                   event={event}
                   coin={findEventCoin(event.coin_id)}
+                  styles={styles}
                 />
               ))
             )}

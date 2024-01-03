@@ -12,10 +12,11 @@ const FearAndGreed = ({handleReturn}) => {
       try {
         const index = await fearAndGreedService.getFearAndGreedIndex();
         setIndexValue(index);
-        setLoading(false)
+        setLoading(false);
+        console.log(index);
       } catch (error) {
         console.error(`Error trying to get fear & greed index data: ${error}`);
-      } 
+      }
     };
 
     fetchFearAndGreedIndex();
@@ -25,10 +26,10 @@ const FearAndGreed = ({handleReturn}) => {
   const [loading, setLoading] = useState(true);
   return (
     <View style={styles.mainSection}>
-      <BackButton handleReturn={handleReturn}/>
+      <BackButton handleReturn={handleReturn} />
       <Text style={styles.title}>Fear and Greed Index</Text>
       <View style={styles.fearAndGreedWidgetContainer}>
-        { loading ? (<Loader />) : (<FearAndGreedIndex indexValue={indexValue} />)}
+        {<FearAndGreedIndex />}
       </View>
     </View>
   );

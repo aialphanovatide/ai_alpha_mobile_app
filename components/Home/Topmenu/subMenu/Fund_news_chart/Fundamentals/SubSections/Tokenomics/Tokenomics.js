@@ -1,6 +1,6 @@
 import {Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import styles from './TokenomicsStyles';
+import useTokenomicsStyles from './TokenomicsStyles';
 
 // Hardcoded data - TODO: fetch or get this information from another sources, and connect it to the current package of topMenu
 
@@ -28,7 +28,7 @@ const tokenomicsInfo = [
   },
 ];
 
-const TokenItem = ({item}) => {
+const TokenItem = ({item, styles}) => {
   return (
     <View style={styles.tokenItem}>
       <View style={styles.tokenRow}>
@@ -36,6 +36,7 @@ const TokenItem = ({item}) => {
         <HorizontalProgressBar
           value={item.circulatingSupply}
           maxValue={item.totalSupply}
+          styles={styles}
         />
       </View>
       <View style={styles.tokenRow}>
@@ -47,22 +48,38 @@ const TokenItem = ({item}) => {
   );
 };
 
-const HorizontalProgressBar = ({maxValue, value}) => {
+const HorizontalProgressBar = ({maxValue, value, styles}) => {
   const percentage = maxValue === Infinity ? 65 : (value / maxValue) * 100;
 
+  function formatNumber(value) {
+    const suffixes = ['', 'thousand', 'million', 'billion', 'trillion'];
+
+    const formatRecursive = (num, suffixIndex) => {
+      if (num < 1000 || suffixIndex === suffixes.length - 1) {
+        return (
+          num.toFixed(2).replace(/\.00$/, '') + ' ' + suffixes[suffixIndex]
+        );
+      } else {
+        return formatRecursive(num / 1000, suffixIndex + 1);
+      }
+    };
+
+    return formatRecursive(value, 0);
+  }
   return (
     <View style={styles.progressBarContainer}>
       <View style={[styles.progressBar, {width: `${percentage}%`}]} />
       <Text style={styles.progressBarValue}>{`${
         maxValue === Infinity
-          ? value
-          : value + ' (' + Math.round(percentage) + ')%'
-      } / ${maxValue === Infinity ? '∞' : maxValue}`}</Text>
+          ? formatNumber(value)
+          : formatNumber(value) + ' (' + Math.round(percentage) + ')%'
+      } / ${maxValue === Infinity ? '∞' : formatNumber(maxValue)}`}</Text>
     </View>
   );
 };
 
 const Tokenomics = () => {
+  const styles = useTokenomicsStyles();
   const [cryptos, setCryptos] = useState(null);
 
   useEffect(() => {
@@ -76,7 +93,9 @@ const Tokenomics = () => {
         <Text style={styles.alignRight}>Total Supply</Text>
       </View>
       {cryptos &&
-        cryptos.map((crypto, index) => <TokenItem key={index} item={crypto} />)}
+        cryptos.map((crypto, index) => (
+          <TokenItem key={index} item={crypto} styles={styles} />
+        ))}
     </View>
   );
 };
