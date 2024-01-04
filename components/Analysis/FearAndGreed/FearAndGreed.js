@@ -1,12 +1,12 @@
 import {React, useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
-import styles from './FearAndGreedStyles';
 import BackButton from '../BackButton/BackButton';
 import FearAndGreedIndex from './FearAndGreedIndex';
 import fearAndGreedService from '../../../services/FearAndGreedServices';
-import Loader from '../../Loader/Loader';
+import useFearAndGreedStyles from './FearAndGreedStyles';
 
 const FearAndGreed = ({handleReturn}) => {
+  const styles = useFearAndGreedStyles();
   useEffect(() => {
     const fetchFearAndGreedIndex = async () => {
       try {
@@ -29,7 +29,7 @@ const FearAndGreed = ({handleReturn}) => {
       <BackButton handleReturn={handleReturn} />
       <Text style={styles.title}>Fear and Greed Index</Text>
       <View style={styles.fearAndGreedWidgetContainer}>
-        {<FearAndGreedIndex />}
+        {<FearAndGreedIndex styles={styles} />}
       </View>
     </View>
   );

@@ -8,6 +8,7 @@ const useCalendarStyles = () => {
       flex: 1,
       width: theme.width,
       padding: 5,
+      backgroundColor: theme.mainBackgroundColor,
     },
     titleContainer: {
       marginVertical: 10,

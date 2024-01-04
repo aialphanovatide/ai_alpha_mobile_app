@@ -34,6 +34,7 @@ const AdvancedTvChart = ({symbol, widgetId, width, height}) => {
               upColor: "#22ab94",
               downColor: "#f7525f",
               enable_publishing: false,
+              hide_volume: true,
           });
           document.querySelector(".tradingview-widget-container__widget_${widgetId}")
         .appendChild(script)

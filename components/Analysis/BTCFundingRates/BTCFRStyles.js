@@ -8,6 +8,7 @@ const useBtcFundingRatesStyles = () => {
     mainSection: {
       flex: 1,
       height: theme.height,
+      backgroundColor: theme.mainBackgroundColor,
     },
     titleContainer: {
       flexDirection: 'row',
@@ -76,7 +77,7 @@ const useBtcFundingRatesStyles = () => {
     },
     priceDown: {
       color: theme.priceDownColor,
-    }
+    },
   });
   return styles;
 };

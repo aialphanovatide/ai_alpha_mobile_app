@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Image} from 'react-native';
-import styles from './FearAndGreedStyles';
 
-const FearAndGreedIndex = () => {
+const FearAndGreedIndex = ({styles}) => {
   // const fearAndGreedValues = [
   //   {range: [0, 20], label: 'Extreme fear', color: '#ff0000'},
   //   {range: [21, 40], label: 'Fear', color: '#ff4500'},

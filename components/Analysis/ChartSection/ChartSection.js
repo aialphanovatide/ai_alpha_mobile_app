@@ -1,14 +1,15 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import BackButton from '../BackButton/BackButton';
-import styles from './ChartSectionStyles';
-import NewTvChart from '../Charts/NewTvChart';
 import AdvancedTvChart from '../Charts/AdvancedTvChart';
+import useChartSectionStyles from './ChartSectionStyles';
 
-const ChartSection = ({title, symbol, widgetId, handleReturn}) => {
+const ChartSection = ({route, navigation}) => {
+  const {title, widgetId, symbol} = route.params;
+  const styles = useChartSectionStyles();
   return (
     <View style={styles.mainSection}>
-      <BackButton handleReturn={handleReturn} />
+      <BackButton />
       <Text style={styles.title}>{title}</Text>
       {/* <TradingViewChart
         symbol={symbol}

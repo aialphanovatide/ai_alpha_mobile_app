@@ -1,13 +1,40 @@
 import {View} from 'react-native';
-import React from 'react';
-import {VictoryChart, VictoryBar, VictoryTooltip} from 'victory-native';
+import React, {useContext} from 'react';
+import {
+  VictoryChart,
+  VictoryBar,
+  VictoryTooltip,
+  VictoryAxis,
+} from 'victory-native';
 import useChartStyles from '../CurrentMarketCap/ChartStyles';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
 const TotalValueLocked = ({cryptos}) => {
+  const {theme} = useContext(AppThemeContext);
   const styles = useChartStyles();
   return (
     <View style={styles.chartContainer}>
       <VictoryChart>
+        <VictoryAxis
+          style={{
+            axis: {stroke: theme.chartsColor},
+            tickLabels: {
+              fontSize: theme.responsiveFontSize * 0.825,
+              fill: theme.titleColor,
+            },
+          }}
+        />
+        <VictoryAxis
+          dependentAxis
+          style={{
+            axis: {stroke: theme.chartsColor},
+            tickLabels: {
+              fontSize: theme.responsiveFontSize * 0.825,
+              fill: theme.chartsColor,
+            },
+            grid: {stroke: theme.chartsColor},
+          }}
+        />
         <VictoryBar
           style={{
             data: {

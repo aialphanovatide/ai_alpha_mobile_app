@@ -14,6 +14,7 @@ import {Image, View} from 'react-native';
 import styles from './HomeScreenStyles';
 import HomeStackScreen from '../../Home/HomeStack';
 import {AppThemeContext} from '../../../context/themeContext';
+import AnalysisScreen from '../../Analysis/AnalysisStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -111,7 +112,7 @@ const HomeScreen = () => {
 
         <Tab.Screen
           name="Analysis"
-          component={Analysis}
+          component={AnalysisScreen}
           options={{
             tabBarLabel: 'Analysis',
             tabBarIcon: ({focused, color, size}) => (

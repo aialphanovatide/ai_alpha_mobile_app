@@ -7,7 +7,7 @@ const useChartStyles = () => {
   const styles = StyleSheet.create({
     chartContainer: {
       flex: 1,
-      backgroundColor: theme.secondaryBoxesBgColor,
+      backgroundColor: theme.boxesBackgroundColor,
     },
   });
   return styles;

@@ -8,7 +8,6 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import CandlestickChart from './Topmenu/subMenu/Fund_news_chart/Charts';
 import NewsComponent from './Topmenu/subMenu/Fund_news_chart/News/NewsComponent.js';
 import {TopMenuContext} from '../../context/topMenuContext';
-import {Dimensions} from 'react-native';
 import NewsArticle from './Topmenu/subMenu/Fund_news_chart/News/NewsArticle';
 import {AppThemeContext} from '../../context/themeContext';
 
@@ -24,7 +23,6 @@ const NewsScreen = () => {
       initialRouteName="NewsMain"
       backBehavior={'none'}
       screenOptions={{headerShown: false}}>
-      {/* Replace NewsMain with NewsComponent */}
       <NewsStack.Screen
         name="NewsMain"
         component={NewsComponent}
