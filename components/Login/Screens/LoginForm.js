@@ -131,7 +131,7 @@ const LoginForm = ({route}) => {
   const logout = async () => {
     await AsyncStorage.removeItem('accessToken');
     await AsyncStorage.removeItem('refreshToken');
-    navigation.navigate('LoginScreen'); // Navigate to the login screen
+    navigation.navigate('SignIn');
   };
 
   return (
