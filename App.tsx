@@ -53,6 +53,7 @@ const App = () => {
 
   return (
     <UserIdProvider>
+          <UserProvider>
       <SafeAreaView
         style={[
           styles.container,
@@ -67,6 +68,7 @@ const App = () => {
           </CategoriesContextProvider>
         </AppThemeProvider>
       </SafeAreaView>
+      </UserProvider>
     </UserIdProvider>
   );
 };
