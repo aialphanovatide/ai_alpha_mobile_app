@@ -12,7 +12,7 @@ const CategorySelector = ({
   activeCategory,
   handleActiveCoins,
   coins,
-  styles
+  styles,
 }) => {
   return (
     <View style={styles.categoriesContainer}>
@@ -65,23 +65,27 @@ const PriceAction = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState(menuData);
-  const [activeCoins, setActiveCoins] = useState([]);
-  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(categories[0]);
+  const [activeCoins, setActiveCoins] = useState(
+    activeCategory ? activeCategory.subMenuOptions : [],
+  );
   useEffect(() => {
     setCoins(priceActionMock);
     setLoading(false);
-    // const fetchCoinsData = async () => {
-    //   try {
-    //     const data = await priceActionService.getAllCoinsInfo();
-    //     console.log(data);
-    //     setCoins(data);
-    //   } catch (error) {
-    //     console.error('Error fetching coins data:', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // fetchCoinsData();
+    /*
+    const fetchCoinsData = async () => {
+      try {
+        const data = await priceActionService.getAllCoinsInfo();
+        console.log(data);
+        setCoins(data);
+      } catch (error) {
+        console.error('Error fetching coins data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCoinsData();
+    */
   }, []);
 
   const findCoinsByCategory = (coins, category) => {
@@ -106,7 +110,7 @@ const PriceAction = () => {
   const handleActiveCoins = (coins, category) => {
     setActiveCategory(category);
     setActiveCoins(findCoinsByCategory(coins, category));
-    console.log(activeCoins);
+    // console.log(activeCoins);
   };
 
   return (

@@ -34,11 +34,11 @@ const useCompetitorsStyles = () => {
     },
     itemIcon: {
       flex: 1,
-      tintColor: theme.secondaryTextColor,
+      tintColor: theme.fundamentalsMenuText,
     },
     menuItemName: {
       padding: 5,
-      color: theme.secondaryTextColor,
+      color: theme.fundamentalsMenuText,
       textAlign: 'center',
       fontSize: theme.responsiveFontSize * 0.9,
     },

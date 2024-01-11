@@ -20,9 +20,12 @@ import topTenGainersService from './services/TopTenGainersService';
 import {UserIdProvider} from './context/UserIdContext';
 import {CategoriesContextProvider} from './context/categoriesContext';
 import {AppThemeProvider} from './context/themeContext';
+import SplashScreen from 'react-native-splash-screen';
+import {RevenueCatProvider} from './context/RevenueCatContext';
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
+  /*
   useEffect(() => {
     Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
     if (Platform.OS === 'ios') {
@@ -30,46 +33,98 @@ const App = () => {
     } else if (Platform.OS === 'android') {
       Purchases.configure({apiKey: ANDROID_API_KEY});
     }
+    const showUserSubscriptionData = async () => {
+      try {
+        const customerInfo = await Purchases.getCustomerInfo();
+        console.log('Customer info:', customerInfo);
+      } catch (error) {
+        console.log('Error purchasing package:', error);
+      }
+    };
+    showUserSubscriptionData();
+  }, []);
+    //const purchaseMade = await Purchases.purchasePackage(purchasePackage);
+    // console.log('Monthly offerings: ', offerings.all.Default.monthly);
+    console.log(
+      'Default available packages: ',
+      offerings.all.Default.availablePackages,
+    );
+    setTimeout(async () => {
+      try {
+        const purchaseMade = await Purchases.purchasePackage(
+          offerings.all.Default.monthly,
+        );
+        const customerInfo = await Purchases.getCustomerInfo();
+        if (
+          typeof purchaseMade.customerInfo.entitlements.active[
+            ENTITLEMENT_ID
+          ] !== 'undefined'
+        ) {
+          console.log('User bought a package!');
+        }
+      } catch (error) {
+        console.log('Error purchasing the package: ', error);
+      }
+    }, 5000);
+    // if (offerings.current !== null) {
+    //   console.log(offerings.current);
+    // }
+    // if (
+    //   typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !==
+    //   'undefined'
+    // ) {
+    //   console.log('User is pro');
+    // }
+    // console.log('Customer info:', customerInfo);
+
+  */
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      SplashScreen.hide();
+    }
   }, []);
 
   console.log('Entitlement id: ', ENTITLEMENT_ID);
 
-  const showUserSubscriptionData = async () => {
-    try {
-      //const purchaseMade = await Purchases.purchasePackage(purchasePackage);
-      const customerInfo = await Purchases.getCustomerInfo();
+  // const showUserSubscriptionData = async () => {
+  //   try {
+  //     //const purchaseMade = await Purchases.purchasePackage(purchasePackage);
+  //     const customerInfo = await Purchases.getCustomerInfo();
 
-      if (
-        typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== 'undefined'
-      ) {
-        console.log('User is pro');
-      }
-      console.log('Customer info:', customerInfo);
-    } catch (error) {
-      console.log('Error purchasing package:', error);
-    }
-  };
-  showUserSubscriptionData();
+  //     if (
+  //       typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== 'undefined'
+  //     ) {
+  //       console.log('User is pro');
+  //     }
+  //     console.log('Customer info:', customerInfo);
+  //   } catch (error) {
+  //     console.log('Error purchasing package:', error);
+  //   }
+  // };
+  // showUserSubscriptionData();
 
   return (
-    <UserProvider>
-      <UserIdProvider>
-        <SafeAreaView
-          style={[
-            styles.container,
-            {backgroundColor: colorScheme === 'dark' ? '#242427' : '#E7EAF1'},
-          ]}>
-          <StatusBar barStyle="dark-content" />
-          <AppThemeProvider>
-            <CategoriesContextProvider>
-              <TopMenuContextProvider>
-                <Navigation />
-              </TopMenuContextProvider>
-            </CategoriesContextProvider>
-          </AppThemeProvider>
-        </SafeAreaView>
-      </UserIdProvider>
-    </UserProvider>
+    <RevenueCatProvider>
+      <UserProvider>
+        <UserIdProvider>
+          <SafeAreaView
+            style={[
+              styles.container,
+              {backgroundColor: colorScheme === 'dark' ? '#242427' : '#E7EAF1'},
+            ]}>
+            <StatusBar barStyle="dark-content" />
+            <AppThemeProvider>
+              <CategoriesContextProvider>
+                <TopMenuContextProvider>
+                  <Navigation />
+                </TopMenuContextProvider>
+              </CategoriesContextProvider>
+            </AppThemeProvider>
+          </SafeAreaView>
+        </UserIdProvider>
+      </UserProvider>
+    </RevenueCatProvider>
   );
 };
 

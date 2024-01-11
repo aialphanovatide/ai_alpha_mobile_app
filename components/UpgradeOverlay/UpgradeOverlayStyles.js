@@ -38,6 +38,35 @@ const useUpgradeOverlayStyles = () => {
     lockIcon: {
       flex: 1,
     },
+    none: {
+      display: 'none',
+    },
+    popUp: {
+      width: theme.width * 0.6,
+      padding: 10,
+      backgroundColor: theme.boxesBackgroundColor,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    closeContainer: {
+      position: 'absolute',
+      top: 5,
+      right: 10,
+      width: 25,
+      height: 25,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    close: {
+      flex: 1,
+    },
+    popUpText: {
+      marginVertical: theme.height * 0.08,
+      marginHorizontal: theme.width * 0.01,
+      color: theme.textColor,
+      fontSize: theme.responsiveFontSize,
+      textAlign: 'center',
+    },
   });
   return styles;
 };

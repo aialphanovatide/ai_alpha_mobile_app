@@ -8,7 +8,7 @@ import {
 } from '../../src/components';
 import Purchases from 'react-native-purchases';
 import CustomButton from '../Login/CustomButton/CustomButton';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/core';
 import auth0 from '../Login/auth0';
 import {useUser} from '../../context/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,27 +48,36 @@ const Account = ({route}) => {
   const {userEmail} = useUser();
   const navigation = useNavigation();
 
+  console.log(route);
+
   const options = [
     {
       name: 'Subscription',
       logo: require('../../assets/images/account/subscription.png'),
+      screenName: 'Subscription',
     },
     {
       name: 'Log Out',
       logo: require('../../assets/images/account/logout.png'),
+      screenName: null,
     },
     {
       name: 'Delete Account',
       logo: require('../../assets/images/account/deleteacc.png'),
+      screenName: null,
     },
   ];
 
   const handleItemTouch = option => {
-    console.log(
-      'Pressed option: ',
-      option.name,
-      '\nReplace this console.log with the navigation to the corresponding screen',
-    );
+    if (option.screenName) {
+      navigation.navigate(option.screenName);
+    } else {
+      console.log(
+        'Pressed option: ',
+        option.name,
+        '\nReplace this console.log with the navigation to the corresponding screen',
+      );
+    }
   };
 
   const getUserData = async () => {

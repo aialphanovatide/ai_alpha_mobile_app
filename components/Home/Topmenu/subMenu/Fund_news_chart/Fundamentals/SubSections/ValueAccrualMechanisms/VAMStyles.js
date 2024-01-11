@@ -26,7 +26,7 @@ const useVAMStyles = () => {
     },
     menuItemName: {
       marginVertical: 5,
-      color: theme.secondaryTextColor,
+      color: theme.fundamentalsMenuText,
       textAlign: 'center',
     },
     iconContainer: {
@@ -37,7 +37,7 @@ const useVAMStyles = () => {
     },
     itemIcon: {
       flex: 1,
-      tintColor: theme.secondaryTextColor,
+      tintColor: theme.fundamentalsMenuText,
     },
     activeItem: {
       color: theme.orange,

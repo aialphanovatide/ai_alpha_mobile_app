@@ -15,6 +15,7 @@ import styles from './HomeScreenStyles';
 import HomeStackScreen from '../../Home/HomeStack';
 import {AppThemeContext} from '../../../context/themeContext';
 import AnalysisScreen from '../../Analysis/AnalysisStack';
+import AccountScreen from '../../Account/AccountStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -129,7 +130,7 @@ const HomeScreen = () => {
         />
         <Tab.Screen
           name="Account"
-          component={Account}
+          component={AccountScreen}
           options={{
             tabBarLabel: 'Account',
             tabBarIcon: ({focused, color, size}) => (

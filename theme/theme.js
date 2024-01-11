@@ -37,8 +37,20 @@ export const lightThemeStyles = {
   speedometerIndicator: '#4D4D4D',
   backbuttonColor: '#B8BBBC',
   chartsColor: '#B8BBBC',
+  fundamentalsMenuText: '#B8BBBC',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
+  subscriptions: {
+    subscriptionsBgColor: '#10101E',
+    purchaseButtonBgColor: '#B8BBBC',
+    purchaseButtonText: '#10101E',
+    text: '#F9FAFC',
+    boxesBgColor: '#535568',
+  },
+  loginBgColor: '#E7EAF1',
+  loginTitlesColor: '#B8BBBD',
+  signUpTitlesColor: '#FFFFFF',
+  loginInputBgColor: '#5F6567',
 };
 
 export const darkThemeStyles = {
@@ -76,6 +88,18 @@ export const darkThemeStyles = {
   speedometerIndicator: '#313343',
   backbuttonColor: '#C4CADA',
   chartsColor: '#74788D',
+  fundamentalsMenuText: '#F9FAFC',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
+  subscriptions: {
+    subscriptionsBgColor: '#10101E',
+    purchaseButtonBgColor: '#B8BBBC',
+    purchaseButtonText: '#10101E',
+    text: '#F9FAFC',
+    boxesBgColor: '#535568',
+  },
+  loginBgColor: '#242427',
+  loginTitlesColor: '#B8BBBD',
+  signUpTitlesColor: '#FFFFFF',
+  loginInputBgColor: '#FFFFFF',
 };

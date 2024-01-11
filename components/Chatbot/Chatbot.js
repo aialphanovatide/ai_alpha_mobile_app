@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, SafeAreaView} from 'react-native';
+import useChatbotStyles from './ChatbotStyles';
 
- const Chatbot = () => {
-   
-   return (
-     <View>
-         <Text>Chatbot Tab</Text>
-     </View>
-   );
- };
- 
- export default Chatbot;
- 
+const Chatbot = () => {
+  const styles = useChatbotStyles();
+  return (
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.messageText}>Coming soon...</Text>
+    </SafeAreaView>
+  );
+};
+
+export default Chatbot;

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, SafeAreaView} from 'react-native';
+import useAlertsStyles from './styles';
 
- const Alerts = () => {
-   
-   return (
-     <View>
-         <Text>Alerts Tab</Text>
-     </View>
-   );
- };
- 
- export default Alerts;
- 
+const Alerts = () => {
+  const styles = useAlertsStyles();
+  return (
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.messageText}>Coming soon...</Text>
+    </SafeAreaView>
+  );
+};
+
+export default Alerts;

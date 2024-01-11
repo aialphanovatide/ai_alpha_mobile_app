@@ -1,7 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Account from './Account';
-import Subscription from '../Login/Subscriptions/Subscription';
+import PackageSubscriptions from './PackageSubscriptions/PackageSubscriptions';
 
 const AccountStack = createNativeStackNavigator();
 
@@ -11,7 +11,10 @@ const AccountScreen = () => {
       initialRouteName="AccountMain"
       screenOptions={{header: () => null, headerShown: false}}>
       <AccountStack.Screen name="AccountMain" component={Account} />
-      <AccountStack.Screen name="Subscription" component={Subscription} />
+      <AccountStack.Screen
+        name="Subscription"
+        component={PackageSubscriptions}
+      />
     </AccountStack.Navigator>
   );
 };

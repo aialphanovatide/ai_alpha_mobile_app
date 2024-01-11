@@ -1,11 +1,11 @@
 import {Text, View, ScrollView, SafeAreaView} from 'react-native';
 import React, {useContext} from 'react';
 import SubSection from './SubSections/SubSection';
-import Introduction from './SubSections/Introduction/Introduction';
-import Tokenomics from './SubSections/Tokenomics/Tokenomics';
-import GeneralTokenAllocation from './SubSections/GeneralTokenAllocation/GeneralTokenAllocation';
-import VestingSchedule from './SubSections/VestingSchedule/VestingSchedule';
-import ValueAccrualMechanisms from './SubSections/ValueAccrualMechanisms/ValueAccrualMechanisms';
+import Introduction from './SubSections/Introduction/Introduction.js';
+import Tokenomics from './SubSections/Tokenomics/Tokenomics.js';
+import GeneralTokenAllocation from './SubSections/GeneralTokenAllocation/GeneralTokenAllocation.js';
+import VestingSchedule from './SubSections/VestingSchedule/VestingSchedule.js';
+import ValueAccrualMechanisms from './SubSections/ValueAccrualMechanisms/ValueAccrualMechanisms.js';
 import Competitors from './SubSections/Competitors/Competitors';
 import RevenueModel from './SubSections/RevenueModel/RevenueModel';
 import Hacks from './SubSections/Hacks/Hacks';

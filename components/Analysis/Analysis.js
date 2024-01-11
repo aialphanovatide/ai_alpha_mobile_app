@@ -37,11 +37,8 @@ const Analysis = () => {
   const [overlayVisible, setOverlayVisible] = useState(true);
   const navigation = useNavigation();
 
-  const handleUpgradePress = () => {
-    setOverlayVisible(true);
-  };
-
   const handleOverlayClose = () => {
+    navigation.navigate('PaywallScreen');
     setOverlayVisible(false);
   };
 
