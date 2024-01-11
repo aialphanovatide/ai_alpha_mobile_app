@@ -26,7 +26,7 @@ const App = () => {
   useEffect(() => {
     Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
     if (Platform.OS === 'ios') {
-      Purchases.configure({apiKey: IOS_API_KEY});
+      Purchases.configure({apiKey: API_KEY});
     } else if (Platform.OS === 'android') {
       Purchases.configure({apiKey: ANDROID_API_KEY});
     }
