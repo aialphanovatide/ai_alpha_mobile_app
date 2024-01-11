@@ -16,4 +16,4 @@ export const GOOGLE_CLIENT_SECRET = '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';
  The entitlement ID from the RevenueCat dashboard that is activated upon successful in-app purchase for the duration of the purchase.
  */
 //console.error("Modify this property to reflect your app's entitlement identifier, then comment this line out.");
-export const ENTITLEMENT_ID = 'Bitcoin';
+export const ENTITLEMENT_ID = 'Bitcoin_4999_m1';

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView, Image, TouchableOpacity, Button} from 'react-native';
 import {ENTITLEMENT_ID} from '../../src/constants';
 import {
   LoginForm,
@@ -14,6 +14,7 @@ import {useUser} from '../../context/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAccountStyles from './styles';
 import ThemeButton from '../ThemeButton/ThemeButton';
+import { API_KEY } from '../../src/constants';
 
 const AccountItem = ({styles, option, handleItemTouch}) => {
   return (
@@ -47,6 +48,8 @@ const Account = ({route}) => {
   const [subscriptionName, setSubscriptionName] = useState('');
   const {userEmail} = useUser();
   const navigation = useNavigation();
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
 
   console.log(route);
 
@@ -69,16 +72,16 @@ const Account = ({route}) => {
   ];
 
   const handleItemTouch = option => {
-    if (option.screenName) {
-      navigation.navigate(option.screenName);
-    } else {
-      console.log(
-        'Pressed option: ',
-        option.name,
-        '\nReplace this console.log with the navigation to the corresponding screen',
-      );
-    }
-  };
+    switch (option.name) {
+      case 'Log Out':
+        handleLogout();
+        break;
+      case 'Delete Account':
+        navigation.navigate('DeleteAccountScreen');
+        break;
+      default:
+        console.log('Option not handled:', option.name);
+    }};
 
   const getUserData = async () => {
     setIsAnonymous(await Purchases.isAnonymous());
@@ -130,6 +133,114 @@ const Account = ({route}) => {
     };
   }, []);
 
+  useEffect(() => {
+    Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
+    if (Platform.OS === 'ios') {
+      Purchases.configure({apiKey: API_KEY});
+    } else if (Platform.OS === 'android') {
+      //Purchases.configure({apiKey: ANDROID_API_KEY});
+    }
+  }, []);
+console.log('Entitlement id: ', ENTITLEMENT_ID);
+async function Buy_now() {
+    try {
+      // Get offerings
+      const offerings = await Purchases.getOfferings();
+      // Check if the desired package is available
+      const packageIdentifier = "packageIdentifier_product_id";
+      const availablePackages = offerings.all["Bitcoin_4999_m1"].availablePackages;
+      if (availablePackages.length !== 0) {
+        // Display packages for sale (you can customize this part based on your UI)
+        // For simplicity, let's assume you want to purchase the first available package
+        const selectedPackage = availablePackages[0];
+        // Make the purchase
+        const { customerInfo, productIdentifier } = await Purchases.purchasePackage(selectedPackage);
+        // Check if the entitlement is active
+        const entitlementIdentifier = "Bitcoin_4999_m1";
+        if (customerInfo.entitlements.active[entitlementIdentifier] !== undefined) {
+          console.log(":white_check_mark: PURCHASE SUCCESSFUL");
+          // Do something after a successful purchase
+          setIsSubscribed(true);
+          console.log(isSubscribed)
+        }
+      }
+    } catch (error) {
+      if (!error.userCancelled) {
+        console.error("PURCHASE FAILED", error);
+        // Handle error (show an error message, etc.)
+      }
+    }
+  }
+
+
+
+  /*Solution1.
+import { Purchases } from 'react-native-purchases';
+async function Buy_now() {
+  try {
+    const offerings = await Purchases.getOfferings();
+    if (offerings.all["offering_name"].availablePackages.length !== 0) {
+      const {customerInfo, productIdentifier} = await Purchases.purchasePackage(offerings.all["offering_name"].availablePackages[0]);
+      if (typeof customerInfo.entitlements.active['offering_name'] !== "undefined") {
+        console.log(":white_check_mark: PURCHASE SUCCESSFUL");
+      }
+    }
+  } catch (e) {
+    console.log("PURCHASE FAILED");
+    if (!e.userCancelled) {
+      showError(e);
+    }
+  }
+}
+Solution2
+import { Purchases } from 'react-native-purchases';
+async function Buy_now() {
+  try {
+    const offerings = await Purchases.getOfferings();
+    if (offerings.all["offering_name"].availablePackages.length !== 0) {
+      const {customerInfo, productIdentifier} = await Purchases.purchasePackage(offerings.all["offering_name"].availablePackages[0]);
+      if (typeof customerInfo.entitlements.active['offering_name'] !== "undefined") {
+        console.log(":white_check_mark: PURCHASE SUCCESSFUL");
+      }
+    }
+  } catch (e) {
+    console.log("PURCHASE FAILED");
+    if (!e.userCancelled) {
+      showError(e);
+    }
+  }
+}
+Solution3
+import Purchases from 'react-native-purchases';
+async function Buy_now() {
+  try {
+    // Get offerings
+    const offerings = await Purchases.getOfferings();
+    // Check if the desired package is available
+    const packageIdentifier = "packageIdentifier_product_id";
+    const availablePackages = offerings.all["experiment_group"].availablePackages;
+    if (availablePackages.length !== 0) {
+      // Display packages for sale (you can customize this part based on your UI)
+      // For simplicity, let's assume you want to purchase the first available package
+      const selectedPackage = availablePackages[0];
+      // Make the purchase
+      const { customerInfo, productIdentifier } = await Purchases.purchasePackage(selectedPackage);
+      // Check if the entitlement is active
+      const entitlementIdentifier = "entitlement_name";
+      if (customerInfo.entitlements.active[entitlementIdentifier] !== undefined) {
+        console.log(":white_check_mark: PURCHASE SUCCESSFUL");
+        // Do something after a successful purchase
+      }
+    }
+  } catch (error) {
+    if (!error.userCancelled) {
+      console.error("PURCHASE FAILED", error);
+      // Handle error (show an error message, etc.)
+    }
+  }
+}
+*/
+
   return (
     <ScrollView style={styles.backgroundColor}>
       {/* <View style={styles.page}>
@@ -144,14 +255,13 @@ const Account = ({route}) => {
          {subscriptionActive ? 'Active' : 'Not Active'}
        </Text>
        <CustomButton text="Delete Account" onPress={() => navigation.navigate('DeleteAccountScreen')} />
-
- 
-       You should always give users the option to restore purchases to connect their purchase to their current app user ID
        <CustomButton text="Log Out" onPress={handleLogout} />
        
      </View> */}
+
       <View style={styles.container}>
         <View style={styles.row}>
+        {isSubscribed && (
           <View style={styles.alphaLogoContainer}>
             <Image
               source={require('../../assets/images/account/alphalogo.png')}
@@ -159,9 +269,16 @@ const Account = ({route}) => {
               style={styles.image}
             />
           </View>
+        )}
           <Text style={styles.username}>
             {userEmail || 'User not available'}
           </Text>
+        </View>
+        <View>
+        <Button
+        title="Click Me"
+        onPress={Buy_now}
+        />
         </View>
         <Text style={styles.headline}>Subscription Name</Text>
         <Text style={styles.text}>
