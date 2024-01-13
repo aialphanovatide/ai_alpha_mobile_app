@@ -41,7 +41,7 @@ const TopTenGainers = () => {
   const styles = useTopTenGainersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
   const [loading, setLoading] = useState(true);
-  /*
+/*
   useEffect(() => {
     const fetchTopTenCoins = async () => {
       try {
@@ -55,7 +55,7 @@ const TopTenGainers = () => {
     };
     fetchTopTenCoins();
   }, []);
-  */
+     */
   return (
     <View style={styles.topTenGainersContainer}>
       <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>

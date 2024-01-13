@@ -92,9 +92,7 @@ const PackageSubscriptions = () => {
   console.log('Packages: ', packages);
 
   const handlePurchase = async pack => {
-    // console.log(
-    //   'Purchase button pressed, change this to RevenueCat purchasePackage function...',
-    // );
+
     await purchasePackage(pack);
   };
 
@@ -123,7 +121,7 @@ const PackageSubscriptions = () => {
         style={styles.purchaseButton}
         onPress={() => handlePurchase()}>
         <Text style={styles.purchaseButtonText}>Purchase</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <ScrollView style={styles.packagesContainer}>
         {packages ? (
           packages.map((item, index) => (

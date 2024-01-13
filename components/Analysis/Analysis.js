@@ -34,13 +34,13 @@ const AnalysisItem = ({id, sectionName, handleItemTouch, icon, styles}) => {
 
 const Analysis = () => {
   const styles = useAnalysisStyles();
-  const [overlayVisible, setOverlayVisible] = useState(true);
+  // const [overlayVisible, setOverlayVisible] = useState(true);
   const navigation = useNavigation();
 
-  const handleOverlayClose = () => {
-    navigation.navigate('PaywallScreen');
-    setOverlayVisible(false);
-  };
+  // const handleOverlayClose = () => {
+  //   navigation.navigate('Subscriptions');
+  //   setOverlayVisible(false);
+  // };
 
   const sections = [
     {
@@ -123,7 +123,7 @@ const Analysis = () => {
           />
         ))}
       </View>
-      <UpgradeOverlay visible={overlayVisible} onClose={handleOverlayClose} />
+      {/* <UpgradeOverlay visible={overlayVisible} onClose={handleOverlayClose} /> */}
     </ScrollView>
   );
 };

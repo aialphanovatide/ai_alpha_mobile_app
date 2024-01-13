@@ -58,7 +58,7 @@ const useAnalysisStyles = () => {
     },
     rightArrow: {
       flex: 1,
-      tintColor: theme.secondaryTextColor,
+      tintColor: theme.textColor,
     },
     analysisTitle: {
       marginHorizontal: 25,
@@ -76,6 +76,17 @@ const useAnalysisStyles = () => {
       paddingHorizontal: 10,
       paddingVertical: 25,
       backgroundColor: theme.boxesBackgroundColor,
+    },
+    messageText: {
+      padding: 20,
+      borderWidth: 1,
+      borderColor: theme.boxesBorderColor,
+      backgroundColor: theme.boxesBackgroundColor,
+      textAlign: 'center',
+      color: theme.titleColor,
+      fontSize: theme.titleFontSize,
+      alignSelf: 'center',
+      borderRadius: 5,
     },
   });
   return styles;

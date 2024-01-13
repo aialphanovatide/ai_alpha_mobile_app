@@ -117,6 +117,17 @@ const usePriceActionStyles = () => {
     row: {
       flexDirection: 'row',
     },
+    emptyMessage: {
+      marginHorizontal: '5%',
+      padding: 10,
+      fontSize: theme.responsiveFontSize,
+      color: theme.textColor,
+      borderWidth: 1,
+      borderColor: theme.textColor,
+      borderRadius: 10,
+      overflow: 'hidden',
+      textAlign: 'center',
+    },
   });
   return styles;
 };

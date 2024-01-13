@@ -65,14 +65,13 @@ const PriceAction = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState(menuData);
-  const [activeCategory, setActiveCategory] = useState(categories[0]);
-  const [activeCoins, setActiveCoins] = useState(
-    activeCategory ? activeCategory.subMenuOptions : [],
-  );
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeCoins, setActiveCoins] = useState([]);
   useEffect(() => {
+    /*
     setCoins(priceActionMock);
     setLoading(false);
-    /*
+    */
     const fetchCoinsData = async () => {
       try {
         const data = await priceActionService.getAllCoinsInfo();
@@ -85,7 +84,6 @@ const PriceAction = () => {
       }
     };
     fetchCoinsData();
-    */
   }, []);
 
   const findCoinsByCategory = (coins, category) => {
@@ -110,7 +108,6 @@ const PriceAction = () => {
   const handleActiveCoins = (coins, category) => {
     setActiveCategory(category);
     setActiveCoins(findCoinsByCategory(coins, category));
-    // console.log(activeCoins);
   };
 
   return (
@@ -140,7 +137,7 @@ const PriceAction = () => {
             // showsVerticalScrollIndicator={false}
           >
             {/* Datos de la tabla */}
-            {activeCoins &&
+            {activeCoins && activeCoins[0] !== undefined ? (
               activeCoins.map((coin, index) => (
                 <TableItem
                   key={index}
@@ -148,7 +145,14 @@ const PriceAction = () => {
                   isActive={activeCoins.includes(coin)}
                   styles={styles}
                 />
-              ))}
+              ))
+            ) : (
+              <View style={styles.dataRow}>
+                <Text style={styles.emptyMessage}>
+                  Select a Category to see the coins data
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       )}

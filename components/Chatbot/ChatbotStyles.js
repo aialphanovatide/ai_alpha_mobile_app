@@ -7,7 +7,6 @@ const useChatbotStyles = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      width: theme.width - 10,
       padding: 10,
       backgroundColor: theme.mainBackgroundColor,
       justifyContent: 'center',

@@ -27,8 +27,13 @@ const useHomeAnalysisStyles = () => {
     },
     description: {
       fontSize: theme.responsiveFontSize * 0.8,
-      color: theme.textColor
-    }
+      color: theme.textColor,
+    },
+    arrowDown: {
+      width: 15,
+      height: 15,
+      tintColor: theme.textColor,
+    },
   });
   return styles;
 };

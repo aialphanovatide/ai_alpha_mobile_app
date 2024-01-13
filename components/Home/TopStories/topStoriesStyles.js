@@ -28,7 +28,12 @@ const useTopStoriesStyles = () => {
     description: {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
-    }
+    },
+    arrowDown: {
+      width: 15,
+      height: 15,
+      tintColor: theme.textColor,
+    },
   });
   return styles;
 };

@@ -1,11 +1,13 @@
 import React from 'react';
 import {SafeAreaView, Text} from 'react-native';
 import BackButton from '../BackButton/BackButton';
-const Total3 = ({handleReturn}) => {
+import useAnalysisStyles from '../AnalysisStyles';
+const Total3 = () => {
+  const styles = useAnalysisStyles();
   return (
-    <SafeAreaView>
-      <BackButton handleReturn={handleReturn} />
-      <Text>Total3</Text>
+    <SafeAreaView style={styles.background}>
+      <BackButton />
+      <Text style={styles.messageText}>Coming soon...</Text>
     </SafeAreaView>
   );
 };

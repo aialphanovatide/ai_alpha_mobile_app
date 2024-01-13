@@ -78,8 +78,8 @@ android {
         applicationId "com.ai_alpha_mobile_app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.0.2"
+        versionCode 3
+        versionName "1.0.3"
         manifestPlaceholders = [
                 auth0Domain: 'dev-zoejuo0jssw5jiid.us.auth0.com',
                 auth0Scheme: "${applicationId}.auth0"

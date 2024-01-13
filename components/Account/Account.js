@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, Image, TouchableOpacity, Button} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import {ENTITLEMENT_ID} from '../../src/constants';
 import {
   LoginForm,
@@ -14,7 +21,7 @@ import {useUser} from '../../context/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAccountStyles from './styles';
 import ThemeButton from '../ThemeButton/ThemeButton';
-import { API_KEY } from '../../src/constants';
+import {API_KEY} from '../../src/constants';
 
 const AccountItem = ({styles, option, handleItemTouch}) => {
   return (
@@ -50,7 +57,7 @@ const Account = ({route}) => {
   const navigation = useNavigation();
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-
+  
   console.log(route);
 
   const options = [
@@ -79,9 +86,12 @@ const Account = ({route}) => {
       case 'Delete Account':
         navigation.navigate('DeleteAccountScreen');
         break;
+      case 'Subscription':
+        navigation.navigate(option.screenName);
       default:
         console.log('Option not handled:', option.name);
-    }};
+    }
+  };
 
   const getUserData = async () => {
     setIsAnonymous(await Purchases.isAnonymous());
@@ -141,8 +151,8 @@ const Account = ({route}) => {
       //Purchases.configure({apiKey: ANDROID_API_KEY});
     }
   }, []);
-console.log('Entitlement id: ', ENTITLEMENT_ID);
-async function Buy_now() {
+  console.log('Entitlement id: ', ENTITLEMENT_ID);
+  async function Buy_now() {
     try {
       // Get offerings
       const offerings = await Purchases.getOfferings();
@@ -161,7 +171,7 @@ async function Buy_now() {
           console.log(":white_check_mark: PURCHASE SUCCESSFUL");
           // Do something after a successful purchase
           setIsSubscribed(true);
-          console.log(isSubscribed)
+          console.log(isSubscribed);
         }
       }
     } catch (error) {
@@ -171,8 +181,6 @@ async function Buy_now() {
       }
     }
   }
-
-
 
   /*Solution1.
 import { Purchases } from 'react-native-purchases';
@@ -261,7 +269,7 @@ async function Buy_now() {
 
       <View style={styles.container}>
         <View style={styles.row}>
-        {isSubscribed && (
+          {isSubscribed && (
           <View style={styles.alphaLogoContainer}>
             <Image
               source={require('../../assets/images/account/alphalogo.png')}
@@ -269,13 +277,13 @@ async function Buy_now() {
               style={styles.image}
             />
           </View>
-        )}
+          )}
           <Text style={styles.username}>
             {userEmail || 'User not available'}
           </Text>
         </View>
         <View>
-        <Button
+          <Button
         title="Click Me"
         onPress={Buy_now}
         />
