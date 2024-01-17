@@ -15,7 +15,7 @@ const NoAlertsView = ({styles}) => (
     </Text>
   </View>
 );
-const GeneralAlertsView = ({route, navigation}) => {
+const Alerts = ({route, navigation}) => {
   const [botName, setBotName] = useState(null);
   const {updateActiveSubCoin, activeCoin, activeSubCoin} =
     useContext(TopMenuContext);
@@ -99,4 +99,4 @@ const GeneralAlertsView = ({route, navigation}) => {
     </SafeAreaView>
   );
 };
-export default GeneralAlertsView;
+export default Alerts;

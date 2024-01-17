@@ -9,7 +9,7 @@ import Home from '../../Home/Home';
 import Analysis from '../../Analysis/Analysis';
 import Account from '../../Account/Account';
 import Chatbot from '../../Chatbot/Chatbot';
-import Alerts from '../../Alerts/alerts';
+import Alerts from '../../Alerts/Alerts';
 import {Image, View} from 'react-native';
 import styles from './HomeScreenStyles';
 import HomeStackScreen from '../../Home/HomeStack';

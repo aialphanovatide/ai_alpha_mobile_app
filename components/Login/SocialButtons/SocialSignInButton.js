@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import { View } from 'react-native';
+import {Platform, View} from 'react-native';
 import CustomButton from '../CustomButton/CustomButton';
-import { appleAuth } from '@invertase/react-native-apple-authentication';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
 import axios from 'axios';
-import { auth0Client, auth0Domain, auth0Audience } from '../../../src/constants';
+import {auth0Client, auth0Domain, auth0Audience} from '../../../src/constants';
 import {
   GoogleSignin,
   statusCodes,
@@ -58,15 +58,17 @@ const SocialSignInButton = () => {
       console.log('Apple Auth Response:', appleAuthRequestResponse);
 
       const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user
+        appleAuthRequestResponse.user,
       );
-      
-      const { fullName, email, authorizationCode, user } = appleAuthRequestResponse;
+
+      const {fullName, email, authorizationCode, user} =
+        appleAuthRequestResponse;
       console.log('User !Email:', email);
 
       if (credentialState === appleAuth.State.AUTHORIZED) {
-        const { fullName,email, authorizationCode, user } = appleAuthRequestResponse;
-        const { familyName, givenName } = fullName || {};
+        const {fullName, email, authorizationCode, user} =
+          appleAuthRequestResponse;
+        const {familyName, givenName} = fullName || {};
         console.log('User Data:', user);
         console.log('Full Name:', fullName);
         console.log('User Email:', user?.email);
@@ -74,7 +76,8 @@ const SocialSignInButton = () => {
 
         const payload = {
           grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
-          subject_token_type: 'http://auth0.com/oauth/token-type/apple-authz-code',
+          subject_token_type:
+            'http://auth0.com/oauth/token-type/apple-authz-code',
           scope: 'read:appointments openid profile email email_verified',
           audience: auth0Audience,
           subject_token: authorizationCode,
@@ -87,15 +90,18 @@ const SocialSignInButton = () => {
             email,
           }),
         };
-  
+
         console.log('Auth0 Request Payload:', payload);
-  
-        const auth0Response = await axios.post(`https://${auth0Domain}/oauth/token`, payload);
-  
+
+        const auth0Response = await axios.post(
+          `https://${auth0Domain}/oauth/token`,
+          payload,
+        );
+
         console.log('Auth0 Response:', auth0Response.data);
         navigation.navigate('HomeScreen');
         console.log('User3 Email:', auth0Response.email);
-        console.log("After navigation")
+        console.log('After navigation');
 
         return {
           message: 'success',
@@ -125,15 +131,15 @@ const SocialSignInButton = () => {
   return (
     <View>
       <CustomButton
-        text="Sign In with Google"
-        onPress={() => signInWithGoogle()}
-        type="GOOGLE"
-        disabled={user !== null}
-      />
-      <CustomButton
         text="Sign In with Apple"
         onPress={() => signInWithApple()}
         type="APPLE"
+        disabled={user !== null}
+      />
+      <CustomButton
+        text="Sign In with Google"
+        onPress={() => signInWithGoogle()}
+        type="GOOGLE"
         disabled={user !== null}
       />
     </View>
