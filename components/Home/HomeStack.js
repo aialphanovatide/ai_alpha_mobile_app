@@ -95,7 +95,7 @@ const TopmenuScreen = () => {
       initialRouteName={'SubMenuScreen'}
       backBehavior="initialRoute"
       screenOptions={{
-        header: () => <SubMenu />,
+        header: () => <SubMenu isAlertsMenu={false} />,
         headerStyle: {
           backgroundColor: theme.mainBackgroundColor,
         },
@@ -116,7 +116,7 @@ const HomeStackScreen = () => {
     <HomeStack.Navigator
       initialRouteName="InitialHome"
       backBehavior="initialRoute"
-      screenOptions={{header: () => <TopMenu />}}>
+      screenOptions={{header: () => <TopMenu isAlertsMenu={false} />}}>
       <HomeStack.Screen
         name="InitialHome"
         component={Home}

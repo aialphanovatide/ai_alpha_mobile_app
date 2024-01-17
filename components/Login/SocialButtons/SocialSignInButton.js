@@ -28,11 +28,11 @@ const SocialSignInButton = () => {
       console.log('User Info --> ', userInfo);
       /*
       // Exchange the token with Auth0
-      const auth0Response = await auth0.auth.exchange({
-        subject_token: userInfo.idToken,
-        subject_token_type: 'http://auth0.com/oauth/token-type/google-oauth2',
-        audience: '647f91b8c76e73342e725c9a', 
-        scope: 'openid profile email', 
+      const auth0Response = await auth0.auth.exchangeNativeSocial({
+        subjectToken: userInfo.idToken,
+        subjectTokenType: 'http://auth0.com/oauth/token-type/google-oauth2',
+        audience: '647f91b8c76e73342e725c9a',
+        scope: 'openid profile email',
       });
 
       console.log('Auth0 Token:', auth0Response.accessToken);

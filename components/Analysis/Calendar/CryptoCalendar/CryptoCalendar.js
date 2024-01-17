@@ -168,13 +168,13 @@ const CryptoCalendar = ({selectedInterval}) => {
           <Loader />
         </View>
       ) : (
-        <ScrollView>
+        <View style={styles.container}>
           <CryptoFilter
             options={options}
             currentFilter={currentFilter && currentFilter}
             handleOptionTouch={handleOptionTouch}
           />
-          <View style={styles.container}>
+          <ScrollView style={styles.eventsContainer}>
             {events.length === 0 ? (
               <View style={styles.messageContainer}>
                 <Text style={styles.emptyEventsMessage}>
@@ -191,8 +191,8 @@ const CryptoCalendar = ({selectedInterval}) => {
                 />
               ))
             )}
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       )}
     </View>
   );

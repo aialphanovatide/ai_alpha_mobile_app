@@ -18,7 +18,7 @@ const useCustomInputStyles = () => {
     },
     input: {
       fontSize: theme.responsiveFontSize,
-      color: theme.titleColor,
+      color: theme.inputColor,
     },
   });
 

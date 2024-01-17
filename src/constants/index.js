@@ -11,6 +11,8 @@ export const GOOGLE_CLIENT_ANDROID_ID =
 export const GOOGLE_CLIENT_WEB_ID =
   '689854850545-9j38s9b89c7utbg2n6g78b66k9unusqv.apps.googleusercontent.com';
 export const GOOGLE_CLIENT_SECRET = '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';
+export const REVENUECAT_ANDROID_API_KEY = 'goog_jUpUsGqcuQSISWJDDXyefnMVWFH';
+export const REVENUECAT_IOS_API_KEY = 'appl_HblzZuTEedJuLQDVVgdOyoGZCxW';
 
 /*
  The entitlement ID from the RevenueCat dashboard that is activated upon successful in-app purchase for the duration of the purchase.

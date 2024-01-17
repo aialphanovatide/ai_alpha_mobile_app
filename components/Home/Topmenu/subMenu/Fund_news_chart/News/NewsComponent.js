@@ -26,7 +26,14 @@ const NewsComponent = ({route}) => {
   };
 
   useEffect(() => {
-    setBotname(activeSubCoin || activeCoin.coin_bots[0].bot_name);
+    if (
+      activeSubCoin &&
+      activeSubCoin !== undefined &&
+      activeCoin &&
+      activeCoin !== undefined
+    ) {
+      setBotname(activeSubCoin || activeCoin.coin_bots[0].bot_name);
+    }
   }, [activeCoin, activeSubCoin]);
 
   useEffect(() => {

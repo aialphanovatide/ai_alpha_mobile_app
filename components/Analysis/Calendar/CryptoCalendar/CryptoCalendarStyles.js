@@ -20,11 +20,14 @@ const useCryptoCalendarStyles = () => {
       alignItems: 'center',
       justifyContent: 'center',
     },
+    eventsContainer: {
+      flex: 1,
+    },
     calendarItem: {
       flex: 1,
       display: 'flex',
       flexDirection: 'row',
-      marginHorizontal: 5,
+      marginHorizontal: '5%',
       marginVertical: 5,
       padding: 10,
       backgroundColor: theme.secondaryBoxesBgColor,
@@ -63,10 +66,10 @@ const useCryptoCalendarStyles = () => {
     },
     date: {
       position: 'absolute',
-      right: 5,
+      right: '10%',
       flexDirection: 'row',
     },
-    partnerShip: {
+    tags: {
       position: 'absolute',
       left: 5,
       flexDirection: 'row',
@@ -92,7 +95,7 @@ const useCryptoCalendarStyles = () => {
       width: '90%',
     },
     cryptoFilter: {
-      flex: 1,
+      minHeight: 80,
       flexDirection: 'row',
       margin: 10,
       paddingVertical: 5,

@@ -32,10 +32,11 @@ const MenuIcon = ({color, iconSource}) => {
 };
 
 const HomeScreen = () => {
-  const {updateActiveCoin} = useContext(TopMenuContext);
+  const {updateActiveCoin, updateActiveSubCoin, activeCoin, activeSubCoin} =
+    useContext(TopMenuContext);
   const {theme} = useContext(AppThemeContext);
   return (
-    <GestureHandlerRootView style={{flex: 1,}}>
+    <GestureHandlerRootView style={{flex: 1}}>
       <Tab.Navigator
         initialRouteName={Home}
         screenOptions={{
@@ -59,6 +60,7 @@ const HomeScreen = () => {
           listeners={{
             tabPress: e => {
               updateActiveCoin({});
+              updateActiveSubCoin(null);
             },
           }}
           component={HomeStackScreen}
@@ -91,6 +93,13 @@ const HomeScreen = () => {
                 }
               />
             ),
+          }}
+          listeners={{
+            focus: e => {
+              if (activeSubCoin && (!activeCoin || activeCoin === undefined)) {
+                updateActiveSubCoin(null);
+              }
+            },
           }}
         />
         <Tab.Screen

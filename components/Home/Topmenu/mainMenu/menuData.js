@@ -4,14 +4,32 @@ const menuData = [
     icon: 'BTC',
     subMenuOptions: null,
     isActive: true,
-    iconImage: require('../../../../assets/images/topMenu/Inactive/Bitcoin.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/Active/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/Bitcoin.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/Dark/Active/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/bitcoin.png'),
+      },
+    },
   },
   {
     id: 2,
     icon: 'ETH',
     subMenuOptions: null,
     isActive: true,
-    iconImage: require('../../../../assets/images/topMenu/Inactive/Ethereum.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/Active/ethereum.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/Ethereum.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/Dark/Active/ethereum.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/ethereum.png'),
+      },
+    },
   },
   {
     id: 3,
@@ -33,7 +51,16 @@ const menuData = [
         imageUri: 'https://cdn-icons-png.flaticon.com/512/3393/3393948.png',
       },
     ],
-    iconImage: require('../../../../assets/images/topMenu/Inactive/RootLink.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/Active/rootlink.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/RootLink.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/Dark/Active/rootlink.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/rootlink.png'),
+      },
+    },
     isActive: false,
   },
   {
@@ -57,7 +84,16 @@ const menuData = [
       },
     ],
     isActive: true,
-    iconImage: require('../../../../assets/images/topMenu/Inactive/BaseBlock.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/Active/baseblock.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/BaseBlock.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/Dark/Active/baseblock.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/baseblock.png'),
+      },
+    },
   },
   {
     id: 5,
@@ -80,7 +116,16 @@ const menuData = [
       },
     ],
     isActive: false,
-    iconImage: require('../../../../assets/images/topMenu/Inactive/CoreChain.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/Active/corechain.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/CoreChain.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/Dark/Active/corechain.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/corechain.png'),
+      },
+    },
   },
   {
     id: 6,
@@ -103,7 +148,16 @@ const menuData = [
       },
     ],
     isActive: true,
-    iconImage: require('../../../../assets/bitcoin.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+      },
+    },
   },
   {
     id: 7,
@@ -126,7 +180,16 @@ const menuData = [
       },
     ],
     isActive: false,
-    iconImage: require('../../../../assets/bitcoin.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+      },
+    },
   },
   {
     id: 8,
@@ -149,7 +212,16 @@ const menuData = [
       },
     ],
     isActive: false,
-    iconImage: require('../../../../assets/images/topMenu/Inactive/BoostLayer.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/Active/boostlayer.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/BoostLayer.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/Dark/Active/boostlayer.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/boostlayer.png'),
+      },
+    },
   },
   {
     id: 9,
@@ -172,11 +244,20 @@ const menuData = [
       },
     ],
     isActive: false,
-    iconImage: require('../../../../assets/bitcoin.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+      },
+    },
   },
   {
     id: 10,
-    icon: 'DEFI',
+    icon: 'NT',
     subMenuOptions: [
       {
         id: 101,
@@ -195,11 +276,20 @@ const menuData = [
       },
     ],
     isActive: false,
-    iconImage: require('../../../../assets/bitcoin.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/Active/NexTrade.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/NexTrade.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/Dark/Active/NexTrade.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/NexTrade.png'),
+      },
+    },
   },
   {
     id: 11,
-    icon: 'DEFI P',
+    icon: 'CS',
     subMenuOptions: [
       {
         id: 111,
@@ -218,11 +308,20 @@ const menuData = [
       },
     ],
     isActive: false,
-    iconImage: require('../../../../assets/bitcoin.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/Active/CycleSwap.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/CycleSwap.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/Dark/Active/CycleSwap.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/CycleSwap.png'),
+      },
+    },
   },
   {
     id: 12,
-    icon: 'DEFI O',
+    icon: 'DF',
     subMenuOptions: [
       {
         id: 121,
@@ -241,7 +340,16 @@ const menuData = [
       },
     ],
     isActive: false,
-    iconImage: require('../../../../assets/bitcoin.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/Active/DiverseFi.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/DiverseFi.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/Dark/Active/DiverseFi.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/DiverseFi.png'),
+      },
+    },
   },
   {
     id: 13,
@@ -264,7 +372,16 @@ const menuData = [
       },
     ],
     isActive: false,
-    iconImage: require('../../../../assets/bitcoin.png'),
+    iconImage: {
+      light: {
+        active: require('../../../../assets/images/topMenu/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+      },
+      dark: {
+        active: require('../../../../assets/images/topMenu/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+      },
+    },
   },
 ];
 

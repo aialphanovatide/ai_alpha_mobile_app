@@ -24,6 +24,14 @@ const useAnalysisStyles = () => {
       marginHorizontal: 15,
       padding: 15,
       backgroundColor: theme.boxesBackgroundColor,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 1,
+        height: 1,
+      },
+      shadowOpacity: 0.125,
+      shadowRadius: 1,
+      elevation: 2,
     },
     analysisIconContainer: {
       width: 30,
@@ -87,6 +95,7 @@ const useAnalysisStyles = () => {
       fontSize: theme.titleFontSize,
       alignSelf: 'center',
       borderRadius: 5,
+      
     },
   });
   return styles;

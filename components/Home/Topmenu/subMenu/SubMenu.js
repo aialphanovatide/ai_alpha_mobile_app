@@ -6,22 +6,24 @@ import {CategoriesContext} from '../../../../context/categoriesContext';
 import {useNavigation} from '@react-navigation/native';
 import useSubMenuStyles from './SubMenuStyles';
 
-const SubMenu = ({coinBotId = null}) => {
+const SubMenu = ({coinBotId = null, isAlertsMenu}) => {
   const {activeCoin, activeSubCoin, updateActiveSubCoin} =
     useContext(TopMenuContext);
   const navigation = useNavigation();
   const styles = useSubMenuStyles();
-  
+
   const handleCoinPress = coin => {
     updateActiveSubCoin(coin);
-    navigation.navigate('SubMenuScreen', {
-      screen: 'Charts',
-      params: {
-        interval: '1h',
-        symbol: `${coin}USDT`,
-        coinBot: coin,
-      },
-    });
+    if (!isAlertsMenu) {
+      navigation.navigate('SubMenuScreen', {
+        screen: 'Charts',
+        params: {
+          interval: '1h',
+          symbol: `${coin}USDT`,
+          coinBot: coin,
+        },
+      });
+    }
   };
 
   return (

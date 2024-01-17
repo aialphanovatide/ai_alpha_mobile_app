@@ -10,63 +10,8 @@ import {
 import usePackageSubscriptionStyles from './PackageSubscriptionStyles';
 import Loader from '../../Loader/Loader';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
-
-const packages_mock = [
-  {
-    title: 'Bitcoin',
-    price: 50,
-    description: `- Lorem ipsum dolor sit amet
-    - Consectetuer adipiscing elit, sed diam.`,
-  },
-  {
-    title: 'Ethereum',
-    price: 50,
-    description: `- Lorem ipsum dolor sit amet
-    - Consectetuer adipiscing elit, sed diam.`,
-  },
-  {
-    title: "Layer 0's",
-    price: 50,
-    description: `- Lorem ipsum dolor sit amet
-    - Consectetuer adipiscing elit, sed diam.`,
-  },
-  {
-    title: 'Layer 1: Large Market Cap',
-    price: 50,
-    description: `- Lorem ipsum dolor sit amet
-    - Consectetuer adipiscing elit, sed diam.`,
-  },
-  {
-    title: 'Layer 1: Mid Market Cap',
-    price: 50,
-    description: `- Lorem ipsum dolor sit amet
-    - Consectetuer adipiscing elit, sed diam.`,
-  },
-  {
-    title: 'Cross Border Payments',
-    price: 50,
-    description: `- Lorem ipsum dolor sit amet
-    - Consectetuer adipiscing elit, sed diam.`,
-  },
-  {
-    title: 'LSDs',
-    price: 50,
-    description: `- Lorem ipsum dolor sit amet
-    - Consectetuer adipiscing elit, sed diam.`,
-  },
-  {
-    title: 'Layer 2s',
-    price: 50,
-    description: `- Lorem ipsum dolor sit amet
-    - Consectetuer adipiscing elit, sed diam.`,
-  },
-  {
-    title: 'Oracles',
-    price: 50,
-    description: `- Lorem ipsum dolor sit amet
-    - Consectetuer adipiscing elit, sed diam.`,
-  },
-];
+import BackButton from '../../Analysis/BackButton/BackButton';
+import {useNavigation} from '@react-navigation/core';
 
 const SubscriptionItem = ({styles, item, onItemPress, pack}) => {
   return (
@@ -74,7 +19,9 @@ const SubscriptionItem = ({styles, item, onItemPress, pack}) => {
       <View style={styles.itemContainer}>
         <View style={styles.row}>
           <Text style={[styles.left, styles.title]}>{item.title}</Text>
-          <Text style={[styles.right, styles.title]}>${item.price}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={[styles.left, styles.title]}>{item.priceString}</Text>
         </View>
         <View style={styles.itemDescriptionContainer}>
           <Text style={styles.itemDescription}>{item.description}</Text>
@@ -86,24 +33,19 @@ const SubscriptionItem = ({styles, item, onItemPress, pack}) => {
 
 const PackageSubscriptions = () => {
   const styles = usePackageSubscriptionStyles();
-  // const [packages, setPackages] = useState(packages_mock);
+  const navigation = useNavigation();
   const {packages, purchasePackage} = useContext(RevenueCatContext);
 
   console.log('Packages: ', packages);
 
   const handlePurchase = async pack => {
-
     await purchasePackage(pack);
-  };
-
-  const onItemPress = item => {
-    console.log(
-      `Selected the ${item.title} subscription. Configure this with the RevenueCat purchasePackage function.`,
-    );
+    navigation.goBack();
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <BackButton />
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
@@ -117,13 +59,13 @@ const PackageSubscriptions = () => {
         culpa ea provident. Excepturi corporis ullam eaque? Earum, modi
         recusandae?
       </Text>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.purchaseButton}
         onPress={() => handlePurchase()}>
         <Text style={styles.purchaseButtonText}>Purchase</Text>
       </TouchableOpacity> */}
       <ScrollView style={styles.packagesContainer}>
-        {packages ? (
+        {packages && packages.length >= 0 ? (
           packages.map((item, index) => (
             <SubscriptionItem
               key={index}
