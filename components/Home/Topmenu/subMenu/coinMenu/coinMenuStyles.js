@@ -27,8 +27,16 @@ const useCoinMenuStyles = () => {
       borderColor: theme.inactiveColor,
       height: 30,
     },
-    activeButton: {
+    firstActiveButton: {
+      backgroundColor: theme.activePurple,
+      color: theme.activeWhite,
+    },
+    secondActiveButton: {
       backgroundColor: theme.activePink,
+      color: theme.activeWhite,
+    },
+    thirdActiveButton: {
+      backgroundColor: theme.activeBlack,
       color: theme.activeWhite,
     },
     buttonContainer: {

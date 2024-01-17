@@ -6,7 +6,7 @@ import {TopMenuContext} from '../../../../context/topMenuContext';
 import {useNavigation} from '@react-navigation/core';
 import {CategoriesContext} from '../../../../context/categoriesContext';
 
-const TopMenu = () => {
+const TopMenu = ({isAlertsMenu}) => {
   const styles = useTopMenuStyles();
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const {categories} = useContext(CategoriesContext);
@@ -15,19 +15,21 @@ const TopMenu = () => {
   const handleButtonPress = category => {
     updateActiveCoin(category);
     updateActiveSubCoin(category.coin_bots[0].bot_name);
-    navigation.navigate('TopMenuScreen', {
-      screen: 'SubMenuScreen',
-      params: {
-        screen: 'Charts',
+    console.log(category);
+    if (!isAlertsMenu) {
+      navigation.navigate('TopMenuScreen', {
+        screen: 'SubMenuScreen',
         params: {
-          interval: '1h',
-          symbol: `${category.coin_bots[0].bot_name}USDT`,
-          coinBot: category.coin_bots[0].bot_name,
+          screen: 'Charts',
+          params: {
+            interval: '1h',
+            symbol: `${category.coin_bots[0].bot_name}USDT`,
+            coinBot: category.coin_bots[0].bot_name,
+          },
         },
-      },
-    });
+      });
+    }
   };
-
   return (
     <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>

@@ -24,6 +24,14 @@ const useAnalysisStyles = () => {
       marginHorizontal: 15,
       padding: 15,
       backgroundColor: theme.boxesBackgroundColor,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 1,
+        height: 1,
+      },
+      shadowOpacity: 0.125,
+      shadowRadius: 1,
+      elevation: 2,
     },
     analysisIconContainer: {
       width: 30,
@@ -58,7 +66,7 @@ const useAnalysisStyles = () => {
     },
     rightArrow: {
       flex: 1,
-      tintColor: theme.secondaryTextColor,
+      tintColor: theme.textColor,
     },
     analysisTitle: {
       marginHorizontal: 25,
@@ -76,6 +84,18 @@ const useAnalysisStyles = () => {
       paddingHorizontal: 10,
       paddingVertical: 25,
       backgroundColor: theme.boxesBackgroundColor,
+    },
+    messageText: {
+      padding: 20,
+      borderWidth: 1,
+      borderColor: theme.boxesBorderColor,
+      backgroundColor: theme.boxesBackgroundColor,
+      textAlign: 'center',
+      color: theme.titleColor,
+      fontSize: theme.titleFontSize,
+      alignSelf: 'center',
+      borderRadius: 5,
+      
     },
   });
   return styles;

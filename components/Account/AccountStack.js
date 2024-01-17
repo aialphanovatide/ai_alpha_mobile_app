@@ -12,7 +12,7 @@ const AccountScreen = () => {
       screenOptions={{header: () => null, headerShown: false}}>
       <AccountStack.Screen name="AccountMain" component={Account} />
       <AccountStack.Screen
-        name="Subscription"
+        name="Subscriptions"
         component={PackageSubscriptions}
       />
     </AccountStack.Navigator>

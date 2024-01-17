@@ -1,15 +1,25 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Image, Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import useCryptoCalendarStyles from './CryptoCalendarStyles';
+import {AppThemeContext} from '../../../../context/themeContext';
 
 const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
+  const {isDarkMode} = useContext(AppThemeContext);
   return (
     <TouchableOpacity onPress={() => handleOptionTouch(option)}>
       <View style={[styles.cryptoItem, active && styles.activeCryptoItem]}>
         <View style={styles.cryptoIconContainer}>
           <Image
             style={styles.cryptoIcon}
-            source={option.iconImage}
+            source={
+              isDarkMode
+                ? active
+                  ? option.iconImage.dark.active
+                  : option.iconImage.dark.inactive
+                : active
+                ? option.iconImage.light.active
+                : option.iconImage.light.inactive
+            }
             resizeMode={'contain'}
           />
         </View>

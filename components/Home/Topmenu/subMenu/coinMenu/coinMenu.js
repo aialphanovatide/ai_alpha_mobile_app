@@ -2,18 +2,23 @@ import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import useCoinMenuStyles from './coinMenuStyles';
 
-
 const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
+  const activeButtonColors = [
+    'firstActiveButton',
+    'secondActiveButton',
+    'thirdActiveButton',
+  ];
   const styles = useCoinMenuStyles();
   return subCoins?.length > 1 ? (
     <View style={styles.menu}>
       <View style={styles.subMenu}>
-        {subCoins.map(coin => (
+        {subCoins.map((coin, index) => (
           <TouchableOpacity
             key={coin.bot_id}
             style={[
               styles.subMenuButton,
-              activeSubCoin === coin.bot_name && styles.activeButton,
+              activeSubCoin === coin.bot_name &&
+                styles[activeButtonColors[index]],
             ]}
             onPress={() => {
               console.log('activeSubcoin: ', coin.bot_name);

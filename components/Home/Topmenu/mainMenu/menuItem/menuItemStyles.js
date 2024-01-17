@@ -1,27 +1,27 @@
-import { StyleSheet } from 'react-native';
-
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 5
-  }, 
+    marginBottom: 5,
+  },
   button: {
     minWidth: 60,
     minHeight: 60,
     borderRadius: 30,
-    backgroundColor: 'gray',
+    // backgroundColor: '#B8BBBC',
     alignItems: 'center',
     justifyContent: 'center',
     margin: 10,
-    shadowColor: '#2c3e50',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 3,
+    // shadowColor: '#2c3e50',
+    // shadowOffset: { 
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 3,
+    overflow: 'hidden',
   },
   buttonText: {
     maxWidth: 60,
@@ -34,18 +34,9 @@ const styles = StyleSheet.create({
     color: 'gray',
     backgroundColor: '#adb5bd',
   },
-  lockIcon: {
-    zIndex: 1,
-    margin: 0,
-    padding: 0,
-  },
   imageIcon: {
     flex: 1,
-  }
+  },
 });
 
-
-  
-  
-  
 export default styles;

@@ -5,23 +5,57 @@ import {AppThemeContext} from '../../context/themeContext';
 const useAlertsStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
-    container: {
+    mainContainer: {
       flex: 1,
-      width: theme.width - 10,
-      padding: 10,
       backgroundColor: theme.mainBackgroundColor,
+    },
+    title: {
+      fontSize: theme.titleFontSize,
+      fontWeight: 'bold',
+      color: theme.titleColor,
+      alignSelf: 'flex-start',
+      margin: 15,
+    },
+    noAlertsContainer: {
+      flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
     },
-    messageText: {
-      padding: 20,
-      borderWidth: 1,
-      borderColor: theme.boxesBorderColor,
-      backgroundColor: theme.boxesBackgroundColor,
+    noAlerts: {
       textAlign: 'center',
-      color: theme.titleColor,
+      textAlignVertical: 'center',
       fontSize: theme.titleFontSize,
+      color: theme.titleColor,
+      alignSelf: 'center'
+    },
+    itemsContainer: {
+      flexDirection: 'row',
+      margin: 12,
+      padding: 15,
       borderRadius: 5,
+      elevation: 1,
+      backgroundColor: theme.boxesBackgroundColor,
+    },
+    leftContent: {
+      flex: 3,
+      display: 'row'
+    },
+    itemsTitle: {
+      fontWeight: 'bold',
+      color: theme.textColor,
+      fontSize: theme.responsiveFontSize,
+    },
+    subtitle: {
+      marginTop: 10,
+      color: theme.textColor,
+    },
+    rightContent: {
+      flex: 1,
+    },
+    rightTitle: {
+      fontWeight: 'bold',
+      color: theme.textColor,
+      fontSize: theme.responsiveFontSize * 0.8,
     },
   });
   return styles;

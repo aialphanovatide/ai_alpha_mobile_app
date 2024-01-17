@@ -7,8 +7,11 @@ const useCalendarStyles = () => {
     container: {
       flex: 1,
       width: theme.width,
-      padding: 5,
+      padding: 20,
       backgroundColor: theme.mainBackgroundColor,
+    },
+    flex: {
+      flex: 1,
     },
     titleContainer: {
       marginVertical: 10,

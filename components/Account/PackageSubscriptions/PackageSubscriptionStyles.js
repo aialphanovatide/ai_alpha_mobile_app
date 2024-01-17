@@ -23,7 +23,7 @@ const usePackageSubscriptionStyles = () => {
       flex: 1,
     },
     description: {
-      color: theme.subscriptions.text,
+      color: theme.subscriptions.title,
       fontSize: theme.responsiveFontSize * 0.9,
       textAlign: 'center',
       marginVertical: 10,
@@ -46,11 +46,19 @@ const usePackageSubscriptionStyles = () => {
       marginVertical: 5,
       padding: 10,
       backgroundColor: theme.subscriptions.boxesBgColor,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 2,
+      elevation: 2,
     },
     row: {
       position: 'relative',
       flexDirection: 'row',
-      marginVertical: 5,
+      marginVertical: 15,
     },
     left: {
       position: 'absolute',
@@ -64,21 +72,22 @@ const usePackageSubscriptionStyles = () => {
     },
     title: {
       color: theme.subscriptions.text,
-      fontSize: theme.titleFontSize * 0.9,
+      fontSize: theme.titleFontSize * 0.8,
     },
     itemDescriptionContainer: {
       marginTop: 20,
       marginBottom: 2.5,
       padding: 2.5,
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'center',
     },
     itemDescription: {
       color: theme.subscriptions.text,
-      fontSize: theme.responsiveFontSize * 0.8,
+      fontSize: theme.responsiveFontSize * 0.675,
+      textAlign: 'left',
     },
     packagesContainer: {
-      width: theme.width * 0.85,
+      width: theme.width * 0.9125,
       marginVertical: 10,
       paddingHorizontal: 10,
     }

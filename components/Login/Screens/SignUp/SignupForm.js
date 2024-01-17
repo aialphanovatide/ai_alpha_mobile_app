@@ -91,31 +91,23 @@ const SignupForm = () => {
       setSignupSuccessful(true);
       navigation.navigate('HomeScreen');
     } catch (error) {
-      if (error.response) {
-        console.error('Signup error', error.response.data);
-        alert(
-          'Signup failed: ' + error.response.data.error_description ||
-            error.response.data.message,
-        );
-      } else if (error.request) {
-        console.error('Signup error', error.request);
-        alert('No response received.');
-      } else {
-        console.error('Error', error.message);
-        alert('Error: ' + error.message);
-      }
+      console.log('Signup error: ', error);
+      // if (error.response) {
+      //   console.error('Signup error', error.response.data);
+      //   alert(
+      //     'Signup failed: ' + error.response.data.error_description ||
+      //       error.response.data.message,
+      //   );
+      // } else if (error.request) {
+      //   console.error('Signup error', error.request);
+      //   alert('No response received.');
+      // } else {
+      //   console.error('Error', error.message);
+      //   alert('Error: ' + error.message);
+      // }
     }
+    navigation.navigate('HomeScreen');
   };
-  /*
-    if (signupSuccessful) {
-        return (
-            <View style={styles.successContainer}>
-                <Image source={GreenTick} style={styles.tickImage} />
-                <Text style={styles.successText}>Sign Up Successful</Text>
-            </View>
-        );
-    }
-    */
 
   return (
     <ScrollView style={styles.scrollview} showsVerticalScrollIndicator={false}>
@@ -159,7 +151,7 @@ const SignupForm = () => {
           disabled={!isFormValid}
         />
         <Separator />
-        <SocialSignUpButton />
+        {/* <SocialSignUpButton /> */}
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already have an account? </Text>
           <TouchableOpacity onPress={onSignInPressed}>

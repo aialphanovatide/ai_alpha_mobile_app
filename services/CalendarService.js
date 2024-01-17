@@ -89,7 +89,8 @@ async function getEventsData(daysInterval) {
     }
 
     const data = await response.json();
-    return data.filter(event => event.important === true);
+    // return data.filter(event => event.important === true);
+    return data;
   } catch (error) {
     console.error('Error:', error.message);
     throw error;

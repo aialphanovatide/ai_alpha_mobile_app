@@ -14,6 +14,8 @@ export const GOOGLE_CLIENT_SECRET = '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';
 export const auth0Client = 'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg';
 export const auth0Domain = 'dev-zoejuo0jssw5jiid.us.auth0.com';
 export const auth0Audience = 'https://aialpha-applelogin-api-url';
+export const REVENUECAT_ANDROID_API_KEY = 'goog_jUpUsGqcuQSISWJDDXyefnMVWFH';
+export const REVENUECAT_IOS_API_KEY = 'appl_HblzZuTEedJuLQDVVgdOyoGZCxW';
 
 /*
  The entitlement ID from the RevenueCat dashboard that is activated upon successful in-app purchase for the duration of the purchase.

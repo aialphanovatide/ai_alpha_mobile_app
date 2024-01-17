@@ -78,6 +78,17 @@ const TopStories = () => {
         title={stories ? stories[0].summary : 'Loading'}
         description={stories ? stories[0].summary : 'Loading'}
         descriptionStyle={styles.description}
+        right={() => (
+          <Image
+            source={
+              expanded
+                ? require('../../../assets/images/arrow-up.png')
+                : require('../../../assets/images/arrow-down.png')
+            }
+            style={styles.arrowDown}
+            resizeMode="contain"
+          />
+        )}
         left={() => (
           <Image
             source={{

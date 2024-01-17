@@ -3,10 +3,20 @@ import {List} from 'react-native-paper';
 import AnalysisItem from './analysisItem/analysisItem';
 import useHomeAnalysisStyles from './analysisStyles';
 import {Image} from 'react-native';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
+import {useNavigation} from '@react-navigation/core';
 
 const Analysis = () => {
   const styles = useHomeAnalysisStyles();
   const [expanded, setExpanded] = React.useState(false);
+  // const [overlayVisible, setOverlayVisible] = React.useState(true);
+  // const navigation = useNavigation();
+
+  // const handleOverlayClose = () => {
+  //   navigation.navigate('Account');
+  //   setOverlayVisible(false);
+  // };
+
   const handlePress = () => setExpanded(!expanded);
 
   const stories = [
@@ -50,6 +60,17 @@ const Analysis = () => {
         left={() => (
           <Image source={{uri: stories[0].image}} style={styles.imageStyle} />
         )}
+        right={() => (
+          <Image
+            source={
+              expanded
+                ? require('../../../assets/images/arrow-up.png')
+                : require('../../../assets/images/arrow-down.png')
+            }
+            style={styles.arrowDown}
+            resizeMode="contain"
+          />
+        )}
         expanded={expanded}
         onPress={handlePress}>
         {stories.map(story => (
@@ -61,6 +82,7 @@ const Analysis = () => {
           />
         ))}
       </List.Accordion>
+      {/* <UpgradeOverlay visible={overlayVisible} onClose={handleOverlayClose} /> */}
     </List.Section>
   );
 };

@@ -59,6 +59,14 @@ const useAccountStyles = () => {
       marginHorizontal: 15,
       padding: 15,
       backgroundColor: theme.boxesBackgroundColor,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 2,
+      elevation: 3,
       alignItems: 'center'
     },
     itemLogoContainer: {
