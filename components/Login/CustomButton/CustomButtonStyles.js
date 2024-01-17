@@ -46,7 +46,7 @@ const useCustomButtonStyles = () => {
       borderWidth: 1,
       borderColor: theme.orange,
     },
-    container_FACEBOOK: {
+    container_APPLE: {
       width: 220,
       backgroundColor: 'transparent',
       borderWidth: 1,

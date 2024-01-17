@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, Pressable, Appearance} from 'react-native';
 import GoogleLogo from './GoogleLogo';
-import FacebookLogo from './FacebookLogo';
+import AppleLogo from './AppleLogo';
 import useCustomButtonStyles from './CustomButtonStyles';
 
 const CustomButton = ({onPress, text, type = 'PRIMARY', disabled}) => {
@@ -12,8 +12,8 @@ const CustomButton = ({onPress, text, type = 'PRIMARY', disabled}) => {
   if (type === 'GOOGLE') {
     logo = <GoogleLogo style={styles.logo} />;
   }
-  if (type === 'FACEBOOK') {
-    logo = <FacebookLogo style={styles.logo} />;
+  if (type === 'APPLE') {
+    logo = <AppleLogo style={styles.logo} />;
   }
   return (
     <Pressable

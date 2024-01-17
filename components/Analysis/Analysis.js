@@ -123,7 +123,7 @@ const Analysis = () => {
           />
         ))}
       </View>
-      <UpgradeOverlay visible={overlayVisible} onClose={handleOverlayClose} />
+      {/*<UpgradeOverlay visible={overlayVisible} onClose={handleOverlayClose} />*/}
     </ScrollView>
   );
 };

@@ -69,16 +69,7 @@ const SignupForm = () => {
   };
   const onRegisterPressed = async () => {
     console.log('Here!');
-    const purchaserInfo = await Purchases.getCustomerInfo();
-    console.log('After Here!');
-    if (
-      typeof purchaserInfo.entitlements.active[ENTITLEMENT_ID] !== 'undefined'
-    ) {
-      console.log('Passed');
-    } else {
-      console.log('not passed');
-      navigation.navigate('PaywallScreen');
-    }
+    
 
     try {
       console.log('Before Signup');
@@ -98,6 +89,7 @@ const SignupForm = () => {
       console.log('Signup successful', response.data);
       setUserEmail(email);
       setSignupSuccessful(true);
+      navigation.navigate('HomeScreen');
     } catch (error) {
       if (error.response) {
         console.error('Signup error', error.response.data);

@@ -79,6 +79,8 @@ const Account = ({route}) => {
       case 'Delete Account':
         navigation.navigate('DeleteAccountScreen');
         break;
+      case 'Subscription':
+          navigation.navigate(option.screenName);
       default:
         console.log('Option not handled:', option.name);
     }};
@@ -144,22 +146,15 @@ const Account = ({route}) => {
 console.log('Entitlement id: ', ENTITLEMENT_ID);
 async function Buy_now() {
     try {
-      // Get offerings
       const offerings = await Purchases.getOfferings();
-      // Check if the desired package is available
       const packageIdentifier = "packageIdentifier_product_id";
-      const availablePackages = offerings.all["Bitcoin_4999_m1"].availablePackages;
+      const availablePackages = offerings.all["Ethereum_4999_m1"].availablePackages;
       if (availablePackages.length !== 0) {
-        // Display packages for sale (you can customize this part based on your UI)
-        // For simplicity, let's assume you want to purchase the first available package
         const selectedPackage = availablePackages[0];
-        // Make the purchase
         const { customerInfo, productIdentifier } = await Purchases.purchasePackage(selectedPackage);
-        // Check if the entitlement is active
-        const entitlementIdentifier = "Bitcoin_4999_m1";
+        const entitlementIdentifier = "Ethereum_4999_m1";
         if (customerInfo.entitlements.active[entitlementIdentifier] !== undefined) {
           console.log(":white_check_mark: PURCHASE SUCCESSFUL");
-          // Do something after a successful purchase
           setIsSubscribed(true);
           console.log(isSubscribed)
         }
@@ -167,14 +162,12 @@ async function Buy_now() {
     } catch (error) {
       if (!error.userCancelled) {
         console.error("PURCHASE FAILED", error);
-        // Handle error (show an error message, etc.)
       }
     }
-  }
+}
 
 
-
-  /*Solution1.
+/*Solution1.
 import { Purchases } from 'react-native-purchases';
 async function Buy_now() {
   try {
