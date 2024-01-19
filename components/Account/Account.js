@@ -68,13 +68,18 @@ const Account = ({route}) => {
       screenName: 'Subscriptions',
     },
     {
-      name: 'Log Out',
-      logo: require('../../assets/images/account/logout.png'),
+      name: 'Delete Account',
+      logo: require('../../assets/images/account/deleteacc.png'),
       screenName: null,
     },
     {
-      name: 'Delete Account',
-      logo: require('../../assets/images/account/deleteacc.png'),
+      name: 'Privacy Policy',
+      logo: require('../../assets/images/account/informationicon.png'),
+      screenName: null,
+    },
+    {
+      name: 'Log Out',
+      logo: require('../../assets/images/account/logout.png'),
       screenName: null,
     },
   ];
@@ -89,6 +94,9 @@ const Account = ({route}) => {
         break;
       case 'Subscriptions':
         navigation.navigate(option.screenName);
+      case 'Privacy Policy':
+        navigation.navigate('PrivacyPolicy');
+        break
       default:
         console.log('Option not handled:', option.name);
     }

@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 import {StyleSheet} from 'react-native';
-import {AppThemeContext} from '../../context/themeContext';
+import { AppThemeContext } from '../../context/themeContext';
 
 const useAccountStyles = () => {
   const {theme} = useContext(AppThemeContext);

@@ -6,7 +6,7 @@ const menuData = [
     isActive: true,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Active/Bitcoin.png'),
         inactive: require('../../../../assets/images/topMenu/Inactive/Bitcoin.png'),
       },
       dark: {
@@ -22,7 +22,7 @@ const menuData = [
     isActive: true,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/ethereum.png'),
+        active: require('../../../../assets/images/topMenu/Active/Ethereum.png'),
         inactive: require('../../../../assets/images/topMenu/Inactive/Ethereum.png'),
       },
       dark: {
@@ -53,7 +53,7 @@ const menuData = [
     ],
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/rootlink.png'),
+        active: require('../../../../assets/images/topMenu/Active/RootLink.png'),
         inactive: require('../../../../assets/images/topMenu/Inactive/RootLink.png'),
       },
       dark: {
@@ -86,7 +86,7 @@ const menuData = [
     isActive: true,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/baseblock.png'),
+        active: require('../../../../assets/images/topMenu/Active/BaseBlock.png'),
         inactive: require('../../../../assets/images/topMenu/Inactive/BaseBlock.png'),
       },
       dark: {
@@ -118,7 +118,7 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/corechain.png'),
+        active: require('../../../../assets/images/topMenu/Active/CoreChain.png'),
         inactive: require('../../../../assets/images/topMenu/Inactive/CoreChain.png'),
       },
       dark: {
@@ -214,7 +214,7 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/boostlayer.png'),
+        active: require('../../../../assets/images/topMenu/Active/BoostLayer.png'),
         inactive: require('../../../../assets/images/topMenu/Inactive/BoostLayer.png'),
       },
       dark: {
