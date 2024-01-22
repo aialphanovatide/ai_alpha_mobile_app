@@ -8,15 +8,8 @@ import {
   Button,
 } from 'react-native';
 import {ENTITLEMENT_ID} from '../../src/constants';
-import {
-  LoginForm,
-  LogoutButton,
-  RestorePurchasesButton,
-} from '../../src/components';
 import Purchases from 'react-native-purchases';
-import CustomButton from '../Login/CustomButton/CustomButton';
 import {useNavigation} from '@react-navigation/core';
-import auth0 from '../Login/auth0';
 import {useUser} from '../../context/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAccountStyles from './styles';

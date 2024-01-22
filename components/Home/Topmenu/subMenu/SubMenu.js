@@ -2,11 +2,10 @@ import React, {useContext} from 'react';
 import {View} from 'react-native';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import CoinMenu from './coinMenu/coinMenu';
-import {CategoriesContext} from '../../../../context/categoriesContext';
 import {useNavigation} from '@react-navigation/native';
 import useSubMenuStyles from './SubMenuStyles';
 
-const SubMenu = ({coinBotId = null, isAlertsMenu}) => {
+const SubMenu = ({isAlertsMenu}) => {
   const {activeCoin, activeSubCoin, updateActiveSubCoin} =
     useContext(TopMenuContext);
   const navigation = useNavigation();

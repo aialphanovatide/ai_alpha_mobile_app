@@ -44,13 +44,13 @@ const AdvancedTvChart = ({symbol, widgetId, width, height}) => {
   `;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <AutoHeightWebView
         source={{html: htmlContent, originWhitelist: ['*']}}
         scalesPageToFit={false}
         viewportContent={'width=device-width, user-scalable=no'}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -6,14 +6,14 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
   };
   const parseTimeframeString = timeFrameString => {
     const match = timeFrameString.match(
-      /^(.*?)\s+(BULLISH|BEARISH|OVERBOUGHT)$/i,
+      /^(.*?)\s+(BULLISH|BEARISH|OVERBOUGHT|OVERSOLD)$/i,
     );
     if (match) {
       const [_, leftText, word] = match;
       return {leftText, word};
     } else {
       console.error('Incorrect string pattern');
-      return null;
+      return {leftText: 'Error', word: 'Error'};
     }
   };
 

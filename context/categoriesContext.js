@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useState} from 'react';
-import {getService} from '../services/aiAlphaApi';
+import {categoriesGetService, getService} from '../services/aiAlphaApi';
 
 const CategoriesContext = createContext();
 
@@ -11,6 +11,7 @@ const CategoriesContextProvider = ({children}) => {
       try {
         const data = await getService('/get_categories');
         setCategories(data.categories);
+        // console.log(data.categories);
       } catch (error) {
         console.error('Error fetching categories:', error.message);
       }

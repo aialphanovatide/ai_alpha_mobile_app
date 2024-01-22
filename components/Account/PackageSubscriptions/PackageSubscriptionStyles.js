@@ -30,15 +30,19 @@ const usePackageSubscriptionStyles = () => {
       marginHorizontal: 5,
     },
     purchaseButton: {
-      width: theme.width * 0.3,
+      width: '35%',
+      marginVertical: 10,
       padding: 5,
       borderRadius: 5,
       overflow: 'hidden',
       backgroundColor: theme.subscriptions.purchaseButtonBgColor,
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
     },
     purchaseButtonText: {
       color: theme.subscriptions.purchaseButtonText,
-      fontSize: theme.titleFontSize * 0.925,
+      fontSize: theme.titleFontSize * 0.715,
       textAlign: 'center',
     },
     itemContainer: {
@@ -83,14 +87,31 @@ const usePackageSubscriptionStyles = () => {
     },
     itemDescription: {
       color: theme.subscriptions.text,
-      fontSize: theme.responsiveFontSize * 0.675,
+      fontSize: theme.responsiveFontSize * 0.75,
       textAlign: 'left',
     },
     packagesContainer: {
       width: theme.width * 0.9125,
       marginVertical: 10,
       paddingHorizontal: 10,
-    }
+    },
+    hidden: {
+      display: 'none',
+    },
+    seeMoreButton: {
+      width: 40,
+      height: 40,
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    seeMoreIcon: {
+      flex: 1,
+      tintColor: theme.subscriptions.seeMoreColor,
+    },
+    alignStart: {
+      alignSelf: 'flex-start',
+    },
   });
   return styles;
 };

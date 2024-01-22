@@ -9,6 +9,10 @@ const useAlertsStyles = () => {
       flex: 1,
       backgroundColor: theme.mainBackgroundColor,
     },
+    background: {
+      flex: 1,
+      backgroundColor: theme.mainBackgroundColor,
+    },
     title: {
       fontSize: theme.titleFontSize,
       fontWeight: 'bold',
@@ -26,7 +30,7 @@ const useAlertsStyles = () => {
       textAlignVertical: 'center',
       fontSize: theme.titleFontSize,
       color: theme.titleColor,
-      alignSelf: 'center'
+      alignSelf: 'center',
     },
     itemsContainer: {
       flexDirection: 'row',
@@ -38,7 +42,7 @@ const useAlertsStyles = () => {
     },
     leftContent: {
       flex: 3,
-      display: 'row'
+      display: 'row',
     },
     itemsTitle: {
       fontWeight: 'bold',
@@ -56,6 +60,35 @@ const useAlertsStyles = () => {
       fontWeight: 'bold',
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      margin: 10,
+      marginBottom: 30,
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    button: {
+      paddingVertical: 5,
+      paddingHorizontal: 15,
+      backgroundColor: theme.subMenuBgColor,
+      marginHorizontal: 5,
+    },
+    activeButton: {
+      backgroundColor: theme.subMenuTextColor,
+    },
+    activeText: {
+      color: theme.secondaryTextColor,
+      fontSize: theme.responsiveFontSize * 0.875,
+      textTransform: 'capitalize',
+      fontWeight: 'bold',
+    },
+    inactiveText: {
+      color: theme.subMenuTextColor,
+      fontSize: theme.responsiveFontSize * 0.875,
+      textTransform: 'capitalize',
+      fontWeight: 'bold',
     },
   });
   return styles;
