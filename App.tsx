@@ -7,6 +7,7 @@ import {
   Platform,
   Appearance,
 } from 'react-native';
+import Config from 'react-native-config';
 import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import PaywallScreen from './components/Login/Screens/PaywallScreen';
@@ -86,7 +87,8 @@ const App = () => {
   }, []);
 
   console.log('Entitlement id: ', ENTITLEMENT_ID);
-
+  const dominiosaurio = Config.AUTH0_DOMAIN;
+  console.log("dominiosaurio: ", dominiosaurio);
   // const showUserSubscriptionData = async () => {
   //   try {
   //     //const purchaseMade = await Purchases.purchasePackage(purchasePackage);
