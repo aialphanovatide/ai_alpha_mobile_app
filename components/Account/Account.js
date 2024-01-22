@@ -87,9 +87,10 @@ const Account = ({route}) => {
         break;
       case 'Subscriptions':
         navigation.navigate(option.screenName);
+        break;
       case 'Privacy Policy':
         navigation.navigate('PrivacyPolicy');
-        break
+        break;
       default:
         console.log('Option not handled:', option.name);
     }
@@ -255,13 +256,17 @@ async function Buy_now() {
 }
 */
 
-  // const formatUserEntitlements = entitlements => {
-  //   let formattedString = 'Subscriptions: \n';
-  //   for (const entitlement in entitlements) {
-  //     formattedString.concat(entitlement.title);
-  //   }
-  //   return formattedString;
-  // };
+  const formatUserEntitlements = entitlements => {
+    let formattedString = '';
+
+    userInfo.entitlements.forEach(entitlement => {
+      let first_separator = entitlement.indexOf('_');
+      let coin_name = entitlement.slice(0, first_separator);
+      formattedString += coin_name;
+      formattedString += '\n';
+    });
+    return formattedString;
+  };
 
   return (
     <ScrollView style={styles.backgroundColor}>
@@ -305,7 +310,7 @@ async function Buy_now() {
         <Text style={styles.headline}>User Subscriptions</Text>
         <Text style={styles.text}>
           {userInfo.entitlements.length > 0
-            ? userInfo.entitlements.join('. \n')
+            ? formatUserEntitlements(userInfo.entitlements)
             : 'There are no active subscriptions.'}
         </Text>
         {/* <Text style={styles.headline}>Subscription Status</Text>

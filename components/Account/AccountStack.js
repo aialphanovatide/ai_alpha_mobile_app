@@ -2,6 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Account from './Account';
 import PackageSubscriptions from './PackageSubscriptions/PackageSubscriptions';
+import PrivacyPolicy from './PrivacyPolicy/PrivacyPolicy';
 
 const AccountStack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ const AccountScreen = () => {
         name="Subscriptions"
         component={PackageSubscriptions}
       />
+      <AccountStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
     </AccountStack.Navigator>
   );
 };
