@@ -6,12 +6,16 @@ import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
+import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
+import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
 
 const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
   const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
+  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
+  const [subscribed, setSubscribed] = useState(false);
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin.bot_name,
   );
@@ -37,10 +41,10 @@ const NewsComponent = ({route}) => {
   }, [activeCoin, activeSubCoin]);
 
   useEffect(() => {
+    requestBody.botName = botname;
     const fetchNews = async () => {
       try {
         const response = await postService('/api/get/news', requestBody);
-        // console.log('response: ', response);
         if (
           response.message &&
           response.message.startsWith('No articles found')
@@ -58,16 +62,30 @@ const NewsComponent = ({route}) => {
     fetchNews();
   }, [botname]);
 
+  // This useEffect handles the content regulation
+  useEffect(() => {
+    const hasCoinSubscription = findCategoryInIdentifiers(
+      activeCoin.category,
+      userInfo.entitlements,
+    );
+    setSubscribed(hasCoinSubscription);
+  }, [activeCoin, userInfo]);
+
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
-      <Text style={styles.title}>News</Text>
-
-      <FlatList
-        data={news}
-        ListEmptyComponent={<Loader />}
-        keyExtractor={item => item.article_id}
-        renderItem={({item}) => <NewsItem item={item} onPress={onPress} />}
-      />
+      {subscribed ? (
+        <>
+          <Text style={styles.title}>News</Text>
+          <FlatList
+            data={news}
+            ListEmptyComponent={<Loader />}
+            keyExtractor={item => item.article_id}
+            renderItem={({item}) => <NewsItem item={item} onPress={onPress} />}
+          />
+        </>
+      ) : (
+        <UpgradeOverlay isBlockingByCoin={true} screen={'News'} />
+      )}
     </SafeAreaView>
   );
 };

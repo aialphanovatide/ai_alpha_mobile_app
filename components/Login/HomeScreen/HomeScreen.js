@@ -1,13 +1,8 @@
-import {
-  TopMenuContext,
-  TopMenuContextProvider,
-} from '../../../context/topMenuContext';
-import React, {useContext, useEffect} from 'react';
+import {TopMenuContext} from '../../../context/topMenuContext';
+import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
-import Analysis from '../../Analysis/Analysis';
-import Account from '../../Account/Account';
 import Chatbot from '../../Chatbot/Chatbot';
 import Alerts from '../../Alerts/alerts';
 import {Image, View} from 'react-native';
@@ -32,7 +27,7 @@ const MenuIcon = ({color, iconSource}) => {
 };
 
 const HomeScreen = () => {
-  const {updateActiveCoin, updateActiveSubCoin, activeCoin, activeSubCoin} =
+  const {updateActiveSubCoin, activeCoin, activeSubCoin} =
     useContext(TopMenuContext);
   const {theme} = useContext(AppThemeContext);
   return (
@@ -59,8 +54,8 @@ const HomeScreen = () => {
           name="Home"
           listeners={{
             tabPress: e => {
-              updateActiveCoin({});
-              updateActiveSubCoin(null);
+              // updateActiveCoin({});
+              // updateActiveSubCoin(null);
             },
           }}
           component={HomeStackScreen}
@@ -152,6 +147,9 @@ const HomeScreen = () => {
                 }
               />
             ),
+          }}
+          initialParams={{
+            screen: 'AccountMain'
           }}
         />
       </Tab.Navigator>

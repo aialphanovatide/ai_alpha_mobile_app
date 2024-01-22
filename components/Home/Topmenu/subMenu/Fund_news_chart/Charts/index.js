@@ -1,15 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import {ScrollView, View} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {ScrollView} from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';
 import CandlestickDetails from './candleDetails';
-import {StyleSheet} from 'react-native';
 import Chart from './chart';
 import RsButton from './S&RButtons';
 import AlertMenu from './alerts/AlertMenu';
 import AlertListComponent from './alerts/AlertListComponent';
+import {TopMenuContext} from '../../../../../../context/topMenuContext';
+import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
+import useChartsStyles from './ChartsStyles';
+import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
 
 const CandlestickChart = ({route}) => {
+  const styles = useChartsStyles();
   const {interval, symbol, coinBot} =
     route.params.screen === 'Charts' ? route.params.params : route.params;
 
@@ -24,9 +28,10 @@ const CandlestickChart = ({route}) => {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeButtons, setActiveButtons] = useState([]);
-
+  const [subscribed, setSubscribed] = useState(false);
+  const {activeCoin} = useContext(TopMenuContext);
+  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
   const [activeAlertOption, setActiveAlertOption] = useState('this week');
-
   async function fetchChartData() {
     try {
       const response = await fetch(
@@ -56,6 +61,15 @@ const CandlestickChart = ({route}) => {
     return () => clearInterval(intervalId);
   }, [interval, symbol]);
 
+  // This useEffect handles the content regulation
+  useEffect(() => {
+    const hasCoinSubscription = findCategoryInIdentifiers(
+      activeCoin.category,
+      userInfo.entitlements,
+    );
+    setSubscribed(hasCoinSubscription);
+  }, [activeCoin, userInfo]);
+
   const changeInterval = async newInterval => {
     setSelectedInterval(newInterval);
     setLoading(true);
@@ -70,17 +84,17 @@ const CandlestickChart = ({route}) => {
     }
   };
 
-  return (
+  return subscribed ? (
     <ScrollView
       style={styles.scroll}
       // keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={true}>
-      <CandlestickDetails coin={symbol} lastPrice={lastPrice} />
+      <CandlestickDetails coin={symbol} lastPrice={lastPrice} styles={styles} />
       <TimeframeSelector
         selectedInterval={selectedInterval}
         changeInterval={changeInterval}
+        styles={styles}
       />
-
       <RsButton
         activeButtons={activeButtons}
         setActiveButtons={setActiveButtons}
@@ -97,19 +111,15 @@ const CandlestickChart = ({route}) => {
         activeAlertOption={activeAlertOption}
         setActiveButtons={setActiveAlertOption}
       />
-
-      <AlertListComponent timeframe={activeAlertOption} botName={coinBot} />
+      <AlertListComponent
+        timeframe={activeAlertOption}
+        botName={coinBot}
+        styles={styles}
+      />
     </ScrollView>
+  ) : (
+    <UpgradeOverlay isBlockingByCoin={true} screen={'Charts'} />
   );
 };
 
 export default CandlestickChart;
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
-  scroll: {
-    width: '100%',
-  },
-});

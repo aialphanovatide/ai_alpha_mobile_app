@@ -2,12 +2,13 @@ const menuData = [
   {
     id: 1,
     icon: 'BTC',
+    name: 'Bitcoin',
     subMenuOptions: null,
     isActive: true,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/Bitcoin.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/Bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Active/bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/bitcoin.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/bitcoin.png'),
@@ -18,12 +19,13 @@ const menuData = [
   {
     id: 2,
     icon: 'ETH',
+    name: 'Ethereum',
     subMenuOptions: null,
     isActive: true,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/Ethereum.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/Ethereum.png'),
+        active: require('../../../../assets/images/topMenu/Active/ethereum.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/ethereum.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/ethereum.png'),
@@ -34,6 +36,7 @@ const menuData = [
   {
     id: 3,
     icon: 'RL',
+    name: 'RootLink',
     subMenuOptions: [
       {
         id: 31,
@@ -53,8 +56,8 @@ const menuData = [
     ],
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/RootLink.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/RootLink.png'),
+        active: require('../../../../assets/images/topMenu/Active/rootlink.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/rootlink.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/rootlink.png'),
@@ -66,6 +69,7 @@ const menuData = [
   {
     id: 4,
     icon: 'BB',
+    name: 'BaseBlock',
     subMenuOptions: [
       {
         id: 41,
@@ -86,8 +90,8 @@ const menuData = [
     isActive: true,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/BaseBlock.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/BaseBlock.png'),
+        active: require('../../../../assets/images/topMenu/Active/baseblock.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/baseblock.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/baseblock.png'),
@@ -98,6 +102,7 @@ const menuData = [
   {
     id: 5,
     icon: 'CC',
+    name: 'CoreChain',
     subMenuOptions: [
       {
         id: 51,
@@ -118,8 +123,8 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/CoreChain.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/CoreChain.png'),
+        active: require('../../../../assets/images/topMenu/Active/corechain.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/corechain.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/corechain.png'),
@@ -129,7 +134,8 @@ const menuData = [
   },
   {
     id: 6,
-    icon: 'CBP',
+    icon: 'XP',
+    name: 'X Payments',
     subMenuOptions: [
       {
         id: 61,
@@ -162,6 +168,7 @@ const menuData = [
   {
     id: 7,
     icon: 'LSDs',
+    name: 'LSDs',
     subMenuOptions: [
       {
         id: 71,
@@ -194,6 +201,7 @@ const menuData = [
   {
     id: 8,
     icon: 'BL',
+    name: 'BoostLayer',
     subMenuOptions: [
       {
         id: 81,
@@ -214,8 +222,8 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/BoostLayer.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/BoostLayer.png'),
+        active: require('../../../../assets/images/topMenu/Active/boostlayer.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/boostlayer.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/boostlayer.png'),
@@ -225,7 +233,8 @@ const menuData = [
   },
   {
     id: 9,
-    icon: 'ORACLE',
+    icon: 'TN',
+    name: 'TruthNodes',
     subMenuOptions: [
       {
         id: 91,
@@ -258,6 +267,7 @@ const menuData = [
   {
     id: 10,
     icon: 'NT',
+    name: 'NexTrade',
     subMenuOptions: [
       {
         id: 101,
@@ -278,18 +288,19 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/NexTrade.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/NexTrade.png'),
+        active: require('../../../../assets/images/topMenu/Active/nextrade.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/nextrade.png'),
       },
       dark: {
-        active: require('../../../../assets/images/topMenu/Dark/Active/NexTrade.png'),
-        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/NexTrade.png'),
+        active: require('../../../../assets/images/topMenu/Dark/Active/nextrade.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/nextrade.png'),
       },
     },
   },
   {
     id: 11,
     icon: 'CS',
+    name: 'CycleSwap',
     subMenuOptions: [
       {
         id: 111,
@@ -310,18 +321,19 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/CycleSwap.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/CycleSwap.png'),
+        active: require('../../../../assets/images/topMenu/Active/cycleswap.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/cycleswap.png'),
       },
       dark: {
-        active: require('../../../../assets/images/topMenu/Dark/Active/CycleSwap.png'),
-        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/CycleSwap.png'),
+        active: require('../../../../assets/images/topMenu/Dark/Active/cycleswap.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/cycleswap.png'),
       },
     },
   },
   {
     id: 12,
     icon: 'DF',
+    name: 'DiverseFi',
     subMenuOptions: [
       {
         id: 121,
@@ -342,18 +354,19 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/DiverseFi.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/DiverseFi.png'),
+        active: require('../../../../assets/images/topMenu/Active/diversefi.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/diversefi.png'),
       },
       dark: {
-        active: require('../../../../assets/images/topMenu/Dark/Active/DiverseFi.png'),
-        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/DiverseFi.png'),
+        active: require('../../../../assets/images/topMenu/Dark/Active/diversefi.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/diversefi.png'),
       },
     },
   },
   {
     id: 13,
-    icon: 'AI',
+    icon: 'IC',
+    name: 'IntelliChain',
     subMenuOptions: [
       {
         id: 131,

@@ -1,9 +1,9 @@
-
 // export const API_BASE_URL = 'https://debd-181-51-89-43.ngrok-free.app';
 export const API_BASE_URL = 'https://star-oyster-known.ngrok-free.app';
+export const CATEGORIES_BASE_URL = 'https://ntf1vmdf-9000.use.devtunnels.ms';
 
 // Function to handle HTTP errors
-const handleErrors = (response) => {
+const handleErrors = response => {
   if (!response.ok) {
     throw Error(response.statusText);
   }
@@ -11,13 +11,13 @@ const handleErrors = (response) => {
 };
 
 // Function to make a GET request
-export const getService = async (endpoint) => {
+export const getService = async endpoint => {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     });
 
     if (!response.ok) {
@@ -25,14 +25,33 @@ export const getService = async (endpoint) => {
     }
 
     const data = await response.json();
-    return data; 
-
+    return data;
   } catch (error) {
     console.error(`Error in GET request: ${error.message}`);
     throw error;
   }
 };
 
+export const categoriesGetService = async endpoint => {
+  try {
+    const response = await fetch(`${CATEGORIES_BASE_URL}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error in GET request: ${error.message}`);
+    throw error;
+  }
+};
 
 // Function to make a POST request
 export const postService = async (endpoint, data) => {
@@ -46,10 +65,9 @@ export const postService = async (endpoint, data) => {
     });
 
     const res = await response.json();
-    return res; 
+    return res;
   } catch (error) {
     console.error(`Error in POST request: ${error.message}`);
     throw error;
   }
 };
-

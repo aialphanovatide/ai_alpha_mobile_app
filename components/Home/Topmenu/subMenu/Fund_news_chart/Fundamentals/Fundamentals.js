@@ -1,4 +1,4 @@
-import {Text, View, ScrollView, SafeAreaView} from 'react-native';
+import {Text, ScrollView, SafeAreaView} from 'react-native';
 import React, {useContext} from 'react';
 import SubSection from './SubSections/SubSection';
 import Introduction from './SubSections/Introduction/Introduction.js';

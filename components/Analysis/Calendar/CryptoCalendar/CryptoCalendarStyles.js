@@ -132,7 +132,7 @@ const useCryptoCalendarStyles = () => {
       fontSize: theme.responsiveFontSize * 0.7,
       color: theme.subMenuTextColor,
       textAlign: 'center',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     },
     messageContainer: {
       width: '80%',

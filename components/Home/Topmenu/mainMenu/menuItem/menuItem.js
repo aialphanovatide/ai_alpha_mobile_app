@@ -1,38 +1,43 @@
 import React from 'react';
 import {Text, TouchableOpacity, View, Image} from 'react-native';
 import styles from './menuItemStyles';
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import {CATEGORIES_BASE_URL} from '../../../../../services/aiAlphaApi';
+// import menuData from '../menuData';
 
-const MenuItem = ({onPress, icon, category, isActive}) => {
+const MenuItem = ({
+  onPress,
+  icon,
+  category,
+  isActive,
+  isDarkMode,
+  findCategoryInMenuData,
+}) => {
+  // const option = findCategoryInMenuData(category, menuData);
+  // console.log(option);
   return (
     <TouchableOpacity
       style={styles.buttonContainer}
-      onPress={isActive ? () => onPress(category) : null}
-      disabled={!isActive}>
-      <View
-        style={
-          // [
-          styles.button
-          // , !isActive && styles.disabledButton]
-        }>
-        {/* {!isActive && ( 
-            <View style={styles.lockIcon}>
-               <Icon name="lock" size={25} color="white"/>
-            </View>
-          */}
+      onPress={() => onPress(category)}>
+      <View style={styles.button}>
         <Image
           source={
-            isActive
-              ? require('../../../../../assets/images/topMenu/bitcoin.png')
-              : require('../../../../../assets/images/topMenu/bitcoin-locked.png')
+            require('../../../../../assets/images/topMenu/bitcoin.png')
+            // isDarkMode
+            //   ? isActive
+            //     ? require(option.iconImage.dark.active)
+            //     : require(option.iconImage.dark.inactive)
+            //   : isActive
+            //   ? require(option.iconImage.light.active)
+            //   : require(option.iconImage.light.inactive)
           }
+          // source={{uri: `${CATEGORIES_BASE_URL}${icon}`}}
           resizeMode="contain"
           style={styles.imageIcon}
         />
       </View>
 
       <Text numberOfLines={1} ellipsizeMode="tail" style={styles.buttonText}>
-        {icon}
+        {category.category}
       </Text>
     </TouchableOpacity>
   );

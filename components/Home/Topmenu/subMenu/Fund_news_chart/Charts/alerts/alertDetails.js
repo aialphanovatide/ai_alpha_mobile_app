@@ -1,48 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text} from 'react-native';
 
-const AlertDetails = ({ message, price, timeframe }) => {
+const AlertDetails = ({ message, price, timeframe, styles }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.leftContent}>
-        <Text style={styles.title}>{timeframe}</Text>
-        <Text style={styles.subtitle}>{message}</Text>
+    <View style={styles.alertDetailsContainer}>
+      <View style={styles.alertDetailsLeftContent}>
+        <Text style={styles.alertDetailsTitle}>{timeframe}</Text>
+        <Text style={styles.alertDetailsSubtitle}>{message}</Text>
       </View>
-      <View style={styles.rightContent}>
-        <Text style={styles.rightTitle}>${price}</Text>
+      <View style={styles.alertDetailsRightContent}>
+        <Text style={styles.alertDetailsRightTitle}>${price}</Text>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    marginVertical: 10,
-    borderRadius: 2,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    flex: 1, // Take up 100% of the width
-  },
-  leftContent: {
-    flex: 1,
-  },
-  rightContent: {
-    alignItems: 'flex-end',
-  },
-  title: {
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: 'gray',
-  },
-  rightTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-});
 
 export default AlertDetails;

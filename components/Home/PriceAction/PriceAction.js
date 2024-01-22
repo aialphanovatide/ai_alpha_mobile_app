@@ -147,7 +147,7 @@ const PriceAction = () => {
                 />
               ))
             ) : (
-              <View style={styles.dataRow}>
+              <View style={[styles.dataRow, styles.alignCenter]}>
                 <Text style={styles.emptyMessage}>
                   Select a Category to see the coins data
                 </Text>

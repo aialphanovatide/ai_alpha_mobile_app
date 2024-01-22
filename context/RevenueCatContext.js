@@ -80,17 +80,14 @@ const RevenueCatProvider = ({children}) => {
   const loadOfferings = async () => {
     try {
       const offerings = await Purchases.getOfferings();
-      // console.log('Offerings: ', offerings);
-
-      // const currentOffering = offerings.current;
-      // if (currentOffering) {
-      //   setPackages(currentOffering.availablePackages);
-      // }
+      console.log('Offerings: ', offerings);
       const all_packages = [];
 
       for (const key in offerings.all) {
         const currentOffering = offerings.all[key];
         const currentPackages = currentOffering?.availablePackages;
+        currentPackages[0].subscriptionDescription =
+          currentOffering.metadata.description;
 
         if (currentPackages && Array.isArray(currentPackages)) {
           all_packages.push(...currentPackages);
@@ -105,6 +102,7 @@ const RevenueCatProvider = ({children}) => {
 
   const purchasePackage = async pack => {
     try {
+      console.log(pack);
       const {customerInfo, productIdentifier} = await Purchases.purchasePackage(
         pack,
       );
@@ -112,21 +110,65 @@ const RevenueCatProvider = ({children}) => {
       console.log(
         `Purchased: ${productIdentifier}\n New customer data: ${customerInfo.entitlements} `,
       );
-      // const updatedUser = {...userInfo};
-      // updatedUser.entitlements = {
-      //   ...updatedUser.entitlements,
-      //   [pack.identifier]: pack,
-      // };
-      // setUserInfo(updatedUser);
     } catch (error) {
       console.log(
         `[Error trying to purchase the package]\n - Error code: ${error.code}\n - Error message: ${error.message} \n - Error description: ${error.underlyingErrorMessage} `,
       );
     }
   };
+  // This function verifies if a package is in the identifiers, comparing the product identifier of the package with all of the entitlements that the user has subscribed.
+  const findProductIdInIdentifiers = (productId, identifiers) => {
+    if (identifiers.length === 0 || !productId || productId === undefined) {
+      return false;
+    }
+
+    if (
+      identifiers.some(id => {
+        const lowercaseId = id.toLowerCase();
+        if (lowercaseId.includes('founders')) {
+          return true;
+        }
+      })
+    ) {
+      return true;
+    }
+
+    return identifiers.some(id => {
+      const lowercaseId = id.toLowerCase();
+      return productId.includes(lowercaseId);
+    });
+  };
+
+// This function finds the activeCoin name inside every string of the user entitlements identifiers
+
+  const findCategoryInIdentifiers = (category, identifiers) => {
+    if (
+      identifiers.length === 0 ||
+      category === null ||
+      category === undefined
+    ) {
+      return false;
+    }
+
+    const categoryKeyword = category.toLowerCase();
+    return identifiers.some(identifier => {
+      const lowercaseIdentifier = identifier.toLowerCase();
+      if (lowercaseIdentifier.includes('founders')) {
+        return true;
+      }
+      return lowercaseIdentifier.includes(categoryKeyword);
+    });
+  };
 
   return (
-    <RevenueCatContext.Provider value={{packages, purchasePackage, userInfo}}>
+    <RevenueCatContext.Provider
+      value={{
+        packages,
+        purchasePackage,
+        userInfo,
+        findCategoryInIdentifiers,
+        findProductIdInIdentifiers,
+      }}>
       {children}
     </RevenueCatContext.Provider>
   );

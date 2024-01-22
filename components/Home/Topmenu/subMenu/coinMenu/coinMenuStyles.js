@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../../../context/themeContext';
 
 const useCoinMenuStyles = () => {

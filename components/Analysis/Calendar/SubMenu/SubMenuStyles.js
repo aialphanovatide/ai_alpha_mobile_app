@@ -14,13 +14,13 @@ const useCalendarSubMenuStyles = () => {
     },
     menuItem: {
       width: '50%',
-      height: 20,
       backgroundColor: 'transparent',
       marginHorizontal: 2,
       borderRadius: 2.5,
       overflow: 'hidden',
     },
     menuItemText: {
+      marginVertical: 5,
       textAlign: 'center',
       fontSize: theme.responsiveFontSize * 0.75,
       color: theme.subMenuTextColor,

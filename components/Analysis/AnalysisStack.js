@@ -18,15 +18,39 @@ const AnalysisScreen = () => {
     <AnalysisStack.Navigator
       initialRouteName="AnalysisMain"
       screenOptions={{headerShown: 'false', header: () => null}}>
-      <AnalysisStack.Screen name="AnalysisMain" component={Analysis}/>
+      <AnalysisStack.Screen name="AnalysisMain" component={Analysis} />
       <AnalysisStack.Screen name="Calendar" component={Calendar} />
       <AnalysisStack.Screen
         name="BTCFundingRates"
         component={BitcoinFundingRates}
       />
-      <AnalysisStack.Screen name="BTCDominance" component={BtcDominance} />
-      <AnalysisStack.Screen name="EthBtc" component={EthBtcChart} />
-      <AnalysisStack.Screen name="Total3" component={Total3} />
+      <AnalysisStack.Screen
+        name="BTCDominance"
+        component={ChartSection}
+        initialParams={{
+          title: 'Bitcoin Dominance Chart',
+          widgetId: 7,
+          symbol: 'CRYPTOCAP:BTC.D',
+        }}
+      />
+      <AnalysisStack.Screen
+        name="EthBtc"
+        component={ChartSection}
+        initialParams={{
+          title: 'ETH/BTC Chart',
+          widgetId: 8,
+          symbol: 'BINANCE:ETHBTC',
+        }}
+      />
+      <AnalysisStack.Screen
+        name="Total3"
+        component={ChartSection}
+        initialParams={{
+          title: 'Total 3 Chart',
+          widgetId: 6,
+          symbol: 'CRYPTOCAP:TOTAL3',
+        }}
+      />
       <AnalysisStack.Screen
         name="DXYChart"
         component={ChartSection}
