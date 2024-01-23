@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import CustomButton from './CustomButton/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { useUserId } from '../../context/UserIdContext';
+import Auth0 from 'react-native-auth0';
 
 const AUTH0_DOMAIN = 'dev-zoejuo0jssw5jiid.us.auth0.com';
 const CLIENT_ID = 'yxHIEb9OfX0Ax6aXlj5dh4ippqnk3bLs';
@@ -11,7 +12,13 @@ const CLIENT_SECRET = 'RT0GEngb2IhR03_AMoIjRPxAQamrTY02B4OG4RPuA8gYgguQ0ua83b509
 const DeleteAccountForm = () => {
     const navigation = useNavigation();
     const [isProcessing, setIsProcessing] = useState(false);
-    const { userId } = useUserId();
+    //const { userId } = useUserId();
+    //const {userId} = "m.mengo@novatidelabs.com"
+    const userId = 'm.mengo@novatidelabs.com'; 
+
+    console.log("User Email: ",{userId})
+    console.log("User Email 2: ",userId)
+
 
 
     const getManagementApiToken = async () => {
@@ -33,19 +40,42 @@ const DeleteAccountForm = () => {
         setIsProcessing(true);
         try {
             const token = await getManagementApiToken();
-            console.log("User Email: ",{userId})
-
-            const response = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${encodeURIComponent(userId)}`, {
+    
+            // Fetch user ID from Auth0 Management API
+            const userInfoResponse = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users?q=email:${encodeURIComponent(userId)}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+    
+            if (!userInfoResponse.ok) {
+                throw new Error('Failed to fetch user information');
+            }
+    
+            const userInfo = await userInfoResponse.json();
+    
+            if (userInfo.length === 0) {
+                throw new Error('User not found');
+            }
+    
+            const auth0UserId = userInfo[0].user_id;
+    
+            const response = await fetch(`https://${AUTH0_DOMAIN}/api/v2/users/${encodeURIComponent(auth0UserId)}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
+    
+            console.log("Response status:", response.status);
+    
             if (response.ok) {
                 console.log('Account deletion initiated');
                 navigation.navigate('SignIn');
             } else {
+                const errorText = await response.text();
+                console.error('Account deletion failed:', errorText);
                 throw new Error('Account deletion failed');
             }
         } catch (error) {
@@ -54,6 +84,8 @@ const DeleteAccountForm = () => {
         }
         setIsProcessing(false);
     };
+    
+    
 
     const handleDeleteAccount = () => {
         Alert.alert(
@@ -75,16 +107,9 @@ const DeleteAccountForm = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    text: {
-        fontSize: 18,
-        marginBottom: 20
-    },
-    // Additional styling as needed
-});
+    fontSize: 18,
+    marginBottom: 20
+},);
+        
 
 export default DeleteAccountForm;
