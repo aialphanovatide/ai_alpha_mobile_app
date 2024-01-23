@@ -12,7 +12,6 @@ import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import PaywallScreen from './components/Login/Screens/PaywallScreen';
 import {IOS_API_KEY, ANDROID_API_KEY} from '@env';
-import {ENTITLEMENT_ID} from './src/constants';
 import Router from './src/navigation/Router';
 import {API_KEY} from './src/constants';
 import {TopMenuContextProvider} from './context/topMenuContext';
@@ -85,11 +84,6 @@ const App = () => {
       SplashScreen.hide();
     }
   }, []);
-
-  console.log('Entitlement id: ', ENTITLEMENT_ID);
-
-  console.log("Aca: ", Keys.API_URL);
-  Keys.URI_SCHEME;
 
   // const showUserSubscriptionData = async () => {
   //   try {

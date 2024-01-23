@@ -57,9 +57,11 @@ const LoginForm = ({route}) => {
       const accessToken = await AsyncStorage.getItem('accessToken');
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       const userEmail = await AsyncStorage.getItem('userEmail');
+      const userId = await AsyncStorage.getItem('userId');
 
       if (accessToken && refreshToken) {
         setUserEmail(userEmail);
+        setUserId(userId);
         navigation.navigate('HomeScreen');
       } else {
         navigation.navigate('SignIn');
@@ -104,6 +106,7 @@ const LoginForm = ({route}) => {
           await AsyncStorage.setItem('accessToken', credentials.accessToken);
           await AsyncStorage.setItem('refreshToken', credentials.refreshToken);
           await AsyncStorage.setItem('userEmail', username);
+          await AsyncStorage.setItem('userId', userId);
 
           setUserEmail(username);
           setUserId(userId);

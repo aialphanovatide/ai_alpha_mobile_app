@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 import {StyleSheet} from 'react-native';
-import { AppThemeContext } from '../../context/themeContext';
+import {AppThemeContext} from '../../context/themeContext';
 
 const useAccountStyles = () => {
   const {theme} = useContext(AppThemeContext);
@@ -25,6 +25,7 @@ const useAccountStyles = () => {
     text: {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      textTransform: 'capitalize',
     },
     userIdentifier: {
       color: theme.textColor,
@@ -67,7 +68,7 @@ const useAccountStyles = () => {
       shadowOpacity: 0.2,
       shadowRadius: 2,
       elevation: 3,
-      alignItems: 'center'
+      alignItems: 'center',
     },
     itemLogoContainer: {
       width: 30,

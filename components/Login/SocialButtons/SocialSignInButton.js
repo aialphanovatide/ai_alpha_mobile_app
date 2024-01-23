@@ -136,12 +136,12 @@ const SocialSignInButton = () => {
         type="APPLE"
         disabled={user !== null}
       />
-      <CustomButton
+      {/* <CustomButton
         text="Sign In with Google"
         onPress={() => signInWithGoogle()}
         type="GOOGLE"
         disabled={user !== null}
-      />
+      /> */}
     </View>
   );
 };
