@@ -32,6 +32,12 @@ const UpgradeOverlay = ({isBlockingByCoin, screen}) => {
         dark: require('../../assets/images/home/upgradeOverlay/alerts-dark-blur.png'),
       },
     },
+    Chatbot: {
+      image: {
+        light: require('../../assets/images/home/upgradeOverlay/chatbot-blur.png'),
+        dark: require('../../assets/images/home/upgradeOverlay/chatbot-dark.png'),
+      },
+    },
   };
   const [activeBlur, setActiveBlur] = useState(screens[screen]);
   const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);

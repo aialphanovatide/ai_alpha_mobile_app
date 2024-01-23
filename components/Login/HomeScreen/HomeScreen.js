@@ -4,13 +4,14 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
 import Chatbot from '../../Chatbot/Chatbot';
-import Alerts from '../../Alerts/alerts';
+import Alerts from '../../Alerts/Alerts';
 import {Image, View} from 'react-native';
 import styles from './HomeScreenStyles';
 import HomeStackScreen from '../../Home/HomeStack';
 import {AppThemeContext} from '../../../context/themeContext';
 import AnalysisScreen from '../../Analysis/AnalysisStack';
 import AccountScreen from '../../Account/AccountStack';
+import {useNavigation} from '@react-navigation/core';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,6 +30,7 @@ const MenuIcon = ({color, iconSource}) => {
 const HomeScreen = () => {
   const {updateActiveSubCoin, activeCoin, activeSubCoin} =
     useContext(TopMenuContext);
+  const navigation = useNavigation();
   const {theme} = useContext(AppThemeContext);
   return (
     <GestureHandlerRootView style={{flex: 1}}>
@@ -149,7 +151,12 @@ const HomeScreen = () => {
             ),
           }}
           initialParams={{
-            screen: 'AccountMain'
+            screen: 'AccountMain',
+          }}
+          listeners={{
+            tabPress: e => {
+              navigation.navigate('Account', {screen: 'AccountMain'});
+            },
           }}
         />
       </Tab.Navigator>

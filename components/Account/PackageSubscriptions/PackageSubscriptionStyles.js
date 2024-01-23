@@ -22,12 +22,21 @@ const usePackageSubscriptionStyles = () => {
     logo: {
       flex: 1,
     },
+    mainTitle: {
+      marginHorizontal: '7.5%',
+      marginVertical: '5%',
+      color: theme.titleColor,
+      fontSize: theme.titleFontSize * 1.25,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      alignSelf: 'flex-start',
+    },
     description: {
       color: theme.subscriptions.title,
       fontSize: theme.responsiveFontSize * 0.9,
-      textAlign: 'center',
+      textAlign: 'justify',
       marginVertical: 10,
-      marginHorizontal: 5,
+      marginHorizontal: '5%',
     },
     purchaseButton: {
       width: '35%',
@@ -77,6 +86,7 @@ const usePackageSubscriptionStyles = () => {
     title: {
       color: theme.subscriptions.text,
       fontSize: theme.titleFontSize * 0.8,
+      fontWeight: 'bold'
     },
     itemDescriptionContainer: {
       marginTop: 20,
@@ -86,6 +96,7 @@ const usePackageSubscriptionStyles = () => {
       justifyContent: 'center',
     },
     itemDescription: {
+      marginHorizontal: '3.5%',
       color: theme.subscriptions.text,
       fontSize: theme.responsiveFontSize * 0.75,
       textAlign: 'left',

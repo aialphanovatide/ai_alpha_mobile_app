@@ -156,12 +156,12 @@ const menuData = [
     isActive: true,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/bitcoin.png'),
-        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Active/xpayments.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/xpayments.png'),
       },
       dark: {
-        active: require('../../../../assets/images/topMenu/bitcoin.png'),
-        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Dark/Active/xpayments.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/xpayments.png'),
       },
     },
   },
@@ -189,12 +189,12 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/bitcoin.png'),
-        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Active/lsds.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/lsds.png'),
       },
       dark: {
-        active: require('../../../../assets/images/topMenu/bitcoin.png'),
-        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Dark/Active/lsds.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/lsds.png'),
       },
     },
   },
@@ -255,12 +255,12 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/bitcoin.png'),
-        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Active/truthnodes.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/truthnodes.png'),
       },
       dark: {
-        active: require('../../../../assets/images/topMenu/bitcoin.png'),
-        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Dark/Active/truthnodes.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/truthnodes.png'),
       },
     },
   },
@@ -387,12 +387,12 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/bitcoin.png'),
-        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Active/intellichain.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/intellichain.png'),
       },
       dark: {
-        active: require('../../../../assets/images/topMenu/bitcoin.png'),
-        inactive: require('../../../../assets/images/topMenu/bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Dark/Active/intellichain.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/intellichain.png'),
       },
     },
   },

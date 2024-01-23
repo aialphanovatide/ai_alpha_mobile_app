@@ -21,26 +21,35 @@ const SubscriptionItem = ({
   pack,
   onItemPress,
   activeItem,
-  isPurchased
+  isPurchased,
 }) => {
+  const formatCoinTitles = title => {
+    let first_space = title.indexOf(' ');
+    let package_display_name = title.slice(0, first_space);
+    return package_display_name;
+  };
   return (
     <View style={[styles.itemContainer, activeItem && styles.activeItem]}>
       <View style={styles.row}>
-        <Text style={[styles.left, styles.title]}>{item.title}</Text>
+        <Text style={[styles.left, styles.title]}>
+          {formatCoinTitles(item.title)}
+        </Text>
       </View>
       <View style={styles.row}>
         <Text style={[styles.left, styles.title]}>{item.priceString}</Text>
       </View>
       <View style={styles.itemDescriptionContainer}>
         <Text style={styles.itemDescription}>
-          {activeItem ? `${description}` : `${description.slice(0, 150)}...`}
+          {activeItem ? `${description}` : `${description.slice(0, 100)}...`}
         </Text>
         {activeItem ? (
           <>
             <TouchableOpacity
               style={styles.purchaseButton}
               onPress={() => onPurchasePress(pack)}>
-              <Text style={styles.purchaseButtonText}>{isPurchased ? 'Manage' : 'Purchase'}</Text>
+              <Text style={styles.purchaseButtonText}>
+                {isPurchased ? 'Manage' : 'Purchase'}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.seeMoreButton}
@@ -86,18 +95,24 @@ const PackageSubscriptions = () => {
     setActiveItem(item);
   };
 
+  const navigateBack = () => {
+    navigation.navigate('AccountMain');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.alignStart}>
-        <BackButton />
+        <BackButton navigationHandler={navigateBack} />
       </View>
-      <View style={styles.logoContainer}>
+      {/* <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
           resizeMode="contain"
           source={require('../../../assets/images/account/alphalogo.png')}
         />
-      </View>
+      </View> */}
+
+      <Text style={styles.mainTitle}>Subscription</Text>
       <Text style={styles.description}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum veniam
         quaerat ipsum quae numquam facere, soluta cum excepturi, adipisci nobis

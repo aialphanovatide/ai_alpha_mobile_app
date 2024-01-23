@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, ImageBackground, StyleSheet} from 'react-native';
 import {
   VictoryChart,
@@ -12,6 +12,7 @@ import {
 } from 'victory-native';
 import Loader from '../../../../../Loader/Loader';
 import useChartStyles from '../Fundamentals/SubSections/Competitors/CompetitorSections/CurrentMarketCap/ChartStyles';
+import {AppThemeContext} from '../../../../../../context/themeContext';
 
 const Chart = ({
   chartData,
@@ -22,6 +23,7 @@ const Chart = ({
   activeButtons,
 }) => {
   const styles = useChartStyles();
+  const {theme} = useContext(AppThemeContext);
   if (loading) {
     return (
       <View style={styles.container}>
@@ -65,8 +67,26 @@ const Chart = ({
             domainPadding={{x: 5, y: 3}}
             scale={{x: 'time', y: 'log'}}
             height={300}>
-            <VictoryAxis dependentAxis orientation="right" />
-            <VictoryAxis />
+            <VictoryAxis
+              style={{
+                axis: {stroke: theme.chartsColor},
+                tickLabels: {
+                  fontSize: theme.responsiveFontSize * 0.7,
+                  fill: theme.titleColor,
+                },
+              }}
+            />
+            <VictoryAxis
+              dependentAxis
+              style={{
+                axis: {stroke: theme.chartsColor},
+                tickLabels: {
+                  fontSize: theme.responsiveFontSize * 0.825,
+                  fill: theme.titleColor,
+                },
+              }}
+              orientation="right"
+            />
 
             <VictoryCandlestick
               data={chartData}
