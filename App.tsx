@@ -7,7 +7,7 @@ import {
   Platform,
   Appearance,
 } from 'react-native';
-import Config from 'react-native-config';
+import Keys from 'react-native-keys';
 import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import PaywallScreen from './components/Login/Screens/PaywallScreen';

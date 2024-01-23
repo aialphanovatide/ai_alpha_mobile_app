@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
-import AlertDetails from './AlertDetails';
+import {View, Text, FlatList, StyleSheet} from 'react-native';
+import AlertDetails from './alertDetails';
 import {postService} from '../../../../../../../services/aiAlphaApi';
 import Loader from '../../../../../../Loader/Loader';
 
