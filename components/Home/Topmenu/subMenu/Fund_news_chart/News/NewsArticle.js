@@ -19,11 +19,12 @@ const NewsArticle = ({route, navigation}) => {
         <Image
           style={styles.articleImage}
           resizeMode={'contain'}
-          source={
-            item.images[0] || {
-              uri: 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
-            }
-          }
+          source={{
+            uri:
+              item.images[0].image ||
+              'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+            width: 300,
+          }}
         />
         <Text style={styles.articleTitle}>{item.title}</Text>
         <Text style={styles.articleDate}>{item.date}</Text>

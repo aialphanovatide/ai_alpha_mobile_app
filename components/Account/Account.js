@@ -47,7 +47,7 @@ const Account = ({route}) => {
   const [userId, setUserId] = useState(null);
   const [subscriptionActive, setSubscriptionActive] = useState(false);
   const [subscriptionName, setSubscriptionName] = useState('');
-  const {userEmail} = useUser();
+  const {userEmail, setUserEmail} = useUser();
   const navigation = useNavigation();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const {userInfo} = useContext(RevenueCatContext);
@@ -96,21 +96,22 @@ const Account = ({route}) => {
     }
   };
 
-  const getUserData = async () => {
-    setIsAnonymous(await Purchases.isAnonymous());
-    setUserId(await Purchases.getAppUserID());
+  // const getUserData = async () => {
+  //   setIsAnonymous(await Purchases.isAnonymous());
+  //   setUserId(await Purchases.getAppUserID());
 
-    const purchaserInfo = await Purchases.getCustomerInfo();
-    setSubscriptionActive(
-      typeof purchaserInfo.entitlements.active[ENTITLEMENT_ID] !== 'undefined',
-    );
-    //await Purchases.identify(userId);
+  //   const purchaserInfo = await Purchases.getCustomerInfo();
+  //   setSubscriptionActive(
+  //     typeof purchaserInfo.entitlements.active[ENTITLEMENT_ID] !== 'undefined',
+  //   );
+  //   //await Purchases.identify(userId);
 
-    const activeSubscriptions = Object.keys(purchaserInfo.entitlements.active);
-    if (activeSubscriptions.length > 0) {
-      setSubscriptionName(activeSubscriptions[0]); // Set the first active subscription name
-    }
-  };
+  //   const activeSubscriptions = Object.keys(purchaserInfo.entitlements.active);
+  //   if (activeSubscriptions.length > 0) {
+  //     setSubscriptionName(activeSubscriptions[0]); // Set the first active subscription name
+  //   }
+  // };
+
   const resetLoginForm = () => {
     navigation.navigate('SignIn', {
       resetForm: () => {
@@ -132,12 +133,12 @@ const Account = ({route}) => {
     }
   };
 
-  useEffect(() => {
-    if (route.params?.userEmail) {
-      setUserEmail(route.params.userEmail);
-    }
-    getUserData();
-  }, []);
+  // useEffect(() => {
+  //   if (route.params?.userEmail) {
+  //     setUserEmail(route.params.userEmail);
+  //   }
+  //   getUserData();
+  // }, []);
 
   // useEffect(() => {
   //   Purchases.addCustomerInfoUpdateListener(getUserData);
@@ -270,25 +271,8 @@ async function Buy_now() {
 
   return (
     <ScrollView style={styles.backgroundColor}>
-      {/* <View style={styles.page}>
-       <Text style={styles.headline}>Current User Identifier</Text>
-       <Text style={styles.userIdentifier}>{userId}</Text>
-       <Text style={styles.headline}>User Email</Text>
-        <Text style={styles.userIdentifier}>{userEmail || 'Email not available'}</Text>
-       <Text style={styles.headline}>Subscription Name</Text>
-       <Text>{subscriptionName || 'No Active Subscription'}</Text>
-       <Text style={styles.headline}>Subscription Status</Text>
-       <Text style={{ color: subscriptionActive ? styles.greenColor : styles.redColor}}>
-         {subscriptionActive ? 'Active' : 'Not Active'}
-       </Text>
-       <CustomButton text="Delete Account" onPress={() => navigation.navigate('DeleteAccountScreen')} />
-       <CustomButton text="Log Out" onPress={handleLogout} />
-       
-     </View> */}
-
       <View style={styles.container}>
         <View style={styles.row}>
-          {/* {isSubscribed && ( */}
           <View style={styles.alphaLogoContainer}>
             <Image
               source={require('../../assets/images/account/alphalogo.png')}
@@ -296,33 +280,16 @@ async function Buy_now() {
               style={styles.image}
             />
           </View>
-          {/* )} */}
           <Text style={styles.username}>
             {userEmail || 'User not available'}
           </Text>
         </View>
-        {/* <View>
-          <Button
-        title="Click Me"
-        onPress={Buy_now}
-        />
-        </View> */}
         <Text style={styles.headline}>User Subscriptions</Text>
         <Text style={styles.text}>
           {userInfo.entitlements.length > 0
             ? formatUserEntitlements(userInfo.entitlements)
             : 'There are no active subscriptions.'}
         </Text>
-        {/* <Text style={styles.headline}>Subscription Status</Text>
-        <Text
-          style={[
-            styles.text,
-            subscriptionActive && {
-              color: subscriptionActive ? styles.greenColor : styles.redColor,
-            },
-          ]}>
-          {subscriptionActive ? 'Active' : 'Not Active'}
-        </Text> */}
         <View style={styles.optionsContainer}>
           {options &&
             options.map((option, index) => (

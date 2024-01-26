@@ -64,7 +64,7 @@ const CandlestickChart = ({route}) => {
   // This useEffect handles the content regulation
   useEffect(() => {
     const hasCoinSubscription = findCategoryInIdentifiers(
-      activeCoin.category,
+      activeCoin.category_name,
       userInfo.entitlements,
     );
     setSubscribed(hasCoinSubscription);

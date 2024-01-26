@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {Text, FlatList, SafeAreaView} from 'react-native';
-import {postService} from '../../../../../../services/aiAlphaApi';
+import {getService, postService} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
@@ -44,7 +44,7 @@ const NewsComponent = ({route}) => {
     requestBody.botName = botname;
     const fetchNews = async () => {
       try {
-        const response = await postService('/api/get/news', requestBody);
+        const response = await getService('/api/get/news', requestBody);
         if (
           response.message &&
           response.message.startsWith('No articles found')
@@ -65,7 +65,7 @@ const NewsComponent = ({route}) => {
   // This useEffect handles the content regulation
   useEffect(() => {
     const hasCoinSubscription = findCategoryInIdentifiers(
-      activeCoin.category,
+      activeCoin.category_name,
       userInfo.entitlements,
     );
     setSubscribed(hasCoinSubscription);

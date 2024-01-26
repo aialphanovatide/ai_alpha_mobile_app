@@ -1,5 +1,5 @@
 import {TopMenuContext} from '../../../context/topMenuContext';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
@@ -12,6 +12,8 @@ import {AppThemeContext} from '../../../context/themeContext';
 import AnalysisScreen from '../../Analysis/AnalysisStack';
 import AccountScreen from '../../Account/AccountStack';
 import {useNavigation} from '@react-navigation/core';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import {useUserId} from '../../../context/UserIdContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,6 +34,16 @@ const HomeScreen = () => {
     useContext(TopMenuContext);
   const navigation = useNavigation();
   const {theme} = useContext(AppThemeContext);
+  const {userId} = useUserId();
+  const {init} = useContext(RevenueCatContext);
+
+  useEffect(() => {
+    init(userId);
+    return () => {
+      console.log('RevenueCat data configured succesfully');
+    };
+  }, []);
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Tab.Navigator

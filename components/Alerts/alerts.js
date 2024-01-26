@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import useAlertsStyles from './styles';
 import {TopMenuContext} from '../../context/topMenuContext';
-import {postService} from '../../services/aiAlphaApi';
+import {getService, postService} from '../../services/aiAlphaApi';
 import AlertDetails from './AlertsDetails';
 import Loader from '../Loader/Loader';
 import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
@@ -76,7 +76,7 @@ const Alerts = ({route, navigation}) => {
   // This useEffect handles the content regulation
   useEffect(() => {
     const hasCoinSubscription = findCategoryInIdentifiers(
-      activeCoin.category,
+      activeCoin.category_name,
       userInfo.entitlements,
     );
     setSubscribed(hasCoinSubscription);
@@ -85,19 +85,16 @@ const Alerts = ({route, navigation}) => {
   const styles = useAlertsStyles();
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const requestBody = {
-    botName: botName,
-    dateOption: activeAlertOption,
-  };
+
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
     }
-    requestBody.botName = botName;
-    requestBody.dateOption = activeAlertOption;
     const fetchGeneralAlerts = async () => {
       try {
-        const response = await postService('/api/get/alerts', requestBody);
+        const response = await getService(
+          `/api/filter/alerts?coin=${botName}&date=${activeAlertOption}`,
+        );
         if (
           response.message &&
           response.message.startsWith('No alerts found')

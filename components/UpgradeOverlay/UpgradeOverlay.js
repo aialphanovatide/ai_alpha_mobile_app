@@ -51,7 +51,7 @@ const UpgradeOverlay = ({isBlockingByCoin, screen}) => {
   useEffect(() => {
     if (isBlockingByCoin && activeCoin && activeCoin !== undefined) {
       const hasCoinSubscription = findCategoryInIdentifiers(
-        activeCoin.category,
+        activeCoin.category_name,
         userInfo.entitlements,
       );
       setSubscribed(hasCoinSubscription);
