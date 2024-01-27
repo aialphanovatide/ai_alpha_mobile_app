@@ -23,19 +23,7 @@ import {ENTITLEMENT_ID} from '../../../../src/constants';
 import {useUser} from '../../../../context/UserContext';
 import useSignUpStyles from './SignUpStyles';
 
-const onTermsPressed = () => {
-  const url = 'https://aialpha.ai/termsofservice';
 
-  Linking.canOpenURL(url)
-    .then(supported => {
-      if (supported) {
-        Linking.openURL(url);
-      } else {
-        console.warn("Don't know how to open URI: " + url);
-      }
-    })
-    .catch(err => console.error('An error occurred', err));
-};
 
 const SignupForm = () => {
   const [username, setUsername] = useState();
@@ -66,6 +54,9 @@ const SignupForm = () => {
 
   const onSignInPressed = () => {
     navigation.navigate('SignIn');
+  };
+  const onTermsPressed = () => {
+    navigation.navigate('TermsAndConditionsScreen');
   };
   const onRegisterPressed = async () => {
     console.log('Here!');

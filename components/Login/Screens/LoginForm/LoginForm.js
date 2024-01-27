@@ -124,6 +124,10 @@ const LoginForm = ({route}) => {
     navigation.navigate('ForgotPassword');
   };
 
+  const onTermsPressed = () => {
+    navigation.navigate('TermsAndConditionsScreen');
+  };
+
   const onSignUpPressed = () => {
     navigation.navigate('SignUp');
   };

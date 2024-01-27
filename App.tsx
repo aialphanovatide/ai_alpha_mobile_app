@@ -7,6 +7,7 @@ import {
   Platform,
   Appearance,
 } from 'react-native';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
 import Keys from 'react-native-keys';
 import Purchases from 'react-native-purchases';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -103,6 +104,7 @@ const App = () => {
   // showUserSubscriptionData();
 
   return (
+    <Auth0Provider domain={"dev-zoejuo0jssw5jiid.us.auth0.com"} clientId={"K5bEigOfEtz4Devpc7kiZSYzzemPLIlg"}>
     <RevenueCatProvider>
       <UserProvider>
         <UserIdProvider>
@@ -123,6 +125,7 @@ const App = () => {
         </UserIdProvider>
       </UserProvider>
     </RevenueCatProvider>
+    </Auth0Provider>
   );
 };
 
