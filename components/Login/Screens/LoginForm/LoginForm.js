@@ -26,6 +26,7 @@ import jwtDecode from 'jwt-decode';
 import {decode as base64decode} from 'base-64';
 import {AppThemeContext} from '../../../../context/themeContext';
 import useLoginFormStyles from './LoginFormStyles';
+import {RevenueCatContext} from '../../../../context/RevenueCatContext';
 
 const LoginForm = ({route}) => {
   const [username, setUsername] = useState();
@@ -36,7 +37,14 @@ const LoginForm = ({route}) => {
   const [error, setError] = useState('');
   const colorScheme = Appearance.getColorScheme();
   const {toggleDarkMode} = useContext(AppThemeContext);
+  const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
   const styles = useLoginFormStyles();
+
+  const formatUserId = user_id => {
+    let separator = user_id.indexOf('|');
+    let formatted_id = user_id.slice(separator + 1, user_id.length);
+    return formatted_id;
+  };
 
   useEffect(() => {
     if (colorScheme === 'dark') {
@@ -59,9 +67,14 @@ const LoginForm = ({route}) => {
       const userEmail = await AsyncStorage.getItem('userEmail');
       const userId = await AsyncStorage.getItem('userId');
 
+      if (userEmail) {
+        updateUserEmail(userEmail);
+      }
+
       if (accessToken && refreshToken) {
+        const user_id = formatUserId(userId);
         setUserEmail(userEmail);
-        setUserId(userId);
+        setUserId(user_id);
         navigation.navigate('HomeScreen');
       } else {
         navigation.navigate('SignIn');
@@ -102,14 +115,16 @@ const LoginForm = ({route}) => {
         if (decodedToken) {
           const userId = decodedToken.sub;
           console.log('User ID:', userId);
+          const formatted_id = formatUserId(userId);
 
           await AsyncStorage.setItem('accessToken', credentials.accessToken);
           await AsyncStorage.setItem('refreshToken', credentials.refreshToken);
           await AsyncStorage.setItem('userEmail', username);
-          await AsyncStorage.setItem('userId', userId);
+          await AsyncStorage.setItem('userId', formatted_id);
 
           setUserEmail(username);
-          setUserId(userId);
+          setUserId(formatted_id);
+          updateUserEmail(username);
 
           navigation.navigate('HomeScreen');
         }

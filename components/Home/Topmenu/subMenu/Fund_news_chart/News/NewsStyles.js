@@ -63,7 +63,7 @@ const useNewsStyles = () => {
     },
     articleImage: {
       width: theme.width - 30,
-      height: 200,
+      height: 300,
       alignSelf: 'center',
       overflow: 'hidden',
     },

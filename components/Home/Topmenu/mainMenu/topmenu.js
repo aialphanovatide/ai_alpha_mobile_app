@@ -48,7 +48,6 @@ const TopMenu = ({isAlertsMenu}) => {
           categories.map(category => (
             <MenuItem
               key={category.category_id}
-              icon={category.image}
               onPress={() => handleButtonPress(category)}
               category={category}
               isDarkMode={isDarkMode}

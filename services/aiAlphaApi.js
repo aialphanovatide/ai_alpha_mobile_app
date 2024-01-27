@@ -1,6 +1,5 @@
-// export const API_BASE_URL = 'https://debd-181-51-89-43.ngrok-free.app';
 export const API_BASE_URL = 'https://star-oyster-known.ngrok-free.app';
-export const CATEGORIES_BASE_URL = 'https://ntf1vmdf-9000.use.devtunnels.ms';
+// export const API_BASE_URL = 'https://ntf1vmdf-9000.use.devtunnels.ms';
 
 // Function to handle HTTP errors
 const handleErrors = response => {
@@ -24,25 +23,8 @@ export const getService = async endpoint => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`Error in GET request: ${error.message}`);
-    throw error;
-  }
-};
-
-export const categoriesGetService = async endpoint => {
-  try {
-    const response = await fetch(`${CATEGORIES_BASE_URL}${endpoint}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    if (response.status === 204) {
+      return [];
     }
 
     const data = await response.json();

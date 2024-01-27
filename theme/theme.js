@@ -56,6 +56,7 @@ export const lightThemeStyles = {
   signUpTitlesColor: '#FFFFFF',
   loginInputBgColor: '#5F6567',
   inputColor: '#F7F7F7',
+  topMenuActiveBg: '#F9F9F933',
 };
 
 export const darkThemeStyles = {
@@ -112,4 +113,5 @@ export const darkThemeStyles = {
   signUpTitlesColor: '#FFFFFF',
   loginInputBgColor: '#FFFFFF',
   inputColor: '#242427',
+  topMenuActiveBg: '#E9E9E933',
 };

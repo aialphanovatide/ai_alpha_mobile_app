@@ -7,6 +7,7 @@ import {createContext, useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 import {CustomerInfo} from 'react-native-purchases';
+import {useUserId} from './UserIdContext';
 
 const RevenueCatContext = createContext();
 
@@ -19,27 +20,34 @@ const RevenueCatProvider = ({children}) => {
     subscribed: false,
   });
 
-  useEffect(() => {
-    const init = async () => {
-      if (Platform.OS === 'ios') {
-        Purchases.configure({apiKey: REVENUECAT_IOS_API_KEY});
-      } else if (Platform.OS === 'android') {
-        Purchases.configure({apiKey: REVENUECAT_ANDROID_API_KEY});
-      }
-      Purchases.setLogLevel(LOG_LEVEL.DEBUG);
-
-      await loadOfferings();
-      await getUserSubscriptionData();
-
-      Purchases.addCustomerInfoUpdateListener(async info => {
-        updateCustomerInformation(info);
+  const init = async (userId) => {
+    if (Platform.OS === 'ios') {
+      Purchases.configure({apiKey: REVENUECAT_IOS_API_KEY, appUserID: userId});
+    } else if (Platform.OS === 'android') {
+      Purchases.configure({
+        apiKey: REVENUECAT_ANDROID_API_KEY,
+        appUserID: userId,
       });
+    }
+    Purchases.setLogLevel(LOG_LEVEL.DEBUG);
+
+    await loadOfferings();
+    await getUserSubscriptionData();
+
+    Purchases.addCustomerInfoUpdateListener(async info => {
+      updateCustomerInformation(info);
+    });
+  };
+
+  const updateUserEmail = newEmail => {
+    let new_user = {
+      id: userInfo.id,
+      email: newEmail,
+      subscribed: userInfo.subscribed,
+      entitlements: userInfo.entitlements,
     };
-    init();
-    return () => {
-      console.log('RevenueCat data configured succesfully');
-    };
-  }, []);
+    setUserInfo(new_user);
+  };
 
   const updateCustomerInformation = async customerInfo => {
     const updatedUser = {
@@ -139,7 +147,7 @@ const RevenueCatProvider = ({children}) => {
     });
   };
 
-// This function finds the activeCoin name inside every string of the user entitlements identifiers
+  // This function finds the activeCoin name inside every string of the user entitlements identifiers
 
   const findCategoryInIdentifiers = (category, identifiers) => {
     if (
@@ -163,9 +171,11 @@ const RevenueCatProvider = ({children}) => {
   return (
     <RevenueCatContext.Provider
       value={{
+        init,
         packages,
         purchasePackage,
         userInfo,
+        updateUserEmail,
         findCategoryInIdentifiers,
         findProductIdInIdentifiers,
       }}>

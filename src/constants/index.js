@@ -16,6 +16,8 @@ export const REVENUECAT_IOS_API_KEY = 'appl_HblzZuTEedJuLQDVVgdOyoGZCxW';
 export const auth0DeleteAccount_Client = 'yxHIEb9OfX0Ax6aXlj5dh4ippqnk3bLs';
 export const auth0DeleteAccount_Secret =
   'RT0GEngb2IhR03_AMoIjRPxAQamrTY02B4OG4RPuA8gYgguQ0ua83b509U3W-t68';
+export const revenueCat_secret = 'sk_OsSNuqHUzDktdaXynIozTeiMAVIMD';
+
 /*
  The entitlement ID from the RevenueCat dashboard that is activated upon successful in-app purchase for the duration of the purchase.
  */

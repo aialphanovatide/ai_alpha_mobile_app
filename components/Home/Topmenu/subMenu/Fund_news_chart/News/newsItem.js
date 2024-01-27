@@ -13,7 +13,9 @@ const NewsItem = ({item, onPress}) => {
       </View>
       <Image
         source={{
-          uri: 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+          uri:
+            item.images[0].image ||
+            'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
         }}
         style={styles.image}
         resizeMode={'contain'}
