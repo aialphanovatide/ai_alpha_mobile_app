@@ -108,7 +108,7 @@ const useAccountStyles = () => {
     username: {
       marginHorizontal: 10,
       padding: 10,
-      fontSize: theme.titleFontSize,
+      fontSize: 15,
       color: theme.titleColor,
       textAlign: 'center',
       fontWeight: 'bold',

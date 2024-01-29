@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
     "ios": "react-native run-ios",
     "ios-dev": "react-native run-ios --scheme \"ai_alpha_mobile_app_dev\"",
     "lint": "eslint .",

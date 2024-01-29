@@ -15,11 +15,17 @@ import {
   GOOGLE_CLIENT_IOS_ID,
   GOOGLE_CLIENT_WEB_ID,
 } from '../../../src/constants';
+import { useUser } from '../../../context/UserContext';
+import { useUserId } from '../../../context/UserIdContext';
+
+
 const SocialSignInButton = () => {
   const [loggedInUser, setloggedInUser] = useState(null);
   const navigation = useNavigation();
   const {authorize, clearSession, user, getCredentials, error, isLoading} = useAuth0();
-
+  const {setUserEmail} = useUser();
+  const {setUserId} = useUserId();
+  
   useEffect(() => {
     GoogleSignin.configure({
       iosClientId: GOOGLE_CLIENT_IOS_ID,

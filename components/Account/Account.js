@@ -272,10 +272,10 @@ async function Buy_now() {
   return (
     <ScrollView style={styles.backgroundColor}>
       <View style={styles.container}>
-        <View style={styles.row}>
+
           <View style={styles.alphaLogoContainer}>
             <Image
-              source={require('../../assets/images/account/alphalogo.png')}
+              source={require('../../assets/images/AIAlphalogonew.png')}
               resizeMode="contain"
               style={styles.image}
             />
@@ -283,7 +283,7 @@ async function Buy_now() {
           <Text style={styles.username}>
             {userEmail || 'User not available'}
           </Text>
-        </View>
+
         <Text style={styles.headline}>User Subscriptions</Text>
         <Text style={styles.text}>
           {userInfo.entitlements.length > 0
