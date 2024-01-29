@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import AlertDetails from './alertDetails';
-import {getService} from '../../../../../../../services/aiAlphaApi';
+import { postService, getService } from '../../../../../../../services/aiAlphaApi';
 import Loader from '../../../../../../Loader/Loader';
 
 const AlertListComponent = ({botName, timeframe, styles}) => {

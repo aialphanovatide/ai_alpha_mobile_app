@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Text, FlatList, SafeAreaView} from 'react-native';
+import {
+  Text,
+  FlatList,
+  SafeAreaView,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {postService} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
@@ -16,8 +22,11 @@ const NewsComponent = ({route}) => {
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin.bot_name,
   );
+  const [activeFilter, setActiveFilter] = useState('Last Day');
+  const [activeButtons, setActiveButtons] = useState('Last Day');
   const requestBody = {
     botName: botname,
+    filter: activeFilter,
   };
 
   // Function to filter the summary or texts of the article, removing the words that are put by the prompt generated, and aren't necessary in the summary or the title.
@@ -53,6 +62,11 @@ const NewsComponent = ({route}) => {
     });
   };
 
+  const handleFilterPress = option => {
+    setActiveButtons(option);
+    setActiveFilter(option);
+  };
+
   useEffect(() => {
     if (
       activeSubCoin &&
@@ -86,12 +100,25 @@ const NewsComponent = ({route}) => {
     };
 
     fetchNews();
-  }, [botname]);
+  }, [botname, activeFilter]);
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
       <BackButton />
       <Text style={styles.title}>News</Text>
+      <View style={styles.buttonContainer}>
+        {['Last Hour', 'Last Day', 'Last Week'].map(option => (
+          <TouchableOpacity
+            key={option}
+            onPress={() => handleFilterPress(option)}
+            style={[
+              styles.button,
+              activeButtons === option ? styles.btnactive : null,
+            ]}>
+            <Text style={styles.buttonText}>{option}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
       <FlatList
         data={news}
         ListEmptyComponent={<Loader />}

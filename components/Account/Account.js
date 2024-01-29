@@ -276,7 +276,7 @@ async function Buy_now() {
         <View style={styles.container}>
           <View style={styles.alphaLogoContainer}>
             <Image
-              source={require('../../assets/images/account/alphalogo.png')}
+              source={require('../../assets/images/AIAlphalogonew.png')}
               resizeMode="contain"
               style={styles.image}
             />

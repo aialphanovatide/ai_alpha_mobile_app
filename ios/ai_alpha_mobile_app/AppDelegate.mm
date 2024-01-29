@@ -1,8 +1,14 @@
 #import "AppDelegate.h"
 //#import "RNCConfig.h"
 #import <React/RCTBundleURLProvider.h>
-
+#import <React/RCTLinkingManager.h>
 @implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
+{
+  return [RCTLinkingManager application:app openURL:url options:options];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -11,7 +17,6 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
   //[RNCConfig setConfigSettings:@{}];  // Chatgpt suggestion
-
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

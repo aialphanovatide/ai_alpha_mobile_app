@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
     "ios": "react-native run-ios",
     "ios-dev": "react-native run-ios --scheme \"ai_alpha_mobile_app_dev\"",
     "lint": "eslint .",
@@ -33,6 +34,7 @@
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-native": "0.72.7",
+    "react-native-app-auth": "^7.1.0",
     "react-native-art": "^1.0.0",
     "react-native-auth0": "^3.1.0",
     "react-native-autoheight-webview": "^1.6.5",

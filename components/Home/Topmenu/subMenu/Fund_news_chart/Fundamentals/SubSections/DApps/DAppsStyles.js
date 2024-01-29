@@ -61,7 +61,7 @@ const useDappsStyles = () => {
       width: '70%',
       flexWrap: 'wrap',
       flexDirection: 'row',
-      justifyContent: 'start',
+      justifyContent: 'flex-start',
     },
     strong: {
       fontWeight: 'bold',

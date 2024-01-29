@@ -1,5 +1,5 @@
-import {Image} from 'react-native';
-import {List} from 'react-native-paper';
+import { Image } from 'react-native';
+import { List } from 'react-native-paper';
 import useHomeAnalysisStyles from '../analysisStyles';
 
 const AnalysisItem = ({title, description, imageBase64}) => {

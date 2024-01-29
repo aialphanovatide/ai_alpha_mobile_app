@@ -1,8 +1,8 @@
 import {useContext} from 'react';
 import {StyleSheet} from 'react-native';
-import {AppThemeContext} from '../../../context/themeContext';
+import { AppThemeContext } from '../../../../context/themeContext';
 
-const usePrivacyPolicyStyles = () => {
+const useTermsAndConditionsStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     mainView: {
@@ -145,4 +145,4 @@ const usePrivacyPolicyStyles = () => {
   return styles;
 };
 
-export default usePrivacyPolicyStyles;
+export default useTermsAndConditionsStyles;

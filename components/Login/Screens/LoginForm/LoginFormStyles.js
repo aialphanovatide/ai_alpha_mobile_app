@@ -52,6 +52,19 @@ const useLoginFormStyles = () => {
       color: theme.activeOrange,
       fontWeight: 'bold',
     },
+    termsContainer: {
+      flexDirection: 'row',
+      marginTop: 0,
+      marginBottom: 10,
+    },
+    termsText: {
+      color: theme.textColor,
+      fontSize: 10,
+    },
+    termsButton: {
+      color: theme.orange,
+      fontSize: 10,
+    },
   });
   return styles;
 };

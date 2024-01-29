@@ -7,6 +7,7 @@ import {
   Platform,
   Appearance,
 } from 'react-native';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
 import Keys from 'react-native-keys';
 import {TopMenuContextProvider} from './context/topMenuContext';
 import {UserProvider} from './context/UserContext';
@@ -15,7 +16,6 @@ import {CategoriesContextProvider} from './context/categoriesContext';
 import {AppThemeProvider} from './context/themeContext';
 import SplashScreen from 'react-native-splash-screen';
 import {RevenueCatProvider} from './context/RevenueCatContext';
-import {Auth0Provider} from 'react-native-auth0';
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();

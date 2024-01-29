@@ -3,40 +3,45 @@ import {Platform, View, Linking} from 'react-native';
 import CustomButton from '../CustomButton/CustomButton';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import axios from 'axios';
-import {
-  auth0Client,
-  auth0Domain,
-  auth0Audience,
-} from '../../../src/constants';
+import {auth0Client, auth0Domain, auth0Audience, auth0GoogleAudience} from '../../../src/constants';
 import {
   GoogleSignin,
 } from '@react-native-google-signin/google-signin';
 import {useNavigation} from '@react-navigation/native';
 import auth0 from '../auth0';
 import {useAuth0, Auth0Provider} from 'react-native-auth0';
-import {authorize} from 'react-native-app-auth';
+import { authorize } from 'react-native-app-auth';
 import {
   GOOGLE_CLIENT_IOS_ID,
   GOOGLE_CLIENT_WEB_ID,
 } from '../../../src/constants';
+import { useUser } from '../../../context/UserContext';
+import { useUserId } from '../../../context/UserIdContext';
+
+
 const SocialSignInButton = () => {
   const [loggedInUser, setloggedInUser] = useState(null);
   const navigation = useNavigation();
-  const {authorize, clearSession, user, getCredentials, error, isLoading} =
-    useAuth0();
+  const {authorize, clearSession, user, getCredentials, error, isLoading} = useAuth0();
+  const {setUserEmail} = useUser();
+  const {setUserId} = useUserId();
+  
   useEffect(() => {
     GoogleSignin.configure({
       iosClientId: GOOGLE_CLIENT_IOS_ID,
       webClientId: GOOGLE_CLIENT_WEB_ID,
     });
   }, []);
+
+
   const signInWithGoogle = async () => {
     try {
       await authorize({}, {});
       const credentials = await getCredentials();
-      console.log('User is: ', user.email);
-      console.log('AccessToken: ', credentials?.accessToken);
-      navigation.navigate('HomeScreen');
+      console.log("User is: ", user.email)
+      console.log('AccessToken: ',credentials?.accessToken);
+      navigation.navigate('HomeScreen')
+
     } catch (error) {
       console.error('Google Sign-In Error:', error);
       if (error.response) {
@@ -51,6 +56,7 @@ const SocialSignInButton = () => {
       throw error;
     }
   };
+  
   const signInWithApple = async () => {
     try {
       const appleAuthRequestResponse = await appleAuth.performRequest({

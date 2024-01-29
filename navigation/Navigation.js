@@ -7,6 +7,7 @@ import ForgotPasswordForm from '../components/Login/Screens/ForgotPassword/Forgo
 import HomeScreen from '../components/Login/HomeScreen/HomeScreen';
 import PaywallScreen from '../src/screens/PaywallScreen';
 import DeleteAccountForm from '../components/Login/DeleteAccount/DeleteUserForm';
+import TermsAndConditions from '../components/Login/Screens/TermsAndConditions/TermsAndConditions';
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -20,6 +21,8 @@ const Navigation = () => {
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="PaywallScreen" component={PaywallScreen} />
         <Stack.Screen name="DeleteAccountScreen" component={DeleteAccountForm} />
+        <Stack.Screen name="TermsAndConditionsScreen" component={TermsAndConditions} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

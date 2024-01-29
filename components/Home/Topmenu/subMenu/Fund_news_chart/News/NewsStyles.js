@@ -100,6 +100,43 @@ const useNewsStyles = () => {
       fontSize: theme.responsiveFontSize * 0.825,
       textAlign: 'justify',
     },
+    buttonContainer: {
+      marginLeft: 10,
+      flexDirection: 'row',
+    },
+    button: {
+      paddingVertical: 5,
+      paddingHorizontal: 18,
+      backgroundColor: 'gray',
+      marginHorizontal: 5,
+    },
+    btnactive: {
+      backgroundColor: '#ccc',
+    },
+    buttonText: {
+      color: 'white',
+    },
+    menuButtonContainer: {
+      marginLeft: 10,
+      flexDirection: 'row',
+    },
+    menuButton: {
+      paddingVertical: 5,
+      paddingHorizontal: 18,
+      backgroundColor: theme.subMenuBgColor,
+      marginHorizontal: 5,
+    },
+    activeButton: {
+      backgroundColor: theme.subMenuTextColor,
+    },
+    activeText: {
+      color: theme.secondaryTextColor,
+      textTransform: 'capitalize',
+    },
+    inactiveText: {
+      color: theme.subMenuTextColor,
+      textTransform: 'capitalize',
+    },
   });
   return styles;
 };
