@@ -2,11 +2,15 @@ import {TouchableOpacity, View, Text} from 'react-native';
 import useBackButtonStyles from './BackButtonStyles';
 import {useNavigation} from '@react-navigation/native';
 
-const BackButton = () => {
+const BackButton = ({navigationHandler = null}) => {
   const styles = useBackButtonStyles();
   const navigation = useNavigation();
   const handleReturn = () => {
-    navigation.goBack();
+    if (navigationHandler && navigationHandler !== undefined) {
+      navigationHandler();
+    } else {
+      navigation.goBack();
+    }
   };
   return (
     <TouchableOpacity onPress={() => handleReturn()}>

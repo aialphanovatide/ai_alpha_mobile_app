@@ -1,53 +1,62 @@
 import React, {useEffect, useState} from 'react';
-import {Platform, View} from 'react-native';
+import {Platform, View, Linking} from 'react-native';
 import CustomButton from '../CustomButton/CustomButton';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import axios from 'axios';
-import {auth0Client, auth0Domain, auth0Audience} from '../../../src/constants';
+import {auth0Client, auth0Domain, auth0Audience, auth0GoogleAudience} from '../../../src/constants';
 import {
   GoogleSignin,
-  statusCodes,
-  GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import {useNavigation} from '@react-navigation/native';
 import auth0 from '../auth0';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
+import { authorize } from 'react-native-app-auth';
 import {
   GOOGLE_CLIENT_IOS_ID,
   GOOGLE_CLIENT_WEB_ID,
 } from '../../../src/constants';
+import { useUser } from '../../../context/UserContext';
+import { useUserId } from '../../../context/UserIdContext';
+
 
 const SocialSignInButton = () => {
-  const [user, setUser] = useState(null);
+  const [loggedInUser, setloggedInUser] = useState(null);
   const navigation = useNavigation();
-
+  const {authorize, clearSession, user, getCredentials, error, isLoading} = useAuth0();
+  const {setUserEmail} = useUser();
+  const {setUserId} = useUserId();
+  
   useEffect(() => {
     GoogleSignin.configure({
       iosClientId: GOOGLE_CLIENT_IOS_ID,
       webClientId: GOOGLE_CLIENT_WEB_ID,
     });
   }, []);
+
+
   const signInWithGoogle = async () => {
     try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log('User Info --> ', userInfo);
-      /*
-      // Exchange the token with Auth0
-      const auth0Response = await auth0.auth.exchangeNativeSocial({
-        subjectToken: userInfo.idToken,
-        subjectTokenType: 'http://auth0.com/oauth/token-type/google-oauth2',
-        audience: '647f91b8c76e73342e725c9a',
-        scope: 'openid profile email',
-      });
+      await authorize({}, {});
+      const credentials = await getCredentials();
+      console.log("User is: ", user.email)
+      console.log('AccessToken: ',credentials?.accessToken);
+      navigation.navigate('HomeScreen')
 
-      console.log('Auth0 Token:', auth0Response.accessToken);
-      */
-      navigation.navigate('HomeScreen');
     } catch (error) {
-      console.error('Authentication error:', error);
+      console.error('Google Sign-In Error:', error);
+      if (error.response) {
+        console.error('Error response data:', error.response.data);
+        console.error('Error response status:', error.response.status);
+        console.error('Error response headers:', error.response.headers);
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+      } else {
+        console.error('Error during request setup:', error.message);
+      }
+      throw error;
     }
   };
-
+  
   const signInWithApple = async () => {
     try {
       const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -56,15 +65,12 @@ const SocialSignInButton = () => {
         requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
       });
       console.log('Apple Auth Response:', appleAuthRequestResponse);
-
       const credentialState = await appleAuth.getCredentialStateForUser(
         appleAuthRequestResponse.user,
       );
-
       const {fullName, email, authorizationCode, user} =
         appleAuthRequestResponse;
       console.log('User !Email:', email);
-
       if (credentialState === appleAuth.State.AUTHORIZED) {
         const {fullName, email, authorizationCode, user} =
           appleAuthRequestResponse;
@@ -73,7 +79,6 @@ const SocialSignInButton = () => {
         console.log('Full Name:', fullName);
         console.log('User Email:', user?.email);
         console.log('User2 Email:', email);
-
         const payload = {
           grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
           subject_token_type:
@@ -90,19 +95,15 @@ const SocialSignInButton = () => {
             email,
           }),
         };
-
         console.log('Auth0 Request Payload:', payload);
-
         const auth0Response = await axios.post(
           `https://${auth0Domain}/oauth/token`,
           payload,
         );
-
         console.log('Auth0 Response:', auth0Response.data);
         navigation.navigate('HomeScreen');
         console.log('User3 Email:', auth0Response.email);
         console.log('After navigation');
-
         return {
           message: 'success',
           ...auth0Response.data,
@@ -117,7 +118,6 @@ const SocialSignInButton = () => {
       throw error;
     }
   };
-
   const isSignedIn = async () => {
     const isSigned = await GoogleSignin.isSignedIn();
     if (isSigned) {
@@ -127,23 +127,25 @@ const SocialSignInButton = () => {
       console.error('Fail to sign in');
     }
   };
-
   return (
-    <View>
-      <CustomButton
-        text="Sign In with Apple"
-        onPress={() => signInWithApple()}
-        type="APPLE"
-        disabled={user !== null}
-      />
-      <CustomButton
-        text="Sign In with Google"
-        onPress={() => signInWithGoogle()}
-        type="GOOGLE"
-        disabled={user !== null}
-      />
-    </View>
+    <Auth0Provider
+      domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
+      clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
+      <View>
+        <CustomButton
+          text="Sign In with Apple"
+          onPress={() => signInWithApple()}
+          type="APPLE"
+          disabled={loggedInUser !== null}
+        />
+        <CustomButton
+          text="Sign In with Google"
+          onPress={() => signInWithGoogle()}
+          type="GOOGLE"
+          disabled={loggedInUser !== null}
+        />
+      </View>
+    </Auth0Provider>
   );
 };
-
 export default SocialSignInButton;

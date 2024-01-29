@@ -128,6 +128,9 @@ const usePriceActionStyles = () => {
       overflow: 'hidden',
       textAlign: 'center',
     },
+    alignCenter: {
+      alignSelf: 'center',
+    },
   });
   return styles;
 };

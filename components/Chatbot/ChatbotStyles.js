@@ -7,10 +7,8 @@ const useChatbotStyles = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      padding: 10,
+      ...StyleSheet.absoluteFillObject,
       backgroundColor: theme.mainBackgroundColor,
-      justifyContent: 'center',
-      alignItems: 'center',
     },
     messageText: {
       padding: 20,
@@ -21,6 +19,12 @@ const useChatbotStyles = () => {
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
       borderRadius: 5,
+    },
+    overlayImage: {
+      flex: 1,
+      padding: '25%',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
   return styles;

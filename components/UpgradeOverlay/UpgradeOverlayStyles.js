@@ -6,13 +6,20 @@ const useUpgradeOverlayStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     overlayContainer: {
+      flex: 1,
       ...StyleSheet.absoluteFillObject,
-      justifyContent: 'center',
-      alignItems: 'center',
       backgroundColor: theme.upgradeOverlayBgColor,
     },
+    overlayImage: {
+      flex: 1,
+      padding: '25%',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
     overlayContent: {
-      padding: 20,
+      flex: 1,
+      padding: '25%',
+      marginVertical: '25%',
       borderRadius: 5,
       alignItems: 'center',
     },
@@ -37,6 +44,10 @@ const useUpgradeOverlayStyles = () => {
     },
     lockIcon: {
       flex: 1,
+      tintColor: theme.textColor,
+    },
+    secondLockIcon: {
+      flex: 1,
     },
     none: {
       display: 'none',
@@ -46,7 +57,7 @@ const useUpgradeOverlayStyles = () => {
       padding: 10,
       backgroundColor: theme.boxesBackgroundColor,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
     closeContainer: {
       position: 'absolute',

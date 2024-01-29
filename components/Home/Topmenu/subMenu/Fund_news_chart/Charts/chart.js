@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, Text, StyleSheet } from 'react-native';
-import moment from 'moment';
+import React, {useContext} from 'react';
+import {View, ImageBackground, StyleSheet} from 'react-native';
 import {
   VictoryChart,
   VictoryAxis,
@@ -9,12 +8,22 @@ import {
   VictoryTheme,
   VictoryLabel,
   VictoryTooltip,
-  VictoryLine
+  VictoryLine,
 } from 'victory-native';
 import Loader from '../../../../../Loader/Loader';
+import useChartStyles from '../Fundamentals/SubSections/Competitors/CompetitorSections/CurrentMarketCap/ChartStyles';
+import {AppThemeContext} from '../../../../../../context/themeContext';
 
-const Chart = ({ chartData, supportLevels, resistanceLevels, loading, candlesToShow=30, activeButtons }) => {
-
+const Chart = ({
+  chartData,
+  supportLevels,
+  resistanceLevels,
+  loading,
+  candlesToShow = 30,
+  activeButtons,
+}) => {
+  const styles = useChartStyles();
+  const {theme} = useContext(AppThemeContext);
   if (loading) {
     return (
       <View style={styles.container}>
@@ -25,75 +34,95 @@ const Chart = ({ chartData, supportLevels, resistanceLevels, loading, candlesToS
 
   const domainY = chartData.reduce(
     (acc, dataPoint) => {
-      const { open, close, high, low } = dataPoint;
+      const {open, close, high, low} = dataPoint;
       return [
         Math.min(acc[0], open, close, high, low),
         Math.max(acc[1], open, close, high, low),
       ];
     },
-    [Infinity, -Infinity]
+    [Infinity, -Infinity],
   );
-
 
   // const domainX = chartData?.map((dataPoint) => dataPoint.x);
   const domainX = [
-    chartData[chartData.length - candlesToShow].x, 
-    chartData && chartData[chartData.length - 1].x,  
+    chartData[chartData.length - candlesToShow].x,
+    chartData && chartData[chartData.length - 1].x,
   ];
 
-
   return (
-    <View style={styles.container}>
-      { loading === true ? (
+    <View style={styles.chartContainer}>
+      {loading === true ? (
         <Loader />
       ) : (
         <View style={styles.chart}>
           <ImageBackground
             source={require('../../../../../../assets/logo_3.png')}
-            style={styles.backgroundImage}
-          >
-          </ImageBackground>
+            style={styles.chartBackgroundImage}></ImageBackground>
 
-            <VictoryChart 
-            width={400} 
-            containerComponent={
-              <VictoryZoomContainer zoomDimension='x'/>
-            }
-            domain={{ x: domainX, y: domainY }}
-            padding={{ top: 10, bottom: 60, left: 30, right: 60 }}
-            domainPadding={{x:5, y: 3}}
-            scale={{ x: 'time', y: 'log' }}
-            height={300} >
+          <VictoryChart
+            width={400}
+            containerComponent={<VictoryZoomContainer zoomDimension="x" />}
+            domain={{x: domainX, y: domainY}}
+            padding={{top: 10, bottom: 60, left: 30, right: 60}}
+            domainPadding={{x: 5, y: 3}}
+            scale={{x: 'time', y: 'log'}}
+            height={300}>
+            <VictoryAxis
+              style={{
+                axis: {stroke: theme.chartsColor},
+                tickLabels: {
+                  fontSize: theme.responsiveFontSize * 0.7,
+                  fill: theme.titleColor,
+                },
+              }}
+            />
+            <VictoryAxis
+              dependentAxis
+              style={{
+                axis: {stroke: theme.chartsColor},
+                tickLabels: {
+                  fontSize: theme.responsiveFontSize * 0.825,
+                  fill: theme.titleColor,
+                },
+              }}
+              orientation="right"
+            />
 
-                <VictoryAxis dependentAxis orientation='right' />
-                <VictoryAxis/>
+            <VictoryCandlestick
+              data={chartData}
+              candleRatio={6}
+              candleColors={{positive: '#3ADF00', negative: '#FF477C'}}
+            />
 
-                <VictoryCandlestick
-                  data={chartData}
-                  candleRatio={6}
-                  candleColors={{ positive: '#3ADF00', negative: '#FF477C' }}
+            {resistanceLevels &&
+              activeButtons.includes('Resistance') &&
+              resistanceLevels?.map((level, index) => (
+                <VictoryLine
+                  domain={{x: domainX, y: domainY}}
+                  data={[
+                    {x: domainX[0], y: level},
+                    {x: domainX[1], y: level},
+                  ]}
+                  key={`resistance-${index}`}
+                  style={{data: {stroke: '#F9B208', strokeWidth: 2}}}
+                  labelComponent={<VictoryLabel dy={0} dx={-30} />}
                 />
-              
-              { resistanceLevels && activeButtons.includes('Resistance') && resistanceLevels?.map((level, index) => (
-              <VictoryLine
-                domain={{ x: domainX, y: domainY }}
-                data={[{ x: domainX[0], y: level }, { x: domainX[1], y: level }]}
-                key={`resistance-${index}`}
-                style={{ data: { stroke: '#F9B208', strokeWidth: 2 } }}
-                labelComponent={<VictoryLabel dy={0} dx={-30}/>}
-              />
-            ))}
-              { supportLevels && activeButtons.includes('Support') && supportLevels?.map((level, index) => (
-              <VictoryLine
-                domain={{ x: domainX, y: domainY }}
-                data={[{ x: domainX[0], y: level }, { x: domainX[1], y: level }]}
-                key={`resistance-${index}`}
-                style={{ data: { stroke: '#FC5404', strokeWidth: 1.5 } }}
-                labelComponent={<VictoryLabel dy={0} dx={-30}/>}
-              />
-            ))}
-
-            </VictoryChart>
+              ))}
+            {supportLevels &&
+              activeButtons.includes('Support') &&
+              supportLevels?.map((level, index) => (
+                <VictoryLine
+                  domain={{x: domainX, y: domainY}}
+                  data={[
+                    {x: domainX[0], y: level},
+                    {x: domainX[1], y: level},
+                  ]}
+                  key={`resistance-${index}`}
+                  style={{data: {stroke: '#FC5404', strokeWidth: 1.5}}}
+                  labelComponent={<VictoryLabel dy={0} dx={-30} />}
+                />
+              ))}
+          </VictoryChart>
         </View>
       )}
     </View>
@@ -102,37 +131,10 @@ const Chart = ({ chartData, supportLevels, resistanceLevels, loading, candlesToS
 
 export default Chart;
 
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'top',
-    alignItems: 'top',
-    width: '100%', 
-    height: 300,
-    // borderWidth: 2,
-    // borderColor: 'black',
-  },
-  chart: {
-    width: '100%', 
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative'
-  },
-  backgroundImage: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    width: 50,
-    height: 50
-  },
-});
-
-
 // this style deletes the line in the y axis
-{/* <VictoryAxis dependentAxis style={{ axis: { stroke: 'none' } }} /> */}
-
-
+{
+  /* <VictoryAxis dependentAxis style={{ axis: { stroke: 'none' } }} /> */
+}
 
 // {chartData.length == 0 ? <View style={styles.loadingContainer}><Text style={styles.loading}>Loading...</Text></View> :
 //         <View style={styles.chart}>
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
 //               containerComponent={<VictoryZoomContainer />}
 //               theme={VictoryTheme.material}
 //             >
-   
+
 //               {/* Y */}
 //               <VictoryAxis
 //                 label={'USD'}
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
 //               <VictoryAxis
 //                 tickCount={4}
 //                 label={'Time'}
-//                 tickFormat={(t) => moment.unix(t).format('MMM DD')} 
+//                 tickFormat={(t) => moment.unix(t).format('MMM DD')}
 //                 axisLabelComponent={<VictoryLabel dy={25} />}
 //                 style={{
 //                   tickLabels: {
@@ -182,8 +184,8 @@ const styles = StyleSheet.create({
 //                   data: {
 //                     margin: 6,
 //                     padding: 10,
-//                     stroke: 'red',  
-//                     strokeWidth: 1,   
+//                     stroke: 'red',
+//                     strokeWidth: 1,
 //                   },
 //                   labels: {
 //                     fill: ({ datum }) => datum.close > datum.open
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
 //                 data={chartData}
 //                 candleColors={{ positive: '#4caf50', negative: '#f44336' }}
 //               />
-              
+
 //               { resistanceLevels && resistanceLevels?.map((level, index) => (
 //               <VictoryLine
 //               domain={{

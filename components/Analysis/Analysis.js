@@ -1,5 +1,12 @@
-import {React, useContext, useState, useEffect} from 'react';
-import {View, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
+import {React, useState} from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  SafeAreaView,
+} from 'react-native';
 import useAnalysisStyles from './AnalysisStyles';
 import UpgradeOverlay from '../UpgradeOverlay/UpgradeOverlay';
 import {useNavigation} from '@react-navigation/native';
@@ -34,14 +41,7 @@ const AnalysisItem = ({id, sectionName, handleItemTouch, icon, styles}) => {
 
 const Analysis = () => {
   const styles = useAnalysisStyles();
-  // const [overlayVisible, setOverlayVisible] = useState(true);
   const navigation = useNavigation();
-
-  // const handleOverlayClose = () => {
-  //   navigation.navigate('Subscriptions');
-  //   setOverlayVisible(false);
-  // };
-
   const sections = [
     {
       id: 'Calendar',
@@ -89,42 +89,29 @@ const Analysis = () => {
       icon: require('../../assets/images/analysis/fandg.png'),
     },
   ];
-  const [currentSection, setCurrentSection] = useState(null);
-  // const [percentages, setPercentages] = useState([
-  //   {id: 'fundingRates', percentage: 0},
-  //   {id: 'btcDominance', percentage: 0},
-  //   {id: 'ethBtc', percentage: 0},
-  //   {id: 'total3', percentage: 0},
-  //   {id: 'goldPrice', percentage: 0},
-  //   {id: 'dxy', percentage: 0},
-  //   {id: 'sp500', percentage: 0},
-  // ]);
-
   const handleItemTouch = selectedSectionId => {
-    // const selectedObject = sections.find(
-    //   section => section.id === selectedSectionId,
-    // );
-    // if (selectedObject) setCurrentSection(selectedObject);
     navigation.navigate(selectedSectionId);
   };
 
   return (
-    <ScrollView style={styles.background} nestedScrollEnabled={true}>
-      <Text style={styles.analysisTitle}>Analysis</Text>
-      <View style={styles.analyisisContainer}>
-        {sections.map(section => (
-          <AnalysisItem
-            handleItemTouch={handleItemTouch}
-            key={section.id}
-            id={section.id}
-            sectionName={section.sectionName}
-            icon={section.icon}
-            styles={styles}
-          />
-        ))}
-      </View>
-      {/* <UpgradeOverlay visible={overlayVisible} onClose={handleOverlayClose} /> */}
-    </ScrollView>
+    <SafeAreaView style={styles.background}>
+      <ScrollView style={styles.background} nestedScrollEnabled={true}>
+        <Text style={styles.analysisTitle}>Analysis</Text>
+        <View style={styles.analyisisContainer}>
+          {sections.map(section => (
+            <AnalysisItem
+              handleItemTouch={handleItemTouch}
+              key={section.id}
+              id={section.id}
+              sectionName={section.sectionName}
+              icon={section.icon}
+              styles={styles}
+            />
+          ))}
+        </View>
+      </ScrollView>
+      <UpgradeOverlay isBlockingByCoin={false} />
+    </SafeAreaView>
   );
 };
 

@@ -22,23 +22,36 @@ const usePackageSubscriptionStyles = () => {
     logo: {
       flex: 1,
     },
+    mainTitle: {
+      marginHorizontal: '7.5%',
+      marginVertical: '5%',
+      color: theme.titleColor,
+      fontSize: theme.titleFontSize * 1.25,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      alignSelf: 'flex-start',
+    },
     description: {
       color: theme.subscriptions.title,
       fontSize: theme.responsiveFontSize * 0.9,
-      textAlign: 'center',
+      textAlign: 'justify',
       marginVertical: 10,
-      marginHorizontal: 5,
+      marginHorizontal: '5%',
     },
     purchaseButton: {
-      width: theme.width * 0.3,
+      width: '35%',
+      marginVertical: 10,
       padding: 5,
       borderRadius: 5,
       overflow: 'hidden',
       backgroundColor: theme.subscriptions.purchaseButtonBgColor,
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
     },
     purchaseButtonText: {
       color: theme.subscriptions.purchaseButtonText,
-      fontSize: theme.titleFontSize * 0.925,
+      fontSize: theme.titleFontSize * 0.715,
       textAlign: 'center',
     },
     itemContainer: {
@@ -73,6 +86,7 @@ const usePackageSubscriptionStyles = () => {
     title: {
       color: theme.subscriptions.text,
       fontSize: theme.titleFontSize * 0.8,
+      fontWeight: 'bold'
     },
     itemDescriptionContainer: {
       marginTop: 20,
@@ -82,15 +96,33 @@ const usePackageSubscriptionStyles = () => {
       justifyContent: 'center',
     },
     itemDescription: {
+      marginHorizontal: '3.5%',
       color: theme.subscriptions.text,
-      fontSize: theme.responsiveFontSize * 0.675,
+      fontSize: theme.responsiveFontSize * 0.75,
       textAlign: 'left',
     },
     packagesContainer: {
       width: theme.width * 0.9125,
       marginVertical: 10,
       paddingHorizontal: 10,
-    }
+    },
+    hidden: {
+      display: 'none',
+    },
+    seeMoreButton: {
+      width: 40,
+      height: 40,
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    seeMoreIcon: {
+      flex: 1,
+      tintColor: theme.subscriptions.seeMoreColor,
+    },
+    alignStart: {
+      alignSelf: 'flex-start',
+    },
   });
   return styles;
 };

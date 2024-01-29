@@ -34,6 +34,17 @@ const useTopStoriesStyles = () => {
       height: 15,
       tintColor: theme.textColor,
     },
+    emptyMessage: {
+      margin: '10%',
+      padding: '5%',
+      fontSize: theme.titleFontSize,
+      color: theme.titleColor,
+      borderRadius: 10,
+      alignSelf: 'center',
+      borderColor: theme.textColor,
+      borderWidth: 2,
+      fontWeight: 'bold',
+    },
   });
   return styles;
 };

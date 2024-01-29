@@ -4,8 +4,11 @@ PODS:
     - JWTDecode (= 3.1.0)
     - React-Core
     - SimpleKeychain (= 1.1.0)
+<<<<<<< HEAD
   - AmplifyRTNCore (1.0.7):
     - React-Core
+=======
+>>>>>>> f923d6e37d2cf50fbe583fe5fd48d0c1186a194d
   - AppAuth (1.6.2):
     - AppAuth/Core (= 1.6.2)
     - AppAuth/ExternalUserAgent (= 1.6.2)
@@ -405,7 +408,8 @@ PODS:
   - React-jsinspector (0.72.7)
   - React-logger (0.72.7):
     - glog
-  - react-native-blur (4.3.2):
+  - react-native-app-auth (7.1.0):
+    - AppAuth (~> 1.6)
     - React-Core
   - react-native-charts-wrapper (0.6.0):
     - DGCharts (= 5.0.0)
@@ -416,6 +420,10 @@ PODS:
   - react-native-config/App (1.5.1):
     - React-Core
   - react-native-config/Extension (1.5.1)
+  - react-native-keys (0.7.10):
+    - OpenSSL-Universal
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - react-native-netinfo (11.2.1):
     - React-Core
   - react-native-pager-view (6.2.3):
@@ -574,7 +582,6 @@ PODS:
 
 DEPENDENCIES:
   - A0Auth0 (from `../node_modules/react-native-auth0`)
-  - "AmplifyRTNCore (from `../node_modules/@aws-amplify/react-native`)"
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -620,10 +627,11 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
-  - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
+  - react-native-app-auth (from `../node_modules/react-native-app-auth`)
   - react-native-charts-wrapper (from `../node_modules/react-native-charts-wrapper`)
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-config/Extension (from `../node_modules/react-native-config`)
+  - react-native-keys (from `../node_modules/react-native-keys`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -690,8 +698,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   A0Auth0:
     :path: "../node_modules/react-native-auth0"
-  AmplifyRTNCore:
-    :path: "../node_modules/@aws-amplify/react-native"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -735,12 +741,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
-  react-native-blur:
-    :path: "../node_modules/@react-native-community/blur"
+  react-native-app-auth:
+    :path: "../node_modules/react-native-app-auth"
   react-native-charts-wrapper:
     :path: "../node_modules/react-native-charts-wrapper"
   react-native-config:
     :path: "../node_modules/react-native-config"
+  react-native-keys:
+    :path: "../node_modules/react-native-keys"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -812,7 +820,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   A0Auth0: d6fa13c9daf99f5fb17a412837ea37f8db38a562
+<<<<<<< HEAD
   AmplifyRTNCore: f694f224500f0c0b811bbea10f2880ccb3015f28
+=======
+>>>>>>> f923d6e37d2cf50fbe583fe5fd48d0c1186a194d
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   Auth0: 72f19ad566fdf57f07bf37f828afd0c1570769a5
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
@@ -854,9 +865,10 @@ SPEC CHECKSUMS:
   React-jsiexecutor: c49502e5d02112247ee4526bc3ccfc891ae3eb9b
   React-jsinspector: 8baadae51f01d867c3921213a25ab78ab4fbcd91
   React-logger: 8edc785c47c8686c7962199a307015e2ce9a0e4f
-  react-native-blur: cfdad7b3c01d725ab62a8a729f42ea463998afa2
+  react-native-app-auth: 1da4b0ec30756ae1f4df8e96d2505b1ce5fbcc1f
   react-native-charts-wrapper: cd83d9b1acb8e06ebd18bf297de597906e1cc87d
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
+  react-native-keys: 95599700905565dfed84cec7f19047a58b4400b4
   react-native-netinfo: 8a7fd3f7130ef4ad2fb4276d5c9f8d3f28d2df3d
   react-native-pager-view: e26d35e382d86950c936f8917e3beb9188115ccc
   react-native-safe-area-context: cd1169d797a2ef722a00bfc5af10748d5b6c94f9

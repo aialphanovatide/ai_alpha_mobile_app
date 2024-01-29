@@ -22,20 +22,9 @@ import Purchases from 'react-native-purchases';
 import {ENTITLEMENT_ID} from '../../../../src/constants';
 import {useUser} from '../../../../context/UserContext';
 import useSignUpStyles from './SignUpStyles';
+import {useUserId} from '../../../../context/UserIdContext';
 
-const onTermsPressed = () => {
-  const url = 'https://aialpha.ai/termsofservice';
 
-  Linking.canOpenURL(url)
-    .then(supported => {
-      if (supported) {
-        Linking.openURL(url);
-      } else {
-        console.warn("Don't know how to open URI: " + url);
-      }
-    })
-    .catch(err => console.error('An error occurred', err));
-};
 
 const SignupForm = () => {
   const [username, setUsername] = useState();
@@ -44,7 +33,8 @@ const SignupForm = () => {
   const [passwordRepeat, setPasswordRepeat] = useState();
   const navigation = useNavigation();
   const [isFormValid, setIsFormValid] = useState(false);
-  const {setUserEmail} = useUser();
+  const {userEmail, setUserEmail} = useUser();
+  const {userId, setUserId} = useUserId();
   const [signupSuccessful, setSignupSuccessful] = useState(false);
   const styles = useSignUpStyles();
 
@@ -67,9 +57,11 @@ const SignupForm = () => {
   const onSignInPressed = () => {
     navigation.navigate('SignIn');
   };
+  const onTermsPressed = () => {
+    navigation.navigate('TermsAndConditionsScreen');
+  };
   const onRegisterPressed = async () => {
     console.log('Here!');
-    
 
     try {
       console.log('Before Signup');
@@ -86,7 +78,8 @@ const SignupForm = () => {
         },
       );
 
-      console.log('Signup successful', response.data);
+      console.log('Signup successful: ', response.data);
+      setUserId(response.data._id);
       setUserEmail(email);
       setSignupSuccessful(true);
       navigation.navigate('HomeScreen');

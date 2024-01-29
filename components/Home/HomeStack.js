@@ -74,8 +74,6 @@ const SubMenuScreen = () => {
           symbol: `${activeSubCoin}USDT`,
           coinBot: activeSubCoin,
         }}
-        // Replace the component prop with the correct component, passing the props that it needs with the initialParams prop, structuring it the way that is right before this comment. I tried to do it the way that was before but throws an error with the request so you may fix that.
-        // component={ChartScreen}
       />
       <SubMenuStack.Screen name="News" component={NewsScreen} />
     </SubMenuStack.Navigator>
@@ -86,6 +84,8 @@ const TopmenuScreen = () => {
   const {activeSubCoin, activeCoin} = useContext(TopMenuContext);
   const [forceUpdate, setForceUpdate] = useState(false);
   const {theme} = useContext(AppThemeContext);
+
+  console.log('Active coin: ', activeCoin);
 
   useEffect(() => {
     setForceUpdate(prevState => !prevState);

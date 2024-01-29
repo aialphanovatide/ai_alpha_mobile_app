@@ -1,21 +1,32 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {View, ScrollView, Text} from 'react-native';
 import MenuItem from './menuItem/menuItem';
 import useTopMenuStyles from './topmenuStyles';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import {useNavigation} from '@react-navigation/core';
 import {CategoriesContext} from '../../../../context/categoriesContext';
+import {AppThemeContext} from '../../../../context/themeContext';
 
 const TopMenu = ({isAlertsMenu}) => {
   const styles = useTopMenuStyles();
-  const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
+  const {updateActiveCoin, updateActiveSubCoin, activeCoin} =
+    useContext(TopMenuContext);
   const {categories} = useContext(CategoriesContext);
   const navigation = useNavigation();
+  const {isDarkMode} = useContext(AppThemeContext);
+
+  // const findCategoryInMenuData = (category, data) => {
+  //   const result = data.find(option => option.name === category.category);
+  //   if (result && result !== undefined) {
+  //     return result;
+  //   } else {
+  //     return null;
+  //   }
+  // };
 
   const handleButtonPress = category => {
     updateActiveCoin(category);
     updateActiveSubCoin(category.coin_bots[0].bot_name);
-    console.log(category);
     if (!isAlertsMenu) {
       navigation.navigate('TopMenuScreen', {
         screen: 'SubMenuScreen',
@@ -37,10 +48,14 @@ const TopMenu = ({isAlertsMenu}) => {
           categories.map(category => (
             <MenuItem
               key={category.category_id}
-              icon={category.category}
               onPress={() => handleButtonPress(category)}
               category={category}
-              isActive={category.is_active}
+              isDarkMode={isDarkMode}
+              isActive={
+                activeCoin &&
+                activeCoin !== undefined &&
+                activeCoin === category
+              }
             />
           ))
         ) : (

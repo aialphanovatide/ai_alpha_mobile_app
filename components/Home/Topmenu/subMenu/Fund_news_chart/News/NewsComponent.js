@@ -1,17 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Text, FlatList, SafeAreaView, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { postService } from '../../../../../../services/aiAlphaApi';
+import React, {useState, useEffect, useContext} from 'react';
+import {Text, FlatList, SafeAreaView} from 'react-native';
+import {getService, postService} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import { useNavigation } from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
 import { TopMenuContext } from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
+import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
+import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
 
 const NewsComponent = ({ route }) => {
   const styles = useNewsStyles();
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
-  const { activeCoin, activeSubCoin } = useContext(TopMenuContext);
+  const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
+  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
+  const [subscribed, setSubscribed] = useState(false);
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin.bot_name,
   );
@@ -45,9 +49,10 @@ const NewsComponent = ({ route }) => {
   }, [activeCoin, activeSubCoin]);
 
   useEffect(() => {
+    requestBody.botName = botname;
     const fetchNews = async () => {
       try {
-        const response = await postService('/api/get/news', requestBody);
+        const response = await getService('/api/get/news', requestBody);
         if (
           response.message &&
           response.message.startsWith('No articles found')
@@ -64,6 +69,15 @@ const NewsComponent = ({ route }) => {
 
     fetchNews();
   }, [botname, activeFilter]);
+
+  // This useEffect handles the content regulation
+  useEffect(() => {
+    const hasCoinSubscription = findCategoryInIdentifiers(
+      activeCoin.category_name,
+      userInfo.entitlements,
+    );
+    setSubscribed(hasCoinSubscription);
+  }, [activeCoin, userInfo]);
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>

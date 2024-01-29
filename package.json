@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
     "ios": "react-native run-ios",
     "ios-dev": "react-native run-ios --scheme \"ai_alpha_mobile_app_dev\"",
     "lint": "eslint .",
@@ -11,12 +12,9 @@
     "test": "jest"
   },
   "dependencies": {
-    "@aws-amplify/react-native": "^1.0.6",
-    "@aws-amplify/ui-react": "^6.0.5",
     "@invertase/react-native-apple-authentication": "^2.3.0",
     "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-native-community/art": "github:react-native-community/art",
-    "@react-native-community/blur": "^4.3.2",
     "@react-native-community/netinfo": "^11.2.0",
     "@react-native-google-signin/google-signin": "^10.1.1",
     "@react-native-picker/picker": "^2.6.1",
@@ -36,6 +34,7 @@
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-native": "0.72.7",
+    "react-native-app-auth": "^7.1.0",
     "react-native-art": "^1.0.0",
     "react-native-auth0": "^3.1.0",
     "react-native-autoheight-webview": "^1.6.5",
@@ -43,6 +42,7 @@
     "react-native-config": "^1.5.1",
     "react-native-dotenv": "^3.4.9",
     "react-native-gesture-handler": "^2.14.0",
+    "react-native-keys": "^0.7.10",
     "react-native-pager-view": "^6.2.3",
     "react-native-paper": "^5.11.3",
     "react-native-pie": "^1.1.2",

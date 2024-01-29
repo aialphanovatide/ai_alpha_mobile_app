@@ -1,13 +1,8 @@
-import {
-  TopMenuContext,
-  TopMenuContextProvider,
-} from '../../../context/topMenuContext';
+import {TopMenuContext} from '../../../context/topMenuContext';
 import React, {useContext, useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
-import Analysis from '../../Analysis/Analysis';
-import Account from '../../Account/Account';
 import Chatbot from '../../Chatbot/Chatbot';
 import Alerts from '../../Alerts/alerts';
 import {Image, View} from 'react-native';
@@ -16,6 +11,9 @@ import HomeStackScreen from '../../Home/HomeStack';
 import {AppThemeContext} from '../../../context/themeContext';
 import AnalysisScreen from '../../Analysis/AnalysisStack';
 import AccountScreen from '../../Account/AccountStack';
+import {useNavigation} from '@react-navigation/core';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import {useUserId} from '../../../context/UserIdContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,9 +30,20 @@ const MenuIcon = ({color, iconSource}) => {
 };
 
 const HomeScreen = () => {
-  const {updateActiveCoin, updateActiveSubCoin, activeCoin, activeSubCoin} =
+  const {updateActiveSubCoin, activeCoin, activeSubCoin} =
     useContext(TopMenuContext);
+  const navigation = useNavigation();
   const {theme} = useContext(AppThemeContext);
+  const {userId} = useUserId();
+  const {init} = useContext(RevenueCatContext);
+
+  useEffect(() => {
+    init(userId);
+    return () => {
+      console.log('RevenueCat data configured succesfully');
+    };
+  }, []);
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Tab.Navigator
@@ -59,8 +68,8 @@ const HomeScreen = () => {
           name="Home"
           listeners={{
             tabPress: e => {
-              updateActiveCoin({});
-              updateActiveSubCoin(null);
+              // updateActiveCoin({});
+              // updateActiveSubCoin(null);
             },
           }}
           component={HomeStackScreen}
@@ -152,6 +161,14 @@ const HomeScreen = () => {
                 }
               />
             ),
+          }}
+          initialParams={{
+            screen: 'AccountMain',
+          }}
+          listeners={{
+            tabPress: e => {
+              navigation.navigate('Account', {screen: 'AccountMain'});
+            },
           }}
         />
       </Tab.Navigator>

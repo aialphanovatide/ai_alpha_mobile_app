@@ -55,7 +55,7 @@ const TopTenGainers = () => {
     };
     fetchTopTenCoins();
   }, []);
-   */
+  */
   return (
     <View style={styles.topTenGainersContainer}>
       <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>
