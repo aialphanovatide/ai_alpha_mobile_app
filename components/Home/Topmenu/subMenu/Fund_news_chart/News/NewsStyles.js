@@ -88,6 +88,22 @@ const useNewsStyles = () => {
       fontSize: theme.responsiveFontSize * 0.825,
       textAlign: 'justify',
     },
+    buttonContainer: {
+      marginLeft: 10,
+      flexDirection: 'row',
+    },
+    button: {
+      paddingVertical: 5,
+      paddingHorizontal: 18,
+      backgroundColor: 'gray',
+      marginHorizontal: 5,
+    },
+    btnactive: {
+      backgroundColor: '#ccc',
+    },
+    buttonText: {
+      color: 'white',
+    },
   });
   return styles;
 };

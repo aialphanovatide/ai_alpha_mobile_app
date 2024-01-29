@@ -1,1 +1,7 @@
-
+APP_STORE_SECRET=026da3cc026f4e208311a0650c190c93
+AUTH0_DOMAIN=dev-kqugsqvoounaylft.us.auth0.com
+IOS_API_KEY=appl_HblzZuTEedJuLQDVVgdOyoGZCxW
+ANDROID_API_KEY=samplekey
+ENTITLEMENT_ID=Bitcoin
+GOOGLE_CLIENT_IOS_ID=518802377703-qhmmcp0nek5ml396l2pbkve8dm5k9fsd.apps.googleusercontent.com
+COINGECKO_API_KEY=CG-YFJkhA5AKwM4SSq8a8515bKQ

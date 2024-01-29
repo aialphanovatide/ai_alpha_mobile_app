@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, StyleSheet, Text } from 'react-native';
+import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import moment from 'moment';
-import {
-  VictoryChart,
-  VictoryAxis,
-  VictoryCandlestick,
-  VictoryLine,
-  VictoryLabel,
-} from 'victory-native';
+import { VictoryChart, VictoryAxis, VictoryCandlestick } from 'victory-native';
 import Loader from '../../Loader/Loader';
 import axios from 'axios';
 import BackButton from '../BackButton/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes'; // Ajusta la ruta según la ubicación de tu componente
 
 const EthBtcChart = ({ loading, candlesToShow = 30 }) => {
   const [chartData, setChartData] = useState([]);
+  const [selectedInterval, setSelectedInterval] = useState('1d');
 
   useEffect(() => {
     const fetchChartData = async () => {
@@ -24,7 +20,7 @@ const EthBtcChart = ({ loading, candlesToShow = 30 }) => {
           {
             params: {
               symbol: 'ETHBTC',
-              interval: '1d',
+              interval: selectedInterval.toLowerCase(),
               limit: 45,
             },
           }
@@ -44,7 +40,7 @@ const EthBtcChart = ({ loading, candlesToShow = 30 }) => {
     };
   
     fetchChartData();
-  }, []); 
+  }, [selectedInterval]);
 
   if (loading || chartData.length === 0) {
     return (
@@ -68,43 +64,51 @@ const EthBtcChart = ({ loading, candlesToShow = 30 }) => {
 
   const domainX = [chartData[0].x, chartData[chartData.length - 1].x];
 
+  const changeInterval = (newInterval) => {
+    setSelectedInterval(newInterval);
+  };
+
   return (
     <>
-    <SafeAreaView style={styles.background}>
-      <BackButton />
-      <Text style={styles.analysisTitle}>ETH/BTC Chart</Text>
-      <View style={styles.container}>
-        <View style={styles.chart}>
-          <ImageBackground
-            source={require('../../../assets/logo_3.png')}
-            style={styles.backgroundImage}
-          ></ImageBackground>
+      <SafeAreaView style={styles.background}>
+        <BackButton />
+        <Text style={styles.analysisTitle}>ETH/BTC Chart</Text>
 
-          <VictoryChart
-            width={400}
-            domain={{ x: domainX, y: domainY }}
-            padding={{ top: 10, bottom: 60, left: 30, right: 60 }}
-            domainPadding={{ x: 5, y: 3 }}
-            scale={{ x: 'time', y: 'linear' }} // Cambiado a escala lineal
-            height={300}
-          >
-            <VictoryAxis dependentAxis orientation="right" />
-            <VictoryAxis />
+        <TimeframeSelector
+          selectedInterval={selectedInterval}
+          changeInterval={changeInterval}
+        />
 
-            <VictoryCandlestick
-              data={chartData}
-              candleRatio={0.5} // Ajusta este valor para controlar el ancho de las velas
-              candleColors={{ positive: '#3ADF00', negative: '#FF477C' }}
-            />
-          </VictoryChart>
+        <View style={styles.container}>
+          <View style={styles.chart}>
+            <ImageBackground
+              source={require('../../../assets/logo_3.png')}
+              style={styles.backgroundImage}
+            ></ImageBackground>
+
+            <VictoryChart
+              width={400}
+              domain={{ x: domainX, y: domainY }}
+              padding={{ top: 10, bottom: 60, left: 30, right: 60 }}
+              domainPadding={{ x: 5, y: 3 }}
+              scale={{ x: 'time', y: 'linear' }}
+              height={300}
+            >
+              <VictoryAxis dependentAxis orientation="right" />
+              <VictoryAxis />
+
+              <VictoryCandlestick
+                data={chartData}
+                candleRatio={0.5}
+                candleColors={{ positive: '#3ADF00', negative: '#FF477C' }}
+              />
+            </VictoryChart>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
     </>
   );
 };
-
-export default EthBtcChart;
 
 const styles = StyleSheet.create({
   container: {
@@ -121,11 +125,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
   },
-  analysisTitle:{
-  marginTop: '3%',
-  marginLeft: '3%',
-  fontSize: 16,
-  fontWeight: 'bold', 
+  analysisTitle: {
+    marginTop: '3%',
+    marginLeft: '3%',
+    fontSize: 16,
+    fontWeight: 'bold', 
   },
   backgroundImage: {
     justifyContent: 'center',
@@ -138,3 +142,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export default EthBtcChart;

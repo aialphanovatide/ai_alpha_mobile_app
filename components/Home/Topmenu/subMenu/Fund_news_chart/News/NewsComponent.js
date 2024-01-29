@@ -1,28 +1,36 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {Text, FlatList, SafeAreaView} from 'react-native';
-import {postService} from '../../../../../../services/aiAlphaApi';
+import React, { useState, useEffect, useContext } from 'react';
+import { Text, FlatList, SafeAreaView, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { postService } from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
-import {TopMenuContext} from '../../../../../../context/topMenuContext';
+import { TopMenuContext } from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
 
-const NewsComponent = ({route}) => {
+const NewsComponent = ({ route }) => {
   const styles = useNewsStyles();
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
-  const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
+  const { activeCoin, activeSubCoin } = useContext(TopMenuContext);
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin.bot_name,
   );
+  const [activeFilter, setActiveFilter] = useState('Last Day'); 
+  const [activeButtons, setActiveButtons] = useState('Last Day'); 
   const requestBody = {
     botName: botname,
+    filter: activeFilter,
   };
 
-  const onPress = item => {
+  const onPress = (item) => {
     navigation.navigate('NewsArticle', {
       item: item,
     });
+  };
+
+  const handleFilterPress = (option) => {
+    setActiveButtons(option);
+    setActiveFilter(option); 
   };
 
   useEffect(() => {
@@ -40,7 +48,6 @@ const NewsComponent = ({route}) => {
     const fetchNews = async () => {
       try {
         const response = await postService('/api/get/news', requestBody);
-        // console.log('response: ', response);
         if (
           response.message &&
           response.message.startsWith('No articles found')
@@ -56,20 +63,58 @@ const NewsComponent = ({route}) => {
     };
 
     fetchNews();
-  }, [botname]);
+  }, [botname, activeFilter]);
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
       <Text style={styles.title}>News</Text>
 
+      {/* Botones de filtro */}
+      <View style={styles.buttonContainer}>
+        {['Last Hour', 'Last Day', 'Last Week'].map((option) => (
+          <TouchableOpacity
+            key={option}
+            onPress={() => handleFilterPress(option)}
+            style={[
+              styles.button,
+              activeButtons === option ? styles.btnactive : null,
+            ]}
+          >
+            <Text style={styles.buttonText}>{option}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
       <FlatList
         data={news}
         ListEmptyComponent={<Loader />}
-        keyExtractor={item => item.article_id}
-        renderItem={({item}) => <NewsItem item={item} onPress={onPress} />}
+        keyExtractor={(item) => item.article_id}
+        renderItem={({ item }) => <NewsItem item={item} onPress={onPress} />}
       />
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    marginLeft: 10,
+    flexDirection: 'row',
+  },
+  button: {
+    paddingVertical: 5,
+    paddingHorizontal: 18,
+    backgroundColor: 'gray',
+    marginHorizontal: 5,
+  },
+  activeButton: {
+    backgroundColor: 'white',
+  },
+  activeText: {
+    color: 'gray',
+  },
+  inactiveText: {
+    color: 'white',
+  },
+});
 
 export default NewsComponent;

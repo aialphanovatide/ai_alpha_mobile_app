@@ -26,8 +26,8 @@ const Analysis = () => {
         'Navigating the Complexities: An In-Depth Analysis of Urban Development Strategies',
       description:
         'In this comprehensive analysis, we delve into the intricate dynamics of urban development strategies, exploring the multifaceted approaches employed by diverse cities around the globe. Our examination encompasses a wide array of factors, from economic considerations and infrastructure planning to social inclusivity and environmental sustainability.',
-      image:
-        'https://cdn4.vectorstock.com/i/1000x1000/56/73/data-analysis-concept-vector-25125673.jpg',
+      imageBase64: 
+        'data:image/png;base64,',
     },
     {
       id: 2,

@@ -5,39 +5,58 @@ import Loader from '../../Loader/Loader';
 import axios from 'axios';
 import BackButton from '../BackButton/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes';
 
 const BtcDominanceChart = ({ loading, candlesToShow = 30 }) => {
   const [chartData, setChartData] = useState([]);
+  const [selectedInterval, setSelectedInterval] = useState('1D');
+  const [loadingState, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchChartData = async () => {
-      try {
-        const response = await axios.get(
-          'https://fapi.binance.com/fapi/v1/klines',
-          {
-            params: {
-              symbol: 'BTCDOMUSDT',
-              interval: '1d',
-              limit: 45,
-            },
-          }
-        );
-        const data = response.data;
-        const ohlcData = data.map((entry) => ({
-          x: new Date(entry[0]),
-          open: parseFloat(entry[1]),
-          high: parseFloat(entry[2]),
-          low: parseFloat(entry[3]),
-          close: parseFloat(entry[4]),
-        }));
-        setChartData(ohlcData);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      }
-    };
+  const fetchChartData = async (interval = selectedInterval) => {
+    try {
+      const response = await axios.get(
+        'https://fapi.binance.com/fapi/v1/klines',
+        {
+          params: {
+            symbol: 'BTCDOMUSDT',
+            interval: interval.toLowerCase(), // Utiliza la nueva temporalidad
+            limit: 45,
+          },
+        }
+      );
+      const data = response.data;
+      const ohlcData = data.map((entry) => ({
+        x: new Date(entry[0]),
+        open: parseFloat(entry[1]),
+        high: parseFloat(entry[2]),
+        low: parseFloat(entry[3]),
+        close: parseFloat(entry[4]),
+      }));
+      setChartData(ohlcData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+      setLoading(false);
+    }
+  };
   
+  useEffect(() => {
     fetchChartData();
-  }, []); 
+  }, [selectedInterval]);
+  
+  const changeInterval = async (newInterval) => {
+    setSelectedInterval(newInterval);
+    setLoading(true);
+  
+    try {
+      setChartData([]);
+      await fetchChartData(newInterval); // Pasa la nueva temporalidad a fetchChartData
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error(`Failed to change interval: ${error}`);
+    }
+  };
 
   if (loading || chartData.length === 0) {
     return (
@@ -64,6 +83,10 @@ const BtcDominanceChart = ({ loading, candlesToShow = 30 }) => {
     <SafeAreaView style={styles.background}>
       <BackButton />
       <Text style={styles.analysisTitle}>BTC Dominance Chart</Text>
+      <TimeframeSelector
+        selectedInterval={selectedInterval}
+        changeInterval={changeInterval}
+      />
       <View style={styles.container}>
         <View style={styles.chart}>
           <ImageBackground
@@ -94,8 +117,6 @@ const BtcDominanceChart = ({ loading, candlesToShow = 30 }) => {
   );
 };
 
-export default BtcDominanceChart;
-
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'top',
@@ -125,4 +146,9 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
+  background: {
+    flex: 1,
+  },
 });
+
+export default BtcDominanceChart;
