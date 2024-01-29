@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  SafeAreaView,
 } from 'react-native';
 import {ENTITLEMENT_ID} from '../../src/constants';
 import Purchases from 'react-native-purchases';
@@ -270,9 +271,9 @@ async function Buy_now() {
   };
 
   return (
-    <ScrollView style={styles.backgroundColor}>
-      <View style={styles.container}>
-
+    <SafeAreaView style={styles.backgroundColor}>
+      <ScrollView style={styles.backgroundColor}>
+        <View style={styles.container}>
           <View style={styles.alphaLogoContainer}>
             <Image
               source={require('../../assets/images/account/logoWithText.png')}
@@ -283,27 +284,27 @@ async function Buy_now() {
           <Text style={styles.username}>
             {userEmail || 'User not available'}
           </Text>
-
-        <Text style={styles.headline}>User Subscriptions</Text>
-        <Text style={styles.text}>
-          {userInfo.entitlements.length > 0
-            ? formatUserEntitlements(userInfo.entitlements)
-            : 'There are no active subscriptions.'}
-        </Text>
-        <View style={styles.optionsContainer}>
-          {options &&
-            options.map((option, index) => (
-              <AccountItem
-                key={index}
-                option={option}
-                styles={styles}
-                handleItemTouch={handleItemTouch}
-              />
-            ))}
-          <ThemeButton />
+          <Text style={styles.headline}>User Subscriptions</Text>
+          <Text style={styles.text}>
+            {userInfo.entitlements.length > 0
+              ? formatUserEntitlements(userInfo.entitlements)
+              : 'There are no active subscriptions.'}
+          </Text>
+          <View style={styles.optionsContainer}>
+            {options &&
+              options.map((option, index) => (
+                <AccountItem
+                  key={index}
+                  option={option}
+                  styles={styles}
+                  handleItemTouch={handleItemTouch}
+                />
+              ))}
+            <ThemeButton />
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

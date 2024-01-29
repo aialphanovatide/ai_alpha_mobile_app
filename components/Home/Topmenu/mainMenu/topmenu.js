@@ -15,15 +15,6 @@ const TopMenu = ({isAlertsMenu}) => {
   const navigation = useNavigation();
   const {isDarkMode} = useContext(AppThemeContext);
 
-  // const findCategoryInMenuData = (category, data) => {
-  //   const result = data.find(option => option.name === category.category);
-  //   if (result && result !== undefined) {
-  //     return result;
-  //   } else {
-  //     return null;
-  //   }
-  // };
-
   const handleButtonPress = category => {
     updateActiveCoin(category);
     updateActiveSubCoin(category.coin_bots[0].bot_name);

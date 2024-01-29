@@ -17,7 +17,6 @@ import {AppThemeProvider} from './context/themeContext';
 import SplashScreen from 'react-native-splash-screen';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 
-
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
 

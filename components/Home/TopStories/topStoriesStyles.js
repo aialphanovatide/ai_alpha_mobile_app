@@ -1,10 +1,14 @@
 import {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useTopStoriesStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
+    background: {
+      width: '100%',
+      backgroundColor: theme.mainBackgroundColor,
+    },
     mainTitle: {
       fontWeight: 'bold',
       color: theme.titleColor,
@@ -23,7 +27,21 @@ const useTopStoriesStyles = () => {
       marginLeft: 10,
     },
     storyItem: {
+      flex: 1,
+      width: theme.width,
+      marginVertical: 5,
       backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 2,
+      overflow: 'hidden',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 2,
+        height: 3,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 5,
+      elevation: 3,
+      alignSelf: 'center',
     },
     description: {
       color: theme.textColor,

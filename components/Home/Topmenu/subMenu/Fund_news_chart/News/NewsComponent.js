@@ -1,32 +1,70 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Text, FlatList, SafeAreaView} from 'react-native';
-import {getService, postService} from '../../../../../../services/aiAlphaApi';
+import {
+  Text,
+  FlatList,
+  SafeAreaView,
+  View,
+  TouchableOpacity,
+} from 'react-native';
+import {postService} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
-import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
-import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
+import BackButton from '../../../../../Analysis/BackButton/BackButton';
 
 const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
   const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
-  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
-  const [subscribed, setSubscribed] = useState(false);
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin.bot_name,
   );
+  const [activeFilter, setActiveFilter] = useState('Last Day');
+  const [activeButtons, setActiveButtons] = useState('Last Day');
   const requestBody = {
     botName: botname,
+    filter: activeFilter,
+  };
+
+  // Function to filter the summary or texts of the article, removing the words that are put by the prompt generated, and aren't necessary in the summary or the title.
+  const filterText = summary => {
+    const keywords_to_remove = [
+      'Headline:',
+      'Summary:',
+      'Step One:',
+      'Step Two:',
+      'Step Three:',
+      'Secondary Summary:',
+    ];
+
+    const filteredText = summary
+      .split('\n')
+      .map(line => {
+        for (const keyword of keywords_to_remove) {
+          if (line.includes(keyword)) {
+            line = line.replace(keyword, '');
+          }
+        }
+        return line.trim();
+      })
+      .join('\n');
+
+    return filteredText;
   };
 
   const onPress = item => {
     navigation.navigate('NewsArticle', {
       item: item,
+      isStory: false,
     });
+  };
+
+  const handleFilterPress = option => {
+    setActiveButtons(option);
+    setActiveFilter(option);
   };
 
   useEffect(() => {
@@ -41,13 +79,15 @@ const NewsComponent = ({route}) => {
   }, [activeCoin, activeSubCoin]);
 
   useEffect(() => {
+    setNews([]);
     requestBody.botName = botname;
     const fetchNews = async () => {
       try {
-        const response = await getService('/api/get/news', requestBody);
+        const response = await postService('/api/get/news', requestBody);
         if (
-          response.message &&
-          response.message.startsWith('No articles found')
+          (response.message &&
+            response.message.startsWith('No articles found')) ||
+          response.error
         ) {
           setNews([]);
         } else {
@@ -60,32 +100,33 @@ const NewsComponent = ({route}) => {
     };
 
     fetchNews();
-  }, [botname]);
-
-  // This useEffect handles the content regulation
-  useEffect(() => {
-    const hasCoinSubscription = findCategoryInIdentifiers(
-      activeCoin.category_name,
-      userInfo.entitlements,
-    );
-    setSubscribed(hasCoinSubscription);
-  }, [activeCoin, userInfo]);
+  }, [botname, activeFilter]);
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
-      {subscribed ? (
-        <>
-          <Text style={styles.title}>News</Text>
-          <FlatList
-            data={news}
-            ListEmptyComponent={<Loader />}
-            keyExtractor={item => item.article_id}
-            renderItem={({item}) => <NewsItem item={item} onPress={onPress} />}
-          />
-        </>
-      ) : (
-        <UpgradeOverlay isBlockingByCoin={true} screen={'News'} />
-      )}
+      <BackButton />
+      <Text style={styles.title}>News</Text>
+      <View style={styles.buttonContainer}>
+        {['Last Hour', 'Last Day', 'Last Week'].map(option => (
+          <TouchableOpacity
+            key={option}
+            onPress={() => handleFilterPress(option)}
+            style={[
+              styles.button,
+              activeButtons === option ? styles.btnactive : null,
+            ]}>
+            <Text style={styles.buttonText}>{option}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <FlatList
+        data={news}
+        ListEmptyComponent={<Loader />}
+        keyExtractor={item => item.article_id}
+        renderItem={({item}) => (
+          <NewsItem item={item} onPress={onPress} filterText={filterText} />
+        )}
+      />
     </SafeAreaView>
   );
 };

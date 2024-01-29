@@ -122,13 +122,14 @@ const useChartsStyles = () => {
       height: 50,
     },
     alertMenuContainer: {
-      paddingVertical: 10,
+      paddingVertical: 5,
       paddingHorizontal: 20,
-      flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
     },
     alertMenuTitle: {
+      marginVertical: '5%',
+      padding: 10,
       fontSize: theme.titleFontSize,
       fontWeight: 'bold',
       color: theme.textColor,
@@ -148,42 +149,59 @@ const useChartsStyles = () => {
     },
     alertMenuActiveText: {
       color: theme.secondaryTextColor,
+      textTransform: 'capitalize',
     },
     alertMenuInactiveText: {
       color: theme.subMenuTextColor,
+      textTransform: 'capitalize',
     },
     alertListContainer: {
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
-      marginVertical: 20,
+      marginVertical: 15,
+      padding: '5%',
     },
     alertsTextMessage: {
       minHeight: 100,
+      margin: 5,
     },
     alertDetailsContainer: {
       flexDirection: 'row',
       backgroundColor: theme.boxesBackgroundColor,
       marginVertical: 10,
-      borderRadius: 2,
+      borderRadius: 7.5,
       paddingVertical: 10,
       paddingHorizontal: 10,
-      flex: 1, // Take up 100% of the width
+      flex: 1,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 1,
+      elevation: 2,
     },
     alertDetailsLeftContent: {
       flex: 1,
+      marginHorizontal: '2.5%',
     },
     alertDetailsRightContent: {
       alignItems: 'flex-end',
+      margin: '3%',
+      marginLeft: 0,
     },
     alertDetailsTitle: {
       fontSize: theme.responsiveFontSize,
       fontWeight: 'bold',
       color: theme.textColor,
+      padding: 2.5,
     },
     alertDetailsSubtitle: {
       fontSize: theme.responsiveFontSize,
       color: theme.textColor,
+      padding: 5,
     },
     alertDetailsRightTitle: {
       fontSize: theme.responsiveFontSize * 0.8,

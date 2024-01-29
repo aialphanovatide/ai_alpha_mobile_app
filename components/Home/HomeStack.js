@@ -85,8 +85,6 @@ const TopmenuScreen = () => {
   const [forceUpdate, setForceUpdate] = useState(false);
   const {theme} = useContext(AppThemeContext);
 
-  console.log('Active coin: ', activeCoin);
-
   useEffect(() => {
     setForceUpdate(prevState => !prevState);
   }, [activeSubCoin, activeCoin]);
