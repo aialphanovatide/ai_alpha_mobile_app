@@ -50,12 +50,15 @@ const HomeScreen = () => {
         initialRouteName={Home}
         screenOptions={{
           headerShown: false,
+          tabBarBadgeStyle: {
+            borderWidth: 0
+          },
           tabBarStyle: {
             height: 70,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: theme.navbarBgColor,
-            border: 'none',
+            borderWidth: 0,
           },
           tabBarActiveTintColor: theme.activeOrange,
           tabBarLabelStyle: {

@@ -25,12 +25,20 @@ const useCryptoCalendarStyles = () => {
     },
     calendarItem: {
       flex: 1,
-      display: 'flex',
+      maxWidth: '95%',
       flexDirection: 'row',
-      marginHorizontal: '5%',
       marginVertical: 5,
       padding: 10,
+      borderRadius: 10,
       backgroundColor: theme.secondaryBoxesBgColor,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 2,
+      elevation: 2,
     },
     itemIconContainer: {
       width: 60,
@@ -96,9 +104,10 @@ const useCryptoCalendarStyles = () => {
     },
     cryptoFilter: {
       minHeight: 80,
+      maxWidth: '95%',
       flexDirection: 'row',
-      margin: 10,
-      paddingVertical: 5,
+      marginVertical: 10,
+      padding: 5,
       backgroundColor: theme.subMenuBgColor,
       borderRadius: 5,
     },
@@ -149,6 +158,10 @@ const useCryptoCalendarStyles = () => {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.9,
       fontWeight: 'bold',
+    },
+    flex: {
+      flex: 1,
+      maxWidth: '95%',
     },
   });
   return styles;

@@ -7,7 +7,6 @@ const useCalendarSubMenuStyles = () => {
   const styles = StyleSheet.create({
     menuContainer: {
       alignSelf: 'center',
-      width: '90%',
       display: 'flex',
       flexDirection: 'row',
       backgroundColor: theme.subMenuBgColor,
@@ -15,8 +14,7 @@ const useCalendarSubMenuStyles = () => {
     menuItem: {
       width: '50%',
       backgroundColor: 'transparent',
-      marginHorizontal: 2,
-      borderRadius: 2.5,
+      borderRadius: 15,
       overflow: 'hidden',
     },
     menuItemText: {

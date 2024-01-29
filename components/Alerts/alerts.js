@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import useAlertsStyles from './styles';
 import {TopMenuContext} from '../../context/topMenuContext';
-import {getService, postService} from '../../services/aiAlphaApi';
+import {getService} from '../../services/aiAlphaApi';
 import AlertDetails from './AlertsDetails';
 import Loader from '../Loader/Loader';
 import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
@@ -95,6 +95,9 @@ const Alerts = ({route, navigation}) => {
         const response = await getService(
           `/api/filter/alerts?coin=${botName}&date=${activeAlertOption}`,
         );
+        if (!response.ok) {
+          setAlerts([]);
+        }
         if (
           response.message &&
           response.message.startsWith('No alerts found')
