@@ -12,8 +12,9 @@ import {
   TouchableOpacity,
   Appearance,
 } from 'react-native';
-import Logo from '../../../../assets/images/AIAlphalogonew.png';
+import Logo from '../../../../assets/images/account/logoWithText.png';
 import CustomInput from '../../CustomInput/CustomInput';
+import CustomPasswordInput from '../../CustomInput/CustomPasswordInput';
 import CustomButton from '../../CustomButton/CustomButton';
 import Separator from '../../CustomButton/Separator';
 import SocialSignInButton from '../../SocialButtons/SocialSignInButton';
@@ -174,7 +175,7 @@ const LoginForm = ({route}) => {
             <Text style={styles.title}>Password</Text>
             {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
           </View>
-          <CustomInput
+          <CustomPasswordInput
             placeholder=" "
             value={password}
             setValue={setPassword}
@@ -192,7 +193,7 @@ const LoginForm = ({route}) => {
         <View style={styles.signUpContainer}>
           <Text style={styles.signUpText}>Don't have an account? </Text>
           <TouchableOpacity onPress={onSignUpPressed}>
-            <Text style={styles.signUpButton}>Sign Up</Text>
+            <Text style={styles.signUpButton}>Sign Up for Free</Text>
           </TouchableOpacity>
         </View>
       </View>
