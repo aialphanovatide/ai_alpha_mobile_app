@@ -20,7 +20,7 @@ const RevenueCatProvider = ({children}) => {
     subscribed: false,
   });
 
-  const init = async userId => {
+  const init = async (userId) => {
     if (Platform.OS === 'ios') {
       Purchases.configure({apiKey: REVENUECAT_IOS_API_KEY, appUserID: userId});
     } else if (Platform.OS === 'android') {
@@ -96,8 +96,7 @@ const RevenueCatProvider = ({children}) => {
         const currentPackages = currentOffering?.availablePackages;
         currentPackages[0].subscriptionDescription =
           currentOffering.metadata.description;
-        currentPackages[0].subscriptionIcon =
-          currentOffering.metadata.icon;
+
         if (currentPackages && Array.isArray(currentPackages)) {
           all_packages.push(...currentPackages);
         }

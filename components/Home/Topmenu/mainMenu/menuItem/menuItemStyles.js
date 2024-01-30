@@ -22,11 +22,10 @@ const useMenuItemStyles = () => {
     },
     buttonText: {
       maxWidth: 60,
-      fontSize: theme.responsiveFontSize * 0.625,
+      fontSize: theme.responsiveFontSize * 0.675,
       fontWeight: 'bold',
       color: theme.titleColor,
       textTransform: 'capitalize',
-      textAlign: 'center'
     },
     imageIcon: {
       flex: 1,

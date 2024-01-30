@@ -50,11 +50,11 @@ const BtcDominanceChart = ({ loading, candlesToShow = 30 }) => {
   
     try {
       setChartData([]);
-      await fetchChartData(newInterval); // Pasa la nueva temporalidad a fetchChartData
+      await fetchChartData(newInterval);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.error(`Failed to change interval: ${error}`);
+      console.error("Failed to change interval: ${error}");
     }
   };
 

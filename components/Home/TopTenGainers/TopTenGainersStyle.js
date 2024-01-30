@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
-import {useContext} from 'react';
+import { useContext } from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
-import {AppThemeContext} from '../../../context/themeContext';
+import { AppThemeContext } from '../../../context/themeContext';
 
 const useTopTenGainersStyles = () => {
   const {theme} = useContext(AppThemeContext);
@@ -11,7 +11,6 @@ const useTopTenGainersStyles = () => {
       width: theme.width,
       paddingHorizontal: 10,
       marginVertical: 20,
-      borderRadius: 2,
     },
     topTenGainersTitle: {
       paddingVertical: 10,
@@ -25,8 +24,8 @@ const useTopTenGainersStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
     },
     row: {
-      flex: 1,
       width: '100%',
+      height: 80,
       marginVertical: 2.5,
       display: 'flex',
       flexDirection: 'row',
@@ -34,31 +33,33 @@ const useTopTenGainersStyles = () => {
       borderBottomColor: theme.boxesBorderColor,
       paddingHorizontal: 20,
       paddingVertical: 10,
-      alignItems: 'flex-start',
     },
     logoContainer: {
-      width: 30,
-      height: 30,
+      width: 50,
+      height: 50,
       marginRight: 25,
       alignSelf: 'flex-start',
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 15,
+      borderRadius: 25,
     },
     coinLogo: {
-      flex: 1,
-      borderRadius: 15,
+      width: '100%',
+      height: '100%',
+      borderRadius: 25,
     },
     coinDataContainer: {
       flex: 1,
+      marginTop: 20,
       marginRight: 30,
       textAlign: 'center',
       justifyContent: 'center',
       alignItems: 'center',
     },
     coinPosition: {
-      marginRight: 7.5,
+      marginRight: 10,
       paddingHorizontal: 5,
+      paddingVertical: 10,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize,
       fontWeight: 'bold',
@@ -73,9 +74,14 @@ const useTopTenGainersStyles = () => {
       fontWeight: 'bold',
     },
     coinNumbersContainer: {
+      position: 'relative',
+      right: 0,
+      top: 0,
       flex: 1,
       marginLeft: 20,
       paddingHorizontal: 20,
+      paddingVertical: 5,
+      alignItems: 'flex-end',
       justifyContent: 'center',
     },
     coinNumber: {

@@ -10,14 +10,13 @@ const StoryItem = ({
   handleStoryRedirect,
   coinBotId,
 }) => {
-  console.log('Image: ', item.images[0].image);
   const styles = useTopStoriesStyles();
+  console.log('Image: ', item.images[0].image);
   return (
     <List.Item
       title={title}
-      titleNumberOfLines={2}
-      // description={description}
-      // descriptionStyle={styles.description}
+      description={description}
+      descriptionStyle={styles.description}
       left={() => (
         <Image
           source={{uri: image, width: 60}}
@@ -27,7 +26,7 @@ const StoryItem = ({
       )}
       titleStyle={styles.titleStyles}
       onPress={() => handleStoryRedirect(item, coinBotId)}
-      style={styles.storyItem}
+      background={styles.storyItem}
     />
   );
 };

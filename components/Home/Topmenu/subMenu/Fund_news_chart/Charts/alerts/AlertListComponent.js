@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text} from 'react-native';
 import AlertDetails from './alertDetails';
-import { postService, getService } from '../../../../../../../services/aiAlphaApi';
+import {getService} from '../../../../../../../services/aiAlphaApi';
 import Loader from '../../../../../../Loader/Loader';
 
 const AlertListComponent = ({botName, timeframe, styles}) => {
@@ -14,9 +14,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
         const response = await getService(
           `/api/filter/alerts?coin=${botName}&date=${timeframe}`,
         );
-        if (!response.ok) {
-          setAlerts([]);
-        }
+
         if (
           response.message &&
           response.message.startsWith('No alerts found')
@@ -36,7 +34,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   }, [timeframe, botName]);
 
   return (
-    <View style={styles.alertListContainer}>
+    <View style={styles.container}>
       {isLoading ? (
         <Loader />
       ) : alerts.length === 0 ? (

@@ -17,7 +17,6 @@ const SubscriptionItem = ({
   styles,
   item,
   description,
-  icon,
   onPurchasePress,
   pack,
   onItemPress,
@@ -29,27 +28,15 @@ const SubscriptionItem = ({
     let package_display_name = title.slice(0, first_space);
     return package_display_name;
   };
-  console.log('Current icon: ', icon);
   return (
     <View style={[styles.itemContainer, activeItem && styles.activeItem]}>
       <View style={styles.row}>
         <Text style={[styles.left, styles.title]}>
           {formatCoinTitles(item.title)}
         </Text>
-        {icon !== null && icon !== undefined && (
-          <View style={styles.itemIcon}>
-            <Image
-              source={{
-                uri: icon,
-                width: 40,
-                height: 40,
-              }}
-              resizeMode="contain"
-              style={styles.image}
-            />
-          </View>
-        )}
-        <Text style={[styles.right, styles.title]}>{item.priceString}</Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={[styles.left, styles.title]}>{item.priceString}</Text>
       </View>
       <View style={styles.itemDescriptionContainer}>
         <Text style={styles.itemDescription}>
@@ -61,7 +48,7 @@ const SubscriptionItem = ({
               style={styles.purchaseButton}
               onPress={() => onPurchasePress(pack)}>
               <Text style={styles.purchaseButtonText}>
-                {isPurchased ? 'Active' : 'Purchase'}
+                {isPurchased ? 'Manage' : 'Purchase'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -141,7 +128,6 @@ const PackageSubscriptions = () => {
               styles={styles}
               onPurchasePress={handlePurchase}
               pack={item}
-              icon={item.subscriptionIcon}
               description={item.subscriptionDescription}
               onItemPress={handleActiveItem}
               activeItem={activeItem && activeItem.title === item.product.title}
