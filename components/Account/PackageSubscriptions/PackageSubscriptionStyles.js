@@ -67,12 +67,11 @@ const usePackageSubscriptionStyles = () => {
       shadowOpacity: 0.2,
       shadowRadius: 2,
       elevation: 2,
-      borderRadius: 10,
     },
     row: {
       position: 'relative',
       flexDirection: 'row',
-      marginVertical: 5,
+      marginVertical: 15,
     },
     left: {
       position: 'absolute',
@@ -87,7 +86,7 @@ const usePackageSubscriptionStyles = () => {
     title: {
       color: theme.subscriptions.text,
       fontSize: theme.titleFontSize * 0.8,
-      fontWeight: 'bold',
+      fontWeight: 'bold'
     },
     itemDescriptionContainer: {
       marginTop: 20,
@@ -105,13 +104,14 @@ const usePackageSubscriptionStyles = () => {
     packagesContainer: {
       width: theme.width * 0.9125,
       marginVertical: 10,
+      paddingHorizontal: 10,
     },
     hidden: {
       display: 'none',
     },
     seeMoreButton: {
-      width: 50,
-      height: 25,
+      width: 40,
+      height: 40,
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'center',
@@ -122,29 +122,6 @@ const usePackageSubscriptionStyles = () => {
     },
     alignStart: {
       alignSelf: 'flex-start',
-    },
-    itemIcon: {
-      position: 'absolute',
-      top: -10,
-      left: '27.5%',
-      width: 30,
-      height: 30,
-      justifyContent: 'center',
-      borderRadius: 15,
-      alignItems: 'center',
-      overflow: 'hidden',
-      backgroundColor: theme.subscriptions.boxesBgColor,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-      elevation: 2,
-    },
-    image: {
-      flex: 1,
     },
   });
   return styles;

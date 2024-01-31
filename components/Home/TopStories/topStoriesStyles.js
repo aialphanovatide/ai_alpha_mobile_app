@@ -1,14 +1,10 @@
 import {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useTopStoriesStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
-    background: {
-      width: '100%',
-      backgroundColor: theme.mainBackgroundColor,
-    },
     mainTitle: {
       fontWeight: 'bold',
       color: theme.titleColor,

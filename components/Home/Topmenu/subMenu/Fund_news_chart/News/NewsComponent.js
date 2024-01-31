@@ -16,13 +16,16 @@ import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
-import BackButton from '../../../../../Analysis/BackButton/BackButton';
+import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
+import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
 
 const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
   const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
+  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
+  const [subscribed, setSubscribed] = useState(false);
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin.bot_name,
   );
@@ -58,13 +61,7 @@ const NewsComponent = ({route}) => {
   const onPress = item => {
     navigation.navigate('NewsArticle', {
       item: item,
-      isStory: false,
     });
-  };
-
-  const handleFilterPress = option => {
-    setActiveButtons(option);
-    setActiveFilter(option);
   };
 
   useEffect(() => {
@@ -87,9 +84,8 @@ const NewsComponent = ({route}) => {
           : `/api/get/news?coin=${botname}`;
         const response = await getService(endpoint);
         if (
-          (response.message &&
-            response.message.startsWith('No articles found')) ||
-          response.error
+          response.message &&
+          response.message.startsWith('No articles found')
         ) {
           setNews([]);
         } else {
@@ -102,7 +98,16 @@ const NewsComponent = ({route}) => {
     };
 
     fetchNews();
-  }, [botname, activeFilter]);
+  }, [botname]);
+
+  // This useEffect handles the content regulation
+  useEffect(() => {
+    const hasCoinSubscription = findCategoryInIdentifiers(
+      activeCoin.category_name,
+      userInfo.entitlements,
+    );
+    setSubscribed(hasCoinSubscription);
+  }, [activeCoin, userInfo]);
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>

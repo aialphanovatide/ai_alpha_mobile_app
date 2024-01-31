@@ -7,8 +7,8 @@ const menuData = [
     isActive: true,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/bitcoin.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/bitcoin.png'),
+        active: require('../../../../assets/images/topMenu/Active/Bitcoin.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/Bitcoin.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/bitcoin.png'),
@@ -24,8 +24,8 @@ const menuData = [
     isActive: true,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/ethereum.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/ethereum.png'),
+        active: require('../../../../assets/images/topMenu/Active/Ethereum.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/Ethereum.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/ethereum.png'),
@@ -56,8 +56,8 @@ const menuData = [
     ],
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/rootlink.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/rootlink.png'),
+        active: require('../../../../assets/images/topMenu/Active/RootLink.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/RootLink.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/rootlink.png'),
@@ -90,8 +90,8 @@ const menuData = [
     isActive: true,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/baseblock.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/baseblock.png'),
+        active: require('../../../../assets/images/topMenu/Active/BaseBlock.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/BaseBlock.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/baseblock.png'),
@@ -123,8 +123,8 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/corechain.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/corechain.png'),
+        active: require('../../../../assets/images/topMenu/Active/CoreChain.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/CoreChain.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/corechain.png'),
@@ -222,8 +222,8 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/boostlayer.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/boostlayer.png'),
+        active: require('../../../../assets/images/topMenu/Active/BoostLayer.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/BoostLayer.png'),
       },
       dark: {
         active: require('../../../../assets/images/topMenu/Dark/Active/boostlayer.png'),
@@ -288,12 +288,12 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/nextrade.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/nextrade.png'),
+        active: require('../../../../assets/images/topMenu/Active/NexTrade.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/NexTrade.png'),
       },
       dark: {
-        active: require('../../../../assets/images/topMenu/Dark/Active/nextrade.png'),
-        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/nextrade.png'),
+        active: require('../../../../assets/images/topMenu/Dark/Active/NexTrade.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/NexTrade.png'),
       },
     },
   },
@@ -321,12 +321,12 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/cycleswap.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/cycleswap.png'),
+        active: require('../../../../assets/images/topMenu/Active/CycleSwap.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/CycleSwap.png'),
       },
       dark: {
-        active: require('../../../../assets/images/topMenu/Dark/Active/cycleswap.png'),
-        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/cycleswap.png'),
+        active: require('../../../../assets/images/topMenu/Dark/Active/CycleSwap.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/CycleSwap.png'),
       },
     },
   },
@@ -354,12 +354,12 @@ const menuData = [
     isActive: false,
     iconImage: {
       light: {
-        active: require('../../../../assets/images/topMenu/Active/diversefi.png'),
-        inactive: require('../../../../assets/images/topMenu/Inactive/diversefi.png'),
+        active: require('../../../../assets/images/topMenu/Active/DiverseFi.png'),
+        inactive: require('../../../../assets/images/topMenu/Inactive/DiverseFi.png'),
       },
       dark: {
-        active: require('../../../../assets/images/topMenu/Dark/Active/diversefi.png'),
-        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/diversefi.png'),
+        active: require('../../../../assets/images/topMenu/Dark/Active/DiverseFi.png'),
+        inactive: require('../../../../assets/images/topMenu/Dark/Inactive/DiverseFi.png'),
       },
     },
   },

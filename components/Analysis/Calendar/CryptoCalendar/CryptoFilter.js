@@ -39,8 +39,7 @@ const CryptoFilter = ({options, currentFilter, handleOptionTouch}) => {
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        bounces={false}
-        style={styles.flex}>
+        bounces={false}>
         {options.map(option => (
           <CryptoItem
             key={option.id}

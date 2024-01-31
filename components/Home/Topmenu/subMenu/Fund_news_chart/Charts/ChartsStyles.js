@@ -122,8 +122,9 @@ const useChartsStyles = () => {
       height: 50,
     },
     alertMenuContainer: {
-      paddingVertical: 5,
+      paddingVertical: 10,
       paddingHorizontal: 20,
+      flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -158,14 +159,12 @@ const useChartsStyles = () => {
     },
     alertMenuInactiveText: {
       color: theme.subMenuTextColor,
-      textTransform: 'capitalize',
     },
     alertListContainer: {
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
-      marginVertical: 15,
-      padding: '5%',
+      marginVertical: 20,
     },
     alertsTextMessage: {
       textAlign: 'center',
@@ -195,7 +194,6 @@ const useChartsStyles = () => {
     },
     alertDetailsLeftContent: {
       flex: 1,
-      marginHorizontal: '2.5%',
     },
     alertDetailsRightContent: {
       position: 'absolute',
@@ -206,12 +204,10 @@ const useChartsStyles = () => {
       fontSize: theme.responsiveFontSize,
       fontWeight: 'bold',
       color: theme.textColor,
-      padding: 2.5,
     },
     alertDetailsSubtitle: {
       fontSize: theme.responsiveFontSize,
       color: theme.textColor,
-      padding: 5,
     },
     alertDetailsRightTitle: {
       fontSize: theme.responsiveFontSize * 0.8,

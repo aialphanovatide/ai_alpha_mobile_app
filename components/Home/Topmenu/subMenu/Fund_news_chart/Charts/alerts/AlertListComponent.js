@@ -39,7 +39,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   }, [timeframe, botName]);
 
   return (
-    <View style={styles.alertListContainer}>
+    <View style={styles.container}>
       {isLoading ? (
         <Loader />
       ) : alerts.length === 0 ? (

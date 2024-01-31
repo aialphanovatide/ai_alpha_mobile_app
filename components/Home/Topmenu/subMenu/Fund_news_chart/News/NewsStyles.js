@@ -8,7 +8,8 @@ const useNewsStyles = () => {
     container: {
       flex: 1,
       width: theme.width,
-      padding: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
     },
     backgroundColor: {
       backgroundColor: theme.mainBackgroundColor,
@@ -22,21 +23,13 @@ const useNewsStyles = () => {
       fontSize: theme.titleFontSize,
     },
     itemContainer: {
-      marginVertical: 5,
       flexDirection: 'row',
       padding: 10,
+      margin: 5,
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
       alignItems: 'center',
       justifyContent: 'center',
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.3,
-      shadowRadius: 5,
-      elevation: 2,
     },
     image: {
       width: 80,
@@ -48,14 +41,13 @@ const useNewsStyles = () => {
     },
     textContainer: {
       flex: 1,
-      marginHorizontal: 10,
+      marginLeft: 10,
     },
     itemTitle: {
       color: theme.textColor,
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontSize: theme.responsiveFontSize,
       fontWeight: 'bold',
-      lineHeight: 22,
-      textAlign: 'left',
+      marginVertical: 5,
     },
     summary: {
       fontSize: theme.responsiveFontSize * 0.825,
@@ -70,7 +62,6 @@ const useNewsStyles = () => {
       padding: 10,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
-      borderRadius: 2,
     },
     articleImage: {
       width: theme.width,
@@ -85,7 +76,6 @@ const useNewsStyles = () => {
       color: theme.textColor,
       textAlign: 'left',
       fontWeight: 'bold',
-      lineHeight: 22,
     },
     articleDate: {
       marginHorizontal: 20,

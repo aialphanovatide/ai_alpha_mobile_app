@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import useAlertsStyles from './styles';
 import {TopMenuContext} from '../../context/topMenuContext';
-import {getService} from '../../services/aiAlphaApi';
+import {getService, postService} from '../../services/aiAlphaApi';
 import AlertDetails from './AlertsDetails';
 import Loader from '../Loader/Loader';
 import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
