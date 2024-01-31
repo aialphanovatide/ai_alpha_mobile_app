@@ -10,12 +10,16 @@ const useVAMStyles = () => {
       width: theme.width - 30,
       alignSelf: 'center',
     },
-
     menuItemContainer: {
       width: theme.width * 0.45,
-      margin: 5,
-      backgroundColor: theme.boxesBackgroundColor,
+      height: 64,
+      padding: 5,
       alignItems: 'center',
+      justifyContent: 'flex-start',
+    },
+    activeMenuContainer: {
+      marginTop: 15,
+      height: 75,
     },
     menuContainer: {
       width: '100%',
@@ -25,15 +29,16 @@ const useVAMStyles = () => {
       alignItems: 'center',
     },
     menuItemName: {
-      marginVertical: 5,
       color: theme.fundamentalsMenuText,
       textAlign: 'center',
+      fontSize: theme.responsiveFontSize * 0.8,
     },
     iconContainer: {
       width: 20,
       height: 20,
-      margin: 5,
+      marginTop: 5,
       alignSelf: 'center',
+      justifyContent: 'flex-start'
     },
     itemIcon: {
       flex: 1,
@@ -55,6 +60,7 @@ const useVAMStyles = () => {
     dataRow: {
       flex: 1,
       flexDirection: 'row',
+      backgroundColor: theme.boxesBackgroundColor,
     },
     imageContainer: {
       width: 80,
@@ -71,6 +77,9 @@ const useVAMStyles = () => {
       margin: 10,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.85,
+    },
+    activeItemBgImage: {
+      flex: 1,
     },
   });
   return styles;

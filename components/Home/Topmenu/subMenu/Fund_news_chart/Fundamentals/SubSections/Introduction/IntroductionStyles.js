@@ -8,6 +8,7 @@ const useIntroductionStyles = () => {
     introText: {
       fontSize: theme.responsiveFontSize * 0.9,
       color: theme.textColor,
+      lineHeight: 22,
     },
     dataContainer: {
       margin: 5,

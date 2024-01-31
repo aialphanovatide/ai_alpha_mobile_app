@@ -6,7 +6,11 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {postService} from '../../../../../../services/aiAlphaApi';
+import {
+  getService,
+  getWithBodyService,
+  postService,
+} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
@@ -22,12 +26,8 @@ const NewsComponent = ({route}) => {
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin.bot_name,
   );
-  const [activeFilter, setActiveFilter] = useState('Last Day');
-  const [activeButtons, setActiveButtons] = useState('Last Day');
-  const requestBody = {
-    botName: botname,
-    filter: activeFilter,
-  };
+  const [activeFilter, setActiveFilter] = useState(null);
+  const [activeButtons, setActiveButtons] = useState(null);
 
   // Function to filter the summary or texts of the article, removing the words that are put by the prompt generated, and aren't necessary in the summary or the title.
   const filterText = summary => {
@@ -80,10 +80,12 @@ const NewsComponent = ({route}) => {
 
   useEffect(() => {
     setNews([]);
-    requestBody.botName = botname;
     const fetchNews = async () => {
       try {
-        const response = await postService('/api/get/news', requestBody);
+        const endpoint = activeFilter
+          ? `/api/get/news?coin=${botname}&time_range=${activeFilter.toLowerCase()}`
+          : `/api/get/news?coin=${botname}`;
+        const response = await getService(endpoint);
         if (
           (response.message &&
             response.message.startsWith('No articles found')) ||
@@ -106,16 +108,22 @@ const NewsComponent = ({route}) => {
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
       <BackButton />
       <Text style={styles.title}>News</Text>
-      <View style={styles.buttonContainer}>
+      <View style={styles.filterContainer}>
         {['Last Hour', 'Last Day', 'Last Week'].map(option => (
           <TouchableOpacity
             key={option}
             onPress={() => handleFilterPress(option)}
             style={[
-              styles.button,
-              activeButtons === option ? styles.btnactive : null,
+              styles.filterButton,
+              activeButtons === option ? styles.activeOption : null,
             ]}>
-            <Text style={styles.buttonText}>{option}</Text>
+            <Text
+              style={[
+                styles.filterText,
+                activeButtons === option ? styles.activeButtonText : null,
+              ]}>
+              {option}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>

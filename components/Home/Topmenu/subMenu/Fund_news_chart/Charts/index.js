@@ -93,7 +93,6 @@ const CandlestickChart = ({route}) => {
       <TimeframeSelector
         selectedInterval={selectedInterval}
         changeInterval={changeInterval}
-        styles={styles}
       />
       <RsButton
         activeButtons={activeButtons}

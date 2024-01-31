@@ -109,7 +109,11 @@ const TopStories = () => {
     const fetchTopStories = async () => {
       try {
         const data = await getService(`/api/get/allTopStories`);
-        setStories(data['top stories']);
+        if (!data || data['top stories'] === undefined) {
+          setStories([]);
+        } else {
+          setStories(data['top stories']);
+        }
       } catch (error) {
         console.error('Error fetching top stories:', error.message);
       }

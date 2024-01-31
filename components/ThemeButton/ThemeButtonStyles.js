@@ -6,16 +6,16 @@ const useThemeButtonStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     buttonContainer: {
-      width: '87%',
+      position: 'relative',
+      width: '100%',
       display: 'flex',
       flexDirection: 'row',
-      marginVertical: 5,
-      marginHorizontal: 15,
+      marginVertical: theme.boxesVerticalMargin,
       padding: 10,
       backgroundColor: theme.boxesBackgroundColor,
       alignItems: 'center',
       shadowColor: '#000',
-      borderRadius: 5,
+      borderRadius: 2,
       shadowOffset: {
         width: 0,
         height: 2,
@@ -44,14 +44,15 @@ const useThemeButtonStyles = () => {
       color: theme.textColor,
     },
     switchContainer: {
+      position:'absolute',
+      right: 24,
       width: 20,
       height: 30,
       alignItems: 'center',
       justifyContent: 'center',
-      transform: [{ scaleX: .8 }, { scaleY: .8 }],
+      transform: [{scaleX: 0.8}, {scaleY: 0.8}],
       marginRight: 10,
     },
-    
   });
 
   return styles;

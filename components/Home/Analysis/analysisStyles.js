@@ -24,31 +24,13 @@ const useHomeAnalysisStyles = () => {
     },
     item: {
       width: theme.width,
-      marginVertical: 2.5,
       backgroundColor: theme.boxesBackgroundColor,
-      borderRadius: 2,
       overflow: 'hidden',
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 2,
-        height: 3,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 5,
-      elevation: 3,
       alignSelf: 'center',
     },
     itemPreview: {
       flex: 1,
       backgroundColor: theme.boxesBackgroundColor,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 2,
-        height: 3,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 5,
-      elevation: 3,
     },
     description: {
       fontSize: theme.responsiveFontSize * 0.8,

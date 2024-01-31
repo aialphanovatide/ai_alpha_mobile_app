@@ -65,7 +65,9 @@ const NewsArticle = ({route, navigation}) => {
 
   return (
     <ScrollView style={styles.backgroundColor}>
-      <BackButton handleReturn={handleReturn} />
+      <View style={styles.marginVertical}>
+        <BackButton handleReturn={handleReturn} />
+      </View>
       <View style={styles.article}>
         <Image
           style={styles.articleImage}

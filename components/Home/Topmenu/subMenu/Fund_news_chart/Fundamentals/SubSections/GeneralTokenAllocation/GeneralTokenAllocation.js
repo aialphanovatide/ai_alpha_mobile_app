@@ -4,7 +4,7 @@ import CircleChart from '../CircleChart/CircleChart';
 import useGTAStyles from './GTAStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
-const GeneralTokenData = ({data, currentToken, handleTokenChange, styles}) => {
+const GeneralTokenData = ({data, handleTokenChange, styles}) => {
   return (
     <View style={styles.circleDataContainer}>
       {data.map((sector, index) => (
@@ -20,15 +20,6 @@ const GeneralTokenData = ({data, currentToken, handleTokenChange, styles}) => {
           </Text>
         </TouchableOpacity>
       ))}
-      <Text
-        style={
-          currentToken && [
-            {color: currentToken.color},
-            styles.currentTokenPercentage,
-          ]
-        }>
-        {currentToken ? ` ${currentToken.percentage}% ` : ''}
-      </Text>
     </View>
   );
 };
@@ -50,11 +41,22 @@ const GeneralTokenAllocation = () => {
 
   return (
     <View style={styles.container}>
-      <CircleChart
-        data={chartData}
-        dividerSize={5}
-        backgroundColor={theme.boxesBackgroundColor}
-      />
+      <View style={styles.flex}>
+        <CircleChart
+          data={chartData}
+          dividerSize={5}
+          backgroundColor={theme.boxesBackgroundColor}
+        />
+        <Text
+          style={
+            currentToken && [
+              {color: currentToken.color},
+              styles.currentTokenPercentage,
+            ]
+          }>
+          {currentToken ? ` ${currentToken.percentage}% ` : ''}
+        </Text>
+      </View>
       <GeneralTokenData
         currentToken={currentToken}
         data={chartData}

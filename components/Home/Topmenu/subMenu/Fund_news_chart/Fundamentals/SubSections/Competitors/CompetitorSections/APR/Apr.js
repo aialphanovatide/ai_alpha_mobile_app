@@ -15,6 +15,7 @@ const Graph = ({value, color, styles}) => {
             ? require('../../../../../../../../../../assets/images/fundamentals/competitors/apr/apr-dark.png')
             : require('../../../../../../../../../../assets/images/fundamentals/competitors/apr/apr.png')
         }
+        resizeMode='contain'
       />
       <View
         style={[

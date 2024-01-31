@@ -1,7 +1,14 @@
-import {Text, View, TouchableOpacity, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
 import Loader from '../../../../../../../Loader/Loader';
 import useVAMStyles from './VAMStyles';
+import { AppThemeContext } from '../../../../../../../../context/themeContext';
 
 const MechanismsMenuItem = ({
   item,
@@ -9,9 +16,18 @@ const MechanismsMenuItem = ({
   handleOptionChange,
   styles,
 }) => {
+  const {theme} = useContext(AppThemeContext)
   return (
     <TouchableOpacity onPress={() => handleOptionChange(item)}>
-      <View style={styles.menuItemContainer}>
+      <ImageBackground
+        source={
+          activeOption.name === item.name
+            ? require('../../../../../../../../assets/images/fundamentals/vam/active-item.png')
+            : require('../../../../../../../../assets/images/fundamentals/vam/inactive-item.png')
+        }
+        resizeMode="cover"
+        style={styles.menuItemContainer}
+        tintColor={theme.secondaryBoxesBgColor}>
         <View style={styles.iconContainer}>
           <Image
             style={[
@@ -29,7 +45,7 @@ const MechanismsMenuItem = ({
           ]}>
           {item.name}
         </Text>
-      </View>
+      </ImageBackground>
     </TouchableOpacity>
   );
 };

@@ -12,9 +12,10 @@ const useNewsStyles = () => {
     },
     backgroundColor: {
       backgroundColor: theme.mainBackgroundColor,
+      padding: 10,
     },
     title: {
-      marginVertical: 20,
+      marginVertical: 10,
       marginHorizontal: 10,
       fontWeight: 'bold',
       color: theme.titleColor,
@@ -25,7 +26,7 @@ const useNewsStyles = () => {
       flexDirection: 'row',
       padding: 10,
       backgroundColor: theme.boxesBackgroundColor,
-      borderRadius: 2,
+      borderRadius: 4,
       alignItems: 'center',
       justifyContent: 'center',
       shadowColor: '#000',
@@ -64,23 +65,22 @@ const useNewsStyles = () => {
     article: {
       flex: 1,
       width: theme.width,
-      marginHorizontal: 10,
       marginTop: 2.5,
       marginBottom: 10,
-      padding: 1.5,
+      padding: 10,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       borderRadius: 2,
     },
     articleImage: {
-      width: theme.width - 30,
-      height: 300,
+      width: theme.width,
+      height: 350,
       alignSelf: 'center',
       overflow: 'hidden',
     },
     articleTitle: {
-      marginVertical: 20,
-      marginHorizontal: 10,
+      marginVertical: theme.titlesVerticalMargin,
+      marginHorizontal: 20,
       fontSize: theme.responsiveFontSize * 1.075,
       color: theme.textColor,
       textAlign: 'left',
@@ -88,54 +88,50 @@ const useNewsStyles = () => {
       lineHeight: 22,
     },
     articleDate: {
-      marginHorizontal: 10,
+      marginHorizontal: 20,
       textAlign: 'left',
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
       fontWeight: 'bold',
+      lineHeight: 22,
     },
     articleSummary: {
       margin: 10,
+      marginHorizontal: 20,
       color: theme.textColor,
-      fontSize: theme.responsiveFontSize * 0.825,
-      textAlign: 'justify',
+      fontSize: theme.responsiveFontSize * 0.85,
+      textAlign: 'left',
+      lineHeight: 22,
     },
-    buttonContainer: {
-      marginLeft: 10,
+    filterContainer: {
+      marginVertical: 10,
+      marginBottom: 15,
       flexDirection: 'row',
-    },
-    button: {
-      paddingVertical: 5,
-      paddingHorizontal: 18,
-      backgroundColor: 'gray',
-      marginHorizontal: 5,
-    },
-    btnactive: {
-      backgroundColor: '#ccc',
-    },
-    buttonText: {
-      color: 'white',
-    },
-    menuButtonContainer: {
-      marginLeft: 10,
-      flexDirection: 'row',
-    },
-    menuButton: {
-      paddingVertical: 5,
-      paddingHorizontal: 18,
       backgroundColor: theme.subMenuBgColor,
-      marginHorizontal: 5,
     },
-    activeButton: {
-      backgroundColor: theme.subMenuTextColor,
+    filterButton: {
+      width: '33.33%',
+      padding: 5,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
-    activeText: {
-      color: theme.secondaryTextColor,
-      textTransform: 'capitalize',
+    activeOption: {
+      backgroundColor: theme.activeWhite,
     },
-    inactiveText: {
+    filterText: {
       color: theme.subMenuTextColor,
       textTransform: 'capitalize',
+      fontWeight: 'bold',
+    },
+    activeButtonText: {
+      color: theme.filterTextColor,
+      textTransform: 'capitalize',
+      fontWeight: 'bold',
+    },
+    marginVertical: {
+      marginVertical: 10,
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
     },
   });
   return styles;

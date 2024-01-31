@@ -36,6 +36,9 @@ const useTimelineStyles = () => {
       borderTopColor: theme.orange,
       borderTopWidth: 2,
     },
+    futureEventLine: {
+      borderStyle: 'dashed',
+    },
     timelineContentContainer: {
       flex: 1,
       maxWidth: '70%',
@@ -55,12 +58,34 @@ const useTimelineStyles = () => {
     timelineArrow: {
       position: 'absolute',
       top: 0,
-      left: '10%',
+      left: '1%',
       width: 10,
-      height: '100%',
-      borderLeftWidth: 2,
-      borderColor: theme.secondaryTextColor,
+      height: '97.5%',
       zIndex: -1,
+    },
+    arrow: {
+      position: 'absolute',
+      bottom: '2%',
+      left: '1.2%',
+      width: 15,
+      height: 15,
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 1,
+    },
+    arrowImage: {
+      flex: 1,
+      tintColor: theme.secondaryTextColor,
+    },
+    arrowTail: {
+      position: 'absolute',
+      top: 0,
+      left: '1.2%',
+      width: 15,
+      height: 15,
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 1,
     },
   });
   return styles;

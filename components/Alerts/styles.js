@@ -28,8 +28,10 @@ const useAlertsStyles = () => {
     noAlerts: {
       textAlign: 'center',
       textAlignVertical: 'center',
-      fontSize: theme.titleFontSize,
-      color: theme.titleColor,
+      fontSize: theme.responsiveFontSize,
+      fontWeight: 'bold',
+      fontStyle: 'italic',
+      color: theme.secondaryTextColor,
       alignSelf: 'center',
     },
     itemsContainer: {

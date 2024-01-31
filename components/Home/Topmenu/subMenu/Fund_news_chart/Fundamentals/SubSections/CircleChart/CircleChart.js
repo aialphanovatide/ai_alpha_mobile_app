@@ -23,7 +23,7 @@ const CircleChart = ({data, dividerSize, backgroundColor}) => {
 
 const styles = StyleSheet.create({
   circleChartContainer: {
-    marginVertical: 30,
+    marginVertical: 15,
   },
 });
 

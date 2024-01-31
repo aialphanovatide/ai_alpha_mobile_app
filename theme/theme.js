@@ -6,6 +6,7 @@ export const lightThemeStyles = {
   width: width,
   height: height,
   mainBackgroundColor: '#E7EAF1',
+  secondaryBgColor: '#F6F7FB',
   boxesBackgroundColor: '#F6F7FB',
   secondaryBoxesBgColor: '#FFFFFF',
   thirdBoxesBgColor: '#E1E5EE',
@@ -40,6 +41,8 @@ export const lightThemeStyles = {
   backbuttonColor: '#B8BBBC',
   chartsColor: '#B8BBBC',
   fundamentalsMenuText: '#B8BBBC',
+  dAppsInactiveItem: '#E1E5EE',
+  dAppsItemBg: '#FFFFFF',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {
@@ -57,12 +60,15 @@ export const lightThemeStyles = {
   loginInputBgColor: '#5F6567',
   inputColor: '#F7F7F7',
   topMenuActiveBg: '#F9F9F933',
+  boxesVerticalMargin: 8,
+  titlesVerticalMargin: 24,
 };
 
 export const darkThemeStyles = {
   width: width,
   height: height,
   mainBackgroundColor: '#10101E',
+  secondaryBgColor: '#424455',
   boxesBackgroundColor: '#535568',
   secondaryBoxesBgColor: '#74788D',
   thirdBoxesBgColor: '#74788D',
@@ -97,6 +103,8 @@ export const darkThemeStyles = {
   backbuttonColor: '#C4CADA',
   chartsColor: '#74788D',
   fundamentalsMenuText: '#F9FAFC',
+  dAppsInactiveItem: '#F9FAFC',
+  dAppsItemBg: '#74788D',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {
@@ -114,4 +122,6 @@ export const darkThemeStyles = {
   loginInputBgColor: '#FFFFFF',
   inputColor: '#242427',
   topMenuActiveBg: '#E9E9E933',
+  boxesVerticalMargin: 8,
+  titlesVerticalMargin: 24,
 };

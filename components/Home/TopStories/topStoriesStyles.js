@@ -29,19 +29,10 @@ const useTopStoriesStyles = () => {
     storyItem: {
       flex: 1,
       width: theme.width,
-      marginVertical: 5,
       backgroundColor: theme.boxesBackgroundColor,
-      borderRadius: 2,
-      overflow: 'hidden',
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 2,
-        height: 3,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 5,
-      elevation: 3,
       alignSelf: 'center',
+      borderBottomColor: theme.boxesBorderColor,
+      borderBottomWidth: 1,
     },
     description: {
       color: theme.textColor,
@@ -53,15 +44,12 @@ const useTopStoriesStyles = () => {
       tintColor: theme.textColor,
     },
     emptyMessage: {
-      margin: '10%',
-      padding: '5%',
-      fontSize: theme.titleFontSize,
-      color: theme.titleColor,
-      borderRadius: 10,
+      margin: theme.boxesVerticalMargin,
+      fontSize: theme.responsiveFontSize,
+      color: theme.secondaryTextColor,
       alignSelf: 'center',
-      borderColor: theme.textColor,
-      borderWidth: 2,
       fontWeight: 'bold',
+      fontStyle: 'italic',
     },
   });
   return styles;

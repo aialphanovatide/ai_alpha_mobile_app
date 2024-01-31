@@ -26,18 +26,9 @@ const usePriceActionStyles = () => {
       height: theme.height * 0.3,
       marginVertical: 10,
       backgroundColor: theme.boxesBackgroundColor,
-      // borderWidth: 1,
       borderColor: theme.boxesBorderColor,
       overflow: 'hidden',
-      borderRadius: 2,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 2,
-        height: 3,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 5,
-      elevation: 3,
+      borderRadius: 6,
       justifyContent:'center'
     },
     tableScrollView: {
