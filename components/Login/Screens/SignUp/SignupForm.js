@@ -11,6 +11,7 @@ import CustomInput from '../../CustomInput/CustomInput';
 import CustomPasswordInput from '../../CustomInput/CustomPasswordInput';
 import CustomButton from '../../CustomButton/CustomButton';
 import Separator from '../../CustomButton/Separator';
+import GreenTick from '../../../../assets/images/greenTick.png';
 import SocialSignUpButton from '../../SocialButtons/SocialSignUpButton';
 import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
@@ -132,12 +133,22 @@ const SignupForm = () => {
       setUserId(response.data._id);
       setUserEmail(email);
       setSignupSuccessful(true);
-      navigation.navigate('HomeScreen');
+
+      setTimeout(() => {
+        navigation.navigate('SignIn');
+      }, 2000);
     } catch (error) {
       console.log('Signup error: ', error);
     }
   };
-
+  if (signupSuccessful) {
+    return (
+      <View style={styles.successContainer}>
+        <Image source={GreenTick} style={styles.tickImage} />
+        <Text style={styles.successText}>User Created</Text>
+      </View>
+    );
+  }
   return (
     <ScrollView style={styles.scrollview} showsVerticalScrollIndicator={false}>
       <View style={styles.root}>

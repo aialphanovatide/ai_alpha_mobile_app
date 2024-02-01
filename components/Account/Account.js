@@ -300,7 +300,8 @@ async function Buy_now() {
             />
           </View>
           <Text style={styles.username}>
-            {userEmail || 'User not available'}
+            {/*{userEmail || 'User not available'}*/}
+            {userEmail || ' '}
           </Text>
           {/* <Text style={styles.headline}>User Subscriptions</Text>
           <Text style={styles.text}>
