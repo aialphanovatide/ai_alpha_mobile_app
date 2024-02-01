@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, FlatList, StyleSheet} from 'react-native';
 import AlertDetails from './alertDetails';
-import {getService} from '../../../../../../../services/aiAlphaApi';
+import {
+  postService,
+  getService,
+} from '../../../../../../../services/aiAlphaApi';
 import Loader from '../../../../../../Loader/Loader';
 
 const AlertListComponent = ({botName, timeframe, styles}) => {
@@ -14,10 +17,12 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
         const response = await getService(
           `/api/filter/alerts?coin=${botName}&date=${timeframe}`,
         );
-
+        console.log('Alerts response: ', response);
         if (
-          response.message &&
-          response.message.startsWith('No alerts found')
+          response.length === 0 ||
+          (response.message &&
+            response.message.startsWith('No alerts found')) ||
+          response.alerts.length === 0
         ) {
           setAlerts([]);
         } else {
@@ -34,11 +39,11 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   }, [timeframe, botName]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.alertListContainer}>
       {isLoading ? (
         <Loader />
       ) : alerts.length === 0 ? (
-        <Text style={styles.textMessage}>No alerts</Text>
+        <Text style={styles.alertsTextMessage}>No alerts</Text>
       ) : (
         alerts.map(alert => (
           <AlertDetails

@@ -69,7 +69,7 @@ const TopStories = () => {
       try {
         const data = await getService(`/api/get/allTopStories`);
         console.log('TopStories data: ', data['top stories']);
-        setStories(data['top stories']);
+        //setStories(data['top stories']);
       } catch (error) {
         console.error('Error fetching top stories:', error.message);
       }
@@ -101,6 +101,7 @@ const TopStories = () => {
             />
           )}
           left={() => (
+            {/*
             <Image
               source={{
                 uri:
@@ -111,6 +112,7 @@ const TopStories = () => {
               style={styles.imageStyle}
               resizeMode="contain"
             />
+            */}
           )}
           expanded={expanded}
           onPress={handlePress}>
@@ -120,10 +122,10 @@ const TopStories = () => {
               key={i}
               title={story.summary}
               description={story.summary}
-              image={
+              /*image={
                 story.images[0].image ||
                 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
-              }
+              }*/
               handleStoryRedirect={handleStoryRedirect}
               coinBotId={story.coin_bot_id}
             />
