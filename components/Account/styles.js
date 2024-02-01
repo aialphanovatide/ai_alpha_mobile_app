@@ -99,8 +99,9 @@ const useAccountStyles = () => {
       backgroundColor: theme.mainBackgroundColor,
     },
     alphaLogoContainer: {
-      width: 70,
-      height: 70,
+      width: 150,
+      height: 150,
+      marginVertical: theme.boxesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -108,9 +109,8 @@ const useAccountStyles = () => {
       flex: 1,
     },
     username: {
-      marginHorizontal: 10,
-      padding: 10,
-      fontSize: 15,
+      margin: theme.boxesVerticalMargin,
+      fontSize: theme.responsiveFontSize,
       color: theme.titleColor,
       textAlign: 'center',
       fontWeight: 'bold',

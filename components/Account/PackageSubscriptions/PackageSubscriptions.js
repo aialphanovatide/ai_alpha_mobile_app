@@ -29,7 +29,6 @@ const SubscriptionItem = ({
     let package_display_name = title.slice(0, first_space);
     return package_display_name;
   };
-  console.log('Current icon: ', icon);
   return (
     <View style={[styles.itemContainer, activeItem && styles.activeItem]}>
       <View style={styles.row}>
@@ -51,19 +50,26 @@ const SubscriptionItem = ({
         )}
         <Text style={[styles.right, styles.title]}>{item.priceString}</Text>
       </View>
+      <TouchableOpacity
+        style={[
+          styles.purchaseButton,
+          isPurchased ? styles.activePurchaseButton : {},
+        ]}
+        onPress={() => onPurchasePress(pack)}>
+        <Text
+          style={[
+            styles.purchaseButtonText,
+            isPurchased ? styles.activePurchaseButtonText : {},
+          ]}>
+          {isPurchased ? 'Active' : 'Purchase'}
+        </Text>
+      </TouchableOpacity>
       <View style={styles.itemDescriptionContainer}>
-        <Text style={styles.itemDescription}>
+        <Text style={styles.itemDescription} numberOfLines={activeItem ? 0 : 2}>
           {activeItem ? `${description}` : `${description.slice(0, 100)}...`}
         </Text>
         {activeItem ? (
           <>
-            <TouchableOpacity
-              style={styles.purchaseButton}
-              onPress={() => onPurchasePress(pack)}>
-              <Text style={styles.purchaseButtonText}>
-                {isPurchased ? 'Active' : 'Purchase'}
-              </Text>
-            </TouchableOpacity>
             <TouchableOpacity
               style={styles.seeMoreButton}
               onPress={() => onItemPress(null)}>

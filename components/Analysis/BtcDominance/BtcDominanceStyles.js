@@ -8,12 +8,12 @@ const useBtcDominanceStyles = () => {
     background: {
       flex: 1,
       backgroundColor: theme.mainBackgroundColor,
-      padding: 15,
+      padding: 10,
     },
     container: {
       width: '100%',
       height: 300,
-      marginVertical: '10%',
+      marginVertical: theme.boxesVerticalMargin,
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'top',
@@ -27,8 +27,7 @@ const useBtcDominanceStyles = () => {
       position: 'relative',
     },
     analysisTitle: {
-      marginTop: '3%',
-      marginLeft: '3%',
+      marginTop: theme.titlesVerticalMargin,
       fontSize: theme.titleFontSize,
       color: theme.titleColor,
       fontWeight: 'bold',
@@ -39,6 +38,11 @@ const useBtcDominanceStyles = () => {
       position: 'absolute',
       width: 50,
       height: 50,
+    },
+    timeframeContainer: {
+      flex: 1,
+      width: '100%',
+      maxHeight: '5%',
     },
   });
   return styles;

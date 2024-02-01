@@ -1,16 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {
+  View,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import moment from 'moment';
-import { VictoryChart, VictoryAxis, VictoryCandlestick } from 'victory-native';
+import {VictoryChart, VictoryAxis, VictoryCandlestick} from 'victory-native';
 import Loader from '../../Loader/Loader';
 import axios from 'axios';
 import BackButton from '../BackButton/BackButton';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes'; // Ajusta la ruta según la ubicación de tu componente
+import useEthBtcStyles from './EthBtcChartStyles';
+import {AppThemeContext} from '../../../context/themeContext';
 
-const EthBtcChart = ({ loading, candlesToShow = 30 }) => {
+const EthBtcChart = ({loading, candlesToShow = 30}) => {
+  const styles = useEthBtcStyles();
   const [chartData, setChartData] = useState([]);
   const [selectedInterval, setSelectedInterval] = useState('1d');
+  const {theme} = useContext(AppThemeContext);
 
   useEffect(() => {
     const fetchChartData = async () => {
@@ -23,10 +33,10 @@ const EthBtcChart = ({ loading, candlesToShow = 30 }) => {
               interval: selectedInterval.toLowerCase(),
               limit: 45,
             },
-          }
+          },
         );
         const data = response.data;
-        const ohlcData = data.map((entry) => ({
+        const ohlcData = data.map(entry => ({
           x: new Date(entry[0]),
           open: parseFloat(entry[1]),
           high: parseFloat(entry[2]),
@@ -38,7 +48,7 @@ const EthBtcChart = ({ loading, candlesToShow = 30 }) => {
         console.error('Failed to fetch data:', error);
       }
     };
-  
+
     fetchChartData();
   }, [selectedInterval]);
 
@@ -59,12 +69,12 @@ const EthBtcChart = ({ loading, candlesToShow = 30 }) => {
       Math.min(acc[0], dataPoint.low),
       Math.max(acc[1], dataPoint.high),
     ],
-    [Infinity, -Infinity]
+    [Infinity, -Infinity],
   );
 
   const domainX = [chartData[0].x, chartData[chartData.length - 1].x];
 
-  const changeInterval = (newInterval) => {
+  const changeInterval = newInterval => {
     setSelectedInterval(newInterval);
   };
 
@@ -73,34 +83,50 @@ const EthBtcChart = ({ loading, candlesToShow = 30 }) => {
       <SafeAreaView style={styles.background}>
         <BackButton />
         <Text style={styles.analysisTitle}>ETH/BTC Chart</Text>
-
-        <TimeframeSelector
-          selectedInterval={selectedInterval}
-          changeInterval={changeInterval}
-        />
-
+        <View style={styles.timeframeContainer}>
+          <TimeframeSelector
+            selectedInterval={selectedInterval}
+            changeInterval={changeInterval}
+          />
+        </View>
         <View style={styles.container}>
           <View style={styles.chart}>
             <ImageBackground
               source={require('../../../assets/logo_3.png')}
-              style={styles.backgroundImage}
-            ></ImageBackground>
+              style={styles.backgroundImage}></ImageBackground>
 
             <VictoryChart
               width={400}
-              domain={{ x: domainX, y: domainY }}
-              padding={{ top: 10, bottom: 60, left: 30, right: 60 }}
-              domainPadding={{ x: 5, y: 3 }}
-              scale={{ x: 'time', y: 'linear' }}
-              height={300}
-            >
-              <VictoryAxis dependentAxis orientation="right" />
-              <VictoryAxis />
+              domain={{x: domainX, y: domainY}}
+              padding={{top: 10, bottom: 60, left: 30, right: 60}}
+              domainPadding={{x: 5, y: 3}}
+              scale={{x: 'time', y: 'linear'}}
+              height={300}>
+              <VictoryAxis
+                style={{
+                  axis: {stroke: theme.chartsColor},
+                  tickLabels: {
+                    fontSize: theme.responsiveFontSize * 0.7,
+                    fill: theme.titleColor,
+                  },
+                }}
+              />
+              <VictoryAxis
+                dependentAxis
+                style={{
+                  axis: {stroke: theme.chartsColor},
+                  tickLabels: {
+                    fontSize: theme.responsiveFontSize * 0.825,
+                    fill: theme.titleColor,
+                  },
+                }}
+                orientation="right"
+              />
 
               <VictoryCandlestick
                 data={chartData}
                 candleRatio={0.5}
-                candleColors={{ positive: '#3ADF00', negative: '#FF477C' }}
+                candleColors={{positive: '#3ADF00', negative: '#FF477C'}}
               />
             </VictoryChart>
           </View>
@@ -109,38 +135,5 @@ const EthBtcChart = ({ loading, candlesToShow = 30 }) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'top',
-    alignItems: 'top',
-    width: '100%',
-    height: 500,
-  },
-  chart: {
-    width: '100%',
-    height: '100%',
-    margin: '0%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  analysisTitle: {
-    marginTop: '3%',
-    marginLeft: '3%',
-    fontSize: 16,
-    fontWeight: 'bold', 
-  },
-  backgroundImage: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    width: 50,
-    height: 50,
-  },
-  background: {
-    flex: 1,
-  },
-});
 
 export default EthBtcChart;

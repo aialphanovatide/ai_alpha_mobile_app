@@ -46,8 +46,8 @@ const useThemeButtonStyles = () => {
     switchContainer: {
       position:'absolute',
       right: 24,
-      width: 20,
-      height: 30,
+      width: 25,
+      height: 35,
       alignItems: 'center',
       justifyContent: 'center',
       transform: [{scaleX: 0.8}, {scaleY: 0.8}],

@@ -27,9 +27,9 @@ const useCryptoCalendarStyles = () => {
       flex: 1,
       maxWidth: '95%',
       flexDirection: 'row',
-      marginVertical: 5,
+      marginVertical: 4,
       padding: 10,
-      borderRadius: 10,
+      borderRadius: 4,
       backgroundColor: theme.secondaryBoxesBgColor,
       shadowColor: '#000',
       shadowOffset: {
@@ -62,7 +62,7 @@ const useCryptoCalendarStyles = () => {
     },
     itemInfo: {
       fontSize: theme.responsiveFontSize * 0.8,
-      color: theme.secondaryItemColor,
+      color: theme.textColor,
       marginHorizontal: 2.5,
     },
     topDataRow: {
@@ -90,7 +90,7 @@ const useCryptoCalendarStyles = () => {
     },
     timeIcon: {
       flex: 1,
-      tintColor: theme.secondaryItemColor,
+      tintColor: theme.textColor,
     },
     itemTitle: {
       paddingVertical: 10,
@@ -145,19 +145,16 @@ const useCryptoCalendarStyles = () => {
     },
     messageContainer: {
       width: '80%',
-      marginVertical: 20,
+      marginVertical: theme.boxesVerticalMargin,
       marginHorizontal: 'auto',
       alignSelf: 'center',
-      borderRadius: 10,
-      borderColor: theme.textColor,
-      borderWidth: 2,
     },
     emptyEventsMessage: {
       textAlign: 'center',
-      padding: 10,
-      color: theme.textColor,
+      color: theme.secondaryTextColor,
       fontSize: theme.responsiveFontSize * 0.9,
       fontWeight: 'bold',
+      fontStyle: 'italic',
     },
     flex: {
       flex: 1,

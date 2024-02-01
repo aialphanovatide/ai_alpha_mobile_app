@@ -6,7 +6,8 @@ const useBackButtonStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     backButton: {
-      fontSize: theme.width * 0.045,
+      fontFamily: 'prompt',
+      fontSize: theme.responsiveFontSize,
       fontWeight: 'bold',
       color: theme.backbuttonColor,
       textDecorationLine: 'underline',

@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, StyleSheet, Text } from 'react-native';
-import { VictoryChart, VictoryAxis, VictoryCandlestick } from 'victory-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {View, ImageBackground, StyleSheet, Text} from 'react-native';
+import {VictoryChart, VictoryAxis, VictoryCandlestick} from 'victory-native';
 import Loader from '../../Loader/Loader';
 import axios from 'axios';
 import BackButton from '../BackButton/BackButton';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes';
+import useBtcDominanceStyles from './BtcDominanceStyles';
+import {AppThemeContext} from '../../../context/themeContext';
 
-const BtcDominanceChart = ({ loading, candlesToShow = 30 }) => {
+const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
   const [chartData, setChartData] = useState([]);
   const [selectedInterval, setSelectedInterval] = useState('1D');
   const [loadingState, setLoading] = useState(true);
+  const styles = useBtcDominanceStyles();
+  const {theme} = useContext(AppThemeContext);
 
   const fetchChartData = async (interval = selectedInterval) => {
     try {
@@ -22,10 +26,10 @@ const BtcDominanceChart = ({ loading, candlesToShow = 30 }) => {
             interval: interval.toLowerCase(), // Utiliza la nueva temporalidad
             limit: 45,
           },
-        }
+        },
       );
       const data = response.data;
-      const ohlcData = data.map((entry) => ({
+      const ohlcData = data.map(entry => ({
         x: new Date(entry[0]),
         open: parseFloat(entry[1]),
         high: parseFloat(entry[2]),
@@ -39,22 +43,22 @@ const BtcDominanceChart = ({ loading, candlesToShow = 30 }) => {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchChartData();
   }, [selectedInterval]);
-  
-  const changeInterval = async (newInterval) => {
+
+  const changeInterval = async newInterval => {
     setSelectedInterval(newInterval);
     setLoading(true);
-  
+
     try {
       setChartData([]);
       await fetchChartData(newInterval);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.error("Failed to change interval: ${error}");
+      console.error('Failed to change interval: ${error}');
     }
   };
 
@@ -71,10 +75,22 @@ const BtcDominanceChart = ({ loading, candlesToShow = 30 }) => {
 
   const domainY = chartData.reduce(
     (acc, dataPoint) => [
-      Math.min(acc[0], dataPoint.open, dataPoint.close, dataPoint.high, dataPoint.low),
-      Math.max(acc[1], dataPoint.open, dataPoint.close, dataPoint.high, dataPoint.low),
+      Math.min(
+        acc[0],
+        dataPoint.open,
+        dataPoint.close,
+        dataPoint.high,
+        dataPoint.low,
+      ),
+      Math.max(
+        acc[1],
+        dataPoint.open,
+        dataPoint.close,
+        dataPoint.high,
+        dataPoint.low,
+      ),
     ],
-    [Infinity, -Infinity]
+    [Infinity, -Infinity],
   );
 
   const domainX = [chartData[0].x, chartData[chartData.length - 1].x];
@@ -83,32 +99,50 @@ const BtcDominanceChart = ({ loading, candlesToShow = 30 }) => {
     <SafeAreaView style={styles.background}>
       <BackButton />
       <Text style={styles.analysisTitle}>BTC Dominance Chart</Text>
-      <TimeframeSelector
-        selectedInterval={selectedInterval}
-        changeInterval={changeInterval}
-      />
+      <View style={styles.timeframeContainer}>
+        <TimeframeSelector
+          selectedInterval={selectedInterval}
+          changeInterval={changeInterval}
+        />
+      </View>
       <View style={styles.container}>
         <View style={styles.chart}>
           <ImageBackground
             source={require('../../../assets/logo_3.png')}
-            style={styles.backgroundImage}
-          ></ImageBackground>
+            style={styles.backgroundImage}></ImageBackground>
 
           <VictoryChart
             width={400}
-            domain={{ x: domainX, y: domainY }}
-            padding={{ top: 10, bottom: 60, left: 30, right: 60 }}
-            domainPadding={{ x: 5, y: 3 }}
-            scale={{ x: 'time', y: 'linear' }}
-            height={300}
-          >
-            <VictoryAxis dependentAxis orientation="right" />
-            <VictoryAxis />
+            domain={{x: domainX, y: domainY}}
+            padding={{top: 10, bottom: 60, left: 30, right: 60}}
+            domainPadding={{x: 5, y: 3}}
+            scale={{x: 'time', y: 'linear'}}
+            height={300}>
+            <VictoryAxis
+              style={{
+                axis: {stroke: theme.chartsColor},
+                tickLabels: {
+                  fontSize: theme.responsiveFontSize * 0.7,
+                  fill: theme.titleColor,
+                },
+              }}
+            />
+            <VictoryAxis
+              dependentAxis
+              style={{
+                axis: {stroke: theme.chartsColor},
+                tickLabels: {
+                  fontSize: theme.responsiveFontSize * 0.825,
+                  fill: theme.titleColor,
+                },
+              }}
+              orientation="right"
+            />
 
             <VictoryCandlestick
               data={chartData}
               candleRatio={0.5}
-              candleColors={{ positive: '#3ADF00', negative: '#FF477C' }}
+              candleColors={{positive: '#3ADF00', negative: '#FF477C'}}
             />
           </VictoryChart>
         </View>
@@ -116,39 +150,5 @@ const BtcDominanceChart = ({ loading, candlesToShow = 30 }) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'top',
-    alignItems: 'top',
-    width: '100%',
-    height: 300,
-  },
-  chart: {
-    marginTop: '15%',
-    width: '100%',
-    height: '90%',
-    margin: '0%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  analysisTitle: {
-    marginTop: '3%',
-    marginLeft: '3%',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  backgroundImage: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    width: 50,
-    height: 50,
-  },
-  background: {
-    flex: 1,
-  },
-});
 
 export default BtcDominanceChart;

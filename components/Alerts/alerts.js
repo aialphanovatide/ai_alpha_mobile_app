@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import useAlertsStyles from './styles';
 import {TopMenuContext} from '../../context/topMenuContext';
-import {getService, postService} from '../../services/aiAlphaApi';
+import {getService} from '../../services/aiAlphaApi';
 import AlertDetails from './AlertsDetails';
 import Loader from '../Loader/Loader';
 import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
@@ -55,6 +55,9 @@ const Alerts = ({route, navigation}) => {
   const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
   const {updateActiveSubCoin, activeCoin, activeSubCoin} =
     useContext(TopMenuContext);
+  const styles = useAlertsStyles();
+  const [alerts, setAlerts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (route.params) {
@@ -82,10 +85,6 @@ const Alerts = ({route, navigation}) => {
     setSubscribed(hasCoinSubscription);
   }, [activeCoin, userInfo]);
 
-  const styles = useAlertsStyles();
-  const [alerts, setAlerts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
@@ -95,11 +94,12 @@ const Alerts = ({route, navigation}) => {
         const response = await getService(
           `/api/filter/alerts?coin=${botName}&date=${activeAlertOption}`,
         );
+
         if (
-          !response.ok ||
+          response.length === 0 ||
           (response.message &&
             response.message.startsWith('No alerts found')) ||
-          response.length === 0
+          response.alerts.length === 0
         ) {
           setAlerts([]);
         } else {

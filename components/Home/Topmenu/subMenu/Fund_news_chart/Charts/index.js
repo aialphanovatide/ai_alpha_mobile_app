@@ -11,6 +11,7 @@ import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
 import useChartsStyles from './ChartsStyles';
 import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
+import {getService} from '../../../../../../services/aiAlphaApi';
 
 const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
@@ -55,6 +56,37 @@ const CandlestickChart = ({route}) => {
       setLoading(false);
     }
   }
+
+  async function getSupportAndResistanceData(botName) {
+    try {
+      const supportValues = [];
+      const resistanceValues = [];
+      const data = await getService(`/api/coin-support-resistance/${botName}`);
+      if (data.success) {
+        const values = data.chart_values;
+        for (const key in values) {
+          console.log('Current value:', key);
+          if (key.includes('support')) {
+            supportValues.push(values[key]);
+          } else {
+            resistanceValues.push(values[key]);
+          }
+        }
+      }
+      return {supportValues, resistanceValues};
+    } catch (error) {
+      console.error(
+        'Error fetching support and resistance data: ',
+        error);
+    }
+  }
+
+  useEffect(() => {
+    const {supportValues, resistanceValues} =
+      getSupportAndResistanceData(coinBot);
+    setResistanceLevels(resistanceValues);
+    setSupportLevels(supportValues);
+  }, [activeButtons]);
 
   useEffect(() => {
     const intervalId = setInterval(fetchChartData, 2000);

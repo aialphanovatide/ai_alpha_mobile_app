@@ -8,7 +8,6 @@ import {
   Button,
   SafeAreaView,
 } from 'react-native';
-import {ENTITLEMENT_ID} from '../../src/constants';
 import Purchases from 'react-native-purchases';
 import {useNavigation} from '@react-navigation/core';
 import {useUser} from '../../context/UserContext';
@@ -84,14 +83,14 @@ const Account = ({route}) => {
       component: <ThemeButton />,
     },
     {
-      name: 'Log Out',
-      logo: require('../../assets/images/account/logout.png'),
+      name: 'Delete Account',
+      logo: require('../../assets/images/account/deleteacc.png'),
       screenName: null,
       component: null,
     },
     {
-      name: 'Delete Account',
-      logo: require('../../assets/images/account/deleteacc.png'),
+      name: 'Log Out',
+      logo: require('../../assets/images/account/logout.png'),
       screenName: null,
       component: null,
     },
@@ -291,8 +290,8 @@ async function Buy_now() {
 
   return (
     <SafeAreaView style={styles.backgroundColor}>
-    <ScrollView style={styles.backgroundColor}>
-      <View style={styles.container}>
+      <ScrollView style={styles.backgroundColor}>
+        <View style={styles.container}>
           <View style={styles.alphaLogoContainer}>
             <Image
               source={require('../../assets/images/account/alphalogo.png')}
@@ -303,12 +302,12 @@ async function Buy_now() {
           <Text style={styles.username}>
             {userEmail || 'User not available'}
           </Text>
-          <Text style={styles.headline}>User Subscriptions</Text>
+          {/* <Text style={styles.headline}>User Subscriptions</Text>
           <Text style={styles.text}>
             {userInfo.entitlements.length > 0
               ? formatUserEntitlements(userInfo.entitlements)
               : 'There are no active subscriptions.'}
-          </Text>
+          </Text> */}
           <View style={styles.optionsContainer}>
             {options &&
               options.map((option, index) => (

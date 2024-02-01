@@ -8,12 +8,13 @@ const useEthBtcStyles = () => {
     background: {
       flex: 1,
       backgroundColor: theme.mainBackgroundColor,
-      padding: 15,
+      width: theme.width,
+      padding: 10,
     },
     container: {
       width: '100%',
       height: 400,
-      marginVertical: '10%',
+      marginVertical: theme.boxesVerticalMargin,
       justifyContent: 'top',
       alignItems: 'top',
       backgroundColor: theme.boxesBackgroundColor,
@@ -27,8 +28,7 @@ const useEthBtcStyles = () => {
       position: 'relative',
     },
     analysisTitle: {
-      marginTop: '3%',
-      marginLeft: '3%',
+      marginVertical: theme.titlesVerticalMargin,
       fontSize: theme.titleFontSize,
       color: theme.titleColor,
       fontWeight: 'bold',
@@ -39,6 +39,11 @@ const useEthBtcStyles = () => {
       position: 'absolute',
       width: 50,
       height: 50,
+    },
+    timeframeContainer: {
+      flex: 1,
+      width: '100%',
+      maxHeight: '5%',
     },
   });
   return styles;

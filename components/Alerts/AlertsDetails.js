@@ -23,7 +23,7 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     <View style={styles.itemsContainer}>
       <View style={styles.leftContent}>
         <Text style={styles.itemsTitle}>{`${leftText}`}</Text>
-        <Text style={{...styles.itemsTitle, ...timeframeStyle}}>
+        <Text style={{...styles.itemsTitle, ...timeframeStyle}} numberOfLines={2}>
           {`${word}`}
         </Text>
         <Text style={styles.subtitle}>{message}</Text>
