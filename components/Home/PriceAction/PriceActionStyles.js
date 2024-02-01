@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const usePriceActionStyles = () => {
@@ -8,7 +8,6 @@ const usePriceActionStyles = () => {
 
   const styles = StyleSheet.create({
     priceActionContainer: {
-      height: 'auto',
       width: theme.width,
       marginVertical: 15,
       paddingBottom: 30,
@@ -23,7 +22,8 @@ const usePriceActionStyles = () => {
       fontWeight: 'bold',
     },
     tableContainer: {
-      height: 500,
+      flex:1,
+      height: theme.height * 0.3,
       marginVertical: 10,
       backgroundColor: theme.boxesBackgroundColor,
       borderColor: theme.boxesBorderColor,
@@ -69,6 +69,10 @@ const usePriceActionStyles = () => {
       borderBottomWidth: 1,
       borderBottomColor: theme.boxesBorderColor,
     },
+    borderless: {
+      borderBottomWidth: 0,
+      borderBottomColor: 'transparent',
+    },
     dataCell: {
       flex: 1,
       padding: 5,
@@ -88,7 +92,7 @@ const usePriceActionStyles = () => {
       display: 'none',
     },
     categoriesContainer: {
-      height: '15%',
+      flex:1,
       backgroundColor: theme.boxesBackgroundColor,
       overflow: 'hidden',
       borderWidth: 1,
@@ -98,40 +102,41 @@ const usePriceActionStyles = () => {
       marginHorizontal: 10,
       color: theme.secondaryTextColor,
     },
-    active: {
-      backgroundColor: theme.subMenuBgColor,
-    },
-    activeText: {
-      fontWeight: 'bold',
-      color: theme.textColor,
-    },
-    categoriesTitle: {
-      flex: 1,
-      paddingTop: 5,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize * 0.9,
-      color: theme.textColor,
-      textAlign: 'center',
-      borderBottomWidth: 1,
-      borderBottomColor: theme.boxesBorderColor,
-    },
     row: {
       flexDirection: 'row',
     },
     emptyMessage: {
-      marginHorizontal: '5%',
-      padding: 10,
-      fontSize: theme.responsiveFontSize,
-      color: theme.textColor,
-      borderWidth: 1,
-      borderColor: theme.textColor,
-      borderRadius: 10,
+      margin: '5%',
+      fontSize: theme.responsiveFontSize * 0.85,
+      color: theme.secondaryTextColor,
+      fontStyle: 'italic',
+      fontWeight: 'bold',
       overflow: 'hidden',
       textAlign: 'center',
     },
     alignCenter: {
       alignSelf: 'center',
     },
+    categoryIconContainer: {
+      width: 30,
+      height: 30,
+      justifyContent: 'center',
+      alignItems: 'center',
+      overflow: 'hidden',
+      borderRadius: 15,
+      backgroundColor: theme.topMenuActiveBg,
+    },
+    categoryIcon: {
+      flex: 1,
+    },
+    categoryWrapper: {
+      flex: 1,
+      marginHorizontal: 5,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    menuBg: {
+    }
   });
   return styles;
 };

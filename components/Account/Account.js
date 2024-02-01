@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  SafeAreaView,
 } from 'react-native';
 import {ENTITLEMENT_ID} from '../../src/constants';
 import Purchases from 'react-native-purchases';
@@ -289,9 +290,9 @@ async function Buy_now() {
   };
 
   return (
+    <SafeAreaView style={styles.backgroundColor}>
     <ScrollView style={styles.backgroundColor}>
       <View style={styles.container}>
-
           <View style={styles.alphaLogoContainer}>
             <Image
               source={require('../../assets/images/account/alphalogo.png')}

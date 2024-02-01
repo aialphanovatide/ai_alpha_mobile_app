@@ -60,6 +60,7 @@ export const lightThemeStyles = {
   loginInputBgColor: '#5F6567',
   inputColor: '#F7F7F7',
   topMenuActiveBg: '#F9F9F933',
+  activeSRButtonColor: '#F7F7F7',
   boxesVerticalMargin: 8,
   titlesVerticalMargin: 24,
 };
@@ -122,6 +123,7 @@ export const darkThemeStyles = {
   loginInputBgColor: '#FFFFFF',
   inputColor: '#242427',
   topMenuActiveBg: '#E9E9E933',
+  activeSRButtonColor: '#F7F7F7',
   boxesVerticalMargin: 8,
   titlesVerticalMargin: 24,
 };

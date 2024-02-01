@@ -16,16 +16,14 @@ import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
-import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
-import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
+import BackButton from '../../../../../Analysis/BackButton/BackButton';
 
 const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
   const [news, setNews] = useState([]);
   const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
-  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
-  const [subscribed, setSubscribed] = useState(false);
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin.bot_name,
   );
@@ -61,7 +59,13 @@ const NewsComponent = ({route}) => {
   const onPress = item => {
     navigation.navigate('NewsArticle', {
       item: item,
+      isStory: false,
     });
+  };
+
+  const handleFilterPress = option => {
+    setActiveButtons(option);
+    setActiveFilter(option);
   };
 
   useEffect(() => {
@@ -77,37 +81,30 @@ const NewsComponent = ({route}) => {
 
   useEffect(() => {
     setNews([]);
-    const fetchNews = async () => {
-      try {
-        const endpoint = activeFilter
-          ? `/api/get/news?coin=${botname}&time_range=${activeFilter.toLowerCase()}`
-          : `/api/get/news?coin=${botname}`;
-        const response = await getService(endpoint);
-        if (
-          response.message &&
-          response.message.startsWith('No articles found')
-        ) {
-          setNews([]);
-        } else {
-          const articles = response.articles.slice(0, 4);
-          setNews(articles);
-        }
-      } catch (error) {
-        console.error('Error fetching news:', error.message);
-      }
-    };
+    setLoading(false);
+    // const fetchNews = async () => {
+    //   try {
+    //     const endpoint = activeFilter
+    //       ? `/api/get/news?coin=${botname}&time_range=${activeFilter.toLowerCase()}`
+    //       : `/api/get/news?coin=${botname}`;
+    //     const response = await getService(endpoint);
+    //     if (
+    //       (response.message &&
+    //         response.message.startsWith('No articles found')) ||
+    //       response.error
+    //     ) {
+    //       setNews([]);
+    //     } else {
+    //       const articles = response.articles.slice(0, 4);
+    //       setNews(articles);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error fetching news:', error.message);
+    //   }
+    // };
 
-    fetchNews();
-  }, [botname]);
-
-  // This useEffect handles the content regulation
-  useEffect(() => {
-    const hasCoinSubscription = findCategoryInIdentifiers(
-      activeCoin.category_name,
-      userInfo.entitlements,
-    );
-    setSubscribed(hasCoinSubscription);
-  }, [activeCoin, userInfo]);
+    // fetchNews();
+  }, [botname, activeFilter]);
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
@@ -132,14 +129,24 @@ const NewsComponent = ({route}) => {
           </TouchableOpacity>
         ))}
       </View>
-      <FlatList
-        data={news}
-        ListEmptyComponent={<Loader />}
-        keyExtractor={item => item.article_id}
-        renderItem={({item}) => (
-          <NewsItem item={item} onPress={onPress} filterText={filterText} />
-        )}
-      />
+      {loading ? (
+        <Loader />
+      ) : (
+        <FlatList
+          data={news}
+          ListEmptyComponent={
+            <View style={styles.emptyMessageContainer}>
+              <Text style={styles.emptyMessage}>
+                There are no News yet. Stay tuned!
+              </Text>
+            </View>
+          }
+          keyExtractor={item => item.article_id}
+          renderItem={({item}) => (
+            <NewsItem item={item} onPress={onPress} filterText={filterText} />
+          )}
+        />
+      )}
     </SafeAreaView>
   );
 };

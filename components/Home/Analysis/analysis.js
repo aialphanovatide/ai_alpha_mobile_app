@@ -3,19 +3,11 @@ import {List} from 'react-native-paper';
 import AnalysisItem from './analysisItem/analysisItem';
 import useHomeAnalysisStyles from './analysisStyles';
 import {Image} from 'react-native';
-import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import {useNavigation} from '@react-navigation/core';
-
+import {analysis_mock} from './analysis_mock';
 const Analysis = () => {
   const styles = useHomeAnalysisStyles();
   const [expanded, setExpanded] = React.useState(false);
-  // const [overlayVisible, setOverlayVisible] = React.useState(true);
-  // const navigation = useNavigation();
-
-  // const handleOverlayClose = () => {
-  //   navigation.navigate('Account');
-  //   setOverlayVisible(false);
-  // };
 
   const handlePress = () => setExpanded(!expanded);
 
@@ -26,8 +18,7 @@ const Analysis = () => {
         'Navigating the Complexities: An In-Depth Analysis of Urban Development Strategies',
       description:
         'In this comprehensive analysis, we delve into the intricate dynamics of urban development strategies, exploring the multifaceted approaches employed by diverse cities around the globe. Our examination encompasses a wide array of factors, from economic considerations and infrastructure planning to social inclusivity and environmental sustainability.',
-      image:
-        'https://cdn4.vectorstock.com/i/1000x1000/56/73/data-analysis-concept-vector-25125673.jpg',
+      imageBase64: analysis_mock,
     },
     {
       id: 2,
@@ -35,8 +26,7 @@ const Analysis = () => {
         'Navigating the Complexities: An In-Depth Analysis of Urban Development Strategies',
       description:
         'In this comprehensive analysis, we delve into the intricate dynamics of urban development strategies, exploring the multifaceted approaches employed by diverse cities around the globe. Our examination encompasses a wide array of factors, from economic considerations and infrastructure planning to social inclusivity and environmental sustainability.',
-      image:
-        'https://cdn4.vectorstock.com/i/1000x1000/56/73/data-analysis-concept-vector-25125673.jpg',
+      imageBase64: analysis_mock,
     },
     {
       id: 3,
@@ -44,21 +34,24 @@ const Analysis = () => {
         'Navigating the Complexities: An In-Depth Analysis of Urban Development Strategies',
       description:
         'In this comprehensive analysis, we delve into the intricate dynamics of urban development strategies, exploring the multifaceted approaches employed by diverse cities around the globe. Our examination encompasses a wide array of factors, from economic considerations and infrastructure planning to social inclusivity and environmental sustainability.',
-      image:
-        'https://cdn4.vectorstock.com/i/1000x1000/56/73/data-analysis-concept-vector-25125673.jpg',
+      imageBase64: analysis_mock,
     },
   ];
 
   return (
-    <List.Section title="Analyses" titleStyle={styles.mainTitle}>
+    <List.Section title="Analysis" titleStyle={styles.mainTitle}>
       <List.Accordion
         style={styles.item}
         titleStyle={styles.titleStyles}
         title={stories[0].title}
-        description={stories[0].description}
-        descriptionStyle={styles.description}
+        titleNumberOfLines={2}
+        // description={stories[0].description}
+        // descriptionStyle={styles.description}
         left={() => (
-          <Image source={{uri: stories[0].image}} style={styles.imageStyle} />
+          <Image
+            source={{uri: `data:image/png;base64,${analysis_mock}`}}
+            style={styles.imageStyle}
+          />
         )}
         right={() => (
           <Image
@@ -78,7 +71,7 @@ const Analysis = () => {
             key={story.id}
             title={story.title}
             description={story.description}
-            image={story.image}
+            imageBase64={story.imageBase64}
           />
         ))}
       </List.Accordion>

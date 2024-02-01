@@ -39,11 +39,11 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   }, [timeframe, botName]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.alertListContainer}>
       {isLoading ? (
         <Loader />
       ) : alerts.length === 0 ? (
-        <Text style={styles.alertsTextMessage}>No alerts</Text>
+        <Text style={styles.alertsTextMessage}>No alerts yet. Stay tuned for important updates!</Text>
       ) : (
         alerts.map(alert => (
           <AlertDetails
