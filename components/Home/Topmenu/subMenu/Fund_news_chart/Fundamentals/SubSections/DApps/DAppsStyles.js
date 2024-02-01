@@ -8,25 +8,21 @@ const useDappsStyles = () => {
     itemContainer: {
       flex: 1,
       flexDirection: 'row',
-      margin: 2.5,
-      padding: 2.5,
-      backgroundColor: theme.thirdBoxesBgColor,
     },
     logoContainer: {
       width: 50,
-      height: 50,
-      justifyContent: 'center',
+      height: 65,
+      justifyContent: 'flex-start',
       alignItems: 'center',
-      overflow: 'hidden',
-      borderRadius: 5,
-      backgroundColor: theme.boxesBackgroundColor,
-      margin: 5,
+      overflow: 'visible',
+      marginHorizontal: 4,
     },
     logo: {
       flex: 1,
+      marginBottom: '20%',
     },
     disabled: {
-      tintColor: theme.thirdBoxesBgColor,
+      tintColor: theme.dAppsInactiveItem,
     },
     mainImageContainer: {
       height: 300,

@@ -23,6 +23,13 @@ const useHomeAnalysisStyles = () => {
       marginLeft: 10,
     },
     item: {
+      width: theme.width,
+      backgroundColor: theme.boxesBackgroundColor,
+      overflow: 'hidden',
+      alignSelf: 'center',
+    },
+    itemPreview: {
+      flex: 1,
       backgroundColor: theme.boxesBackgroundColor,
     },
     description: {

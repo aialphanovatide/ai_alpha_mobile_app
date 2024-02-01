@@ -10,6 +10,8 @@ import NewsComponent from './Topmenu/subMenu/Fund_news_chart/News/NewsComponent.
 import {TopMenuContext} from '../../context/topMenuContext';
 import NewsArticle from './Topmenu/subMenu/Fund_news_chart/News/NewsArticle';
 import {AppThemeContext} from '../../context/themeContext';
+import {Animated, TouchableOpacity, View} from 'react-native';
+import useHomeStyles from './HomeStyles';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -33,6 +35,58 @@ const NewsScreen = () => {
   );
 };
 
+const FundNewsChartsMenu = ({state, descriptors, navigation, position}) => {
+  const styles = useHomeStyles();
+
+  return (
+    <View style={styles.menuContainer}>
+      {state.routes.map((route, index) => {
+        const {options} = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name, route.params);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key,
+          });
+        };
+
+        return (
+          <TouchableOpacity
+            key={index}
+            style={[styles.menuItem, isFocused && styles.activeItem]}
+            onPress={onPress}
+            onLongPress={onLongPress}>
+            <Animated.Text
+              style={[styles.menuItemText, isFocused && styles.activeText]}>
+              {label}
+            </Animated.Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+};
+
 const SubMenuScreen = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
   const {theme} = useContext(AppThemeContext);
@@ -40,31 +94,10 @@ const SubMenuScreen = () => {
     <SubMenuStack.Navigator
       initialRouteName="Charts"
       backBehavior={'none'}
-      style={{backgroundColor: theme.mainBackgroundColor}}
       screenOptions={{
         swipeEnabled: false,
-        tabBarShowLabel: true,
-        tabBarShowIcon: false,
-        tabBarLabelStyle: {
-          fontSize: theme.responsiveFontSize * 0.75,
-          fontWeight: 'bold',
-          color: theme.subMenuTextColor,
-        },
-        tabBarStyle: {
-          height: '8%',
-          marginVertical: 2.5,
-          marginHorizontal: 5,
-          backgroundColor: theme.subMenuBgColor,
-          borderRadius: 5,
-        },
-        tabBarIndicatorStyle: {
-          backgroundColor: '#42444550',
-          height: '100%',
-        },
-        tabBarGap: 5,
-        tabBarPressColor: 'transparent',
-        tabBarActiveTintColor: '#959BB260',
-      }}>
+      }}
+      tabBar={props => <FundNewsChartsMenu {...props} />}>
       <SubMenuStack.Screen name="Fundamentals" component={Fundamentals} />
       <SubMenuStack.Screen
         name="Charts"
@@ -84,8 +117,6 @@ const TopmenuScreen = () => {
   const {activeSubCoin, activeCoin} = useContext(TopMenuContext);
   const [forceUpdate, setForceUpdate] = useState(false);
   const {theme} = useContext(AppThemeContext);
-
-  console.log('Active coin: ', activeCoin);
 
   useEffect(() => {
     setForceUpdate(prevState => !prevState);

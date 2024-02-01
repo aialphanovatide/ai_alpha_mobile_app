@@ -10,6 +10,40 @@ const useHomeStyles = () => {
     container: {
       backgroundColor: theme.mainBackgroundColor,
     },
+    marginWrapper: {
+      flex: 1,
+      marginVertical: theme.boxesMarginVertical,
+      backgroundColor: theme.mainBackgroundColor,
+    },
+    menuContainer: {
+      alignSelf: 'center',
+      display: 'flex',
+      flexDirection: 'row',
+      backgroundColor: theme.subMenuBgColor,
+    },
+    menuItem: {
+      width: '33.33%',
+      backgroundColor: theme.subMenuBgColor,
+      borderRadius: 6,
+      overflow: 'hidden',
+    },
+    menuItemText: {
+      marginVertical: 4,
+      textAlign: 'center',
+      fontSize: theme.responsiveFontSize * 0.825,
+      color: theme.subMenuTextColor,
+      fontWeight: 'bold',
+    },
+    activeItem: {
+      backgroundColor: theme.activeWhite,
+      borderColor: theme.subMenuBgColor,
+      borderWidth: 2,
+      borderRadius: 5,
+    },
+    activeText: {
+      fontWeight: 'bold',
+      color: theme.filterTextColor,
+    },
   });
   return styles;
 };

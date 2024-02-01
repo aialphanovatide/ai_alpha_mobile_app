@@ -7,7 +7,6 @@ const TimeframeSelector = ({selectedInterval, changeInterval}) => {
   const styles = useChartsStyles();
   return (
     <View style={styles.timeFrameContainer}>
-      <View style={styles.timeFrameSubContainer}>
         {timeframes.map(interval => (
           <TouchableOpacity
             key={interval}
@@ -27,7 +26,6 @@ const TimeframeSelector = ({selectedInterval, changeInterval}) => {
             </Text>
           </TouchableOpacity>
         ))}
-      </View>
     </View>
   );
 };

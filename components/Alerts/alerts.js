@@ -96,8 +96,10 @@ const Alerts = ({route, navigation}) => {
           `/api/filter/alerts?coin=${botName}&date=${activeAlertOption}`,
         );
         if (
-          response.message &&
-          response.message.startsWith('No alerts found')
+          !response.ok ||
+          (response.message &&
+            response.message.startsWith('No alerts found')) ||
+          response.length === 0
         ) {
           setAlerts([]);
         } else {

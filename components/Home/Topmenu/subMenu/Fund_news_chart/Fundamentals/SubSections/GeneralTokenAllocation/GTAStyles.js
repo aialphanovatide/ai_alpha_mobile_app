@@ -24,19 +24,28 @@ const useGTAStyles = () => {
     },
     strong: {
       fontWeight: 'bold',
+      alignSelf: 'center',
     },
     circleDataContainer: {
       padding: 10,
       marginVertical: 20,
     },
     currentTokenPercentage: {
-      padding: 10,
+      position: 'absolute',
+      top: '35%',
+      left: '40%',
       textAlign: 'center',
-      fontSize: theme.titleFontSize,
+      fontSize: theme.titleFontSize * 1.35,
       fontWeight: 'bold',
     },
     displayNone: {
       display: 'none',
+    },
+    flex: {
+      position: 'relative',
+      flex: 1,
+      flexDirection: 'column',
+      alignItems: 'center',
     },
   });
   return styles;

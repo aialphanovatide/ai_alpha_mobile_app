@@ -20,6 +20,7 @@ const DollarGraphs = ({value, color, styles}) => {
                 ? require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar-dark.png')
                 : require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar.png')
             }
+            resizeMode="contain"
           />
           <View style={[styles.overlay, {backgroundColor: color}]}></View>
         </View>,
@@ -35,11 +36,11 @@ const DollarGraphs = ({value, color, styles}) => {
                 ? require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar-dark.png')
                 : require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar.png')
             }
+            resizeMode="contain"
           />
           <View
             style={[
               styles.overlay,
-              ,
               {
                 height: 80 * decimalValue,
                 backgroundColor: color,
@@ -58,6 +59,7 @@ const DollarGraphs = ({value, color, styles}) => {
             ? require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar-dark.png')
             : require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar.png')
         }
+        resizeMode="contain"
       />,
     );
   }

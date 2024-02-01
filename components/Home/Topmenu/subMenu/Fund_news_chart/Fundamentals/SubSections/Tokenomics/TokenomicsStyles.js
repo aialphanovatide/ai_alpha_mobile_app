@@ -8,12 +8,17 @@ const useTokenomicsStyles = () => {
   const styles = StyleSheet.create({
     progressBarContainer: {
       height: 25,
-      width: '80%',
-      backgroundColor: theme.secondaryBoxesBgColor,
-      borderRadius: 5,
+      width: '100%',
+      backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 2,
       overflow: 'hidden',
       marginVertical: 10,
       justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: theme.secondaryTextColor,
+    },
+    progressBarWrapper: {
+      flex: 1,
     },
     progressBar: {
       height: '100%',
@@ -21,24 +26,33 @@ const useTokenomicsStyles = () => {
     },
     progressBarValue: {
       position: 'absolute',
-      textAlign: 'center',
-      width: '100%',
-      lineHeight: 30,
-      color: theme.textColor,
-      fontWeight: 'bold',
+      left: 0,
+      top: 0,
+      textAlign: 'left',
+      color: theme.orange,
+    },
+    progressBarMaxValue: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      textAlign: 'right',
+      color: theme.inactiveColor,
+    },
+    infinityBar: {
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
     },
     // Tokenomics styles
     tokenItemsContainer: {
-      backgroundColor: theme.boxesBackgroundColor,
     },
     tokenItem: {
       paddingHorizontal: 10,
       paddingVertical: 5,
-      marginVertical: 5,
+      marginVertical: theme.boxesVerticalMargin,
       borderRadius: 5,
+      backgroundColor: theme.boxesBackgroundColor,
     },
     tokenRow: {
-      marginVertical: 2.5,
       flexDirection: 'row',
     },
     numberTitles: {
@@ -48,7 +62,8 @@ const useTokenomicsStyles = () => {
       justifyContent: 'space-between',
     },
     alignRight: {
-      right: 5,
+      right: 10,
+      color: theme.inactiveColor,
     },
     alignLeft: {
       left: 70,
@@ -62,10 +77,17 @@ const useTokenomicsStyles = () => {
       color: theme.textColor,
       textAlign: 'center',
       verticalAlign: 'middle',
+      alignSelf: 'flex-end',
     },
     text: {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.925,
+      marginLeft: 8,
+    },
+    row: {
+      position: 'relative',
+      marginBottom: 15,
+      flexDirection: 'row',
     },
   });
   return styles;

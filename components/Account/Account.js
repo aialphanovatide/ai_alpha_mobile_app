@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  SafeAreaView,
 } from 'react-native';
 import {ENTITLEMENT_ID} from '../../src/constants';
 import Purchases from 'react-native-purchases';
@@ -17,7 +18,12 @@ import ThemeButton from '../ThemeButton/ThemeButton';
 import {API_KEY} from '../../src/constants';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
 
-const AccountItem = ({styles, option, handleItemTouch}) => {
+const AccountItem = ({
+  styles,
+  option,
+  handleItemTouch,
+  itemComponent = null,
+}) => {
   return (
     <TouchableOpacity onPress={() => handleItemTouch(option)}>
       <View style={styles.itemContainer}>
@@ -29,13 +35,17 @@ const AccountItem = ({styles, option, handleItemTouch}) => {
           />
         </View>
         <Text style={styles.itemName}>{option.name}</Text>
-        <View style={styles.rightArrowContainer}>
-          <Image
-            style={styles.rightArrow}
-            source={require('../../assets/images/analysis/right-arrow.png')}
-            resizeMode={'contain'}
-          />
-        </View>
+        {itemComponent !== null ? (
+          itemComponent
+        ) : (
+          <View style={styles.rightArrowContainer}>
+            <Image
+              style={styles.rightArrow}
+              source={require('../../assets/images/analysis/right-arrow.png')}
+              resizeMode={'contain'}
+            />
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -59,21 +69,31 @@ const Account = ({route}) => {
       name: 'Subscriptions',
       logo: require('../../assets/images/account/subscription.png'),
       screenName: 'Subscriptions',
-    },
-    {
-      name: 'Delete Account',
-      logo: require('../../assets/images/account/deleteacc.png'),
-      screenName: null,
+      component: null,
     },
     {
       name: 'Privacy Policy',
       logo: require('../../assets/images/account/informationicon.png'),
       screenName: null,
+      component: null,
+    },
+    {
+      name: 'Dark Mode',
+      logo: require('../../assets/images/account/darkmode.png'),
+      screenName: null,
+      component: <ThemeButton />,
     },
     {
       name: 'Log Out',
       logo: require('../../assets/images/account/logout.png'),
       screenName: null,
+      component: null,
+    },
+    {
+      name: 'Delete Account',
+      logo: require('../../assets/images/account/deleteacc.png'),
+      screenName: null,
+      component: null,
     },
   ];
 
@@ -270,12 +290,12 @@ async function Buy_now() {
   };
 
   return (
+    <SafeAreaView style={styles.backgroundColor}>
     <ScrollView style={styles.backgroundColor}>
       <View style={styles.container}>
-
           <View style={styles.alphaLogoContainer}>
             <Image
-              source={require('../../assets/images/account/logoWithText.png')}
+              source={require('../../assets/images/account/alphalogo.png')}
               resizeMode="contain"
               style={styles.image}
             />
@@ -284,27 +304,27 @@ async function Buy_now() {
             {/*{userEmail || 'User not available'}*/}
             {userEmail || ' '}
           </Text>
-
-        <Text style={styles.headline}>User Subscriptions</Text>
-        <Text style={styles.text}>
-          {userInfo.entitlements.length > 0
-            ? formatUserEntitlements(userInfo.entitlements)
-            : 'There are no active subscriptions.'}
-        </Text>
-        <View style={styles.optionsContainer}>
-          {options &&
-            options.map((option, index) => (
-              <AccountItem
-                key={index}
-                option={option}
-                styles={styles}
-                handleItemTouch={handleItemTouch}
-              />
-            ))}
-          <ThemeButton />
+          <Text style={styles.headline}>User Subscriptions</Text>
+          <Text style={styles.text}>
+            {userInfo.entitlements.length > 0
+              ? formatUserEntitlements(userInfo.entitlements)
+              : 'There are no active subscriptions.'}
+          </Text>
+          <View style={styles.optionsContainer}>
+            {options &&
+              options.map((option, index) => (
+                <AccountItem
+                  key={index}
+                  option={option}
+                  styles={styles}
+                  handleItemTouch={handleItemTouch}
+                  itemComponent={option.component && option.component}
+                />
+              ))}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

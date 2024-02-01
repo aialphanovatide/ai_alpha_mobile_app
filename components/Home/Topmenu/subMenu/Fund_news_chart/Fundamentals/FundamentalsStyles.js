@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 
 const useFundamentalsStyles = () => {
@@ -13,26 +13,30 @@ const useFundamentalsStyles = () => {
       backgroundColor: theme.mainBackgroundColor,
     },
     title: {
-      margin: 10,
+      margin: theme.titlesVerticalMargin,
       fontWeight: 'bold',
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
     },
     subTitle: {
-      margin: 10,
+      margin: theme.boxesVerticalMargin,
       color: theme.titleColor,
       fontWeight: 'bold',
       fontSize: theme.responsiveFontSize,
     },
     subSectionContent: {
       flex: 1,
-      marginBottom: 20,
+      marginVertical: theme.boxesVerticalMargin,
       padding: 10,
-      backgroundColor: theme.boxesBackgroundColor,
+      backgroundColor: theme.secondaryBgColor,
       borderRadius: 5,
     },
     backgroundColor: {
       backgroundColor: theme.mainBackgroundColor,
+    },
+    subSection: {
+      flex: 1,
+      marginVertical: theme.boxesVerticalMargin,
     },
   });
   return styles;

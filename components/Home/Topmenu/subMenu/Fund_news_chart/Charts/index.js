@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';
 import CandlestickDetails from './candleDetails';
@@ -90,22 +90,23 @@ const CandlestickChart = ({route}) => {
       // keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={true}>
       <CandlestickDetails coin={symbol} lastPrice={lastPrice} styles={styles} />
-      <TimeframeSelector
-        selectedInterval={selectedInterval}
-        changeInterval={changeInterval}
-        styles={styles}
-      />
-      <RsButton
-        activeButtons={activeButtons}
-        setActiveButtons={setActiveButtons}
-      />
-      <Chart
-        chartData={chartData}
-        supportLevels={supportLevels}
-        loading={loading}
-        activeButtons={activeButtons}
-        resistanceLevels={resistanceLevels}
-      />
+      <View style={styles.chartsWrapper}>
+        <TimeframeSelector
+          selectedInterval={selectedInterval}
+          changeInterval={changeInterval}
+        />
+        <RsButton
+          activeButtons={activeButtons}
+          setActiveButtons={setActiveButtons}
+        />
+        <Chart
+          chartData={chartData}
+          supportLevels={supportLevels}
+          loading={loading}
+          activeButtons={activeButtons}
+          resistanceLevels={resistanceLevels}
+        />
+      </View>
 
       <AlertMenu
         activeAlertOption={activeAlertOption}

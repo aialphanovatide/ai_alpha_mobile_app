@@ -1,10 +1,14 @@
 import {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useTopStoriesStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
+    background: {
+      width: '100%',
+      backgroundColor: theme.mainBackgroundColor,
+    },
     mainTitle: {
       fontWeight: 'bold',
       color: theme.titleColor,
@@ -23,7 +27,12 @@ const useTopStoriesStyles = () => {
       marginLeft: 10,
     },
     storyItem: {
+      flex: 1,
+      width: theme.width,
       backgroundColor: theme.boxesBackgroundColor,
+      alignSelf: 'center',
+      borderBottomColor: theme.boxesBorderColor,
+      borderBottomWidth: 1,
     },
     description: {
       color: theme.textColor,
@@ -35,15 +44,12 @@ const useTopStoriesStyles = () => {
       tintColor: theme.textColor,
     },
     emptyMessage: {
-      margin: '10%',
-      padding: '5%',
-      fontSize: theme.titleFontSize,
-      color: theme.titleColor,
-      borderRadius: 10,
+      margin: theme.boxesVerticalMargin,
+      fontSize: theme.responsiveFontSize,
+      color: theme.secondaryTextColor,
       alignSelf: 'center',
-      borderColor: theme.textColor,
-      borderWidth: 2,
       fontWeight: 'bold',
+      fontStyle: 'italic',
     },
   });
   return styles;

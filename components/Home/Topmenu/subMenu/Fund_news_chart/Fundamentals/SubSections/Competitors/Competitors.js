@@ -1,4 +1,11 @@
-import {Text, View, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  ImageBackground,
+} from 'react-native';
 import React, {useContext, useState} from 'react';
 import TypeOfToken from './CompetitorSections/TypeOfToken/TypeOfToken';
 import CompetitorSection from './CompetitorSections/CompetitorSection';
@@ -19,7 +26,15 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
   const {theme} = useContext(AppThemeContext);
   return (
     <TouchableOpacity onPress={() => handleOptionChange(item)}>
-      <View style={styles.menuItemContainer}>
+      <ImageBackground
+        source={
+          activeOption.name === item.name
+            ? require('../../../../../../../../assets/images/fundamentals/competitors/competitors-active-item.png')
+            : require('../../../../../../../../assets/images/fundamentals/competitors/competitors-inactive-item.png')
+        }
+        style={styles.menuItemContainer}
+        resizeMode="contain"
+        tintColor={theme.secondaryBoxesBgColor}>
         <View style={styles.iconContainer}>
           <Image
             style={[
@@ -37,7 +52,7 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
           ]}>
           {item.name}
         </Text>
-      </View>
+      </ImageBackground>
     </TouchableOpacity>
   );
 };
@@ -49,7 +64,7 @@ const CompetitorsMenu = ({
   styles,
 }) => {
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} bounces={false}>
       <View style={styles.menuContainer}>
         {options.map((item, index) => (
           <MenuItem

@@ -7,12 +7,10 @@ const useTransactionFeeStyles = () => {
   const styles = StyleSheet.create({
     imageContainer: {
       position: 'relative',
-      width: theme.width * 0.6,
-      height: 80,
-      margin: 10,
+      height: 100,
+      margin: theme.boxesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.graphSecondaryColor
     },
     dollarImage: {
       flex: 1,
@@ -43,10 +41,10 @@ const useTransactionFeeStyles = () => {
     overlay: {
       position: 'absolute',
       top: 0,
-      left: -5,
-      right: 0,
-      bottom: 0,
-      width: '104%',
+      left: '2.45%',
+      right: '2.45%',
+      bottom: '4.9%',
+      height: '100%',
       opacity: 0.5,
     },
   });

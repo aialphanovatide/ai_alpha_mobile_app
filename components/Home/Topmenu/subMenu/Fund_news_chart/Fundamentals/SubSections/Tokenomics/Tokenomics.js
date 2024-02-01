@@ -67,13 +67,25 @@ const HorizontalProgressBar = ({maxValue, value, styles}) => {
     return formatRecursive(value, 0);
   }
   return (
-    <View style={styles.progressBarContainer}>
-      <View style={[styles.progressBar, {width: `${percentage}%`}]} />
-      <Text style={styles.progressBarValue}>{`${
-        maxValue === Infinity
-          ? formatNumber(value)
-          : formatNumber(value) + ' (' + Math.round(percentage) + ')%'
-      } / ${maxValue === Infinity ? '∞' : formatNumber(maxValue)}`}</Text>
+    <View style={styles.progressBarWrapper}>
+      <View style={styles.row}>
+        <Text style={styles.progressBarValue}>{`${
+          maxValue === Infinity
+            ? formatNumber(value)
+            : formatNumber(value) + ' (' + Math.round(percentage) + ')%'
+        }`}</Text>
+        <Text style={styles.progressBarMaxValue}>
+          {maxValue === Infinity ? '∞' : formatNumber(maxValue)}
+        </Text>
+      </View>
+
+      <View
+        style={[
+          styles.progressBarContainer,
+          maxValue === Infinity ? styles.infinityBar : null,
+        ]}>
+        <View style={[styles.progressBar, {width: `${percentage}%`}]}></View>
+      </View>
     </View>
   );
 };

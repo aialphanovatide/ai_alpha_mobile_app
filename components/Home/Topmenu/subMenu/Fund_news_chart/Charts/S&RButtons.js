@@ -26,36 +26,27 @@ const RsButton = ({activeButtons, setActiveButtons}) => {
 
   return (
     <View style={styles.rsButtonContainer}>
-      <View style={styles.rsButtonSubContainer}>
-        {buttons.map((button, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.rsButton,
-              {
-                backgroundColor: activeButtons.includes(button.label)
-                  ? button.color
-                  : 'white',
-                borderColor: activeButtons.includes(button.label)
-                  ? 'transparent'
-                  : button.color,
-              },
-            ]}
-            onPress={() => handlePress(button.label)}>
-            <Text
-              style={[
-                styles.rsButtonText,
-                {
-                  color: activeButtons.includes(button.label)
-                    ? 'white'
-                    : button.color,
-                },
-              ]}>
-              {button.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      {buttons.map((button, index) => (
+        <TouchableOpacity
+          key={index}
+          style={[
+            styles.rsButton,
+            {
+              backgroundColor: activeButtons.includes(button.label)
+                ? button.color
+                : 'transparent',
+              borderColor: activeButtons.includes(button.label)
+                ? 'transparent'
+                : button.color,
+            },
+          ]}
+          onPress={() => handlePress(button.label)}>
+          <Text
+            style={styles.rsButtonText}>
+            {button.label}
+          </Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 };

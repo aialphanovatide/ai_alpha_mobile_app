@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import priceActionMock from './priceActionMock';
 import priceActionService from '../../../services/PriceActionService';
 import {ScrollView} from 'react-native-gesture-handler';
 import Loader from '../../Loader/Loader';
-import menuData from '../Topmenu/mainMenu/menuData';
 import usePriceActionStyles from './PriceActionStyles';
+import {CategoriesContext} from '../../../context/categoriesContext';
+import {API_BASE_URL} from '../../../services/aiAlphaApi';
 
 const CategorySelector = ({
   categories,
@@ -16,24 +17,42 @@ const CategorySelector = ({
 }) => {
   return (
     <View style={styles.categoriesContainer}>
-      <Text style={styles.categoriesTitle}>Categories</Text>
       <ScrollView
         horizontal={true}
-        style={styles.row}
+        style={[styles.row, styles.menuBg]}
         showsHorizontalScrollIndicator={false}>
         {categories.map(category => (
           <TouchableOpacity
-            style={activeCategory?.id === category.id && styles.active}
-            key={category.id}
+            style={styles.categoryWrapper}
+            key={category.category_id}
             onPress={() => handleActiveCoins(coins, category)}>
-            <Text
+            {/* <Text
               style={[
                 styles.dataCell,
                 styles.category,
-                activeCategory?.id === category.id && styles.activeText,
+                activeCategory?.category_id === category.category_id &&
+                  styles.activeText,
               ]}>
               {category.icon}
-            </Text>
+            </Text> */}
+            <View
+              style={[
+                styles.categoryIconContainer,
+                activeCategory?.category_id === category.category_id && {
+                  borderColor: category.borderColor,
+                  borderWidth: 2,
+                },
+              ]}>
+              <Image
+                source={{
+                  uri: `${API_BASE_URL}${category.icon}`,
+                  width: 30,
+                  height: 30,
+                }}
+                resizeMode="contain"
+                style={styles.categoryIcon}
+              />
+            </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -64,7 +83,7 @@ const PriceAction = () => {
   const styles = usePriceActionStyles();
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState(menuData);
+  const {categories} = useContext(CategoriesContext);
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeCoins, setActiveCoins] = useState([]);
   useEffect(() => {
@@ -88,17 +107,17 @@ const PriceAction = () => {
 
   const findCoinsByCategory = (coins, category) => {
     let filteredCoins = [];
-    if (category.subMenuOptions) {
+    if (category.coin_bots.length > 1) {
       coins.forEach(coin => {
-        category.subMenuOptions.forEach(categoryCoin => {
-          if (categoryCoin.coin === coin.symbol.toUpperCase()) {
+        category.coin_bots.forEach(categoryCoin => {
+          if (categoryCoin.bot_name === coin.symbol) {
             filteredCoins.push(coin);
           }
         });
       });
     } else {
       let found = coins.find(
-        coin => coin.symbol.toUpperCase() === category.icon,
+        coin => coin.name.toUpperCase() === category.category.toUpperCase(),
       );
       filteredCoins.push(found);
     }
@@ -112,7 +131,7 @@ const PriceAction = () => {
 
   return (
     <View style={[styles.priceActionContainer]}>
-      <Text style={styles.title}>Price action</Text>
+      <Text style={styles.title}>Price Action</Text>
       {loading ? (
         <Loader />
       ) : (
@@ -147,7 +166,8 @@ const PriceAction = () => {
                 />
               ))
             ) : (
-              <View style={[styles.dataRow, styles.alignCenter]}>
+              <View
+                style={[styles.dataRow, styles.borderless, styles.alignCenter]}>
                 <Text style={styles.emptyMessage}>
                   Select a Category to see the coins data
                 </Text>
