@@ -13,7 +13,7 @@ const useUpgradeOverlayStyles = () => {
     overlayImage: {
       flex: 1,
       padding: '25%',
-      justifyContent: 'flex-start',
+      justifyContent: 'center',
       alignItems: 'center',
     },
     overlayContent: {
@@ -22,6 +22,13 @@ const useUpgradeOverlayStyles = () => {
       marginVertical: '25%',
       borderRadius: 5,
       alignItems: 'center',
+    },
+    analysisOverlayContent: {
+      flex: 1,
+      marginVertical: '25%',
+      borderRadius: 5,
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     upgradeButton: {
       marginTop: 20,

@@ -42,7 +42,12 @@ const RsButton = ({activeButtons, setActiveButtons}) => {
           ]}
           onPress={() => handlePress(button.label)}>
           <Text
-            style={styles.rsButtonText}>
+            style={[
+              styles.rsButtonText,
+              activeButtons.includes(button.label)
+                ? styles.activeRsButtonText
+                : {},
+            ]}>
             {button.label}
           </Text>
         </TouchableOpacity>

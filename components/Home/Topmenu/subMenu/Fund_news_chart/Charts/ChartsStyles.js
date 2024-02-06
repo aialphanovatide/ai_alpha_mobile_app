@@ -18,14 +18,10 @@ const useChartsStyles = () => {
       flex: 1,
       marginVertical: theme.titlesVerticalMargin,
       flexDirection: 'row',
-      justifyContent: 'center',
       width: '100%',
     },
-    detailsSubContainer: {
-      flexDirection: 'row',
-      width: '90%',
-    },
     detailslabel: {
+      marginHorizontal: 10,
       textTransform: 'uppercase',
       fontSize: theme.responsiveFontSize,
       fontWeight: 'bold',
@@ -89,6 +85,9 @@ const useChartsStyles = () => {
     rsButtonText: {
       textTransform: 'capitalize',
       fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.textColor,
+    },
+    activeRsButtonText: {
       color: theme.activeSRButtonColor,
     },
     chartContainer: {
@@ -97,6 +96,7 @@ const useChartsStyles = () => {
       width: '100%',
       height: 300,
       backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 2,
     },
     chart: {
       width: '100%',
@@ -109,8 +109,9 @@ const useChartsStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      width: 50,
-      height: 50,
+      width: 60,
+      height: 60,
+      opacity: 0.8,
     },
     chartsWrapper: {
       flex: 1,
@@ -122,21 +123,22 @@ const useChartsStyles = () => {
     },
     alertMenuContainer: {
       paddingVertical: 5,
-      paddingHorizontal: 10,
       alignItems: 'center',
       justifyContent: 'center',
     },
     alertMenuTitle: {
       marginVertical: theme.titlesVerticalMargin,
+      marginHorizontal: 10,
       fontSize: theme.titleFontSize,
       fontWeight: 'bold',
       color: theme.textColor,
+      alignSelf: 'flex-start',
     },
     alertMenuButtonContainer: {
       marginVertical: theme.boxesVerticalMargin,
       flexDirection: 'row',
       backgroundColor: theme.subMenuBgColor,
-      borderRadius: 4,
+      borderRadius: 2,
     },
     alertMenuButton: {
       width: '33.33%',
@@ -154,10 +156,12 @@ const useChartsStyles = () => {
       fontWeight: 'bold',
       color: theme.filterTextColor,
       textTransform: 'capitalize',
+      fontSize: theme.responsiveFontSize * 0.8,
     },
     alertMenuInactiveText: {
       color: theme.subMenuTextColor,
       textTransform: 'capitalize',
+      fontSize: theme.responsiveFontSize * 0.8,
     },
     alertListContainer: {
       justifyContent: 'center',
@@ -176,11 +180,12 @@ const useChartsStyles = () => {
     },
     alertDetailsContainer: {
       position: 'relative',
+      minHeight: 80,
       flexDirection: 'row',
       backgroundColor: theme.boxesBackgroundColor,
-      marginVertical: theme.boxesVerticalMargin,
+      marginVertical: 4,
       borderRadius: 2,
-      padding: 8,
+      padding: 4,
       flex: 1,
       shadowColor: '#000',
       shadowOffset: {
@@ -189,30 +194,36 @@ const useChartsStyles = () => {
       },
       shadowOpacity: 0.1,
       shadowRadius: 1,
-      elevation: 2,
+      elevation: 1,
     },
     alertDetailsLeftContent: {
       flex: 1,
-      marginHorizontal: '2.5%',
+      margin: 2,
+    },
+    alertsRow: {
+      flexDirection: 'row',
+      marginHorizontal: 8,
     },
     alertDetailsRightContent: {
       position: 'absolute',
       right: 12,
-      top: 12,
+      margin: 4,
     },
     alertDetailsTitle: {
-      fontSize: theme.responsiveFontSize,
+      marginHorizontal: 4,
+      fontSize: theme.responsiveFontSize * 0.9,
       fontWeight: 'bold',
       color: theme.textColor,
-      padding: 2.5,
+      lineHeight: 22,
     },
     alertDetailsSubtitle: {
-      fontSize: theme.responsiveFontSize * 0.85,
+      marginHorizontal: 10,
+      fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
-      padding: 4,
       lineHeight: 22,
     },
     alertDetailsRightTitle: {
+      marginVertical: 4,
       fontSize: theme.responsiveFontSize * 0.8,
       fontWeight: 'bold',
       color: theme.textColor,

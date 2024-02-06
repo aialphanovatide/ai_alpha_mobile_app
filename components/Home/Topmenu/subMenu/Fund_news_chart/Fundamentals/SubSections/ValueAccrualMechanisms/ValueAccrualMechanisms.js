@@ -8,7 +8,7 @@ import {
 import React, {useContext, useEffect, useState} from 'react';
 import Loader from '../../../../../../../Loader/Loader';
 import useVAMStyles from './VAMStyles';
-import { AppThemeContext } from '../../../../../../../../context/themeContext';
+import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
 const MechanismsMenuItem = ({
   item,
@@ -16,7 +16,7 @@ const MechanismsMenuItem = ({
   handleOptionChange,
   styles,
 }) => {
-  const {theme} = useContext(AppThemeContext)
+  const {theme} = useContext(AppThemeContext);
   return (
     <TouchableOpacity onPress={() => handleOptionChange(item)}>
       <ImageBackground
@@ -76,7 +76,7 @@ const ContentItem = ({data, styles}) => {
     <View style={styles.dataContainer}>
       <Text style={styles.dataTitle}>{data.title}</Text>
       <View style={styles.dataRow}>
-        <View style={styles.imageContainer}>
+        <View style={styles.dataImageContainer}>
           <Image
             style={styles.dataImage}
             alt={data.name}

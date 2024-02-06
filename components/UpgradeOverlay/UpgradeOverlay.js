@@ -90,7 +90,7 @@ const UpgradeOverlay = ({isBlockingByCoin, screen}) => {
     </View>
   ) : (
     <View style={styles.overlayContainer}>
-      <View style={styles.overlayContent}>
+      <View style={styles.analysisOverlayContent}>
         <View style={styles.lockContainer}>
           <Image
             resizeMode="contain"

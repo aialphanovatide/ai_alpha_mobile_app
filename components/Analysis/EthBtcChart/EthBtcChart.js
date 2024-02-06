@@ -109,6 +109,7 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
                     fontSize: theme.responsiveFontSize * 0.7,
                     fill: theme.titleColor,
                   },
+                  grid: {stroke: theme.homeChartsGridColor},
                 }}
               />
               <VictoryAxis
@@ -119,14 +120,20 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
                     fontSize: theme.responsiveFontSize * 0.825,
                     fill: theme.titleColor,
                   },
+                  grid: {stroke: theme.homeChartsGridColor},
                 }}
                 orientation="right"
               />
 
               <VictoryCandlestick
                 data={chartData}
-                candleRatio={0.5}
+                candleRatio={0.6}
                 candleColors={{positive: '#3ADF00', negative: '#FF477C'}}
+                style={{
+                  data: {
+                    strokeWidth: 0,
+                  },
+                }}
               />
             </VictoryChart>
           </View>

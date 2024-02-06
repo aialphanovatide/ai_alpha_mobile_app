@@ -7,25 +7,21 @@ const useVAMStyles = () => {
 
   const styles = StyleSheet.create({
     container: {
-      width: theme.width - 30,
+      width: '100%',
       alignSelf: 'center',
     },
     menuItemContainer: {
-      width: theme.width * 0.45,
+      width: theme.width * 0.435,
       height: 64,
       padding: 5,
       alignItems: 'center',
       justifyContent: 'flex-start',
     },
-    activeMenuContainer: {
-      marginTop: 15,
-      height: 75,
-    },
     menuContainer: {
-      width: '100%',
       flex: 1,
+      padding: 10,
       flexDirection: 'row',
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
       alignItems: 'center',
     },
     menuItemName: {
@@ -33,15 +29,11 @@ const useVAMStyles = () => {
       textAlign: 'center',
       fontSize: theme.responsiveFontSize * 0.8,
     },
-    iconContainer: {
-      width: 20,
-      height: 20,
-      marginTop: 5,
-      alignSelf: 'center',
-      justifyContent: 'flex-start'
-    },
     itemIcon: {
-      flex: 1,
+      width: 18,
+      height: 18,
+      marginTop: 5,
+      marginBottom: 2,
       tintColor: theme.fundamentalsMenuText,
     },
     activeItem: {
@@ -49,34 +41,39 @@ const useVAMStyles = () => {
       fontWeight: 'bold',
     },
     dataContainer: {
-      marginVertical: 10,
+      width: '100%',
+      flex: 1,
+      marginVertical: theme.boxesVerticalMargin,
+      justifyContent: 'flex-start',
     },
     dataTitle: {
+      marginVertical: 4,
+      marginHorizontal: 8,
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize * 0.95,
       fontWeight: 'bold',
       padding: 5,
     },
     dataRow: {
-      flex: 1,
+      width: '100%',
       flexDirection: 'row',
       backgroundColor: theme.boxesBackgroundColor,
     },
-    imageContainer: {
-      width: 80,
-      height: 80,
-      justifyContent: 'center',
-      alignItems: 'center',
+    dataImageContainer: {
+      width: 'auto',
+      height: 110,
     },
     dataImage: {
       flex: 1,
     },
     dataText: {
+      marginVertical: theme.boxesVerticalMargin,
+      marginHorizontal: 8,
       flex: 1,
-      padding: 10,
-      margin: 10,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.85,
+      lineHeight: 22,
+      textAlign: 'left',
     },
     activeItemBgImage: {
       flex: 1,

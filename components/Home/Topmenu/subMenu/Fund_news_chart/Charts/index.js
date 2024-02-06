@@ -75,9 +75,7 @@ const CandlestickChart = ({route}) => {
       }
       return {supportValues, resistanceValues};
     } catch (error) {
-      console.error(
-        'Error fetching support and resistance data: ',
-        error);
+      console.error('Error fetching support and resistance data: ', error);
     }
   }
 
@@ -91,7 +89,7 @@ const CandlestickChart = ({route}) => {
   useEffect(() => {
     const intervalId = setInterval(fetchChartData, 2000);
     return () => clearInterval(intervalId);
-  }, [interval, symbol]);
+  }, [interval, symbol, selectedInterval]);
 
   // This useEffect handles the content regulation
   useEffect(() => {
@@ -103,15 +101,13 @@ const CandlestickChart = ({route}) => {
   }, [activeCoin, userInfo]);
 
   const changeInterval = async newInterval => {
-    setSelectedInterval(newInterval);
     setLoading(true);
-
     try {
+      setSelectedInterval(newInterval);
       setChartData([]);
       await fetchChartData();
       setLoading(false);
     } catch (error) {
-      setLoading(false);
       console.error(`Failed to change interval: ${error}`);
     }
   };
@@ -121,7 +117,7 @@ const CandlestickChart = ({route}) => {
       style={styles.scroll}
       // keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={true}>
-      <CandlestickDetails coin={symbol} lastPrice={lastPrice} styles={styles} />
+      <CandlestickDetails coin={symbol} interval={selectedInterval} lastPrice={lastPrice} styles={styles} />
       <View style={styles.chartsWrapper}>
         <TimeframeSelector
           selectedInterval={selectedInterval}

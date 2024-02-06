@@ -59,7 +59,7 @@ const useAccountStyles = () => {
       display: 'flex',
       flexDirection: 'row',
       marginVertical: 4,
-      padding: 16,
+      padding: 12,
       backgroundColor: theme.boxesBackgroundColor,
       alignItems: 'center',
       shadowColor: '#000',
@@ -89,7 +89,7 @@ const useAccountStyles = () => {
       paddingVertical: '2.5%',
       paddingHorizontal: 10,
       fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize,
+      fontSize: theme.responsiveFontSize * 0.9,
       color: theme.textColor,
     },
     container: {

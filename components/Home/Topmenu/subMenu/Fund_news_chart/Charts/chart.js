@@ -1,18 +1,16 @@
 import React, {useContext} from 'react';
-import {View, ImageBackground, StyleSheet} from 'react-native';
+import {View, ImageBackground} from 'react-native';
 import {
   VictoryChart,
   VictoryAxis,
   VictoryZoomContainer,
   VictoryCandlestick,
-  VictoryTheme,
   VictoryLabel,
-  VictoryTooltip,
   VictoryLine,
 } from 'victory-native';
 import Loader from '../../../../../Loader/Loader';
-import useChartStyles from '../Fundamentals/SubSections/Competitors/CompetitorSections/CurrentMarketCap/ChartStyles';
 import {AppThemeContext} from '../../../../../../context/themeContext';
+import useChartsStyles from './ChartsStyles';
 
 const Chart = ({
   chartData,
@@ -22,11 +20,11 @@ const Chart = ({
   candlesToShow = 30,
   activeButtons,
 }) => {
-  const styles = useChartStyles();
+  const styles = useChartsStyles();
   const {theme} = useContext(AppThemeContext);
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View style={styles.chartContainer}>
         <Loader />
       </View>
     );
@@ -57,7 +55,8 @@ const Chart = ({
         <View style={styles.chart}>
           <ImageBackground
             source={require('../../../../../../assets/logo_3.png')}
-            style={styles.chartBackgroundImage}></ImageBackground>
+            style={styles.chartBackgroundImage}
+            resizeMode="contain"></ImageBackground>
 
           <VictoryChart
             width={400}
@@ -74,6 +73,7 @@ const Chart = ({
                   fontSize: theme.responsiveFontSize * 0.7,
                   fill: theme.titleColor,
                 },
+                grid: {stroke: theme.homeChartsGridColor},
               }}
             />
             <VictoryAxis
@@ -84,14 +84,21 @@ const Chart = ({
                   fontSize: theme.responsiveFontSize * 0.825,
                   fill: theme.titleColor,
                 },
+                grid: {stroke: theme.homeChartsGridColor},
               }}
               orientation="right"
             />
 
             <VictoryCandlestick
+              padding={2}
               data={chartData}
               candleRatio={6}
               candleColors={{positive: '#3ADF00', negative: '#FF477C'}}
+              style={{
+                data: {
+                  strokeWidth: 0,
+                },
+              }}
             />
 
             {resistanceLevels &&

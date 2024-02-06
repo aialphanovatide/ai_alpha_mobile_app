@@ -12,7 +12,6 @@ const useNewsStyles = () => {
     },
     backgroundColor: {
       backgroundColor: theme.mainBackgroundColor,
-      padding: 10,
     },
     title: {
       marginVertical: 10,
@@ -104,6 +103,7 @@ const useNewsStyles = () => {
       lineHeight: 22,
     },
     filterContainer: {
+      marginHorizontal: 8,
       marginVertical: 10,
       marginBottom: 15,
       flexDirection: 'row',
@@ -122,11 +122,13 @@ const useNewsStyles = () => {
       color: theme.subMenuTextColor,
       textTransform: 'capitalize',
       fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize * 0.8,
     },
     activeButtonText: {
       color: theme.filterTextColor,
       textTransform: 'capitalize',
       fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize * 0.8,
     },
     marginVertical: {
       marginVertical: 10,

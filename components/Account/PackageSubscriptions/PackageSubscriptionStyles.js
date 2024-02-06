@@ -106,6 +106,7 @@ const usePackageSubscriptionStyles = () => {
     packagesContainer: {
       width: theme.width,
       marginVertical: theme.boxesVerticalMargin,
+      padding: 10,
     },
     hidden: {
       display: 'none',

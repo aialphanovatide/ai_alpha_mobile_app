@@ -109,7 +109,8 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
         <View style={styles.chart}>
           <ImageBackground
             source={require('../../../assets/logo_3.png')}
-            style={styles.backgroundImage}></ImageBackground>
+            style={styles.backgroundImage}
+            resizeMode='contain'></ImageBackground>
 
           <VictoryChart
             width={400}
@@ -125,6 +126,7 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
                   fontSize: theme.responsiveFontSize * 0.7,
                   fill: theme.titleColor,
                 },
+                grid: {stroke: theme.homeChartsGridColor},
               }}
             />
             <VictoryAxis
@@ -135,6 +137,7 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
                   fontSize: theme.responsiveFontSize * 0.825,
                   fill: theme.titleColor,
                 },
+                grid: {stroke: theme.homeChartsGridColor},
               }}
               orientation="right"
             />
@@ -143,6 +146,11 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
               data={chartData}
               candleRatio={0.5}
               candleColors={{positive: '#3ADF00', negative: '#FF477C'}}
+              style={{
+                data: {
+                  strokeWidth: 0,
+                },
+              }}
             />
           </VictoryChart>
         </View>

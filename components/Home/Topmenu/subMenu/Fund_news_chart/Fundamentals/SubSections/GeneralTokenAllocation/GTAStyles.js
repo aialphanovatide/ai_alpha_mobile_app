@@ -9,8 +9,8 @@ const useGTAStyles = () => {
       flex: 1,
       flexDirection: 'row',
       backgroundColor: theme.boxesBackgroundColor,
-      alignItems: 'flex-start',
       justifyContent: 'center',
+      borderRadius: 4,
     },
     row: {
       flexDirection: 'row',
@@ -32,8 +32,8 @@ const useGTAStyles = () => {
     },
     currentTokenPercentage: {
       position: 'absolute',
-      top: '35%',
-      left: '40%',
+      top: '45%',
+      left: '42%',
       textAlign: 'center',
       fontSize: theme.titleFontSize * 1.35,
       fontWeight: 'bold',
@@ -44,7 +44,7 @@ const useGTAStyles = () => {
     flex: {
       position: 'relative',
       flex: 1,
-      flexDirection: 'column',
+      padding: 10,
       alignItems: 'center',
     },
   });

@@ -1,5 +1,5 @@
 import {Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import useTokenomicsStyles from './TokenomicsStyles';
 
 // Hardcoded data - TODO: fetch or get this information from another sources, and connect it to the current package of topMenu
@@ -99,15 +99,17 @@ const Tokenomics = () => {
   }, []);
 
   return (
-    <View style={styles.tokenItemsContainer}>
+    <View style={styles.container}>
       <View style={styles.numberTitles}>
         <Text style={styles.alignLeft}>Circulating supply</Text>
         <Text style={styles.alignRight}>Total Supply</Text>
       </View>
-      {cryptos &&
-        cryptos.map((crypto, index) => (
-          <TokenItem key={index} item={crypto} styles={styles} />
-        ))}
+      <View style={styles.tokenItemsContainer}>
+        {cryptos &&
+          cryptos.map((crypto, index) => (
+            <TokenItem key={index} item={crypto} styles={styles} />
+          ))}
+      </View>
     </View>
   );
 };

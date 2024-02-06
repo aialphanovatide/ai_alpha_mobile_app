@@ -14,7 +14,6 @@ const TopMenu = ({isAlertsMenu}) => {
   const {categories} = useContext(CategoriesContext);
   const navigation = useNavigation();
   const {isDarkMode} = useContext(AppThemeContext);
-  console.log('Active coin: ', activeCoin);
   const handleButtonPress = category => {
     updateActiveCoin(category);
     updateActiveSubCoin(category.coin_bots[0].bot_name);

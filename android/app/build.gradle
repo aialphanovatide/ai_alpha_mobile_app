@@ -81,6 +81,7 @@ android {
         versionCode 3
         versionName "1.0.3"
         manifestPlaceholders = [
+                appAuthRedirectScheme: 'com.aialpha.com',
                 auth0Domain: 'dev-zoejuo0jssw5jiid.us.auth0.com',
                 auth0Scheme: "${applicationId}.auth0"
             ]
@@ -116,6 +117,9 @@ android {
                 auth0ClientId: "K5bEigOfEtz4Devpc7kiZSYzzemPLIlg"
             ]
         }
+    }
+    packagingOptions {
+        pickFirst 'lib/*/libcrypto.so'
     }
 }
 

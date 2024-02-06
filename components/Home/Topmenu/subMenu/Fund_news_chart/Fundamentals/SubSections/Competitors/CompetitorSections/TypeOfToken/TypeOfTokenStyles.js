@@ -10,12 +10,12 @@ const useTypeOfTokenStyles = () => {
       margin: 10,
     },
     tokenImageContainer: {
-      width: 40,
-      height: 40,
+      width: 32,
+      height: 32,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: theme.secondaryBoxesBgColor,
-      borderRadius: 25,
+      borderRadius: 16,
       overflow: 'hidden',
     },
     row: {
@@ -41,6 +41,7 @@ const useTypeOfTokenStyles = () => {
       width: '50%',
       margin: 5,
       backgroundColor: theme.secondaryBoxesBgColor,
+      borderRadius: 2,
     },
     tokenButtonText: {
       padding: 10,

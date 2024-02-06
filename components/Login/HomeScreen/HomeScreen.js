@@ -55,7 +55,8 @@ const HomeScreen = () => {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: theme.navbarBgColor,
-            border: 'none',
+            borderTopWidth: 0,
+            elevation: 0,
           },
           tabBarActiveTintColor: theme.activeOrange,
           tabBarLabelStyle: {

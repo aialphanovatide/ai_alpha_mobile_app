@@ -36,8 +36,9 @@ const useBtcDominanceStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      width: 50,
-      height: 50,
+      width: 70,
+      height: 70,
+      opacity: 0.6
     },
     timeframeContainer: {
       flex: 1,

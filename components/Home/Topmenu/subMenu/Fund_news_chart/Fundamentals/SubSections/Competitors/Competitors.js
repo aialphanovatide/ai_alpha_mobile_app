@@ -49,7 +49,7 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
           style={[
             styles.menuItemName,
             activeOption.name === item.name && styles.activeItem,
-          ]}>
+          ]} numberOfLines={2}>
           {item.name}
         </Text>
       </ImageBackground>

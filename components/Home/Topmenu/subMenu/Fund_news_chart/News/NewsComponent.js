@@ -108,7 +108,6 @@ const NewsComponent = ({route}) => {
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
-      <BackButton />
       <Text style={styles.title}>News</Text>
       <View style={styles.filterContainer}>
         {['Last Hour', 'Last Day', 'Last Week'].map(option => (

@@ -16,6 +16,7 @@ import useAccountStyles from './styles';
 import ThemeButton from '../ThemeButton/ThemeButton';
 import {API_KEY} from '../../src/constants';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
+import {NOTIFICATIONS_MOCK} from './NotificationsPanel/notificationsMock';
 
 const AccountItem = ({
   styles,
@@ -77,6 +78,12 @@ const Account = ({route}) => {
       component: null,
     },
     {
+      name: 'Notifications',
+      logo: require('../../assets/images/account/notifications.png'),
+      screenName: 'Notifications',
+      component: null,
+    },
+    {
       name: 'Dark Mode',
       logo: require('../../assets/images/account/darkmode.png'),
       screenName: null,
@@ -84,7 +91,7 @@ const Account = ({route}) => {
     },
     {
       name: 'Delete Account',
-      logo: require('../../assets/images/account/deleteacc.png'),
+      logo: require('../../assets/images/account/delete-account.png'),
       screenName: null,
       component: null,
     },
@@ -109,6 +116,8 @@ const Account = ({route}) => {
         break;
       case 'Privacy Policy':
         navigation.navigate('PrivacyPolicy');
+      case 'Notifications':
+        navigation.navigate('Notifications', {options: NOTIFICATIONS_MOCK});
         break;
       default:
         console.log('Option not handled:', option.name);

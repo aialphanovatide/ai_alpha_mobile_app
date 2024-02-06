@@ -1,6 +1,6 @@
 import {Dimensions} from 'react-native';
 const {width, height} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
+const responsiveFontSize = width * 0.04; // Font size: 15.70909090909091
 
 export const lightThemeStyles = {
   width: width,
@@ -22,7 +22,7 @@ export const lightThemeStyles = {
   titleColor: '#424455',
   textColor: '#242427',
   priceUpColor: '#52DD8D',
-  priceDownColor: '#F4065C',
+  priceDownColor: '#C20034',
   navbarBgColor: '#FFFFFF',
   boxesBorderColor: '#EFEFEF',
   tableHeaderColor: '#EFEFEF',
@@ -31,7 +31,7 @@ export const lightThemeStyles = {
   inactiveTextColor: '#5F6466',
   inactiveMenuBgColor: '#D9D9D9',
   buttonColor: '#FFFFFF',
-  upgradeOverlayBgColor: '#47474790',
+  upgradeOverlayBgColor: '#47474770',
   activePink: '#E6007A',
   activePurple: '#49346B',
   activeBlack: '#151515',
@@ -39,10 +39,12 @@ export const lightThemeStyles = {
   graphOpacityColor: '#DDE1E230',
   speedometerIndicator: '#4D4D4D',
   backbuttonColor: '#B8BBBC',
+  homeChartsGridColor: '#D9D9D930',
   chartsColor: '#B8BBBC',
   fundamentalsMenuText: '#B8BBBC',
   dAppsInactiveItem: '#E1E5EE',
   dAppsItemBg: '#FFFFFF',
+  notificationsWSwitchColor: '#333333',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {
@@ -85,7 +87,7 @@ export const darkThemeStyles = {
   filterTextColor: '#74788D',
   activeSubMenuText: '#F9FAFC',
   priceUpColor: '#52DD8D',
-  priceDownColor: '#F4065C',
+  priceDownColor: '#FF477C',
   navbarBgColor: '#10101E',
   boxesBorderColor: '#74788D',
   tableHeaderColor: '#74788D',
@@ -103,9 +105,11 @@ export const darkThemeStyles = {
   speedometerIndicator: '#313343',
   backbuttonColor: '#C4CADA',
   chartsColor: '#74788D',
+  homeChartsGridColor: '#F9FAFC20',
   fundamentalsMenuText: '#F9FAFC',
   dAppsInactiveItem: '#F9FAFC',
   dAppsItemBg: '#74788D',
+  notificationsWSwitchColor: '#D9D9D9',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {

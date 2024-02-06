@@ -7,6 +7,7 @@ import {TopMenuContext} from '../../context/topMenuContext';
 import TopTenGainers from './TopTenGainers/TopTenGainers';
 import PriceAction from './PriceAction/PriceAction';
 import useHomeStyles from './HomeStyles';
+import SkeletonLoader from '../Loader/SilhouetteLoader/SilhouetteLoader';
 
 const Home = () => {
   const {activeCoin} = useContext(TopMenuContext);
@@ -19,6 +20,7 @@ const Home = () => {
         alwaysBounceVertical={false}
         showsVerticalScrollIndicator={false}>
         <TickerTape />
+        <SkeletonLoader />
         <TopStories />
         <Analysis />
         <TopTenGainers />

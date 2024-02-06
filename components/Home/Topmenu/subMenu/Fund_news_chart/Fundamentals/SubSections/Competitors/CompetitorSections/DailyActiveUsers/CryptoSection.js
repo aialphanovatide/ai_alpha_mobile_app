@@ -1,9 +1,7 @@
-// CryptoSection.js
 import React, {useContext} from 'react';
 import {View, Image, Text} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import useCirculatingSupplyStyles from '../CirculatingSupply/CirculatingSupplyStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
+import useDailyActiveUsersStyles from './DailyActiveUsersStyles';
 
 const UserIcon = ({tintColor, styles}) => {
   return (
@@ -12,6 +10,7 @@ const UserIcon = ({tintColor, styles}) => {
         style={styles.userImage}
         source={require('../../../../../../../../../../assets/images/fundamentals/competitors/dailyActiveUsers/User.png')}
         tintColor={tintColor}
+        resizeMode='contain'
       />
     </View>
   );
@@ -19,14 +18,13 @@ const UserIcon = ({tintColor, styles}) => {
 
 const CryptoSection = ({name, logo, score, value}) => {
   const {theme} = useContext(AppThemeContext);
-  const styles = useCirculatingSupplyStyles();
+  const styles = useDailyActiveUsersStyles();
   const renderIcons = score => {
     const totalIcons = 6;
     const filledIcons = Math.floor(score);
     const halfIcon = score - filledIcons > 0 ? 1 : 0;
 
     const icons = Array.from({length: filledIcons}, (_, index) => (
-      // <Icon key={index} name="user" size={20} color="orange" />
       <UserIcon key={index} tintColor={'#F98404'} styles={styles} />
     ));
 
@@ -55,17 +53,19 @@ const CryptoSection = ({name, logo, score, value}) => {
   };
 
   return (
-    <View style={[styles.row, styles.section]}>
+    <View style={styles.dailyActiveUsersItem}>
       <View>
-        <View style={styles.row}>
+        <View style={[styles.row, styles.noVerticalMargin]}>
           <Image source={logo} style={styles.logoContainer} />
-          <Text style={[styles.labelLeft, styles.text]}>{name}</Text>
+          <Text style={styles.label}>{name}</Text>
         </View>
         <View style={styles.row}>
-          <View style={styles.usersContainer}>{renderIcons(score)}</View>
+          <View style={styles.usersContainer}>
+            {renderIcons(score)}
+            <Text style={styles.labelOrange}>{value}</Text>
+          </View>
         </View>
       </View>
-      <Text style={[styles.labelRight, styles.orange]}>{value}</Text>
     </View>
   );
 };

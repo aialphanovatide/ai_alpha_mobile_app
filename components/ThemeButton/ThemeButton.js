@@ -20,7 +20,7 @@ const ThemeButton = () => {
       <Switch
         value={isDarkMode}
         onChange={() => toggleDarkMode()}
-        trackColor={isDarkMode ? '#52DD8D' : '#D9D9D9'}
+        trackColor={isDarkMode ? '#00E561' : '#D9D9D9'}
         thumbColor={'#F6F7FB'}
         ios_backgroundColor={'#D9D9D9'}
       />
