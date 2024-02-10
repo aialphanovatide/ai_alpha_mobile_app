@@ -41,19 +41,21 @@ const useTimelineStyles = () => {
     },
     timelineContentContainer: {
       flex: 1,
-      maxWidth: '70%',
-      paddingVertical: '5%',
-      paddingHorizontal: '2.5%',
+      maxWidth: '80%',
+      padding: 16,
       backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 3,
     },
     dateText: {
       fontWeight: 'bold',
       marginBottom: 5,
       fontSize: theme.responsiveFontSize,
-      color: theme.inactiveTextColor,
+      color: theme.textColor,
     },
     descriptionText: {
       color: theme.textColor,
+      fontSize: theme.responsiveFontSize * 0.75,
+      lineHeight: 20,
     },
     timelineArrow: {
       position: 'absolute',

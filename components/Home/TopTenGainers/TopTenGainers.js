@@ -13,7 +13,9 @@ const Item = ({position, coin}) => {
   const styles = useTopTenGainersStyles();
   return (
     <View key={position} style={styles.row}>
-      <Text style={styles.coinPosition}>{position}</Text>
+      <View style={styles.positionContainer}>
+        <Text style={styles.coinPosition}>{position}</Text>
+      </View>
       <View style={styles.logoContainer}>
         <Image
           style={[styles.coinLogo]}

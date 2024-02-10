@@ -1,5 +1,5 @@
 import {Text, ScrollView, SafeAreaView} from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import SubSection from './SubSections/SubSection';
 import Introduction from './SubSections/Introduction/Introduction.js';
 import Tokenomics from './SubSections/Tokenomics/Tokenomics.js';
@@ -13,10 +13,33 @@ import Upgrades from './SubSections/UpgradesSection/Upgrades';
 import DApps from './SubSections/DApps/DApps';
 import useFundamentalsStyles from './FundamentalsStyles';
 import {AppThemeContext} from '../../../../../../context/themeContext';
+import UpdatedRevenueModel from './SubSections/RevenueModel/UpdatedRevenueModel';
+import {TopMenuContext} from '../../../../../../context/topMenuContext';
+import {altGetService} from '../../../../../../services/aiAlphaApi';
 
-const Fundamentals = ({}) => {
+const Fundamentals = ({route}) => {
+  const {activeSubCoin} = useContext(TopMenuContext);
+  const coin = route ? route.params.activeCoin : activeSubCoin;
   const {isDarkMode} = useContext(AppThemeContext);
   const styles = useFundamentalsStyles();
+
+  console.log('Fundamentals active coin: ', coin);
+
+  const getHacksData = async coin => {
+    const data = await altGetService(`/api/hacks?coin_bot_name=${coin}`);
+    console.log('Hacks response from server: ', data);
+    return data.message;
+  };
+
+  const getIntroductionData = async coin => {
+    const data = await altGetService(`/get_introduction/${coin}`);
+    return data;
+  };
+
+  useEffect(() => {
+    
+  }, [coin]);
+
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.backgroundColor}>
       <SafeAreaView style={styles.container}>
@@ -25,15 +48,8 @@ const Fundamentals = ({}) => {
           subtitle={'Introduction'}
           content={
             <Introduction
-              description={
-                'Ethereum aims to address the limitations of traditional blockchains by enabling the creation of over 3,000 DApps and smart contracts that are currently running on the protocol.'
-              }
-              dataItems={[
-                {text: 'Market capitalization of over $25 billion'},
-                {text: '4 billion unique addresses and facilitated'},
-                {text: 'Over $150 billion in transaction volume'},
-                {text: 'Leading platform for decentralised innovation'},
-              ]}
+              coin={coin}
+              getIntroductionData={getIntroductionData}
             />
           }
         />
@@ -140,43 +156,18 @@ const Fundamentals = ({}) => {
           }
         />
         <SubSection
-          subtitle={'Hacks'}
+          subtitle={'Revenue Model (New)'}
           content={
-            <Hacks
-              events={[
-                {
-                  date: 'July 2016',
-                  description:
-                    'A vulnerability in the DAO smart contract allowed an attacker to steal $60 million worth of ETH.',
-                  hasFinished: true,
-                },
-                {
-                  date: 'June 2017',
-                  description:
-                    'A bug in the Parity wallet software allowed attackers to steal $31 million worth of ETH.',
-                  hasFinished: true,
-                },
-                {
-                  date: 'November 2018',
-                  description:
-                    'A DNS hijacking attack allowed attackers to steal $17 million worth of ETH from MyEtherWallet users.',
-                  hasFinished: true,
-                },
-                {
-                  date: 'February 2019',
-                  description:
-                    'A security breach at Crypto.com allowed attackers to steal $26 million worth of ETH and other cryptocurrencies.',
-                  hasFinished: true,
-                },
-                {
-                  date: 'May 2022',
-                  description:
-                    'A cross-chain bridge between the Ethereum and Avalanche blockchains was hacked, resulting in the loss of $190 million worth of cryptocurrencies.',
-                  hasFinished: true,
-                },
-              ]}
+            <UpdatedRevenueModel
+              title={'Annualised Revenue'}
+              subtitle={'*Cumulative last 1yr revenue'}
+              value={'$1.562b'}
             />
           }
+        />
+        <SubSection
+          subtitle={'Hacks'}
+          content={<Hacks getHacksData={getHacksData} coin={coin} />}
         />
         <SubSection
           subtitle={'Upgrades'}

@@ -30,18 +30,24 @@ const Chart = ({
     );
   }
 
-  const domainY = chartData.reduce(
-    (acc, dataPoint) => {
-      const {open, close, high, low} = dataPoint;
-      return [
-        Math.min(acc[0], open, close, high, low),
-        Math.max(acc[1], open, close, high, low),
-      ];
-    },
-    [Infinity, -Infinity],
-  );
+  const domainY = () => {
+    if (activeButtons.length === 0) {
+      return chartData.reduce(
+        (acc, dataPoint) => {
+          const {open, close, high, low} = dataPoint;
+          return [
+            Math.min(acc[0], open, close, high, low),
+            Math.max(acc[1], open, close, high, low),
+          ];
+        },
+        [Infinity, -Infinity],
+      );
+    } else {
+      const levels = [...supportLevels, ...resistanceLevels];
+      return [Math.min(...levels), Math.max(...levels)];
+    }
+  };
 
-  // const domainX = chartData?.map((dataPoint) => dataPoint.x);
   const domainX = [
     chartData[chartData.length - candlesToShow].x,
     chartData && chartData[chartData.length - 1].x,
@@ -54,14 +60,14 @@ const Chart = ({
       ) : (
         <View style={styles.chart}>
           <ImageBackground
-            source={require('../../../../../../assets/logo_3.png')}
+            source={require('../../../../../../assets/images/chart_alpha_logo.png')}
             style={styles.chartBackgroundImage}
             resizeMode="contain"></ImageBackground>
 
           <VictoryChart
             width={400}
             containerComponent={<VictoryZoomContainer zoomDimension="x" />}
-            domain={{x: domainX, y: domainY}}
+            domain={{x: domainX, y: domainY()}}
             padding={{top: 10, bottom: 60, left: 30, right: 60}}
             domainPadding={{x: 5, y: 3}}
             scale={{x: 'time', y: 'log'}}
@@ -105,28 +111,72 @@ const Chart = ({
               activeButtons.includes('Resistance') &&
               resistanceLevels?.map((level, index) => (
                 <VictoryLine
-                  domain={{x: domainX, y: domainY}}
                   data={[
                     {x: domainX[0], y: level},
                     {x: domainX[1], y: level},
                   ]}
                   key={`resistance-${index}`}
                   style={{data: {stroke: '#F9B208', strokeWidth: 2}}}
-                  labelComponent={<VictoryLabel dy={0} dx={-30} />}
+                  labels={() => [`$${level.toString()} `]}
+                  labelComponent={
+                    <VictoryLabel
+                      dy={5}
+                      dx={260}
+                      textAnchor="start"
+                      inline={true}
+                      style={{
+                        fill: '#F7F7F7',
+                        fontSize: 11,
+                        fontWeight: 'bold',
+                      }}
+                      backgroundPadding={[0]}
+                      backgroundStyle={[
+                        {
+                          fill: '#F9B208',
+                          borderRadius: 4,
+                        },
+                        {fill: 'transparent'},
+                      ]}
+                    />
+                  }
                 />
               ))}
             {supportLevels &&
               activeButtons.includes('Support') &&
               supportLevels?.map((level, index) => (
                 <VictoryLine
-                  domain={{x: domainX, y: domainY}}
                   data={[
                     {x: domainX[0], y: level},
                     {x: domainX[1], y: level},
                   ]}
-                  key={`resistance-${index}`}
-                  style={{data: {stroke: '#FC5404', strokeWidth: 1.5}}}
-                  labelComponent={<VictoryLabel dy={0} dx={-30} />}
+                  key={`support-${index}`}
+                  style={{
+                    data: {stroke: '#FC5404', strokeWidth: 2},
+                  }}
+                  labels={() => [`$${level.toString()} `]}
+                  labelComponent={
+                    <VictoryLabel
+                      dy={5}
+                      dx={260}
+                      textAnchor="start"
+                      inline={true}
+                      backgroundPadding={[0, 0]}
+                      backgroundStyle={[
+                        {
+                          fill: '#FC5404',
+                          borderRadius: 2,
+                        },
+                        {fill: 'transparent'},
+                      ]}
+                      style={[
+                        {
+                          fill: '#F7F7F7',
+                          fontSize: 11,
+                          fontWeight: 'bold',
+                        },
+                      ]}
+                    />
+                  }
                 />
               ))}
           </VictoryChart>

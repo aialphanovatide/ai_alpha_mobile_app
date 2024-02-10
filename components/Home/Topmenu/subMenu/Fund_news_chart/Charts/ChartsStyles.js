@@ -90,6 +90,13 @@ const useChartsStyles = () => {
     activeRsButtonText: {
       color: theme.activeSRButtonColor,
     },
+    lineLabel: {
+      flex: 1,
+      padding: 4,
+      borderRadius: 2,
+      alignItems: 'center',
+      justifyContent: 'center', 
+    },
     chartContainer: {
       justifyContent: 'top',
       alignItems: 'top',
@@ -109,6 +116,8 @@ const useChartsStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
+      top: 0,
+      left: 0,
       width: 60,
       height: 60,
       opacity: 0.8,

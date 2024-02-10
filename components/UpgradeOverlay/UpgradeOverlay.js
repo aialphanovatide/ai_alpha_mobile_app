@@ -16,8 +16,8 @@ const UpgradeOverlay = ({isBlockingByCoin, screen}) => {
   const screens = {
     Charts: {
       image: {
-        light: require('../../assets/images/home/upgradeOverlay/charts-light-blur.png'),
-        dark: require('../../assets/images/home/upgradeOverlay/charts-dark-blur.png'),
+        light: require('../../assets/images/home/upgradeOverlay/charts-light-blur-updated.png'),
+        dark: require('../../assets/images/home/upgradeOverlay/charts-dark-blur-updated.png'),
       },
     },
     News: {
@@ -28,8 +28,8 @@ const UpgradeOverlay = ({isBlockingByCoin, screen}) => {
     },
     Alerts: {
       image: {
-        light: require('../../assets/images/home/upgradeOverlay/alerts-light-blur.png'),
-        dark: require('../../assets/images/home/upgradeOverlay/alerts-dark-blur.png'),
+        light: require('../../assets/images/home/upgradeOverlay/alerts-blur-light-updated.png'),
+        dark: require('../../assets/images/home/upgradeOverlay/alerts-blur-dark-updated.png'),
       },
     },
     Chatbot: {

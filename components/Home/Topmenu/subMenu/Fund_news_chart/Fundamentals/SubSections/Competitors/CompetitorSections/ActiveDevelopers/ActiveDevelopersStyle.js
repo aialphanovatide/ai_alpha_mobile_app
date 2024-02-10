@@ -8,6 +8,7 @@ const useActiveDevelopersStyles = () => {
     logoContainer: {
       width: 30,
       height: 30,
+      marginHorizontal: 10,
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 15,
@@ -39,7 +40,7 @@ const useActiveDevelopersStyles = () => {
       flexDirection: 'row',
       padding: 10,
       marginVertical: 10,
-      backgroundColor: theme.boxesBackgroundColor,
+      backgroundColor: theme.fundamentalsCompetitorsItemBg,
     },
     activeDevsValue: {
       position: 'absolute',

@@ -116,6 +116,7 @@ const Account = ({route}) => {
         break;
       case 'Privacy Policy':
         navigation.navigate('PrivacyPolicy');
+        break;
       case 'Notifications':
         navigation.navigate('Notifications', {options: NOTIFICATIONS_MOCK});
         break;

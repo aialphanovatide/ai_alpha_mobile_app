@@ -11,7 +11,7 @@ import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
 import useChartsStyles from './ChartsStyles';
 import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
-import {getService} from '../../../../../../services/aiAlphaApi';
+import {altGetService, getService} from '../../../../../../services/aiAlphaApi';
 
 const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
@@ -20,12 +20,8 @@ const CandlestickChart = ({route}) => {
 
   const [selectedInterval, setSelectedInterval] = useState(interval);
   const [lastPrice, setLastPrice] = useState(undefined);
-  const [resistanceLevels, setResistanceLevels] = useState([
-    43200, 43500, 43800, 44100,
-  ]);
-  const [supportLevels, setSupportLevels] = useState([
-    40600, 41000, 41500, 41800,
-  ]);
+  const [resistanceLevels, setResistanceLevels] = useState([]);
+  const [supportLevels, setSupportLevels] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeButtons, setActiveButtons] = useState([]);
@@ -57,34 +53,44 @@ const CandlestickChart = ({route}) => {
     }
   }
 
-  async function getSupportAndResistanceData(botName) {
-    try {
-      const supportValues = [];
-      const resistanceValues = [];
-      const data = await getService(`/api/coin-support-resistance/${botName}`);
-      if (data.success) {
-        const values = data.chart_values;
-        for (const key in values) {
-          console.log('Current value:', key);
-          if (key.includes('support')) {
-            supportValues.push(values[key]);
-          } else {
-            resistanceValues.push(values[key]);
+  useEffect(() => {
+    async function getSupportAndResistanceData(botName) {
+      try {
+        const supportValues = [];
+        const resistanceValues = [];
+        const data = await getService(
+          `/api/coin-support-resistance/${botName}`,
+        );
+        if (data.success) {
+          const values = data.chart_values;
+          for (const key in values) {
+            if (key.includes('support')) {
+              supportValues.push(values[key]);
+            } else {
+              resistanceValues.push(values[key]);
+            }
           }
         }
+        return {
+          support: supportValues,
+          resistance: resistanceValues,
+        };
+      } catch (error) {
+        console.error('Error fetching support and resistance data: ', error);
       }
-      return {supportValues, resistanceValues};
-    } catch (error) {
-      console.error('Error fetching support and resistance data: ', error);
     }
-  }
 
-  useEffect(() => {
-    const {supportValues, resistanceValues} =
-      getSupportAndResistanceData(coinBot);
-    setResistanceLevels(resistanceValues);
-    setSupportLevels(supportValues);
-  }, [activeButtons]);
+    getSupportAndResistanceData(coinBot)
+      .then(response => {
+        if (response) {
+          setResistanceLevels(response.resistance);
+          setSupportLevels(response.support);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching support and resistance data: ', error);
+      });
+  }, [activeButtons, coinBot]);
 
   useEffect(() => {
     const intervalId = setInterval(fetchChartData, 2000);
@@ -117,7 +123,12 @@ const CandlestickChart = ({route}) => {
       style={styles.scroll}
       // keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={true}>
-      <CandlestickDetails coin={symbol} interval={selectedInterval} lastPrice={lastPrice} styles={styles} />
+      <CandlestickDetails
+        coin={symbol}
+        interval={selectedInterval}
+        lastPrice={lastPrice}
+        styles={styles}
+      />
       <View style={styles.chartsWrapper}>
         <TimeframeSelector
           selectedInterval={selectedInterval}

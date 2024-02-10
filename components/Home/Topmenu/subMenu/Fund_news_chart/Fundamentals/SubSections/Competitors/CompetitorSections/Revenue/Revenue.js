@@ -1,8 +1,25 @@
-import {Text, View} from 'react-native';
+import {Image, ImageBackground, Text, View} from 'react-native';
 import React, {useContext} from 'react';
-import {VictoryAxis, VictoryBar, VictoryChart} from 'victory-native';
 import useRevenueStyles from './RevenueStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
+import {revenueImagesUrls} from './revenueImagesUrl';
+
+const GraphItem = ({value, scale, color, imageNumber, styles}) => {
+  const imagePath = revenueImagesUrls[color][imageNumber - 1];
+  return (
+    <View>
+      <Text style={styles.itemText}>${value}</Text>
+      <Image
+        source={imagePath}
+        style={[
+          {...styles.graphImage, width: 40},
+          imageNumber > 10 ? styles.marginBottom : {},
+        ]}
+        resizeMode="contain"
+      />
+    </View>
+  );
+};
 
 const RevenueGraphReferences = ({cryptos, styles}) => {
   return (
@@ -12,6 +29,11 @@ const RevenueGraphReferences = ({cryptos, styles}) => {
           key={index}
           style={[styles.selectorItem, {backgroundColor: item.color}]}>
           <Text style={styles.itemText}>{item.crypto}</Text>
+          {/* <Image
+            source={item.image}
+            resizeMode="contain"
+            style={styles.itemIcon}
+          /> */}
         </View>
       ))}
     </View>
@@ -21,40 +43,67 @@ const RevenueGraphReferences = ({cryptos, styles}) => {
 const Revenue = ({cryptos}) => {
   const {theme} = useContext(AppThemeContext);
   const styles = useRevenueStyles();
+  const values = cryptos.map(crypto => {
+    return {symbol: crypto.symbol, value: crypto.revenue};
+  });
+  const colors = ['blue', 'cyan', 'purple', 'magenta'];
+  const sortedValues = values.slice().sort((a, b) => b.value - a.value);
+  const maxValue = sortedValues[0];
+  const minValue = sortedValues[sortedValues.length - 1];
+  const valueRange = maxValue.value - minValue.value;
+
+  function formatNumber(num) {
+    const absNum = Math.abs(num);
+    const abbrev = ['', 'k', 'm', 'b', 't'];
+    const thousand = 1000;
+
+    const tier = (Math.log10(absNum) / 3) | 0;
+
+    if (tier == 0) return num;
+
+    const divisor = Math.pow(thousand, tier);
+    const formattedNum = (num / divisor).toFixed(1);
+
+    return formattedNum + abbrev[tier];
+  }
+
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.chartContainer}>
-        <VictoryChart>
-          <VictoryBar
-            width={600}
-            height={500}
-            style={{
-              data: {
-                fill: ({datum}) => datum.color || '#FB6822',
-              },
-              labels: {
-                fill: theme.textColor,
-              },
-            }}
-            alignment={'end'}
-            domain={{x: [0, 5], y: [0, 2.5]}}
-            data={cryptos.map(crypto => ({
-              x: crypto.symbol,
-              y: crypto.revenue,
-              color: crypto.color,
-            }))}
-            labels={cryptos.map(crypto => `$${crypto.revenue}b`)}
-          />
-          <VictoryAxis
-            style={{
-              axis: {stroke: theme.graphSecondaryColor, size: 1},
-              ticks: {stroke: 'none'},
-              tickLabels: {fill: 'none'},
-              grid: {stroke: 'none'},
-            }}
-          />
-        </VictoryChart>
         <RevenueGraphReferences cryptos={cryptos} styles={styles} />
+        <ImageBackground
+          style={[styles.bgImage, styles.first]}
+          source={require('../../../../../../../../../../assets/images/fundamentals/competitors/revenue/bg-1.png')}
+          resizeMode="contain">
+          <ImageBackground
+            style={[styles.bgImage, styles.second]}
+            source={require('../../../../../../../../../../assets/images/fundamentals/competitors/revenue/bg-2.png')}
+            resizeMode="contain">
+            <ImageBackground
+              style={[styles.bgImage]}
+              source={require('../../../../../../../../../../assets/images/fundamentals/competitors/revenue/bg-3.png')}
+              resizeMode="contain"></ImageBackground>
+          </ImageBackground>
+        </ImageBackground>
+        <View style={styles.imagesContainer}>
+          {values.map((revenueValue, index) => {
+            const scale =
+              1 - (revenueValue.value - minValue.value) / valueRange;
+            const color = colors[index % colors.length];
+            const imageNumber = Math.floor(scale * 14) + 1;
+            return (
+              <GraphItem
+                color={color}
+                imageNumber={imageNumber}
+                scale={scale}
+                key={index}
+                value={formatNumber(revenueValue.value)}
+                styles={styles}
+              />
+            );
+          })}
+        </View>
+        <View style={styles.grayRectangle} />
       </View>
     </View>
   );

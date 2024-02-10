@@ -57,7 +57,6 @@ const DApps = ({protocols}) => {
   const handleActiveProtocol = protocol => {
     setActiveProtocol(protocol);
   };
-
   return (
     <View>
       <View style={styles.mainImageContainer}>

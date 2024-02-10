@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import {
   getService,
-  getWithBodyService,
   postService,
 } from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
@@ -16,7 +15,6 @@ import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
-import BackButton from '../../../../../Analysis/BackButton/BackButton';
 
 const NewsComponent = ({route}) => {
   const styles = useNewsStyles();

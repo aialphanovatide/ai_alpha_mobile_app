@@ -51,7 +51,7 @@ const useUpgradeOverlayStyles = () => {
     },
     lockIcon: {
       flex: 1,
-      tintColor: theme.textColor,
+      tintColor: theme.lockIconColor,
     },
     secondLockIcon: {
       flex: 1,

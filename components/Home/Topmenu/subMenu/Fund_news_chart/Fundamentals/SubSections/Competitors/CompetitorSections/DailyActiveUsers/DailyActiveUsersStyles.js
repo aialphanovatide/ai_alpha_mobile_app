@@ -32,16 +32,16 @@ const useDailyActiveUsersStyles = () => {
       alignItems: 'center',
     },
     logoContainer: {
-      marginLeft: 22,
-      width: 28,
-      height: 28,
-      borderRadius: 14,
+      width: 30,
+      height: 30,
+      marginHorizontal: 10,
+      borderRadius: 15,
     },
     usersContainer: {
       flexDirection: 'row',
       width: '100%',
       padding: theme.boxesVerticalMargin,
-      backgroundColor: theme.boxesBackgroundColor,
+      backgroundColor: theme.fundamentalsCompetitorsItemBg,
       alignItems: 'center',
     },
     userImageContainer: {
@@ -57,8 +57,7 @@ const useDailyActiveUsersStyles = () => {
     itemName: {
       color: theme.inactiveTextColor,
       marginHorizontal: 10,
-      fontSize: theme.responsiveFontSize * 0.9,
-      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize * 0.875,
     },
     image: {
       flex: 1,
