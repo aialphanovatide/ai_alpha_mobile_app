@@ -28,7 +28,7 @@ const usePriceActionStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
       borderColor: theme.boxesBorderColor,
       overflow: 'hidden',
-      borderRadius: 6,
+      borderRadius: 4,
       justifyContent:'center'
     },
     tableScrollView: {
@@ -92,7 +92,8 @@ const usePriceActionStyles = () => {
       display: 'none',
     },
     categoriesContainer: {
-      flex:1,
+      paddingVertical: 10,
+      paddingHorizontal: 4,
       backgroundColor: theme.boxesBackgroundColor,
       overflow: 'hidden',
       borderWidth: 1,
@@ -130,13 +131,10 @@ const usePriceActionStyles = () => {
       flex: 1,
     },
     categoryWrapper: {
-      flex: 1,
       marginHorizontal: 5,
       alignItems: 'center',
       justifyContent: 'center',
     },
-    menuBg: {
-    }
   });
   return styles;
 };

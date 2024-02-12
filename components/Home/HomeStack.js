@@ -98,7 +98,13 @@ const SubMenuScreen = () => {
         swipeEnabled: false,
       }}
       tabBar={props => <FundNewsChartsMenu {...props} />}>
-      <SubMenuStack.Screen name="Fundamentals" component={Fundamentals} />
+      <SubMenuStack.Screen
+        name="Fundamentals"
+        component={Fundamentals}
+        initialParams={{
+          activeCoin: activeSubCoin,
+        }}
+      />
       <SubMenuStack.Screen
         name="Charts"
         component={CandlestickChart}

@@ -149,7 +149,7 @@ const menuData = [
       },
       {
         id: 63,
-        coin: 'ETH3',
+        coin: 'XRP',
         imageUri: 'https://cdn-icons-png.flaticon.com/512/3393/3393948.png',
       },
     ],
@@ -182,7 +182,7 @@ const menuData = [
       },
       {
         id: 73,
-        coin: 'XRP',
+        coin: 'FXS',
         imageUri: 'https://cdn-icons-png.flaticon.com/512/3393/3393948.png',
       },
     ],

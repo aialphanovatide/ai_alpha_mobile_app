@@ -6,15 +6,16 @@ const useCalendarSubMenuStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     menuContainer: {
-      alignSelf: 'center',
-      display: 'flex',
+      marginVertical: theme.boxesVerticalMargin,
       flexDirection: 'row',
+      alignSelf: 'center',
       backgroundColor: theme.subMenuBgColor,
+      borderRadius: 4,
     },
     menuItem: {
-      width: '50%',
+      width: '47.25%',
       backgroundColor: 'transparent',
-      borderRadius: 8,
+      borderRadius: 4,
       overflow: 'hidden',
     },
     menuItemText: {

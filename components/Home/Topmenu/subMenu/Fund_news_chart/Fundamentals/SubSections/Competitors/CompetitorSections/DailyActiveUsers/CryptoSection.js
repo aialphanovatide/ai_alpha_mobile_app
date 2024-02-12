@@ -57,7 +57,7 @@ const CryptoSection = ({name, logo, score, value}) => {
       <View>
         <View style={[styles.row, styles.noVerticalMargin]}>
           <Image source={logo} style={styles.logoContainer} />
-          <Text style={styles.label}>{name}</Text>
+          <Text style={styles.itemName}>{name}</Text>
         </View>
         <View style={styles.row}>
           <View style={styles.usersContainer}>

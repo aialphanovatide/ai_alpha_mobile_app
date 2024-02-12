@@ -50,7 +50,7 @@ const useThemeButtonStyles = () => {
       height: 35,
       alignItems: 'center',
       justifyContent: 'center',
-      transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+      transform: [{scaleX: 0.9}, {scaleY: 0.9}],
       marginRight: 10,
     },
   });

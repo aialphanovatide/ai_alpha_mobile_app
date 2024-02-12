@@ -23,6 +23,7 @@ const useTopTenGainersStyles = () => {
     table: {
       paddingTop: 10,
       backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 4,
     },
     row: {
       flex: 1,
@@ -40,7 +41,7 @@ const useTopTenGainersStyles = () => {
       width: 30,
       height: 30,
       marginRight: 25,
-      alignSelf: 'flex-start',
+      alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 15,
@@ -56,13 +57,18 @@ const useTopTenGainersStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
     },
+    positionContainer: {
+      width: 30,
+      marginRight: 4,
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center',
+    },
     coinPosition: {
-      marginRight: 7.5,
-      paddingHorizontal: 5,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize,
       fontWeight: 'bold',
-      textAlign: 'center',
+      textAlign: 'left',
     },
     coinData: {
       color: theme.textColor,

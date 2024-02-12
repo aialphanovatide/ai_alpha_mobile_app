@@ -75,7 +75,7 @@ const CalendarItem = ({event, coin, styles}) => {
               <Image
                 style={styles.timeIcon}
                 resizeMode={'contain'}
-                source={require('../../../../assets/images/fundamentals/competitors/tspeed.png')}
+                source={require('../../../../assets/images/analysis/calendar-time.png')}
               />
             </View>
             <Text style={styles.itemInfo}>{event.date_start}</Text>
@@ -164,7 +164,7 @@ const CryptoCalendar = ({selectedInterval}) => {
   return (
     <View style={styles.contentCenter}>
       {options.length === 0 || loading ? (
-        <View style={styles.container}>
+        <View style={styles.loaderContainer}>
           <Loader />
         </View>
       ) : (

@@ -42,8 +42,8 @@ const Calendar = ({handleReturn}) => {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Calendar</Text>
         </View>
+        <Text style={styles.subTitle}>Crypto</Text>
         <View style={styles.calendarContent}>
-          <Text style={styles.subTitle}>Crypto</Text>
           <SubMenu
             Intervals={Intervals}
             handlePress={handleCryptoPress}
@@ -51,8 +51,8 @@ const Calendar = ({handleReturn}) => {
           />
           <CryptoCalendar selectedInterval={cryptoSelectedInterval.days} />
         </View>
+        <Text style={styles.subTitle}>Macroeconomics</Text>
         <View style={styles.calendarContent}>
-          <Text style={styles.subTitle}>Macroeconomics</Text>
           <TVEconomicCalendar
             selectedInterval={economicSelectedInterval}
             width={400}

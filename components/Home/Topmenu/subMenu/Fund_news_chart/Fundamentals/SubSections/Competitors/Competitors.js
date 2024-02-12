@@ -98,7 +98,7 @@ const Competitors = () => {
       tps: [11.14],
       fee: 1.3,
       apr: 4.44,
-      revenue: 2.48,
+      revenue: 2480000000,
       activeDevs: 162.87,
       inflationRate: [
         {year: 2022, value: 4.5},
@@ -118,7 +118,7 @@ const Competitors = () => {
       tps: [65000],
       fee: 0.01,
       apr: 8.69,
-      revenue: 0.019,
+      revenue: 19180000,
       activeDevs: 82.57,
       inflationRate: [
         {year: 2022, value: 8},
@@ -138,7 +138,7 @@ const Competitors = () => {
       tps: [1000],
       fee: 0.07,
       apr: 6.94,
-      revenue: 0.16,
+      revenue: 166000000,
       activeDevs: 166.8,
       inflationRate: [
         {year: 2022, value: 4.72},
@@ -158,7 +158,7 @@ const Competitors = () => {
       tps: [4500, 6500],
       fee: 0.96,
       apr: 3.14,
-      revenue: 0.033,
+      revenue: 33000000,
       activeDevs: 47.17,
       inflationRate: null,
     },

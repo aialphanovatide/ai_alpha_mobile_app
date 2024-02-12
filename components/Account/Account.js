@@ -63,7 +63,7 @@ const Account = ({route}) => {
   const {userInfo} = useContext(RevenueCatContext);
 
   console.log(userInfo);
-
+// Account menu!
   const options = [
     {
       name: 'Subscriptions',
@@ -72,7 +72,7 @@ const Account = ({route}) => {
       component: null,
     },
     {
-      name: 'Privacy Policy',
+      name: 'Legal and Information',
       logo: require('../../assets/images/account/informationicon.png'),
       screenName: null,
       component: null,
@@ -84,14 +84,8 @@ const Account = ({route}) => {
       component: null,
     },
     {
-      name: 'Dark Mode',
-      logo: require('../../assets/images/account/darkmode.png'),
-      screenName: null,
-      component: <ThemeButton />,
-    },
-    {
-      name: 'Delete Account',
-      logo: require('../../assets/images/account/delete-account.png'),
+      name: 'Settings',
+      logo: require('../../assets/images/account/settingsscreenicon.png'),
       screenName: null,
       component: null,
     },
@@ -108,14 +102,15 @@ const Account = ({route}) => {
       case 'Log Out':
         handleLogout();
         break;
-      case 'Delete Account':
-        navigation.navigate('DeleteAccountScreen');
+      case 'Settings':
+        navigation.navigate('SettingsScreen');
         break;
       case 'Subscriptions':
         navigation.navigate(option.screenName);
         break;
-      case 'Privacy Policy':
-        navigation.navigate('PrivacyPolicy');
+      case 'Legal and Information':
+        navigation.navigate('Legal');
+        break;
       case 'Notifications':
         navigation.navigate('Notifications', {options: NOTIFICATIONS_MOCK});
         break;

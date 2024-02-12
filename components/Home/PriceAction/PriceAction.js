@@ -26,15 +26,6 @@ const CategorySelector = ({
             style={styles.categoryWrapper}
             key={category.category_id}
             onPress={() => handleActiveCoins(coins, category)}>
-            {/* <Text
-              style={[
-                styles.dataCell,
-                styles.category,
-                activeCategory?.category_id === category.category_id &&
-                  styles.activeText,
-              ]}>
-              {category.icon}
-            </Text> */}
             <View
               style={[
                 styles.categoryIconContainer,

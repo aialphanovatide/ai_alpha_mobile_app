@@ -8,14 +8,14 @@ const useDappsStyles = () => {
     itemContainer: {
       flex: 1,
       flexDirection: 'row',
+      padding: 10,
     },
     logoContainer: {
       width: 50,
-      height: 65,
+      height: 56,
       justifyContent: 'flex-start',
       alignItems: 'center',
       overflow: 'visible',
-      marginHorizontal: 4,
     },
     logo: {
       flex: 1,
@@ -34,12 +34,13 @@ const useDappsStyles = () => {
       flex: 1,
     },
     dataContainer: {
-      margin: 10,
+      margin: theme.boxesVerticalMargin,
       padding: 10,
       backgroundColor: theme.boxesBackgroundColor,
     },
     title: {
-      marginVertical: 5,
+      marginVertical: theme.boxesVerticalMargin,
+      marginHorizontal: 12,
       fontSize: theme.titleFontSize,
       textTransform: 'capitalize',
       color: theme.textColor,
@@ -48,12 +49,15 @@ const useDappsStyles = () => {
     text: {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
+      lineHeight: 16,
     },
     description: {
+      marginHorizontal: 10,
       marginBottom: 10,
     },
     row: {
-      marginHorizontal: 5,
+      marginVertical: 4,
+      marginHorizontal: 10,
       width: '70%',
       flexWrap: 'wrap',
       flexDirection: 'row',

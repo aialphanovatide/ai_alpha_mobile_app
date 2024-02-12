@@ -10,21 +10,11 @@ const Timeline = ({events}) => {
       {events ? (
         events.map((event, index) => (
           <View key={index} style={styles.timelineEventContainer}>
-            <View
-              style={[
-                styles.timelineDot,
-                event.hasFinished ? {} : styles.futureDot,
-              ]}
-            />
-            <View
-              style={[
-                styles.timelineLine,
-                event.hasFinished ? {} : styles.futureEventLine,
-              ]}
-            />
+            <View style={styles.timelineDot} />
+            <View style={styles.timelineLine} />
             <View style={styles.timelineContentContainer}>
               <Text style={styles.dateText}>{event.date}</Text>
-              <Text style={styles.descriptionText}>{event.description}</Text>
+              <Text style={styles.descriptionText}>{event.incident_description}</Text>
             </View>
           </View>
         ))
