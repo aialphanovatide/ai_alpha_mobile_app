@@ -63,7 +63,7 @@ const Account = ({route}) => {
   const {userInfo} = useContext(RevenueCatContext);
 
   console.log(userInfo);
-// Account menu!
+// Account menu!!
   const options = [
     {
       name: 'Subscriptions',
