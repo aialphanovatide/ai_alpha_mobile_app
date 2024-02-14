@@ -57,11 +57,11 @@ const useVAMStyles = () => {
     dataRow: {
       width: '100%',
       flexDirection: 'row',
-      backgroundColor: theme.boxesBackgroundColor,
+      backgroundColor: theme.fundamentalsCompetitorsItemBg,
     },
     dataImageContainer: {
       width: 'auto',
-      height: 110,
+      height: '100%',
     },
     dataImage: {
       flex: 1,
@@ -69,10 +69,11 @@ const useVAMStyles = () => {
     dataText: {
       marginVertical: theme.boxesVerticalMargin,
       marginHorizontal: 8,
+      padding: 4,
       flex: 1,
       color: theme.textColor,
-      fontSize: theme.responsiveFontSize * 0.85,
-      lineHeight: 22,
+      fontSize: theme.responsiveFontSize * 0.8,
+      lineHeight: 18,
       textAlign: 'left',
     },
     activeItemBgImage: {

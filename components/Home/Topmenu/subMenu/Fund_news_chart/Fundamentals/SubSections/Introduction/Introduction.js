@@ -2,9 +2,14 @@ import {Image, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useIntroductionStyles from './IntroductionStyles';
 import Loader from '../../../../../../../Loader/Loader';
+
+import {fundamentalsMock} from '../../fundamentalsMock';
 const Introduction = ({getIntroductionData, coin}) => {
   const styles = useIntroductionStyles();
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState({
+    description: fundamentalsMock.introduction.description,
+    dataItems: fundamentalsMock.introduction.dataItems,
+  });
 
   const parseContent = text => {
     const [description, ...dataItems] = text.trim().split('\n');
@@ -19,20 +24,20 @@ const Introduction = ({getIntroductionData, coin}) => {
     };
   };
 
-  useEffect(() => {
-    const getContent = async () => {
-      const data = await getIntroductionData(coin);
-      console.log('Introductions response from server: ', data);
-      if (data && data !== undefined) {
-        const parsedContent = parseContent(data.message.content);
-        console.log('Parsed content: ', parsedContent);
-        setContent(parsedContent);
-      } else {
-        setContent('');
-      }
-    };
-    getContent();
-  }, [coin]);
+  // useEffect(() => {
+  //   const getContent = async () => {
+  //     const data = await getIntroductionData(coin);
+  //     console.log('Introductions response from server: ', data);
+  //     if (data && data !== undefined) {
+  //       const parsedContent = parseContent(data.message.content);
+  //       console.log('Parsed content: ', parsedContent);
+  //       setContent(parsedContent);
+  //     } else {
+  //       setContent('');
+  //     }
+  //   };
+  //   getContent();
+  // }, [coin]);
 
   return (
     <View style={styles.container}>

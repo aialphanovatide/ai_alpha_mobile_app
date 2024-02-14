@@ -71,7 +71,7 @@ const MechanismsMenu = ({
   );
 };
 
-const ContentItem = ({data, styles}) => {
+const ContentItem = ({data, styles, isDarkMode}) => {
   return (
     <View style={styles.dataContainer}>
       <Text style={styles.dataTitle}>{data.title}</Text>
@@ -80,7 +80,7 @@ const ContentItem = ({data, styles}) => {
           <Image
             style={styles.dataImage}
             alt={data.name}
-            source={data.image}
+            source={isDarkMode ? data.image.dark : data.image.light}
             resizeMode={'contain'}
           />
         </View>
@@ -92,6 +92,7 @@ const ContentItem = ({data, styles}) => {
 
 const ValueAccrualMechanisms = ({options, contentData}) => {
   const styles = useVAMStyles();
+  const {isDarkMode} = useContext(AppThemeContext);
   const [activeOption, setActiveOption] = useState(options[0]);
   const [filteredData, setFilteredData] = useState(null);
 
@@ -120,16 +121,16 @@ const ValueAccrualMechanisms = ({options, contentData}) => {
     <View style={styles.container}>
       {activeOption && filteredData ? (
         <View>
-          <MechanismsMenu
+          {/* <MechanismsMenu
             options={options}
             handleOptionChange={handleOptionChange}
             activeOption={activeOption}
             styles={styles}
-          />
+          /> */}
           <View style={styles.content}>
             {filteredData &&
               filteredData.map((data, index) => (
-                <ContentItem data={data} key={index} styles={styles} />
+                <ContentItem data={data} key={index} styles={styles} isDarkMode={isDarkMode}/>
               ))}
           </View>
         </View>

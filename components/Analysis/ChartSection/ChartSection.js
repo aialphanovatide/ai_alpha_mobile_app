@@ -5,12 +5,15 @@ import AdvancedTvChart from '../Charts/AdvancedTvChart';
 import useChartSectionStyles from './ChartSectionStyles';
 
 const ChartSection = ({route, navigation}) => {
-  const {title, widgetId, symbol} = route.params;
+  const {title, widgetId, symbol, description} = route.params;
   const styles = useChartSectionStyles();
   return (
     <SafeAreaView style={styles.mainSection}>
       <BackButton />
       <Text style={styles.title}>{title}</Text>
+      <Text style={styles.sectionDescription}>
+        {description}
+      </Text>
       <AdvancedTvChart
         symbol={symbol}
         widgetId={widgetId}

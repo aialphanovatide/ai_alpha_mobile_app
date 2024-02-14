@@ -21,8 +21,8 @@ const useDailyActiveUsersStyles = () => {
     labelOrange: {
       marginHorizontal: 24,
       textAlign: 'center',
-      fontSize: theme.responsiveFontSize * 0.825,
-      color: theme.orange,
+      fontWeight: 'bold',
+      fontSize: theme.titleFontSize * 0.85,
     },
     row: {
       position: 'relative',

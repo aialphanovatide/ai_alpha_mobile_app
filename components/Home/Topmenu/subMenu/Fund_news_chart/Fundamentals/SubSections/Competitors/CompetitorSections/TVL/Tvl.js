@@ -14,7 +14,9 @@ const TotalValueLocked = ({cryptos}) => {
   const styles = useChartStyles();
   return (
     <View style={styles.chartContainer}>
-      <VictoryChart>
+      <VictoryChart
+        height={450}
+        padding={{left: 55, right: 50, bottom: 40, top: 40}}>
         <VictoryAxis
           style={{
             axis: {stroke: theme.chartsColor},
@@ -34,6 +36,7 @@ const TotalValueLocked = ({cryptos}) => {
             },
             grid: {stroke: theme.chartsColor},
           }}
+          tickFormat={value => `$${value}b`}
         />
         <VictoryBar
           style={{
@@ -42,8 +45,8 @@ const TotalValueLocked = ({cryptos}) => {
             },
           }}
           alignment={'middle'}
-          domain={{x: [0, 5], y: [0, 30]}}
-          domainPadding={{x: 1, y: 3}}
+          domain={{x: [0, 5], y: [0, 20]}}
+          domainPadding={{x: 1, y: 1.5}}
           data={cryptos.map(crypto => ({
             x: crypto.symbol,
             y: crypto.tvl,

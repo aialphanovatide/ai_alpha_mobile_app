@@ -13,9 +13,10 @@ const useCompetitorsStyles = () => {
       flexDirection: 'row',
     },
     menuItemContainer: {
-      width: theme.width * 0.3,
-      height: theme.height * 0.15,
+      width: theme.width * 0.225,
+      height: theme.height * 0.125,
       margin: 4,
+      marginBottom: 0,
       borderRadius: 4,
       overflow: 'hidden',
       alignItems: 'center',
@@ -23,9 +24,9 @@ const useCompetitorsStyles = () => {
     },
     iconContainer: {
       position: 'absolute',
-      top: 12,
+      top: 10,
       width: 'auto',
-      height: 20,
+      height: 15,
       margin: 5,
     },
     itemIcon: {
@@ -37,8 +38,7 @@ const useCompetitorsStyles = () => {
       padding: 5,
       color: theme.fundamentalsMenuText,
       textAlign: 'center',
-      fontSize: theme.responsiveFontSize * 0.8,
-      lineHeight: 22,
+      fontSize: theme.responsiveFontSize * 0.725,
     },
     activeItem: {
       color: theme.orange,
@@ -49,11 +49,17 @@ const useCompetitorsStyles = () => {
       marginVertical: theme.boxesVerticalMargin,
     },
     title: {
-      margin: theme.titlesVerticalMargin * 0.5,
+      marginBottom: theme.titlesVerticalMargin * 0.5,
       marginHorizontal: theme.titlesVerticalMargin,
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize * 0.95,
       fontWeight: 'bold',
+    },
+    row: {
+      width: '100%',
+      position: 'relative',
+      marginVertical: 8,
+      flexDirection: 'row',
     },
   });
   return styles;

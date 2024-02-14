@@ -42,6 +42,11 @@ const Calendar = ({handleReturn}) => {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Calendar</Text>
         </View>
+        <Text style={styles.sectionDescription}>
+          Presents key cryptocurrency events, such as token launches, protocol
+          updates and regulatory decisions, serving as an aid to anticipate
+          market movements and adjust trading strategies.
+        </Text>
         <Text style={styles.subTitle}>Crypto</Text>
         <View style={styles.calendarContent}>
           <SubMenu

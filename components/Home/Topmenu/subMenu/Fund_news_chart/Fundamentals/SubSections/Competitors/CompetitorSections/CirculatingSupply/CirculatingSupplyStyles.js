@@ -16,7 +16,8 @@ const useCirculatingSupplyStyles = () => {
       height: 15,
       width: '100%',
       marginVertical: 4,
-      borderWidth: 1,
+      borderWidth: 2,
+      backgroundColor: theme.secondaryTextColor,
       borderColor: theme.secondaryTextColor,
     },
     progressBarFill: {
@@ -27,26 +28,57 @@ const useCirculatingSupplyStyles = () => {
       borderRightWidth: 0,
       borderLeftWidth: 0,
     },
+    referenceLabel: {
+      marginHorizontal: 12,
+      paddingHorizontal: 4,
+      paddingVertical: 2,
+      fontSize: theme.responsiveFontSize * 0.7,
+      lineHeight: 20,
+      borderRadius: 4,
+      color: theme.whiteTextColor,
+    },
+    symbolLabel: {
+      color: theme.inactiveTextColor,
+      fontSize: theme.responsiveFontSize * 0.725,
+      borderColor: theme.inactiveTextColor,
+      borderWidth: 1,
+    },
+    noMargin: {
+      marginHorizontal: 0,
+    },
+    noPaddingH: {
+      paddingHorizontal: 0,
+    },
     labelRight: {
-      position: 'absolute',
-      right: 16,
-      textAlign: 'center',
-      fontSize: theme.responsiveFontSize * 0.825,
-      color: theme.secondaryTextColor,
+      marginHorizontal: 0,
+      backgroundColor: theme.grayLabelColor,
     },
     labelLeft: {
-      position: 'absolute',
-      left: 16,
-      textAlign: 'center',
-      fontSize: theme.responsiveFontSize * 0.825,
-      color: theme.orange,
+      backgroundColor: theme.orangeLabelColor,
+    },
+    symbolWrapper: {
+      padding: 6,
+      paddingBottom: 0,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    referenceIconImage: {
+      width: 14,
+      height: 14,
+      tintColor: theme.inactiveTextColor,
+    },
+    valueLabel:{
+      fontSize: theme.responsiveFontSize * 0.75,
+      color: theme.inactiveGrayText,
+
     },
     labelBottom: {
       marginLeft: '45%',
       marginTop: 2,
       flex: 1,
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontSize: theme.responsiveFontSize * 0.925,
       color: theme.orange,
+      fontWeight: 'bold',
     },
     text: {
       color: theme.textColor,
@@ -58,6 +90,7 @@ const useCirculatingSupplyStyles = () => {
       position: 'relative',
       marginVertical: theme.boxesVerticalMargin,
       width: '100%',
+      paddingHorizontal: 10,
       flexDirection: 'row',
       alignItems: 'center',
     },
@@ -100,9 +133,8 @@ const useCirculatingSupplyStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
     },
     inflationaryArrow: {
-      width: 12,
-      height: 12,
-      marginRight: 6,
+      width: 14,
+      height: 14,
       tintColor: theme.textColor,
     },
     inflationaryLabel: {

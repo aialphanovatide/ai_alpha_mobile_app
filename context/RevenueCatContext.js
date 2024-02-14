@@ -20,6 +20,36 @@ const RevenueCatProvider = ({children}) => {
     subscribed: false,
   });
 
+  // This function order the packages in the Figma defined order.
+
+  const orderPackages = data => {
+    const order = [
+      'Founders_14999_m1',
+      'Bitcoin_4999_m1',
+      'Ethereum_4999_m1',
+      'Baseblock_4999_m1',
+      'Corechain_4999_m1',
+      'Rootlink_4999_m1',
+      'Xpayments_4999_m1',
+      'Lsds_4999_m1',
+      'Boostlayer_4999_m1',
+      'Truthnodes_4999_m1',
+      'Cycleswap_4999_m1',
+      'Nextrade_4999_m1',
+      'Diversefi_4999_m1',
+      'Intellichain_4999_m1',
+    ];
+
+    const compare = (objA, objB) => {
+      const indexA = order.indexOf(objA.offeringIdentifier);
+      const indexB = order.indexOf(objB.offeringIdentifier);
+      return indexA - indexB;
+    };
+
+    data.sort(compare);
+    return data;
+  };
+
   const init = async userId => {
     if (Platform.OS === 'ios') {
       Purchases.configure({apiKey: REVENUECAT_IOS_API_KEY, appUserID: userId});
@@ -96,14 +126,14 @@ const RevenueCatProvider = ({children}) => {
         const currentPackages = currentOffering?.availablePackages;
         currentPackages[0].subscriptionDescription =
           currentOffering.metadata.description;
-        currentPackages[0].subscriptionIcon =
-          currentOffering.metadata.icon;
+        currentPackages[0].subscriptionIcon = currentOffering.metadata.icon;
         if (currentPackages && Array.isArray(currentPackages)) {
           all_packages.push(...currentPackages);
         }
       }
-      console.log('All packages from offerings: ', all_packages);
-      setPackages(all_packages);
+      const orderedPackages = orderPackages(all_packages);
+      console.log('All packages from offerings: ', orderedPackages);
+      setPackages(orderedPackages);
     } catch (error) {
       console.error('Error trying to get offerings: ', error);
     }

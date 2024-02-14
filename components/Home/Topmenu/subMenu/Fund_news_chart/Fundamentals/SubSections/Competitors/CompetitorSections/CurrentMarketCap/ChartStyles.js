@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
 const useChartStyles = () => {
@@ -7,7 +7,10 @@ const useChartStyles = () => {
   const styles = StyleSheet.create({
     chartContainer: {
       flex: 1,
+      marginHorizontal: 10,
+      minHeight: 475,
       backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 4,
     },
   });
   return styles;

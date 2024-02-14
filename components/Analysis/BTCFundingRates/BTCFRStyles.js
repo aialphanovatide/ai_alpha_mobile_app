@@ -9,6 +9,7 @@ const useBtcFundingRatesStyles = () => {
       flex: 1,
       height: theme.height,
       backgroundColor: theme.mainBackgroundColor,
+      padding: 10,
     },
     titleContainer: {
       flexDirection: 'row',
@@ -77,6 +78,25 @@ const useBtcFundingRatesStyles = () => {
     },
     priceDown: {
       color: theme.priceDownColor,
+    },
+    sectionDescription: {
+      width: '100%',
+      paddingHorizontal: 8,
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.textColor,
+      textAlign: 'left',
+    },
+    readMoreButton: {
+      marginHorizontal: 8,
+      flex: 1,
+    },
+    readMoreText: {
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: '#7B7BFF',
+      lineHeight: 24,
+      textDecorationLine: 'underline',
+      textDecorationColor: '#7B7BFF',
+      fontWeight: 'bold',
     },
   });
   return styles;

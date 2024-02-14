@@ -3,7 +3,13 @@ import React, {useContext} from 'react';
 import useActiveDevelopersStyles from './ActiveDevelopersStyle';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
-const generateActiveDevs = (value, maxValue, styles, isDarkMode) => {
+const generateActiveDevs = (
+  value,
+  maxValue,
+  styles,
+  isDarkMode,
+  chosenColor,
+) => {
   const images = [];
   for (let i = 0; i < 4; i++) {
     const colored = i < Math.ceil((value / maxValue) * 4);
@@ -15,7 +21,7 @@ const generateActiveDevs = (value, maxValue, styles, isDarkMode) => {
             styles.image,
             {
               tintColor: colored
-                ? '#F98404'
+                ? chosenColor
                 : isDarkMode
                 ? '#74788D'
                 : '#EFEFEF',
@@ -30,7 +36,9 @@ const generateActiveDevs = (value, maxValue, styles, isDarkMode) => {
   return images;
 };
 
-const ActiveDevsItem = ({item, styles, maxValue}) => {
+const ActiveDevsItem = ({item, styles, maxValue, itemIndex}) => {
+  const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
+  const chosenColor = tintColors[itemIndex > 3 ? itemIndex % 3 : itemIndex];
   const {isDarkMode} = useContext(AppThemeContext);
   return (
     <View style={styles.itemContainer}>
@@ -45,8 +53,16 @@ const ActiveDevsItem = ({item, styles, maxValue}) => {
         <Text style={styles.itemName}>{item.crypto}</Text>
       </View>
       <View style={styles.activeDevsContainer}>
-        {generateActiveDevs(item.activeDevs, maxValue, styles, isDarkMode)}
-        <Text style={styles.activeDevsValue}>{item.activeDevs}</Text>
+        {generateActiveDevs(
+          item.activeDevs,
+          maxValue,
+          styles,
+          isDarkMode,
+          chosenColor,
+        )}
+        <Text style={[styles.activeDevsValue, {color: chosenColor}]}>
+          {item.activeDevs}
+        </Text>
       </View>
     </View>
   );
@@ -70,6 +86,7 @@ const ActiveDevelopers = ({cryptos}) => {
           key={index}
           item={item}
           styles={styles}
+          itemIndex={index}
           maxValue={findMaxActiveDevsValue(cryptos)}
         />
       ))}

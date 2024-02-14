@@ -94,7 +94,7 @@ const useAlertsStyles = () => {
       alignSelf: 'center',
     },
     button: {
-      width: '33.33%',
+      width: '49.5%',
       padding: 4,
       justifyContent: 'center',
       alignItems: 'center',

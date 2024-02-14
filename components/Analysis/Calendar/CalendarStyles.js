@@ -15,7 +15,8 @@ const useCalendarStyles = () => {
     },
     titleContainer: {
       paddingHorizontal: 10,
-      marginVertical: theme.titlesVerticalMargin,
+      marginTop: theme.titlesVerticalMargin,
+      marginVertical: theme.boxesVerticalMargin,
     },
     title: {
       fontWeight: 'bold',
@@ -37,6 +38,13 @@ const useCalendarStyles = () => {
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize,
       fontWeight: 'bold',
+    },
+    sectionDescription: {
+      width: '100%',
+      marginHorizontal: 10,
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.textColor,
+      textAlign: 'left',
     },
   });
   return styles;

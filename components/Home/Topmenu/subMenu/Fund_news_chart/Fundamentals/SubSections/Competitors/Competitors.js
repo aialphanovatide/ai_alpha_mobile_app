@@ -21,6 +21,7 @@ import ActiveDevelopers from './CompetitorSections/ActiveDevelopers/ActiveDevelo
 import InflationRate from './CompetitorSections/InflationRate/InflationRate';
 import useCompetitorsStyles from './CompetitorsStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
+import {fundamentalsMock} from '../../fundamentalsMock';
 
 const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
   const {theme} = useContext(AppThemeContext);
@@ -49,7 +50,8 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
           style={[
             styles.menuItemName,
             activeOption.name === item.name && styles.activeItem,
-          ]} numberOfLines={2}>
+          ]}
+          numberOfLines={2}>
           {item.name}
         </Text>
       </ImageBackground>
@@ -64,7 +66,10 @@ const CompetitorsMenu = ({
   styles,
 }) => {
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} bounces={false}>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      bounces={false}>
       <View style={styles.menuContainer}>
         {options.map((item, index) => (
           <MenuItem
@@ -80,145 +85,76 @@ const CompetitorsMenu = ({
   );
 };
 
-// Todo - Move content outside the component
-
-const Competitors = () => {
+const Competitors = ({cryptosData, subsectionsData, handleAboutPress}) => {
   const styles = useCompetitorsStyles();
-  const cryptosData = [
-    {
-      crypto: 'Ethereum',
-      symbol: 'ETH',
-      image: require('../../../../../../../../assets/ETH.png'),
-      maxValue: Infinity,
-      percentageValue: 100,
-      inflationary: false,
-      marketCap: [250.3, 250331978.508],
-      tvl: 26.6,
-      color: '#399AEA',
-      tps: [11.14],
-      fee: 1.3,
-      apr: 4.44,
-      revenue: 2480000000,
-      activeDevs: 162.87,
-      inflationRate: [
-        {year: 2022, value: 4.5},
-        {year: 2023, value: -0.16},
-      ],
-    },
-    {
-      crypto: 'Solana',
-      symbol: 'SOL',
-      image: require('../../../../../../../../assets/SOL.png'),
-      maxValue: Infinity,
-      percentageValue: 75,
-      inflationary: null,
-      marketCap: [25.7, 25696025.115],
-      tvl: 0.67,
-      color: '#20CBDD',
-      tps: [65000],
-      fee: 0.01,
-      apr: 8.69,
-      revenue: 19180000,
-      activeDevs: 82.57,
-      inflationRate: [
-        {year: 2022, value: 8},
-        {year: 2023, value: 7},
-      ],
-    },
-    {
-      crypto: 'Cardano',
-      symbol: 'ADA',
-      image: require('../../../../../../../../assets/ADA.png'),
-      maxValue: '45 billion ADA',
-      percentageValue: 78,
-      inflationary: true,
-      marketCap: [13.4, 13412098.765],
-      tvl: 0.25,
-      color: '#895EF6',
-      tps: [1000],
-      fee: 0.07,
-      apr: 6.94,
-      revenue: 166000000,
-      activeDevs: 166.8,
-      inflationRate: [
-        {year: 2022, value: 4.72},
-        {year: 2023, value: 2.58},
-      ],
-    },
-    {
-      crypto: 'Avalanche',
-      symbol: 'AVAX',
-      image: require('../../../../../../../../assets/AVAX.png'),
-      maxValue: '720 million AVAX',
-      percentageValue: 49,
-      inflationary: false,
-      marketCap: [7.9, 7974837.865],
-      tvl: 3,
-      color: '#C539B4',
-      tps: [4500, 6500],
-      fee: 0.96,
-      apr: 3.14,
-      revenue: 33000000,
-      activeDevs: 47.17,
-      inflationRate: null,
-    },
-  ];
 
   const content = [
-    {
-      name: 'Type Of Token',
-      component: <TypeOfToken tokens={cryptosData} />,
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/typeoftoken.png'),
-    },
-    {
-      name: 'Circulating Supply',
-      component: <CirculatingSupply cryptos={cryptosData} />,
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/circulatingsupply.png'),
-    },
     {
       name: 'Current Market Cap',
       component: <CurrentMarketCap cryptos={cryptosData} />,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/cmc.png'),
+      sectionDescription: subsectionsData.marketCap.sectionDescription,
+    },
+    {
+      name: 'Supply Model',
+      component: <CirculatingSupply cryptos={cryptosData} />,
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/circulatingsupply.png'),
+      sectionDescription: subsectionsData.supplyModel.sectionDescription,
+    },
+
+    {
+      name: 'Type Of Token',
+      component: <TypeOfToken tokens={cryptosData} />,
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/typeoftoken.png'),
+      sectionDescription: subsectionsData.typeOfToken.sectionDescription,
     },
     {
       name: 'TVL',
       component: <TotalValueLocked cryptos={cryptosData} />,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/TVL.png'),
+      sectionDescription: subsectionsData.TVL.sectionDescription,
     },
     {
       name: 'Daily Active Users',
       component: <DailyActiveUsers cryptos={cryptosData} />,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/dailyusers.png'),
+      sectionDescription: subsectionsData.dailyActiveUsers.sectionDescription,
     },
     {
       name: 'Transaction Fees',
       component: <TransactionFees cryptos={cryptosData} />,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/tfee.png'),
+      sectionDescription: subsectionsData.transactionFees.sectionDescription,
     },
     {
       name: 'Transaction Speed',
       component: <TransactionSpeed cryptos={cryptosData} />,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/tspeed.png'),
+      sectionDescription: subsectionsData.transactionSpeed.sectionDescription,
     },
     {
       name: 'Inflation Rate',
       component: <InflationRate cryptos={cryptosData} />,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/inflationrate.png'),
+      sectionDescription: subsectionsData.inflationRate.sectionDescription,
     },
     {
       name: 'APR',
       component: <Apr cryptos={cryptosData} />,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/apr.png'),
+      sectionDescription: subsectionsData.APR.sectionDescription,
     },
     {
       name: 'Active Developers',
       component: <ActiveDevelopers cryptos={cryptosData} />,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/activedevs.png'),
+      sectionDescription: subsectionsData.activeDevelopers.sectionDescription,
     },
     {
       name: 'Revenue',
       component: <Revenue cryptos={cryptosData} />,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/revenue.png'),
+      sectionDescription: subsectionsData.revenue.sectionDescription,
     },
   ];
 
@@ -238,7 +174,9 @@ const Competitors = () => {
       />
       <View style={styles.selectedOptionContent}>
         <CompetitorSection
+          handleAboutPress={handleAboutPress}
           title={activeOption.name}
+          description={activeOption.sectionDescription}
           component={activeOption.component}
           styles={styles}
         />

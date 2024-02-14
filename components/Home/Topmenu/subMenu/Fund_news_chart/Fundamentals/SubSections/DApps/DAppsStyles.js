@@ -26,7 +26,7 @@ const useDappsStyles = () => {
     },
     mainImageContainer: {
       height: 300,
-      marginVertical: 20,
+      marginTop: theme.boxesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -36,7 +36,6 @@ const useDappsStyles = () => {
     dataContainer: {
       margin: theme.boxesVerticalMargin,
       padding: 10,
-      backgroundColor: theme.boxesBackgroundColor,
     },
     title: {
       marginVertical: theme.boxesVerticalMargin,
@@ -55,17 +54,81 @@ const useDappsStyles = () => {
       marginHorizontal: 10,
       marginBottom: 10,
     },
-    row: {
-      marginVertical: 4,
-      marginHorizontal: 10,
-      width: '70%',
-      flexWrap: 'wrap',
+    protocolItemContainer: {
+      position: 'relative',
+      width: '100%',
+      minHeight:40,
+      marginVertical: theme.boxesVerticalMargin * 1.2,
       flexDirection: 'row',
-      justifyContent: 'flex-start',
+    },
+    row: {
+      position: 'relative',
+      flexDirection: 'row',
     },
     strong: {
       fontWeight: 'bold',
     },
+    protocolImage: {
+      width: 40,
+      height: 40,
+      alignSelf: 'center',
+      zIndex: 20,
+    },
+    line: {
+      position: 'absolute',
+      left: '10%',
+      width: '10%',
+      borderTopWidth: 6,
+      borderColor: theme.fundamentalsCompetitorsItemBg,
+      alignSelf: 'center'
+    },
+    protocolDataContainer: {
+      flex: 1,
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      marginLeft: 15,
+      width: '85%',
+      backgroundColor: theme.fundamentalsCompetitorsItemBg,
+      padding: 12,
+    },
+    arrowButton: {
+      width: 10,
+      height: 10,
+      padding: 2,
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    arrowImage: {
+      flex: 1,
+      tintColor: theme.grayArrowColor
+    },
+    protocolName: {
+      fontSize: theme.responsiveFontSize * 0.85,
+      color: theme.inactiveTextColor,
+      fontWeight: 'bold',
+    },
+    tvl: {
+      position: 'absolute',
+      right: 0,
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.inactiveTextColor,
+      fontWeight: 'bold',
+    },
+    protocolDescription: {
+      marginVertical: theme.boxesVerticalMargin,
+      fontSize: theme.responsiveFontSize * 0.8,
+      lineHeight: 16,
+      color: theme.inactiveTextColor,
+    },
+    hidden: {
+      display: 'none'
+    },
+    activeItem: {
+      flex: 1,
+      height: 'auto',
+    }
   });
   return styles;
 };

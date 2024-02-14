@@ -44,10 +44,9 @@ const useActiveDevelopersStyles = () => {
     },
     activeDevsValue: {
       position: 'absolute',
-      right: 20,
+      left: '55%',
       alignSelf: 'center',
-      color: theme.orange,
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontSize: theme.titleFontSize * 0.85,
       fontWeight: 'bold',
     },
   });
