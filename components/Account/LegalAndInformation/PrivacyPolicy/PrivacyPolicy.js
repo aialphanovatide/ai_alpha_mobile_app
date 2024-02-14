@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ScrollView, Text, Image} from 'react-native';
 import usePrivacyPolicyStyles from './styles';
-import BackButton from '../../Analysis/BackButton/BackButton';
+import BackButton from '../../../Analysis/BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const PrivacyPolicy = () => {
@@ -287,7 +287,7 @@ What categories of personal information do we collect?
 {'\n\n'}
 We have collected the following categories of personal information in the past twelve (12) months:
 </Text>
-<Image source={require('../../../assets/images/account/termlyGrid.png')} style={styles.gridStyle}/>
+<Image source={require('../../../../assets/images/account/termlyGrid.png')} style={styles.gridStyle}/>
 <Text style={styles.privacyPolicyText}>
 {'\n\n'}
 We may also collect other personal information outside of these categories through instances where you interact with us in person, online, or by phone or mail in the context of:

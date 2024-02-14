@@ -23,8 +23,8 @@ const SocialSignInButton = () => {
   const [loggedInUser, setloggedInUser] = useState(null);
   const navigation = useNavigation();
   const {authorize, clearSession, user, getCredentials, error, isLoading} = useAuth0();
-  const {setUserEmail} = useUser();
-  const {setUserId} = useUserId();
+  const { userEmail, setUserEmail } = useUser();
+  const { userId, setUserId } = useUserId();
   
   useEffect(() => {
     GoogleSignin.configure({
@@ -101,8 +101,14 @@ const SocialSignInButton = () => {
           payload,
         );
         console.log('Auth0 Response:', auth0Response.data);
+        console.log("User id is: ", user);
+        let newUser = "apple|" + user;
+        console.log("New User id is: ", newUser);
         navigation.navigate('HomeScreen');
-        console.log('User3 Email:', auth0Response.email);
+        setUserId(newUser);
+        //setUserEmail(email);
+        console.log("auth0Response.data._id", auth0Response.data._id);
+        console.log("email!: ", email);
         console.log('After navigation');
         return {
           message: 'success',

@@ -19,6 +19,8 @@ export const auth0DeleteAccount_Secret =
   'RT0GEngb2IhR03_AMoIjRPxAQamrTY02B4OG4RPuA8gYgguQ0ua83b509U3W-t68';
 export const revenueCat_secret = 'sk_OsSNuqHUzDktdaXynIozTeiMAVIMD';
 export const COINALYZE_API_KEY = 'da0213a7-235c-456e-8876-6c62ce1a6c54';
+export const auth0ManagementAPI_Client = 'K7b9CODJzB8yAlxcFkbLJyRaukd4kmko';
+export const auth0ManagementAPI_Secret = 'hpl8U6AmaZ-rJyE5mKdH6hLaIaDEVC_BxFD6ZwlPW0YhZSfeYxsRntyNxNssf9RM';
 
 /*
  The entitlement ID from the RevenueCat dashboard that is activated upon successful in-app purchase for the duration of the purchase.

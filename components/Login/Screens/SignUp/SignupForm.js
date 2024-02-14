@@ -18,6 +18,9 @@ import axios from 'axios';
 import useSignUpStyles from './SignUpStyles';
 import { useUser } from '../../../../context/UserContext';
 import { useUserId } from '../../../../context/UserIdContext';
+import { auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret } from '../../../../src/constants';
+
+
 
 const SignupForm = () => {
   const [username, setUsername] = useState('');
@@ -37,6 +40,8 @@ const SignupForm = () => {
   const navigation = useNavigation();
   const { userEmail, setUserEmail } = useUser();
   const { userId, setUserId } = useUserId();
+  const [emailInUse, setEmailInUse] = useState(false);
+
 
   
   const validateEmail = (email) => {
@@ -72,7 +77,7 @@ const SignupForm = () => {
     const formIsValid =
       username &&
       email &&
-      emailRegex.test(email) && // Check if the email is valid
+      emailRegex.test(email) &&
       password &&
       passwordRepeat &&
       password === passwordRepeat &&
@@ -115,28 +120,77 @@ const SignupForm = () => {
     navigation.navigate('TermsAndConditionsScreen');
   };
 
+  const getManagementApiToken = async () => {
+    const response = await fetch(`https://${auth0Domain}/oauth/token`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        client_id: auth0ManagementAPI_Client,
+        client_secret: auth0ManagementAPI_Secret,
+        audience: `https://${auth0Domain}/api/v2/`,
+        grant_type: 'client_credentials',
+      }),
+    });
+    const data = await response.json();
+    return data.access_token;
+  };
+
   const onRegisterPressed = async () => {
     try {
-      const response = await axios.post(
-        'https://dev-zoejuo0jssw5jiid.us.auth0.com/dbconnections/signup',
+      const token = await getManagementApiToken();
+
+      const emailCheckResponse = await axios.get(
+        `https://${auth0Domain}/api/v2/users-by-email`,
         {
-          client_id: 'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg',
-          email: email,
-          password: password,
-          connection: 'Username-Password-Authentication',
-          user_metadata: {
-            username: username,
+          params: {
+            email: email,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
         },
       );
+      console.log("emailcheckresponse: ", emailCheckResponse);
+      let isUsernamePasswordAuthenticationUser = false;
 
-      setUserId(response.data._id);
-      setUserEmail(email);
-      setSignupSuccessful(true);
+      if (emailCheckResponse.data.length > 0) {
 
-      setTimeout(() => {
-        navigation.navigate('SignIn');
-      }, 2000);
+        const identities = emailCheckResponse.data[0].identities;
+
+        identities.forEach(identity => {
+        if (identity.connection === 'Username-Password-Authentication') {
+          isUsernamePasswordAuthenticationUser = true;
+        }
+          });
+
+        if (isUsernamePasswordAuthenticationUser) {
+          setEmailInUse(true);
+        }
+
+      } 
+      if (isUsernamePasswordAuthenticationUser == false){
+        console.log("entered here!!!")
+        const response = await axios.post(
+          'https://dev-zoejuo0jssw5jiid.us.auth0.com/dbconnections/signup',
+          {
+            client_id: 'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg',
+            email: email,
+            password: password,
+            connection: 'Username-Password-Authentication',
+            user_metadata: {
+              username: username,
+            },
+          },
+        );
+        console.log("here!!!")
+        setUserId(response.data._id);
+        setUserEmail(email);
+        setSignupSuccessful(true);
+  
+        setTimeout(() => {
+          navigation.navigate('SignIn');
+        }, 2000);
+      }
     } catch (error) {
       console.log('Signup error: ', error);
     }
@@ -162,12 +216,18 @@ const SignupForm = () => {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.title}>Email</Text>
+        <View style={styles.labelContainer}>
+            <Text style={styles.title}>Email</Text>
+            {emailInUse && (
+          <Text style={styles.errorLabel}>Email already in use</Text>
+          )}
+          </View>
           <CustomInput
             placeholder=""
             value={email}
             setValue={setEmail}
           />
+
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.title}>Password</Text>

@@ -77,6 +77,16 @@ const useSignUpStyles = () => {
       height: 88,
       marginBottom: 10,
     },
+    labelContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
+    errorLabel: {
+      color: theme.priceDownColor,
+      fontSize: 12,
+      marginLeft: 8,
+    },
   });
   return styles;
 };
