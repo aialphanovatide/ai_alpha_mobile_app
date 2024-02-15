@@ -112,7 +112,7 @@ const HomeScreen = () => {
             },
           }}
         />
-        <Tab.Screen
+        {/*<Tab.Screen
           name="Chatbot"
           component={Chatbot}
           options={{
@@ -128,7 +128,7 @@ const HomeScreen = () => {
               />
             ),
           }}
-        />
+        />*/}
 
         <Tab.Screen
           name="Analysis"

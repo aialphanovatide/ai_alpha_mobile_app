@@ -44,7 +44,7 @@ const Fundamentals = ({route}) => {
     <ScrollView nestedScrollEnabled={true} style={styles.backgroundColor}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Fundamentals</Text>
-        <SubSection
+        {/*<SubSection
           subtitle={'Introduction'}
           content={
             <Introduction
@@ -52,7 +52,7 @@ const Fundamentals = ({route}) => {
               getIntroductionData={getIntroductionData}
             />
           }
-        />
+        />*/}
         <SubSection subtitle={'Tokenomics'} content={<Tokenomics />} />
         <SubSection
           subtitle={'General Token Allocation'}
