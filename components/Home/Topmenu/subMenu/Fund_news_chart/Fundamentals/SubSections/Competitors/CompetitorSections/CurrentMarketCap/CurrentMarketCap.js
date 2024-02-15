@@ -14,7 +14,9 @@ const CurrentMarketCap = ({cryptos}) => {
   const styles = useChartStyles();
   return (
     <View style={styles.chartContainer}>
-      <VictoryChart>
+      <VictoryChart
+        height={450}
+        padding={{left: 65, right: 40, top: 40, bottom: 40}}>
         <VictoryAxis
           style={{
             axis: {stroke: theme.chartsColor},
@@ -34,6 +36,7 @@ const CurrentMarketCap = ({cryptos}) => {
             },
             grid: {stroke: theme.chartsColor},
           }}
+          tickFormat={value => `$${value}b`}
         />
         <VictoryBar
           style={{
@@ -42,8 +45,8 @@ const CurrentMarketCap = ({cryptos}) => {
             },
           }}
           alignment={'middle'}
-          domain={{x: [0, 5], y: [0, 260]}}
-          domainPadding={{x: 1, y: 20}}
+          domain={{x: [0, 5], y: [0, 300]}}
+          domainPadding={{x: 1, y: 10}}
           data={cryptos.map(crypto => ({
             x: crypto.symbol,
             y: crypto.marketCap[0],

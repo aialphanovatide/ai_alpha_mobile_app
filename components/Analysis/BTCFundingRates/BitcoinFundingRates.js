@@ -1,5 +1,5 @@
 import {React, useState, useEffect, useContext} from 'react';
-import {View, Text, ScrollView, Image} from 'react-native';
+import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import BackButton from '../BackButton/BackButton';
 import FundingRatesServices from '../../../services/FundingRatesServices';
 import Loader from '../../Loader/Loader';
@@ -60,7 +60,14 @@ const BitcoinFundingRates = ({handleReturn}) => {
       <View style={styles.titleContainer}>
         <Text style={styles.title}>BTC Funding Rates</Text>
       </View>
-
+      <Text style={styles.sectionDescription}>
+        Shows the current funding rates for Bitcoin on various exchanges. These
+        are key indicators to understand the market outlook in terms of long or
+        short positions.
+      </Text>
+      <TouchableOpacity style={styles.readMoreButton}>
+        <Text style={styles.readMoreText}>Read more</Text>
+      </TouchableOpacity>
       {loading ? (
         <Loader />
       ) : (

@@ -30,14 +30,14 @@ const RevenueCatProvider = ({children}) => {
       'Baseblock_4999_m1',
       'Corechain_4999_m1',
       'Rootlink_4999_m1',
+      'Xpayments_4999_m1',
+      'Lsds_4999_m1',
       'Boostlayer_4999_m1',
+      'Truthnodes_4999_m1',
       'Cycleswap_4999_m1',
       'Nextrade_4999_m1',
       'Diversefi_4999_m1',
-      'Truthnodes_4999_m1',
-      'Xpayments_4999_m1',
       'Intellichain_4999_m1',
-      'Lsds_4999_m1',
     ];
 
     const compare = (objA, objB) => {

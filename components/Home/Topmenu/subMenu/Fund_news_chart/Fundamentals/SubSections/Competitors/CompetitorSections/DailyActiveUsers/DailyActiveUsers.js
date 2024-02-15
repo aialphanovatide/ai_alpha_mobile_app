@@ -34,7 +34,7 @@ const DailyActiveUsers = ({cryptos}) => {
   return (
     <View>
       {data.map((crypto, index) => (
-        <CryptoSection key={index} {...crypto} />
+        <CryptoSection key={index} {...crypto} itemIndex={index}/>
       ))}
     </View>
   );

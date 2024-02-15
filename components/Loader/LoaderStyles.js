@@ -20,8 +20,7 @@ const useLoaderStyles = () => {
     silhouetteLoaderContainer: {
       position: 'relative',
     },
-    shimmer: {
-      backgroundColor: theme.textColor,
+    skeletonContainer: {
       position: 'absolute',
       top: 0,
       left: 0,
@@ -29,6 +28,10 @@ const useLoaderStyles = () => {
       bottom: 0,
       zIndex: 1,
     },
+    loader: {
+      width: 40,
+      height: 40,
+    }
   });
   return styles;
 };

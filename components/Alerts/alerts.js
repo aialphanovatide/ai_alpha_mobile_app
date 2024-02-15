@@ -48,7 +48,7 @@ const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
 };
 
 const Alerts = ({route, navigation}) => {
-  const options = ['today', 'this week', 'last week'];
+  const options = ['today', 'this week'];
   const [activeAlertOption, setActiveAlertOption] = useState(options[0]);
   const [botName, setBotName] = useState(null);
   const [subscribed, setSubscribed] = useState(false);

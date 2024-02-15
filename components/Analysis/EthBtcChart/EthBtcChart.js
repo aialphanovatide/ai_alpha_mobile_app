@@ -1,12 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  View,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
-import moment from 'moment';
+import {View, ImageBackground, Text} from 'react-native';
 import {VictoryChart, VictoryAxis, VictoryCandlestick} from 'victory-native';
 import Loader from '../../Loader/Loader';
 import axios from 'axios';
@@ -15,6 +8,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes'; // Ajusta la ruta según la ubicación de tu componente
 import useEthBtcStyles from './EthBtcChartStyles';
 import {AppThemeContext} from '../../../context/themeContext';
+import SilhouetteLoader from '../../Loader/SilhouetteLoader/SilhouetteLoader';
 
 const EthBtcChart = ({loading, candlesToShow = 30}) => {
   const styles = useEthBtcStyles();
@@ -57,6 +51,11 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
       <SafeAreaView style={styles.background}>
         <BackButton />
         <Text style={styles.analysisTitle}>ETH/BTC Chart</Text>
+        <Text style={styles.sectionDescription}>
+          The strength of ETH against BTC helps us understand how strong
+          Ethereum and its ecosystem projects are while also telling us how
+          strong the entire altcoin market is too.
+        </Text>
         <View style={styles.container}>
           <Loader />
         </View>
@@ -83,6 +82,11 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
       <SafeAreaView style={styles.background}>
         <BackButton />
         <Text style={styles.analysisTitle}>ETH/BTC Chart</Text>
+        <Text style={styles.sectionDescription}>
+          The strength of ETH against BTC helps us understand how strong
+          Ethereum and its ecosystem projects are while also telling us how
+          strong the entire altcoin market is too.
+        </Text>
         <View style={styles.timeframeContainer}>
           <TimeframeSelector
             selectedInterval={selectedInterval}

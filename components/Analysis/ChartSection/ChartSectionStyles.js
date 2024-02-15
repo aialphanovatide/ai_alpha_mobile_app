@@ -10,10 +10,11 @@ const useChartSectionStyles = () => {
       width: theme.width,
       height: theme.height,
       backgroundColor: theme.mainBackgroundColor,
+      padding: 10,
     },
     title: {
-      paddingVertical: 2.5,
-      paddingHorizontal: 15,
+      marginTop: theme.titlesVerticalMargin,
+      marginHorizontal: 10,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
       fontWeight: 'bold',
@@ -23,6 +24,14 @@ const useChartSectionStyles = () => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    sectionDescription: {
+      width: '100%',
+      marginVertical: theme.boxesVerticalMargin,
+      paddingHorizontal: 8,
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.textColor,
+      textAlign: 'left',
     },
   });
   return styles;

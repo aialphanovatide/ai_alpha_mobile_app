@@ -42,7 +42,7 @@ const useUpdatedRevenueModelStyles = () => {
     revenueValue: {
       marginHorizontal: 10,
       fontSize: theme.titleFontSize * 0.85,
-      color: theme.orange,
+      color: theme.orangeTextColor,
       fontWeight: 'bold',
       lineHeight: 22,
       textAlign: 'center',

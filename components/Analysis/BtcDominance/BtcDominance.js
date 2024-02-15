@@ -66,6 +66,12 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
     return (
       <SafeAreaView style={styles.background}>
         <BackButton />
+        <Text style={styles.analysisTitle}>BTC Dominance Chart</Text>
+        <Text style={styles.sectionDescription}>
+          Reflects the proportion of the total cryptocurrency market held by
+          Bitcoin. It is a vital indicator for assessing the market's preference
+          for BTC over other altcoins.
+        </Text>
         <View style={styles.container}>
           <Loader />
         </View>
@@ -99,6 +105,11 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
     <SafeAreaView style={styles.background}>
       <BackButton />
       <Text style={styles.analysisTitle}>BTC Dominance Chart</Text>
+      <Text style={styles.sectionDescription}>
+        Reflects the proportion of the total cryptocurrency market held by
+        Bitcoin. It is a vital indicator for assessing the market's preference
+        for BTC over other altcoins.
+      </Text>
       <View style={styles.timeframeContainer}>
         <TimeframeSelector
           selectedInterval={selectedInterval}
@@ -110,7 +121,7 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
           <ImageBackground
             source={require('../../../assets/logo_3.png')}
             style={styles.backgroundImage}
-            resizeMode='contain'></ImageBackground>
+            resizeMode="contain"></ImageBackground>
 
           <VictoryChart
             width={400}

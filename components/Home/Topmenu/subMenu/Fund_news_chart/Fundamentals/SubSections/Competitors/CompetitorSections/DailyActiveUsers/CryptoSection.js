@@ -10,13 +10,15 @@ const UserIcon = ({tintColor, styles}) => {
         style={styles.userImage}
         source={require('../../../../../../../../../../assets/images/fundamentals/competitors/dailyActiveUsers/User.png')}
         tintColor={tintColor}
-        resizeMode='contain'
+        resizeMode="contain"
       />
     </View>
   );
 };
 
-const CryptoSection = ({name, logo, score, value}) => {
+const CryptoSection = ({name, logo, score, value, itemIndex}) => {
+  const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
+  const chosenColor = tintColors[itemIndex > 3 ? itemIndex % 3 : itemIndex] 
   const {theme} = useContext(AppThemeContext);
   const styles = useDailyActiveUsersStyles();
   const renderIcons = score => {
@@ -25,14 +27,18 @@ const CryptoSection = ({name, logo, score, value}) => {
     const halfIcon = score - filledIcons > 0 ? 1 : 0;
 
     const icons = Array.from({length: filledIcons}, (_, index) => (
-      <UserIcon key={index} tintColor={'#F98404'} styles={styles} />
+      <UserIcon
+        key={index}
+        tintColor={chosenColor}
+        styles={styles}
+      />
     ));
 
     if (halfIcon > 0) {
       icons.push(
         <UserIcon
           key={`half_${halfIcon}`}
-          tintColor={'#F98404'}
+          tintColor={chosenColor}
           styles={styles}
         />,
       );
@@ -62,7 +68,7 @@ const CryptoSection = ({name, logo, score, value}) => {
         <View style={styles.row}>
           <View style={styles.usersContainer}>
             {renderIcons(score)}
-            <Text style={styles.labelOrange}>{value}</Text>
+            <Text style={[styles.labelOrange, {color: chosenColor}]}>{value}</Text>
           </View>
         </View>
       </View>

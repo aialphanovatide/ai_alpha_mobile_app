@@ -28,6 +28,7 @@ const useBtcDominanceStyles = () => {
     },
     analysisTitle: {
       marginTop: theme.titlesVerticalMargin,
+      marginHorizontal: 10,
       fontSize: theme.titleFontSize,
       color: theme.titleColor,
       fontWeight: 'bold',
@@ -38,12 +39,20 @@ const useBtcDominanceStyles = () => {
       position: 'absolute',
       width: 70,
       height: 70,
-      opacity: 0.6
+      opacity: 0.6,
     },
     timeframeContainer: {
       flex: 1,
       width: '100%',
       maxHeight: '5%',
+    },
+    sectionDescription: {
+      width: '100%',
+      marginVertical: theme.boxesVerticalMargin,
+      paddingHorizontal: 8,
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.textColor,
+      textAlign: 'left',
     },
   });
   return styles;
