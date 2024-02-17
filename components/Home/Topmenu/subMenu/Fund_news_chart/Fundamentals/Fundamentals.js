@@ -59,7 +59,7 @@ const Fundamentals = ({route}) => {
           />
         )}
         <Text style={styles.title}>Fundamentals</Text>
-        <SubSection
+        {/*<SubSection
           subtitle={'Introduction'}
           content={
             <Introduction

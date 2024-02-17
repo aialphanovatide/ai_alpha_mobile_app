@@ -76,13 +76,13 @@ const Account = ({route}) => {
       logo: require('../../assets/images/account/informationicon.png'),
       screenName: null,
       component: null,
-    },
+    },/*
     {
       name: 'Notifications',
       logo: require('../../assets/images/account/notifications.png'),
       screenName: 'Notifications',
       component: null,
-    },
+    }*/,
     {
       name: 'Settings',
       logo: require('../../assets/images/account/settingsscreenicon.png'),
@@ -111,9 +111,9 @@ const Account = ({route}) => {
       case 'Legal and Information':
         navigation.navigate('Legal');
         break;
-      case 'Notifications':
+      {/*case 'Notifications':
         navigation.navigate('Notifications', {options: NOTIFICATIONS_MOCK});
-        break;
+    break;*/}
       default:
         console.log('Option not handled:', option.name);
     }
