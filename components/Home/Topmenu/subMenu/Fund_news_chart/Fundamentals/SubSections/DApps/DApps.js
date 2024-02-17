@@ -86,49 +86,7 @@ const ProtocolItem = ({
   );
 };
 
-const ProtocolSelector = ({
-  protocols,
-  handleActiveProtocol,
-  activeProtocol,
-  styles,
-}) => {
-  const {theme} = useContext(AppThemeContext);
-  return (
-    <ScrollView
-      style={styles.itemContainer}
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}>
-      {protocols.map((protocol, index) => (
-        <TouchableOpacity
-          key={index}
-          onPress={() => handleActiveProtocol(protocol)}>
-          <ImageBackground
-            style={styles.logoContainer}
-            source={
-              activeProtocol && activeProtocol.name === protocol.name
-                ? require('../../../../../../../../assets/images/fundamentals/dApps/active-logo.png')
-                : require('../../../../../../../../assets/images/fundamentals/dApps/inactive-logo.png')
-            }
-            tintColor={theme.dAppsItemBg}
-            resizeMode="contain">
-            <Image
-              style={[
-                styles.logo,
-                activeProtocol &&
-                  activeProtocol.name !== protocol.name &&
-                  styles.disabled,
-              ]}
-              source={protocol.image}
-              resizeMode={'contain'}
-            />
-          </ImageBackground>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
-  );
-};
-
-const DApps = ({protocols}) => {
+const DApps = ({mainImage, protocols}) => {
   const styles = useDappsStyles();
   const [activeProtocol, setActiveProtocol] = useState(null);
 
@@ -146,7 +104,7 @@ const DApps = ({protocols}) => {
         <Image
           style={styles.mainImage}
           resizeMode={'contain'}
-          source={require('../../../../../../../../assets/images/fundamentals/dApps/dapps.png')}
+          source={mainImage}
         />
       </View>
       <View style={styles.dataContainer}>

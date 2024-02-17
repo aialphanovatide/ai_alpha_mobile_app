@@ -57,11 +57,11 @@ const Calendar = ({handleReturn}) => {
           <CryptoCalendar selectedInterval={cryptoSelectedInterval.days} />
         </View>
         <Text style={styles.subTitle}>Macroeconomics</Text>
-        <View style={styles.calendarContent}>
+        <View style={[styles.calendarContent, styles.macroeconomicsContainer]}>
           <TVEconomicCalendar
             selectedInterval={economicSelectedInterval}
-            width={400}
-            height={400}
+            width={300}
+            height={300}
           />
         </View>
       </ScrollView>

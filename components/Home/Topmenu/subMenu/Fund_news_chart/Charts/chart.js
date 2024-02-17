@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {View, ImageBackground} from 'react-native';
+import {View, ImageBackground, Text} from 'react-native';
 import {
   VictoryChart,
   VictoryAxis,
@@ -22,6 +22,22 @@ const Chart = ({
 }) => {
   const styles = useChartsStyles();
   const {theme} = useContext(AppThemeContext);
+
+  const formatNumber = num => {
+    const absNum = Math.abs(num);
+    const abbrev = ['', 'k', 'm', 'b', 't'];
+    const thousand = 1000;
+
+    const tier = (Math.log10(absNum) / 3) | 0;
+
+    if (tier == 0) return num;
+
+    const divisor = Math.pow(thousand, tier);
+    const formattedNum = (num / divisor).toFixed(1);
+
+    return formattedNum + abbrev[tier];
+  };
+
   if (loading) {
     return (
       <View style={styles.chartContainer}>
@@ -31,8 +47,12 @@ const Chart = ({
   }
 
   const domainY = () => {
-    if (activeButtons.length === 0) {
-      return chartData.reduce(
+    if (
+      activeButtons.length === 0 ||
+      (activeButtons.length > 0 &&
+        (supportLevels.length === 0 || resistanceLevels.length === 0))
+    ) {
+      return chartData.slice(-candlesToShow).reduce(
         (acc, dataPoint) => {
           const {open, close, high, low} = dataPoint;
           return [
@@ -65,44 +85,49 @@ const Chart = ({
             resizeMode="contain"></ImageBackground>
 
           <VictoryChart
-            width={400}
+            width={380}
             containerComponent={<VictoryZoomContainer zoomDimension="x" />}
             domain={{x: domainX, y: domainY()}}
-            padding={{top: 10, bottom: 60, left: 30, right: 60}}
-            domainPadding={{x: 5, y: 3}}
+            padding={{top: 20, bottom: 60, left: 25, right: 65}}
+            domainPadding={{x: 10, y: 10}}
             scale={{x: 'time', y: 'log'}}
-            height={300}>
+            height={340}>
             <VictoryAxis
               style={{
-                axis: {stroke: theme.chartsColor},
+                axis: {stroke: theme.chartsAxisColor},
                 tickLabels: {
-                  fontSize: theme.responsiveFontSize * 0.7,
+                  fontSize: theme.responsiveFontSize * 0.725,
                   fill: theme.titleColor,
+                  maxWidth: 10,
                 },
                 grid: {stroke: theme.homeChartsGridColor},
               }}
+              tickCount={6}
             />
             <VictoryAxis
               dependentAxis
               style={{
-                axis: {stroke: theme.chartsColor},
+                axis: {stroke: theme.chartsAxisColor},
                 tickLabels: {
-                  fontSize: theme.responsiveFontSize * 0.825,
+                  fontSize: theme.responsiveFontSize * 0.725,
                   fill: theme.titleColor,
                 },
                 grid: {stroke: theme.homeChartsGridColor},
               }}
+              tickCount={8}
+              tickFormat={t => `$${formatNumber(t)}`}
               orientation="right"
             />
 
             <VictoryCandlestick
-              padding={2}
               data={chartData}
               candleRatio={6}
               candleColors={{positive: '#3ADF00', negative: '#FF477C'}}
               style={{
                 data: {
-                  strokeWidth: 0,
+                  strokeWidth: 0.75,
+                  stroke: datum =>
+                    datum.close < datum.open ? '#3ADF00' : '#FF477C',
                 },
               }}
             />

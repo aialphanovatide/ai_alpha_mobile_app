@@ -34,6 +34,17 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     }
   };
 
+  const formatNumber = price => {
+    const number = parseFloat(price);
+    if (isNaN(number)) {
+      return 'Invalid number';
+    }
+    return number.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
   const {leftText, word} = parseTimeframeString(timeframe);
 
   const {coin_title, chart_word, interval_word} = formatAlertTitle(leftText);
@@ -42,18 +53,29 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     <View style={styles.itemsContainer}>
       <View style={styles.leftContent}>
         <View style={styles.row}>
-          <Text style={styles.itemsTitle}>{`${coin_title} ${interval_word} ${chart_word} - `}</Text>
-          <Text style={{...styles.itemsTitle, ...timeframeStyle, ...styles.noHorizontalMargin}}>
+          <Text
+            style={
+              styles.itemsTitle
+            }>{`${coin_title} ${interval_word} ${chart_word} - `}</Text>
+          <Text
+            style={{
+              ...styles.itemsTitle,
+              ...timeframeStyle,
+              ...styles.noHorizontalMargin,
+            }}>
             {`${word}`}
+          </Text>
+          <Text style={[styles.itemsTitle, styles.price]}>
+            ${formatNumber(price)}
           </Text>
         </View>
         <Text style={styles.subtitle} numberOfLines={2}>
           {message}
         </Text>
       </View>
-      <View style={styles.rightContent}>
+      {/* <View style={styles.rightContent}>
         <Text style={styles.rightTitle}>${price}</Text>
-      </View>
+      </View> */}
     </View>
   );
 };

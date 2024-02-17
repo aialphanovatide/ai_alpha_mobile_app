@@ -7,10 +7,12 @@ import {getService} from '../../../services/aiAlphaApi';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext';
 import {CategoriesContext} from '../../../context/categoriesContext';
+import Loader from '../../Loader/Loader';
 
 const TopStories = () => {
   const styles = useTopStoriesStyles();
   const [expanded, setExpanded] = useState(false);
+  const [loading, setLoading] = useState(true);
   const handlePress = () => setExpanded(!expanded);
   const [stories, setStories] = useState([]);
   const navigation = useNavigation();
@@ -106,40 +108,44 @@ const TopStories = () => {
   };
 
   useEffect(() => {
-    setStories([]);
-    // const fetchTopStories = async () => {
-    //   try {
-    //     const data = await getService(`/api/get/allTopStories`);
-    //     if (!data || data['top stories'] === undefined) {
-    //       setStories([]);
-    //     } else {
-    //       setStories(data['top stories']);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching top stories:', error.message);
-    //   }
-    // };
+    // setStories([]);
+    setLoading(true);
+    const fetchTopStories = async () => {
+      try {
+        const data = await getService(`/api/get/allTopStories`);
+        console.log(data.top_stories);
+        if (!data || data.top_stories === undefined) {
+          setStories([]);
+        } else {
+          setStories(data.top_stories);
+        }
+      } catch (error) {
+        console.error('Error fetching top stories:', error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // fetchTopStories();
+    fetchTopStories();
   }, []);
 
   return (
     <List.Section title="Top Stories" titleStyle={styles.mainTitle}>
-      {stories.length === 0 ? (
+      {loading ? (
+        <Loader />
+      ) : stories.length === 0 ? (
         <Text style={styles.emptyMessage}>There are no Stories to show...</Text>
       ) : (
         <View style={styles.background}>
           <List.Accordion
             style={styles.storyItem}
             titleStyle={styles.titleStyles}
-            title={stories ? filterText(stories[0].summary) : 'Loading'}
+            title={
+              stories && stories !== undefined
+                ? filterText(stories[0].summary)
+                : 'Loading'
+            }
             titleNumberOfLines={2}
-            // description={
-            //   stories
-            //     ? filterArticleTitle(filterText(stories[0].summary)).content
-            //     : 'Loading'
-            // }
-            // descriptionStyle={styles.description}
             right={() => (
               <Image
                 source={
@@ -155,8 +161,11 @@ const TopStories = () => {
               <Image
                 source={{
                   uri:
-                    stories[0].images[0].image ||
-                    'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+                    stories &&
+                    stories !== undefined &&
+                    stories[0].images.length > 0
+                      ? stories[0].images[0].image
+                      : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
                   width: 60,
                 }}
                 style={styles.imageStyle}
@@ -174,8 +183,9 @@ const TopStories = () => {
                   filterArticleTitle(filterText(story.summary)).content
                 }
                 image={
-                  story.images[0].image ||
-                  'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
+                  story.images.length > 0
+                    ? story.images[0].image
+                    : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
                 }
                 handleStoryRedirect={handleStoryRedirect}
                 coinBotId={story.coin_bot_id}

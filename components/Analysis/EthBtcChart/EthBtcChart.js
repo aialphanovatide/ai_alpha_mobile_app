@@ -8,12 +8,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes'; // Ajusta la ruta según la ubicación de tu componente
 import useEthBtcStyles from './EthBtcChartStyles';
 import {AppThemeContext} from '../../../context/themeContext';
-import SilhouetteLoader from '../../Loader/SilhouetteLoader/SilhouetteLoader';
 
 const EthBtcChart = ({loading, candlesToShow = 30}) => {
   const styles = useEthBtcStyles();
   const [chartData, setChartData] = useState([]);
-  const [selectedInterval, setSelectedInterval] = useState('1d');
+  const [selectedInterval, setSelectedInterval] = useState('1D');
   const {theme} = useContext(AppThemeContext);
 
   useEffect(() => {
@@ -95,47 +94,56 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
         </View>
         <View style={styles.container}>
           <View style={styles.chart}>
-            <ImageBackground
-              source={require('../../../assets/logo_3.png')}
-              style={styles.backgroundImage}></ImageBackground>
-
             <VictoryChart
               width={400}
               domain={{x: domainX, y: domainY}}
-              padding={{top: 10, bottom: 60, left: 30, right: 60}}
-              domainPadding={{x: 5, y: 3}}
+              padding={{top: 10, bottom: 40, left: 20, right: 70}}
+              domainPadding={{x: 2.5, y: 3}}
               scale={{x: 'time', y: 'linear'}}
-              height={300}>
+              height={300}
+              style={{
+                background: {
+                  fill: theme.chartsBgColor,
+                },
+              }}>
               <VictoryAxis
                 style={{
-                  axis: {stroke: theme.chartsColor},
+                  axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
                   tickLabels: {
                     fontSize: theme.responsiveFontSize * 0.7,
                     fill: theme.titleColor,
                   },
                   grid: {stroke: theme.homeChartsGridColor},
                 }}
+                tickCount={6}
               />
               <VictoryAxis
                 dependentAxis
                 style={{
-                  axis: {stroke: theme.chartsColor},
+                  axis: {stroke: theme.chartsAxisColor},
                   tickLabels: {
-                    fontSize: theme.responsiveFontSize * 0.825,
+                    fontSize: theme.responsiveFontSize * 0.725,
                     fill: theme.titleColor,
                   },
                   grid: {stroke: theme.homeChartsGridColor},
                 }}
                 orientation="right"
+                tickCount={6}
               />
-
+              <ImageBackground
+                source={require('../../../assets/images/chart_alpha_logo.png')}
+                style={styles.chartBackgroundImage}
+                resizeMode="contain"
+              />
               <VictoryCandlestick
                 data={chartData}
                 candleRatio={0.6}
                 candleColors={{positive: '#3ADF00', negative: '#FF477C'}}
                 style={{
                   data: {
-                    strokeWidth: 0,
+                    strokeWidth: 0.75,
+                    stroke: datum =>
+                      datum.close < datum.open ? '#3ADF00' : '#FF477C',
                   },
                 }}
               />

@@ -34,6 +34,7 @@ const usePackageSubscriptionStyles = () => {
     },
     description: {
       marginVertical: theme.boxesVerticalMargin,
+      marginTop: 4,
       marginHorizontal: 16,
     },
     text: {
@@ -50,7 +51,7 @@ const usePackageSubscriptionStyles = () => {
       marginLeft: 2,
     },
     secondaryText: {
-      color: theme.secondaryTextColor,
+      color: theme.subscriptions.secondaryText,
       fontSize: theme.responsiveFontSize * 0.75,
       lineHeight: 22,
     },
@@ -162,6 +163,7 @@ const usePackageSubscriptionStyles = () => {
     },
     alignStart: {
       alignSelf: 'flex-start',
+      marginVertical: theme.boxesVerticalMargin,
     },
     itemIcon: {
       width: 40,

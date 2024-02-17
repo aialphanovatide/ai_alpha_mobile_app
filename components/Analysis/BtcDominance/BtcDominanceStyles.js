@@ -12,12 +12,13 @@ const useBtcDominanceStyles = () => {
     },
     container: {
       width: '100%',
-      height: 300,
+      height: theme.height * 0.45,
       marginVertical: theme.boxesVerticalMargin,
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'top',
       backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 4,
     },
     chart: {
       width: '100%',
@@ -33,13 +34,16 @@ const useBtcDominanceStyles = () => {
       color: theme.titleColor,
       fontWeight: 'bold',
     },
-    backgroundImage: {
+    chartBackgroundImage: {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      width: 70,
-      height: 70,
-      opacity: 0.6,
+      top: 15,
+      left: '7.5%',
+      width: 60,
+      height: 60,
+      opacity: 0.8,
+      zIndex: -10,
     },
     timeframeContainer: {
       flex: 1,

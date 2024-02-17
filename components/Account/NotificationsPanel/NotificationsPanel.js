@@ -1,5 +1,12 @@
 import React, {useContext} from 'react';
-import {Image, SafeAreaView, Switch, Text, View} from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  Switch,
+  Text,
+  View,
+} from 'react-native';
 import useNotificationsStyles from './NotificationsStyles';
 import BackButton from '../../Analysis/BackButton/BackButton';
 import {AppThemeContext} from '../../../context/themeContext';
@@ -15,19 +22,19 @@ const NotificationItem = ({
   return (
     <View style={styles.itemContainer}>
       {hasImage ? (
-          <Image
-            style={styles.iconImage}
-            resizeMode="contain"
-            source={
-              isDarkMode
-                ? isActive
-                  ? item.iconImage.dark.active
-                  : item.iconImage.dark.inactive
-                : isActive
-                ? item.iconImage.light.active
-                : item.iconImage.light.inactive
-            }
-          />
+        <Image
+          style={styles.iconImage}
+          resizeMode="contain"
+          source={
+            isDarkMode
+              ? isActive
+                ? item.iconImage.dark.active
+                : item.iconImage.dark.inactive
+              : isActive
+              ? item.iconImage.light.active
+              : item.iconImage.light.inactive
+          }
+        />
       ) : (
         <></>
       )}
@@ -79,7 +86,7 @@ const NotificationsPanel = ({route, options = null}) => {
           hasImage={false}
         />
       </View>
-      <View style={styles.itemsContainer}>
+      <ScrollView style={styles.itemsContainer} showsVerticalScrollIndicator={false} bounces={false}>
         {options.map((item, index) => (
           <React.Fragment key={item.name}>
             <NotificationItem
@@ -94,7 +101,7 @@ const NotificationsPanel = ({route, options = null}) => {
             <View key={`line_${item.name}`} style={styles.horizontalLine} />
           </React.Fragment>
         ))}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

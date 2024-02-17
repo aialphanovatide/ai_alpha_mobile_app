@@ -118,38 +118,40 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
       </View>
       <View style={styles.container}>
         <View style={styles.chart}>
-          <ImageBackground
-            source={require('../../../assets/logo_3.png')}
-            style={styles.backgroundImage}
-            resizeMode="contain"></ImageBackground>
-
           <VictoryChart
             width={400}
             domain={{x: domainX, y: domainY}}
-            padding={{top: 10, bottom: 60, left: 30, right: 60}}
+            padding={{top: 10, bottom: 40, left: 20, right: 70}}
             domainPadding={{x: 5, y: 3}}
             scale={{x: 'time', y: 'linear'}}
-            height={300}>
+            height={300}
+            style={{
+              background: {
+                fill: theme.chartsBgColor,
+              },
+            }}>
             <VictoryAxis
               style={{
-                axis: {stroke: theme.chartsColor},
+                axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
                 tickLabels: {
                   fontSize: theme.responsiveFontSize * 0.7,
                   fill: theme.titleColor,
                 },
                 grid: {stroke: theme.homeChartsGridColor},
               }}
+              tickCount={6}
             />
             <VictoryAxis
               dependentAxis
               style={{
-                axis: {stroke: theme.chartsColor},
+                axis: {stroke: theme.chartsAxisColor},
                 tickLabels: {
-                  fontSize: theme.responsiveFontSize * 0.825,
+                  fontSize: theme.responsiveFontSize * 0.725,
                   fill: theme.titleColor,
                 },
                 grid: {stroke: theme.homeChartsGridColor},
               }}
+              tickCount={6}
               orientation="right"
             />
 
@@ -159,9 +161,16 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
               candleColors={{positive: '#3ADF00', negative: '#FF477C'}}
               style={{
                 data: {
-                  strokeWidth: 0,
+                  strokeWidth: 0.75,
+                  stroke: datum =>
+                    datum.close < datum.open ? '#3ADF00' : '#FF477C',
                 },
               }}
+            />
+            <ImageBackground
+              source={require('../../../assets/images/chart_alpha_logo.png')}
+              style={styles.chartBackgroundImage}
+              resizeMode="contain"
             />
           </VictoryChart>
         </View>

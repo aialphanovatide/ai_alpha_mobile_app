@@ -186,11 +186,7 @@ const Fundamentals = ({route}) => {
           handleAboutPress={handleAboutPress}
           subtitle={'Upgrades'}
           description={fundamentalsMock.upgrades.sectionDescription}
-          content={
-            <Upgrades
-              events={fundamentalsMock.upgrades.events}
-            />
-          }
+          content={<Upgrades events={fundamentalsMock.upgrades.events} />}
         />
         <SubSection
           hasAbout
@@ -198,6 +194,7 @@ const Fundamentals = ({route}) => {
           subtitle={'DApps'}
           content={
             <DApps
+              mainImage={fundamentalsMock.dApps.mainImage}
               protocols={fundamentalsMock.dApps.protocols}
             />
           }

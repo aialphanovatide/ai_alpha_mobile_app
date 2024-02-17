@@ -30,25 +30,17 @@ const useCryptoCalendarStyles = () => {
     },
     eventsContainer: {
       flex: 1,
-      width: '100%',
+      width: theme.width - 30,
     },
     calendarItem: {
       flex: 1,
-      maxWidth: '100%',
+      maxWidth: '91.5%',
       flexDirection: 'row',
       marginVertical: 4,
       paddingVertical: 8,
       paddingHorizontal: 4,
       borderRadius: 4,
       backgroundColor: theme.secondaryBoxesBgColor,
-      // shadowColor: '#000',
-      // shadowOffset: {
-      //   width: 0,
-      //   height: 2,
-      // },
-      // shadowOpacity: 0.2,
-      // shadowRadius: 2,
-      // elevation: 2,
     },
     itemIconContainer: {
       width: 45,

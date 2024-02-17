@@ -11,7 +11,6 @@ const NewsArticle = ({route, navigation}) => {
   const handleReturn = () => {
     navigation.goBack();
   };
-  console.log('News data: ', item);
   // Function to extract the title from the summaries, that detects the first sentences within "", using regular expressions, and returns it. It only returns the first because it can happen that is inside the summary text another sentences within "".
 
   const filterArticleTitle = summary => {
@@ -74,8 +73,9 @@ const NewsArticle = ({route, navigation}) => {
           resizeMode={'contain'}
           source={{
             uri:
-              item.images[0].image ||
-              'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+              item.images.length > 0
+                ? item.images[0].image
+                : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
             width: 300,
           }}
         />

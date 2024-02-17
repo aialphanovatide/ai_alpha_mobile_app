@@ -311,7 +311,7 @@ const SettingsScreen = ({route}) => {
 
   return (
     <SafeAreaView style={styles.backgroundColor}>
-      <ScrollView style={styles.backgroundColor}>
+      <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
       <BackButton />
       <Text style={styles.title}>Settings</Text>
         <View style={styles.container}>

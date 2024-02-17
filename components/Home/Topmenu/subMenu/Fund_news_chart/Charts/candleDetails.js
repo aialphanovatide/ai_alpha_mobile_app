@@ -2,6 +2,17 @@ import React from 'react';
 import {View, Text} from 'react-native';
 
 const CandlestickDetails = ({coin, lastPrice, interval, styles}) => {
+  const formatNumber = price => {
+    const number = parseFloat(price);
+    if (isNaN(number)) {
+      return 'Invalid number';
+    }
+    return number.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
   const formatCoin = coin => {
     const usdt_word_index = coin.indexOf('USDT');
     const coin_word = coin.slice(0, usdt_word_index).toUpperCase();
@@ -12,8 +23,16 @@ const CandlestickDetails = ({coin, lastPrice, interval, styles}) => {
       <Text style={styles.detailslabel}>
         {coin ? formatCoin(coin) : 'Loading ...'}
       </Text>
-      <Text style={styles.lastPrice}>
-        ${lastPrice ? lastPrice : ' ...'}
+      <Text
+        style={[
+          styles.lastPrice,
+          //  prevPrice !== undefined && lastPrice !== undefined
+          //     ? lastPrice > prevPrice
+          //       ? styles.priceUpColor
+          //       : styles.priceDownColor
+          //     : {},
+        ]}>
+        ${lastPrice ? formatNumber(lastPrice) : ' ...'}
       </Text>
     </View>
   );

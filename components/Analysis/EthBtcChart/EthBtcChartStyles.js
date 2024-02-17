@@ -13,11 +13,12 @@ const useEthBtcStyles = () => {
     },
     container: {
       width: '100%',
-      height: 400,
+      height: theme.height * 0.45,
       marginVertical: theme.boxesVerticalMargin,
-      justifyContent: 'top',
+      justifyContent: 'center',
       alignItems: 'top',
       backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 4,
     },
     chart: {
       width: '100%',
@@ -34,12 +35,16 @@ const useEthBtcStyles = () => {
       color: theme.titleColor,
       fontWeight: 'bold',
     },
-    backgroundImage: {
+    chartBackgroundImage: {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      width: 50,
-      height: 50,
+      top: 15,
+      left: '7.5%',
+      width: 60,
+      height: 60,
+      opacity: 0.8,
+      zIndex: -2,
     },
     timeframeContainer: {
       flex: 1,
