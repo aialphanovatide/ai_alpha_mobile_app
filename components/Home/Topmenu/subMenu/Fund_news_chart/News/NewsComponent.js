@@ -6,10 +6,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {
-  getService,
-  postService,
-} from '../../../../../../services/aiAlphaApi';
+import {getService, postService} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
@@ -78,37 +75,39 @@ const NewsComponent = ({route}) => {
   }, [activeCoin, activeSubCoin]);
 
   useEffect(() => {
-    setNews([]);
-    setLoading(false);
-    // const fetchNews = async () => {
-    //   try {
-    //     const endpoint = activeFilter
-    //       ? `/api/get/news?coin=${botname}&time_range=${activeFilter.toLowerCase()}`
-    //       : `/api/get/news?coin=${botname}`;
-    //     const response = await getService(endpoint);
-    //     if (
-    //       (response.message &&
-    //         response.message.startsWith('No articles found')) ||
-    //       response.error
-    //     ) {
-    //       setNews([]);
-    //     } else {
-    //       const articles = response.articles.slice(0, 4);
-    //       setNews(articles);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching news:', error.message);
-    //   }
-    // };
+    // setNews([]);
+    // setLoading(false);
+    setLoading(true);
+    const fetchNews = async () => {
+      try {
+        const endpoint = activeFilter
+          ? `/api/get/news?coin=${botname}&time_range=${activeFilter.toLowerCase()}`
+          : `/api/get/news?coin=${botname}`;
+        const response = await getService(endpoint);
+        if (
+          (response.message &&
+            response.message.startsWith('No articles found')) ||
+          response.error
+        ) {
+          setNews([]);
+        } else {
+          const articles = response.articles.slice(0, 4);
+          setNews(articles);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error fetching news:', error.message);
+      }
+    };
 
-    // fetchNews();
+    fetchNews();
   }, [botname, activeFilter]);
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
       <Text style={styles.title}>News</Text>
       <View style={styles.filterContainer}>
-        {['Last Hour', 'Last Day', 'Last Week'].map(option => (
+        {['Today', 'This Week', 'Last Month'].map(option => (
           <TouchableOpacity
             key={option}
             onPress={() => handleFilterPress(option)}

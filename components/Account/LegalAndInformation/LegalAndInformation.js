@@ -1,16 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   ScrollView,
   Image,
   TouchableOpacity,
-  Button,
   SafeAreaView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import useLegalStyles from './LegalAndInformationStyles';
-import ThemeButton from '../../ThemeButton/ThemeButton';
 import BackButton from '../../Analysis/BackButton/BackButton';
 
 const LegalItem = ({
@@ -91,7 +89,7 @@ const LegalAndInformation = ({route}) => {
 
   return (
     <SafeAreaView style={styles.backgroundColor}>
-      <ScrollView style={styles.backgroundColor}>
+      <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
       <BackButton />
       <Text style={styles.title}>Legal and Information</Text>
         <View style={styles.container}>

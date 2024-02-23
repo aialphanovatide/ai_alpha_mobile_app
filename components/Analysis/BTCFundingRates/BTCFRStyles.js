@@ -30,6 +30,7 @@ const useBtcFundingRatesStyles = () => {
       marginVertical: 20,
       alignItems: 'center',
       justifyContent: 'center',
+      borderRadius: 4,
     },
     tableHeader: {
       backgroundColor: theme.tableHeaderColor,
@@ -44,8 +45,7 @@ const useBtcFundingRatesStyles = () => {
       justifyContent: 'center',
     },
     exchangeLogo: {
-      width: '100%',
-      height: '100%',
+      flex: 1,
     },
     dataRow: {
       backgroundColor: theme.boxesBackgroundColor,
@@ -98,6 +98,12 @@ const useBtcFundingRatesStyles = () => {
       textDecorationColor: '#7B7BFF',
       fontWeight: 'bold',
     },
+    loaderWrapper: {
+      flex: 1,
+      marginBottom: '50%',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    }
   });
   return styles;
 };

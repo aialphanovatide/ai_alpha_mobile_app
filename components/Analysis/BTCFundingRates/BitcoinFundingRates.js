@@ -1,4 +1,4 @@
-import {React, useState, useEffect, useContext} from 'react';
+import {React, useState, useEffect} from 'react';
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import BackButton from '../BackButton/BackButton';
 import FundingRatesServices from '../../../services/FundingRatesServices';
@@ -10,7 +10,11 @@ const TableHeaderCell = ({obj, styles}) => {
   return (
     <View style={styles.headerCell}>
       <View style={styles.logoContainer}>
-        <Image style={styles.exchangeLogo} source={{uri: obj.logo}} />
+        <Image
+          style={styles.exchangeLogo}
+          source={obj.altLogo}
+          resizeMode="contain"
+        />
       </View>
       <Text style={styles.exchangeName}>{obj.exchange}</Text>
     </View>
@@ -19,7 +23,6 @@ const TableHeaderCell = ({obj, styles}) => {
 
 const BitcoinFundingRates = ({handleReturn}) => {
   const styles = useBtcFundingRatesStyles();
-  const [btcData, setBtcData] = useState(null);
   const [fundingRates, setFundingRates] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -28,10 +31,14 @@ const BitcoinFundingRates = ({handleReturn}) => {
       let logo = exchanges.find(
         exchange => obj.exchange === exchange.name,
       ).logo;
+      let altLogo = exchanges.find(
+        exchange => obj.exchange === exchange.name,
+      ).static_logo;
       return {
         exchange: obj.exchange,
         value: obj.value,
         logo: logo,
+        altLogo: altLogo,
         symbol: obj.symbol,
       };
     });
@@ -42,8 +49,6 @@ const BitcoinFundingRates = ({handleReturn}) => {
     const fetchBtcFundingRates = async () => {
       try {
         const data = await FundingRatesServices.getBtcFundingRates();
-        // setBtcData({btcSymbol: data.symbol, btcLogo: data.symbolLogo});
-        // const fundingRatesArray = data.uMarginList;
         const fullData = formatExchangesData(data, exchangesData);
         setFundingRates(fullData);
         setLoading(false);
@@ -69,7 +74,9 @@ const BitcoinFundingRates = ({handleReturn}) => {
         <Text style={styles.readMoreText}>Read more</Text>
       </TouchableOpacity>
       {loading ? (
-        <Loader />
+        <View style={styles.loaderWrapper}>
+          <Loader />
+        </View>
       ) : (
         <ScrollView nestedScrollEnabled>
           <View style={styles.tableContainer}>

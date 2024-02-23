@@ -11,6 +11,17 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     marginHorizontal: 0,
   };
 
+  const formatNumber = price => {
+    const number = parseFloat(price);
+    if (isNaN(number)) {
+      return 'Invalid number';
+    }
+    return number.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
   const formatAlertTitle = title => {
     const usdt_word_index = title.indexOf('USDT');
     const coin_word = title.slice(0, usdt_word_index).toUpperCase();
@@ -45,19 +56,22 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
       <View style={styles.alertDetailsLeftContent}>
         <View style={styles.alertsRow}>
           <Text style={styles.alertDetailsTitle} numberOfLines={2}>
-            {coin_title}
+            {`${coin_title} ${interval_word} ${chart_word} - `}
           </Text>
-          <Text style={styles.alertDetailsTitle}>{interval_word}</Text>
-          <Text style={styles.alertDetailsTitle}>{chart_word} - </Text>
           <Text style={[styles.alertDetailsTitle, timeframeStyle]}>{word}</Text>
+          <Text style={[styles.alertDetailsTitle, styles.price]}>
+            ${formatNumber(price)}
+          </Text>
         </View>
         <Text style={styles.alertDetailsSubtitle} numberOfLines={2}>
           {message}
         </Text>
       </View>
-      <View style={styles.alertDetailsRightContent}>
-        <Text style={styles.alertDetailsRightTitle}>${price}</Text>
-      </View>
+      {/* <View style={styles.alertDetailsRightContent}>
+        <Text style={styles.alertDetailsRightTitle}>
+          ${formatNumber(price)}
+        </Text>
+      </View> */}
     </View>
   );
 };

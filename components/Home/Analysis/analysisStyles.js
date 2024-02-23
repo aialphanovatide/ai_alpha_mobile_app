@@ -39,6 +39,7 @@ const useHomeAnalysisStyles = () => {
     arrowDown: {
       width: 15,
       height: 15,
+      marginTop: 10,
       tintColor: theme.textColor,
     },
   });

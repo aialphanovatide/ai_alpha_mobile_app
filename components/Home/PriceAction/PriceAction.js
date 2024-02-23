@@ -78,9 +78,10 @@ const PriceAction = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeCoins, setActiveCoins] = useState([]);
   useEffect(() => {
+    /*
     setCoins(priceActionMock);
     setLoading(false);
-    /*
+    */
     const fetchCoinsData = async () => {
       try {
         const data = await priceActionService.getAllCoinsInfo();
@@ -93,7 +94,6 @@ const PriceAction = () => {
       }
     };
     fetchCoinsData();
-    */
   }, []);
 
   const findCoinsByCategory = (coins, category) => {

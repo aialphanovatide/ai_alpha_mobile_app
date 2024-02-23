@@ -10,19 +10,27 @@ import DeleteAccountForm from '../components/Login/DeleteAccount/DeleteUserForm'
 import TermsAndConditions from '../components/Login/Screens/TermsAndConditions/TermsAndConditions';
 const Stack = createNativeStackNavigator();
 
-const Navigation = () => {
+const Navigation = ({handleStatusBarChange}) => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        
-        <Stack.Screen name="SignIn" component={LoginForm} options={{ unmountOnBlur: true }}/>
+        <Stack.Screen
+          name="SignIn"
+          component={LoginForm}
+          options={{unmountOnBlur: true}}
+        />
         <Stack.Screen name="SignUp" component={SignupForm} />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordForm} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="PaywallScreen" component={PaywallScreen} />
-        <Stack.Screen name="DeleteAccountScreen" component={DeleteAccountForm} />
-        <Stack.Screen name="TermsAndConditionsScreen" component={TermsAndConditions} />
-
+        <Stack.Screen
+          name="DeleteAccountScreen"
+          component={DeleteAccountForm}
+        />
+        <Stack.Screen
+          name="TermsAndConditionsScreen"
+          component={TermsAndConditions}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

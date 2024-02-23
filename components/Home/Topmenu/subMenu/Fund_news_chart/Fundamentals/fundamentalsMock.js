@@ -85,48 +85,48 @@ export const fundamentalsMock = {
       {
         title: 'Gas Fees and Transactions Settlements',
         image: {
-          light: require('../../../../../../assets/images/fundamentals/vam/gfats-light.png'),
-          dark: require('../../../../../../assets/images/fundamentals/vam/gfats-dark.png'),
+          light: require('../../../../../../assets/images/fundamentals/coins/eth/vam/light/Gfats.png'),
+          dark: require('../../../../../../assets/images/fundamentals/coins/eth/vam/dark/Gfats.png'),
         },
         text: 'All ERC-20 transactions require ETH to pay gas fees.',
       },
       {
         title: 'Staking',
         image: {
-          light: require('../../../../../../assets/images/fundamentals/vam/Staking.png'),
-          dark: require('../../../../../../assets/images/fundamentals/vam/StakingDark.png'),
+          light: require('../../../../../../assets/images/fundamentals/coins/eth/vam/light/Staking.png'),
+          dark: require('../../../../../../assets/images/fundamentals/coins/eth/vam/dark/Staking.png'),
         },
         text: 'ETH holders can stake their tokens to become validators or delegate them to validators.',
       },
       {
         title: 'Platform Currency',
         image: {
-          light: require('../../../../../../assets/images/fundamentals/vam/platform-currency-light.png'),
-          dark: require('../../../../../../assets/images/fundamentals/vam/platform-currency-dark.png'),
+          light: require('../../../../../../assets/images/fundamentals/coins/eth/vam/light/PlatformCurrency.png'),
+          dark: require('../../../../../../assets/images/fundamentals/coins/eth/vam/dark/PlatformCurrency.png'),
         },
         text: 'Developers deploy DApps on Ethereum using ETH, paying in ETH at every step from contract creation to execution.',
       },
       {
         title: 'Interoperability and Layer 2 Solutions',
         image: {
-          light: require('../../../../../../assets/images/fundamentals/vam/interoperability-light.png'),
-          dark: require('../../../../../../assets/images/fundamentals/vam/interoperability-dark.png'),
+          light: require('../../../../../../assets/images/fundamentals/coins/eth/vam/light/Interoperability.png'),
+          dark: require('../../../../../../assets/images/fundamentals/coins/eth/vam/dark/Interoperability.png'),
         },
         text: 'Cross-Chain Interactions: ETH is often used in cross-chain interoperability solutions to interact with multiple blockchain networks. \n*Layer 2 Scaling with ETH:* ETH is used in Layer 2 solutions for transaction fees, network security via staking, and collateral for asset transfers between Layer 2 and Ethereum mainnet',
       },
       {
         title: 'Decentralised Finance (DeFi)',
         image: {
-          light: require('../../../../../../assets/images/fundamentals/vam/defi-light.png'),
-          dark: require('../../../../../../assets/images/fundamentals/vam/defi-dark.png'),
+          light: require('../../../../../../assets/images/fundamentals/coins/eth/vam/light/DeFi.png'),
+          dark: require('../../../../../../assets/images/fundamentals/coins/eth/vam/dark/DeFi.png'),
         },
         text: 'Collateral for Loans and Borrowing: Many DeFi platforms allow users to lock up their ETH as collateral to borrow other assets or take out loans.\n *Yield Farming and Liquidity Provision:* Users can stake or lend their ETH in DeFi protocols to earn interest or a portion of the transaction fees.',
       },
       {
         title: 'Governance',
         image: {
-          light: require('../../../../../../assets/images/fundamentals/vam/governance-light.png'),
-          dark: require('../../../../../../assets/images/fundamentals/vam/governance-dark.png'),
+          light: require('../../../../../../assets/images/fundamentals/coins/eth/vam/light/Governance.png'),
+          dark: require('../../../../../../assets/images/fundamentals/coins/eth/vam/dark/Governance.png'),
         },
         text: 'Some platforms and protocols use ETH to grant voting rights in decentralised autonomous organisations (DAOs) or other governance structures.',
       },
@@ -152,16 +152,16 @@ export const fundamentalsMock = {
           {
             title: 'Token Burning',
             image: {
-              light: require('../../../../../../assets/images/fundamentals/vam/token-burning-light.png'),
-              dark: require('../../../../../../assets/images/fundamentals/vam/token-burning-dark.png'),
+              light: require('../../../../../../assets/images/fundamentals/coins/eth/vam/light/TokenBurning.png'),
+              dark: require('../../../../../../assets/images/fundamentals/coins/eth/vam/dark/TokenBurning.png'),
             },
             text: "Implemented with the London Hard Fork in August 2021, Ethereum's EIP-1559 introduced a token burning mechanism where a base fee for transactions, dynamically adjusted by the protocol based on network activity, is burned. This reduces Ether's circulating supply and can potentially lead to a deflationary state, particularly during high network usage, if the amount of burned ETH surpasses new ETH issuance.",
           },
           {
             title: 'Token Buyback',
             image: {
-              light: require('../../../../../../assets/images/fundamentals/vam/token-buyback-light.png'),
-              dark: require('../../../../../../assets/images/fundamentals/vam/token-buyback-dark.png'),
+              light: require('../../../../../../assets/images/fundamentals/coins/eth/vam/light/TokenBuyback.png'),
+              dark: require('../../../../../../assets/images/fundamentals/coins/eth/vam/dark/TokenBuyback.png'),
             },
             text: 'Ethereum does not have an official token buyback mechanism as a part of its protocol design or economic policy.',
           },
@@ -173,16 +173,16 @@ export const fundamentalsMock = {
           {
             title: 'TokenBurning',
             image: {
-              light: require('../../../../../../assets/images/fundamentals/vam/token-burning-dark.png'),
-              dark: require('../../../../../../assets/images/fundamentals/vam/token-burning-dark.png'),
+              light: require('../../../../../../assets/images/fundamentals/coins/eth/vam/light/TokenBurning.png'),
+              dark: require('../../../../../../assets/images/fundamentals/coins/eth/vam/dark/TokenBurning.png'),
             },
             text: "Implemented with the London Hard Fork in August 2021, Ethereum's EIP-1559 introduced a token burning mechanism where a base fee for transactions, dynamically adjusted by the protocol based on network activity, is burned. This reduces Ether's circulating supply and can potentially lead to a deflationary state, particularly during high network usage, if the amount of burned ETH surpasses new ETH issuance.",
           },
           {
             title: 'Token Buyback',
             image: {
-              light: require('../../../../../../assets/images/fundamentals/vam/token-buyback-dark.png'),
-              dark: require('../../../../../../assets/images/fundamentals/vam/token-buyback-dark.png'),
+              light: require('../../../../../../assets/images/fundamentals/coins/eth/vam/light/TokenBuyback.png'),
+              dark: require('../../../../../../assets/images/fundamentals/coins/eth/vam/dark/TokenBuyback.png'),
             },
             text: 'Ethereum does not have an official token buyback mechanism as a part of its protocol design or economic policy.',
           },
@@ -199,7 +199,7 @@ export const fundamentalsMock = {
       {
         crypto: 'Ethereum',
         symbol: 'ETH',
-        image: require('../../../../../../assets/images/fundamentals/competitors/ETH.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/competitors/ETH.png'),
         maxValue: Infinity,
         percentageValue: 100,
         inflationary: false,
@@ -219,7 +219,7 @@ export const fundamentalsMock = {
       {
         crypto: 'Solana',
         symbol: 'SOL',
-        image: require('../../../../../../assets/images/fundamentals/competitors/SOL.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/competitors/SOL.png'),
         maxValue: Infinity,
         percentageValue: 75,
         inflationary: null,
@@ -239,7 +239,7 @@ export const fundamentalsMock = {
       {
         crypto: 'Cardano',
         symbol: 'ADA',
-        image: require('../../../../../../assets/images/fundamentals/competitors/ADA.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/competitors/ADA.png'),
         maxValue: '45 billion ADA',
         percentageValue: 78,
         inflationary: true,
@@ -259,7 +259,7 @@ export const fundamentalsMock = {
       {
         crypto: 'Avalanche',
         symbol: 'AVAX',
-        image: require('../../../../../../assets/images/fundamentals/competitors/AVAX.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/competitors/AVAX.png'),
         maxValue: '720 million AVAX',
         percentageValue: 49,
         inflationary: false,
@@ -411,6 +411,7 @@ export const fundamentalsMock = {
       'Presents a roadmap outlining the upcoming milestones and improvements for the protocol, offering a clear view of how the project is progressing.',
   },
   dApps: {
+    mainImage: require('../../../../../../assets/images/fundamentals/coins/eth/dApps/dapps.png'),
     sectionDescription:
       'These dApps are leading the way in their ecosystem, playing a crucial role in attracting investors and creating a positive feedback loop that encourages further user and developer participation.',
     protocols: [
@@ -421,7 +422,7 @@ export const fundamentalsMock = {
         tvl: 3710000000,
         benefits:
           'Decentralised and permissionless way to trade Ethereum-based tokens, which helps to increase the liquidity of these tokens and to make them more accessible to users.',
-        image: require('../../../../../../assets/images/fundamentals/dApps/hexagons/uniswap.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/dApps/hexagons/uniswap.png'),
       },
       {
         name: 'Aave',
@@ -429,7 +430,7 @@ export const fundamentalsMock = {
         tvl: 5939000000,
         benefits:
           'Decentralised and permissionless way for users to borrow and lend Ethereum-based tokens, which helps to increase the utilisation of these tokens and to create new financial products and services.',
-        image: require('../../../../../../assets/images/fundamentals/dApps/hexagons/aave.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/dApps/hexagons/aave.png'),
       },
       {
         name: 'MakerDAO',
@@ -437,7 +438,7 @@ export const fundamentalsMock = {
         tvl: 7761000000,
         benefits:
           'MakerDAO issues the DAI stablecoin, which is one of the most popular stablecoins in the crypto ecosystem. DAI provides a stable and reliable store of value, which helps to attract users to the Ethereum ecosystem and to make it more attractive to institutional investors.',
-        image: require('../../../../../../assets/images/fundamentals/dApps/hexagons/makerdao.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/dApps/hexagons/makerdao.png'),
       },
       {
         name: 'Lido Finance',
@@ -446,7 +447,7 @@ export const fundamentalsMock = {
         tvl: 22140000000,
         benefits:
           'Lido Finance makes it easier for users to participate in staking, which helps to increase the security of the Ethereum network and to provide a source of passive income for stakers.',
-        image: require('../../../../../../assets/images/fundamentals/dApps/hexagons/lido.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/dApps/hexagons/lido.png'),
       },
       {
         name: 'Curve',
@@ -454,7 +455,7 @@ export const fundamentalsMock = {
         tvl: 1842000000,
         benefits:
           'Decentralised and permissionless way to trade stablecoins, which helps to improve the stability of the Ethereum ecosystem and to make it more attractive to institutional investors.',
-        image: require('../../../../../../assets/images/fundamentals/dApps/hexagons/curve.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/dApps/hexagons/curve.png'),
       },
       {
         name: 'Synthetix',
@@ -463,7 +464,7 @@ export const fundamentalsMock = {
         tvl: 375570000,
         benefits:
           'Synthetix provides a decentralised and permissionless way to trade synthetic assets, which helps to expand the range of financial products and services available on Ethereum.',
-        image: require('../../../../../../assets/images/fundamentals/dApps/hexagons/synthetix.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/dApps/hexagons/synthetix.png'),
       },
       {
         name: 'dYdX',
@@ -471,16 +472,8 @@ export const fundamentalsMock = {
         tvl: 282000000,
         benefits:
           'dYdX provides a decentralised and permissionless way to trade crypto assets with leverage, which helps to increase the liquidity of these assets and to create new financial products and services.',
-        image: require('../../../../../../assets/images/fundamentals/dApps/hexagons/dydx.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/dApps/hexagons/dydx.png'),
       },
-      // {
-      //   name: 'OpenSea',
-      //   description: 'NFT marketplace.',
-      //   tvl: 7.2,
-      //   benefits:
-      //     'Decentralised and permissionless way to create, buy, and sell NFTs, which helps to fuel the growth of the NFT market and to bring new users to the Ethereum ecosystem.',
-      //   image: require('../../../../../../assets/images/fundamentals/dApps/hexagons/opensea.png'),
-      // },
       {
         name: 'Compound Protocol',
         description:
@@ -488,7 +481,7 @@ export const fundamentalsMock = {
         tvl: 2034000000,
         benefits:
           'Compound Protocol provides a decentralised and permissionless way to borrow and lend Ethereum-based tokens, which helps to increase the utilisation of these tokens and to create new financial products and services.',
-        image: require('../../../../../../assets/images/fundamentals/dApps/hexagons/compound.png'),
+        image: require('../../../../../../assets/images/fundamentals/coins/eth/dApps/hexagons/compound.png'),
       },
     ],
   },

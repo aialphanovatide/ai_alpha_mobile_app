@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Navigation from './navigation/Navigation';
 import {
   SafeAreaView,
@@ -17,15 +17,20 @@ import {AppThemeProvider} from './context/themeContext';
 import SplashScreen from 'react-native-splash-screen';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 
-
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
-
+  const [barScheme, setBarScheme] = useState('default');
   useEffect(() => {
     if (Platform.OS === 'android') {
       SplashScreen.hide();
     }
+    const bar_theme = colorScheme === 'dark' ? 'dark-content' : 'light-content';
+    setBarScheme(bar_theme);
   }, []);
+
+  const handleStatusBarChange = theme => {
+    setBarScheme(theme);
+  };
 
   return (
     <Auth0Provider
@@ -34,23 +39,23 @@ const App = () => {
       <RevenueCatProvider>
         <UserProvider>
           <UserIdProvider>
-            <SafeAreaView
-              style={[
-                styles.container,
-                {
-                  backgroundColor:
-                    colorScheme === 'dark' ? '#242427' : '#E7EAF1',
-                },
-              ]}>
-              <StatusBar barStyle="dark-content" />
-              <AppThemeProvider>
+            <AppThemeProvider>
+              <SafeAreaView
+                style={[
+                  styles.container,
+                  {
+                    backgroundColor:
+                      colorScheme === 'dark' ? '#10101E' : '#E7EAF1',
+                  },
+                ]}>
+                <StatusBar barStyle={barScheme} />
                 <CategoriesContextProvider>
                   <TopMenuContextProvider>
                     <Navigation />
                   </TopMenuContextProvider>
                 </CategoriesContextProvider>
-              </AppThemeProvider>
-            </SafeAreaView>
+              </SafeAreaView>
+            </AppThemeProvider>
           </UserIdProvider>
         </UserProvider>
       </RevenueCatProvider>
@@ -64,6 +69,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === 'android' ? 0 : StatusBar.currentHeight,
-    backgroundColor: '#242427',
   },
 });

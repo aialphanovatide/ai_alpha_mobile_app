@@ -126,6 +126,9 @@ const useSettingsScreenStyles = () => {
       width: '80%',
       flexDirection: 'row',
     },
+    paddingV: {
+      paddingVertical: 24,
+    }
   });
   return styles;
 };

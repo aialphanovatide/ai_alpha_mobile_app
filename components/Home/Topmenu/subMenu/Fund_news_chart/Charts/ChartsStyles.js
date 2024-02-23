@@ -95,7 +95,7 @@ const useChartsStyles = () => {
       padding: 4,
       borderRadius: 2,
       alignItems: 'center',
-      justifyContent: 'center', 
+      justifyContent: 'center',
     },
     chartContainer: {
       justifyContent: 'top',
@@ -178,6 +178,11 @@ const useChartsStyles = () => {
       width: '100%',
       marginVertical: 15,
     },
+    loaderContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     alertsTextMessage: {
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -210,6 +215,7 @@ const useChartsStyles = () => {
       margin: 2,
     },
     alertsRow: {
+      position: 'relative',
       flexDirection: 'row',
       marginHorizontal: 8,
     },
@@ -219,7 +225,7 @@ const useChartsStyles = () => {
       margin: 4,
     },
     alertDetailsTitle: {
-      marginHorizontal: 4,
+      marginHorizontal: 2,
       fontSize: theme.responsiveFontSize * 0.9,
       fontWeight: 'bold',
       color: theme.textColor,
@@ -237,6 +243,18 @@ const useChartsStyles = () => {
       fontWeight: 'bold',
       color: theme.textColor,
     },
+    price: {
+      position: 'absolute',
+      right: 4,
+      top: 0,
+      fontSize: theme.responsiveFontSize * 0.8,
+    },
+    priceUpColor: {
+      color: theme.priceUpColor
+    },
+    priceDownColor: {
+      color: theme.priceDownColor,
+    }
   });
   return styles;
 };

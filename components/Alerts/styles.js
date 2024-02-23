@@ -86,6 +86,12 @@ const useAlertsStyles = () => {
       color: theme.textColor,
       lineHeight: 22,
     },
+    price: {
+      position: 'absolute',
+      right: 4,
+      top: 0,
+      fontSize: theme.responsiveFontSize * 0.8,
+    },
     buttonContainer: {
       flexDirection: 'row',
       marginVertical: theme.boxesVerticalMargin,

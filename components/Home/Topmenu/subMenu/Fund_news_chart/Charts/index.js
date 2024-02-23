@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useMemo} from 'react';
 import {ScrollView, View} from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';
@@ -29,14 +29,15 @@ const CandlestickChart = ({route}) => {
   const {activeCoin} = useContext(TopMenuContext);
   const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
   const [activeAlertOption, setActiveAlertOption] = useState('this week');
-  async function fetchChartData() {
+
+  async function fetchChartData(oldLastPrice) {
     try {
       const response = await fetch(
         `https://api3.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&limit=200&interval=${selectedInterval.toLowerCase()}`,
       );
       const data = await response.json();
-
-      setLastPrice(parseFloat(data[data.length - 1][4]));
+      const currentPrice = parseFloat(data[data.length - 1][4]);
+      setLastPrice(currentPrice);
       const formattedChartData = data.map(item => ({
         x: moment(item[0]),
         open: parseFloat(item[1]),
@@ -93,7 +94,7 @@ const CandlestickChart = ({route}) => {
   }, [activeButtons, coinBot]);
 
   useEffect(() => {
-    const intervalId = setInterval(fetchChartData, 2000);
+    const intervalId = setInterval(() => fetchChartData(lastPrice), 2000);
     return () => clearInterval(intervalId);
   }, [interval, symbol, selectedInterval]);
 

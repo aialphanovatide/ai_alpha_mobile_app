@@ -46,6 +46,11 @@ const useCalendarStyles = () => {
       color: theme.textColor,
       textAlign: 'left',
     },
+    macroeconomicsContainer: {
+      minWidth: 375,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   });
   return styles;
 };

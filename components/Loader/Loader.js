@@ -12,7 +12,6 @@ const Loader = ({isLoading = true}) => {
         size="large"
         color={theme.loaderColor}
       />
-
     </View>
   );
 };
