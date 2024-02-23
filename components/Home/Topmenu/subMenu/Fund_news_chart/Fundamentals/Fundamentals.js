@@ -59,7 +59,7 @@ const Fundamentals = ({route}) => {
           />
         )}
         <Text style={styles.title}>Fundamentals</Text>
-        {/*<SubSection
+        <SubSection
           subtitle={'Introduction'}
           content={
             <Introduction
@@ -83,14 +83,14 @@ const Fundamentals = ({route}) => {
           handleAboutPress={handleAboutPress}
           description={fundamentalsMock.tokenDistribution.sectionDescription}
         />
-        {/* <SubSection
+        <SubSection
           subtitle={'Vesting Schedules'}
           content={
             <VestingSchedule year={2024} tokens={49999992} crypto={'ETH'} />
           }
           hasAbout
           handleAboutPress={handleAboutPress}
-        /> */}
+        />
         <SubSection
           subtitle={'Token Utility'}
           content={
@@ -127,40 +127,7 @@ const Fundamentals = ({route}) => {
           handleAboutPress={handleAboutPress}
           description={fundamentalsMock.competitors.sectionDescription}
         />
-        {/* <SubSection
-          hasAbout
-          subtitle={'Revenue Model'}
-          content={
-            <RevenueModel
-              options={[
-                {
-                  name: 'Transaction Fees',
-                  color: '#399AEA',
-                  values: [
-                    {year: 2022, percentage: 75},
-                    {year: 2023, percentage: 65},
-                  ],
-                },
-                {
-                  name: 'Ether Burning',
-                  color: '#C539B4',
-                  values: [
-                    {year: 2022, percentage: 20},
-                    {year: 2023, percentage: 30},
-                  ],
-                },
-                {
-                  name: 'Other Sources',
-                  color: '#FFC53D',
-                  values: [
-                    {year: 2022, percentage: 0},
-                    {year: 2023, percentage: 5},
-                  ],
-                },
-              ]}
-            />
-          }
-        /> */}
+        
         <SubSection
           subtitle={'Revenue Model'}
           hasAbout
