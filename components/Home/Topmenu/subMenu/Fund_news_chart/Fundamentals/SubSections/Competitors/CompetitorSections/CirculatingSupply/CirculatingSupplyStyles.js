@@ -60,17 +60,16 @@ const useCirculatingSupplyStyles = () => {
       padding: 6,
       paddingBottom: 0,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
     referenceIconImage: {
       width: 14,
       height: 14,
       tintColor: theme.inactiveTextColor,
     },
-    valueLabel:{
+    valueLabel: {
       fontSize: theme.responsiveFontSize * 0.75,
       color: theme.inactiveGrayText,
-
     },
     labelBottom: {
       marginLeft: '45%',
@@ -147,6 +146,7 @@ const useCirculatingSupplyStyles = () => {
     circulatingSupplyItem: {
       flex: 1,
       marginVertical: theme.boxesVerticalMargin,
+      backgroundColor: theme.fundamentalsCompetitorsItemBg,
     },
   });
   return styles;

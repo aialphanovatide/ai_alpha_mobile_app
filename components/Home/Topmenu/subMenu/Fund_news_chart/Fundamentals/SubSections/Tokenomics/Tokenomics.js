@@ -1,32 +1,6 @@
 import {Text, View} from 'react-native';
-import React, { useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useTokenomicsStyles from './TokenomicsStyles';
-
-// Hardcoded data - TODO: fetch or get this information from another sources, and connect it to the current package of topMenu
-
-const tokenomicsInfo = [
-  {
-    name: 'Ethereum',
-    symbol: 'ETH',
-    circulatingSupply: 120251000,
-    totalSupply: Infinity,
-    inflationary: true,
-  },
-  {
-    name: 'Bitcoin',
-    symbol: 'BTC',
-    circulatingSupply: 19540000,
-    totalSupply: 21000000,
-    inflationary: false,
-  },
-  {
-    name: 'Cardano',
-    symbol: 'ADA',
-    circulatingSupply: 34964744027,
-    totalSupply: 45000000000,
-    inflationary: true,
-  },
-];
 
 const TokenItem = ({item, styles}) => {
   return (
@@ -90,13 +64,94 @@ const HorizontalProgressBar = ({maxValue, value, styles}) => {
   );
 };
 
-const Tokenomics = () => {
+const Tokenomics = ({content, getSectionData, coin}) => {
   const styles = useTokenomicsStyles();
   const [cryptos, setCryptos] = useState(null);
 
+  if (!coin || coin === undefined) {
+    setCryptos(content);
+  }
+
+  const extractNameAndSymbol = cryptoString => {
+    const [name, symbol] = cryptoString.split(' ');
+    return {name, symbol: symbol.slice(1, -1)};
+  };
+
+  const parseNumberString = inputString => {
+    const regex = /^([\d,]+)\s*(million|billion)?\s*(\w+)?$/i;
+
+    const match = inputString.match(regex);
+
+    if (!match) return null;
+
+    const [, numberString, multiplier, currency] = match;
+
+    const number = Number(numberString.replace(/,/g, ''));
+
+    let multiplierValue = 1;
+    if (multiplier) {
+      switch (multiplier.toLowerCase()) {
+        case 'million':
+          multiplierValue = 1e6;
+          break;
+        case 'billion':
+          multiplierValue = 1e9;
+          break;
+        default:
+          break;
+      }
+    }
+
+    const parsedNumber = number * multiplierValue;
+
+    return {value: parsedNumber, currency};
+  };
+
   useEffect(() => {
-    setCryptos(tokenomicsInfo);
-  }, []);
+    const fetchTokenomicsData = async () => {
+      try {
+        const response = await getSectionData(
+          `/api/get_tokenomics?coin_name=${coin}`,
+        );
+
+        if (response.status !== 200) {
+          setCryptos([]);
+        } else {
+          const parsed_cryptos = response.message.tokenomics_data.map(
+            crypto => {
+              return {
+                symbol: extractNameAndSymbol(crypto.tokenomics.token).symbol,
+                name: extractNameAndSymbol(crypto.tokenomics.token).name,
+                circulatingSupply: Number(
+                  crypto.tokenomics.circulating_supply
+                    .split(' ')[0]
+                    .replace(/,/g, ''),
+                ),
+                totalSupply:
+                  crypto.tokenomics.total_supply.replace(' ', '') === '∞'
+                    ? Infinity
+                    : parseNumberString(crypto.tokenomics.total_supply).value,
+                maxSupply:
+                  crypto.tokenomics.max_supply.replace(' ', '') === '∞'
+                    ? Infinity
+                    : parseNumberString(crypto.tokenomics.max_supply).value,
+                inflationary: crypto.tokenomics.supply_model === 'Inflationary',
+              };
+            },
+          );
+          // console.log('Tokenomics data:', parsed_cryptos);
+          setCryptos(parsed_cryptos);
+        }
+      } catch (error) {
+        console.log('Error trying to get tokenomics data: ', error);
+      }
+    };
+    fetchTokenomicsData();
+  }, [coin]);
+
+  if (cryptos?.length === 0) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>

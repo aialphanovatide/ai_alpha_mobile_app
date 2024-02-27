@@ -43,7 +43,7 @@ const useRevenueStyles = () => {
       borderRadius: 2,
     },
     itemText: {
-      color: theme.subMenuTextColor,
+      color: theme.fundamentalsCompetitorsLabelColor,
       fontSize: theme.responsiveFontSize * 0.7,
       fontWeight: 'bold',
       alignSelf: 'center'
@@ -54,6 +54,7 @@ const useRevenueStyles = () => {
       flex: 1,
       width: '100%',
       minHeight: 300,
+      opacity: 0.5
     },
     graphImage: {
       marginHorizontal: 10,

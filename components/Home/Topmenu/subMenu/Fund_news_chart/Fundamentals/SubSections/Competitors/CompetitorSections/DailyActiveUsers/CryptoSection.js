@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {View, Image, Text} from 'react-native';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import useDailyActiveUsersStyles from './DailyActiveUsersStyles';
+import {icons} from '../../icons';
 
 const UserIcon = ({tintColor, styles}) => {
   return (
@@ -16,22 +17,35 @@ const UserIcon = ({tintColor, styles}) => {
   );
 };
 
-const CryptoSection = ({name, logo, score, value, itemIndex}) => {
+const CryptoSection = ({crypto, maxValue, itemIndex}) => {
   const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
-  const chosenColor = tintColors[itemIndex > 3 ? itemIndex % 3 : itemIndex] 
+  const chosenColor = tintColors[itemIndex > 3 ? itemIndex % 3 : itemIndex];
   const {theme} = useContext(AppThemeContext);
   const styles = useDailyActiveUsersStyles();
-  const renderIcons = score => {
+
+  const formatNumber = num => {
+    const absNum = Math.abs(num);
+    const abbrev = ['', 'k', 'm', 'b', 't'];
+    const thousand = 1000;
+
+    const tier = (Math.log10(absNum) / 3) | 0;
+
+    if (tier === 0) return num;
+
+    const divisor = Math.pow(thousand, tier);
+    const formattedNum = (num / divisor).toFixed(1);
+
+    return formattedNum + abbrev[tier];
+  };
+
+  const renderIcons = (value, maxValue) => {
     const totalIcons = 6;
+    const score = value === 0 ? 0 : (value * 6) / maxValue;
     const filledIcons = Math.floor(score);
     const halfIcon = score - filledIcons > 0 ? 1 : 0;
 
     const icons = Array.from({length: filledIcons}, (_, index) => (
-      <UserIcon
-        key={index}
-        tintColor={chosenColor}
-        styles={styles}
-      />
+      <UserIcon key={index} tintColor={chosenColor} styles={styles} />
     ));
 
     if (halfIcon > 0) {
@@ -62,13 +76,18 @@ const CryptoSection = ({name, logo, score, value, itemIndex}) => {
     <View style={styles.dailyActiveUsersItem}>
       <View>
         <View style={[styles.row, styles.noVerticalMargin]}>
-          <Image source={logo} style={styles.logoContainer} />
-          <Text style={styles.itemName}>{name}</Text>
+          <Image
+            source={icons[crypto.name.toUpperCase()]}
+            style={styles.logoContainer}
+          />
+          <Text style={styles.itemName}>{crypto.symbol}</Text>
         </View>
         <View style={styles.row}>
           <View style={styles.usersContainer}>
-            {renderIcons(score)}
-            <Text style={[styles.labelOrange, {color: chosenColor}]}>{value}</Text>
+            {renderIcons(crypto.activeUsers, maxValue)}
+            <Text style={[styles.labelOrange, {color: chosenColor}]}>
+              {formatNumber(crypto.activeUsers)}
+            </Text>
           </View>
         </View>
       </View>

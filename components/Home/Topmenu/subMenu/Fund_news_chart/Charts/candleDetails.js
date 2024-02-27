@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-const CandlestickDetails = ({coin, lastPrice, interval, styles}) => {
+const CandlestickDetails = ({coin, lastPrice, interval, styles, isPriceUp}) => {
   const formatNumber = price => {
     const number = parseFloat(price);
     if (isNaN(number)) {
@@ -26,11 +26,11 @@ const CandlestickDetails = ({coin, lastPrice, interval, styles}) => {
       <Text
         style={[
           styles.lastPrice,
-          //  prevPrice !== undefined && lastPrice !== undefined
-          //     ? lastPrice > prevPrice
-          //       ? styles.priceUpColor
-          //       : styles.priceDownColor
-          //     : {},
+           isPriceUp !== null
+              ? isPriceUp
+                ? styles.priceUpColor
+                : styles.priceDownColor
+              : {},
         ]}>
         ${lastPrice ? formatNumber(lastPrice) : ' ...'}
       </Text>

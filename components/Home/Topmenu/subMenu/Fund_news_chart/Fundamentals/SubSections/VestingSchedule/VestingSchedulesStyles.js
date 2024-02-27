@@ -5,60 +5,67 @@ import {AppThemeContext} from '../../../../../../../../context/themeContext';
 const useVestingShedulesStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.secondaryBoxesBgColor,
+    },
     rowContainer: {
       flexDirection: 'row',
-      paddingHorizontal: 5,
-      paddingVertical: 10,
+      marginVertical: 16,
+      paddingHorizontal: 8,
+      paddingVertical: 8,
     },
     subtitle: {
       marginHorizontal: 10,
       fontSize: theme.responsiveFontSize,
       color: theme.textColor,
+      fontWeight: 'bold',
     },
     tokenDataContainer: {
       flex: 1,
       width: '100%',
       paddingHorizontal: 10,
-      backgroundColor: theme.secondaryBoxesBgColor,
+    },
+    itemContainer: {
+      flex: 1,
+      paddingVertical: 10,
+      borderTopWidth: 1,
+      borderTopColor: theme.secondaryGrayColor,
     },
     yearContainer: {
-      margin: 5,
-      width: '30%',
+      maxWidth: '40%',
+      marginVertical: 8,
+      width: 'auto',
       flexDirection: 'row',
-      padding: 10,
-      backgroundColor: theme.secondaryTextColor,
-      borderRadius: 5,
+      padding: 8,
+      paddingHorizontal: 16,
+      backgroundColor: theme.secondaryGrayColor,
+      borderRadius: 3,
+      alignItems: 'center',
+      justifyContent: 'flex-start',
     },
     yearText: {
-      marginHorizontal: 5,
-      color: theme.textColor,
-      fontSize: theme.responsiveFontSize * 0.8,
+      marginHorizontal: 4,
+      color: theme.whiteTextColor,
+      fontSize: theme.responsiveFontSize * 0.825,
     },
     bigText: {
-      padding: 12.5,
+      marginVertical: 8,
       fontSize: theme.responsiveFontSize * 1.5,
       color: theme.titleColor,
       fontWeight: 'bold',
     },
-    unlockIconContainer: {
+    unlockIcon: {
+      padding: 8,
       width: 25,
       height: 25,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    unlockIcon: {
-      flex: 1,
       tintColor: theme.secondaryTextColor,
     },
-    calendarIconContainer: {
-      width: 20,
-      height: 20,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
     calendarIcon: {
-      flex: 1,
-      tintColor: theme.textColor,
+      width: 26,
+      height: 26,
+      alignSelf: 'flex-start',
+      tintColor: theme.whiteTextColor,
     },
   });
   return styles;

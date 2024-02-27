@@ -14,6 +14,7 @@ const useFundamentalsStyles = () => {
     },
     title: {
       marginVertical: theme.titlesVerticalMargin * 0.5,
+      marginTop: 0,
       fontWeight: 'bold',
       color: theme.titleColor,
       fontSize: theme.titleFontSize,

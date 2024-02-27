@@ -12,6 +12,7 @@ import Loader from '../../Loader/Loader';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import BackButton from '../../Analysis/BackButton/BackButton';
 import {useNavigation} from '@react-navigation/core';
+import SubscriptionsLoader from '../../Loader/SubscriptionsLoader';
 
 const SubscriptionItem = ({
   styles,
@@ -117,10 +118,12 @@ const PackageSubscriptions = () => {
     useContext(RevenueCatContext);
   const [activeItem, setActiveItem] = useState(null);
   const [missingMessageActive, setMissingMessageActive] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   console.log('Packages: ', packages);
 
   const handlePurchase = async pack => {
+    setLoading(true);
     if (pack === null) {
       setMissingMessageActive(true);
       return;
@@ -132,6 +135,7 @@ const PackageSubscriptions = () => {
       setMissingMessageActive(true);
     } finally {
       setActiveItem(null);
+      setLoading(false);
     }
   };
 
@@ -199,6 +203,7 @@ const PackageSubscriptions = () => {
           <Loader />
         )}
       </ScrollView>
+      <SubscriptionsLoader isLoading={loading} />
     </SafeAreaView>
   );
 };

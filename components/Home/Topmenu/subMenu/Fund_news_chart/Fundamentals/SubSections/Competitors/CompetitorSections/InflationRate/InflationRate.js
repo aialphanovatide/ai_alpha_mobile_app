@@ -1,8 +1,9 @@
 import {Text, View, TouchableOpacity, Image} from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import CryptosSelector from '../../CryptoSelector/CryptosSelector';
 import useInflationRateStyles from './InflationRateStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
+import Loader from '../../../../../../../../../Loader/Loader';
 
 const SelectorItem = ({year, activeYear, handleYearChange, styles}) => {
   return (
@@ -40,8 +41,9 @@ const YearSelector = ({years, activeYear, handleYearChange, styles}) => {
   );
 };
 
-const InflationRate = ({cryptos}) => {
+const InflationRate = ({competitorsData}) => {
   const {isDarkMode} = useContext(AppThemeContext);
+  const [cryptos, setCryptos] = useState([]);
   const styles = useInflationRateStyles();
   const years = [
     {
@@ -91,8 +93,79 @@ const InflationRate = ({cryptos}) => {
   ];
 
   const [activeYear, setActiveYear] = useState(2022);
-  const [activeCrypto, setActiveCrypto] = useState(cryptos[0]);
+  const [activeCrypto, setActiveCrypto] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [currentPercentage, setCurrentPercentage] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    const inflation_rate_data = [];
+    competitorsData.forEach((item, index) => {
+      if (
+        inflation_rate_data.find(mappedItem =>
+          item.competitor.token.includes(mappedItem.name),
+        )
+      ) {
+        return;
+      } else {
+        const mapped_crypto = {
+          id: index + 1,
+          name:
+            item.competitor.token.indexOf('(') !== -1
+              ? item.competitor.token.slice(
+                  0,
+                  item.competitor.token.indexOf('(') - 1,
+                )
+              : item.competitor.token.replace(' ', ''),
+          crypto:
+            item.competitor.token.indexOf('(') !== -1
+              ? item.competitor.token
+                  .slice(0, item.competitor.token.indexOf('(') - 1)
+                  .toUpperCase()[0] +
+                item.competitor.token
+                  .slice(0, item.competitor.token.indexOf('(') - 1)
+                  .slice(1)
+              : item.competitor.token.replace(' ', '').toUpperCase()[0] +
+                item.competitor.token.replace(' ', '').slice(1),
+          inflationRate: getInflationRateFromYears(
+            years,
+            competitorsData,
+            item.competitor.token,
+          ),
+        };
+        inflation_rate_data.push(mapped_crypto);
+      }
+    });
+    setCryptos(inflation_rate_data);
+    setActiveCrypto(inflation_rate_data[0]);
+    setLoading(false);
+  }, [competitorsData]);
+
+  const getInflationRateFromYears = (years, competitors_data, token) => {
+    const inflationRate = [];
+    years.forEach(year => {
+      const current_year_value = {
+        year: year.year,
+        value: parseInflationRateValue(
+          findKeyInCompetitorItem(
+            competitors_data,
+            `inflation rate ${year.year}`,
+            token,
+          ),
+        ),
+      };
+      inflationRate.push(current_year_value);
+    });
+    return inflationRate;
+  };
+
+  const parseInflationRateValue = stringValue => {
+    if (!stringValue) {
+      return 0;
+    }
+    const filtered_string = stringValue.replace(/[%]/g, '');
+    return Number(filtered_string);
+  };
 
   const handleYearChange = year => {
     setActiveYear(year);
@@ -112,6 +185,13 @@ const InflationRate = ({cryptos}) => {
     }
   };
 
+  const findKeyInCompetitorItem = (data, key, crypto) => {
+    const found = data.find(
+      item => item.competitor.token === crypto && item.competitor.key === key,
+    );
+    return found && found !== undefined ? found.competitor.value : null;
+  };
+
   const findImageByInflationRate = rate => {
     if (rate <= 0) {
       return inflationValues[0].image;
@@ -122,6 +202,18 @@ const InflationRate = ({cryptos}) => {
       return selectedImage.image;
     }
   };
+
+  if (loading) {
+    return (
+      <View>
+        <Loader />
+      </View>
+    );
+  }
+
+  if (!cryptos || cryptos?.length === 0) {
+    return null;
+  }
 
   return (
     <View>

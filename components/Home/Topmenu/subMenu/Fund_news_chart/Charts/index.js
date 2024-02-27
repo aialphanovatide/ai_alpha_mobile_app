@@ -17,7 +17,7 @@ const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
   const {interval, symbol, coinBot} =
     route.params.screen === 'Charts' ? route.params.params : route.params;
-
+  const [isPriceUp, setIsPriceUp] = useState(null);
   const [selectedInterval, setSelectedInterval] = useState(interval);
   const [lastPrice, setLastPrice] = useState(undefined);
   const [resistanceLevels, setResistanceLevels] = useState([]);
@@ -37,6 +37,9 @@ const CandlestickChart = ({route}) => {
       );
       const data = await response.json();
       const currentPrice = parseFloat(data[data.length - 1][4]);
+      data[data.length - 1][4] >= data[data.length - 2][4]
+        ? setIsPriceUp(true)
+        : setIsPriceUp(false);
       setLastPrice(currentPrice);
       const formattedChartData = data.map(item => ({
         x: moment(item[0]),
@@ -55,19 +58,19 @@ const CandlestickChart = ({route}) => {
   }
 
   useEffect(() => {
-    async function getSupportAndResistanceData(botName) {
+    async function getSupportAndResistanceData(botName, time_interval) {
       try {
         const supportValues = [];
         const resistanceValues = [];
         const data = await getService(
-          `/api/coin-support-resistance/${botName}`,
+          `//api/coin-support-resistance?coin_name=${botName}&temporality=${time_interval}&pair=usdt`,
         );
         if (data.success) {
           const values = data.chart_values;
           for (const key in values) {
             if (key.includes('support')) {
               supportValues.push(values[key]);
-            } else {
+            } else if (key.includes('resistance')) {
               resistanceValues.push(values[key]);
             }
           }
@@ -81,7 +84,7 @@ const CandlestickChart = ({route}) => {
       }
     }
 
-    getSupportAndResistanceData(coinBot)
+    getSupportAndResistanceData(coinBot, selectedInterval)
       .then(response => {
         if (response) {
           setResistanceLevels(response.resistance);
@@ -91,7 +94,7 @@ const CandlestickChart = ({route}) => {
       .catch(error => {
         console.error('Error fetching support and resistance data: ', error);
       });
-  }, [activeButtons, coinBot]);
+  }, [activeButtons, coinBot, selectedInterval]);
 
   useEffect(() => {
     const intervalId = setInterval(() => fetchChartData(lastPrice), 2000);
@@ -129,6 +132,7 @@ const CandlestickChart = ({route}) => {
         interval={selectedInterval}
         lastPrice={lastPrice}
         styles={styles}
+        isPriceUp={isPriceUp}
       />
       <View style={styles.chartsWrapper}>
         <TimeframeSelector

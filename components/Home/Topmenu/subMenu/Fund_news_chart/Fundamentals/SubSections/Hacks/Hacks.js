@@ -1,41 +1,47 @@
-import {SafeAreaView, ScrollView, Text, View} from 'react-native';
+import {View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Timeline from './Timeline/Timeline';
-import Loader from '../../../../../../../Loader/Loader';
-import { fundamentalsMock } from '../../fundamentalsMock';
+import {fundamentalsMock} from '../../fundamentalsMock';
 
-const Hacks = ({getHacksData, coin}) => {
-  const [events, setEvents] = useState(fundamentalsMock.hacks.events);
-  // useEffect(() => {
-  //   const getHacks = async () => {
-  //     const hacks = await getHacksData(coin);
-  //     if (hacks && hacks !== undefined) {
-  //       setEvents(hacks);
-  //       console.log('Hacks data:', hacks);
-  //     } else {
-  //       setEvents([]);
-  //     }
-  //   };
-  //   getHacks();
-  // }, [coin]);
+const Hacks = ({getSectionData, coin}) => {
+  const [events, setEvents] = useState([]);
+  useEffect(() => {
+    const fetchHacksData = async () => {
+      try {
+        const response = await getSectionData(
+          `/api/hacks?coin_bot_name=${coin}`,
+        );
+
+        if (response.status !== 200) {
+          setEvents([]);
+        } else {
+          setEvents(response.message);
+        }
+      } catch (error) {
+        console.log('Error trying to get hacks data: ', error);
+      }
+    };
+    fetchHacksData();
+  }, [coin]);
+
+  if (events.length === 0 || !events) {
+    return null;
+  }
+
   return (
-    <SafeAreaView style={{flex: 1, maxHeight: 500}}>
-      {events && events !== undefined ? (
-        <Timeline
-          events={events}
-          textPoints={[
-            {label: 'What was the incident?', propName: 'incident_description'},
-            {label: 'What were the consequences?', propName: 'consequences'},
-            {
-              label: 'What risk mitigation measures have been taken?',
-              propName: 'mitigation_measure',
-            },
-          ]}
-        />
-      ) : (
-        <Loader />
-      )}
-    </SafeAreaView>
+    <View style={{flex: 1, minHeight: 500}}>
+      <Timeline
+        events={events}
+        textPoints={[
+          {label: 'What was the incident?', propName: 'incident_description'},
+          {label: 'What were the consequences?', propName: 'consequences'},
+          {
+            label: 'What risk mitigation measures have been taken?',
+            propName: 'mitigation_measure',
+          },
+        ]}
+      />
+    </View>
   );
 };
 

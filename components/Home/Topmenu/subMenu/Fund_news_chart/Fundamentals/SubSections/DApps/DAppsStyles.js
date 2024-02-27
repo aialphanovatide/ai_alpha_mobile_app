@@ -128,7 +128,20 @@ const useDappsStyles = () => {
     activeItem: {
       flex: 1,
       height: 'auto',
-    }
+    },
+    emptySectionMessage: {
+      margin: theme.boxesVerticalMargin,
+      fontSize: theme.responsiveFontSize,
+      color: theme.secondaryTextColor,
+      alignSelf: 'center',
+      fontWeight: 'bold',
+      fontStyle: 'italic',
+    },
+    emptyMessageContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   });
   return styles;
 };

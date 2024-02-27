@@ -78,22 +78,22 @@ const PriceAction = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeCoins, setActiveCoins] = useState([]);
   useEffect(() => {
-    /*
     setCoins(priceActionMock);
     setLoading(false);
-    */
+    /*
     const fetchCoinsData = async () => {
       try {
         const data = await priceActionService.getAllCoinsInfo();
         console.log(data);
         setCoins(data);
       } catch (error) {
-        console.error('Error fetching coins data:', error);
+        console.error('Error fetching price action data:', error);
       } finally {
         setLoading(false);
       }
     };
     fetchCoinsData();
+    */
   }, []);
 
   const findCoinsByCategory = (coins, category) => {

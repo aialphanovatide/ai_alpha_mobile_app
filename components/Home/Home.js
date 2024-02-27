@@ -3,13 +3,11 @@ import {ScrollView, SafeAreaView} from 'react-native';
 import TickerTape from './Tickertape/TickerTape';
 import TopStories from './TopStories/topStories';
 import Analysis from './Analysis/analysis';
-import {TopMenuContext} from '../../context/topMenuContext';
 import TopTenGainers from './TopTenGainers/TopTenGainers';
 import PriceAction from './PriceAction/PriceAction';
 import useHomeStyles from './HomeStyles';
 
 const Home = () => {
-  const {activeCoin} = useContext(TopMenuContext);
   const styles = useHomeStyles();
 
   return (

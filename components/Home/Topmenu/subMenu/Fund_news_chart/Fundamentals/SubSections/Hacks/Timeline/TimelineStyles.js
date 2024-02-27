@@ -7,6 +7,7 @@ const useTimelineStyles = () => {
   const styles = StyleSheet.create({
     timelineContainer: {
       margin: '2.5%',
+      height: '100%',
       position: 'relative',
       paddingVertical: '5%',
     },

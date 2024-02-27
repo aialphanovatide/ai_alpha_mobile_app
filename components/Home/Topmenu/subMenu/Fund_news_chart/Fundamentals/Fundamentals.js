@@ -4,10 +4,8 @@ import SubSection from './SubSections/SubSection';
 import Introduction from './SubSections/Introduction/Introduction.js';
 import Tokenomics from './SubSections/Tokenomics/Tokenomics.js';
 import GeneralTokenAllocation from './SubSections/GeneralTokenAllocation/GeneralTokenAllocation.js';
-import VestingSchedule from './SubSections/VestingSchedule/VestingSchedule.js';
 import ValueAccrualMechanisms from './SubSections/ValueAccrualMechanisms/ValueAccrualMechanisms.js';
 import Competitors from './SubSections/Competitors/Competitors';
-import RevenueModel from './SubSections/RevenueModel/RevenueModel';
 import Hacks from './SubSections/Hacks/Hacks';
 import Upgrades from './SubSections/UpgradesSection/Upgrades';
 import DApps from './SubSections/DApps/DApps';
@@ -15,18 +13,25 @@ import useFundamentalsStyles from './FundamentalsStyles';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 import UpdatedRevenueModel from './SubSections/RevenueModel/UpdatedRevenueModel';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
-import {altGetService} from '../../../../../../services/aiAlphaApi';
+import {altGetService, getService} from '../../../../../../services/aiAlphaApi';
 import {fundamentalsMock} from './fundamentalsMock';
 import TokenUtility from './SubSections/TokenUtility/TokenUtility';
 import AboutModal from './AboutModal';
+import {fundamentals_static_content} from './fundamentalsStaticData';
+import VestingSchedule from './SubSections/VestingSchedule/VestingSchedule';
 
 const Fundamentals = ({route}) => {
   const {activeSubCoin} = useContext(TopMenuContext);
-  const coin = route ? route.params.activeCoin : activeSubCoin;
+  console.log(route);
+  const initial_coin = route ? route.params.activeCoin : activeSubCoin;
+  const [coin, setCoin] = useState(initial_coin);
+  // const coin = 'eth';
   const {isDarkMode} = useContext(AppThemeContext);
   const styles = useFundamentalsStyles();
   const [aboutVisible, setAboutVisible] = useState(false);
   const [aboutDescription, setAboutDescription] = useState('');
+  const [currentContent, setCurrentContent] = useState(fundamentalsMock[coin]);
+  const [sharedData, setSharedData] = useState([]);
 
   const handleAboutPress = (description = null) => {
     if (description) {
@@ -35,18 +40,41 @@ const Fundamentals = ({route}) => {
     setAboutVisible(!aboutVisible);
   };
 
-  const getHacksData = async coin => {
-    const data = await altGetService(`/api/hacks?coin_bot_name=${coin}`);
-    console.log('Hacks response from server: ', data);
-    return data.message;
-  };
-
-  const getIntroductionData = async coin => {
-    const data = await altGetService(`/get_introduction/${coin}`);
+  const getSectionData = async endpoint => {
+    const data = await getService(endpoint);
     return data;
   };
 
-  useEffect(() => {}, [coin]);
+  useEffect(() => {
+    const handleCoinUpdate = newCoin => {
+      setCurrentContent(fundamentalsMock[newCoin]);
+      setCoin(newCoin);
+      console.log(`Updating content from coin ${coin} to ${newCoin}`);
+    };
+
+    handleCoinUpdate(activeSubCoin);
+  }, [coin, activeSubCoin]);
+
+  useEffect(() => {
+    const fetchTokenomicsData = async () => {
+      try {
+        const response = await getSectionData(
+          `/api/get_tokenomics?coin_name=${coin}`,
+        );
+
+        if (response.status !== 200) {
+          setSharedData([]);
+        } else {
+          // console.log(response.message.tokenomics_data);
+          const parsed_cryptos = response.message.tokenomics_data;
+          setSharedData(parsed_cryptos);
+        }
+      } catch (error) {
+        console.log('Error trying to get tokenomics data: ', error);
+      }
+    };
+    fetchTokenomicsData();
+  }, [coin]);
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.backgroundColor}>
@@ -59,134 +87,140 @@ const Fundamentals = ({route}) => {
           />
         )}
         <Text style={styles.title}>Fundamentals</Text>
-        {/*<SubSection
+        <SubSection
           subtitle={'Introduction'}
-          content={
-            <Introduction
-              coin={coin}
-              getIntroductionData={getIntroductionData}
-            />
-          }
+          content={<Introduction coin={coin} getSectionData={getSectionData} />}
           handleAboutPress={handleAboutPress}
         />
         <SubSection
           handleAboutPress={handleAboutPress}
           subtitle={'Tokenomics'}
-          content={<Tokenomics />}
+          content={
+            <Tokenomics
+              content={currentContent.tokenomics.content}
+              getSectionData={getSectionData}
+              coin={coin}
+            />
+          }
           hasAbout={true}
-          description={fundamentalsMock.tokenomics.sectionDescription}
+          description={
+            fundamentals_static_content.tokenomics.sectionDescription
+          }
         />
         <SubSection
           subtitle={'Token Distribution'}
-          content={<GeneralTokenAllocation />}
-          hasAbout
-          handleAboutPress={handleAboutPress}
-          description={fundamentalsMock.tokenDistribution.sectionDescription}
-        />
-        {/* <SubSection
-          subtitle={'Vesting Schedules'}
           content={
-            <VestingSchedule year={2024} tokens={49999992} crypto={'ETH'} />
-          }
-          hasAbout
-          handleAboutPress={handleAboutPress}
-        /> */}
-        <SubSection
-          subtitle={'Token Utility'}
-          content={
-            <TokenUtility content={fundamentalsMock.tokenUtility.content} />
-          }
-          hasAbout
-          handleAboutPress={handleAboutPress}
-          description={fundamentalsMock.tokenUtility.sectionDescription}
-        />
-        <SubSection
-          subtitle={'Value Accrual Mechanisms'}
-          content={
-            <ValueAccrualMechanisms
-              options={fundamentalsMock.valueAccrualMechanisms.options}
-              contentData={fundamentalsMock.valueAccrualMechanisms.contentData}
+            <GeneralTokenAllocation
+              chartData={currentContent.tokenDistribution.chartData}
+              getSectionData={getSectionData}
+              coin={coin}
             />
           }
           hasAbout
           handleAboutPress={handleAboutPress}
           description={
-            fundamentalsMock.valueAccrualMechanisms.sectionDescription
+            fundamentals_static_content.tokenDistribution.sectionDescription
+          }
+        />
+        <SubSection
+          subtitle={'Vesting Schedule'}
+          content={
+            <VestingSchedule
+              crypto={currentContent.vestingSchedules?.displayName}
+              schedules={currentContent.vestingSchedules?.schedules}
+            />
+          }
+          hasAbout
+          handleAboutPress={handleAboutPress}
+          description={
+            fundamentals_static_content.vestingSchedule.sectionDescription
+          }
+        />
+        <SubSection
+          subtitle={'Token Utility'}
+          content={
+            <TokenUtility
+              getSectionData={getSectionData}
+              coin={coin}
+              content={currentContent.tokenUtility.content}
+            />
+          }
+          hasAbout
+          handleAboutPress={handleAboutPress}
+          description={
+            fundamentals_static_content.tokenUtility.sectionDescription
+          }
+        />
+        <SubSection
+          subtitle={'Value Accrual Mechanisms'}
+          content={
+            <ValueAccrualMechanisms
+              contentData={currentContent.valueAccrualMechanisms.content}
+              getSectionData={getSectionData}
+              coin={coin}
+            />
+          }
+          hasAbout
+          handleAboutPress={handleAboutPress}
+          description={
+            fundamentals_static_content.valueAccrualMechanisms
+              .sectionDescription
           }
         />
         <SubSection
           subtitle={'Competitors'}
           content={
             <Competitors
-              cryptosData={fundamentalsMock.competitors.cryptosData}
-              subsectionsData={fundamentalsMock.competitors.subsections}
+              coin={coin}
+              getSectionData={getSectionData}
+              tokenomicsData={sharedData}
+              cryptosData={currentContent.competitors.cryptosData}
+              subsectionsData={
+                fundamentals_static_content.competitors.subsections
+              }
               handleAboutPress={handleAboutPress}
             />
           }
           hasAbout
           handleAboutPress={handleAboutPress}
-          description={fundamentalsMock.competitors.sectionDescription}
-        />
-        {/* <SubSection
-          hasAbout
-          subtitle={'Revenue Model'}
-          content={
-            <RevenueModel
-              options={[
-                {
-                  name: 'Transaction Fees',
-                  color: '#399AEA',
-                  values: [
-                    {year: 2022, percentage: 75},
-                    {year: 2023, percentage: 65},
-                  ],
-                },
-                {
-                  name: 'Ether Burning',
-                  color: '#C539B4',
-                  values: [
-                    {year: 2022, percentage: 20},
-                    {year: 2023, percentage: 30},
-                  ],
-                },
-                {
-                  name: 'Other Sources',
-                  color: '#FFC53D',
-                  values: [
-                    {year: 2022, percentage: 0},
-                    {year: 2023, percentage: 5},
-                  ],
-                },
-              ]}
-            />
+          description={
+            fundamentals_static_content.competitors.sectionDescription
           }
-        /> */}
+        />
         <SubSection
           subtitle={'Revenue Model'}
           hasAbout
           handleAboutPress={handleAboutPress}
           content={
             <UpdatedRevenueModel
-              title={'Annualised Revenue'}
-              subtitle={'*Cumulative last 1yr revenue'}
-              value={'$1.562b'}
+              revenues={currentContent.revenueModel?.revenues}
+              getSectionData={getSectionData}
+              coin={coin}
             />
           }
-          description={fundamentalsMock.revenueModel.sectionDescription}
+          description={
+            fundamentals_static_content.revenueModel.sectionDescription
+          }
         />
         <SubSection
           hasAbout
           handleAboutPress={handleAboutPress}
           subtitle={'Hacks'}
-          content={<Hacks getHacksData={getHacksData} coin={coin} />}
-          description={fundamentalsMock.hacks.sectionDescription}
+          content={<Hacks getSectionData={getSectionData} coin={coin} />}
+          description={fundamentalsMock.eth.hacks.sectionDescription}
         />
         <SubSection
           hasAbout
           handleAboutPress={handleAboutPress}
           subtitle={'Upgrades'}
-          description={fundamentalsMock.upgrades.sectionDescription}
-          content={<Upgrades events={fundamentalsMock.upgrades.events} />}
+          description={fundamentals_static_content.upgrades.sectionDescription}
+          content={
+            <Upgrades
+              events={currentContent.upgrades.events}
+              getSectionData={getSectionData}
+              coin={coin}
+            />
+          }
         />
         <SubSection
           hasAbout
@@ -194,11 +228,12 @@ const Fundamentals = ({route}) => {
           subtitle={'DApps'}
           content={
             <DApps
-              mainImage={fundamentalsMock.dApps.mainImage}
-              protocols={fundamentalsMock.dApps.protocols}
+              content={currentContent.dApps}
+              getSectionData={getSectionData}
+              coin={coin}
             />
           }
-          description={fundamentalsMock.dApps.sectionDescription}
+          description={fundamentals_static_content.dApps.sectionDescription}
         />
       </SafeAreaView>
     </ScrollView>

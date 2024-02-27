@@ -30,7 +30,7 @@ const RevenueCatProvider = ({children}) => {
       'Baseblock_4999_m1',
       'Corechain_4999_m1',
       'Rootlink_4999_m1',
-      'Xpayments_4999_m1',
+      'XPayments_4999_m1',
       'Lsds_4999_m1',
       'Boostlayer_4999_m1',
       'Truthnodes_4999_m1',

@@ -7,13 +7,23 @@ const useUpdatedRevenueModelStyles = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      flexDirection: 'row',
       marginVertical: theme.boxesVerticalMargin * 1.2,
-      padding: 10,
-      paddingLeft: 5,
+      paddingHorizontal: 10,
       backgroundColor: theme.boxesBackgroundColor,
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    itemContainer: {
+      flex: 1,
+      width: '100%',
+      marginVertical: 8,
+      flexDirection: 'row',
+      padding: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderBottomColor: theme.titleColor,
+      borderBottomWidth: 1,
+
     },
     revenueImage: {
       height: 44,

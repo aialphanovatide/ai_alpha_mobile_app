@@ -11,6 +11,9 @@ const SubSection = ({
   description,
 }) => {
   const styles = useFundamentalsStyles();
+  if (content === null) {
+    return <></>;
+  }
   return (
     <View style={styles.subSection}>
       <View style={styles.row}>

@@ -113,7 +113,6 @@ const TopStories = () => {
     const fetchTopStories = async () => {
       try {
         const data = await getService(`/api/get/allTopStories`);
-        console.log(data.top_stories);
         if (!data || data.top_stories === undefined) {
           setStories([]);
         } else {

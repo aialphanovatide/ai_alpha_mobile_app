@@ -2,34 +2,47 @@ import {Image, Text, View} from 'react-native';
 import React from 'react';
 import useVestingShedulesStyles from './VestingSchedulesStyles';
 
-const VestingSchedule = ({year, tokens, crypto}) => {
+const VestingSchedule = ({crypto, schedules}) => {
   const styles = useVestingShedulesStyles();
+  const formatTokensNumber = number => {
+    const parts = number.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    return parts.join('.');
+  };
+
+  if (!crypto || !schedules || schedules.length === 0) {
+    return null;
+  }
+
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.rowContainer}>
-        <View style={styles.unlockIconContainer}>
-          <Image
-            style={styles.unlockIcon}
-            source={require('../../../../../../../../assets/images/fundamentals/unlock.png')}
-            resizeMode={'contain'}
-          />
-        </View>
+        <Image
+          style={styles.unlockIcon}
+          source={require('../../../../../../../../assets/images/fundamentals/unlock.png')}
+          resizeMode={'contain'}
+        />
         <Text style={styles.subtitle}>
           {crypto} tokens scheduled for release
         </Text>
       </View>
       <View style={styles.tokenDataContainer}>
-        <View style={styles.yearContainer}>
-          <View style={styles.calendarIconContainer}>
-            <Image
-              style={styles.calendarIcon}
-              resizeMode={'contain'}
-              source={require('../../../../../../../../assets/images/fundamentals/calendar.png')}
-            />
+        {schedules.map((schedule, index) => (
+          <View key={index} style={styles.itemContainer}>
+            <View style={styles.yearContainer}>
+              <Image
+                style={styles.calendarIcon}
+                resizeMode={'contain'}
+                source={require('../../../../../../../../assets/images/fundamentals/calendar.png')}
+              />
+              <Text style={styles.yearText}>{schedule.date}</Text>
+            </View>
+            <Text style={styles.bigText}>
+              {formatTokensNumber(schedule.tokens)} tokens
+            </Text>
           </View>
-          <Text style={styles.yearText}>Year {year}</Text>
-        </View>
-        <Text style={styles.bigText}>{tokens} tokens</Text>
+        ))}
       </View>
     </View>
   );

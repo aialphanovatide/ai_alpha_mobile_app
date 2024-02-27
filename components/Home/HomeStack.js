@@ -12,6 +12,7 @@ import NewsArticle from './Topmenu/subMenu/Fund_news_chart/News/NewsArticle';
 import {AppThemeContext} from '../../context/themeContext';
 import {Animated, TouchableOpacity, View} from 'react-native';
 import useHomeStyles from './HomeStyles';
+import AnalysisArticle from './Analysis/AnalysisArticle';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -164,6 +165,10 @@ const HomeStackScreen = () => {
         }}
       />
       <HomeStack.Screen name="TopMenuScreen" component={TopmenuScreen} />
+      <HomeStack.Screen
+        name="AnalysisArticleScreen"
+        component={AnalysisArticle}
+      />
     </HomeStack.Navigator>
   );
 };

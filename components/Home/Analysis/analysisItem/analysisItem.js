@@ -1,8 +1,8 @@
-import { Image } from 'react-native';
-import { List } from 'react-native-paper';
+import {Image} from 'react-native';
+import {List} from 'react-native-paper';
 import useHomeAnalysisStyles from '../analysisStyles';
 
-const AnalysisItem = ({title, description, imageBase64}) => {
+const AnalysisItem = ({title, image, item, handleAnalysisNavigation}) => {
   const styles = useHomeAnalysisStyles();
 
   return (
@@ -10,13 +10,9 @@ const AnalysisItem = ({title, description, imageBase64}) => {
       style={styles.item}
       title={title}
       titleNumberOfLines={2}
-      left={() => (
-        <Image
-          source={{uri: `data:image/png;base64,${imageBase64}`}}
-          style={styles.imageStyle}
-        />
-      )}
+      left={() => <Image source={{uri: image}} style={styles.imageStyle} />}
       titleStyle={styles.titleStyles}
+      onPress={() => handleAnalysisNavigation(item)}
     />
   );
 };

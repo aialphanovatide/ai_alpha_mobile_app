@@ -1,14 +1,6 @@
-import {
-  Image,
-  ImageBackground,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useContext, useState} from 'react';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import useDappsStyles from './DAppsStyles';
-import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../Loader/Loader';
 
 const ProtocolItem = ({
@@ -24,7 +16,7 @@ const ProtocolItem = ({
 
     const tier = (Math.log10(absNum) / 3) | 0;
 
-    if (tier == 0) return num;
+    if (tier === 0) return num;
 
     const divisor = Math.pow(thousand, tier);
     const formattedNum = (num / divisor).toFixed(1);
@@ -50,7 +42,7 @@ const ProtocolItem = ({
           styles.activeItem && {marginBottom: marginValue},
       ]}>
       <Image
-        source={protocol.image}
+        source={{uri: protocol.image, width: 40, height: 40}}
         style={styles.protocolImage}
         resizeMode="contain"
       />
@@ -58,7 +50,12 @@ const ProtocolItem = ({
       <View style={styles.protocolDataContainer}>
         <View style={styles.row}>
           <Text style={styles.protocolName}>{protocol.name}</Text>
-          <Text style={styles.tvl}>TVL: ${formatNumber(protocol.tvl)}</Text>
+          <Text style={styles.tvl}>
+            TVL:
+            {typeof protocol.tvl === 'string'
+              ? protocol.tvl
+              : `$${formatNumber(protocol.tvl)}`}
+          </Text>
         </View>
         <Text
           style={
@@ -86,9 +83,47 @@ const ProtocolItem = ({
   );
 };
 
-const DApps = ({mainImage, protocols}) => {
+const DApps = ({content, getSectionData, coin}) => {
   const styles = useDappsStyles();
   const [activeProtocol, setActiveProtocol] = useState(null);
+  const [mappedData, setMappedData] = useState([]);
+
+  const generateImageUri = protocol => {
+    const formatted_protocol = protocol.toLowerCase().replace(' ', '');
+    return `https://${coin}aialpha.s3.us-east-2.amazonaws.com/dapps/${formatted_protocol}.png`;
+  };
+
+  useEffect(() => {
+    const fetchDAppsData = async coin => {
+      try {
+        const response = await getSectionData(
+          `/api/dapps?coin_bot_name=${coin}`,
+        );
+        if (response.status !== 200) {
+          setMappedData([]);
+        } else {
+          // console.log('Dapps: ', response.message);
+          const dapps_response = response.message.map(protocol => {
+            return {
+              id: protocol.id,
+              name: protocol.dapps,
+              description: protocol.description,
+              tvl: protocol.tvl,
+              image: generateImageUri(protocol.dapps),
+            };
+          });
+          setMappedData(dapps_response);
+        }
+      } catch (error) {
+        console.log('Error trying to get dApps data: ', error);
+      }
+    };
+    fetchDAppsData(coin);
+  }, [coin]);
+
+  if (mappedData === undefined || mappedData === null) {
+    return null;
+  }
 
   const handleActiveProtocol = protocol => {
     if (activeProtocol && protocol.name === activeProtocol.name) {
@@ -97,31 +132,37 @@ const DApps = ({mainImage, protocols}) => {
       setActiveProtocol(protocol);
     }
   };
-
   return (
     <View>
-      <View style={styles.mainImageContainer}>
-        <Image
-          style={styles.mainImage}
-          resizeMode={'contain'}
-          source={mainImage}
-        />
-      </View>
-      <View style={styles.dataContainer}>
-        {protocols && protocols !== undefined ? (
-          protocols.map((protocol, index) => (
-            <ProtocolItem
-              key={index}
-              protocol={protocol}
-              styles={styles}
-              handleActiveProtocol={handleActiveProtocol}
-              activeProtocol={activeProtocol}
+      {mappedData && mappedData !== undefined ? (
+        <>
+          <View style={styles.mainImageContainer}>
+            <Image
+              style={styles.mainImage}
+              resizeMode={'contain'}
+              source={{
+                uri: `https://${coin}aialpha.s3.us-east-2.amazonaws.com/dapps/dapps.png`,
+                width: 320,
+                height: 200,
+              }}
             />
-          ))
-        ) : (
-          <Loader />
-        )}
-      </View>
+          </View>
+          <View style={styles.dataContainer}>
+            {mappedData?.map((protocol, index) => (
+              <ProtocolItem
+                key={index}
+                coin={coin}
+                protocol={protocol}
+                styles={styles}
+                handleActiveProtocol={handleActiveProtocol}
+                activeProtocol={activeProtocol}
+              />
+            ))}
+          </View>
+        </>
+      ) : (
+        <Loader />
+      )}
     </View>
   );
 };

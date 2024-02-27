@@ -4,12 +4,9 @@ import useIntroductionStyles from './IntroductionStyles';
 import Loader from '../../../../../../../Loader/Loader';
 
 import {fundamentalsMock} from '../../fundamentalsMock';
-const Introduction = ({getIntroductionData, coin}) => {
+const Introduction = ({getSectionData, coin}) => {
   const styles = useIntroductionStyles();
-  const [content, setContent] = useState({
-    description: fundamentalsMock.introduction.description,
-    dataItems: fundamentalsMock.introduction.dataItems,
-  });
+  const [content, setContent] = useState(null);
 
   const parseContent = text => {
     const [description, ...dataItems] = text.trim().split('\n');
@@ -20,32 +17,44 @@ const Introduction = ({getIntroductionData, coin}) => {
 
     return {
       description: description.trim(),
-      dataItems: cleanedDataItems.filter(item => item !== ''),
+      dataItems:
+        cleanedDataItems.length > 0
+          ? cleanedDataItems.filter(item => item !== '')
+          : ['', '', '', ''],
     };
   };
 
-  // useEffect(() => {
-  //   const getContent = async () => {
-  //     const data = await getIntroductionData(coin);
-  //     console.log('Introductions response from server: ', data);
-  //     if (data && data !== undefined) {
-  //       const parsedContent = parseContent(data.message.content);
-  //       console.log('Parsed content: ', parsedContent);
-  //       setContent(parsedContent);
-  //     } else {
-  //       setContent('');
-  //     }
-  //   };
-  //   getContent();
-  // }, [coin]);
+  useEffect(() => {
+    const fetchIntroductionContent = async () => {
+      try {
+        const response = await getSectionData(
+          `/api/get_introduction?coin_name=${coin}`,
+        );
+
+        if (response.status !== 200) {
+          setContent([]);
+        } else {
+          const parsedContent = parseContent(response.message.content);
+          setContent(parsedContent);
+        }
+      } catch (error) {
+        console.log('Error trying to get introduction data: ', error);
+      }
+    };
+    fetchIntroductionContent();
+  }, [coin]);
+
+  if (!content || content === undefined) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
-      {content ? (
-        <>
-          <Text style={styles.introText}>{content.description}</Text>
-          <View style={styles.dataContainer}>
-            {content.dataItems.map((item, index) => (
+      <Text style={styles.introText}>{content.description}</Text>
+      <View style={styles.dataContainer}>
+        {content.dataItems?.map((item, index) => {
+          if (item !== '') {
+            return (
               <View key={index} style={styles.textContainer}>
                 <Image
                   style={styles.starSymbol}
@@ -54,12 +63,12 @@ const Introduction = ({getIntroductionData, coin}) => {
                 />
                 <Text style={styles.introText}>{item}</Text>
               </View>
-            ))}
-          </View>
-        </>
-      ) : (
-        <Loader />
-      )}
+            );
+          } else {
+            return;
+          }
+        })}
+      </View>
     </View>
   );
 };

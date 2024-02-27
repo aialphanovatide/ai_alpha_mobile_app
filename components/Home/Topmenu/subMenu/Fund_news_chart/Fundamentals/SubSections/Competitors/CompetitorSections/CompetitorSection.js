@@ -9,6 +9,9 @@ const CompetitorSection = ({
   styles,
   handleAboutPress,
 }) => {
+  if (!component) {
+    return <></>;
+  }
   return (
     <View style={styles.competitorSection}>
       <View style={styles.row}>

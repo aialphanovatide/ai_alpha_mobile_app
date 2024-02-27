@@ -50,22 +50,22 @@ const TopTenGainers = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    /*
     setTopTenCoins(TOP_TEN_GAINERS_MOCK);
     setLoading(false);
-    */
+    /*
     const fetchTopTenCoins = async () => {
       try {
         const data = await topTenGainersService.getTop10Coins();
         setTopTenCoins(data);
         console.log('TopTenGainers data:', data);
       } catch (error) {
-        console.error('Error fetching top 10 coins:', error);
+        console.error('Error fetching top 10 gainers:', error);
       } finally {
         setLoading(false);
       }
     };
     fetchTopTenCoins();
+    */
   }, []);
   return (
     <View style={styles.topTenGainersContainer}>

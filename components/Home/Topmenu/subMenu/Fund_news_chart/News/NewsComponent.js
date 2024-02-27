@@ -85,6 +85,7 @@ const NewsComponent = ({route}) => {
           : `/api/get/news?coin=${botname}`;
         const response = await getService(endpoint);
         if (
+          response.length === 0 ||
           (response.message &&
             response.message.startsWith('No articles found')) ||
           response.error
@@ -93,10 +94,11 @@ const NewsComponent = ({route}) => {
         } else {
           const articles = response.articles.slice(0, 4);
           setNews(articles);
-          setLoading(false);
         }
       } catch (error) {
         console.error('Error fetching news:', error.message);
+      } finally {
+        setLoading(false);
       }
     };
 

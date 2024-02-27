@@ -2,16 +2,16 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import Pie from 'react-native-pie';
 
-const CircleChart = ({data, dividerSize, backgroundColor}) => {
+const CircleChart = ({data, dividerSize, backgroundColor, colors}) => {
   return (
     <View style={styles.circleChartContainer}>
       <Pie
         radius={80}
         innerRadius={60}
-        sections={data.map(sector => {
+        sections={data.map((sector, index) => {
           return {
             percentage: sector.percentage,
-            color: sector.color,
+            color: colors[index > 5 ? index % 5 : index],
           };
         })}
         backgroundColor={backgroundColor}

@@ -1,77 +1,10 @@
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ImageBackground,
-} from 'react-native';
+import {Text, View, Image} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import Loader from '../../../../../../../Loader/Loader';
 import useVAMStyles from './VAMStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
-const MechanismsMenuItem = ({
-  item,
-  activeOption,
-  handleOptionChange,
-  styles,
-}) => {
-  const {theme} = useContext(AppThemeContext);
-  return (
-    <TouchableOpacity onPress={() => handleOptionChange(item)}>
-      <ImageBackground
-        source={
-          activeOption.name === item.name
-            ? require('../../../../../../../../assets/images/fundamentals/vam/active-item.png')
-            : require('../../../../../../../../assets/images/fundamentals/vam/inactive-item.png')
-        }
-        resizeMode="cover"
-        style={styles.menuItemContainer}
-        tintColor={theme.secondaryBoxesBgColor}>
-        <View style={styles.iconContainer}>
-          <Image
-            style={[
-              styles.itemIcon,
-              activeOption.name === item.name && {tintColor: '#F98404'},
-            ]}
-            resizeMode={'contain'}
-            source={item.icon}
-          />
-        </View>
-        <Text
-          style={[
-            styles.menuItemName,
-            activeOption.name === item.name && styles.activeItem,
-          ]}>
-          {item.name}
-        </Text>
-      </ImageBackground>
-    </TouchableOpacity>
-  );
-};
-
-const MechanismsMenu = ({
-  options,
-  activeOption,
-  handleOptionChange,
-  styles,
-}) => {
-  return (
-    <View style={styles.menuContainer}>
-      {options.map((item, index) => (
-        <MechanismsMenuItem
-          key={index}
-          item={item}
-          activeOption={activeOption}
-          handleOptionChange={handleOptionChange}
-          styles={styles}
-        />
-      ))}
-    </View>
-  );
-};
-
-const ContentItem = ({data, styles, isDarkMode}) => {
+const ContentItem = ({data, styles}) => {
   return (
     <View style={styles.dataContainer}>
       <Text style={styles.dataTitle}>{data.title}</Text>
@@ -79,9 +12,13 @@ const ContentItem = ({data, styles, isDarkMode}) => {
         <View style={styles.dataImageContainer}>
           <Image
             style={styles.dataImage}
-            alt={data.name}
-            source={isDarkMode ? data.image.dark : data.image.light}
-            resizeMode={'contain'}
+            alt={data.title}
+            source={{
+              uri: data?.image,
+              width: data?.imageSize.width,
+              height: data?.imageSize.height,
+            }}
+            resizeMode={'stretch'}
           />
         </View>
         <Text style={styles.dataText}>{data.text}</Text>
@@ -90,53 +27,86 @@ const ContentItem = ({data, styles, isDarkMode}) => {
   );
 };
 
-const ValueAccrualMechanisms = ({options, contentData}) => {
+const ValueAccrualMechanisms = ({getSectionData, coin, contentData}) => {
   const styles = useVAMStyles();
   const {isDarkMode} = useContext(AppThemeContext);
-  const [activeOption, setActiveOption] = useState(options[0]);
-  const [filteredData, setFilteredData] = useState(null);
+  const [dataItems, setDataItems] = useState([]);
+
+  const getItemImageUri = (coin, section, isDarkMode) => {
+    const formatted_title = section
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join('');
+    const theme_word = isDarkMode ? 'Dark' : 'Light';
+    return `https://${coin}aialpha.s3.us-east-2.amazonaws.com/${formatted_title}${theme_word}.jpg`;
+  };
+
+  const calculateImageSize = section => {
+    return section.length >= 150
+      ? section.length >= 300
+        ? {width: 188, height: 356}
+        : {width: 124, height: 208}
+      : {
+          width: 124,
+          height: 111,
+        };
+  };
 
   useEffect(() => {
-    const activeOptionData = filterContentByOptions(contentData, activeOption);
-    setFilteredData(activeOptionData);
-  }, [activeOption, contentData]);
-
-  const filterContentByOptions = (content, option) => {
-    const filteredContent = [];
-    content.forEach(obj => {
-      if (obj.option === option.name) {
-        obj.content.forEach(data => {
-          filteredContent.push(data);
-        });
+    const fetchValueAccrualMechanisms = async coin => {
+      try {
+        const response = await getSectionData(
+          `/api/get_tokenomics?coin_name=${coin}`,
+        );
+        if (response.status !== 200) {
+          setDataItems([]);
+        } else {
+          const parsed_data = response.message.value_accrual_mechanisms.map(
+            item => {
+              return {
+                id: item.value_accrual_mechanisms.id,
+                title: item.value_accrual_mechanisms.mechanism,
+                text: item.value_accrual_mechanisms.description,
+                image: getItemImageUri(
+                  coin,
+                  item.value_accrual_mechanisms.mechanism,
+                  isDarkMode,
+                ),
+                imageSize: calculateImageSize(
+                  item.value_accrual_mechanisms.description,
+                ),
+              };
+            },
+          );
+          setDataItems(parsed_data);
+        }
+      } catch (error) {
+        console.log(
+          'Error trying to get Value Accrual Mechanisms data: ',
+          error,
+        );
       }
-    });
-    return filteredContent;
-  };
+    };
+    fetchValueAccrualMechanisms(coin);
+  }, [coin]);
 
-  const handleOptionChange = option => {
-    setActiveOption(option);
-  };
+  if (!dataItems || dataItems.length === 0) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
-      {activeOption && filteredData ? (
-        <View>
-          {/* <MechanismsMenu
-            options={options}
-            handleOptionChange={handleOptionChange}
-            activeOption={activeOption}
-            styles={styles}
-          /> */}
-          <View style={styles.content}>
-            {filteredData &&
-              filteredData.map((data, index) => (
-                <ContentItem data={data} key={index} styles={styles} isDarkMode={isDarkMode}/>
-              ))}
-          </View>
+      <View>
+        <View style={styles.content}>
+          {dataItems && dataItems.length > 0 ? (
+            dataItems.map((data, index) => (
+              <ContentItem data={data} key={index} styles={styles} />
+            ))
+          ) : (
+            <Loader />
+          )}
         </View>
-      ) : (
-        <Loader />
-      )}
+      </View>
     </View>
   );
 };

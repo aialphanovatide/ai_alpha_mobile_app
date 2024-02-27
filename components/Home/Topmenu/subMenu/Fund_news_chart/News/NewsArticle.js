@@ -63,7 +63,7 @@ const NewsArticle = ({route, navigation}) => {
   const {title, content} = filterArticleTitle(item.summary);
 
   return (
-    <ScrollView style={styles.backgroundColor}>
+    <ScrollView style={[styles.container, styles.backgroundColor]}>
       <View style={styles.marginVertical}>
         <BackButton handleReturn={handleReturn} />
       </View>

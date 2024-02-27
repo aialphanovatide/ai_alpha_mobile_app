@@ -28,12 +28,8 @@ const useTokenUtilityStyles = () => {
       flexDirection: 'row',
       backgroundColor: theme.fundamentalsCompetitorsItemBg,
     },
-    dataImageContainer: {
-      width: 'auto',
-      height: '100%',
-    },
     dataImage: {
-      flex: 1,
+      alignSelf: 'flex-start',
     },
     dataText: {
       marginVertical: theme.boxesVerticalMargin,

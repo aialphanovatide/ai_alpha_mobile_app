@@ -1,7 +1,9 @@
 import {Image, Text, View} from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import useActiveDevelopersStyles from './ActiveDevelopersStyle';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
+import {icons} from '../../icons';
+import Loader from '../../../../../../../../../Loader/Loader';
 
 const generateActiveDevs = (
   value,
@@ -45,7 +47,7 @@ const ActiveDevsItem = ({item, styles, maxValue, itemIndex}) => {
       <View style={styles.row}>
         <View style={styles.logoContainer}>
           <Image
-            source={item.image}
+            source={icons[item.crypto.toUpperCase()]}
             style={styles.image}
             resizeMode={'contain'}
           />
@@ -68,8 +70,10 @@ const ActiveDevsItem = ({item, styles, maxValue, itemIndex}) => {
   );
 };
 
-const ActiveDevelopers = ({cryptos}) => {
+const ActiveDevelopers = ({competitorsData}) => {
   const styles = useActiveDevelopersStyles();
+  const [cryptos, setCryptos] = useState([]);
+  const [loading, setLoading] = useState(true);
   const findMaxActiveDevsValue = cryptos => {
     let maxDevs = 0;
     cryptos.forEach(item => {
@@ -79,6 +83,72 @@ const ActiveDevelopers = ({cryptos}) => {
     });
     return maxDevs;
   };
+
+  const findKeyInCompetitorItem = (data, key, crypto) => {
+    const found = data.find(
+      item => item.competitor.token === crypto && item.competitor.key === key,
+    );
+    console.log('Key received: ', key, 'Apr value found: ', found);
+    return found && found !== undefined ? found.competitor.value : null;
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    const active_devs_data = [];
+    competitorsData.forEach((item, index) => {
+      if (
+        active_devs_data.find(mappedItem =>
+          item.competitor.token.includes(mappedItem.name),
+        )
+      ) {
+        return;
+      } else {
+        const mapped_crypto = {
+          id: index + 1,
+          name:
+            item.competitor.token.indexOf('(') !== -1
+              ? item.competitor.token.slice(
+                  0,
+                  item.competitor.token.indexOf('(') - 1,
+                )
+              : item.competitor.token.replace(' ', ''),
+          crypto:
+            item.competitor.token.indexOf('(') !== -1
+              ? item.competitor.token
+                  .slice(0, item.competitor.token.indexOf('(') - 1)
+                  .toUpperCase()[0] +
+                item.competitor.token
+                  .slice(0, item.competitor.token.indexOf('(') - 1)
+                  .slice(1)
+              : item.competitor.token.replace(' ', '').toUpperCase()[0] +
+                item.competitor.token.replace(' ', '').slice(1),
+          activeDevs: Number(
+            findKeyInCompetitorItem(
+              competitorsData,
+              'active developers',
+              item.competitor.token,
+            ),
+          ),
+        };
+        active_devs_data.push(mapped_crypto);
+      }
+    });
+    console.log(active_devs_data);
+    setCryptos(active_devs_data);
+    setLoading(false);
+  }, [competitorsData]);
+
+  if (loading) {
+    return (
+      <View>
+        <Loader />
+      </View>
+    );
+  }
+
+  if (!cryptos || cryptos?.length === 0) {
+    return null;
+  }
   return (
     <View>
       {cryptos.map((item, index) => (
