@@ -88,6 +88,7 @@ const Fundamentals = ({route}) => {
         )}
         <Text style={styles.title}>Fundamentals</Text>
         <SubSection
+        <SubSection
           subtitle={'Introduction'}
           content={<Introduction coin={coin} getSectionData={getSectionData} />}
           handleAboutPress={handleAboutPress}
