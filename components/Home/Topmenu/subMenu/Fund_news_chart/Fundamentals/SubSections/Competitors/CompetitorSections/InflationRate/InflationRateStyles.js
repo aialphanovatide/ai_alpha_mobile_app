@@ -7,30 +7,30 @@ const useInflationRateStyles = () => {
   const styles = StyleSheet.create({
     yearSelectorContainer: {
       flexDirection: 'row',
-      width: '75%',
+      width: '70%',
       marginVertical: 10,
       padding: 2.5,
       alignSelf: 'center',
-      backgroundColor: theme.inactiveMenuBgColor,
-      borderRadius: 5,
+      backgroundColor: theme.subMenuBgColor,
+      borderRadius: 2,
       overflow: 'hidden',
     },
     selectorItem: {
       flex: 1,
-      marginHorizontal: 5,
+      marginHorizontal: 2,
       backgroundColor: 'transparent',
-      borderRadius: 5,
+      borderRadius: 2,
     },
     active: {
       backgroundColor: theme.activeWhite,
     },
     yearText: {
-      color: '#F7F7F7',
+      color: theme.subMenuTextColor,
       fontSize: theme.responsiveFontSize * 0.8,
       textAlign: 'center',
     },
     activeText: {
-      color: theme.secondaryTextColor,
+      color: theme.subMenuTextColor,
       fontWeight: 'bold',
     },
     container: {
@@ -41,14 +41,17 @@ const useInflationRateStyles = () => {
       justifyContent: 'center',
     },
     currentValue: {
+      width: '30%',
       marginVertical: 10,
-      paddingVertical: 5,
-      paddingHorizontal: 10,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
       color: theme.textColor,
       fontWeight: 'bold',
       fontSize: theme.responsiveFontSize * 0.9,
       borderWidth: 1,
-      borderColor: theme.textColor,
+      borderColor: theme.secondaryGrayColor,
+      textAlign: 'center',
+      alignSelf: 'center',
     },
     imageContainer: {
       width: 300,

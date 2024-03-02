@@ -8,8 +8,9 @@ const useBtcFundingRatesStyles = () => {
     mainSection: {
       flex: 1,
       height: theme.height,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
       padding: 10,
+      paddingTop: 36,
     },
     titleContainer: {
       flexDirection: 'row',
@@ -85,6 +86,7 @@ const useBtcFundingRatesStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
       textAlign: 'left',
+      lineHeight: 20,
     },
     readMoreButton: {
       marginHorizontal: 8,

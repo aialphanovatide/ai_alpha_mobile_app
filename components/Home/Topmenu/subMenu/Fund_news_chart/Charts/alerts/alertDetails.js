@@ -8,7 +8,6 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     color: timeframe.toLowerCase().includes('bullish')
       ? theme.priceUpColor
       : theme.priceDownColor,
-    marginHorizontal: 0,
   };
 
   const formatNumber = price => {
@@ -55,23 +54,33 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     <View style={styles.alertDetailsContainer}>
       <View style={styles.alertDetailsLeftContent}>
         <View style={styles.alertsRow}>
-          <Text style={styles.alertDetailsTitle} numberOfLines={2}>
-            {`${coin_title} ${interval_word} ${chart_word} - `}
+          <Text
+            style={[styles.alertDetailsTitle]}
+            numberOfLines={2}>
+            {`${coin_title.toUpperCase()} ${
+              interval_word.toUpperCase()[0] +
+              interval_word.toLowerCase().slice(1)
+            }${
+              chart_word.toUpperCase()[0] + chart_word.toLowerCase().slice(1)
+            }`}
           </Text>
-          <Text style={[styles.alertDetailsTitle, timeframeStyle]}>{word}</Text>
-          <Text style={[styles.alertDetailsTitle, styles.price]}>
-            ${formatNumber(price)}
-          </Text>
+          <View style={styles.alertsPriceAndWord}>
+            <Text style={[styles.alertDetailsTitle, styles.price]}>
+              ${formatNumber(price)}
+            </Text>
+            <Text
+              style={[
+                styles.alertDetailsTitle,
+                timeframeStyle,
+              ]}>
+              {word.toUpperCase()[0] + word.toLowerCase().slice(1)}
+            </Text>
+          </View>
         </View>
         <Text style={styles.alertDetailsSubtitle} numberOfLines={2}>
           {message}
         </Text>
       </View>
-      {/* <View style={styles.alertDetailsRightContent}>
-        <Text style={styles.alertDetailsRightTitle}>
-          ${formatNumber(price)}
-        </Text>
-      </View> */}
     </View>
   );
 };

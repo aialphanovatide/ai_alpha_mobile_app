@@ -3,10 +3,48 @@ import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import CryptoSection from './CryptoSection';
 import Loader from '../../../../../../../../../Loader/Loader';
+import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 
 const DailyActiveUsers = ({competitorsData}) => {
   const [cryptos, setCryptos] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const coins_names = [
+    {symbol: 'ETH', name: 'Ethereum'},
+    {symbol: 'BTC', name: 'Bitcoin'},
+    {symbol: 'ADA', name: 'Cardano'},
+    {symbol: 'SOL', name: 'Solana'},
+    {symbol: 'AVAX', name: 'Avalanche'},
+    {symbol: 'QNT', name: 'Quantum'},
+    {symbol: 'DOT', name: 'Polkadot'},
+    {symbol: 'ATOM', name: 'Cosmos'},
+    {symbol: 'LINK', name: 'ChainLink'},
+    {symbol: 'BAND', name: 'Band Protocol'},
+    {symbol: 'API3', name: 'API3'},
+    {symbol: 'RPL', name: 'Rocket Pool'},
+    {symbol: 'LDO', name: 'Lido Finance'},
+    {symbol: 'FXS', name: 'Frax Finance'},
+    {symbol: 'OP', name: 'Optimism'},
+    {symbol: 'MATIC', name: 'Polygon'},
+    {symbol: 'ARB', name: 'Arbitrum'},
+    {symbol: 'XLM', name: 'Stellar'},
+    {symbol: 'XRP', name: 'Ripple'},
+    {symbol: 'ALGO', name: 'Algorand'},
+    {symbol: '1INCH', name: '1Inch Network'},
+    {symbol: 'AAVE', name: 'Aave'},
+    {symbol: 'GMX', name: 'GMX'},
+    {symbol: 'PENDLE', name: 'Pendle'},
+    {symbol: 'CAKE', name: 'PanCake Swap'},
+    {symbol: 'SUSHI', name: 'Sushi Swap'},
+    {symbol: 'UNI', name: 'UNISWAP'},
+    {symbol: 'VELO', name: 'Velo'},
+    {symbol: 'DYDX', name: 'dYdX'},
+  ];
+
+  const findCoinNameBySymbol = symbol => {
+    const found = coins_names.find(coin => coin.symbol === symbol);
+    return found !== undefined ? found.name : null;
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -14,21 +52,19 @@ const DailyActiveUsers = ({competitorsData}) => {
     competitorsData.forEach(item => {
       if (
         mapped_data.find(
-          mapped => mapped.symbol === extractSymbol(item.competitor.token),
+          mapped =>
+            mapped.symbol ===
+            item.competitor.token.replace(/\s|,/g, '').toUpperCase(),
         )
       ) {
         return;
       } else {
         const current = {
           id: item.competitor.id,
-          symbol: extractSymbol(item.competitor.token),
-          name:
-            item.competitor.token.indexOf('(') !== -1
-              ? item.competitor.token.slice(
-                  0,
-                  item.competitor.token.indexOf('(') - 1,
-                )
-              : item.competitor.token.replace(' ', ''),
+          symbol: item.competitor.token.replace(/\s|,/g, '').toUpperCase(),
+          name: findCoinNameBySymbol(
+            item.competitor.token.replace(/\s|,/g, '').toUpperCase(),
+          ),
           activeUsers: parseLargeNumberString(
             findKeyInCompetitorItem(
               competitorsData,
@@ -44,20 +80,6 @@ const DailyActiveUsers = ({competitorsData}) => {
     setLoading(false);
   }, [competitorsData]);
 
-  const extractSymbol = cryptoString => {
-    const string_without_spaces = cryptoString.replace(' ', '');
-    const name = string_without_spaces.split('(')[0];
-    const symbol_index_start = string_without_spaces.indexOf('(');
-    const symbol_index_end = string_without_spaces.indexOf(')');
-    const symbol =
-      symbol_index_start !== -1
-        ? string_without_spaces
-            .slice(symbol_index_start + 1, symbol_index_end)
-            .toUpperCase()
-        : name[0].toUpperCase() + name.slice(1);
-    return symbol;
-  };
-
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
       item =>
@@ -68,19 +90,9 @@ const DailyActiveUsers = ({competitorsData}) => {
   };
 
   const parseLargeNumberString = numberString => {
-    const numberWithoutSign = numberString.replace(/\$/g, '');
-    const decimalNumberString = numberWithoutSign.replace(/,/g, '.');
-    const [numberPart, unitPart] = decimalNumberString.split(/(?=[a-zA-Z])/);
-    const numericValue = Number(numberPart);
-    const unitValues = {
-      k: 1000,
-      m: 1000000,
-      b: 1000000000,
-      t: 1000000000000,
-    };
-
-    const scaledValue = numericValue * unitValues[unitPart.toLowerCase()];
-    return Number(scaledValue.toFixed(3));
+    const numberWithoutSign = numberString.replace(/\s|,/g, '');
+    const numericValue = Number(numberWithoutSign);
+    return numericValue;
   };
 
   const findMaxUsersValue = cryptos => {
@@ -93,30 +105,24 @@ const DailyActiveUsers = ({competitorsData}) => {
     return maxUsers;
   };
 
-  if (loading) {
-    return (
-      <View>
-        <Loader />
-      </View>
-    );
-  }
-
-  if (!cryptos || cryptos?.length === 0) {
-    return null;
-  }
-
   const max_value = findMaxUsersValue(cryptos);
 
   return (
     <View>
-      {cryptos.map((crypto, index) => (
-        <CryptoSection
-          key={index}
-          crypto={crypto}
-          maxValue={max_value}
-          itemIndex={index}
-        />
-      ))}
+      {loading ? (
+        <Loader />
+      ) : cryptos?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        cryptos.map((crypto, index) => (
+          <CryptoSection
+            key={index}
+            crypto={crypto}
+            maxValue={max_value}
+            itemIndex={index}
+          />
+        ))
+      )}
     </View>
   );
 };

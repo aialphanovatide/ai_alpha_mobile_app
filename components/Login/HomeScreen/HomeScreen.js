@@ -33,7 +33,7 @@ const HomeScreen = () => {
   const {updateActiveSubCoin, activeCoin, activeSubCoin} =
     useContext(TopMenuContext);
   const navigation = useNavigation();
-  const {theme} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const {userId} = useUserId();
   const {init} = useContext(RevenueCatContext);
 
@@ -55,8 +55,13 @@ const HomeScreen = () => {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: theme.navbarBgColor,
-            borderTopWidth: 0,
-            elevation: 0,
+            shadowColor: isDarkMode ? 'transparent' : '#000000',
+            shadowOffset: isDarkMode
+              ? {width: 0, height: 0}
+              : {width: 2, height: 4},
+            shadowOpacity: isDarkMode ? 0 : 0.125,
+            shadowRadius: isDarkMode ? 0 : 6,
+            elevation: isDarkMode ? 0 : 64,
           },
           tabBarActiveTintColor: theme.activeOrange,
           tabBarLabelStyle: {

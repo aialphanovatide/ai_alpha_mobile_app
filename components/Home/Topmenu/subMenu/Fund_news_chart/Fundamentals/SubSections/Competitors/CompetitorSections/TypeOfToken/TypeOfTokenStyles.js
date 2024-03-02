@@ -35,12 +35,14 @@ const useTypeOfTokenStyles = () => {
     buttonContainer: {
       width: '100%',
       flex: 1,
+      paddingVertical: 4,
       flexDirection: 'row',
     },
     tokenButton: {
       width: 90,
+      padding: 4,
       marginHorizontal: 4,
-      backgroundColor: theme.secondaryBoxesBgColor,
+      backgroundColor: theme.activeWhite,
       borderRadius: 2,
       alignItems: 'center',
       justifyContent: 'center',

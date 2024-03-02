@@ -12,6 +12,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchAlerts = async () => {
       try {
         const response = await getService(

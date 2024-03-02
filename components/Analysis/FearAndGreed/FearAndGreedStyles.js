@@ -9,23 +9,24 @@ const useFearAndGreedStyles = () => {
       flex: 1,
       width: theme.width,
       height: theme.height * 0.8,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
       padding: 10,
+      paddingTop: 36,
     },
     fearAndGreedWidgetContainer: {
       flex: 1,
       margin: theme.boxesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 10,
-      backgroundColor: theme.secondaryBoxesBgColor,
+      borderRadius: 4,
+      backgroundColor: theme.boxesBackgroundColor,
     },
     container: {
       width: '100%',
       height: 250,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 10,
+      borderRadius: 4,
       overflow: 'hidden',
     },
     indexNumber: {
@@ -62,6 +63,7 @@ const useFearAndGreedStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
       textAlign: 'left',
+      lineHeight: 20,
     },
   });
   return styles;

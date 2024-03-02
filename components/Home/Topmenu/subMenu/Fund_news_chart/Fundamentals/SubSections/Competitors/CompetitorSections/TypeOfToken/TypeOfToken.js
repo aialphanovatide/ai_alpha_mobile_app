@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import useTypeOfTokenStyles from './TypeOfTokenStyles';
 import {icons} from '../../icons';
 import Loader from '../../../../../../../../../Loader/Loader';
+import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 
 const TokenItem = ({crypto, styles}) => {
   return (
@@ -15,7 +16,7 @@ const TokenItem = ({crypto, styles}) => {
             resizeMode={'contain'}
           />
         </View>
-        <Text style={styles.tokenName}>{crypto.crypto}</Text>
+        <Text style={styles.tokenName}>{crypto.name}</Text>
       </View>
       <ScrollView style={styles.buttonContainer} horizontal>
         {crypto.typeOfToken?.map((type, index) => (
@@ -33,23 +34,47 @@ const TypeOfToken = ({competitorsData}) => {
   const [mappedData, setMappedData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const extractSymbol = cryptoString => {
-    const string_without_spaces = cryptoString.replace(' ', '');
-    const name = string_without_spaces.split('(')[0];
-    const symbol_index_start = string_without_spaces.indexOf('(');
-    const symbol_index_end = string_without_spaces.indexOf(')');
-    const symbol =
-      symbol_index_start !== -1
-        ? string_without_spaces
-            .slice(symbol_index_start + 1, symbol_index_end)
-            .toUpperCase()
-        : name[0].toUpperCase() + name.slice(1);
-    return symbol;
+  const coins_names = [
+    {symbol: 'ETH', name: 'Ethereum'},
+    {symbol: 'BTC', name: 'Bitcoin'},
+    {symbol: 'ADA', name: 'Cardano'},
+    {symbol: 'SOL', name: 'Solana'},
+    {symbol: 'AVAX', name: 'Avalanche'},
+    {symbol: 'QNT', name: 'Quantum'},
+    {symbol: 'DOT', name: 'Polkadot'},
+    {symbol: 'ATOM', name: 'Cosmos'},
+    {symbol: 'LINK', name: 'ChainLink'},
+    {symbol: 'BAND', name: 'Band Protocol'},
+    {symbol: 'API3', name: 'API3'},
+    {symbol: 'RPL', name: 'Rocket Pool'},
+    {symbol: 'LDO', name: 'Lido Finance'},
+    {symbol: 'FXS', name: 'Frax Finance'},
+    {symbol: 'OP', name: 'Optimism'},
+    {symbol: 'MATIC', name: 'Polygon'},
+    {symbol: 'ARB', name: 'Arbitrum'},
+    {symbol: 'XLM', name: 'Stellar'},
+    {symbol: 'XRP', name: 'Ripple'},
+    {symbol: 'ALGO', name: 'Algorand'},
+    {symbol: '1INCH', name: '1Inch Network'},
+    {symbol: 'AAVE', name: 'Aave'},
+    {symbol: 'GMX', name: 'GMX'},
+    {symbol: 'PENDLE', name: 'Pendle'},
+    {symbol: 'CAKE', name: 'PanCake Swap'},
+    {symbol: 'SUSHI', name: 'Sushi Swap'},
+    {symbol: 'UNI', name: 'UNISWAP'},
+    {symbol: 'VELO', name: 'Velo'},
+    {symbol: 'DYDX', name: 'dYdX'},
+  ];
+
+  const findCoinNameBySymbol = symbol => {
+    const found = coins_names.find(coin => coin.symbol === symbol);
+    return found !== undefined ? found.name : null;
   };
 
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
-      item => item.competitor.token === crypto && item.competitor.key === key,
+      item =>
+        item.competitor.token === crypto && item.competitor.key.includes(key),
     );
     return found && found !== undefined ? found.competitor.value : null;
   };
@@ -59,57 +84,50 @@ const TypeOfToken = ({competitorsData}) => {
     const type_of_token_data = [];
     competitorsData.forEach((item, index) => {
       if (
-        type_of_token_data.find(
-          mapped => mapped.crypto === extractSymbol(item.competitor.token),
+        type_of_token_data.find(mapped =>
+          mapped.crypto.includes(
+            item.competitor.token.replace(' ', '').toUpperCase(),
+          ),
         )
       ) {
         return;
       } else {
         const mapped_crypto = {
           id: type_of_token_data.length + 1,
-          name:
-            item.competitor.token.indexOf('(') !== -1
-              ? item.competitor.token.slice(
-                  0,
-                  item.competitor.token.indexOf('(') - 1,
-                )
-              : item.competitor.token.replace(' ', ''),
-          crypto: extractSymbol(item.competitor.token),
+          name: findCoinNameBySymbol(
+            item.competitor.token.replace(' ', '').toUpperCase(),
+          ),
+          crypto: item.competitor.token.replace(' ', '').toUpperCase(),
           typeOfToken: findKeyInCompetitorItem(
             competitorsData,
             'type of token',
             item.competitor.token,
           )
-            .split(' / ')
-            .map(word => word.trim().charAt(0).toUpperCase() + word.slice(1)),
+            .replace(/\s/g, '')
+            .split('/')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1)),
         };
         type_of_token_data.push(mapped_crypto);
       }
     });
-    // console.log(type_of_token_data);
     setLoading(false);
+    console.log('Type of token data: ', type_of_token_data);
     setMappedData(type_of_token_data);
   }, [competitorsData]);
 
-  if (loading) {
-    return (
-      <View>
-        <Loader />
-      </View>
-    );
-  }
-
-  if (!mappedData || mappedData?.length === 0) {
-    return null;
-  }
-
   return (
     <View>
-      {mappedData && mappedData.length > 0
-        ? mappedData.map((crypto, index) => (
+      {loading ? (
+        <Loader />
+      ) : mappedData?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          {mappedData.map((crypto, index) => (
             <TokenItem key={index} crypto={crypto} styles={styles} />
-          ))
-        : null}
+          ))}
+        </>
+      )}
     </View>
   );
 };

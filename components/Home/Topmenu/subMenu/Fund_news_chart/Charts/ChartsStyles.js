@@ -7,11 +7,11 @@ const useChartsStyles = () => {
   const styles = StyleSheet.create({
     container: {
       width: '100%',
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
     },
     scroll: {
       width: theme.width,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
       paddingHorizontal: 10,
     },
     detailsContainer: {
@@ -64,7 +64,7 @@ const useChartsStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
     },
     timeFrameActiveButtonText: {
-      color: theme.secondaryTextColor,
+      color: theme.subMenuTextColor,
       textTransform: 'uppercase',
       fontWeight: 'bold',
       fontSize: theme.responsiveFontSize * 0.8,
@@ -85,10 +85,11 @@ const useChartsStyles = () => {
     rsButtonText: {
       textTransform: 'capitalize',
       fontSize: theme.responsiveFontSize * 0.8,
-      color: theme.textColor,
+      color: theme.supportAndResistanceText,
     },
     activeRsButtonText: {
-      color: theme.activeSRButtonColor,
+      color: theme.supportAndResistanceText,
+      fontWeight: 'bold',
     },
     lineLabel: {
       flex: 1,
@@ -102,7 +103,6 @@ const useChartsStyles = () => {
       alignItems: 'top',
       width: '100%',
       height: 300,
-      backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 2,
     },
     chart: {
@@ -116,8 +116,8 @@ const useChartsStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      top: 0,
-      left: 0,
+      top: '5%',
+      left: '5%',
       width: 60,
       height: 60,
       opacity: 0.8,
@@ -125,13 +125,11 @@ const useChartsStyles = () => {
     chartsWrapper: {
       flex: 1,
       padding: 8,
-      marginVertical: theme.boxesVerticalMargin,
-      backgroundColor: theme.boxesBackgroundColor,
       alignItems: 'center',
       borderRadius: 2,
     },
     alertMenuContainer: {
-      paddingVertical: 5,
+      paddingVertical: 6,
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -163,7 +161,7 @@ const useChartsStyles = () => {
     },
     alertMenuActiveText: {
       fontWeight: 'bold',
-      color: theme.filterTextColor,
+      color: theme.subMenuTextColor,
       textTransform: 'capitalize',
       fontSize: theme.responsiveFontSize * 0.8,
     },
@@ -199,16 +197,9 @@ const useChartsStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
       marginVertical: 4,
       borderRadius: 2,
-      padding: 4,
+      padding: 6,
+      paddingVertical: 8,
       flex: 1,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.1,
-      shadowRadius: 1,
-      elevation: 1,
     },
     alertDetailsLeftContent: {
       flex: 1,
@@ -217,7 +208,6 @@ const useChartsStyles = () => {
     alertsRow: {
       position: 'relative',
       flexDirection: 'row',
-      marginHorizontal: 8,
     },
     alertDetailsRightContent: {
       position: 'absolute',
@@ -225,16 +215,20 @@ const useChartsStyles = () => {
       margin: 4,
     },
     alertDetailsTitle: {
-      marginHorizontal: 2,
-      fontSize: theme.responsiveFontSize * 0.9,
+      marginHorizontal: 4,
       fontWeight: 'bold',
       color: theme.textColor,
+      fontSize: theme.responsiveFontSize * 0.9,
       lineHeight: 22,
     },
+    noHorizontalMargin: {
+      marginHorizontal: 0,
+    },
     alertDetailsSubtitle: {
-      marginHorizontal: 10,
-      fontSize: theme.responsiveFontSize * 0.8,
+      maxWidth: '70%',
+      marginHorizontal: 4,
       color: theme.textColor,
+      fontSize: theme.responsiveFontSize * 0.8,
       lineHeight: 22,
     },
     alertDetailsRightTitle: {
@@ -243,18 +237,26 @@ const useChartsStyles = () => {
       fontWeight: 'bold',
       color: theme.textColor,
     },
-    price: {
+    alertsPriceAndWord: {
       position: 'absolute',
-      right: 4,
       top: 0,
+      right: 0,
+      margin: 4,
+      padding: 2,
+    },
+    price: {
       fontSize: theme.responsiveFontSize * 0.8,
     },
     priceUpColor: {
-      color: theme.priceUpColor
+      color: theme.priceUpColor,
     },
     priceDownColor: {
       color: theme.priceDownColor,
-    }
+    },
+    titleRow: {
+      width: '100%',
+      flexDirection: 'row',
+    },
   });
   return styles;
 };

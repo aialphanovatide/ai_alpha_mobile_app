@@ -80,7 +80,7 @@ const CryptoSection = ({crypto, maxValue, itemIndex}) => {
             source={icons[crypto.name.toUpperCase()]}
             style={styles.logoContainer}
           />
-          <Text style={styles.itemName}>{crypto.symbol}</Text>
+          <Text style={styles.itemName}>{crypto.name}</Text>
         </View>
         <View style={styles.row}>
           <View style={styles.usersContainer}>

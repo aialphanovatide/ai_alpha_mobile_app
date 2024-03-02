@@ -9,13 +9,12 @@ const useTopTenGainersStyles = () => {
     topTenGainersContainer: {
       height: 400,
       width: theme.width,
-      paddingHorizontal: 10,
       marginVertical: 20,
       borderRadius: 4,
     },
     topTenGainersTitle: {
-      paddingVertical: 10,
-      paddingHorizontal: 5,
+      padding: 10,
+      paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
       fontWeight: 'bold',
@@ -31,8 +30,8 @@ const useTopTenGainersStyles = () => {
       marginVertical: 2.5,
       display: 'flex',
       flexDirection: 'row',
-      borderBottomWidth: 2,
-      borderBottomColor: theme.boxesBorderColor,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.secondaryGrayColor,
       paddingHorizontal: 20,
       paddingVertical: 10,
       alignItems: 'flex-start',
@@ -94,6 +93,9 @@ const useTopTenGainersStyles = () => {
     },
     redNumber: {
       color: theme.priceDownColor,
+    },
+    titleRow: {
+      flexDirection: 'row',
     },
   });
   return styles;

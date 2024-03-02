@@ -13,6 +13,8 @@ import {AppThemeContext} from '../../context/themeContext';
 import {Animated, TouchableOpacity, View} from 'react-native';
 import useHomeStyles from './HomeStyles';
 import AnalysisArticle from './Analysis/AnalysisArticle';
+import AboutModal from './Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
+import {AboutModalContext} from '../../context/AboutModalContext';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -91,6 +93,7 @@ const FundNewsChartsMenu = ({state, descriptors, navigation, position}) => {
 const SubMenuScreen = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
   const {theme} = useContext(AppThemeContext);
+
   return (
     <SubMenuStack.Navigator
       initialRouteName="Charts"
@@ -154,7 +157,9 @@ const HomeStackScreen = () => {
     <HomeStack.Navigator
       initialRouteName="InitialHome"
       backBehavior="initialRoute"
-      screenOptions={{header: () => <TopMenu isAlertsMenu={false} />}}>
+      screenOptions={{
+        header: () => <TopMenu isAlertsMenu={false} />,
+      }}>
       <HomeStack.Screen
         name="InitialHome"
         component={Home}

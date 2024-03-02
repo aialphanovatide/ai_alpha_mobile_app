@@ -20,11 +20,11 @@ const useCryptoSelectorStyles = () => {
       borderRadius: 2.5,
     },
     itemText: {
-      color: theme.secondaryTextColor,
-      fontSize: theme.responsiveFontSize * 0.68,
+      color: theme.cryptoSelectorText,
+      fontSize: theme.responsiveFontSize * 0.75,
     },
     activeText: {
-      color: theme.activeWhite,
+      color: theme.activeCryptoSelector,
       fontWeight: 'bold',
     },
   });

@@ -7,6 +7,8 @@ import Loader from '../../Loader/Loader';
 import usePriceActionStyles from './PriceActionStyles';
 import {CategoriesContext} from '../../../context/categoriesContext';
 import {API_BASE_URL} from '../../../services/aiAlphaApi';
+import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import {home_static_data} from '../homeStaticData';
 
 const CategorySelector = ({
   categories,
@@ -70,7 +72,7 @@ const TableItem = ({index, coin, isActive, styles}) => {
   );
 };
 
-const PriceAction = () => {
+const PriceAction = ({handleAboutPress}) => {
   const styles = usePriceActionStyles();
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -122,7 +124,13 @@ const PriceAction = () => {
 
   return (
     <View style={[styles.priceActionContainer]}>
-      <Text style={styles.title}>Price Action</Text>
+      <View style={styles.titleRow}>
+        <Text style={styles.title}>Price Action</Text>
+        <AboutIcon
+          description={home_static_data.priceAction.sectionDescription}
+          handleAboutPress={handleAboutPress}
+        />
+      </View>
       {loading ? (
         <Loader />
       ) : (

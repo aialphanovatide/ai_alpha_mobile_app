@@ -33,11 +33,11 @@ const useUpgradeOverlayStyles = () => {
     upgradeButton: {
       marginTop: 20,
       backgroundColor: theme.orange,
-      borderRadius: 10,
+      borderRadius: 4,
     },
     buttonText: {
-      paddingVertical: 10,
-      paddingHorizontal: 15,
+      paddingVertical: 14,
+      paddingHorizontal: 24,
       color: theme.buttonColor,
       fontWeight: 'bold',
       fontSize: theme.responsiveFontSize,

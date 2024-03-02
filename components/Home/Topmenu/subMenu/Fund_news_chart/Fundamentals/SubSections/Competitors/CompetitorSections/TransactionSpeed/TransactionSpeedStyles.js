@@ -18,7 +18,7 @@ const useTransactionSpeedStyles = () => {
       fontWeight: 'bold',
       fontSize: theme.responsiveFontSize * 0.9,
       borderWidth: 2,
-      borderColor: theme.textColor,
+      borderColor: theme.secondaryGrayColor,
     },
   });
   return styles;

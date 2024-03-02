@@ -3,6 +3,8 @@ import React, {useContext, useEffect, useState} from 'react';
 import CircleChart from '../CircleChart/CircleChart';
 import useGTAStyles from './GTAStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
+import Loader from '../../../../../../../Loader/Loader';
+import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
 const GeneralTokenData = ({data, handleTokenChange, styles, colors}) => {
   return (
@@ -34,11 +36,12 @@ const GeneralTokenData = ({data, handleTokenChange, styles, colors}) => {
   );
 };
 
-const GeneralTokenAllocation = ({chartData, getSectionData, coin}) => {
-  const colors = ['#399AEA', '#20CBDD', '#C539B4', '#FF3BC3', '#FFC53D'];
+const GeneralTokenAllocation = ({getSectionData, coin}) => {
+  const colors = ['#80290E', '#C93A05', '#FC5404', '#FF8D34', '#FFB76E'];
   const styles = useGTAStyles();
   const [percentagesData, setPercentagesData] = useState([]);
   const {theme} = useContext(AppThemeContext);
+  const [loading, setLoading] = useState(true);
   const [currentToken, setCurrentToken] = useState(
     percentagesData.length > 0 ? percentagesData[0] : null,
   );
@@ -47,6 +50,8 @@ const GeneralTokenAllocation = ({chartData, getSectionData, coin}) => {
   };
 
   useEffect(() => {
+    setLoading(true);
+    setPercentagesData([]);
     const fetchTokenDistributionData = async () => {
       try {
         const response = await getSectionData(
@@ -75,14 +80,12 @@ const GeneralTokenAllocation = ({chartData, getSectionData, coin}) => {
         }
       } catch (error) {
         console.log('Error trying to get token distribution data: ', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchTokenDistributionData();
-  }, []);
-
-  if (percentagesData === null || percentagesData.length === 0) {
-    return null;
-  }
+  }, [coin]);
 
   const currentTokenIndex = percentagesData.findIndex(
     values => values.title === currentToken?.title,
@@ -90,38 +93,46 @@ const GeneralTokenAllocation = ({chartData, getSectionData, coin}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.flex}>
-        <CircleChart
-          data={percentagesData}
-          dividerSize={5}
-          backgroundColor={theme.boxesBackgroundColor}
-          colors={colors}
-        />
-        <Text
-          style={
-            currentToken && [
-              {
-                color: currentToken
-                  ? colors[
-                      currentTokenIndex > 5
-                        ? currentTokenIndex % 5
-                        : currentTokenIndex
-                    ]
-                  : theme.boxesBackgroundColor,
-              },
-              styles.currentTokenPercentage,
-            ]
-          }>
-          {currentToken ? ` ${currentToken.percentage}% ` : ''}
-        </Text>
-      </View>
-      <GeneralTokenData
-        currentToken={currentToken}
-        data={percentagesData}
-        handleTokenChange={handleTokenChange}
-        styles={styles}
-        colors={colors}
-      />
+      {loading ? (
+        <Loader />
+      ) : percentagesData?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          <View style={styles.flex}>
+            <CircleChart
+              data={percentagesData}
+              dividerSize={5}
+              backgroundColor={theme.boxesBackgroundColor}
+              colors={colors}
+            />
+            <Text
+              style={
+                currentToken && [
+                  {
+                    color: currentToken
+                      ? colors[
+                          currentTokenIndex > 5
+                            ? currentTokenIndex % 5
+                            : currentTokenIndex
+                        ]
+                      : theme.boxesBackgroundColor,
+                  },
+                  styles.currentTokenPercentage,
+                ]
+              }>
+              {currentToken ? ` ${currentToken.percentage}% ` : ''}
+            </Text>
+          </View>
+          <GeneralTokenData
+            currentToken={currentToken}
+            data={percentagesData}
+            handleTokenChange={handleTokenChange}
+            styles={styles}
+            colors={colors}
+          />
+        </>
+      )}
     </View>
   );
 };

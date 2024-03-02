@@ -53,29 +53,35 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     <View style={styles.itemsContainer}>
       <View style={styles.leftContent}>
         <View style={styles.row}>
-          <Text
-            style={
-              styles.itemsTitle
-            }>{`${coin_title} ${interval_word} ${chart_word} - `}</Text>
-          <Text
-            style={{
-              ...styles.itemsTitle,
-              ...timeframeStyle,
-              ...styles.noHorizontalMargin,
-            }}>
-            {`${word}`}
-          </Text>
-          <Text style={[styles.itemsTitle, styles.price]}>
-            ${formatNumber(price)}
-          </Text>
+          <Text style={styles.itemsTitle}>{`${coin_title.toUpperCase()} ${
+            interval_word.toUpperCase()[0] +
+            interval_word.toLowerCase().slice(1)
+          } ${
+            chart_word.toUpperCase()[0] + chart_word.toLowerCase().slice(1)
+          }`}</Text>
+          <View style={styles.priceAndStateWord}>
+            <Text
+              style={[
+                styles.itemsTitle,
+                styles.price,
+                styles.noHorizontalMargin,
+              ]}>
+              ${formatNumber(price)}
+            </Text>
+            <Text
+              style={{
+                ...styles.itemsTitle,
+                ...timeframeStyle,
+                ...styles.noHorizontalMargin,
+              }}>
+              {`${word.toUpperCase()[0] + word.toLowerCase().slice(1)}`}
+            </Text>
+          </View>
         </View>
         <Text style={styles.subtitle} numberOfLines={2}>
           {message}
         </Text>
       </View>
-      {/* <View style={styles.rightContent}>
-        <Text style={styles.rightTitle}>${price}</Text>
-      </View> */}
     </View>
   );
 };

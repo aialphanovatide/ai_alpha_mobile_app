@@ -25,6 +25,7 @@ const useRevenueStyles = () => {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 2,
       zIndex: 2,
     },
     grayRectangle: {
@@ -46,7 +47,7 @@ const useRevenueStyles = () => {
       color: theme.fundamentalsCompetitorsLabelColor,
       fontSize: theme.responsiveFontSize * 0.7,
       fontWeight: 'bold',
-      alignSelf: 'center'
+      alignSelf: 'center',
     },
     bgImage: {
       position: 'absolute',
@@ -54,7 +55,7 @@ const useRevenueStyles = () => {
       flex: 1,
       width: '100%',
       minHeight: 300,
-      opacity: 0.5
+      opacity: 0.4,
     },
     graphImage: {
       marginHorizontal: 10,
@@ -71,7 +72,6 @@ const useRevenueStyles = () => {
     marginBottom: {
       marginBottom: 40,
     },
-
   });
   return styles;
 };

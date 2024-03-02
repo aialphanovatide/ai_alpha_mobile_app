@@ -6,12 +6,16 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {getService, postService} from '../../../../../../services/aiAlphaApi';
+import {getService} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
+import {AboutModalContext} from '../../../../../../context/AboutModalContext';
+import {AboutIcon} from '../Fundamentals/AboutIcon';
+import {home_static_data} from '../../../../homeStaticData';
+import AboutModal from '../Fundamentals/AboutModal';
 
 const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
@@ -24,6 +28,8 @@ const NewsComponent = ({route}) => {
   );
   const [activeFilter, setActiveFilter] = useState(null);
   const [activeButtons, setActiveButtons] = useState(null);
+  const {handleAboutPress, aboutDescription, aboutVisible} =
+    useContext(AboutModalContext);
 
   // Function to filter the summary or texts of the article, removing the words that are put by the prompt generated, and aren't necessary in the summary or the title.
   const filterText = summary => {
@@ -107,7 +113,20 @@ const NewsComponent = ({route}) => {
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
-      <Text style={styles.title}>News</Text>
+      {aboutVisible && (
+        <AboutModal
+          description={aboutDescription}
+          onClose={handleAboutPress}
+          visible={aboutVisible}
+        />
+      )}
+      <View style={styles.titleRow}>
+        <Text style={styles.title}>News</Text>
+        <AboutIcon
+          handleAboutPress={handleAboutPress}
+          description={home_static_data.news.sectionDescription}
+        />
+      </View>
       <View style={styles.filterContainer}>
         {['Today', 'This Week', 'Last Month'].map(option => (
           <TouchableOpacity

@@ -17,8 +17,8 @@ const useCirculatingSupplyStyles = () => {
       width: '100%',
       marginVertical: 4,
       borderWidth: 2,
-      backgroundColor: theme.secondaryTextColor,
-      borderColor: theme.secondaryTextColor,
+      backgroundColor: theme.secondaryGrayColor,
+      borderColor: theme.secondaryGrayColor,
     },
     progressBarFill: {
       height: '100%',
@@ -29,19 +29,24 @@ const useCirculatingSupplyStyles = () => {
       borderLeftWidth: 0,
     },
     referenceLabel: {
+      width: '40%',
       marginHorizontal: 12,
-      paddingHorizontal: 4,
+      paddingHorizontal: 8,
       paddingVertical: 2,
-      fontSize: theme.responsiveFontSize * 0.7,
+      fontSize: theme.responsiveFontSize * 0.725,
       lineHeight: 20,
       borderRadius: 4,
       color: theme.whiteTextColor,
+      textAlign: 'center'
     },
     symbolLabel: {
-      color: theme.inactiveTextColor,
+      paddingHorizontal: 10,
+      paddingVertical: 2,
+      color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.725,
-      borderColor: theme.inactiveTextColor,
+      borderColor: theme.textColor,
       borderWidth: 1,
+      textAlign: 'left',
     },
     noMargin: {
       marginHorizontal: 0,
@@ -51,13 +56,15 @@ const useCirculatingSupplyStyles = () => {
     },
     labelRight: {
       marginHorizontal: 0,
-      backgroundColor: theme.grayLabelColor,
+      backgroundColor: theme.orange,
     },
     labelLeft: {
-      backgroundColor: theme.orangeLabelColor,
+      backgroundColor: theme.orange,
     },
     symbolWrapper: {
       padding: 6,
+      paddingTop: 8,
+      paddingHorizontal: 12,
       paddingBottom: 0,
       alignItems: 'center',
       justifyContent: 'center',
@@ -65,11 +72,11 @@ const useCirculatingSupplyStyles = () => {
     referenceIconImage: {
       width: 14,
       height: 14,
-      tintColor: theme.inactiveTextColor,
+      tintColor: theme.textColor,
     },
     valueLabel: {
       fontSize: theme.responsiveFontSize * 0.75,
-      color: theme.inactiveGrayText,
+      color: theme.secondaryTextColor,
     },
     labelBottom: {
       marginLeft: '45%',
@@ -83,7 +90,7 @@ const useCirculatingSupplyStyles = () => {
       color: theme.textColor,
     },
     orange: {
-      color: theme.orange,
+      color: theme.activeOrange,
     },
     row: {
       position: 'relative',
@@ -99,7 +106,6 @@ const useCirculatingSupplyStyles = () => {
       height: 30,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.secondaryBoxesBgColor,
       borderRadius: 15,
       overflow: 'hidden',
     },
@@ -129,7 +135,6 @@ const useCirculatingSupplyStyles = () => {
     dataContainer: {
       flex: 1,
       padding: 10,
-      backgroundColor: theme.boxesBackgroundColor,
     },
     inflationaryArrow: {
       width: 14,
@@ -146,7 +151,6 @@ const useCirculatingSupplyStyles = () => {
     circulatingSupplyItem: {
       flex: 1,
       marginVertical: theme.boxesVerticalMargin,
-      backgroundColor: theme.fundamentalsCompetitorsItemBg,
     },
   });
   return styles;

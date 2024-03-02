@@ -17,6 +17,8 @@ import ThemeButton from '../ThemeButton/ThemeButton';
 import {API_KEY} from '../../src/constants';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
 import {NOTIFICATIONS_MOCK} from './NotificationsPanel/notificationsMock';
+import LinearGradient from 'react-native-linear-gradient';
+import {AppThemeContext} from '../../context/themeContext';
 
 const AccountItem = ({
   styles,
@@ -61,9 +63,10 @@ const Account = ({route}) => {
   const navigation = useNavigation();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const {userInfo} = useContext(RevenueCatContext);
+  const {isDarkMode} = useContext(AppThemeContext);
 
   console.log(userInfo);
-// Account menu!!
+  // Account menu!!
   const options = [
     {
       name: 'Subscriptions',
@@ -76,13 +79,14 @@ const Account = ({route}) => {
       logo: require('../../assets/images/account/informationicon.png'),
       screenName: null,
       component: null,
-    },/*
+    } /*
     {
       name: 'Notifications',
       logo: require('../../assets/images/account/notifications.png'),
       screenName: 'Notifications',
       component: null,
     }*/,
+    ,
     {
       name: 'Settings',
       logo: require('../../assets/images/account/settingsscreenicon.png'),
@@ -111,9 +115,11 @@ const Account = ({route}) => {
       case 'Legal and Information':
         navigation.navigate('Legal');
         break;
-      {/*case 'Notifications':
+        {
+          /*case 'Notifications':
         navigation.navigate('Notifications', {options: NOTIFICATIONS_MOCK});
-    break;*/}
+    break;*/
+        }
       default:
         console.log('Option not handled:', option.name);
     }
@@ -294,39 +300,45 @@ async function Buy_now() {
 
   return (
     <SafeAreaView style={styles.backgroundColor}>
-      <ScrollView style={styles.backgroundColor}>
-        <View style={styles.container}>
-          <View style={styles.alphaLogoContainer}>
-            <Image
-              source={require('../../assets/images/account/alphalogo.png')}
-              resizeMode="contain"
-              style={styles.image}
-            />
-          </View>
-          <Text style={styles.username}>
-            {/*{userEmail || 'User not available'}*/}
-            {userEmail || ' '}
-          </Text>
-          {/* <Text style={styles.headline}>User Subscriptions</Text>
+      <LinearGradient
+        useAngle={true}
+        angle={45}
+        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        style={styles.gradient}>
+        <ScrollView style={styles.backgroundColor}>
+          <View style={styles.container}>
+            <View style={styles.alphaLogoContainer}>
+              <Image
+                source={require('../../assets/images/account/alphalogo.png')}
+                resizeMode="contain"
+                style={styles.image}
+              />
+            </View>
+            <Text style={styles.username}>
+              {/*{userEmail || 'User not available'}*/}
+              {userEmail || ' '}
+            </Text>
+            {/* <Text style={styles.headline}>User Subscriptions</Text>
           <Text style={styles.text}>
             {userInfo.entitlements.length > 0
               ? formatUserEntitlements(userInfo.entitlements)
               : 'There are no active subscriptions.'}
           </Text> */}
-          <View style={styles.optionsContainer}>
-            {options &&
-              options.map((option, index) => (
-                <AccountItem
-                  key={index}
-                  option={option}
-                  styles={styles}
-                  handleItemTouch={handleItemTouch}
-                  itemComponent={option.component && option.component}
-                />
-              ))}
+            <View style={styles.optionsContainer}>
+              {options &&
+                options.map((option, index) => (
+                  <AccountItem
+                    key={index}
+                    option={option}
+                    styles={styles}
+                    handleItemTouch={handleItemTouch}
+                    itemComponent={option.component && option.component}
+                  />
+                ))}
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </LinearGradient>
     </SafeAreaView>
   );
 };

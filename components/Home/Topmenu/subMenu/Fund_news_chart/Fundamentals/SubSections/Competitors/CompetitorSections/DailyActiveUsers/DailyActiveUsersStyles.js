@@ -41,8 +41,9 @@ const useDailyActiveUsersStyles = () => {
       flexDirection: 'row',
       width: '100%',
       padding: theme.boxesVerticalMargin,
-      backgroundColor: theme.fundamentalsCompetitorsItemBg,
       alignItems: 'center',
+      borderBottomColor: theme.secondaryGrayColor,
+      borderBottomWidth: 1,
     },
     userImageContainer: {
       height: 48,
@@ -58,6 +59,7 @@ const useDailyActiveUsersStyles = () => {
       color: theme.inactiveTextColor,
       marginHorizontal: 10,
       fontSize: theme.responsiveFontSize * 0.875,
+      fontWeight: 'bold',
     },
     image: {
       flex: 1,

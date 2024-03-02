@@ -13,6 +13,8 @@ import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import BackButton from '../../Analysis/BackButton/BackButton';
 import {useNavigation} from '@react-navigation/core';
 import SubscriptionsLoader from '../../Loader/SubscriptionsLoader';
+import LinearGradient from 'react-native-linear-gradient';
+import {AppThemeContext} from '../../../context/themeContext';
 
 const SubscriptionItem = ({
   styles,
@@ -64,10 +66,22 @@ const SubscriptionItem = ({
               />
             </View>
           )}
-          <Text style={[styles.left, styles.title]}>
+          <Text
+            style={[
+              styles.left,
+              styles.title,
+              isFoundersPackage && styles.foundersText,
+            ]}>
             {formatCoinTitles(item.title)}
           </Text>
-          <Text style={[styles.right, styles.title]}>{item.priceString}</Text>
+          <Text
+            style={[
+              styles.right,
+              styles.title,
+              isFoundersPackage && styles.foundersText,
+            ]}>
+            {item.priceString}
+          </Text>
           <Text
             style={[
               styles.right,
@@ -79,7 +93,12 @@ const SubscriptionItem = ({
           </Text>
         </View>
         <View style={styles.itemDescriptionContainer}>
-          <Text style={styles.itemDescription} numberOfLines={expanded ? 0 : 2}>
+          <Text
+            style={[
+              styles.itemDescription,
+              isFoundersPackage && styles.foundersText,
+            ]}
+            numberOfLines={expanded ? 0 : 2}>
             {expanded ? `${description}` : `${description.slice(0, 100)}...`}
           </Text>
           {expanded ? (
@@ -114,6 +133,7 @@ const SubscriptionItem = ({
 const PackageSubscriptions = () => {
   const styles = usePackageSubscriptionStyles();
   const navigation = useNavigation();
+  const {isDarkMode} = useContext(AppThemeContext);
   const {packages, purchasePackage, findProductIdInIdentifiers, userInfo} =
     useContext(RevenueCatContext);
   const [activeItem, setActiveItem] = useState(null);
@@ -126,6 +146,7 @@ const PackageSubscriptions = () => {
     setLoading(true);
     if (pack === null) {
       setMissingMessageActive(true);
+      setLoading(false);
       return;
     }
     try {
@@ -148,63 +169,69 @@ const PackageSubscriptions = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.alignStart}>
-        <BackButton navigationHandler={navigateBack} />
-      </View>
-      <Text style={styles.mainTitle}>Subscription</Text>
-      <View style={styles.description}>
-        <View style={styles.textRow}>
-          <Text style={[styles.text, styles.bold]}>
-            Unlock premium features now with a
-          </Text>
-          <Text style={[styles.text, styles.bold, styles.orange]}>
-            7-day free trial
-          </Text>
+    <LinearGradient
+      useAngle={true}
+      angle={45}
+      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      style={styles.flex}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.alignStart}>
+          <BackButton navigationHandler={navigateBack} />
         </View>
-        <View style={styles.textRow}>
-          <Text style={styles.secondaryText}>
-            Monthly subscription begins after. Cancel anytime hussle-free.
-          </Text>
+        <Text style={styles.mainTitle}>Subscriptions Options</Text>
+        <View style={styles.description}>
+          <View style={styles.textRow}>
+            <Text style={[styles.text, styles.bold]}>
+              Unlock premium features now with a
+            </Text>
+            <Text style={[styles.text, styles.bold, styles.orange]}>
+              7-day free trial
+            </Text>
+          </View>
+          <View style={styles.textRow}>
+            <Text style={styles.secondaryText}>
+              Monthly subscription begins after. Cancel anytime hussle-free.
+            </Text>
+          </View>
         </View>
-      </View>
-      <TouchableOpacity
-        style={[
-          styles.purchaseButton,
-          activeItem ? styles.activePurchaseButton : {},
-        ]}
-        onPress={() => handlePurchase(activeItem)}>
-        <Text
+        <TouchableOpacity
           style={[
-            styles.purchaseButtonText,
-            activeItem ? styles.activePurchaseButtonText : {},
-          ]}>
-          Purchase
-        </Text>
-      </TouchableOpacity>
-      <ScrollView style={styles.packagesContainer}>
-        {packages && packages.length >= 0 ? (
-          packages.map((item, index) => (
-            <SubscriptionItem
-              key={index}
-              item={item.product}
-              styles={styles}
-              offering={item}
-              icon={item.subscriptionIcon}
-              description={item.subscriptionDescription}
-              onItemPress={handleActiveItem}
-              activeItem={
-                activeItem && activeItem.product.title === item.product.title
-              }
-              isFoundersPackage={item.product.identifier.includes('founders')}
-            />
-          ))
-        ) : (
-          <Loader />
-        )}
-      </ScrollView>
-      <SubscriptionsLoader isLoading={loading} />
-    </SafeAreaView>
+            styles.purchaseButton,
+            activeItem ? styles.activePurchaseButton : {},
+          ]}
+          onPress={() => handlePurchase(activeItem)}>
+          <Text
+            style={[
+              styles.purchaseButtonText,
+              activeItem ? styles.activePurchaseButtonText : {},
+            ]}>
+            Purchase
+          </Text>
+        </TouchableOpacity>
+        <ScrollView style={styles.packagesContainer}>
+          {packages && packages.length >= 0 ? (
+            packages.map((item, index) => (
+              <SubscriptionItem
+                key={index}
+                item={item.product}
+                styles={styles}
+                offering={item}
+                icon={item.subscriptionIcon}
+                description={item.subscriptionDescription}
+                onItemPress={handleActiveItem}
+                activeItem={
+                  activeItem && activeItem.product.title === item.product.title
+                }
+                isFoundersPackage={item.product.identifier.includes('founders')}
+              />
+            ))
+          ) : (
+            <Loader />
+          )}
+        </ScrollView>
+        <SubscriptionsLoader isLoading={loading} />
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 

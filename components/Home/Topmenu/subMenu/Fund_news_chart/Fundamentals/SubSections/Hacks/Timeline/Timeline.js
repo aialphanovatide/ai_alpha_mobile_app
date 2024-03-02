@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import Loader from '../../../../../../../../Loader/Loader';
 import useTimelineStyles from './TimelineStyles';
 
@@ -8,15 +8,15 @@ const Timeline = ({events, textPoints}) => {
   const [activeEvent, setActiveEvent] = useState(null);
 
   const formatDate = dateString => {
-    const words = dateString.split(' ');
-
+    const words = dateString.split(/\s|-|\//g);
+    const time_words = ['ongoing', 'development', 'long', 'mid', 'early'];
     const month = words[0];
+    const has_words = time_words.includes(month.toLowerCase());
     const isLargeMonth = month.length > 5;
     const shorted_month = isLargeMonth ? month.slice(0, 3) : month;
-
     const formatted_date = shorted_month + ' ' + words[1];
 
-    return formatted_date;
+    return has_words ? dateString : formatted_date;
   };
 
   const generateEventInformation = (event, topics) => {

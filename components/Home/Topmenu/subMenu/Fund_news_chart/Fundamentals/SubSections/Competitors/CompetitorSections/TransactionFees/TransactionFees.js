@@ -4,6 +4,7 @@ import CryptosSelector from '../../CryptoSelector/CryptosSelector';
 import useTransactionFeeStyles from './TransactionFeesStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../../../Loader/Loader';
+import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 
 const DollarGraphs = ({value, itemIndex, styles}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -54,16 +55,18 @@ const DollarGraphs = ({value, itemIndex, styles}) => {
     }
   } else {
     images.push(
-      <Image
-        key={'zero'}
-        style={styles.dollarImage}
-        source={
-          isDarkMode
-            ? require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar-dark.png')
-            : require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar.png')
-        }
-        resizeMode="contain"
-      />,
+      <View key={`zero_container`} style={styles.imageContainer}>
+        <Image
+          key={'zero'}
+          style={styles.dollarImage}
+          source={
+            isDarkMode
+              ? require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar-dark.png')
+              : require('../../../../../../../../../../assets/images/fundamentals/competitors/transactionFees/dollar.png')
+          }
+          resizeMode="contain"
+        />
+      </View>,
     );
   }
 
@@ -76,13 +79,53 @@ const TransactionFees = ({competitorsData}) => {
   const [activeOption, setActiveOption] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const coins_names = [
+    {symbol: 'ETH', name: 'Ethereum'},
+    {symbol: 'BTC', name: 'Bitcoin'},
+    {symbol: 'ADA', name: 'Cardano'},
+    {symbol: 'SOL', name: 'Solana'},
+    {symbol: 'AVAX', name: 'Avalanche'},
+    {symbol: 'QNT', name: 'Quantum'},
+    {symbol: 'DOT', name: 'Polkadot'},
+    {symbol: 'ATOM', name: 'Cosmos'},
+    {symbol: 'LINK', name: 'ChainLink'},
+    {symbol: 'BAND', name: 'Band Protocol'},
+    {symbol: 'API3', name: 'API3'},
+    {symbol: 'RPL', name: 'Rocket Pool'},
+    {symbol: 'LDO', name: 'Lido Finance'},
+    {symbol: 'FXS', name: 'Frax Finance'},
+    {symbol: 'OP', name: 'Optimism'},
+    {symbol: 'MATIC', name: 'Polygon'},
+    {symbol: 'ARB', name: 'Arbitrum'},
+    {symbol: 'XLM', name: 'Stellar'},
+    {symbol: 'XRP', name: 'Ripple'},
+    {symbol: 'ALGO', name: 'Algorand'},
+    {symbol: '1INCH', name: '1Inch Network'},
+    {symbol: 'AAVE', name: 'Aave'},
+    {symbol: 'GMX', name: 'GMX'},
+    {symbol: 'PENDLE', name: 'Pendle'},
+    {symbol: 'CAKE', name: 'PanCake Swap'},
+    {symbol: 'SUSHI', name: 'Sushi Swap'},
+    {symbol: 'UNI', name: 'UNISWAP'},
+    {symbol: 'VELO', name: 'Velo'},
+    {symbol: 'DYDX', name: 'dYdX'},
+  ];
+
+  const findCoinNameBySymbol = symbol => {
+    const found = coins_names.find(coin => coin.symbol === symbol);
+    return found !== undefined ? found.name : null;
+  };
+
   const handleActiveOptionChange = option => {
     setActiveOption(option);
   };
 
   const formatFeeValue = stringValue => {
-    const formatted_string = stringValue.replace('$', '').split(' ');
-    const number = Number(formatted_string[0]);
+    if (stringValue === null || stringValue === undefined) {
+      return 0;
+    }
+    const formatted_string = stringValue.replace(/\s/g, '');
+    const number = Number(formatted_string.replace(/,/g, '.'));
     // console.log('Formatted transaction fees value: ', number);
     return number;
   };
@@ -93,8 +136,10 @@ const TransactionFees = ({competitorsData}) => {
 
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
-      item => item.competitor.token === crypto && item.competitor.key === key,
+      item =>
+        item.competitor.token === crypto && item.competitor.key.includes(key),
     );
+    console.log(found);
     return found && found !== undefined ? found.competitor.value : null;
   };
 
@@ -103,31 +148,20 @@ const TransactionFees = ({competitorsData}) => {
     const transaction_fees_data = [];
     competitorsData.forEach((item, index) => {
       if (
-        transaction_fees_data.find(mappedItem =>
-          item.competitor.token.includes(mappedItem.name),
+        transaction_fees_data.find(
+          mappedItem =>
+            mappedItem.crypto ===
+            item.competitor.token.replace(/\s|,/g, '').toUpperCase(),
         )
       ) {
         return;
       } else {
         const mapped_crypto = {
           id: index + 1,
-          name:
-            item.competitor.token.indexOf('(') !== -1
-              ? item.competitor.token.slice(
-                  0,
-                  item.competitor.token.indexOf('(') - 1,
-                )
-              : item.competitor.token.replace(' ', ''),
-          crypto:
-            item.competitor.token.indexOf('(') !== -1
-              ? item.competitor.token
-                  .slice(0, item.competitor.token.indexOf('(') - 1)
-                  .toUpperCase()[0] +
-                item.competitor.token
-                  .slice(0, item.competitor.token.indexOf('(') - 1)
-                  .slice(1)
-              : item.competitor.token.replace(' ', '').toUpperCase()[0] +
-                item.competitor.token.replace(' ', '').slice(1),
+          name: findCoinNameBySymbol(
+            item.competitor.token.replace(/\s|,/g, '').toUpperCase(),
+          ),
+          crypto: item.competitor.token.replace(/\s|,/g, '').toUpperCase(),
           fee: formatFeeValue(
             findKeyInCompetitorItem(
               competitorsData,
@@ -139,43 +173,39 @@ const TransactionFees = ({competitorsData}) => {
         transaction_fees_data.push(mapped_crypto);
       }
     });
-    // console.log(transaction_fees_data);
+    console.log('Transaction fees data: ', transaction_fees_data);
     setCryptos(transaction_fees_data);
     setActiveOption(transaction_fees_data[0]);
     setLoading(false);
   }, [competitorsData]);
 
-  if (loading) {
-    return (
-      <View>
-        <Loader />
-      </View>
-    );
-  }
-
-  if (!cryptos || cryptos?.length === 0) {
-    return null;
-  }
-
   return (
     <View>
-      <CryptosSelector
-        cryptos={cryptos}
-        activeCrypto={activeOption}
-        handleActiveCryptoChange={handleActiveOptionChange}
-      />
-      <View style={styles.activeOptionContainer}>
-        <Text style={styles.activeOptionValue}>
-          {`$${activeOption ? activeOption.fee : 0.0} USD`}
-        </Text>
-      </View>
-      <View style={styles.graphsContainer}>
-        <DollarGraphs
-          value={activeOption ? activeOption.fee : 0}
-          itemIndex={findActiveOptionIndex(cryptos, activeOption)}
-          styles={styles}
-        />
-      </View>
+      {loading ? (
+        <Loader />
+      ) : cryptos?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          <CryptosSelector
+            cryptos={cryptos}
+            activeCrypto={activeOption}
+            handleActiveCryptoChange={handleActiveOptionChange}
+          />
+          <View style={styles.activeOptionContainer}>
+            <Text style={styles.activeOptionValue}>
+              {`$${activeOption ? activeOption.fee : 0.0} USD`}
+            </Text>
+          </View>
+          <View style={styles.graphsContainer}>
+            <DollarGraphs
+              value={activeOption ? activeOption.fee : 0}
+              itemIndex={findActiveOptionIndex(cryptos, activeOption)}
+              styles={styles}
+            />
+          </View>
+        </>
+      )}
     </View>
   );
 };

@@ -20,8 +20,7 @@ const CryptosSelector = ({cryptos, activeCrypto, handleActiveCryptoChange}) => {
                 styles.activeItem,
               activeCrypto &&
                 activeCrypto.crypto === item.crypto && {
-                  backgroundColor:
-                    tintColors[index > 3 ? index % 3 : index],
+                  backgroundColor: tintColors[index > 3 ? index % 3 : index],
                 },
             ]}>
             <Text
@@ -31,7 +30,7 @@ const CryptosSelector = ({cryptos, activeCrypto, handleActiveCryptoChange}) => {
                   activeCrypto.crypto === item.crypto &&
                   styles.activeText,
               ]}>
-              {item.crypto}
+              {item.name}
             </Text>
           </View>
         </TouchableOpacity>

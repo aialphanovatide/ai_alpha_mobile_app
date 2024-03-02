@@ -15,6 +15,8 @@ import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
 import SubMenu from '../Home/Topmenu/subMenu/SubMenu';
 import UpgradeOverlay from '../UpgradeOverlay/UpgradeOverlay';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
+import LinearGradient from 'react-native-linear-gradient';
+import {AppThemeContext} from '../../context/themeContext';
 // This component render general alerts from each selected category
 const NoAlertsView = ({styles}) => (
   <View style={styles.noAlertsContainer}>
@@ -58,6 +60,7 @@ const Alerts = ({route, navigation}) => {
   const styles = useAlertsStyles();
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const {isDarkMode} = useContext(AppThemeContext);
 
   useEffect(() => {
     if (route.params) {
@@ -120,39 +123,45 @@ const Alerts = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <TopMenu isAlertsMenu={true} />
-      <SubMenu isAlertsMenu={true} />
-      <Text style={styles.title}>Alerts</Text>
-      {isLoading ? (
-        <Loader />
-      ) : subscribed ? (
-        <View style={styles.background}>
-          <AlertMenu
-            options={options}
-            setActiveOption={handleOptionChange}
-            styles={styles}
-            activeOption={activeAlertOption}
-          />
-          <FlatList
-            data={alerts}
-            renderItem={({item}) => (
-              <AlertDetails
-                key={item.alert_id}
-                message={item.alert_message}
-                timeframe={item.alert_name}
-                price={item.price}
-                styles={styles}
-              />
-            )}
-            keyExtractor={item => item.alert_id.toString()}
-            ListEmptyComponent={<NoAlertsView styles={styles} />}
-          />
-        </View>
-      ) : (
-        <View style={styles.background}>
-          <UpgradeOverlay isBlockingByCoin={true} screen={'Alerts'} />
-        </View>
-      )}
+      <LinearGradient
+        useAngle={true}
+        angle={45}
+        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        style={{flex: 1}}>
+        <TopMenu isAlertsMenu={true} />
+        <SubMenu isAlertsMenu={true} />
+        <Text style={styles.title}>Alerts</Text>
+        {isLoading ? (
+          <Loader />
+        ) : subscribed ? (
+          <View style={styles.background}>
+            <AlertMenu
+              options={options}
+              setActiveOption={handleOptionChange}
+              styles={styles}
+              activeOption={activeAlertOption}
+            />
+            <FlatList
+              data={alerts}
+              renderItem={({item}) => (
+                <AlertDetails
+                  key={item.alert_id}
+                  message={item.alert_message}
+                  timeframe={item.alert_name}
+                  price={item.price}
+                  styles={styles}
+                />
+              )}
+              keyExtractor={item => item.alert_id.toString()}
+              ListEmptyComponent={<NoAlertsView styles={styles} />}
+            />
+          </View>
+        ) : (
+          <View style={styles.background}>
+            <UpgradeOverlay isBlockingByCoin={true} screen={'Alerts'} />
+          </View>
+        )}
+      </LinearGradient>
     </SafeAreaView>
   );
 };

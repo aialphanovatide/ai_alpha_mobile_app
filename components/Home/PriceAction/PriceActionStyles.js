@@ -11,25 +11,24 @@ const usePriceActionStyles = () => {
       width: theme.width,
       marginVertical: 15,
       paddingBottom: 30,
-      paddingHorizontal: 10,
       overflow: 'hidden',
     },
     title: {
       paddingVertical: 10,
-      paddingHorizontal: 5,
+      paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
       fontWeight: 'bold',
     },
     tableContainer: {
-      flex:1,
+      flex: 1,
       height: theme.height * 0.3,
       marginVertical: 10,
       backgroundColor: theme.boxesBackgroundColor,
-      borderColor: theme.boxesBorderColor,
+      borderColor: theme.secondaryGrayColor,
       overflow: 'hidden',
-      borderRadius: 4,
-      justifyContent:'center'
+      borderRadius: 2,
+      justifyContent: 'center',
     },
     tableScrollView: {
       flex: 1,
@@ -37,8 +36,9 @@ const usePriceActionStyles = () => {
     },
     headerRow: {
       flexDirection: 'row',
-      borderWidth: 1,
-      borderColor: theme.boxesBorderColor,
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderColor: theme.secondaryGrayColor,
     },
     logoContainer: {
       width: 20,
@@ -67,7 +67,7 @@ const usePriceActionStyles = () => {
     dataRow: {
       flexDirection: 'row',
       borderBottomWidth: 1,
-      borderBottomColor: theme.boxesBorderColor,
+      borderBottomColor: theme.secondaryGrayColor,
     },
     borderless: {
       borderBottomWidth: 0,
@@ -93,10 +93,9 @@ const usePriceActionStyles = () => {
     },
     categoriesContainer: {
       paddingVertical: 10,
-      paddingHorizontal: 4,
       backgroundColor: theme.boxesBackgroundColor,
       overflow: 'hidden',
-      borderWidth: 1,
+      borderTopWidth: 1,
       borderColor: theme.boxesBorderColor,
     },
     category: {
@@ -134,6 +133,9 @@ const usePriceActionStyles = () => {
       marginHorizontal: 5,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    titleRow: {
+      flexDirection: 'row',
     },
   });
   return styles;

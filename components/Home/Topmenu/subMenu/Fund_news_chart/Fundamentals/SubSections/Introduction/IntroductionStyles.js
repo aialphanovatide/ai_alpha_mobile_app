@@ -15,6 +15,7 @@ const useIntroductionStyles = () => {
       alignItems: 'center',
     },
     introText: {
+      padding: 8,
       fontSize: theme.responsiveFontSize * 0.9,
       color: theme.textColor,
       lineHeight: 22,
@@ -30,6 +31,17 @@ const useIntroductionStyles = () => {
       height: 12,
       marginRight: 4,
       overflow: 'hidden',
+    },
+    linkContainer: {
+      flex: 1,
+    },
+    link: {
+      fontSize: theme.responsiveFontSize * 0.9,
+      color: '#7B7BFF',
+      textDecorationLine: 'underline',
+      textDecorationColor: '#7B7BFF',
+      fontWeight: 'bold',
+      lineHeight: 22,
     },
   });
   return styles;

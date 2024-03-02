@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
 import useAnalysisStyles from './AnalysisStyles';
 import UpgradeOverlay from '../UpgradeOverlay/UpgradeOverlay';
 import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import {AppThemeContext} from '../../context/themeContext';
 const AnalysisItem = ({id, sectionName, handleItemTouch, icon, styles}) => {
   return (
     <TouchableOpacity onPress={() => handleItemTouch(id)}>
@@ -42,6 +44,7 @@ const AnalysisItem = ({id, sectionName, handleItemTouch, icon, styles}) => {
 const Analysis = () => {
   const styles = useAnalysisStyles();
   const navigation = useNavigation();
+  const {isDarkMode} = useContext(AppThemeContext);
   const sections = [
     {
       id: 'Calendar',
@@ -94,24 +97,32 @@ const Analysis = () => {
   };
 
   return (
-    <SafeAreaView style={styles.background}>
-      <ScrollView style={styles.background} nestedScrollEnabled={true}>
-        <Text style={styles.analysisTitle}>Analysis</Text>
-        <View style={styles.analyisisContainer}>
-          {sections.map(section => (
-            <AnalysisItem
-              handleItemTouch={handleItemTouch}
-              key={section.id}
-              id={section.id}
-              sectionName={section.sectionName}
-              icon={section.icon}
-              styles={styles}
-            />
-          ))}
-        </View>
-      </ScrollView>
-      <UpgradeOverlay isBlockingByCoin={false} />
-    </SafeAreaView>
+    <LinearGradient
+      useAngle={true}
+      angle={45}
+      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      style={{flex: 1}}>
+      <SafeAreaView style={styles.background}>
+        <ScrollView
+          style={[styles.background, styles.paddingV]}
+          nestedScrollEnabled={true}>
+          <Text style={styles.analysisTitle}>Analysis</Text>
+          <View style={styles.analyisisContainer}>
+            {sections.map(section => (
+              <AnalysisItem
+                handleItemTouch={handleItemTouch}
+                key={section.id}
+                id={section.id}
+                sectionName={section.sectionName}
+                icon={section.icon}
+                styles={styles}
+              />
+            ))}
+          </View>
+        </ScrollView>
+        <UpgradeOverlay isBlockingByCoin={false} />
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 

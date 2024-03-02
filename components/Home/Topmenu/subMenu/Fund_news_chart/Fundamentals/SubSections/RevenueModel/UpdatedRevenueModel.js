@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Image, Text, View} from 'react-native';
 import useUpdatedRevenueModelStyles from './UpdatedRevenueModelStyles';
+import Loader from '../../../../../../../Loader/Loader';
+import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
 const UpdatedRevenueModel = ({getSectionData, coin}) => {
   const styles = useUpdatedRevenueModelStyles();
   const [revenues, setRevenues] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const formatNumber = num => {
     const absNum = Math.abs(num);
@@ -16,12 +19,15 @@ const UpdatedRevenueModel = ({getSectionData, coin}) => {
     if (tier == 0) return num;
 
     const divisor = Math.pow(thousand, tier);
-    const formattedNum = (num / divisor).toFixed(3);
+    const formattedNum = (num / divisor).toFixed(2);
 
     return formattedNum + abbrev[tier];
   };
 
   useEffect(() => {
+    setLoading(true);
+    setRevenues([]);
+
     const fetchRevenueModelData = async coin => {
       try {
         const response = await getSectionData(
@@ -56,37 +62,47 @@ const UpdatedRevenueModel = ({getSectionData, coin}) => {
         }
       } catch (error) {
         console.log('Error trying to get revenue model data: ', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchRevenueModelData(coin);
   }, [coin]);
 
-  if (revenues?.length === 0) {
-    return null;
-  }
-
   return (
     <View style={styles.container}>
-      {revenues.map((revenue, index) => (
-        <View key={index} style={styles.itemContainer}>
-          <Image
-            style={styles.revenueImage}
-            resizeMode="contain"
-            source={require('../../../../../../../../assets/images/fundamentals/revenueModel.png')}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.revenueTitle}>{revenue.title}</Text>
-            <Text style={styles.revenueSubtitle}>{revenue.subtitle}</Text>
-          </View>
-          <Text style={styles.revenueValue}>
-            {revenue.value !== null
-              ? typeof revenue.value === 'string'
-                ? revenue.value
-                : `$${formatNumber(revenue.value)}`
-              : 'N/A'}
-          </Text>
-        </View>
-      ))}
+      {loading ? (
+        <Loader />
+      ) : revenues?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          {revenues.map((revenue, index) => {
+            if (revenue.value === null) {
+              return;
+            } else {
+              return (
+                <View key={index} style={styles.itemContainer}>
+                  <Image
+                    style={styles.revenueImage}
+                    resizeMode="contain"
+                    source={require('../../../../../../../../assets/images/fundamentals/revenueModel.png')}
+                  />
+                  <View style={styles.textContainer}>
+                    <Text style={styles.revenueTitle}>{revenue.title}</Text>
+                    <Text style={styles.revenueSubtitle}>
+                      {revenue.subtitle}
+                    </Text>
+                  </View>
+                  <Text style={styles.revenueValue}>
+                    {`$${formatNumber(revenue.value)}`}
+                  </Text>
+                </View>
+              );
+            }
+          })}
+        </>
+      )}
     </View>
   );
 };

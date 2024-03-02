@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import useCirculatingSupplyStyles from './CirculatingSupplyStyles';
 import {icons} from '../../icons';
 import Loader from '../../../../../../../../../Loader/Loader';
+import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 
 const CirculatingSupplyItem = ({item, styles}) => {
   return (
@@ -88,32 +89,63 @@ const CirculatingSupply = ({
   coin,
 }) => {
   const [mappedData, setMappedData] = useState([]);
+  const styles = useCirculatingSupplyStyles();
   const [loading, setLoading] = useState(true);
+
+  const coins_names = [
+    {symbol: 'ETH', name: 'Ethereum'},
+    {symbol: 'BTC', name: 'Bitcoin'},
+    {symbol: 'ADA', name: 'Cardano'},
+    {symbol: 'SOL', name: 'Solana'},
+    {symbol: 'AVAX', name: 'Avalanche'},
+    {symbol: 'QNT', name: 'Quantum'},
+    {symbol: 'DOT', name: 'Polkadot'},
+    {symbol: 'ATOM', name: 'Cosmos'},
+    {symbol: 'LINK', name: 'ChainLink'},
+    {symbol: 'BAND', name: 'Band Protocol'},
+    {symbol: 'API3', name: 'API3'},
+    {symbol: 'RPL', name: 'Rocket Pool'},
+    {symbol: 'LDO', name: 'Lido Finance'},
+    {symbol: 'FXS', name: 'Frax Finance'},
+    {symbol: 'OP', name: 'Optimism'},
+    {symbol: 'MATIC', name: 'Polygon'},
+    {symbol: 'ARB', name: 'Arbitrum'},
+    {symbol: 'XLM', name: 'Stellar'},
+    {symbol: 'XRP', name: 'Ripple'},
+    {symbol: 'ALGO', name: 'Algorand'},
+    {symbol: '1INCH', name: '1Inch Network'},
+    {symbol: 'AAVE', name: 'Aave'},
+    {symbol: 'GMX', name: 'GMX'},
+    {symbol: 'PENDLE', name: 'Pendle'},
+    {symbol: 'CAKE', name: 'PanCake Swap'},
+    {symbol: 'SUSHI', name: 'Sushi Swap'},
+    {symbol: 'UNI', name: 'UNISWAP'},
+    {symbol: 'VELO', name: 'Velo'},
+    {symbol: 'DYDX', name: 'dYdX'},
+  ];
+
+  const findCoinNameBySymbol = symbol => {
+    const found = coins_names.find(coin => coin.symbol === symbol);
+    return found !== undefined ? found.name : null;
+  };
 
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
-      item => item.competitor.token === crypto && item.competitor.key === key,
+      item =>
+        item.competitor.token === crypto && item.competitor.key.includes(key),
     );
     return found && found !== undefined ? found.competitor.value : null;
   };
 
-  const extractSymbol = cryptoString => {
-    const string_without_spaces = cryptoString.replace(' ', '');
-    const name = string_without_spaces.split('(')[0];
-    const symbol_index_start = string_without_spaces.indexOf('(');
-    const symbol_index_end = string_without_spaces.indexOf(')');
-    const symbol =
-      symbol_index_start !== -1
-        ? string_without_spaces.slice(symbol_index_start + 1, symbol_index_end)
-        : name;
-    return symbol;
+  const parseNumberFromString = str => {
+    const cleanedStr = str.replace(/\s|,/g, '');
+    const numberValue = Number(cleanedStr);
+    return numberValue;
   };
 
   const findMaxValueInTokenomics = (tokenomicsData, crypto) => {
-    const found = tokenomicsData.find(item =>
-      item.name.includes(crypto[0].toUpperCase() + crypto.slice(1)),
-    );
-    console.log('Found value in tokenomics:', found);
+    const found = tokenomicsData.find(item => item.name.includes(crypto));
+    // console.log('Found value in tokenomics:', found);
     return found && found !== undefined ? found.maxSupply : null;
   };
 
@@ -121,50 +153,66 @@ const CirculatingSupply = ({
     setLoading(true);
     const tokenomics_mapped = tokenomicsData.map(crypto => {
       return {
-        name: crypto.tokenomics.token,
-        maxSupply: crypto.tokenomics.max_supply.includes('∞')
-          ? Infinity
-          : parseFloat(crypto.tokenomics.max_supply.replace(/,/g, '')),
+        name: crypto.tokenomics.token.replace(' ', '').toUpperCase(),
+        maxSupply:
+          crypto.tokenomics.max_supply.replace(' ', '') === '∞'
+            ? Infinity
+            : parseNumberFromString(crypto.tokenomics.max_supply),
       };
     });
-    console.log('Tokenomics helper data: ', tokenomics_mapped);
-    // console.log(competitorsData);
     const supply_model_data = [];
     competitorsData.forEach((item, index) => {
       if (
         supply_model_data.find(mappedItem =>
-          item.competitor.token.includes(mappedItem.name),
+          item.competitor.token
+            .replace(' ', '')
+            .toUpperCase()
+            .includes(mappedItem.crypto),
         )
       ) {
         return;
       } else {
         const mapped_crypto = {
           id: index + 1,
-          name:
-            item.competitor.token.indexOf('(') !== -1
-              ? item.competitor.token.slice(
-                  0,
-                  item.competitor.token.indexOf('(') - 1,
-                )
-              : item.competitor.token.replace(' ', ''),
-          crypto: extractSymbol(item.competitor.token).toUpperCase(),
+          name: findCoinNameBySymbol(
+            item.competitor.token.replace(' ', '').toUpperCase(),
+          ),
+          crypto: item.competitor.token.replace(' ', '').toUpperCase(),
           percentageValue: parseFloat(
             findKeyInCompetitorItem(
               competitorsData,
               'circulating supply',
               item.competitor.token,
-            ).replace('%', ''),
+            ),
           ),
           inflationary:
             findKeyInCompetitorItem(
               competitorsData,
               'token supply model',
               item.competitor.token,
-            ) === 'inflationary',
-          maxValue: findMaxValueInTokenomics(
-            tokenomics_mapped,
-            extractSymbol(item.competitor.token),
-          ),
+            )
+              .replace(' ', '')
+              .toLowerCase() === 'hybrid'
+              ? null
+              : findKeyInCompetitorItem(
+                  competitorsData,
+                  'token supply model',
+                  item.competitor.token,
+                ).toLowerCase() === 'inflationary'
+              ? true
+              : false,
+          maxValue:
+            findMaxValueInTokenomics(
+              tokenomics_mapped,
+              item.competitor.token.replace(' ', '').toUpperCase(),
+            ) ||
+            parseNumberFromString(
+              findKeyInCompetitorItem(
+                competitorsData,
+                'fully diluted value',
+                item.competitor.token,
+              ),
+            ),
         };
         supply_model_data.push(mapped_crypto);
       }
@@ -173,58 +221,57 @@ const CirculatingSupply = ({
     setLoading(false);
   }, [competitorsData]);
 
-  const styles = useCirculatingSupplyStyles();
-
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <Loader />
-      </View>
-    );
-  }
-
-  if (!mappedData || mappedData?.length === 0) {
-    return null;
-  }
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <Text style={[styles.referenceLabel, styles.labelLeft]}>
-          Circulating Supply
-        </Text>
-        <Text style={[styles.referenceLabel, styles.labelRight]}>
-          Total tokens in Supply
-        </Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={[styles.referenceLabel, styles.symbolLabel]}>
-          <View style={styles.symbolWrapper}>
-            <Image
-              source={require('../../../../../../../../../../assets/images/fundamentals/competitors/circulatingSupply/deflationary.png')}
-              style={styles.referenceIconImage}
-              resizeMode="contain"
-            />
+      {loading ? (
+        <Loader />
+      ) : cryptos?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          <View style={styles.row}>
+            <Text style={[styles.referenceLabel, styles.labelLeft]}>
+              Circulating Supply
+            </Text>
+            <Text style={[styles.referenceLabel, styles.labelRight]}>
+              Total tokens in Supply
+            </Text>
           </View>
-          Deflationary
-        </Text>
-        <Text
-          style={[styles.referenceLabel, styles.symbolLabel, styles.noMargin]}>
-          <View style={styles.symbolWrapper}>
-            <Image
-              source={require('../../../../../../../../../../assets/images/fundamentals/competitors/circulatingSupply/inflationary.png')}
-              style={styles.referenceIconImage}
-              resizeMode="contain"
-            />
+          <View style={styles.row}>
+            <Text style={[styles.referenceLabel, styles.symbolLabel]}>
+              <View style={styles.symbolWrapper}>
+                <Image
+                  source={require('../../../../../../../../../../assets/images/fundamentals/competitors/circulatingSupply/deflationary.png')}
+                  style={styles.referenceIconImage}
+                  resizeMode="contain"
+                />
+              </View>
+              Deflationary
+            </Text>
+            <Text
+              style={[
+                styles.referenceLabel,
+                styles.symbolLabel,
+                styles.noMargin,
+              ]}>
+              <View style={styles.symbolWrapper}>
+                <Image
+                  source={require('../../../../../../../../../../assets/images/fundamentals/competitors/circulatingSupply/inflationary.png')}
+                  style={styles.referenceIconImage}
+                  resizeMode="contain"
+                />
+              </View>
+              Inflationary
+            </Text>
           </View>
-          Inflationary
-        </Text>
-      </View>
 
-      <View style={styles.itemsContainer}>
-        {mappedData.map((item, index) => (
-          <CirculatingSupplyItem item={item} key={index} styles={styles} />
-        ))}
-      </View>
+          <View style={styles.itemsContainer}>
+            {mappedData.map((item, index) => (
+              <CirculatingSupplyItem item={item} key={index} styles={styles} />
+            ))}
+          </View>
+        </>
+      )}
     </View>
   );
 };

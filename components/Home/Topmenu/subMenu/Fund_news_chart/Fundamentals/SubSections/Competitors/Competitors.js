@@ -23,6 +23,7 @@ import useCompetitorsStyles from './CompetitorsStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import {fundamentalsMock} from '../../fundamentalsMock';
 import Loader from '../../../../../../../Loader/Loader';
+import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
 const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
   const {theme} = useContext(AppThemeContext);
@@ -36,7 +37,7 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
         }
         style={styles.menuItemContainer}
         resizeMode="contain"
-        tintColor={theme.secondaryBoxesBgColor}>
+        tintColor={theme.fundamentalsCompetitorsItemBg}>
         <View style={styles.iconContainer}>
           <Image
             style={[
@@ -97,9 +98,11 @@ const Competitors = ({
   const styles = useCompetitorsStyles();
   const [competitorsData, setCompetitorsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeOption, setActiveOption] = useState(null);
 
   useEffect(() => {
     setLoading(true);
+    setCompetitorsData([]);
     const fetchCompetitorsData = async coin => {
       try {
         const response = await getSectionData(
@@ -113,6 +116,7 @@ const Competitors = ({
       } catch (error) {
         console.log('Error trying to get competitors data: ', error);
       } finally {
+        setActiveOption(content[0]);
         setLoading(false);
       }
     };
@@ -120,17 +124,6 @@ const Competitors = ({
   }, [coin]);
 
   const content = [
-    {
-      name: 'Current Market Cap',
-      component: (
-        <CurrentMarketCap
-          cryptos={cryptosData}
-          competitorsData={competitorsData}
-        />
-      ),
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/cmc.png'),
-      sectionDescription: subsectionsData.marketCap.sectionDescription,
-    },
     {
       name: 'Supply Model',
       component: (
@@ -145,7 +138,17 @@ const Competitors = ({
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/circulatingsupply.png'),
       sectionDescription: subsectionsData.supplyModel.sectionDescription,
     },
-
+    {
+      name: 'Current Market Cap',
+      component: (
+        <CurrentMarketCap
+          cryptos={cryptosData}
+          competitorsData={competitorsData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/cmc.png'),
+      sectionDescription: subsectionsData.marketCap.sectionDescription,
+    },
     {
       name: 'Type Of Token',
       component: (
@@ -219,43 +222,35 @@ const Competitors = ({
     },
   ];
 
-  const [activeOption, setActiveOption] = useState(content[0]);
-
   const handleOptionChange = option => {
     setActiveOption(option);
   };
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.loaderWrapper}>
-          <Loader />
-        </View>
-      </View>
-    );
-  }
-
-  if (!cryptosData || cryptosData.length === 0) {
-    return null;
-  }
-
   return (
     <View style={styles.container}>
-      <CompetitorsMenu
-        options={content}
-        activeOption={activeOption}
-        handleOptionChange={handleOptionChange}
-        styles={styles}
-      />
-      <View style={styles.selectedOptionContent}>
-        <CompetitorSection
-          handleAboutPress={handleAboutPress}
-          title={activeOption.name}
-          description={activeOption.sectionDescription}
-          component={activeOption.component}
-          styles={styles}
-        />
-      </View>
+      {loading ? (
+        <Loader />
+      ) : competitorsData.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          <CompetitorsMenu
+            options={content}
+            activeOption={activeOption}
+            handleOptionChange={handleOptionChange}
+            styles={styles}
+          />
+          <View style={styles.selectedOptionContent}>
+            <CompetitorSection
+              handleAboutPress={handleAboutPress}
+              title={activeOption.name}
+              description={activeOption.sectionDescription}
+              component={activeOption.component}
+              styles={styles}
+            />
+          </View>
+        </>
+      )}
     </View>
   );
 };

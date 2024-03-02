@@ -2,6 +2,8 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Image, Text, View} from 'react-native';
 import useTokenUtilityStyles from './TokenUtilityStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
+import Loader from '../../../../../../../Loader/Loader';
+import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
 const TokenUtilityItem = ({styles, data}) => {
   return (
@@ -16,7 +18,7 @@ const TokenUtilityItem = ({styles, data}) => {
             width: data.imageSize.width,
             height: data.imageSize.height,
           }}
-          resizeMode={'stretch'}
+          resizeMode={'cover'}
         />
         <Text style={styles.dataText}>{data.text}</Text>
       </View>
@@ -28,21 +30,24 @@ const TokenUtility = ({getSectionData, coin, content}) => {
   const styles = useTokenUtilityStyles();
   const {isDarkMode} = useContext(AppThemeContext);
   const [dataItems, setDataItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const getItemImageUri = (coin, section, isDarkMode) => {
+  const getItemImageUri = (coin, section, description, isDarkMode) => {
     const formatted_title = section
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join('');
+    const longitude_shape = description.length >= 200 ? 'R' : 'S';
     const theme_word = isDarkMode ? 'Dark' : 'Light';
-    return `https://${coin}aialpha.s3.us-east-2.amazonaws.com/${formatted_title}${theme_word}.jpg`;
+    return `https://${coin}aialpha.s3.us-east-2.amazonaws.com/${formatted_title}${theme_word}${longitude_shape}.jpg`;
   };
 
   const calculateImageSize = section => {
-    return section.length >= 150
-      ? section.length >= 300
-        ? {width: 188, height: 356}
-        : {width: 124, height: 208}
+    return section.length >= 200
+      ? {
+          width: 124,
+          height: 208,
+        }
       : {
           width: 124,
           height: 111,
@@ -50,6 +55,9 @@ const TokenUtility = ({getSectionData, coin, content}) => {
   };
 
   useEffect(() => {
+    setLoading(true);
+    setDataItems([]);
+
     const fetchTokenUtilities = async coin => {
       try {
         const response = await getSectionData(
@@ -66,30 +74,29 @@ const TokenUtility = ({getSectionData, coin, content}) => {
               image: getItemImageUri(
                 coin,
                 item.token_utilities.token_application,
+                item.token_utilities.description,
                 isDarkMode,
               ),
-              imageSize: calculateImageSize(
-                item.token_utilities.description,
-              ),
+              imageSize: calculateImageSize(item.token_utilities.description),
             };
           });
           setDataItems(parsed_data);
         }
       } catch (error) {
         console.log('Error trying to get Token Utilities data: ', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchTokenUtilities(coin);
-  }, [coin]);
-
-  if (!dataItems || dataItems.length === 0) {
-    return null;
-  }
-
-  // For mocking data, replace dataItems with content.
+  }, [coin, isDarkMode]);
   return (
     <View style={styles.container}>
-      {dataItems &&
+      {loading ? (
+        <Loader />
+      ) : dataItems?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
         dataItems.map((item, index) => (
           <TokenUtilityItem
             key={index}
@@ -97,7 +104,8 @@ const TokenUtility = ({getSectionData, coin, content}) => {
             styles={styles}
             isDarkMode={isDarkMode}
           />
-        ))}
+        ))
+      )}
     </View>
   );
 };

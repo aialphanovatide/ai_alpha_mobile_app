@@ -47,7 +47,7 @@ const useVestingShedulesStyles = () => {
     yearText: {
       marginHorizontal: 4,
       color: theme.whiteTextColor,
-      fontSize: theme.responsiveFontSize * 0.825,
+      fontSize: theme.responsiveFontSize * 0.85,
     },
     bigText: {
       marginVertical: 8,
@@ -59,11 +59,12 @@ const useVestingShedulesStyles = () => {
       padding: 8,
       width: 25,
       height: 25,
-      tintColor: theme.secondaryTextColor,
+      tintColor: theme.fundamentalsLockIcon,
     },
     calendarIcon: {
       width: 26,
       height: 26,
+      marginRight: 4,
       alignSelf: 'flex-start',
       tintColor: theme.whiteTextColor,
     },

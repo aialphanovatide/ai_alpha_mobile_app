@@ -69,16 +69,6 @@ const useSettingsScreenStyles = () => {
       padding: 12,
       backgroundColor: theme.boxesBackgroundColor,
       alignItems: 'center',
-      shadowColor: '#000',
-      borderRadius: 2,
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-      elevation: 3,
-
     },
     itemLogoContainer: {
       width: 30,
