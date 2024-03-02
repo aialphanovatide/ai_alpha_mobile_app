@@ -12,7 +12,6 @@ import CustomPasswordInput from '../../CustomInput/CustomPasswordInput';
 import CustomButton from '../../CustomButton/CustomButton';
 import Separator from '../../CustomButton/Separator';
 import GreenTick from '../../../../assets/images/greenTick.png';
-import SocialSignUpButton from '../../SocialButtons/SocialSignUpButton';
 import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
 import useSignUpStyles from './SignUpStyles';
@@ -278,7 +277,6 @@ const SignupForm = () => {
           disabled={!isFormValid}
         />
         <Separator />
-        {/* <SocialSignUpButton /> */}
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already have an account? </Text>
           <TouchableOpacity onPress={onSignInPressed}>
