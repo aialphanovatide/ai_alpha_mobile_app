@@ -11,7 +11,7 @@ const CircleChart = ({data, dividerSize, backgroundColor, colors}) => {
         sections={data.map((sector, index) => {
           return {
             percentage: sector.percentage,
-            color: colors[index > 5 ? index % 5 : index],
+            color: colors[index],
           };
         })}
         backgroundColor={backgroundColor}
@@ -23,7 +23,9 @@ const CircleChart = ({data, dividerSize, backgroundColor, colors}) => {
 
 const styles = StyleSheet.create({
   circleChartContainer: {
-    marginVertical: 15,
+    position: 'absolute',
+    top: '22.5%',
+    left: '10%',
   },
 });
 

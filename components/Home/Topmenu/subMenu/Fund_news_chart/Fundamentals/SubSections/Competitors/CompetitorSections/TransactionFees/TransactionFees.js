@@ -5,6 +5,7 @@ import useTransactionFeeStyles from './TransactionFeesStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
+import {findCoinNameBySymbol} from '../../coinsNames';
 
 const DollarGraphs = ({value, itemIndex, styles}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -73,48 +74,11 @@ const DollarGraphs = ({value, itemIndex, styles}) => {
   return images;
 };
 
-const TransactionFees = ({competitorsData}) => {
+const TransactionFees = ({competitorsData, isSectionWithoutData}) => {
   const [cryptos, setCryptos] = useState([]);
   const styles = useTransactionFeeStyles();
   const [activeOption, setActiveOption] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const coins_names = [
-    {symbol: 'ETH', name: 'Ethereum'},
-    {symbol: 'BTC', name: 'Bitcoin'},
-    {symbol: 'ADA', name: 'Cardano'},
-    {symbol: 'SOL', name: 'Solana'},
-    {symbol: 'AVAX', name: 'Avalanche'},
-    {symbol: 'QNT', name: 'Quantum'},
-    {symbol: 'DOT', name: 'Polkadot'},
-    {symbol: 'ATOM', name: 'Cosmos'},
-    {symbol: 'LINK', name: 'ChainLink'},
-    {symbol: 'BAND', name: 'Band Protocol'},
-    {symbol: 'API3', name: 'API3'},
-    {symbol: 'RPL', name: 'Rocket Pool'},
-    {symbol: 'LDO', name: 'Lido Finance'},
-    {symbol: 'FXS', name: 'Frax Finance'},
-    {symbol: 'OP', name: 'Optimism'},
-    {symbol: 'MATIC', name: 'Polygon'},
-    {symbol: 'ARB', name: 'Arbitrum'},
-    {symbol: 'XLM', name: 'Stellar'},
-    {symbol: 'XRP', name: 'Ripple'},
-    {symbol: 'ALGO', name: 'Algorand'},
-    {symbol: '1INCH', name: '1Inch Network'},
-    {symbol: 'AAVE', name: 'Aave'},
-    {symbol: 'GMX', name: 'GMX'},
-    {symbol: 'PENDLE', name: 'Pendle'},
-    {symbol: 'CAKE', name: 'PanCake Swap'},
-    {symbol: 'SUSHI', name: 'Sushi Swap'},
-    {symbol: 'UNI', name: 'UNISWAP'},
-    {symbol: 'VELO', name: 'Velo'},
-    {symbol: 'DYDX', name: 'dYdX'},
-  ];
-
-  const findCoinNameBySymbol = symbol => {
-    const found = coins_names.find(coin => coin.symbol === symbol);
-    return found !== undefined ? found.name : null;
-  };
 
   const handleActiveOptionChange = option => {
     setActiveOption(option);
@@ -127,7 +91,7 @@ const TransactionFees = ({competitorsData}) => {
     const formatted_string = stringValue.replace(/\s/g, '');
     const number = Number(formatted_string.replace(/,/g, '.'));
     // console.log('Formatted transaction fees value: ', number);
-    return number;
+    return isNaN(number) ? 0 : number;
   };
 
   const findActiveOptionIndex = (cryptos, active) => {
@@ -140,7 +104,11 @@ const TransactionFees = ({competitorsData}) => {
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
     console.log(found);
-    return found && found !== undefined ? found.competitor.value : null;
+    return found && found !== undefined
+      ? found.competitor.value !== '-'
+        ? found.competitor.value
+        : ''
+      : null;
   };
 
   useEffect(() => {
@@ -173,7 +141,6 @@ const TransactionFees = ({competitorsData}) => {
         transaction_fees_data.push(mapped_crypto);
       }
     });
-    console.log('Transaction fees data: ', transaction_fees_data);
     setCryptos(transaction_fees_data);
     setActiveOption(transaction_fees_data[0]);
     setLoading(false);
@@ -183,7 +150,8 @@ const TransactionFees = ({competitorsData}) => {
     <View>
       {loading ? (
         <Loader />
-      ) : cryptos?.length === 0 ? (
+      ) : cryptos?.length === 0 ||
+        isSectionWithoutData(competitorsData, 'transaction fees', '-') ? (
         <NoContentMessage />
       ) : (
         <>

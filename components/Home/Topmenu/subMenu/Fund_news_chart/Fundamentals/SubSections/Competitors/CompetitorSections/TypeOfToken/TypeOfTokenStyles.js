@@ -39,7 +39,7 @@ const useTypeOfTokenStyles = () => {
       flexDirection: 'row',
     },
     tokenButton: {
-      width: 90,
+      width: 100,
       padding: 4,
       marginHorizontal: 4,
       backgroundColor: theme.activeWhite,

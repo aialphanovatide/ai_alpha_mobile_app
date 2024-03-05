@@ -6,6 +6,7 @@ import useTransactionSpeedStyles from './TransactionSpeedStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
+import {findCoinNameBySymbol} from '../../coinsNames';
 
 const TransactionSpeed = ({competitorsData}) => {
   const {theme} = useContext(AppThemeContext);
@@ -13,43 +14,6 @@ const TransactionSpeed = ({competitorsData}) => {
   const [activeCrypto, setActiveCrypto] = useState(null);
   const [loading, setLoading] = useState(true);
   const styles = useTransactionSpeedStyles();
-
-  const coins_names = [
-    {symbol: 'ETH', name: 'Ethereum'},
-    {symbol: 'BTC', name: 'Bitcoin'},
-    {symbol: 'ADA', name: 'Cardano'},
-    {symbol: 'SOL', name: 'Solana'},
-    {symbol: 'AVAX', name: 'Avalanche'},
-    {symbol: 'QNT', name: 'Quantum'},
-    {symbol: 'DOT', name: 'Polkadot'},
-    {symbol: 'ATOM', name: 'Cosmos'},
-    {symbol: 'LINK', name: 'ChainLink'},
-    {symbol: 'BAND', name: 'Band Protocol'},
-    {symbol: 'API3', name: 'API3'},
-    {symbol: 'RPL', name: 'Rocket Pool'},
-    {symbol: 'LDO', name: 'Lido Finance'},
-    {symbol: 'FXS', name: 'Frax Finance'},
-    {symbol: 'OP', name: 'Optimism'},
-    {symbol: 'MATIC', name: 'Polygon'},
-    {symbol: 'ARB', name: 'Arbitrum'},
-    {symbol: 'XLM', name: 'Stellar'},
-    {symbol: 'XRP', name: 'Ripple'},
-    {symbol: 'ALGO', name: 'Algorand'},
-    {symbol: '1INCH', name: '1Inch Network'},
-    {symbol: 'AAVE', name: 'Aave'},
-    {symbol: 'GMX', name: 'GMX'},
-    {symbol: 'PENDLE', name: 'Pendle'},
-    {symbol: 'CAKE', name: 'PanCake Swap'},
-    {symbol: 'SUSHI', name: 'Sushi Swap'},
-    {symbol: 'UNI', name: 'UNISWAP'},
-    {symbol: 'VELO', name: 'Velo'},
-    {symbol: 'DYDX', name: 'dYdX'},
-  ];
-
-  const findCoinNameBySymbol = symbol => {
-    const found = coins_names.find(coin => coin.symbol === symbol);
-    return found !== undefined ? found.name : null;
-  };
 
   const handleActiveCryptoChange = crypto => {
     setActiveCrypto(crypto);
@@ -71,7 +35,11 @@ const TransactionSpeed = ({competitorsData}) => {
       item =>
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
-    return found && found !== undefined ? found.competitor.value : null;
+    return found && found !== undefined
+      ? found.competitor.value !== '-'
+        ? found.competitor.value
+        : ''
+      : null;
   };
 
   useEffect(() => {

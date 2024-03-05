@@ -21,7 +21,7 @@ export const icons = {
   'LIDO FINANCE': require('../../../../../../../../assets/images/fundamentals/competitors/icons/LDO.png'),
   CHAINLINK: require('../../../../../../../../assets/images/fundamentals/competitors/icons/LINK.png'),
   MATIC: require('../../../../../../../../assets/images/fundamentals/competitors/icons/MATIC.png'),
-  'NEAR PROTOCOL': require('../../../../../../../../assets/images/fundamentals/competitors/icons/NEAR.png'),
+  NEAR: require('../../../../../../../../assets/images/fundamentals/competitors/icons/NEAR.png'),
   OCEAN: require('../../../../../../../../assets/images/fundamentals/competitors/icons/OCEAN.png'),
   OPTIMISM: require('../../../../../../../../assets/images/fundamentals/competitors/icons/OP.png'),
   PENDLE: require('../../../../../../../../assets/images/fundamentals/competitors/icons/PENDLE.png'),

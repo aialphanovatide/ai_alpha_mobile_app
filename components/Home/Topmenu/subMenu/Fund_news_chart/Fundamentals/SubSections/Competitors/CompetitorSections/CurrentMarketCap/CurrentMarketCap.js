@@ -23,7 +23,11 @@ const CurrentMarketCap = ({competitorsData}) => {
       item =>
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
-    return found && found !== undefined ? found.competitor.value : null;
+    return found && found !== undefined
+      ? found.competitor.value !== '-'
+        ? found.competitor.value
+        : ''
+      : null;
   };
 
   const parseNumberString = numberString => {

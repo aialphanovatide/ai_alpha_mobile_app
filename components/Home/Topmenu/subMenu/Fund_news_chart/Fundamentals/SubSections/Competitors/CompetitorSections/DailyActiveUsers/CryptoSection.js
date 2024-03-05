@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import {View, Image, Text} from 'react-native';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import useDailyActiveUsersStyles from './DailyActiveUsersStyles';
-import {icons} from '../../icons';
 
 const UserIcon = ({tintColor, styles}) => {
   return (
@@ -77,7 +76,11 @@ const CryptoSection = ({crypto, maxValue, itemIndex}) => {
       <View>
         <View style={[styles.row, styles.noVerticalMargin]}>
           <Image
-            source={icons[crypto.name.toUpperCase()]}
+            source={{
+              uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${crypto.symbol.toLowerCase()}.png`,
+              width: 30,
+              height: 30,
+            }}
             style={styles.logoContainer}
           />
           <Text style={styles.itemName}>{crypto.name}</Text>

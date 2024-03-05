@@ -81,7 +81,7 @@ const ValueAccrualMechanisms = ({getSectionData, coin}) => {
                 text: item.value_accrual_mechanisms.description,
                 image: getItemImageUri(
                   coin,
-                  item.value_accrual_mechanisms.mechanism,
+                  item.value_accrual_mechanisms.mechanism.replace(/'/g, ''),
                   item.value_accrual_mechanisms.description,
                   isDarkMode,
                 ),

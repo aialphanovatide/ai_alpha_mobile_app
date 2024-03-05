@@ -23,9 +23,8 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const Fundamentals = ({route}) => {
   const {activeSubCoin} = useContext(TopMenuContext);
-  const initial_coin = route ? route.params.activeCoin : activeSubCoin;
+  const initial_coin = activeSubCoin;
   const [coin, setCoin] = useState(initial_coin);
-  // const coin = 'eth';
   const {isDarkMode} = useContext(AppThemeContext);
   const styles = useFundamentalsStyles();
   const [aboutVisible, setAboutVisible] = useState(false);
@@ -102,12 +101,7 @@ const Fundamentals = ({route}) => {
           <SubSection
             handleAboutPress={handleAboutPress}
             subtitle={'Tokenomics'}
-            content={
-              <Tokenomics
-                getSectionData={getSectionData}
-                coin={coin}
-              />
-            }
+            content={<Tokenomics getSectionData={getSectionData} coin={coin} />}
             hasAbout={true}
             description={
               fundamentals_static_content.tokenomics.sectionDescription
@@ -144,10 +138,7 @@ const Fundamentals = ({route}) => {
           <SubSection
             subtitle={'Token Utility'}
             content={
-              <TokenUtility
-                getSectionData={getSectionData}
-                coin={coin}
-              />
+              <TokenUtility getSectionData={getSectionData} coin={coin} />
             }
             hasAbout
             handleAboutPress={handleAboutPress}
@@ -217,23 +208,13 @@ const Fundamentals = ({route}) => {
             description={
               fundamentals_static_content.upgrades.sectionDescription
             }
-            content={
-              <Upgrades
-                getSectionData={getSectionData}
-                coin={coin}
-              />
-            }
+            content={<Upgrades getSectionData={getSectionData} coin={coin} />}
           />
           <SubSection
             hasAbout
             handleAboutPress={handleAboutPress}
             subtitle={'DApps'}
-            content={
-              <DApps
-                getSectionData={getSectionData}
-                coin={coin}
-              />
-            }
+            content={<DApps getSectionData={getSectionData} coin={coin} />}
             description={fundamentals_static_content.dApps.sectionDescription}
           />
         </SafeAreaView>

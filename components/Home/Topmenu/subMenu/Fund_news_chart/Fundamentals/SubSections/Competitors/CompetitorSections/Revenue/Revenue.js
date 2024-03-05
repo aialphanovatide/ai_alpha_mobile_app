@@ -5,6 +5,7 @@ import {AppThemeContext} from '../../../../../../../../../../context/themeContex
 import {revenueImagesUrls} from './revenueImagesUrl';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import Loader from '../../../../../../../../../Loader/Loader';
+import {findCoinNameBySymbol} from '../../coinsNames';
 
 const GraphItem = ({value, scale, color, imageNumber, styles}) => {
   const imagePath = revenueImagesUrls[color][imageNumber - 1];
@@ -37,7 +38,7 @@ const RevenueGraphReferences = ({cryptos, styles}) => {
   );
 };
 
-const Revenue = ({competitorsData}) => {
+const Revenue = ({competitorsData, isSectionWithoutData}) => {
   const [cryptos, setCryptos] = useState([]);
   const [valuesData, setValuesData] = useState(null);
   const {theme} = useContext(AppThemeContext);
@@ -45,43 +46,6 @@ const Revenue = ({competitorsData}) => {
   const colors = ['blue', 'cyan', 'purple', 'magenta'];
   const tintColors = ['#20CBDD', '#895EF6', '#FF3BC3', '#C539B4'];
   const [loading, setLoading] = useState(true);
-
-  const coins_names = [
-    {symbol: 'ETH', name: 'Ethereum'},
-    {symbol: 'BTC', name: 'Bitcoin'},
-    {symbol: 'ADA', name: 'Cardano'},
-    {symbol: 'SOL', name: 'Solana'},
-    {symbol: 'AVAX', name: 'Avalanche'},
-    {symbol: 'QNT', name: 'Quantum'},
-    {symbol: 'DOT', name: 'Polkadot'},
-    {symbol: 'ATOM', name: 'Cosmos'},
-    {symbol: 'LINK', name: 'ChainLink'},
-    {symbol: 'BAND', name: 'Band Protocol'},
-    {symbol: 'API3', name: 'API3'},
-    {symbol: 'RPL', name: 'Rocket Pool'},
-    {symbol: 'LDO', name: 'Lido Finance'},
-    {symbol: 'FXS', name: 'Frax Finance'},
-    {symbol: 'OP', name: 'Optimism'},
-    {symbol: 'MATIC', name: 'Polygon'},
-    {symbol: 'ARB', name: 'Arbitrum'},
-    {symbol: 'XLM', name: 'Stellar'},
-    {symbol: 'XRP', name: 'Ripple'},
-    {symbol: 'ALGO', name: 'Algorand'},
-    {symbol: '1INCH', name: '1Inch Network'},
-    {symbol: 'AAVE', name: 'Aave'},
-    {symbol: 'GMX', name: 'GMX'},
-    {symbol: 'PENDLE', name: 'Pendle'},
-    {symbol: 'CAKE', name: 'PanCake Swap'},
-    {symbol: 'SUSHI', name: 'Sushi Swap'},
-    {symbol: 'UNI', name: 'UNISWAP'},
-    {symbol: 'VELO', name: 'Velo'},
-    {symbol: 'DYDX', name: 'dYdX'},
-  ];
-
-  const findCoinNameBySymbol = symbol => {
-    const found = coins_names.find(coin => coin.symbol === symbol);
-    return found !== undefined ? found.name : null;
-  };
 
   const getRequiredValues = cryptos => {
     const sortedValues = cryptos?.slice().sort((a, b) => b.value - a.value);
@@ -103,7 +67,7 @@ const Revenue = ({competitorsData}) => {
     const numberWithoutSpaces = numberString.replace(/\s/g, '');
     const decimalNumberString = numberWithoutSpaces.replace(/,/g, '');
 
-    return Number(decimalNumberString);
+    return isNaN(Number(decimalNumberString)) ? 0 : Number(decimalNumberString);
   };
 
   const findKeyInCompetitorItem = (data, key, crypto) => {
@@ -112,7 +76,11 @@ const Revenue = ({competitorsData}) => {
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
     console.log('Key received: ', key, 'Revenue value found: ', found);
-    return found && found !== undefined ? found.competitor.value : null;
+    return found && found !== undefined
+      ? found.competitor.value !== '-'
+        ? found.competitor.value
+        : ''
+      : null;
   };
 
   function formatNumber(num) {
@@ -170,7 +138,8 @@ const Revenue = ({competitorsData}) => {
     <View style={styles.container}>
       {loading ? (
         <Loader />
-      ) : cryptos?.length === 0 ? (
+      ) : cryptos?.length === 0 ||
+        isSectionWithoutData(competitorsData, 'revenue', '-') ? (
         <NoContentMessage />
       ) : (
         <View style={styles.chartContainer}>

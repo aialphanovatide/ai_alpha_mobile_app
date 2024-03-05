@@ -18,16 +18,12 @@ const GeneralTokenData = ({data, handleTokenChange, styles, colors}) => {
             style={[
               styles.tokenSelector,
               {
-                backgroundColor: colors[index > 5 ? index % 5 : index],
+                backgroundColor: colors[index],
               },
             ]}>
             {''}
           </Text>
-          <Text
-            style={[
-              styles.strong,
-              {color: colors[index > 5 ? index % 5 : index]},
-            ]}>
+          <Text style={[styles.strong, {color: colors[index]}]}>
             {sector.title}
           </Text>
         </TouchableOpacity>
@@ -37,7 +33,29 @@ const GeneralTokenData = ({data, handleTokenChange, styles, colors}) => {
 };
 
 const GeneralTokenAllocation = ({getSectionData, coin}) => {
-  const colors = ['#80290E', '#C93A05', '#FC5404', '#FF8D34', '#FFB76E'];
+  const colors = [
+    '#451205',
+    '#A02E0C',
+    '#80290E',
+    '#C93A05',
+    '#FC5404',
+    '#FF8D34',
+    '#FFB76E',
+    '#FFD5A7',
+    '#FFECD3',
+    '#FFF7EC',
+    '#460C3C',
+    '#6C235F',
+    '#832574',
+    '#A02B90',
+    '#C539B4',
+    '#DE57D1',
+    '#EC86E2',
+    '#F4B3EF',
+    '#F9D5F8',
+    '#FDEAFD',
+    '#FEF5FE',
+  ];
   const styles = useGTAStyles();
   const [percentagesData, setPercentagesData] = useState([]);
   const {theme} = useContext(AppThemeContext);
@@ -111,11 +129,7 @@ const GeneralTokenAllocation = ({getSectionData, coin}) => {
                 currentToken && [
                   {
                     color: currentToken
-                      ? colors[
-                          currentTokenIndex > 5
-                            ? currentTokenIndex % 5
-                            : currentTokenIndex
-                        ]
+                      ? colors[currentTokenIndex]
                       : theme.boxesBackgroundColor,
                   },
                   styles.currentTokenPercentage,

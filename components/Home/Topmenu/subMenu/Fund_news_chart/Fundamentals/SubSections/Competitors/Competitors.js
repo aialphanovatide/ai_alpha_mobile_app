@@ -100,6 +100,154 @@ const Competitors = ({
   const [loading, setLoading] = useState(true);
   const [activeOption, setActiveOption] = useState(null);
 
+  const isSectionWithoutData = (data, key, nullSymbol) => {
+    const has_one_key = data.find(datum => datum.competitor.key.includes(key));
+
+    if (has_one_key && has_one_key !== undefined) {
+      const found = data.find(
+        datum =>
+          datum.competitor.key.includes(key) &&
+          datum.competitor.value !== nullSymbol,
+      );
+      return found && found !== undefined ? false : true;
+    }
+
+    return true;
+  };
+
+  const content = [
+    {
+      name: 'Current Market Cap',
+      component: (
+        <CurrentMarketCap
+          cryptos={cryptosData}
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/cmc.png'),
+      sectionDescription: subsectionsData.marketCap.sectionDescription,
+    },
+    {
+      name: 'Supply Model',
+      component: (
+        <CirculatingSupply
+          getSectionData={getSectionData}
+          competitorsData={competitorsData}
+          tokenomicsData={tokenomicsData}
+          cryptos={cryptosData}
+          coin={coin}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/circulatingsupply.png'),
+      sectionDescription: subsectionsData.supplyModel.sectionDescription,
+    },
+    {
+      name: 'Type Of Token',
+      component: (
+        <TypeOfToken
+          tokens={cryptosData}
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/typeoftoken.png'),
+      sectionDescription: subsectionsData.typeOfToken.sectionDescription,
+    },
+    {
+      name: 'TVL',
+      component: (
+        <TotalValueLocked
+          cryptos={cryptosData}
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/TVL.png'),
+      sectionDescription: subsectionsData.TVL.sectionDescription,
+    },
+    {
+      name: 'Daily Active Users',
+      component: (
+        <DailyActiveUsers
+          cryptos={cryptosData}
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/dailyusers.png'),
+      sectionDescription: subsectionsData.dailyActiveUsers.sectionDescription,
+    },
+    {
+      name: 'Transaction Fees',
+      component: (
+        <TransactionFees
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/tfee.png'),
+      sectionDescription: subsectionsData.transactionFees.sectionDescription,
+    },
+    {
+      name: 'Transaction Speed',
+      component: (
+        <TransactionSpeed
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/tspeed.png'),
+      sectionDescription: subsectionsData.transactionSpeed.sectionDescription,
+    },
+    {
+      name: 'Inflation Rate',
+      component: (
+        <InflationRate
+          cryptos={cryptosData}
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/inflationrate.png'),
+      sectionDescription: subsectionsData.inflationRate.sectionDescription,
+    },
+    {
+      name: 'APR',
+      component: (
+        <Apr
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/apr.png'),
+      sectionDescription: subsectionsData.APR.sectionDescription,
+    },
+    {
+      name: 'Active Developers',
+      component: (
+        <ActiveDevelopers
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/activedevs.png'),
+      sectionDescription: subsectionsData.activeDevelopers.sectionDescription,
+    },
+    {
+      name: 'Revenue',
+      component: (
+        <Revenue
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/revenue.png'),
+      sectionDescription: subsectionsData.revenue.sectionDescription,
+    },
+  ];
+
   useEffect(() => {
     setLoading(true);
     setCompetitorsData([]);
@@ -121,106 +269,7 @@ const Competitors = ({
       }
     };
     fetchCompetitorsData(coin);
-  }, [coin]);
-
-  const content = [
-    {
-      name: 'Supply Model',
-      component: (
-        <CirculatingSupply
-          getSectionData={getSectionData}
-          competitorsData={competitorsData}
-          tokenomicsData={tokenomicsData}
-          cryptos={cryptosData}
-          coin={coin}
-        />
-      ),
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/circulatingsupply.png'),
-      sectionDescription: subsectionsData.supplyModel.sectionDescription,
-    },
-    {
-      name: 'Current Market Cap',
-      component: (
-        <CurrentMarketCap
-          cryptos={cryptosData}
-          competitorsData={competitorsData}
-        />
-      ),
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/cmc.png'),
-      sectionDescription: subsectionsData.marketCap.sectionDescription,
-    },
-    {
-      name: 'Type Of Token',
-      component: (
-        <TypeOfToken tokens={cryptosData} competitorsData={competitorsData} />
-      ),
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/typeoftoken.png'),
-      sectionDescription: subsectionsData.typeOfToken.sectionDescription,
-    },
-    {
-      name: 'TVL',
-      component: (
-        <TotalValueLocked
-          cryptos={cryptosData}
-          competitorsData={competitorsData}
-        />
-      ),
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/TVL.png'),
-      sectionDescription: subsectionsData.TVL.sectionDescription,
-    },
-    {
-      name: 'Daily Active Users',
-      component: (
-        <DailyActiveUsers
-          cryptos={cryptosData}
-          competitorsData={competitorsData}
-        />
-      ),
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/dailyusers.png'),
-      sectionDescription: subsectionsData.dailyActiveUsers.sectionDescription,
-    },
-    {
-      name: 'Transaction Fees',
-      component: <TransactionFees competitorsData={competitorsData} />,
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/tfee.png'),
-      sectionDescription: subsectionsData.transactionFees.sectionDescription,
-    },
-    {
-      name: 'Transaction Speed',
-      component: <TransactionSpeed competitorsData={competitorsData} />,
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/tspeed.png'),
-      sectionDescription: subsectionsData.transactionSpeed.sectionDescription,
-    },
-    {
-      name: 'Inflation Rate',
-      component: (
-        <InflationRate
-          cryptos={cryptosData}
-          competitorsData={competitorsData}
-        />
-      ),
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/inflationrate.png'),
-      sectionDescription: subsectionsData.inflationRate.sectionDescription,
-    },
-    {
-      name: 'APR',
-      component: <Apr competitorsData={competitorsData} />,
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/apr.png'),
-      sectionDescription: subsectionsData.APR.sectionDescription,
-    },
-    {
-      name: 'Active Developers',
-      component: <ActiveDevelopers competitorsData={competitorsData} />,
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/activedevs.png'),
-      sectionDescription: subsectionsData.activeDevelopers.sectionDescription,
-    },
-    {
-      name: 'Revenue',
-      component: <Revenue competitorsData={competitorsData} />,
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/revenue.png'),
-      sectionDescription: subsectionsData.revenue.sectionDescription,
-    },
-  ];
+  }, [coin, getSectionData]);
 
   const handleOptionChange = option => {
     setActiveOption(option);

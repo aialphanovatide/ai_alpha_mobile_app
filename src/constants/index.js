@@ -11,7 +11,7 @@ export const auth0Client = 'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg';
 export const auth0Domain = 'dev-zoejuo0jssw5jiid.us.auth0.com';
 //export const auth0Audience = '647f91b8c76e73342e725c9a';
 export const auth0Audience = 'https://aialpha-applelogin-api-url';
-export const auth0GoogleAudience = 'https://aialpha-googlelogin-api-url'
+export const auth0GoogleAudience = 'https://aialpha-googlelogin-api-url';
 export const REVENUECAT_ANDROID_API_KEY = 'goog_jUpUsGqcuQSISWJDDXyefnMVWFH';
 export const REVENUECAT_IOS_API_KEY = 'appl_HblzZuTEedJuLQDVVgdOyoGZCxW';
 export const auth0DeleteAccount_Client = 'yxHIEb9OfX0Ax6aXlj5dh4ippqnk3bLs';
@@ -20,8 +20,10 @@ export const auth0DeleteAccount_Secret =
 export const revenueCat_secret = 'sk_OsSNuqHUzDktdaXynIozTeiMAVIMD';
 export const COINALYZE_API_KEY = 'da0213a7-235c-456e-8876-6c62ce1a6c54';
 export const auth0ManagementAPI_Client = 'K7b9CODJzB8yAlxcFkbLJyRaukd4kmko';
-export const auth0ManagementAPI_Secret = 'hpl8U6AmaZ-rJyE5mKdH6hLaIaDEVC_BxFD6ZwlPW0YhZSfeYxsRntyNxNssf9RM';
-
+export const auth0ManagementAPI_Secret =
+  'hpl8U6AmaZ-rJyE5mKdH6hLaIaDEVC_BxFD6ZwlPW0YhZSfeYxsRntyNxNssf9RM';
+export const TOP_MENU_IMAGES_URL =
+  'https://aialphaicons.s3.us-east-2.amazonaws.com/';
 /*
  The entitlement ID from the RevenueCat dashboard that is activated upon successful in-app purchase for the duration of the purchase.
  */

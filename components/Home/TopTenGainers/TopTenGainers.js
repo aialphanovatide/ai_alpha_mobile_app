@@ -7,7 +7,7 @@ import topTenGainersService from '../../../services/TopTenGainersService.js';
 import Loader from '../../Loader/Loader.js';
 import TOP_TEN_GAINERS_MOCK from './TopTenGainersMock.js';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
-import { home_static_data } from '../homeStaticData.js';
+import {home_static_data} from '../homeStaticData.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
@@ -52,14 +52,15 @@ const TopTenGainers = ({handleAboutPress}) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    /*
     setTopTenCoins(TOP_TEN_GAINERS_MOCK);
     setLoading(false);
-    /*
+    */
     const fetchTopTenCoins = async () => {
       try {
         const data = await topTenGainersService.getTop10Coins();
         setTopTenCoins(data);
-        console.log('TopTenGainers data:', data);
+        // console.log('TopTenGainers data:', data);
       } catch (error) {
         console.error('Error fetching top 10 gainers:', error);
       } finally {
@@ -67,13 +68,15 @@ const TopTenGainers = ({handleAboutPress}) => {
       }
     };
     fetchTopTenCoins();
-    */
   }, []);
   return (
     <View style={styles.topTenGainersContainer}>
       <View style={styles.titleRow}>
         <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>
-        <AboutIcon handleAboutPress={handleAboutPress} description={home_static_data.topTenGainers.sectionDescription}/>
+        <AboutIcon
+          handleAboutPress={handleAboutPress}
+          description={home_static_data.topTenGainers.sectionDescription}
+        />
       </View>
       {loading ? (
         <Loader />

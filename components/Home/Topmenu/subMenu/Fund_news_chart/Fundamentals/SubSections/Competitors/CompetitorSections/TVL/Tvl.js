@@ -11,7 +11,7 @@ import {AppThemeContext} from '../../../../../../../../../../context/themeContex
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 
-const TotalValueLocked = ({competitorsData}) => {
+const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
   const {theme} = useContext(AppThemeContext);
   const styles = useChartStyles();
   const [cryptos, setCryptos] = useState([]);
@@ -21,7 +21,9 @@ const TotalValueLocked = ({competitorsData}) => {
     const numberWithoutSign = numberString.replace(/\s|,/g, '');
     const numericValue = parseFloat(numberWithoutSign);
     const valueInBillions = numericValue / 1e9;
-    return [valueInBillions, numericValue];
+    return isNaN(valueInBillions) && isNaN(numericValue)
+      ? [0, 0]
+      : [valueInBillions, numericValue];
   };
 
   const parseLargeNumberString = numberString => {
@@ -46,7 +48,11 @@ const TotalValueLocked = ({competitorsData}) => {
       item =>
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
-    return found && found !== undefined ? found.competitor.value : null;
+    return found && found !== undefined
+      ? found.competitor.value !== '-'
+        ? found.competitor.value
+        : ''
+      : null;
   };
 
   useEffect(() => {
@@ -87,7 +93,8 @@ const TotalValueLocked = ({competitorsData}) => {
     <View style={styles.chartContainer}>
       {loading ? (
         <Loader />
-      ) : cryptos?.length === 0 ? (
+      ) : cryptos?.length === 0 ||
+        isSectionWithoutData(competitorsData, 'tvl', '-') ? (
         <NoContentMessage />
       ) : (
         <>

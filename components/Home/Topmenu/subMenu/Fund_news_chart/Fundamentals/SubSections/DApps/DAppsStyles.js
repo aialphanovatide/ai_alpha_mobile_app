@@ -57,7 +57,7 @@ const useDappsStyles = () => {
     protocolItemContainer: {
       position: 'relative',
       width: '100%',
-      minHeight:40,
+      minHeight: 40,
       marginVertical: theme.boxesVerticalMargin * 1.2,
       flexDirection: 'row',
     },
@@ -74,13 +74,16 @@ const useDappsStyles = () => {
       alignSelf: 'center',
       zIndex: 20,
     },
+    defaultProtocol: {
+      tintColor: theme.secondaryGrayColor,
+    },
     line: {
       position: 'absolute',
       left: '10%',
       width: '10%',
       borderTopWidth: 6,
       borderColor: theme.fundamentalsCompetitorsItemBg,
-      alignSelf: 'center'
+      alignSelf: 'center',
     },
     protocolDataContainer: {
       flex: 1,
@@ -93,8 +96,8 @@ const useDappsStyles = () => {
       padding: 12,
     },
     arrowButton: {
-      width: 10,
-      height: 10,
+      width: 20,
+      height: 20,
       padding: 2,
       alignSelf: 'center',
       alignItems: 'center',
@@ -102,7 +105,7 @@ const useDappsStyles = () => {
     },
     arrowImage: {
       flex: 1,
-      tintColor: theme.grayArrowColor
+      tintColor: theme.grayArrowColor,
     },
     protocolName: {
       fontSize: theme.responsiveFontSize * 0.85,
@@ -123,7 +126,7 @@ const useDappsStyles = () => {
       color: theme.inactiveTextColor,
     },
     hidden: {
-      display: 'none'
+      display: 'none',
     },
     activeItem: {
       flex: 1,

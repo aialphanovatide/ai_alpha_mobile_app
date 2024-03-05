@@ -10,6 +10,26 @@ const ProtocolItem = ({
   handleActiveProtocol,
   activeProtocol,
 }) => {
+  const [hasImage, setHasImage] = useState(false);
+
+  useEffect(() => {
+    const checkImageURL = async url => {
+      try {
+        const response = await fetch(url);
+        if (
+          response.headers.map['content-type'] &&
+          response.headers.map['content-type'].startsWith('image/')
+        ) {
+          setHasImage(true);
+        }
+      } catch (error) {
+        console.error('Error al verificar el URL de la imagen:', error);
+        setHasImage(false);
+      }
+    };
+    checkImageURL(protocol.image);
+  }, [protocol]);
+
   const formatNumber = num => {
     const absNum = Math.abs(num);
     const abbrev = ['', 'k', 'm', 'b', 't'];
@@ -43,8 +63,12 @@ const ProtocolItem = ({
           styles.activeItem && {marginBottom: marginValue},
       ]}>
       <Image
-        source={{uri: protocol.image, width: 40, height: 40}}
-        style={styles.protocolImage}
+        source={
+          hasImage
+            ? {uri: protocol.image, width: 40, height: 40}
+            : require('../../../../../../../../assets/images/fundamentals/dApps/protocol_default.png')
+        }
+        style={[styles.protocolImage, !hasImage && styles.defaultProtocol]}
         resizeMode="contain"
       />
       <View style={styles.line} />

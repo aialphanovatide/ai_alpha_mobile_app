@@ -73,7 +73,7 @@ const TokenUtility = ({getSectionData, coin, content}) => {
               text: item.token_utilities.description,
               image: getItemImageUri(
                 coin,
-                item.token_utilities.token_application,
+                item.token_utilities.token_application.replace(/'/g, ''),
                 item.token_utilities.description,
                 isDarkMode,
               ),
