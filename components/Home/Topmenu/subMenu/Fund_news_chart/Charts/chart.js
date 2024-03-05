@@ -82,13 +82,14 @@ const Chart = ({
           <ImageBackground
             source={require('../../../../../../assets/images/chart_alpha_logo.png')}
             style={styles.chartBackgroundImage}
-            resizeMode="contain"></ImageBackground>
+            resizeMode="contain"
+          />
 
           <VictoryChart
-            width={380}
+            width={400}
             containerComponent={<VictoryZoomContainer zoomDimension="x" />}
             domain={{x: domainX, y: domainY()}}
-            padding={{top: 20, bottom: 60, left: 25, right: 65}}
+            padding={{top: 20, bottom: 60, left: 20, right: 65}}
             domainPadding={{x: 10, y: 10}}
             scale={{x: 'time', y: 'log'}}
             height={340}>
@@ -100,7 +101,7 @@ const Chart = ({
                   fill: theme.titleColor,
                   maxWidth: 10,
                 },
-                grid: {stroke: theme.homeChartsGridColor},
+                grid: {stroke: theme.chartsGridColor},
               }}
               tickCount={6}
             />
@@ -112,7 +113,7 @@ const Chart = ({
                   fontSize: theme.responsiveFontSize * 0.725,
                   fill: theme.titleColor,
                 },
-                grid: {stroke: theme.homeChartsGridColor},
+                grid: {stroke: theme.chartsGridColor},
               }}
               tickCount={8}
               tickFormat={t => `$${formatNumber(t)}`}
@@ -121,13 +122,13 @@ const Chart = ({
 
             <VictoryCandlestick
               data={chartData}
-              candleRatio={6}
-              candleColors={{positive: '#3ADF00', negative: '#FF477C'}}
+              candleRatio={2.5}
+              candleColors={{positive: '#09C283', negative: '#E93334'}}
               style={{
                 data: {
                   strokeWidth: 0.75,
                   stroke: datum =>
-                    datum.close < datum.open ? '#3ADF00' : '#FF477C',
+                    datum.close < datum.open ? '#09C283' : '#E93334',
                 },
               }}
             />

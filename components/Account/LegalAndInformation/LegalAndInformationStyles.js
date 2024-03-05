@@ -1,13 +1,13 @@
 import {useContext} from 'react';
 import {StyleSheet} from 'react-native';
-import { AppThemeContext } from '../../../context/themeContext';
+import {AppThemeContext} from '../../../context/themeContext';
 
 const useLegalStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     backgroundColor: {
       flex: 1,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
     },
     page: {
       alignItems: 'center',
@@ -69,16 +69,7 @@ const useLegalStyles = () => {
       padding: 12,
       backgroundColor: theme.boxesBackgroundColor,
       alignItems: 'center',
-      shadowColor: '#000',
       borderRadius: 2,
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-      elevation: 3,
-
     },
     itemLogoContainer: {
       width: 30,
@@ -128,7 +119,7 @@ const useLegalStyles = () => {
     },
     paddingV: {
       paddingVertical: 24,
-    }
+    },
   });
   return styles;
 };

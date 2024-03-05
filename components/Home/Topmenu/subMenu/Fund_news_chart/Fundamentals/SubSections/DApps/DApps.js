@@ -2,6 +2,7 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useDappsStyles from './DAppsStyles';
 import Loader from '../../../../../../../Loader/Loader';
+import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
 const ProtocolItem = ({
   protocol,
@@ -52,9 +53,7 @@ const ProtocolItem = ({
           <Text style={styles.protocolName}>{protocol.name}</Text>
           <Text style={styles.tvl}>
             TVL:
-            {typeof protocol.tvl === 'string'
-              ? protocol.tvl
-              : `$${formatNumber(protocol.tvl)}`}
+            {`$${formatNumber(protocol.tvl)}`}
           </Text>
         </View>
         <Text
@@ -83,17 +82,21 @@ const ProtocolItem = ({
   );
 };
 
-const DApps = ({content, getSectionData, coin}) => {
+const DApps = ({getSectionData, coin}) => {
   const styles = useDappsStyles();
   const [activeProtocol, setActiveProtocol] = useState(null);
   const [mappedData, setMappedData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const generateImageUri = protocol => {
-    const formatted_protocol = protocol.toLowerCase().replace(' ', '');
+    const formatted_protocol = protocol.toLowerCase().replace(/\s/g, '');
     return `https://${coin}aialpha.s3.us-east-2.amazonaws.com/dapps/${formatted_protocol}.png`;
   };
 
   useEffect(() => {
+    setLoading(true);
+    setMappedData([]);
+
     const fetchDAppsData = async coin => {
       try {
         const response = await getSectionData(
@@ -116,14 +119,12 @@ const DApps = ({content, getSectionData, coin}) => {
         }
       } catch (error) {
         console.log('Error trying to get dApps data: ', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchDAppsData(coin);
   }, [coin]);
-
-  if (mappedData === undefined || mappedData === null) {
-    return null;
-  }
 
   const handleActiveProtocol = protocol => {
     if (activeProtocol && protocol.name === activeProtocol.name) {
@@ -134,7 +135,11 @@ const DApps = ({content, getSectionData, coin}) => {
   };
   return (
     <View>
-      {mappedData && mappedData !== undefined ? (
+      {loading ? (
+        <Loader />
+      ) : mappedData?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
         <>
           <View style={styles.mainImageContainer}>
             <Image
@@ -160,8 +165,6 @@ const DApps = ({content, getSectionData, coin}) => {
             ))}
           </View>
         </>
-      ) : (
-        <Loader />
       )}
     </View>
   );

@@ -22,12 +22,12 @@ const useAprStyles = () => {
       alignItems: 'center',
     },
     activeOptionContainer: {
-      width: '50%',
-      marginVertical: 15,
-      paddingVertical: 5,
-      paddingHorizontal: 10,
-      borderWidth: 2,
-      borderColor: theme.textColor,
+      width: '35%',
+      marginVertical: theme.boxesVerticalMargin,
+      paddingVertical: 6,
+      paddingHorizontal: 8,
+      borderWidth: 1,
+      borderColor: theme.secondaryGrayColor,
       alignItems: 'center',
       justifyContent: 'center',
       alignSelf: 'center',
@@ -35,7 +35,7 @@ const useAprStyles = () => {
     activeOptionValue: {
       color: theme.textColor,
       fontWeight: 'bold',
-      fontSize: theme.titleFontSize,
+      fontSize: theme.responsiveFontSize * 0.9,
       textAlign: 'center',
     },
     overlay: {

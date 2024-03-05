@@ -11,7 +11,11 @@ import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
 import useChartsStyles from './ChartsStyles';
 import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
-import {altGetService, getService} from '../../../../../../services/aiAlphaApi';
+import {getService} from '../../../../../../services/aiAlphaApi';
+import {AboutModalContext} from '../../../../../../context/AboutModalContext';
+import AboutModal from '../Fundamentals/AboutModal';
+import LinearGradient from 'react-native-linear-gradient';
+import {AppThemeContext} from '../../../../../../context/themeContext';
 
 const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
@@ -29,6 +33,9 @@ const CandlestickChart = ({route}) => {
   const {activeCoin} = useContext(TopMenuContext);
   const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
   const [activeAlertOption, setActiveAlertOption] = useState('this week');
+  const {aboutDescription, aboutVisible, handleAboutPress} =
+    useContext(AboutModalContext);
+  const {isDarkMode} = useContext(AppThemeContext);
 
   async function fetchChartData(oldLastPrice) {
     try {
@@ -123,47 +130,66 @@ const CandlestickChart = ({route}) => {
   };
 
   return subscribed ? (
-    <ScrollView
-      style={styles.scroll}
-      // keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={true}>
-      <CandlestickDetails
-        coin={symbol}
-        interval={selectedInterval}
-        lastPrice={lastPrice}
-        styles={styles}
-        isPriceUp={isPriceUp}
-      />
-      <View style={styles.chartsWrapper}>
-        <TimeframeSelector
-          selectedInterval={selectedInterval}
-          changeInterval={changeInterval}
+    <LinearGradient
+      useAngle={true}
+      angle={45}
+      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      style={styles.flex}>
+      <ScrollView
+        style={styles.scroll}
+        // keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={true}>
+        {aboutVisible && (
+          <AboutModal
+            description={aboutDescription}
+            onClose={handleAboutPress}
+            visible={aboutVisible}
+          />
+        )}
+        <CandlestickDetails
+          coin={symbol}
+          interval={selectedInterval}
+          lastPrice={lastPrice}
+          styles={styles}
+          isPriceUp={isPriceUp}
         />
-        <RsButton
-          activeButtons={activeButtons}
-          setActiveButtons={setActiveButtons}
-        />
-        <Chart
-          chartData={chartData}
-          supportLevels={supportLevels}
-          loading={loading}
-          activeButtons={activeButtons}
-          resistanceLevels={resistanceLevels}
-        />
-      </View>
+        <View style={styles.chartsWrapper}>
+          <TimeframeSelector
+            selectedInterval={selectedInterval}
+            changeInterval={changeInterval}
+          />
+          <RsButton
+            activeButtons={activeButtons}
+            setActiveButtons={setActiveButtons}
+          />
+          <Chart
+            chartData={chartData}
+            supportLevels={supportLevels}
+            loading={loading}
+            activeButtons={activeButtons}
+            resistanceLevels={resistanceLevels}
+          />
+        </View>
 
-      <AlertMenu
-        activeAlertOption={activeAlertOption}
-        setActiveButtons={setActiveAlertOption}
-      />
-      <AlertListComponent
-        timeframe={activeAlertOption}
-        botName={coinBot}
-        styles={styles}
-      />
-    </ScrollView>
+        <AlertMenu
+          activeAlertOption={activeAlertOption}
+          setActiveButtons={setActiveAlertOption}
+        />
+        <AlertListComponent
+          timeframe={activeAlertOption}
+          botName={coinBot}
+          styles={styles}
+        />
+      </ScrollView>
+    </LinearGradient>
   ) : (
-    <UpgradeOverlay isBlockingByCoin={true} screen={'Charts'} />
+    <LinearGradient
+      useAngle={true}
+      angle={45}
+      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      style={{flex: 1}}>
+      <UpgradeOverlay isBlockingByCoin={true} screen={'Charts'} />
+    </LinearGradient>
   );
 };
 

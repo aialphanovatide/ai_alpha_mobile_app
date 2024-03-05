@@ -9,6 +9,7 @@ import {
 import useChartStyles from '../CurrentMarketCap/ChartStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../../../Loader/Loader';
+import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 
 const TotalValueLocked = ({competitorsData}) => {
   const {theme} = useContext(AppThemeContext);
@@ -16,18 +17,11 @@ const TotalValueLocked = ({competitorsData}) => {
   const [cryptos, setCryptos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const extractSymbol = cryptoString => {
-    const string_without_spaces = cryptoString.replace(' ', '');
-    const name = string_without_spaces.split('(')[0];
-    const symbol_index_start = string_without_spaces.indexOf('(');
-    const symbol_index_end = string_without_spaces.indexOf(')');
-    const symbol =
-      symbol_index_start !== -1
-        ? string_without_spaces
-            .slice(symbol_index_start + 1, symbol_index_end)
-            .toUpperCase()
-        : name[0].toUpperCase() + name.slice(1);
-    return symbol;
+  const parseNumberString = numberString => {
+    const numberWithoutSign = numberString.replace(/\s|,/g, '');
+    const numericValue = parseFloat(numberWithoutSign);
+    const valueInBillions = numericValue / 1e9;
+    return [valueInBillions, numericValue];
   };
 
   const parseLargeNumberString = numberString => {
@@ -52,7 +46,6 @@ const TotalValueLocked = ({competitorsData}) => {
       item =>
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
-    console.log('Tvl value found: ', found);
     return found && found !== undefined ? found.competitor.value : null;
   };
 
@@ -62,15 +55,17 @@ const TotalValueLocked = ({competitorsData}) => {
     competitorsData.forEach(item => {
       if (
         mapped_tvl.find(
-          mapped => mapped.symbol === extractSymbol(item.competitor.token),
+          mapped =>
+            mapped.symbol ===
+            item.competitor.token.replace(/\s/g, '').toUpperCase(),
         )
       ) {
         return;
       } else {
         const current = {
           id: item.competitor.id,
-          symbol: extractSymbol(item.competitor.token),
-          tvl: parseLargeNumberString(
+          symbol: item.competitor.token.replace(/\s/g, '').toUpperCase(),
+          tvl: parseNumberString(
             findKeyInCompetitorItem(
               competitorsData,
               'tvl',
@@ -81,67 +76,68 @@ const TotalValueLocked = ({competitorsData}) => {
         mapped_tvl.push(current);
       }
     });
+    console.log('Mapped tvl: ', mapped_tvl);
     setCryptos(mapped_tvl);
     setLoading(false);
   }, [competitorsData]);
 
   const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
 
-  if (loading) {
-    <View style={styles.chartContainer}>
-      <Loader />
-    </View>;
-  }
-
-  if (!cryptos || cryptos?.length === 0) {
-    return null;
-  }
   return (
     <View style={styles.chartContainer}>
-      <VictoryChart
-        height={450}
-        padding={{left: 55, right: 50, bottom: 40, top: 40}}>
-        <VictoryAxis
-          style={{
-            axis: {stroke: theme.chartsColor},
-            tickLabels: {
-              fontSize: theme.responsiveFontSize * 0.825,
-              fill: theme.titleColor,
-            },
-          }}
-        />
-        <VictoryAxis
-          dependentAxis
-          style={{
-            axis: {stroke: theme.chartsColor},
-            tickLabels: {
-              fontSize: theme.responsiveFontSize * 0.825,
-              fill: theme.chartsColor,
-            },
-            grid: {stroke: theme.chartsColor},
-          }}
-          tickFormat={value => `$${value}b`}
-        />
-        <VictoryBar
-          style={{
-            data: {
-              fill: ({datum, index}) =>
-                tintColors[index > 3 ? index % 3 : index],
-            },
-          }}
-          alignment={'middle'}
-          domain={{x: [0, 5], y: [0, 20]}}
-          domainPadding={{x: 1, y: 1.5}}
-          data={cryptos.map((crypto, index) => ({
-            x: crypto.symbol,
-            y: crypto.tvl,
-            label: ` $${crypto.tvl}b `,
-            color: tintColors[index > 3 ? index % 3 : index],
-          }))}
-          labels={({datum}) => datum.label}
-          labelComponent={<VictoryTooltip renderInPortal={false} />}
-        />
-      </VictoryChart>
+      {loading ? (
+        <Loader />
+      ) : cryptos?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          <VictoryChart
+            height={450}
+            padding={{left: 55, right: 50, bottom: 40, top: 40}}>
+            <VictoryAxis
+              style={{
+                axis: {stroke: theme.chartsColor},
+                tickLabels: {
+                  fontSize: theme.responsiveFontSize * 0.825,
+                  fill: theme.titleColor,
+                },
+              }}
+            />
+            <VictoryAxis
+              dependentAxis
+              style={{
+                axis: {stroke: theme.chartsColor},
+                tickLabels: {
+                  fontSize: theme.responsiveFontSize * 0.825,
+                  fill: theme.secondaryTextColor,
+                },
+                grid: {stroke: theme.chartsColor},
+              }}
+              tickFormat={value => `$${value}b`}
+              tickCount={8}
+            />
+            <VictoryBar
+              style={{
+                data: {
+                  fill: ({datum, index}) =>
+                    tintColors[index > 3 ? index % 3 : index],
+                },
+              }}
+              alignment={'middle'}
+              domain={{x: [0, 5], y: [0, 20]}}
+              domainPadding={{x: 1, y: 1.5}}
+              data={cryptos.map((crypto, index) => ({
+                x: crypto.symbol,
+                y: crypto.tvl[0],
+                label: ` $${crypto.tvl[1]}b `,
+                color: tintColors[index > 3 ? index % 3 : index],
+              }))}
+              labels={({datum}) => datum.label}
+              labelComponent={<VictoryTooltip renderInPortal={false} />}
+            />
+          </VictoryChart>
+        </>
+      )}
     </View>
   );
 };

@@ -36,13 +36,15 @@ const useTimelineStyles = () => {
     },
     timelineContentContainer: {
       position: 'absolute',
-      top: 8, 
+      top: 8,
       right: 8,
       width: '77.5%',
       height: '100%',
       padding: 16,
       backgroundColor: theme.fundamentalsCompetitorsItemBg,
       borderRadius: 3,
+      borderWidth: 2,
+      borderColor: theme.orange,
     },
     dateText: {
       width: 40,
@@ -50,8 +52,9 @@ const useTimelineStyles = () => {
       paddingHorizontal: 4,
       fontWeight: 'bold',
       fontSize: theme.responsiveFontSize * 0.75,
-      color: theme.inactiveColor,
+      color: theme.fundamentalsMenuText,
       alignSelf: 'flex-start',
+      overflow: 'visible',
     },
     activeDate: {
       color: theme.orange,
@@ -73,12 +76,12 @@ const useTimelineStyles = () => {
     },
     infoTitle: {
       color: theme.orange,
-      fontWeight:'600',
+      fontWeight: '600',
       fontSize: theme.responsiveFontSize * 0.85,
       lineHeight: 16,
     },
     infoContent: {
-      color:theme.textColor,
+      color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.825,
       lineHeight: 16,
     },
@@ -102,7 +105,7 @@ const useTimelineStyles = () => {
     },
     arrowImage: {
       flex: 1,
-      tintColor: theme.secondaryTextColor,
+      tintColor: theme.secondaryGrayColor,
     },
     arrowTail: {
       position: 'absolute',

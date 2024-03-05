@@ -44,6 +44,7 @@
     "react-native-dotenv": "^3.4.9",
     "react-native-gesture-handler": "^2.14.0",
     "react-native-keys": "^0.7.10",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-pager-view": "^6.2.3",
     "react-native-paper": "^5.11.3",
     "react-native-pie": "^1.1.2",

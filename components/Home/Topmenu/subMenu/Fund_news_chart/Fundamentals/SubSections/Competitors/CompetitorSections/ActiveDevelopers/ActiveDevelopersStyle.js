@@ -21,6 +21,7 @@ const useActiveDevelopersStyles = () => {
       color: theme.inactiveTextColor,
       marginHorizontal: 10,
       fontSize: theme.responsiveFontSize * 0.875,
+      fontWeight: 'bold',
     },
     image: {
       flex: 1,
@@ -40,7 +41,8 @@ const useActiveDevelopersStyles = () => {
       flexDirection: 'row',
       padding: 10,
       marginVertical: 10,
-      backgroundColor: theme.fundamentalsCompetitorsItemBg,
+      borderBottomColor: theme.secondaryGrayColor,
+      borderBottomWidth: 1,
     },
     activeDevsValue: {
       position: 'absolute',

@@ -1,6 +1,8 @@
-import {Text, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useTokenomicsStyles from './TokenomicsStyles';
+import Loader from '../../../../../../../Loader/Loader';
+import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
 const TokenItem = ({item, styles}) => {
   return (
@@ -9,13 +11,28 @@ const TokenItem = ({item, styles}) => {
         <Text style={styles.tokenName}>{item.symbol}</Text>
         <HorizontalProgressBar
           value={item.circulatingSupply}
-          maxValue={item.totalSupply}
+          maxValue={item.maxSupply}
           styles={styles}
         />
       </View>
       <View style={styles.tokenRow}>
+        <Image
+          style={styles.inflationaryArrow}
+          resizeMode="contain"
+          source={
+            item.inflationary === null
+              ? require('../../../../../../../../assets/images/fundamentals/tokenomics/hybrid.png')
+              : item.inflationary === true
+              ? require('../../../../../../../../assets/images/fundamentals/tokenomics/inflationary.png')
+              : require('../../../../../../../../assets/images/fundamentals/tokenomics/deflationary.png')
+          }
+        />
         <Text style={styles.text}>
-          {item.inflationary ? '↗ Inflationary' : '↘ Deflationary'}
+          {item.inflationary === null
+            ? 'Hybrid'
+            : item.inflationary === true
+            ? 'Inflationary'
+            : 'Deflationary'}
         </Text>
       </View>
     </View>
@@ -64,50 +81,20 @@ const HorizontalProgressBar = ({maxValue, value, styles}) => {
   );
 };
 
-const Tokenomics = ({content, getSectionData, coin}) => {
+const Tokenomics = ({getSectionData, coin}) => {
   const styles = useTokenomicsStyles();
   const [cryptos, setCryptos] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!coin || coin === undefined) {
-    setCryptos(content);
-  }
-
-  const extractNameAndSymbol = cryptoString => {
-    const [name, symbol] = cryptoString.split(' ');
-    return {name, symbol: symbol.slice(1, -1)};
-  };
-
-  const parseNumberString = inputString => {
-    const regex = /^([\d,]+)\s*(million|billion)?\s*(\w+)?$/i;
-
-    const match = inputString.match(regex);
-
-    if (!match) return null;
-
-    const [, numberString, multiplier, currency] = match;
-
-    const number = Number(numberString.replace(/,/g, ''));
-
-    let multiplierValue = 1;
-    if (multiplier) {
-      switch (multiplier.toLowerCase()) {
-        case 'million':
-          multiplierValue = 1e6;
-          break;
-        case 'billion':
-          multiplierValue = 1e9;
-          break;
-        default:
-          break;
-      }
-    }
-
-    const parsedNumber = number * multiplierValue;
-
-    return {value: parsedNumber, currency};
+  const parseNumberFromString = str => {
+    const cleanedStr = str.replace(/\s|,/g, '');
+    const numberValue = Number(cleanedStr);
+    return numberValue;
   };
 
   useEffect(() => {
+    setLoading(true);
+    setCryptos([]);
     const fetchTokenomicsData = async () => {
       try {
         const response = await getSectionData(
@@ -120,51 +107,58 @@ const Tokenomics = ({content, getSectionData, coin}) => {
           const parsed_cryptos = response.message.tokenomics_data.map(
             crypto => {
               return {
-                symbol: extractNameAndSymbol(crypto.tokenomics.token).symbol,
-                name: extractNameAndSymbol(crypto.tokenomics.token).name,
+                symbol: crypto.tokenomics.token.replace(' ', '').toUpperCase(),
                 circulatingSupply: Number(
-                  crypto.tokenomics.circulating_supply
-                    .split(' ')[0]
-                    .replace(/,/g, ''),
+                  crypto.tokenomics.circulating_supply.replace(/,/g, ''),
                 ),
                 totalSupply:
                   crypto.tokenomics.total_supply.replace(' ', '') === '∞'
                     ? Infinity
-                    : parseNumberString(crypto.tokenomics.total_supply).value,
+                    : parseNumberFromString(crypto.tokenomics.total_supply),
                 maxSupply:
                   crypto.tokenomics.max_supply.replace(' ', '') === '∞'
                     ? Infinity
-                    : parseNumberString(crypto.tokenomics.max_supply).value,
-                inflationary: crypto.tokenomics.supply_model === 'Inflationary',
+                    : parseNumberFromString(crypto.tokenomics.max_supply),
+                inflationary:
+                  crypto.tokenomics.supply_model === 'Inflationary'
+                    ? true
+                    : crypto.tokenomics.supply_model === 'Deflationary'
+                    ? false
+                    : null,
               };
             },
           );
-          // console.log('Tokenomics data:', parsed_cryptos);
           setCryptos(parsed_cryptos);
         }
       } catch (error) {
         console.log('Error trying to get tokenomics data: ', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchTokenomicsData();
   }, [coin]);
 
-  if (cryptos?.length === 0) {
-    return null;
-  }
-
   return (
     <View style={styles.container}>
-      <View style={styles.numberTitles}>
-        <Text style={styles.alignLeft}>Circulating supply</Text>
-        <Text style={styles.alignRight}>Total Supply</Text>
-      </View>
-      <View style={styles.tokenItemsContainer}>
-        {cryptos &&
-          cryptos.map((crypto, index) => (
-            <TokenItem key={index} item={crypto} styles={styles} />
-          ))}
-      </View>
+      {loading ? (
+        <Loader />
+      ) : cryptos?.length === 0 ? (
+        <NoContentMessage hasSectionName={false} />
+      ) : (
+        <>
+          <View style={styles.numberTitles}>
+            <Text style={styles.alignLeft}>Circulating supply</Text>
+            <Text style={styles.alignRight}>Total Supply</Text>
+          </View>
+          <View style={styles.tokenItemsContainer}>
+            {cryptos &&
+              cryptos.map((crypto, index) => (
+                <TokenItem key={index} item={crypto} styles={styles} />
+              ))}
+          </View>
+        </>
+      )}
     </View>
   );
 };

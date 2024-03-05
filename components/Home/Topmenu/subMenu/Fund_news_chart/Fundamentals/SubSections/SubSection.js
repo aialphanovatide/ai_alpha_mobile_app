@@ -2,6 +2,7 @@ import {Image, Text, View} from 'react-native';
 import React from 'react';
 import useFundamentalsStyles from '../FundamentalsStyles';
 import {AboutIcon} from '../AboutIcon';
+import NoContentMessage from '../NoContentMessage/NoContentMessage';
 
 const SubSection = ({
   subtitle,
@@ -11,9 +12,6 @@ const SubSection = ({
   description,
 }) => {
   const styles = useFundamentalsStyles();
-  if (content === null) {
-    return <></>;
-  }
   return (
     <View style={styles.subSection}>
       <View style={styles.row}>

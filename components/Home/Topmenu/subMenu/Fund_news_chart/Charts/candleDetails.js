@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text} from 'react-native';
+import {AboutIcon} from '../Fundamentals/AboutIcon';
+import {home_static_data} from '../../../../homeStaticData';
+import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 
 const CandlestickDetails = ({coin, lastPrice, interval, styles, isPriceUp}) => {
+  const {handleAboutPress} = useContext(AboutModalContext);
   const formatNumber = price => {
     const number = parseFloat(price);
     if (isNaN(number)) {
@@ -26,14 +30,18 @@ const CandlestickDetails = ({coin, lastPrice, interval, styles, isPriceUp}) => {
       <Text
         style={[
           styles.lastPrice,
-           isPriceUp !== null
-              ? isPriceUp
-                ? styles.priceUpColor
-                : styles.priceDownColor
-              : {},
+          isPriceUp !== null
+            ? isPriceUp
+              ? styles.priceUpColor
+              : styles.priceDownColor
+            : {},
         ]}>
         ${lastPrice ? formatNumber(lastPrice) : ' ...'}
       </Text>
+      <AboutIcon
+        description={home_static_data.charts.sectionDescription}
+        handleAboutPress={handleAboutPress}
+      />
     </View>
   );
 };

@@ -8,7 +8,7 @@ const useHomeStyles = () => {
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
     },
     marginWrapper: {
       flex: 1,
@@ -20,6 +20,9 @@ const useHomeStyles = () => {
       display: 'flex',
       flexDirection: 'row',
       backgroundColor: theme.subMenuBgColor,
+    },
+    paddingH: {
+      paddingHorizontal: 10,
     },
     menuItem: {
       width: '33.33%',
@@ -42,7 +45,10 @@ const useHomeStyles = () => {
     },
     activeText: {
       fontWeight: 'bold',
-      color: theme.filterTextColor,
+      color: theme.subMenuTextColor,
+    },
+    flex: {
+      flex: 1,
     },
   });
   return styles;

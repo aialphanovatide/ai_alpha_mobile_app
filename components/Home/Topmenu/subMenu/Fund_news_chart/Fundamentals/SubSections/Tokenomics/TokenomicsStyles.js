@@ -37,7 +37,7 @@ const useTokenomicsStyles = () => {
       right: 0,
       top: 0,
       textAlign: 'right',
-      color: theme.inactiveColor,
+      color: theme.secondaryTextColor,
       fontSize: theme.responsiveFontSize * 0.8,
     },
     infinityBar: {
@@ -58,6 +58,8 @@ const useTokenomicsStyles = () => {
       paddingVertical: 5,
       marginVertical: theme.boxesVerticalMargin * 0.6,
       backgroundColor: theme.boxesBackgroundColor,
+      borderTopColor: theme.secondaryGrayColor,
+      borderTopWidth: 1,
     },
     tokenRow: {
       flexDirection: 'row',
@@ -70,7 +72,7 @@ const useTokenomicsStyles = () => {
     },
     alignRight: {
       right: 10,
-      color: theme.inactiveColor,
+      color: theme.secondaryTextColor,
       fontSize: theme.responsiveFontSize * 0.8,
     },
     alignLeft: {
@@ -97,6 +99,11 @@ const useTokenomicsStyles = () => {
       position: 'relative',
       marginBottom: 15,
       flexDirection: 'row',
+    },
+    inflationaryArrow: {
+      width: theme.responsiveFontSize * 0.85,
+      height: theme.responsiveFontSize * 0.85,
+      tintColor: theme.textColor,
     },
   });
   return styles;

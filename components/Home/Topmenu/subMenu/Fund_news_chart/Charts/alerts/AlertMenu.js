@@ -1,12 +1,22 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import useChartsStyles from '../ChartsStyles';
+import {AboutIcon} from '../../Fundamentals/AboutIcon';
+import {AboutModalContext} from '../../../../../../../context/AboutModalContext';
+import {home_static_data} from '../../../../../homeStaticData';
 
 const AlertMenu = ({activeAlertOption, setActiveButtons}) => {
+  const {handleAboutPress} = useContext(AboutModalContext);
   const styles = useChartsStyles();
   return (
     <View style={styles.alertMenuContainer}>
-      <Text style={styles.alertMenuTitle}>Alerts</Text>
+      <View style={styles.titleRow}>
+        <Text style={styles.alertMenuTitle}>Alerts</Text>
+        <AboutIcon
+          handleAboutPress={handleAboutPress}
+          description={home_static_data.alerts.sectionDescription}
+        />
+      </View>
       <View style={styles.alertMenuButtonContainer}>
         {['today', 'this week', 'last week'].map(option => (
           <TouchableOpacity
@@ -14,7 +24,9 @@ const AlertMenu = ({activeAlertOption, setActiveButtons}) => {
             onPress={() => setActiveButtons(option)}
             style={[
               styles.alertMenuButton,
-              activeAlertOption === option ? styles.alertMenuActiveButton : null,
+              activeAlertOption === option
+                ? styles.alertMenuActiveButton
+                : null,
             ]}>
             <Text
               style={

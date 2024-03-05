@@ -79,12 +79,18 @@ const useHomeAnalysisStyles = () => {
       marginVertical: theme.titlesVerticalMargin * 0.8,
       marginHorizontal: 8,
       lineHeight: 22,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     },
     backButtonWrapper: {
       marginHorizontal: 4,
       marginVertical: 8,
-    }
+    },
+    aboutIconContainer: {
+      flex: 1,
+      position: 'relative',
+      marginTop: '5%',
+    },
+
   });
   return styles;
 };

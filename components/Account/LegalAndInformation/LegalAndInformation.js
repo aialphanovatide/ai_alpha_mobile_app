@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   Text,
@@ -10,13 +10,10 @@ import {
 import {useNavigation} from '@react-navigation/core';
 import useLegalStyles from './LegalAndInformationStyles';
 import BackButton from '../../Analysis/BackButton/BackButton';
+import {AppThemeContext} from '../../../context/themeContext';
+import LinearGradient from 'react-native-linear-gradient';
 
-const LegalItem = ({
-  styles,
-  option,
-  handleItemTouch,
-  itemComponent = null,
-}) => {
+const LegalItem = ({styles, option, handleItemTouch, itemComponent = null}) => {
   return (
     <TouchableOpacity onPress={() => handleItemTouch(option)}>
       <View style={styles.itemContainer}>
@@ -47,7 +44,7 @@ const LegalItem = ({
 const LegalAndInformation = ({route}) => {
   const styles = useLegalStyles();
   const navigation = useNavigation();
-
+  const {isDarkMode} = useContext(AppThemeContext);
 
   const options = [
     {
@@ -86,28 +83,33 @@ const LegalAndInformation = ({route}) => {
     }
   };
 
-
   return (
-    <SafeAreaView style={styles.backgroundColor}>
-      <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
-      <BackButton />
-      <Text style={styles.title}>Legal and Information</Text>
-        <View style={styles.container}>
-          <View style={styles.optionsContainer}>
-            {options &&
-              options.map((option, index) => (
-                <LegalItem
-                  key={index}
-                  option={option}
-                  styles={styles}
-                  handleItemTouch={handleItemTouch}
-                  itemComponent={option.component && option.component}
-                />
-              ))}
+    <LinearGradient
+      useAngle={true}
+      angle={45}
+      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      style={{flex: 1}}>
+      <SafeAreaView style={styles.backgroundColor}>
+        <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
+          <BackButton />
+          <Text style={styles.title}>Legal and Information</Text>
+          <View style={styles.container}>
+            <View style={styles.optionsContainer}>
+              {options &&
+                options.map((option, index) => (
+                  <LegalItem
+                    key={index}
+                    option={option}
+                    styles={styles}
+                    handleItemTouch={handleItemTouch}
+                    itemComponent={option.component && option.component}
+                  />
+                ))}
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 

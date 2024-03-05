@@ -10,10 +10,10 @@ const useFundamentalsStyles = () => {
       paddingHorizontal: 10,
       paddingTop: 30,
       marginBottom: 80,
-      backgroundColor: theme.mainBackgroundColor,
     },
     title: {
       marginVertical: theme.titlesVerticalMargin * 0.5,
+      marginHorizontal: 12,
       marginTop: 0,
       fontWeight: 'bold',
       color: theme.titleColor,
@@ -21,7 +21,7 @@ const useFundamentalsStyles = () => {
     },
     subTitle: {
       margin: theme.boxesVerticalMargin,
-      marginHorizontal: theme.boxesVerticalMargin * 2,
+      marginHorizontal: 12,
       color: theme.titleColor,
       fontWeight: 'bold',
       fontSize: theme.responsiveFontSize,
@@ -29,7 +29,7 @@ const useFundamentalsStyles = () => {
     subSectionContent: {
       flex: 1,
       marginVertical: theme.boxesVerticalMargin,
-      backgroundColor: theme.secondaryBgColor,
+      backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
     backgroundColor: {
@@ -78,6 +78,7 @@ const useFundamentalsStyles = () => {
       ...StyleSheet.absoluteFillObject,
       position: 'relative',
       alignItems: 'flex-end',
+      backgroundColor: '#00000060',
     },
     modalContent: {
       position: 'absolute',

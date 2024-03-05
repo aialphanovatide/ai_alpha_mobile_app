@@ -2,16 +2,21 @@ import * as React from 'react';
 import {List} from 'react-native-paper';
 import AnalysisItem from './analysisItem/analysisItem';
 import useHomeAnalysisStyles from './analysisStyles';
-import {Image, View, Text} from 'react-native';
+import {Image, View, Text, StyleSheet} from 'react-native';
 // import {analysis_mock} from './analysis_mock';
 import {getService} from '../../../services/aiAlphaApi';
 import {useNavigation} from '@react-navigation/core';
-const Analysis = () => {
+import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import {home_static_data} from '../homeStaticData';
+const Analysis = ({handleAboutPress}) => {
   const styles = useHomeAnalysisStyles();
   const [analysisData, setAnalysisData] = React.useState([]);
   const [expanded, setExpanded] = React.useState(false);
   const handlePress = () => setExpanded(!expanded);
   const navigation = useNavigation();
+  const aboutIconStyles = {
+    top: 12.5,
+  };
 
   React.useEffect(() => {
     const getAnalysisData = async () => {
@@ -29,7 +34,7 @@ const Analysis = () => {
               image: extractFirstTitleAndImage(item.analysis).imageSrc,
             };
           });
-          setAnalysisData(parsed_data);
+          setAnalysisData(parsed_data.slice(0, 10));
         } else {
           setAnalysisData([]);
         }
@@ -105,6 +110,11 @@ const Analysis = () => {
   if (analysisData?.length === 0) {
     return (
       <List.Section title="Analysis" titleStyle={styles.mainTitle}>
+        <AboutIcon
+          handleAboutPress={handleAboutPress}
+          additionalStyles={aboutIconStyles}
+          description={home_static_data.analysis.sectionDescription}
+        />
         <Text style={styles.emptyMessage}>There aren't analysis to show.</Text>
       </List.Section>
     );
@@ -112,7 +122,15 @@ const Analysis = () => {
   const first_analysis_item = analysisData[0];
 
   return (
-    <List.Section title="Analysis" titleStyle={styles.mainTitle}>
+    <List.Section
+      title="Analysis"
+      titleStyle={styles.mainTitle}
+      style={styles.mainSection}>
+      <AboutIcon
+        handleAboutPress={handleAboutPress}
+        description={home_static_data.analysis.sectionDescription}
+        additionalStyles={aboutIconStyles}
+      />
       <List.Accordion
         style={styles.item}
         titleStyle={styles.titleStyles}

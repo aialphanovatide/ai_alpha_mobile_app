@@ -8,7 +8,7 @@ const useEulaStyles = () => {
     mainView: {
       width: theme.width,
       height: theme.height,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
     },
     scrollview: {
       flex: 1,
@@ -21,7 +21,7 @@ const useEulaStyles = () => {
       marginVertical: 10,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
     },
     page: {
       alignItems: 'center',
@@ -136,12 +136,15 @@ const useEulaStyles = () => {
     boldSection: {
       fontWeight: 'bold',
     },
-    gridStyle:{
+    gridStyle: {
       width: 300,
       height: 500,
       resizeMode: 'contain',
-      marginTop:10,
-    }
+      marginTop: 10,
+    },
+    paddingV: {
+      paddingVertical: 24,
+    },
   });
   return styles;
 };

@@ -23,16 +23,18 @@ const useTopStoriesStyles = () => {
     imageStyle: {
       width: 50,
       height: 50,
-      borderRadius: 5,
+      borderRadius: 2,
       marginLeft: 10,
     },
     storyItem: {
       flex: 1,
       width: theme.width,
+      paddingLeft: 8,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       borderBottomColor: theme.boxesBorderColor,
       borderBottomWidth: 1,
+      borderRadius: 3,
     },
     description: {
       color: theme.textColor,

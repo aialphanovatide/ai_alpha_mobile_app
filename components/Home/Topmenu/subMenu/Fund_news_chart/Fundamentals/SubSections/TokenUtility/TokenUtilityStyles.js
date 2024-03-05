@@ -27,6 +27,9 @@ const useTokenUtilityStyles = () => {
       width: '100%',
       flexDirection: 'row',
       backgroundColor: theme.fundamentalsCompetitorsItemBg,
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderColor: theme.secondaryGrayColor,
     },
     dataImage: {
       alignSelf: 'flex-start',

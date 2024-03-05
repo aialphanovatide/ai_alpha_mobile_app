@@ -8,8 +8,8 @@ const useCustomButtonStyles = () => {
     container: {
       paddingVertical: 15,
       paddingHorizontal: 10,
-      marginVertical: 5,
-      borderRadius: 5,
+      marginVertical: 4,
+      borderRadius: 4,
       alignItems: 'center',
     },
     pressed: {
@@ -55,13 +55,19 @@ const useCustomButtonStyles = () => {
     text: {
       fontWeight: 'bold',
       fontSize: 15,
-      color: theme.textColor
+      color: theme.signUpButtonText,
     },
     text_PRIMARY: {
-      color: theme.textColor,
+      color: theme.signUpButtonText,
     },
     text_TERTIARY: {
       color: theme.orange,
+    },
+    text_GOOGLE: {
+      color: theme.textColor,
+    },
+    text_APPLE: {
+      color: theme.textColor,
     },
   });
   return styles;

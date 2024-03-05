@@ -9,6 +9,7 @@ import {
 import useChartStyles from './ChartStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../../../Loader/Loader';
+import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 
 const CurrentMarketCap = ({competitorsData}) => {
   const {theme} = useContext(AppThemeContext);
@@ -26,65 +27,14 @@ const CurrentMarketCap = ({competitorsData}) => {
   };
 
   const parseNumberString = numberString => {
-    const numberWithoutSign = numberString.replace(/\$|,/g, '');
+    const numberWithoutSign = numberString.replace(/\s|,/g, '');
     const numericValue = parseFloat(numberWithoutSign);
     const valueInBillions = numericValue / 1e9;
     return [valueInBillions, numericValue];
   };
 
-  const extractSymbol = cryptoString => {
-    const string_without_spaces = cryptoString.replace(' ', '');
-    const name = string_without_spaces.split('(')[0];
-    const symbol_index_start = string_without_spaces.indexOf('(');
-    const symbol_index_end = string_without_spaces.indexOf(')');
-    const symbol =
-      symbol_index_start !== -1
-        ? string_without_spaces
-            .slice(symbol_index_start + 1, symbol_index_end)
-            .toUpperCase()
-        : name[0].toUpperCase() + name.slice(1);
-    return symbol;
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    const mapped_competitors_data = [];
-    competitorsData.forEach(item => {
-      if (
-        mapped_competitors_data.find(
-          mapped => mapped.symbol === extractSymbol(item.competitor.token),
-        )
-      ) {
-        return;
-      } else {
-        const current = {
-          id: item.competitor.id,
-          symbol: extractSymbol(item.competitor.token),
-          marketCap: parseNumberString(
-            findKeyInCompetitorItem(
-              competitorsData,
-              'current market cap',
-              item.competitor.token,
-            ),
-          ),
-        };
-        mapped_competitors_data.push(current);
-      }
-    });
-    setCryptos(mapped_competitors_data);
-    setLoading(false);
-  }, [competitorsData]);
-
-  if (loading || cryptos?.length === 0) {
+  const generateMarketCapChart = (cryptos, tintColors) => {
     return (
-      <View style={styles.chartContainer}>
-        <Loader />
-      </View>
-    );
-  }
-
-  return (
-    <View style={styles.chartContainer}>
       <VictoryChart
         height={450}
         padding={{left: 65, right: 40, top: 40, bottom: 40}}>
@@ -93,7 +43,7 @@ const CurrentMarketCap = ({competitorsData}) => {
             axis: {stroke: theme.chartsColor},
             tickLabels: {
               fontSize: theme.responsiveFontSize * 0.825,
-              fill: theme.titleColor,
+              fill: theme.textColor,
             },
           }}
         />
@@ -103,11 +53,12 @@ const CurrentMarketCap = ({competitorsData}) => {
             axis: {stroke: theme.chartsColor},
             tickLabels: {
               fontSize: theme.responsiveFontSize * 0.825,
-              fill: theme.chartsColor,
+              fill: theme.secondaryTextColor,
             },
             grid: {stroke: theme.chartsColor},
           }}
           tickFormat={value => `$${value}b`}
+          tickCount={10}
         />
         <VictoryBar
           style={{
@@ -129,6 +80,50 @@ const CurrentMarketCap = ({competitorsData}) => {
           labelComponent={<VictoryTooltip renderInPortal={false} />}
         />
       </VictoryChart>
+    );
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    const mapped_competitors_data = [];
+    competitorsData.forEach(item => {
+      if (
+        mapped_competitors_data.find(
+          mapped =>
+            mapped.symbol ===
+            item.competitor.token.replace(' ', '').toUpperCase(),
+        )
+      ) {
+        return;
+      } else {
+        const current = {
+          id: item.competitor.id,
+          symbol: item.competitor.token.replace(' ', '').toUpperCase(),
+          marketCap: parseNumberString(
+            findKeyInCompetitorItem(
+              competitorsData,
+              'current market cap',
+              item.competitor.token,
+            ),
+          ),
+        };
+        mapped_competitors_data.push(current);
+      }
+    });
+    console.log('Mapped competitors: ', mapped_competitors_data);
+    setCryptos(mapped_competitors_data);
+    setLoading(false);
+  }, [competitorsData]);
+
+  return (
+    <View style={styles.chartContainer}>
+      {loading ? (
+        <Loader />
+      ) : cryptos?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        generateMarketCapChart(cryptos, tintColors)
+      )}
     </View>
   );
 };

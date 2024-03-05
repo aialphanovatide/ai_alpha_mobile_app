@@ -13,7 +13,7 @@ const TVEconomicCalendar = ({width, height}) => {
             <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
         </head>
     <body>
-        <div class="tradingview-widget-container__widget_economic_calendar" style={{"width": 400, "height": 600}}></div>
+        <div class="tradingview-widget-container__widget_economic_calendar" style={{"width": 300, "height": 600}}></div>
         <script type="text/javascript">
             const script = document.createElement('script');
             script.type = 'text/javascript';

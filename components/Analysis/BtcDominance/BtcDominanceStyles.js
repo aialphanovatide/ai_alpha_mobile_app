@@ -7,8 +7,9 @@ const useBtcDominanceStyles = () => {
   const styles = StyleSheet.create({
     background: {
       flex: 1,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
       padding: 10,
+      paddingTop: 36,
     },
     container: {
       width: '100%',
@@ -17,7 +18,6 @@ const useBtcDominanceStyles = () => {
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'top',
-      backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
     chart: {
@@ -57,6 +57,7 @@ const useBtcDominanceStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
       textAlign: 'left',
+      lineHeight: 20,
     },
   });
   return styles;

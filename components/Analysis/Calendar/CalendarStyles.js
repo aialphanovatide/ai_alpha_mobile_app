@@ -7,8 +7,8 @@ const useCalendarStyles = () => {
     container: {
       flex: 1,
       width: theme.width,
-      padding: 20,
-      backgroundColor: theme.mainBackgroundColor,
+      paddingTop: 36,
+      backgroundColor: 'transparent',
     },
     flex: {
       flex: 1,
@@ -29,11 +29,11 @@ const useCalendarStyles = () => {
       width: '100%',
       marginVertical: theme.boxesVerticalMargin,
       alignItems: 'flex-start',
-      backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
     subTitle: {
-      marginVertical: theme.boxesVerticalMargin,
+      marginVertical: theme.titlesVerticalMargin,
+      marginBottom: theme.boxesVerticalMargin,
       paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize,
@@ -45,11 +45,20 @@ const useCalendarStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
       textAlign: 'left',
+      lineHeight: 20,
     },
     macroeconomicsContainer: {
-      minWidth: 375,
+      flex: 1,
+      maxWidth: '90%',
+      marginBottom: 50,
+      alignItems: 'center',
+      backgroundColor: theme.boxesBackgroundColor,
+    },
+    paddingH: {
+      width: 350,
       alignItems: 'center',
       justifyContent: 'center',
+      marginLeft: '12.5%',
     },
   });
   return styles;

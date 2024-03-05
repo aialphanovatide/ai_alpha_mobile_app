@@ -2,11 +2,16 @@ import {SafeAreaView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Timeline from '../Hacks/Timeline/Timeline';
 import Loader from '../../../../../../../Loader/Loader';
+import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
 const Upgrades = ({getSectionData, coin}) => {
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
+    setEvents([]);
+
     const fetchUpgradesData = async () => {
       try {
         const response = await getSectionData(
@@ -30,18 +35,20 @@ const Upgrades = ({getSectionData, coin}) => {
         }
       } catch (error) {
         console.log('Error trying to get upgrades data: ', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUpgradesData();
   }, [coin]);
 
-  if (!events || events.length === 0) {
-    return null;
-  }
-
   return (
     <SafeAreaView style={{flex: 1}}>
-      {events && events !== undefined ? (
+      {loading ? (
+        <Loader />
+      ) : events?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
         <Timeline
           events={events}
           textPoints={[
@@ -55,8 +62,6 @@ const Upgrades = ({getSectionData, coin}) => {
             },
           ]}
         />
-      ) : (
-        <Loader />
       )}
     </SafeAreaView>
   );

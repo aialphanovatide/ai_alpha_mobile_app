@@ -16,10 +16,12 @@ import {CategoriesContextProvider} from './context/categoriesContext';
 import {AppThemeProvider} from './context/themeContext';
 import SplashScreen from 'react-native-splash-screen';
 import {RevenueCatProvider} from './context/RevenueCatContext';
+import {AboutModalProvider} from './context/AboutModalContext';
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
   const [barScheme, setBarScheme] = useState('default');
+
   useEffect(() => {
     if (Platform.OS === 'android') {
       SplashScreen.hide();
@@ -45,13 +47,15 @@ const App = () => {
                   styles.container,
                   {
                     backgroundColor:
-                      colorScheme === 'dark' ? '#10101E' : '#E7EAF1',
+                      colorScheme === 'dark' ? '#0A0A0A' : '#EDEDED',
                   },
                 ]}>
                 <StatusBar barStyle={barScheme} />
                 <CategoriesContextProvider>
                   <TopMenuContextProvider>
-                    <Navigation />
+                    <AboutModalProvider>
+                      <Navigation />
+                    </AboutModalProvider>
                   </TopMenuContextProvider>
                 </CategoriesContextProvider>
               </SafeAreaView>

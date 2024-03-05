@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 import {StyleSheet} from 'react-native';
-import { AppThemeContext } from '../../../../context/themeContext';
+import {AppThemeContext} from '../../../../context/themeContext';
 
 const useTermsAndConditionsStyles = () => {
   const {theme} = useContext(AppThemeContext);
@@ -13,6 +13,7 @@ const useTermsAndConditionsStyles = () => {
     scrollview: {
       flex: 1,
       backgroundColor: 'transparent',
+      paddingVertical: 24,
     },
     container: {
       flex: 1,
@@ -135,12 +136,12 @@ const useTermsAndConditionsStyles = () => {
     boldSection: {
       fontWeight: 'bold',
     },
-    gridStyle:{
+    gridStyle: {
       width: 300,
       height: 500,
       resizeMode: 'contain',
-      marginTop:10,
-    }
+      marginTop: 10,
+    },
   });
   return styles;
 };

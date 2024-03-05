@@ -11,7 +11,10 @@ const usePackageSubscriptionStyles = () => {
       padding: 10,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.subscriptions.subscriptionsBgColor,
+      backgroundColor: 'transparent',
+    },
+    flex: {
+      flex: 1,
     },
     logoContainer: {
       width: 150,
@@ -66,11 +69,15 @@ const usePackageSubscriptionStyles = () => {
     textRow: {
       flexDirection: 'row',
     },
+    foundersText: {
+      color: theme.subscriptions.foundersText,
+    },
     purchaseButton: {
       width: '35%',
       marginTop: theme.boxesVerticalMargin * 2.5,
       padding: 4,
-      borderRadius: 4,
+      paddingVertical: 12,
+      borderRadius: 3,
       overflow: 'hidden',
       backgroundColor: theme.subscriptions.purchaseButtonBgColor,
       justifyContent: 'center',
@@ -87,15 +94,6 @@ const usePackageSubscriptionStyles = () => {
       marginVertical: 4,
       padding: 10,
       backgroundColor: theme.subscriptions.boxesBgColor,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-      elevation: 2,
-      borderRadius: 4,
     },
     selectedItem: {
       borderWidth: 2,

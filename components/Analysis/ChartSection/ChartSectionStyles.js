@@ -9,8 +9,9 @@ const useChartSectionStyles = () => {
       flex: 1,
       width: theme.width,
       height: theme.height,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
       padding: 10,
+      paddingTop: 36,
     },
     title: {
       marginTop: theme.titlesVerticalMargin,
@@ -32,6 +33,7 @@ const useChartSectionStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
       textAlign: 'left',
+      lineHeight: 20,
     },
   });
   return styles;

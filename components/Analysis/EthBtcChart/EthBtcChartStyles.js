@@ -7,9 +7,10 @@ const useEthBtcStyles = () => {
   const styles = StyleSheet.create({
     background: {
       flex: 1,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
       width: theme.width,
       padding: 10,
+      paddingTop: 36
     },
     container: {
       width: '100%',
@@ -17,7 +18,6 @@ const useEthBtcStyles = () => {
       marginVertical: theme.boxesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'top',
-      backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
     chart: {
@@ -58,6 +58,7 @@ const useEthBtcStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
       textAlign: 'left',
+      lineHeight: 20,
     },
   });
   return styles;

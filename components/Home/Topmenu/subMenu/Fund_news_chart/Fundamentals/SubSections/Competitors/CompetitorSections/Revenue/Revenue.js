@@ -3,6 +3,8 @@ import React, {useContext, useEffect, useState} from 'react';
 import useRevenueStyles from './RevenueStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import {revenueImagesUrls} from './revenueImagesUrl';
+import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
+import Loader from '../../../../../../../../../Loader/Loader';
 
 const GraphItem = ({value, scale, color, imageNumber, styles}) => {
   const imagePath = revenueImagesUrls[color][imageNumber - 1];
@@ -28,9 +30,7 @@ const RevenueGraphReferences = ({cryptos, styles}) => {
         <View
           key={index}
           style={[styles.selectorItem, {backgroundColor: item.color}]}>
-          <Text style={[styles.itemText, {color: '#F9FAFC'}]}>
-            {item.crypto}
-          </Text>
+          <Text style={[styles.itemText, {color: '#FFFFFF'}]}>{item.name}</Text>
         </View>
       ))}
     </View>
@@ -43,6 +43,45 @@ const Revenue = ({competitorsData}) => {
   const {theme} = useContext(AppThemeContext);
   const styles = useRevenueStyles();
   const colors = ['blue', 'cyan', 'purple', 'magenta'];
+  const tintColors = ['#20CBDD', '#895EF6', '#FF3BC3', '#C539B4'];
+  const [loading, setLoading] = useState(true);
+
+  const coins_names = [
+    {symbol: 'ETH', name: 'Ethereum'},
+    {symbol: 'BTC', name: 'Bitcoin'},
+    {symbol: 'ADA', name: 'Cardano'},
+    {symbol: 'SOL', name: 'Solana'},
+    {symbol: 'AVAX', name: 'Avalanche'},
+    {symbol: 'QNT', name: 'Quantum'},
+    {symbol: 'DOT', name: 'Polkadot'},
+    {symbol: 'ATOM', name: 'Cosmos'},
+    {symbol: 'LINK', name: 'ChainLink'},
+    {symbol: 'BAND', name: 'Band Protocol'},
+    {symbol: 'API3', name: 'API3'},
+    {symbol: 'RPL', name: 'Rocket Pool'},
+    {symbol: 'LDO', name: 'Lido Finance'},
+    {symbol: 'FXS', name: 'Frax Finance'},
+    {symbol: 'OP', name: 'Optimism'},
+    {symbol: 'MATIC', name: 'Polygon'},
+    {symbol: 'ARB', name: 'Arbitrum'},
+    {symbol: 'XLM', name: 'Stellar'},
+    {symbol: 'XRP', name: 'Ripple'},
+    {symbol: 'ALGO', name: 'Algorand'},
+    {symbol: '1INCH', name: '1Inch Network'},
+    {symbol: 'AAVE', name: 'Aave'},
+    {symbol: 'GMX', name: 'GMX'},
+    {symbol: 'PENDLE', name: 'Pendle'},
+    {symbol: 'CAKE', name: 'PanCake Swap'},
+    {symbol: 'SUSHI', name: 'Sushi Swap'},
+    {symbol: 'UNI', name: 'UNISWAP'},
+    {symbol: 'VELO', name: 'Velo'},
+    {symbol: 'DYDX', name: 'dYdX'},
+  ];
+
+  const findCoinNameBySymbol = symbol => {
+    const found = coins_names.find(coin => coin.symbol === symbol);
+    return found !== undefined ? found.name : null;
+  };
 
   const getRequiredValues = cryptos => {
     const sortedValues = cryptos?.slice().sort((a, b) => b.value - a.value);
@@ -61,24 +100,16 @@ const Revenue = ({competitorsData}) => {
   };
 
   const parseLargeNumberString = numberString => {
-    const numberWithoutSign = numberString.replace(/\$/g, '');
-    const decimalNumberString = numberWithoutSign.replace(/,/g, '.');
-    const [numberPart, unitPart] = decimalNumberString.split(/(?=[a-zA-Z])/);
-    const numericValue = Number(numberPart);
-    const unitValues = {
-      k: 100000,
-      m: 1000000,
-      b: 1000000000,
-      t: 1000000000000,
-    };
+    const numberWithoutSpaces = numberString.replace(/\s/g, '');
+    const decimalNumberString = numberWithoutSpaces.replace(/,/g, '');
 
-    const scaledValue = numericValue * unitValues[unitPart.toLowerCase()];
-    return Number(scaledValue.toFixed(3));
+    return Number(decimalNumberString);
   };
 
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
-      item => item.competitor.token === crypto && item.competitor.key === key,
+      item =>
+        item.competitor.token === crypto && item.competitor.key.includes(key),
     );
     console.log('Key received: ', key, 'Revenue value found: ', found);
     return found && found !== undefined ? found.competitor.value : null;
@@ -100,34 +131,24 @@ const Revenue = ({competitorsData}) => {
   }
 
   useEffect(() => {
+    setLoading(true);
     const revenue_data = [];
     competitorsData.forEach((item, index) => {
       if (
-        revenue_data.find(mappedItem =>
-          item.competitor.token.includes(mappedItem.name),
+        revenue_data.find(
+          mappedItem =>
+            mappedItem.crypto ===
+            item.competitor.token.replace(/\s/g, '').toUpperCase(),
         )
       ) {
         return;
       } else {
         const mapped_crypto = {
           id: index + 1,
-          name:
-            item.competitor.token.indexOf('(') !== -1
-              ? item.competitor.token.slice(
-                  0,
-                  item.competitor.token.indexOf('(') - 1,
-                )
-              : item.competitor.token.replace(' ', ''),
-          crypto:
-            item.competitor.token.indexOf('(') !== -1
-              ? item.competitor.token
-                  .slice(0, item.competitor.token.indexOf('(') - 1)
-                  .toUpperCase()[0] +
-                item.competitor.token
-                  .slice(0, item.competitor.token.indexOf('(') - 1)
-                  .slice(1)
-              : item.competitor.token.replace(' ', '').toUpperCase()[0] +
-                item.competitor.token.replace(' ', '').slice(1),
+          name: findCoinNameBySymbol(
+            item.competitor.token.replace(/\s/g, '').toUpperCase(),
+          ),
+          crypto: item.competitor.token.replace(/\s/g, '').toUpperCase(),
           value: parseLargeNumberString(
             findKeyInCompetitorItem(
               competitorsData,
@@ -135,58 +156,62 @@ const Revenue = ({competitorsData}) => {
               item.competitor.token,
             ),
           ),
+          color: tintColors[index > 3 ? index % 3 : index],
         };
         revenue_data.push(mapped_crypto);
       }
     });
     setCryptos(revenue_data);
     getRequiredValues(revenue_data);
+    setLoading(false);
   }, [competitorsData]);
-
-  if (!cryptos || cryptos?.length === 0 || !valuesData) {
-    return null;
-  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.chartContainer}>
-        <RevenueGraphReferences cryptos={cryptos} styles={styles} />
-        <ImageBackground
-          style={[styles.bgImage, styles.first]}
-          source={require('../../../../../../../../../../assets/images/fundamentals/competitors/revenue/bg-1.png')}
-          resizeMode="contain">
+      {loading ? (
+        <Loader />
+      ) : cryptos?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <View style={styles.chartContainer}>
+          <RevenueGraphReferences cryptos={cryptos} styles={styles} />
           <ImageBackground
-            style={[styles.bgImage, styles.second]}
-            source={require('../../../../../../../../../../assets/images/fundamentals/competitors/revenue/bg-2.png')}
+            style={[styles.bgImage, styles.first]}
+            source={require('../../../../../../../../../../assets/images/fundamentals/competitors/revenue/bg-1.png')}
             resizeMode="contain">
             <ImageBackground
-              style={[styles.bgImage]}
-              source={require('../../../../../../../../../../assets/images/fundamentals/competitors/revenue/bg-3.png')}
-              resizeMode="contain"></ImageBackground>
+              style={[styles.bgImage, styles.second]}
+              source={require('../../../../../../../../../../assets/images/fundamentals/competitors/revenue/bg-2.png')}
+              resizeMode="contain">
+              <ImageBackground
+                style={[styles.bgImage]}
+                source={require('../../../../../../../../../../assets/images/fundamentals/competitors/revenue/bg-3.png')}
+                resizeMode="contain"></ImageBackground>
+            </ImageBackground>
           </ImageBackground>
-        </ImageBackground>
-        <View style={styles.imagesContainer}>
-          {cryptos.map((revenueValue, index) => {
-            const scale =
-              1 -
-              (revenueValue.value - valuesData?.minValue.value) /
-                valuesData?.valueRange;
-            const color = colors[index % colors.length];
-            const imageNumber = Math.floor(scale * 14) + 1;
-            return (
-              <GraphItem
-                color={color}
-                imageNumber={imageNumber}
-                scale={scale}
-                key={index}
-                value={formatNumber(revenueValue.value)}
-                styles={styles}
-              />
-            );
-          })}
+          <View style={styles.imagesContainer}>
+            {cryptos.map((revenueValue, index) => {
+              const scale =
+                1 -
+                (revenueValue.value - valuesData?.minValue.value) /
+                  valuesData?.valueRange;
+              const color = colors[index % colors.length];
+              const imageNumber = Math.floor(scale * 14) + 1;
+              return (
+                <GraphItem
+                  color={color}
+                  imageNumber={imageNumber}
+                  scale={scale}
+                  key={index}
+                  value={formatNumber(revenueValue.value)}
+                  styles={styles}
+                />
+              );
+            })}
+          </View>
+          <View style={styles.grayRectangle} />
         </View>
-        <View style={styles.grayRectangle} />
-      </View>
+      )}
     </View>
   );
 };

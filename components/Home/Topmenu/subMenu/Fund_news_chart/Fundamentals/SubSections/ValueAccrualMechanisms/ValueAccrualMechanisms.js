@@ -3,6 +3,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import Loader from '../../../../../../../Loader/Loader';
 import useVAMStyles from './VAMStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
+import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
 const ContentItem = ({data, styles}) => {
   return (
@@ -18,7 +19,7 @@ const ContentItem = ({data, styles}) => {
               width: data?.imageSize.width,
               height: data?.imageSize.height,
             }}
-            resizeMode={'stretch'}
+            resizeMode={'cover'}
           />
         </View>
         <Text style={styles.dataText}>{data.text}</Text>
@@ -27,25 +28,33 @@ const ContentItem = ({data, styles}) => {
   );
 };
 
-const ValueAccrualMechanisms = ({getSectionData, coin, contentData}) => {
+const ValueAccrualMechanisms = ({getSectionData, coin}) => {
   const styles = useVAMStyles();
   const {isDarkMode} = useContext(AppThemeContext);
   const [dataItems, setDataItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const getItemImageUri = (coin, section, isDarkMode) => {
+  const getItemImageUri = (coin, section, description, isDarkMode) => {
     const formatted_title = section
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join('');
+    const longitude_shape = description.length >= 200 ? 'R' : 'S';
     const theme_word = isDarkMode ? 'Dark' : 'Light';
-    return `https://${coin}aialpha.s3.us-east-2.amazonaws.com/${formatted_title}${theme_word}.jpg`;
+    return `https://${coin}aialpha.s3.us-east-2.amazonaws.com/${formatted_title}${theme_word}${longitude_shape}.jpg`;
   };
 
   const calculateImageSize = section => {
-    return section.length >= 150
-      ? section.length >= 300
-        ? {width: 188, height: 356}
-        : {width: 124, height: 208}
+    return section.length >= 200
+      ? section.length >= 350
+        ? {
+            width: 124,
+            height: 272,
+          }
+        : {
+            width: 124,
+            height: 208,
+          }
       : {
           width: 124,
           height: 111,
@@ -53,6 +62,9 @@ const ValueAccrualMechanisms = ({getSectionData, coin, contentData}) => {
   };
 
   useEffect(() => {
+    setLoading(true);
+    setDataItems([]);
+
     const fetchValueAccrualMechanisms = async coin => {
       try {
         const response = await getSectionData(
@@ -70,6 +82,7 @@ const ValueAccrualMechanisms = ({getSectionData, coin, contentData}) => {
                 image: getItemImageUri(
                   coin,
                   item.value_accrual_mechanisms.mechanism,
+                  item.value_accrual_mechanisms.description,
                   isDarkMode,
                 ),
                 imageSize: calculateImageSize(
@@ -85,28 +98,28 @@ const ValueAccrualMechanisms = ({getSectionData, coin, contentData}) => {
           'Error trying to get Value Accrual Mechanisms data: ',
           error,
         );
+      } finally {
+        setLoading(false);
       }
     };
     fetchValueAccrualMechanisms(coin);
-  }, [coin]);
-
-  if (!dataItems || dataItems.length === 0) {
-    return null;
-  }
+  }, [coin, isDarkMode]);
 
   return (
     <View style={styles.container}>
-      <View>
-        <View style={styles.content}>
-          {dataItems && dataItems.length > 0 ? (
-            dataItems.map((data, index) => (
+      {loading ? (
+        <Loader />
+      ) : dataItems?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <View>
+          <View style={styles.content}>
+            {dataItems.map((data, index) => (
               <ContentItem data={data} key={index} styles={styles} />
-            ))
-          ) : (
-            <Loader />
-          )}
+            ))}
+          </View>
         </View>
-      </View>
+      )}
     </View>
   );
 };

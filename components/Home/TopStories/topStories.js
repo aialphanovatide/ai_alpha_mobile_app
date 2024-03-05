@@ -8,8 +8,10 @@ import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext';
 import {CategoriesContext} from '../../../context/categoriesContext';
 import Loader from '../../Loader/Loader';
+import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import {home_static_data} from '../homeStaticData';
 
-const TopStories = () => {
+const TopStories = ({handleAboutPress}) => {
   const styles = useTopStoriesStyles();
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -18,6 +20,9 @@ const TopStories = () => {
   const navigation = useNavigation();
   const {categories} = useContext(CategoriesContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
+  const aboutIconStyles = {
+    top: 12.5,
+  };
 
   // This function finds the category and coin bot that belongs to the story, passing through the parameters the coin bot id and the coins where find it.
   const findCoinById = (coins, coinBotId) => {
@@ -130,6 +135,11 @@ const TopStories = () => {
 
   return (
     <List.Section title="Top Stories" titleStyle={styles.mainTitle}>
+      <AboutIcon
+        handleAboutPress={handleAboutPress}
+        description={home_static_data.topStories.sectionDescription}
+        additionalStyles={aboutIconStyles}
+      />
       {loading ? (
         <Loader />
       ) : stories.length === 0 ? (

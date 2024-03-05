@@ -13,10 +13,9 @@ const useBackButtonStyles = () => {
       textDecorationLine: 'underline',
     },
     arrowContainer: {
-      marginTop: 2.5,
-      marginHorizontal: 2.5,
-      width: 20,
-      height: 20,
+      margin: 6,
+      width: 12,
+      height: 12,
       justifyContent: 'center',
       alignItems: 'center',
       overflow: 'hidden',

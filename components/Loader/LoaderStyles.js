@@ -9,8 +9,11 @@ const useLoaderStyles = () => {
   const styles = StyleSheet.create({
     loaderContainer: {
       flex: 1,
+      minHeight: theme.height * 0.25,
+      padding: '25%',
       justifyContent: 'center',
       alignItems: 'center',
+      alignSelf: 'center',
     },
     loadingText: {
       marginTop: 10,
@@ -22,9 +25,9 @@ const useLoaderStyles = () => {
       padding: 10,
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor: theme.mainBackgroundColor,
     },
     fullViewContainer: {
-      backgroundColor: theme.loaderBgColor,
       position: 'absolute',
       top: 0,
       left: 0,
