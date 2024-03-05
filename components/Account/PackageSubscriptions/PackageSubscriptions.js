@@ -126,6 +126,7 @@ const PackageSubscriptions = () => {
     setLoading(true);
     if (pack === null) {
       setMissingMessageActive(true);
+      setLoading(false);
       return;
     }
     try {
