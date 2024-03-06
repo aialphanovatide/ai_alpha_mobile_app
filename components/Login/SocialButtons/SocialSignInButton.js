@@ -33,30 +33,41 @@ const SocialSignInButton = () => {
     });
   }, []);
 
-
-  const signInWithGoogle = async () => {
+  const authenticateWithAuth0 = async (googleToken) => {
     try {
-      await authorize({}, {});
-      const credentials = await getCredentials();
-      console.log("User is: ", user.email)
-      console.log('AccessToken: ',credentials?.accessToken);
-      navigation.navigate('HomeScreen')
-
+      const auth0Response = await axios.post(
+        `https://${auth0Domain}/oauth/token`,
+        {
+          grant_type: 'authorization_code',
+          client_id: auth0Client,
+          audience: auth0GoogleAudience,
+          code: googleToken,
+          redirect_uri: 'com.aialphamobileapp.auth0://dev-zoejuo0jssw5jiid.us.auth0.com/ios/com.aialphamobileapp/callback',
+        }
+      );
+      // Handle Auth0 response
+      console.log('Auth0 Response:', auth0Response.data);
+      navigation.navigate('HomeScreen');
     } catch (error) {
-      console.error('Google Sign-In Error:', error);
-      if (error.response) {
-        console.error('Error response data:', error.response.data);
-        console.error('Error response status:', error.response.status);
-        console.error('Error response headers:', error.response.headers);
-      } else if (error.request) {
-        console.error('No response received:', error.request);
-      } else {
-        console.error('Error during request setup:', error.message);
-      }
-      throw error;
+      console.error('Auth0 Authentication Error:', error);
     }
   };
   
+
+  const signInWithGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const googleToken = userInfo.idToken; // Assuming you're using ID token for authentication
+      console.log("google token: ", googleToken);
+      await authenticateWithAuth0(googleToken);
+    } catch (error) {
+      console.error('Google Sign-In Error:', error);
+    }
+  };
+  
+  
+
   const signInWithApple = async () => {
     try {
       const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -139,17 +150,18 @@ const SocialSignInButton = () => {
       clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
       <View>
         <CustomButton
-          text="Sign In with Apple"
+          text="Continue with Apple"
           onPress={() => signInWithApple()}
           type="APPLE"
           disabled={loggedInUser !== null}
         />
         <CustomButton
-          text="Sign In with Google"
+          text="Continue with Google"
           onPress={() => signInWithGoogle()}
           type="GOOGLE"
           disabled={loggedInUser !== null}
         />
+
       </View>
     </Auth0Provider>
   );

@@ -8,13 +8,17 @@ const useCustomInputStyles = () => {
     container: {
       width: '100%',
       paddingHorizontal: 12,
-      marginVertical: theme.boxesVerticalMargin,
-      borderRadius: 2,
+      paddingVertical: 10,
+      marginTop: 5,
+      marginBottom: 15,
+      borderRadius: 5,
+      borderWidth: 0.3,
+      borderColor: theme.textColor,
       backgroundColor: theme.loginInputBgColor,
     },
     input: {
       fontSize: theme.responsiveFontSize,
-      color: theme.textColor,
+      color: theme.inputColor,
     },
   });
 

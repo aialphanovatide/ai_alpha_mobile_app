@@ -10,10 +10,9 @@ const useBackButtonStyles = () => {
       fontSize: theme.responsiveFontSize,
       fontWeight: 'bold',
       color: theme.backbuttonColor,
-      textDecorationLine: 'underline',
     },
     arrowContainer: {
-      margin: 6,
+      margin: 4,
       width: 12,
       height: 12,
       justifyContent: 'center',
