@@ -26,43 +26,33 @@ const SocialSignInButton = () => {
   const { userEmail, setUserEmail } = useUser();
   const { userId, setUserId } = useUserId();
   
-  useEffect(() => {
-    GoogleSignin.configure({
-      iosClientId: GOOGLE_CLIENT_IOS_ID,
-      webClientId: GOOGLE_CLIENT_WEB_ID,
-    });
-  }, []);
-
-  const authenticateWithAuth0 = async (googleToken) => {
-    try {
-      const auth0Response = await axios.post(
-        `https://${auth0Domain}/oauth/token`,
-        {
-          grant_type: 'authorization_code',
-          client_id: auth0Client,
-          audience: auth0GoogleAudience,
-          code: googleToken,
-          redirect_uri: 'com.aialphamobileapp.auth0://dev-zoejuo0jssw5jiid.us.auth0.com/ios/com.aialphamobileapp/callback',
-        }
-      );
-      // Handle Auth0 response
-      console.log('Auth0 Response:', auth0Response.data);
-      navigation.navigate('HomeScreen');
-    } catch (error) {
-      console.error('Auth0 Authentication Error:', error);
-    }
-  };
-  
 
   const signInWithGoogle = async () => {
+    const config = {
+      issuer: `https://${auth0Domain}`,
+      clientId: auth0Client,
+      redirectUrl: 'https://dev-zoejuo0jssw5jiid.us.auth0.com/callback',
+      scopes: ['openid', 'profile', 'email'],
+    };
+  
     try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const googleToken = userInfo.idToken; // Assuming you're using ID token for authentication
-      console.log("google token: ", googleToken);
-      await authenticateWithAuth0(googleToken);
+      const result = await authorize(config);
+  
+      // Log the entire result object
+      console.log('Authorization Result:', result);
+  
+      if (result.accessToken) {
+        // Log user data
+        console.log('User Data:', result.accessTokenPayload);
+        
+        // Navigate to HomeScreen
+        navigation.navigate('HomeScreen');
+      } else {
+        console.log('Authentication failed.');
+      }
     } catch (error) {
-      console.error('Google Sign-In Error:', error);
+      // Handle authentication failure
+      console.error('Authentication error:', error);
     }
   };
   
@@ -160,7 +150,7 @@ const SocialSignInButton = () => {
           onPress={() => signInWithGoogle()}
           type="GOOGLE"
           disabled={loggedInUser !== null}
-        />
+        />     
 
       </View>
     </Auth0Provider>
