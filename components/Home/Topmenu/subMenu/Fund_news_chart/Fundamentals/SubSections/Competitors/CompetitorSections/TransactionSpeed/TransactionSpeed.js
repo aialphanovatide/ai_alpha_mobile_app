@@ -20,6 +20,9 @@ const TransactionSpeed = ({competitorsData}) => {
   };
 
   const extractNumberFromString = str => {
+    if (!str || str === undefined) {
+      return 0;
+    }
     const match = str.replace(/,/g, '').match(/\d+/);
     console.log(match);
     if (match) {

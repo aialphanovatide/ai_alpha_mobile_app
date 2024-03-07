@@ -8,16 +8,17 @@ import {getService} from '../../../services/aiAlphaApi';
 import {useNavigation} from '@react-navigation/core';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 const Analysis = ({handleAboutPress}) => {
   const styles = useHomeAnalysisStyles();
   const [analysisData, setAnalysisData] = React.useState([]);
   const [expanded, setExpanded] = React.useState(false);
-  const handlePress = () => setExpanded(!expanded);
   const navigation = useNavigation();
   const aboutIconStyles = {
     top: 12.5,
   };
 
+  const handlePress = () => setExpanded(!expanded);
   React.useEffect(() => {
     const getAnalysisData = async () => {
       try {
@@ -107,64 +108,48 @@ const Analysis = ({handleAboutPress}) => {
     };
   };
 
-  if (analysisData?.length === 0) {
-    return (
-      <List.Section title="Analysis" titleStyle={styles.mainTitle}>
-        <AboutIcon
-          handleAboutPress={handleAboutPress}
-          additionalStyles={aboutIconStyles}
-          description={home_static_data.analysis.sectionDescription}
-        />
-        <Text style={styles.emptyMessage}>There aren't analysis to show.</Text>
-      </List.Section>
-    );
-  }
-  const first_analysis_item = analysisData[0];
-
   return (
-    <List.Section
-      title="Analysis"
-      titleStyle={styles.mainTitle}
-      style={styles.mainSection}>
+    <List.Section title="Analysis" titleStyle={styles.mainTitle}>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.analysis.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
-      <List.Accordion
-        style={styles.item}
-        titleStyle={styles.titleStyles}
-        title={first_analysis_item.title}
-        titleNumberOfLines={2}
-        left={() => (
-          <Image
-            source={{uri: first_analysis_item.image}}
-            style={styles.imageStyle}
-          />
-        )}
-        right={() => (
-          <Image
-            source={
-              expanded
-                ? require('../../../assets/images/arrow-up.png')
-                : require('../../../assets/images/arrow-down.png')
-            }
-            style={styles.arrowDown}
-            resizeMode="contain"
-          />
-        )}
-        expanded={expanded}
-        onPress={handlePress}>
-        {analysisData?.map(story => (
-          <AnalysisItem
-            key={story.id}
-            title={story.title}
-            image={story.image}
-            item={story}
-            handleAnalysisNavigation={handleAnalysisNavigation}
-          />
-        ))}
-      </List.Accordion>
+      {analysisData?.length === 0 ? (
+        <Text style={styles.emptyMessage}>There aren't analysis to show.</Text>
+      ) : (
+        <View style={styles.itemsContainer}>
+          {analysisData?.map((story, index) => (
+            <View
+              style={[
+                styles.itemWrapper,
+                index > 0 && !expanded ? styles.hidden : {},
+              ]}
+              key={index}>
+              <AnalysisItem
+                key={story.id}
+                title={story.title}
+                image={story.image}
+                item={story}
+                handleAnalysisNavigation={handleAnalysisNavigation}
+              />
+              <TouchableOpacity
+                style={[styles.arrowContainer, index > 0 ? styles.hidden : {}]}
+                onPress={() => handlePress()}>
+                <Image
+                  source={
+                    expanded
+                      ? require('../../../assets/images/arrow-up.png')
+                      : require('../../../assets/images/arrow-down.png')
+                  }
+                  style={styles.arrowDown}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      )}
     </List.Section>
   );
 };

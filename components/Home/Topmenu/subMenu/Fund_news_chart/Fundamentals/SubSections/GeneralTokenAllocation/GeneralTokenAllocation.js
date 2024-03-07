@@ -23,7 +23,9 @@ const GeneralTokenData = ({data, handleTokenChange, styles, colors}) => {
             ]}>
             {''}
           </Text>
-          <Text style={[styles.strong, {color: colors[index]}]}>
+          <Text
+            style={[styles.strong, {color: colors[index]}]}
+            numberOfLines={2}>
             {sector.title}
           </Text>
         </TouchableOpacity>
@@ -42,8 +44,6 @@ const GeneralTokenAllocation = ({getSectionData, coin}) => {
     '#FF8D34',
     '#FFB76E',
     '#FFD5A7',
-    '#FFECD3',
-    '#FFF7EC',
     '#460C3C',
     '#6C235F',
     '#832574',
@@ -53,16 +53,12 @@ const GeneralTokenAllocation = ({getSectionData, coin}) => {
     '#EC86E2',
     '#F4B3EF',
     '#F9D5F8',
-    '#FDEAFD',
-    '#FEF5FE',
   ];
   const styles = useGTAStyles();
   const [percentagesData, setPercentagesData] = useState([]);
   const {theme} = useContext(AppThemeContext);
   const [loading, setLoading] = useState(true);
-  const [currentToken, setCurrentToken] = useState(
-    percentagesData.length > 0 ? percentagesData[0] : null,
-  );
+  const [currentToken, setCurrentToken] = useState(null);
   const handleTokenChange = token => {
     setCurrentToken(token);
   };
@@ -95,6 +91,7 @@ const GeneralTokenAllocation = ({getSectionData, coin}) => {
           );
           console.log('Parsed data:', parsed_data);
           setPercentagesData(parsed_data);
+          setCurrentToken(parsed_data[0]);
         }
       } catch (error) {
         console.log('Error trying to get token distribution data: ', error);
@@ -117,27 +114,13 @@ const GeneralTokenAllocation = ({getSectionData, coin}) => {
         <NoContentMessage />
       ) : (
         <>
-          <View style={styles.flex}>
-            <CircleChart
-              data={percentagesData}
-              dividerSize={5}
-              backgroundColor={theme.boxesBackgroundColor}
-              colors={colors}
-            />
-            <Text
-              style={
-                currentToken && [
-                  {
-                    color: currentToken
-                      ? colors[currentTokenIndex]
-                      : theme.boxesBackgroundColor,
-                  },
-                  styles.currentTokenPercentage,
-                ]
-              }>
-              {currentToken ? ` ${currentToken.percentage}% ` : ''}
-            </Text>
-          </View>
+          <CircleChart
+            data={percentagesData}
+            dividerSize={4}
+            colors={colors}
+            currentToken={currentToken}
+            currentTokenIndex={currentTokenIndex}
+          />
           <GeneralTokenData
             currentToken={currentToken}
             data={percentagesData}

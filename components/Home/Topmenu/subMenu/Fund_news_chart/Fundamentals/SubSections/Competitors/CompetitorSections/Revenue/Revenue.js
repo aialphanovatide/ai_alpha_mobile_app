@@ -101,6 +101,7 @@ const Revenue = ({competitorsData, isSectionWithoutData}) => {
   useEffect(() => {
     setLoading(true);
     const revenue_data = [];
+    let artificial_id = 0;
     competitorsData.forEach((item, index) => {
       if (
         revenue_data.find(
@@ -112,7 +113,7 @@ const Revenue = ({competitorsData, isSectionWithoutData}) => {
         return;
       } else {
         const mapped_crypto = {
-          id: index + 1,
+          id: artificial_id,
           name: findCoinNameBySymbol(
             item.competitor.token.replace(/\s/g, '').toUpperCase(),
           ),
@@ -124,9 +125,11 @@ const Revenue = ({competitorsData, isSectionWithoutData}) => {
               item.competitor.token,
             ),
           ),
-          color: tintColors[index > 3 ? index % 3 : index],
+          color:
+            tintColors[artificial_id > 3 ? artificial_id % 3 : artificial_id],
         };
         revenue_data.push(mapped_crypto);
+        artificial_id += 1;
       }
     });
     setCryptos(revenue_data);

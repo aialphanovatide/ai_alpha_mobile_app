@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 import AlertDetails from './alertDetails';
 import {
-  postService,
   getService,
 } from '../../../../../../../services/aiAlphaApi';
 import Loader from '../../../../../../Loader/Loader';
@@ -18,7 +17,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
         const response = await getService(
           `/api/filter/alerts?coin=${botName}&date=${timeframe}`,
         );
-        console.log('Alerts response: ', response);
+        // console.log('Alerts response: ', response);
         if (
           response.length === 0 ||
           (response.message &&
@@ -27,7 +26,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
         ) {
           setAlerts([]);
         } else {
-          setAlerts(response.alerts);
+          setAlerts(response.alerts.slice(0, 30));
         }
       } catch (error) {
         console.error('Error fetching alerts:', error.message);

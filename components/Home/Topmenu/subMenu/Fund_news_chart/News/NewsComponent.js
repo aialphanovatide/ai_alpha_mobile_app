@@ -86,9 +86,15 @@ const NewsComponent = ({route}) => {
     setLoading(true);
     const fetchNews = async () => {
       try {
+        const newsLimit =
+          activeFilter && activeFilter === 'Last Month'
+            ? 30
+            : activeFilter === 'This Week'
+            ? 20
+            : 10;
         const endpoint = activeFilter
-          ? `/api/get/news?coin=${botname}&time_range=${activeFilter.toLowerCase()}`
-          : `/api/get/news?coin=${botname}`;
+          ? `/api/get/news?coin=${botname}&time_range=${activeFilter.toLowerCase()}&limit=${newsLimit}`
+          : `/api/get/news?coin=${botname}&limit=${newsLimit}`;
         const response = await getService(endpoint);
         if (
           response.length === 0 ||
@@ -98,7 +104,7 @@ const NewsComponent = ({route}) => {
         ) {
           setNews([]);
         } else {
-          const articles = response.articles.slice(0, 4);
+          const articles = response.articles;
           setNews(articles);
         }
       } catch (error) {
@@ -154,7 +160,7 @@ const NewsComponent = ({route}) => {
           ListEmptyComponent={
             <View style={styles.emptyMessageContainer}>
               <Text style={styles.emptyMessage}>
-                There are no News yet. Stay tuned!
+                There aren't news to show.
               </Text>
             </View>
           }

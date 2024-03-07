@@ -83,8 +83,8 @@ const PriceAction = ({handleAboutPress}) => {
     /*
     setCoins(priceActionMock);
     setLoading(false);
-    setLoading(true);
     */
+    setLoading(true);
     const fetchCoinsData = async () => {
       try {
         const data = await priceActionService.getAllCoinsInfo();

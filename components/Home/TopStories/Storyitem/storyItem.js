@@ -10,7 +10,7 @@ const StoryItem = ({item, title, image, handleStoryRedirect, coinBotId}) => {
       titleNumberOfLines={2}
       left={() => (
         <Image
-          source={{uri: image, width: 60}}
+          source={{uri: `data:image/png;base64,${image}`, width: 60}}
           style={styles.imageStyle}
           resizeMode="contain"
         />

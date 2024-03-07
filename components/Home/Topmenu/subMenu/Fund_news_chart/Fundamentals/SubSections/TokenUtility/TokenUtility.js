@@ -39,6 +39,9 @@ const TokenUtility = ({getSectionData, coin, content}) => {
       .join('');
     const longitude_shape = description.length >= 200 ? 'R' : 'S';
     const theme_word = isDarkMode ? 'Dark' : 'Light';
+    console.log(
+      `https://${coin}aialpha.s3.us-east-2.amazonaws.com/${formatted_title}${theme_word}${longitude_shape}.jpg`,
+    );
     return `https://${coin}aialpha.s3.us-east-2.amazonaws.com/${formatted_title}${theme_word}${longitude_shape}.jpg`;
   };
 

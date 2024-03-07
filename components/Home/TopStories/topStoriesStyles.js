@@ -5,9 +5,17 @@ import {AppThemeContext} from '../../../context/themeContext';
 const useTopStoriesStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
-    background: {
+    storiesContainer: {
       width: '100%',
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
+    },
+    storyWrapper: {
+      flex: 1,
+      flexDirection: 'row',
+      position: 'relative',
+    },
+    hidden: {
+      display: 'none',
     },
     mainTitle: {
       fontWeight: 'bold',
@@ -15,6 +23,7 @@ const useTopStoriesStyles = () => {
       fontSize: theme.titleFontSize,
     },
     titleStyles: {
+      maxWidth: '85%',
       fontWeight: 'bold',
       color: theme.titleColor,
       marginBottom: 2,
@@ -28,7 +37,7 @@ const useTopStoriesStyles = () => {
     },
     storyItem: {
       flex: 1,
-      width: theme.width,
+      width: '100%',
       paddingLeft: 8,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
@@ -45,6 +54,16 @@ const useTopStoriesStyles = () => {
       height: 15,
       marginTop: 10,
       tintColor: theme.textColor,
+    },
+    arrowContainer: {
+      flex: 1,
+      width: 30,
+      height: 30,
+      position: 'absolute',
+      top: 20,
+      right: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     emptyMessage: {
       margin: theme.boxesVerticalMargin,

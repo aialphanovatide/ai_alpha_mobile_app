@@ -37,7 +37,7 @@ const CandlestickChart = ({route}) => {
     useContext(AboutModalContext);
   const {isDarkMode} = useContext(AppThemeContext);
 
-  async function fetchChartData(oldLastPrice) {
+  async function fetchChartData() {
     try {
       const response = await fetch(
         `https://api3.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&limit=200&interval=${selectedInterval.toLowerCase()}`,
@@ -57,12 +57,17 @@ const CandlestickChart = ({route}) => {
       }));
 
       setChartData(formattedChartData);
-      setLoading(false);
     } catch (error) {
       console.error(`Failed to fetch data: ${error}`);
+    } finally {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => fetchChartData(), 5000);
+    return () => clearInterval(intervalId);
+  }, [interval, symbol, selectedInterval]);
 
   useEffect(() => {
     async function getSupportAndResistanceData(botName, time_interval) {
@@ -70,7 +75,7 @@ const CandlestickChart = ({route}) => {
         const supportValues = [];
         const resistanceValues = [];
         const data = await getService(
-          `//api/coin-support-resistance?coin_name=${botName}&temporality=${time_interval}&pair=usdt`,
+          `/api/coin-support-resistance?coin_name=${botName}&temporality=${time_interval.toLowerCase()}&pair=usdt`,
         );
         if (data.success) {
           const values = data.chart_values;
@@ -103,11 +108,6 @@ const CandlestickChart = ({route}) => {
       });
   }, [activeButtons, coinBot, selectedInterval]);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => fetchChartData(lastPrice), 2000);
-    return () => clearInterval(intervalId);
-  }, [interval, symbol, selectedInterval]);
-
   // This useEffect handles the content regulation
   useEffect(() => {
     const hasCoinSubscription = findCategoryInIdentifiers(
@@ -122,8 +122,7 @@ const CandlestickChart = ({route}) => {
     try {
       setSelectedInterval(newInterval);
       setChartData([]);
-      await fetchChartData();
-      setLoading(false);
+      // await fetchChartData();
     } catch (error) {
       console.error(`Failed to change interval: ${error}`);
     }
@@ -154,15 +153,18 @@ const CandlestickChart = ({route}) => {
           isPriceUp={isPriceUp}
         />
         <View style={styles.chartsWrapper}>
-          <TimeframeSelector
-            selectedInterval={selectedInterval}
-            changeInterval={changeInterval}
-          />
-          <RsButton
-            activeButtons={activeButtons}
-            setActiveButtons={setActiveButtons}
-          />
+          <View style={styles.chartsRow}>
+            <RsButton
+              activeButtons={activeButtons}
+              setActiveButtons={setActiveButtons}
+            />
+            <TimeframeSelector
+              selectedInterval={selectedInterval}
+              changeInterval={changeInterval}
+            />
+          </View>
           <Chart
+            selectedInterval={selectedInterval}
             chartData={chartData}
             supportLevels={supportLevels}
             loading={loading}

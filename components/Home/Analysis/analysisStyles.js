@@ -11,6 +11,7 @@ const useHomeAnalysisStyles = () => {
       fontSize: theme.titleFontSize,
     },
     titleStyles: {
+      maxWidth: '85%',
       fontWeight: 'bold',
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize,
@@ -19,14 +20,18 @@ const useHomeAnalysisStyles = () => {
     imageStyle: {
       width: 50,
       height: 50,
-      borderRadius: 5,
+      borderRadius: 2,
       marginLeft: 10,
     },
     item: {
-      width: theme.width,
+      flex: 1,
+      width: '100%',
+      paddingLeft: 8,
       backgroundColor: theme.boxesBackgroundColor,
-      overflow: 'hidden',
       alignSelf: 'center',
+      borderBottomColor: theme.boxesBorderColor,
+      borderBottomWidth: 1,
+      borderRadius: 2,
     },
     itemPreview: {
       flex: 1,
@@ -53,11 +58,14 @@ const useHomeAnalysisStyles = () => {
     background: {
       flex: 1,
       backgroundColor: theme.mainBackgroundColor,
+      padding: 10,
     },
     container: {
       flex: 1,
-      width: theme.width,
-      padding: 10,
+      width: '100%',
+      paddingHorizontal: 16,
+      backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 4,
     },
     analysisArticleImage: {
       width: 'auto',
@@ -82,15 +90,35 @@ const useHomeAnalysisStyles = () => {
       fontWeight: 'bold',
     },
     backButtonWrapper: {
-      marginHorizontal: 4,
-      marginVertical: 8,
+      margin: 16,
     },
     aboutIconContainer: {
       flex: 1,
       position: 'relative',
       marginTop: '5%',
     },
-
+    itemsContainer: {
+      width: '100%',
+      backgroundColor: 'transparent',
+    },
+    hidden: {
+      display: 'none',
+    },
+    itemWrapper: {
+      flex: 1,
+      flexDirection: 'row',
+      position: 'relative',
+    },
+    arrowContainer: {
+      flex: 1,
+      width: 30,
+      height: 30,
+      position: 'absolute',
+      top: 20,
+      right: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   });
   return styles;
 };

@@ -81,8 +81,8 @@ const useNewsStyles = () => {
     articleDate: {
       marginHorizontal: 20,
       textAlign: 'left',
-      fontSize: theme.responsiveFontSize * 0.8,
-      color: theme.textColor,
+      fontSize: theme.responsiveFontSize * 0.825,
+      color: theme.secondaryTextColor,
       fontWeight: 'bold',
       lineHeight: 22,
     },

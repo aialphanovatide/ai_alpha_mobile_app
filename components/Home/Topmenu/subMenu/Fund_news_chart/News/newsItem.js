@@ -39,7 +39,7 @@ const NewsItem = ({item, onPress, filterText}) => {
         source={{
           uri:
             item.images.length > 0
-              ? item.images[0].image
+              ? `data:image/png;base64,${item.images[0].image}`
               : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
         }}
         style={styles.image}

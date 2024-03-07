@@ -10,7 +10,9 @@ const AnalysisItem = ({title, image, item, handleAnalysisNavigation}) => {
       style={styles.item}
       title={title}
       titleNumberOfLines={2}
-      left={() => <Image source={{uri: image}} style={styles.imageStyle} />}
+      left={() => (
+        <Image source={{uri: image, width: 60}} style={styles.imageStyle} />
+      )}
       titleStyle={styles.titleStyles}
       onPress={() => handleAnalysisNavigation(item)}
     />

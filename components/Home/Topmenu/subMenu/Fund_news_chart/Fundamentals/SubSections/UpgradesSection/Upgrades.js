@@ -21,7 +21,7 @@ const Upgrades = ({getSectionData, coin}) => {
         if (response.status !== 200) {
           setEvents([]);
         } else {
-          // console.log('Upgrade response: ', response.message);
+          console.log('Upgrade response: ', response.message);
           const mapped_events = response.message.map(event => {
             return {
               id: event.upgrade.id,

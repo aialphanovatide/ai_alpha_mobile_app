@@ -14,7 +14,8 @@ const Timeline = ({events, textPoints}) => {
     const has_words = time_words.includes(month.toLowerCase());
     const isLargeMonth = month.length > 5;
     const shorted_month = isLargeMonth ? month.slice(0, 3) : month;
-    const formatted_date = shorted_month + ' ' + words[1];
+    const formatted_date =
+      words.length > 1 ? shorted_month + ' ' + words[1] : dateString;
 
     return has_words ? dateString : formatted_date;
   };

@@ -17,6 +17,7 @@ const useChartsStyles = () => {
     detailsContainer: {
       flex: 1,
       marginVertical: theme.titlesVerticalMargin,
+      marginBottom: 8,
       flexDirection: 'row',
       width: '100%',
     },
@@ -36,20 +37,19 @@ const useChartsStyles = () => {
     },
     timeFrameContainer: {
       flex: 1,
+      maxWidth: '40%',
+      marginVertical: 4,
       flexDirection: 'row',
-      marginTop: theme.boxesVerticalMargin,
       backgroundColor: theme.subMenuBgColor,
       borderRadius: 2,
     },
     timeFrameButton: {
-      flex: 1,
       width: '25%',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 4,
     },
     timeFrameActiveButton: {
-      flex: 1,
       width: '25%',
       justifyContent: 'center',
       alignItems: 'center',
@@ -71,8 +71,7 @@ const useChartsStyles = () => {
     },
     rsButtonContainer: {
       flexDirection: 'row',
-      width: '100%',
-      marginTop: 8,
+      width: '50%',
     },
     rsButton: {
       paddingHorizontal: 8,
@@ -90,6 +89,12 @@ const useChartsStyles = () => {
     activeRsButtonText: {
       color: theme.supportAndResistanceText,
       fontWeight: 'bold',
+    },
+    chartsRow: {
+      flex: 1,
+      flexDirection: 'row',
+      marginBottom: 16,
+      justifyContent: 'flex-start',
     },
     lineLabel: {
       flex: 1,

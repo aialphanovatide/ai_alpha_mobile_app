@@ -10,18 +10,21 @@ import {CategoriesContext} from '../../../context/categoriesContext';
 import Loader from '../../Loader/Loader';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const TopStories = ({handleAboutPress}) => {
   const styles = useTopStoriesStyles();
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
-  const handlePress = () => setExpanded(!expanded);
   const [stories, setStories] = useState([]);
   const navigation = useNavigation();
   const {categories} = useContext(CategoriesContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const aboutIconStyles = {
     top: 12.5,
+  };
+  const handlePress = () => {
+    setExpanded(!expanded);
   };
 
   // This function finds the category and coin bot that belongs to the story, passing through the parameters the coin bot id and the coins where find it.
@@ -121,6 +124,8 @@ const TopStories = ({handleAboutPress}) => {
         if (!data || data.top_stories === undefined) {
           setStories([]);
         } else {
+          console.log(data.top_stories);
+
           setStories(data.top_stories);
         }
       } catch (error) {
@@ -143,47 +148,16 @@ const TopStories = ({handleAboutPress}) => {
       {loading ? (
         <Loader />
       ) : stories.length === 0 ? (
-        <Text style={styles.emptyMessage}>There are no Stories to show...</Text>
+        <Text style={styles.emptyMessage}>There aren't stories to show</Text>
       ) : (
-        <View style={styles.background}>
-          <List.Accordion
-            style={styles.storyItem}
-            titleStyle={styles.titleStyles}
-            title={
-              stories && stories !== undefined
-                ? filterText(stories[0].summary)
-                : 'Loading'
-            }
-            titleNumberOfLines={2}
-            right={() => (
-              <Image
-                source={
-                  expanded
-                    ? require('../../../assets/images/arrow-up.png')
-                    : require('../../../assets/images/arrow-down.png')
-                }
-                style={styles.arrowDown}
-                resizeMode="contain"
-              />
-            )}
-            left={() => (
-              <Image
-                source={{
-                  uri:
-                    stories &&
-                    stories !== undefined &&
-                    stories[0].images.length > 0
-                      ? stories[0].images[0].image
-                      : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
-                  width: 60,
-                }}
-                style={styles.imageStyle}
-                resizeMode="contain"
-              />
-            )}
-            expanded={expanded}
-            onPress={handlePress}>
-            {stories?.map((story, i) => (
+        <View style={[styles.storiesContainer]}>
+          {stories?.slice(0, 10).map((story, i) => (
+            <View
+              key={i}
+              style={[
+                styles.storyWrapper,
+                i > 0 && !expanded ? styles.hidden : {},
+              ]}>
               <StoryItem
                 item={story}
                 key={i}
@@ -199,8 +173,21 @@ const TopStories = ({handleAboutPress}) => {
                 handleStoryRedirect={handleStoryRedirect}
                 coinBotId={story.coin_bot_id}
               />
-            ))}
-          </List.Accordion>
+              <TouchableOpacity
+                style={[styles.arrowContainer, i > 0 ? styles.hidden : {}]}
+                onPress={() => handlePress()}>
+                <Image
+                  source={
+                    expanded
+                      ? require('../../../assets/images/arrow-up.png')
+                      : require('../../../assets/images/arrow-down.png')
+                  }
+                  style={styles.arrowDown}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+          ))}
         </View>
       )}
     </List.Section>
