@@ -5,16 +5,12 @@ import {AppThemeContext} from '../../../../context/themeContext';
 const useLoginFormStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
-    background: {
-      flex: 1,
-      backgroundColor: theme.mainBackgroundColor,
-    },
     root: {
       alignItems: 'center',
       padding: 20,
     },
     scrollview: {
-      backgroundColor: 'transparent',
+      backgroundColor: theme.mainBackgroundColor,
     },
     logo: {
       width: '50%',
@@ -35,9 +31,8 @@ const useLoginFormStyles = () => {
       marginLeft: 8,
     },
     inputContainer: {
-      paddingHorizontal: 10,
       alignSelf: 'stretch',
-      marginBottom: theme.boxesVerticalMargin,
+      marginBottom: 10,
     },
     title: {
       color: theme.titleColor,
@@ -48,17 +43,14 @@ const useLoginFormStyles = () => {
     },
     signUpContainer: {
       flexDirection: 'row',
-      marginTop: 4,
+      marginTop: 5,
     },
     signUpText: {
       color: theme.textColor,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize,
     },
     signUpButton: {
       color: theme.activeOrange,
       fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize,
     },
     termsContainer: {
       flexDirection: 'row',

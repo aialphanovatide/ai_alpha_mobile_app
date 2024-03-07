@@ -26,37 +26,38 @@ const SocialSignInButton = () => {
   const { userEmail, setUserEmail } = useUser();
   const { userId, setUserId } = useUserId();
   
-  useEffect(() => {
-    GoogleSignin.configure({
-      iosClientId: GOOGLE_CLIENT_IOS_ID,
-      webClientId: GOOGLE_CLIENT_WEB_ID,
-    });
-  }, []);
-
 
   const signInWithGoogle = async () => {
+    const config = {
+      issuer: `https://${auth0Domain}`,
+      clientId: auth0Client,
+      redirectUrl: 'https://dev-zoejuo0jssw5jiid.us.auth0.com/callback',
+      scopes: ['openid', 'profile', 'email'],
+    };
+  
     try {
-      await authorize({}, {});
-      const credentials = await getCredentials();
-      console.log("User is: ", user.email)
-      console.log('AccessToken: ',credentials?.accessToken);
-      navigation.navigate('HomeScreen')
-
-    } catch (error) {
-      console.error('Google Sign-In Error:', error);
-      if (error.response) {
-        console.error('Error response data:', error.response.data);
-        console.error('Error response status:', error.response.status);
-        console.error('Error response headers:', error.response.headers);
-      } else if (error.request) {
-        console.error('No response received:', error.request);
+      const result = await authorize(config);
+  
+      // Log the entire result object
+      console.log('Authorization Result:', result);
+  
+      if (result.accessToken) {
+        // Log user data
+        console.log('User Data:', result.accessTokenPayload);
+        
+        // Navigate to HomeScreen
+        navigation.navigate('HomeScreen');
       } else {
-        console.error('Error during request setup:', error.message);
+        console.log('Authentication failed.');
       }
-      throw error;
+    } catch (error) {
+      // Handle authentication failure
+      console.error('Authentication error:', error);
     }
   };
   
+  
+
   const signInWithApple = async () => {
     try {
       const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -139,17 +140,18 @@ const SocialSignInButton = () => {
       clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
       <View>
         <CustomButton
-          text="Sign In with Apple"
+          text="Continue with Apple"
           onPress={() => signInWithApple()}
           type="APPLE"
           disabled={loggedInUser !== null}
         />
         <CustomButton
-          text="Sign In with Google"
+          text="Continue with Google"
           onPress={() => signInWithGoogle()}
           type="GOOGLE"
           disabled={loggedInUser !== null}
-        />
+        />     
+
       </View>
     </Auth0Provider>
   );
