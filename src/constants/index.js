@@ -8,6 +8,7 @@ export const GOOGLE_CLIENT_WEB_ID =
   '689854850545-9j38s9b89c7utbg2n6g78b66k9unusqv.apps.googleusercontent.com';
 export const GOOGLE_CLIENT_SECRET = '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';
 export const auth0Client = 'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg';
+export const auth0ClientSecret = 'C81yRwVPAQTQRuEFP-y6tRpz4RbWEWFTx9uWKGwuMCz9Xqnke3XMTse3-zzQ22ag';
 export const auth0Domain = 'dev-zoejuo0jssw5jiid.us.auth0.com';
 export const auth0ClientSecretGoogle = 'UjrEqULTtwj2dssOUfGe85geDfYkuXivaNrpq5jZwowSRl6k_Cr7KBumxpjyCsTC';
 //export const auth0Audience = '647f91b8c76e73342e725c9a';

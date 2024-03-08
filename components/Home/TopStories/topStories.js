@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import {List} from 'react-native-paper';
 import StoryItem from './Storyitem/storyItem';
 import useTopStoriesStyles from './topStoriesStyles';
-import {Image, Text, View} from 'react-native';
+import {Image, Text, View, TouchableOpacity} from 'react-native';
 import {getService} from '../../../services/aiAlphaApi';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext';
@@ -10,7 +10,6 @@ import {CategoriesContext} from '../../../context/categoriesContext';
 import Loader from '../../Loader/Loader';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const TopStories = ({handleAboutPress}) => {
   const styles = useTopStoriesStyles();
