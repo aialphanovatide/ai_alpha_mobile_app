@@ -21,7 +21,7 @@ const useBtcFundingRatesStyles = () => {
       paddingHorizontal: 15,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     tableContainer: {
       flex: 1,
@@ -59,6 +59,7 @@ const useBtcFundingRatesStyles = () => {
       paddingVertical: 20,
       paddingHorizontal: theme.width * 0.05,
       fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontSemibold,
     },
     dataCell: {
       flex: 1,
@@ -68,11 +69,12 @@ const useBtcFundingRatesStyles = () => {
       marginVertical: 20,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
     },
     exchangeName: {
       color: theme.textColor,
-      fontSize: theme.responsiveFontSize,
-      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize * 1.05,
+      fontFamily: theme.fontMedium,
     },
     priceUp: {
       color: theme.priceUpColor,
@@ -86,6 +88,7 @@ const useBtcFundingRatesStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
       textAlign: 'left',
+      fontFamily: theme.fontMedium,
       lineHeight: 20,
     },
     readMoreButton: {
@@ -98,7 +101,7 @@ const useBtcFundingRatesStyles = () => {
       lineHeight: 24,
       textDecorationLine: 'underline',
       textDecorationColor: '#7B7BFF',
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     loaderWrapper: {
       flex: 1,

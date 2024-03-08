@@ -21,6 +21,19 @@ import {fundamentals_static_content} from './fundamentalsStaticData';
 import VestingSchedule from './SubSections/VestingSchedule/VestingSchedule';
 import LinearGradient from 'react-native-linear-gradient';
 
+const initialContentState = {
+  introduction: false,
+  tokenomics: false,
+  generalTokenAllocation: false,
+  tokenUtility: false,
+  valueAccrualMechanisms: false,
+  competitors: false,
+  revenueModel: false,
+  hacks: false,
+  upgrades: false,
+  dapps: false,
+};
+
 const Fundamentals = ({route}) => {
   const {activeSubCoin} = useContext(TopMenuContext);
   const initial_coin = activeSubCoin;
@@ -31,6 +44,11 @@ const Fundamentals = ({route}) => {
   const [aboutDescription, setAboutDescription] = useState('');
   const [currentContent, setCurrentContent] = useState(fundamentalsMock[coin]);
   const [sharedData, setSharedData] = useState([]);
+  const [hasContent, setHasContent] = useState(initialContentState);
+
+  const handleSectionContent = (section, value) => {
+    setHasContent({...hasContent, [section]: value});
+  };
 
   const handleAboutPress = (description = null) => {
     if (description) {
@@ -48,6 +66,7 @@ const Fundamentals = ({route}) => {
     const handleCoinUpdate = newCoin => {
       setCurrentContent(fundamentalsMock[newCoin]);
       setCoin(newCoin);
+      setHasContent(initialContentState);
       console.log(`Updating content from coin ${coin} to ${newCoin}`);
     };
 
@@ -94,18 +113,30 @@ const Fundamentals = ({route}) => {
           <SubSection
             subtitle={'Introduction'}
             content={
-              <Introduction coin={coin} getSectionData={getSectionData} />
+              <Introduction
+                coin={coin}
+                getSectionData={getSectionData}
+                handleSectionContent={handleSectionContent}
+              />
             }
             handleAboutPress={handleAboutPress}
+            hasEmptyContent={hasContent.introduction}
           />
           <SubSection
             handleAboutPress={handleAboutPress}
             subtitle={'Tokenomics'}
-            content={<Tokenomics getSectionData={getSectionData} coin={coin} />}
+            content={
+              <Tokenomics
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
+            }
             hasAbout={true}
             description={
               fundamentals_static_content.tokenomics.sectionDescription
             }
+            hasEmptyContent={hasContent.tokenomics}
           />
           <SubSection
             subtitle={'Token Distribution'}
@@ -113,8 +144,10 @@ const Fundamentals = ({route}) => {
               <GeneralTokenAllocation
                 getSectionData={getSectionData}
                 coin={coin}
+                handleSectionContent={handleSectionContent}
               />
             }
+            hasEmptyContent={hasContent.generalTokenAllocation}
             hasAbout
             handleAboutPress={handleAboutPress}
             description={
@@ -137,8 +170,13 @@ const Fundamentals = ({route}) => {
           /> */}
           <SubSection
             subtitle={'Token Utility'}
+            hasEmptyContent={hasContent.tokenUtility}
             content={
-              <TokenUtility getSectionData={getSectionData} coin={coin} />
+              <TokenUtility
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
             }
             hasAbout
             handleAboutPress={handleAboutPress}
@@ -148,8 +186,10 @@ const Fundamentals = ({route}) => {
           />
           <SubSection
             subtitle={'Value Accrual Mechanisms'}
+            hasEmptyContent={hasContent.valueAccrualMechanisms}
             content={
               <ValueAccrualMechanisms
+                handleSectionContent={handleSectionContent}
                 getSectionData={getSectionData}
                 coin={coin}
               />
@@ -162,11 +202,13 @@ const Fundamentals = ({route}) => {
             }
           />
           <SubSection
+            hasEmptyContent={hasContent.competitors}
             subtitle={'Competitors'}
             content={
               <Competitors
                 coin={coin}
                 getSectionData={getSectionData}
+                handleSectionContent={handleSectionContent}
                 tokenomicsData={sharedData}
                 subsectionsData={
                   fundamentals_static_content.competitors.subsections
@@ -181,11 +223,13 @@ const Fundamentals = ({route}) => {
             }
           />
           <SubSection
+            hasEmptyContent={hasContent.revenueModel}
             subtitle={'Revenue Model'}
             hasAbout
             handleAboutPress={handleAboutPress}
             content={
               <UpdatedRevenueModel
+                handleSectionContent={handleSectionContent}
                 getSectionData={getSectionData}
                 coin={coin}
               />
@@ -195,26 +239,47 @@ const Fundamentals = ({route}) => {
             }
           />
           <SubSection
+            hasEmptyContent={hasContent.hacks}
             hasAbout
             handleAboutPress={handleAboutPress}
             subtitle={'Hacks'}
-            content={<Hacks getSectionData={getSectionData} coin={coin} />}
+            content={
+              <Hacks
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
+            }
             description={fundamentalsMock.eth.hacks.sectionDescription}
           />
           <SubSection
             hasAbout
+            hasEmptyContent={hasContent.upgrades}
             handleAboutPress={handleAboutPress}
             subtitle={'Upgrades'}
             description={
               fundamentals_static_content.upgrades.sectionDescription
             }
-            content={<Upgrades getSectionData={getSectionData} coin={coin} />}
+            content={
+              <Upgrades
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
+            }
           />
           <SubSection
             hasAbout
+            hasEmptyContent={hasContent.dapps}
             handleAboutPress={handleAboutPress}
             subtitle={'DApps'}
-            content={<DApps getSectionData={getSectionData} coin={coin} />}
+            content={
+              <DApps
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
+            }
             description={fundamentals_static_content.dApps.sectionDescription}
           />
         </SafeAreaView>

@@ -18,13 +18,13 @@ const useTopStoriesStyles = () => {
       display: 'none',
     },
     mainTitle: {
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
     },
     titleStyles: {
       maxWidth: '85%',
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.titleColor,
       marginBottom: 2,
       fontSize: theme.responsiveFontSize,
@@ -48,6 +48,7 @@ const useTopStoriesStyles = () => {
     description: {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.font,
     },
     arrowDown: {
       width: 15,
@@ -70,8 +71,7 @@ const useTopStoriesStyles = () => {
       fontSize: theme.responsiveFontSize,
       color: theme.secondaryTextColor,
       alignSelf: 'center',
-      fontWeight: 'bold',
-      fontStyle: 'italic',
+      fontFamily: theme.fontBoldItalic,
     },
   });
   return styles;

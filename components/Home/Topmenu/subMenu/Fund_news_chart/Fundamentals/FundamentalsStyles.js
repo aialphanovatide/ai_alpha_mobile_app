@@ -15,7 +15,7 @@ const useFundamentalsStyles = () => {
       marginVertical: theme.titlesVerticalMargin * 0.5,
       marginHorizontal: 12,
       marginTop: 0,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
     },
@@ -23,7 +23,7 @@ const useFundamentalsStyles = () => {
       margin: theme.boxesVerticalMargin,
       marginHorizontal: 12,
       color: theme.titleColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       fontSize: theme.responsiveFontSize,
     },
     subSectionContent: {
@@ -59,13 +59,14 @@ const useFundamentalsStyles = () => {
     },
     buttonText: {
       color: 'white',
+      fontFamily: theme.fontMedium,
       fontSize: 16,
     },
     aboutTitle: {
       marginBottom: theme.titlesVerticalMargin,
       fontSize: theme.responsiveFontSize * 0.85,
       textAlign: 'left',
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.textColor,
     },
     modalBackground: {
@@ -106,11 +107,13 @@ const useFundamentalsStyles = () => {
     },
     modalDescription: {
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
       color: theme.textColor,
       lineHeight: 22,
     },
     readMoreText: {
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontSemibold,
       color: '#7B7BFF',
       lineHeight: 24,
       textDecorationLine: 'underline',

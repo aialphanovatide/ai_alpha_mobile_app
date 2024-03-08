@@ -16,7 +16,7 @@ const useAlertsStyles = () => {
       margin: 12,
       marginHorizontal: 24,
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.titleColor,
       alignSelf: 'flex-start',
     },
@@ -29,8 +29,7 @@ const useAlertsStyles = () => {
       textAlign: 'center',
       textAlignVertical: 'center',
       fontSize: theme.responsiveFontSize,
-      fontWeight: 'bold',
-      fontStyle: 'italic',
+      fontFamily: theme.fontBoldItalic,
       color: theme.secondaryTextColor,
       alignSelf: 'center',
     },
@@ -51,9 +50,9 @@ const useAlertsStyles = () => {
     },
     itemsTitle: {
       marginHorizontal: 4,
-      fontWeight: 'bold',
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.9,
+      fontFamily: theme.fontSemibold,
       lineHeight: 22,
     },
     noHorizontalMargin: {
@@ -64,6 +63,7 @@ const useAlertsStyles = () => {
       marginHorizontal: 4,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.font,
       lineHeight: 22,
     },
     rightContent: {
@@ -74,12 +74,13 @@ const useAlertsStyles = () => {
     rightTitle: {
       marginHorizontal: 4,
       fontSize: theme.responsiveFontSize * 0.8,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.textColor,
       lineHeight: 22,
     },
     price: {
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontSemibold,
     },
     buttonContainer: {
       flexDirection: 'row',
@@ -104,13 +105,13 @@ const useAlertsStyles = () => {
       color: theme.subMenuTextColor,
       fontSize: theme.responsiveFontSize * 0.875,
       textTransform: 'capitalize',
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
     },
     inactiveText: {
       color: theme.subMenuTextColor,
       fontSize: theme.responsiveFontSize * 0.875,
       textTransform: 'capitalize',
-      fontWeight: 'bold',
+      fontFamily: theme.font,
     },
     row: {
       flexDirection: 'row',

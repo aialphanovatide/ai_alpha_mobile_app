@@ -28,10 +28,11 @@ const useInflationRateStyles = () => {
       color: theme.subMenuTextColor,
       fontSize: theme.responsiveFontSize * 0.8,
       textAlign: 'center',
+      fontFamily: theme.fontMedium,
     },
     activeText: {
       color: theme.subMenuTextColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     container: {
       flex: 1,
@@ -46,8 +47,8 @@ const useInflationRateStyles = () => {
       paddingVertical: 8,
       paddingHorizontal: 16,
       color: theme.textColor,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontFamily: theme.fontMedium,
+      fontSize: theme.responsiveFontSize,
       borderWidth: 1,
       borderColor: theme.secondaryGrayColor,
       textAlign: 'center',

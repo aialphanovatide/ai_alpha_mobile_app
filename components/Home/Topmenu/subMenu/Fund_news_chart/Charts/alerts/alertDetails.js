@@ -8,6 +8,7 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     color: timeframe.toLowerCase().includes('bullish')
       ? theme.priceUpColor
       : theme.priceDownColor,
+      marginTop: 4,
   };
 
   const formatNumber = price => {

@@ -46,16 +46,18 @@ const CurrentMarketCap = ({competitorsData}) => {
           style={{
             axis: {stroke: theme.chartsColor},
             tickLabels: {
+              fontFamily: theme.fontMedium,
               fontSize: theme.responsiveFontSize * 0.825,
               fill: theme.textColor,
             },
           }}
-        />
+          />
         <VictoryAxis
           dependentAxis
           style={{
             axis: {stroke: theme.chartsColor},
             tickLabels: {
+              fontFamily: theme.fontMedium,
               fontSize: theme.responsiveFontSize * 0.825,
               fill: theme.secondaryTextColor,
             },

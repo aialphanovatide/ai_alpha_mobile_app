@@ -41,22 +41,14 @@ const usePrivacyPolicyStyles = () => {
       marginLeft: '6%',
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     privacyPolicyText: {
       marginHorizontal: 15,
       marginVertical: 1,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
-    },
-    userIdentifier: {
-      color: theme.textColor,
-    },
-    greenColor: {
-      color: theme.priceUpColor,
-    },
-    redColor: {
-      color: theme.priceDownColor,
+      fontFamily: theme.font,
     },
     rightArrowContainer: {
       width: 20,
@@ -133,17 +125,18 @@ const usePrivacyPolicyStyles = () => {
       flexDirection: 'row',
     },
     boldSection: {
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
+      fontSize: theme.responsiveFontSize,
     },
-    gridStyle:{
+    gridStyle: {
       width: 300,
       height: 500,
       resizeMode: 'contain',
-      marginTop:10,
+      marginTop: 10,
     },
     paddingV: {
       paddingVertical: 24,
-    }
+    },
   });
   return styles;
 };

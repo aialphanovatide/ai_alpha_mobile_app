@@ -40,22 +40,22 @@ const useUpdatedRevenueModelStyles = () => {
       fontSize: theme.titleFontSize * 0.8,
       color: theme.titleColor,
       textAlign: 'left',
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     revenueSubtitle: {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.titleColor,
       lineHeight: 22,
       textAlign: 'left',
-      fontStyle: 'italic',
+      fontFamily: theme.fontItalic,
     },
     revenueValue: {
       marginHorizontal: 10,
       fontSize: theme.titleFontSize * 0.85,
       color: theme.orangeTextColor,
-      fontWeight: 'bold',
       lineHeight: 22,
       textAlign: 'center',
+      fontFamily: theme.fontSemibold,
     },
   });
   return styles;

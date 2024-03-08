@@ -94,6 +94,7 @@ const Competitors = ({
   tokenomicsData,
   subsectionsData,
   handleAboutPress,
+  handleSectionContent,
 }) => {
   const styles = useCompetitorsStyles();
   const [competitorsData, setCompetitorsData] = useState([]);
@@ -274,6 +275,10 @@ const Competitors = ({
   const handleOptionChange = option => {
     setActiveOption(option);
   };
+
+  if (!loading && competitorsData?.length === 0) {
+    handleSectionContent('competitors', true);
+  }
 
   return (
     <View style={styles.container}>

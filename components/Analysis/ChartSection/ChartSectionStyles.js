@@ -18,7 +18,7 @@ const useChartSectionStyles = () => {
       marginHorizontal: 10,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     widgetContainer: {
       marginTop: 20,
@@ -32,6 +32,7 @@ const useChartSectionStyles = () => {
       paddingHorizontal: 8,
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
+      fontFamily: theme.fontMedium,
       textAlign: 'left',
       lineHeight: 20,
     },

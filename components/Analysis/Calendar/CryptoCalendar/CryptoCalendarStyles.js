@@ -58,11 +58,12 @@ const useCryptoCalendarStyles = () => {
     coinName: {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.75,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
       textAlign: 'center',
     },
     itemInfo: {
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.font,
       color: theme.secondaryTextColor,
       marginHorizontal: 2.5,
     },
@@ -98,9 +99,9 @@ const useCryptoCalendarStyles = () => {
     itemTitle: {
       paddingVertical: 10,
       marginHorizontal: theme.width * 0.05,
+      fontFamily: theme.fontSemibold,
       fontSize: theme.responsiveFontSize,
       color: theme.titleColor,
-      fontWeight: 'bold',
     },
     dataColumn: {
       width: '90%',
@@ -138,12 +139,13 @@ const useCryptoCalendarStyles = () => {
     },
     activeCryptoName: {
       color: theme.secondaryTextColor,
+      fontFamily: theme.fontSemibold,
     },
     cryptoName: {
       fontSize: theme.responsiveFontSize * 0.7,
       color: theme.subMenuTextColor,
+      fontFamily: theme.fontMedium,
       textAlign: 'center',
-      fontWeight: 'bold',
     },
     messageContainer: {
       width: '80%',
@@ -155,8 +157,7 @@ const useCryptoCalendarStyles = () => {
       textAlign: 'center',
       color: theme.secondaryTextColor,
       fontSize: theme.responsiveFontSize * 0.9,
-      fontWeight: 'bold',
-      fontStyle: 'italic',
+      fontFamily: theme.fontBoldItalic,
     },
     flex: {
       flex: 1,

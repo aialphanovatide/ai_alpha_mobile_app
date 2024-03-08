@@ -44,7 +44,6 @@ const TopStories = ({handleAboutPress}) => {
 
   const filterArticleTitle = summary => {
     const match = summary.match(/"([^"]+)"/);
-
     if (match && match[1]) {
       const title = match[1];
       const content = summary.replace(`"${title}"`, '').trim();
@@ -55,8 +54,8 @@ const TopStories = ({handleAboutPress}) => {
       };
     } else {
       return {
-        title: null,
-        content: null,
+        title: filterText(summary.slice(0, 120)),
+        content: summary,
       };
     }
   };
@@ -123,7 +122,7 @@ const TopStories = ({handleAboutPress}) => {
         if (!data || data.top_stories === undefined) {
           setStories([]);
         } else {
-          console.log(data.top_stories);
+          // console.log(data.top_stories);
 
           setStories(data.top_stories);
         }

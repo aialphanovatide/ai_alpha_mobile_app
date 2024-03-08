@@ -1,11 +1,10 @@
 import {View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Timeline from './Timeline/Timeline';
-import {fundamentalsMock} from '../../fundamentalsMock';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import Loader from '../../../../../../../Loader/Loader';
 
-const Hacks = ({getSectionData, coin}) => {
+const Hacks = ({getSectionData, coin, handleSectionContent}) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -31,6 +30,10 @@ const Hacks = ({getSectionData, coin}) => {
     };
     fetchHacksData();
   }, [coin]);
+
+  if (!loading && events?.length === 0) {
+    handleSectionContent('hacks', true);
+  }
 
   return (
     <View style={{flex: 1, minHeight: 500}}>

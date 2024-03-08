@@ -17,14 +17,15 @@ const useAccountStyles = () => {
     },
     headline: {
       color: theme.titleColor,
-      fontFamily: 'ArialRoundedMTBold',
       fontSize: theme.titleFontSize,
+      fontFamily: theme.fontSemibold,
       paddingVertical: 8,
       marginTop: 50,
     },
     text: {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
       textTransform: 'capitalize',
     },
     userIdentifier: {
@@ -78,8 +79,8 @@ const useAccountStyles = () => {
       width: '60%',
       paddingVertical: '2.5%',
       paddingHorizontal: 10,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontFamily: theme.fontMedium,
+      fontSize: theme.responsiveFontSize,
       color: theme.textColor,
     },
     container: {
@@ -102,9 +103,9 @@ const useAccountStyles = () => {
       margin: theme.boxesVerticalMargin,
       marginTop: 0,
       fontSize: theme.responsiveFontSize * 1.2,
+      fontFamily: theme.fontSemibold,
       color: theme.titleColor,
       textAlign: 'center',
-      fontWeight: 'bold',
     },
     row: {
       width: '80%',

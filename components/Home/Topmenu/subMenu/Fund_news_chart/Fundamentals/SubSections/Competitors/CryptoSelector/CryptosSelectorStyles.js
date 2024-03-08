@@ -22,10 +22,11 @@ const useCryptoSelectorStyles = () => {
     itemText: {
       color: theme.cryptoSelectorText,
       fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.fontMedium,
     },
     activeText: {
       color: theme.activeCryptoSelector,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
   });
   return styles;

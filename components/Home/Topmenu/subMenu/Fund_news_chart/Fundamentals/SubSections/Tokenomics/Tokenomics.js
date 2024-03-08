@@ -81,7 +81,7 @@ const HorizontalProgressBar = ({maxValue, value, styles}) => {
   );
 };
 
-const Tokenomics = ({getSectionData, coin}) => {
+const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
   const styles = useTokenomicsStyles();
   const [cryptos, setCryptos] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -138,6 +138,10 @@ const Tokenomics = ({getSectionData, coin}) => {
     };
     fetchTokenomicsData();
   }, [coin]);
+
+  if (!loading && cryptos?.length === 0) {
+    handleSectionContent('tokenomics', true);
+  }
 
   return (
     <View style={styles.container}>

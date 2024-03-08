@@ -32,7 +32,7 @@ const useBtcDominanceStyles = () => {
       marginHorizontal: 10,
       fontSize: theme.titleFontSize,
       color: theme.titleColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     chartBackgroundImage: {
       justifyContent: 'center',
@@ -55,6 +55,7 @@ const useBtcDominanceStyles = () => {
       marginVertical: theme.boxesVerticalMargin,
       paddingHorizontal: 8,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
       color: theme.textColor,
       textAlign: 'left',
       lineHeight: 20,

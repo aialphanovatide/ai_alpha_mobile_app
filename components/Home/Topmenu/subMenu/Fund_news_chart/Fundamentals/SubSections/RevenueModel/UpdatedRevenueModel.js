@@ -4,7 +4,7 @@ import useUpdatedRevenueModelStyles from './UpdatedRevenueModelStyles';
 import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
-const UpdatedRevenueModel = ({getSectionData, coin}) => {
+const UpdatedRevenueModel = ({getSectionData, coin, handleSectionContent}) => {
   const styles = useUpdatedRevenueModelStyles();
   const [revenues, setRevenues] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -68,6 +68,10 @@ const UpdatedRevenueModel = ({getSectionData, coin}) => {
     };
     fetchRevenueModelData(coin);
   }, [coin]);
+
+  if (!loading && revenues?.length === 0) {
+    handleSectionContent('revenueModel', true);
+  }
 
   return (
     <View style={styles.container}>

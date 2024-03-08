@@ -7,12 +7,15 @@ import {
   VictoryCandlestick,
   VictoryLabel,
   VictoryLine,
+  VictoryPortal,
+  VictoryContainer,
 } from 'victory-native';
 import Loader from '../../../../../Loader/Loader';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 import useChartsStyles from './ChartsStyles';
 
 const Chart = ({
+  symbol,
   chartData,
   supportLevels,
   resistanceLevels,
@@ -65,7 +68,10 @@ const Chart = ({
       );
     } else {
       const levels = [...supportLevels, ...resistanceLevels];
-      return [Math.min(...levels), Math.max(...levels)];
+      // Remove: atom usdt issue solver.
+      return symbol.toLowerCase() === 'atomusdt' && selectedInterval === '1W'
+        ? [1, Math.max(...levels)]
+        : [Math.min(...levels), Math.max(...levels)];
     }
   };
 
@@ -88,7 +94,13 @@ const Chart = ({
           containerComponent={<VictoryZoomContainer zoomDimension="x" />}
           domain={{x: domainX, y: domainY()}}
           padding={{top: 20, bottom: 60, left: 20, right: 65}}
-          domainPadding={{x: 10, y: 10}}
+          domainPadding={{
+            x: 10,
+            y:
+              symbol.toLowerCase() === 'atomusdt' && selectedInterval === '1W'
+                ? 0
+                : 10,
+          }}
           scale={{x: 'time', y: 'log'}}
           height={340}>
           <VictoryAxis
@@ -97,6 +109,7 @@ const Chart = ({
               tickLabels: {
                 fontSize: theme.responsiveFontSize * 0.725,
                 fill: theme.titleColor,
+                fontFamily: theme.font,
                 maxWidth: 10,
               },
               grid: {stroke: theme.chartsGridColor},
@@ -111,12 +124,13 @@ const Chart = ({
               axis: {stroke: theme.chartsAxisColor},
               tickLabels: {
                 fontSize: theme.responsiveFontSize * 0.725,
+                fontFamily: theme.font,
                 fill: theme.titleColor,
               },
               grid: {stroke: theme.chartsGridColor},
             }}
-            tickCount={selectedInterval === '1W' ? 12 : 8}
-            tickFormat={t => `$${formatNumber(t)}`}
+            tickCount={selectedInterval === '1W' ? 10 : 8}
+            tickFormat={t => (t > 0.01 ? `$${formatNumber(t)}` : t)}
             orientation="right"
           />
 
@@ -153,7 +167,7 @@ const Chart = ({
                     style={{
                       fill: '#F7F7F7',
                       fontSize: 11,
-                      fontWeight: 'bold',
+                      fontFamily: theme.fontMedium,
                     }}
                     backgroundPadding={[0]}
                     backgroundStyle={[
@@ -198,7 +212,7 @@ const Chart = ({
                       {
                         fill: '#F7F7F7',
                         fontSize: 11,
-                        fontWeight: 'bold',
+                        fontFamily: theme.fontMedium,
                       },
                     ]}
                   />

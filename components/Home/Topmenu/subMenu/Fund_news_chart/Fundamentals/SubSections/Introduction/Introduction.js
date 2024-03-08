@@ -19,7 +19,7 @@ const ExternalLink = ({url, text}) => {
   );
 };
 
-const Introduction = ({getSectionData, coin}) => {
+const Introduction = ({getSectionData, coin, handleSectionContent}) => {
   const styles = useIntroductionStyles();
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -52,6 +52,9 @@ const Introduction = ({getSectionData, coin}) => {
     fetchIntroductionContent();
   }, [coin]);
 
+  if (!loading && (content === null || content.length === 0)) {
+    handleSectionContent('introduction', true);
+  }
   return (
     <View style={styles.container}>
       {loading ? (

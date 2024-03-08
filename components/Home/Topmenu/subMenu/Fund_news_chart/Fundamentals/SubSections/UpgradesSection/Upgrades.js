@@ -4,7 +4,7 @@ import Timeline from '../Hacks/Timeline/Timeline';
 import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
-const Upgrades = ({getSectionData, coin}) => {
+const Upgrades = ({getSectionData, coin, handleSectionContent}) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,6 +41,10 @@ const Upgrades = ({getSectionData, coin}) => {
     };
     fetchUpgradesData();
   }, [coin]);
+
+  if (!loading && events?.length === 0) {
+    handleSectionContent('upgrades', true);
+  }
 
   return (
     <SafeAreaView style={{flex: 1}}>

@@ -17,6 +17,7 @@ const useDeleteAccountStyles = () => {
     text: {
       marginTop: '40%',
       marginBottom: '5%',
+      fontFamily: theme.fontMedium,
       fontSize: theme.titleFontSize,
       color: theme.textColor,
     },

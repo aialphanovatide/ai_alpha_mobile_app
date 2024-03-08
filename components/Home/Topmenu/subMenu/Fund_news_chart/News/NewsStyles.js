@@ -16,9 +16,9 @@ const useNewsStyles = () => {
     title: {
       marginVertical: 10,
       marginHorizontal: 10,
-      fontWeight: 'bold',
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
+      fontFamily: theme.fontSemibold,
     },
     itemContainer: {
       marginVertical: 5,
@@ -44,14 +44,15 @@ const useNewsStyles = () => {
     itemTitle: {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.9,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       lineHeight: 22,
       textAlign: 'left',
     },
     summary: {
       fontSize: theme.responsiveFontSize * 0.825,
       color: theme.textColor,
-      margin: 5,
+      fontFamily: theme.fontMedium,
+      margin: 4,
     },
     article: {
       flex: 1,
@@ -74,8 +75,8 @@ const useNewsStyles = () => {
       marginHorizontal: 20,
       fontSize: theme.responsiveFontSize * 1.075,
       color: theme.textColor,
+      fontFamily: theme.fontSemibold,
       textAlign: 'left',
-      fontWeight: 'bold',
       lineHeight: 22,
     },
     articleDate: {
@@ -83,7 +84,7 @@ const useNewsStyles = () => {
       textAlign: 'left',
       fontSize: theme.responsiveFontSize * 0.825,
       color: theme.secondaryTextColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       lineHeight: 22,
     },
     articleSummary: {
@@ -91,6 +92,7 @@ const useNewsStyles = () => {
       marginHorizontal: 20,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.85,
+      fontFamily: theme.fontMedium,
       textAlign: 'left',
       lineHeight: 22,
     },
@@ -115,13 +117,13 @@ const useNewsStyles = () => {
     filterText: {
       color: theme.subMenuTextColor,
       textTransform: 'capitalize',
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
       fontSize: theme.responsiveFontSize * 0.8,
     },
     activeButtonText: {
       color: theme.subMenuTextColor,
       textTransform: 'capitalize',
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       fontSize: theme.responsiveFontSize * 0.8,
     },
     marginVertical: {
@@ -139,8 +141,7 @@ const useNewsStyles = () => {
       fontSize: theme.responsiveFontSize,
       color: theme.secondaryTextColor,
       alignSelf: 'center',
-      fontWeight: 'bold',
-      fontStyle: 'italic',
+      fontFamily: theme.fontBoldItalic,
     },
     titleRow: {
       width: '100%',

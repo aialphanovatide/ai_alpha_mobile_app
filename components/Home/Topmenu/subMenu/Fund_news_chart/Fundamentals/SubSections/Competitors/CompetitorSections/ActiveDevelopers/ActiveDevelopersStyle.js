@@ -20,8 +20,8 @@ const useActiveDevelopersStyles = () => {
     itemName: {
       color: theme.inactiveTextColor,
       marginHorizontal: 10,
-      fontSize: theme.responsiveFontSize * 0.875,
-      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
     },
     image: {
       flex: 1,
@@ -49,7 +49,7 @@ const useActiveDevelopersStyles = () => {
       left: '55%',
       alignSelf: 'center',
       fontSize: theme.titleFontSize * 0.85,
-      fontWeight: 'bold',
+      fontFamily: theme.fontBold,
     },
   });
   return styles;

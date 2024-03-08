@@ -34,8 +34,8 @@ const useAprStyles = () => {
     },
     activeOptionValue: {
       color: theme.textColor,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontFamily: theme.fontMedium,
+      fontSize: theme.responsiveFontSize,
       textAlign: 'center',
     },
     overlay: {

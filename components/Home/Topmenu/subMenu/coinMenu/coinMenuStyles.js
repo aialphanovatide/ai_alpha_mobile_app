@@ -52,10 +52,11 @@ const useCoinMenuStyles = () => {
       color: theme.inactiveColor,
       textTransform: 'uppercase',
       fontSize: theme.responsiveFontSize * 0.925,
-      fontWeight: '500',
+      fontFamily: theme.fontMedium,
     },
     activeButtonText: {
       color: theme.activeWhite,
+      fontFamily: theme.fontSemibold,
     },
   });
   return styles;

@@ -26,14 +26,6 @@ const useAnalysisStyles = () => {
       marginHorizontal: 16,
       padding: 16,
       backgroundColor: theme.boxesBackgroundColor,
-      // shadowColor: '#000',
-      // shadowOffset: {
-      //   width: 1,
-      //   height: 1,
-      // },
-      // shadowOpacity: 0.125,
-      // shadowRadius: 1,
-      // elevation: 2,
     },
     analysisIconContainer: {
       width: 30,
@@ -49,10 +41,10 @@ const useAnalysisStyles = () => {
     itemText: {
       width: '60%',
       paddingHorizontal: 10,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
       fontSize: theme.responsiveFontSize,
       color: theme.textColor,
-      alignSelf: 'center'
+      alignSelf: 'center',
     },
     rateValueContainer: {
       position: 'absolute',
@@ -76,7 +68,7 @@ const useAnalysisStyles = () => {
       marginVertical: 16,
       marginTop: 64,
       fontSize: theme.responsiveFontSize * 1.5,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.titleColor,
     },
     emphasizedItem: {
@@ -97,9 +89,9 @@ const useAnalysisStyles = () => {
       textAlign: 'center',
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
+      fontFamily: theme.fontMedium,
       alignSelf: 'center',
       borderRadius: 5,
-      
     },
   });
   return styles;

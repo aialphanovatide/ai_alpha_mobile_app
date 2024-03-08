@@ -50,8 +50,8 @@ const useTimelineStyles = () => {
       width: 40,
       marginTop: 24,
       paddingHorizontal: 4,
-      fontWeight: 'bold',
       fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.fontSemibold,
       color: theme.fundamentalsMenuText,
       alignSelf: 'flex-start',
       overflow: 'visible',
@@ -64,11 +64,12 @@ const useTimelineStyles = () => {
       fontSize: theme.responsiveFontSize * 0.9,
       color: theme.textColor,
       lineHeight: 20,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold
     },
     descriptionText: {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.fontMedium,
       lineHeight: 20,
     },
     infoContainer: {
@@ -76,13 +77,14 @@ const useTimelineStyles = () => {
     },
     infoTitle: {
       color: theme.orange,
-      fontWeight: '600',
+      fontFamily: theme.fontSemibold,
       fontSize: theme.responsiveFontSize * 0.85,
       lineHeight: 16,
     },
     infoContent: {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.825,
+      fontFamily: theme.font,
       lineHeight: 16,
     },
     timelineArrow: {

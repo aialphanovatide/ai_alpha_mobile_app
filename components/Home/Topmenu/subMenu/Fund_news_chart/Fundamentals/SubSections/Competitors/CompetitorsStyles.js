@@ -39,10 +39,11 @@ const useCompetitorsStyles = () => {
       color: theme.fundamentalsMenuText,
       textAlign: 'center',
       fontSize: theme.responsiveFontSize * 0.725,
+      fontFamily: theme.fontMedium,
     },
     activeItem: {
       color: theme.orange,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     competitorSection: {
       flex: 1,
@@ -53,7 +54,7 @@ const useCompetitorsStyles = () => {
       marginHorizontal: theme.titlesVerticalMargin,
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize * 0.95,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     row: {
       width: '100%',
@@ -66,8 +67,7 @@ const useCompetitorsStyles = () => {
       fontSize: theme.responsiveFontSize,
       color: theme.secondaryTextColor,
       alignSelf: 'center',
-      fontWeight: 'bold',
-      fontStyle: 'italic',
+      fontFamily: theme.fontBoldItalic,
     },
     emptyMessageContainer: {
       flex: 1,
@@ -76,7 +76,7 @@ const useCompetitorsStyles = () => {
     },
     loaderWrapper: {
       paddingVertical: 48,
-    }
+    },
   });
   return styles;
 };

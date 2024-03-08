@@ -77,7 +77,7 @@ const ProtocolItem = ({
           <Text style={styles.protocolName}>{protocol.name}</Text>
           <Text style={styles.tvl}>
             TVL:
-            {`$${formatNumber(protocol.tvl)}`}
+            {` $${formatNumber(protocol.tvl)}`}
           </Text>
         </View>
         <Text
@@ -106,7 +106,7 @@ const ProtocolItem = ({
   );
 };
 
-const DApps = ({getSectionData, coin}) => {
+const DApps = ({getSectionData, coin, handleSectionContent}) => {
   const styles = useDappsStyles();
   const [activeProtocol, setActiveProtocol] = useState(null);
   const [mappedData, setMappedData] = useState([]);
@@ -157,6 +157,11 @@ const DApps = ({getSectionData, coin}) => {
       setActiveProtocol(protocol);
     }
   };
+
+  if (!loading && mappedData?.length === 0) {
+    handleSectionContent('dapps', true);
+  }
+
   return (
     <View>
       {loading ? (

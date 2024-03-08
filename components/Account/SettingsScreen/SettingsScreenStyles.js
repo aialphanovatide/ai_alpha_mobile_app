@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 import {StyleSheet} from 'react-native';
-import { AppThemeContext } from '../../../context/themeContext';
+import {AppThemeContext} from '../../../context/themeContext';
 
 const useSettingsScreenStyles = () => {
   const {theme} = useContext(AppThemeContext);
@@ -20,8 +20,8 @@ const useSettingsScreenStyles = () => {
       marginVertical: '5%',
       marginLeft: '6%',
       color: theme.titleColor,
-      fontSize: 25,
-      fontWeight: 'bold',
+      fontSize: theme.titleFontSize,
+      fontFamily: theme.fontSemibold,
     },
     headline: {
       color: theme.titleColor,
@@ -34,6 +34,7 @@ const useSettingsScreenStyles = () => {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
       textTransform: 'capitalize',
+      fontFamily: theme.fontMedium,
     },
     userIdentifier: {
       color: theme.textColor,
@@ -85,8 +86,8 @@ const useSettingsScreenStyles = () => {
       width: '70%',
       paddingVertical: '2.5%',
       paddingHorizontal: 10,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
       color: theme.textColor,
     },
     container: {
@@ -118,7 +119,7 @@ const useSettingsScreenStyles = () => {
     },
     paddingV: {
       paddingVertical: 24,
-    }
+    },
   });
   return styles;
 };

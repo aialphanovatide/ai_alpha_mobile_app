@@ -34,8 +34,8 @@ const useTransactionFeeStyles = () => {
     },
     activeOptionValue: {
       color: theme.textColor,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
       textAlign: 'center',
     },
     overlay: {

@@ -59,7 +59,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIImageName</key>
@@ -72,7 +72,7 @@
 		<string>armv7</string>
 	</array>
 	<key>UIStatusBarStyle</key>
-	<string></string>
+	<string/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -81,5 +81,26 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>prompt_black.ttf</string>
+		<string>prompt_black_italic.ttf</string>
+		<string>prompt_bold.ttf</string>
+		<string>prompt_bold_italic.ttf</string>
+		<string>prompt_extra_bold.ttf</string>
+		<string>prompt_extra_bold_italic.ttf</string>
+		<string>prompt_extra_light.ttf</string>
+		<string>prompt_extra_light_italic.ttf</string>
+		<string>prompt_italic.ttf</string>
+		<string>prompt_light.ttf</string>
+		<string>prompt_light_italic.ttf</string>
+		<string>prompt_medium.ttf</string>
+		<string>prompt_medium_italic.ttf</string>
+		<string>prompt_regular.ttf</string>
+		<string>prompt_semibold.ttf</string>
+		<string>prompt_semibold_italic.ttf</string>
+		<string>prompt_thin.ttf</string>
+		<string>prompt_thin_italic.ttf</string>
+	</array>
 </dict>
 </plist>

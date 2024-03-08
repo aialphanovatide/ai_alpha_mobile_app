@@ -45,8 +45,8 @@ const useRevenueStyles = () => {
     },
     itemText: {
       color: theme.fundamentalsCompetitorsLabelColor,
-      fontSize: theme.responsiveFontSize * 0.7,
-      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
       alignSelf: 'center',
     },
     bgImage: {

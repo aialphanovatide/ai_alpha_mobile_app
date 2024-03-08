@@ -31,7 +31,7 @@ const usePackageSubscriptionStyles = () => {
       marginVertical: theme.titlesVerticalMargin,
       color: theme.titleColor,
       fontSize: theme.titleFontSize * 1.25,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       textAlign: 'center',
       alignSelf: 'flex-start',
     },
@@ -43,11 +43,12 @@ const usePackageSubscriptionStyles = () => {
     text: {
       color: theme.subscriptions.title,
       fontSize: theme.responsiveFontSize * 0.9,
+      fontFamily: theme.font,
       textAlign: 'left',
       lineHeight: 22,
     },
     bold: {
-      fontWeight: 'bold',
+      fontFamily: theme.fontBold,
     },
     orange: {
       color: theme.orange,
@@ -56,11 +57,12 @@ const usePackageSubscriptionStyles = () => {
     secondaryText: {
       color: theme.subscriptions.secondaryText,
       fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.font,
       lineHeight: 22,
     },
     reference: {
       top: 30,
-      fontStyle: 'italic',
+      fontFamily: theme.fontItalic,
       fontSize: theme.responsiveFontSize * 0.7,
     },
     foundersReference: {
@@ -87,6 +89,7 @@ const usePackageSubscriptionStyles = () => {
     purchaseButtonText: {
       color: theme.subscriptions.purchaseButtonText,
       fontSize: theme.titleFontSize * 0.8,
+      fontFamily: theme.fontMedium,
       textAlign: 'center',
     },
     itemContainer: {
@@ -124,7 +127,7 @@ const usePackageSubscriptionStyles = () => {
       margin: 8,
       color: theme.subscriptions.text,
       fontSize: theme.titleFontSize * 0.8,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     itemDescriptionContainer: {
       paddingTop: 8,
@@ -135,6 +138,7 @@ const usePackageSubscriptionStyles = () => {
       marginHorizontal: 8,
       marginTop: 4,
       color: theme.subscriptions.text,
+      fontFamily: theme.fontMedium,
       fontSize: theme.responsiveFontSize * 0.75,
       textAlign: 'left',
       lineHeight: 22,
@@ -185,7 +189,9 @@ const usePackageSubscriptionStyles = () => {
     },
     activePurchaseButtonText: {
       color: '#FFFFFF',
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
+      fontSize: theme.titleFontSize * 0.85,
+
     },
   });
   return styles;

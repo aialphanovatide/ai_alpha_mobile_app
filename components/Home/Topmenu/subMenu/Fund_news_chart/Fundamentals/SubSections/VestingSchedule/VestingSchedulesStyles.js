@@ -19,7 +19,7 @@ const useVestingShedulesStyles = () => {
       marginHorizontal: 10,
       fontSize: theme.responsiveFontSize,
       color: theme.textColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     tokenDataContainer: {
       flex: 1,
@@ -48,12 +48,13 @@ const useVestingShedulesStyles = () => {
       marginHorizontal: 4,
       color: theme.whiteTextColor,
       fontSize: theme.responsiveFontSize * 0.85,
+      fontFamily: theme.fontMedium,
     },
     bigText: {
       marginVertical: 8,
       fontSize: theme.responsiveFontSize * 1.5,
       color: theme.titleColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     unlockIcon: {
       padding: 8,

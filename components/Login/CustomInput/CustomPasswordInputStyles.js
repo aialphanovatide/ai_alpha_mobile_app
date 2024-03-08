@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { StyleSheet } from 'react-native';
-import { AppThemeContext } from '../../../context/themeContext';
+import React, {useContext} from 'react';
+import {StyleSheet} from 'react-native';
+import {AppThemeContext} from '../../../context/themeContext';
 
 const CustomPasswordInputStyles = () => {
-  const { theme } = useContext(AppThemeContext);
+  const {theme} = useContext(AppThemeContext);
 
   const styles = StyleSheet.create({
     container: {
@@ -22,6 +22,7 @@ const CustomPasswordInputStyles = () => {
     input: {
       flex: 1,
       fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
       color: theme.inputColor,
     },
     eyeIconContainer: {
