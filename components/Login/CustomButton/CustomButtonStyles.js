@@ -53,7 +53,7 @@ const useCustomButtonStyles = () => {
       borderColor: theme.orange,
     },
     text: {
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
       fontSize: 15,
       color: theme.signUpButtonText,
     },

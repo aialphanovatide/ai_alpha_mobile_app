@@ -28,7 +28,11 @@ const ContentItem = ({data, styles}) => {
   );
 };
 
-const ValueAccrualMechanisms = ({getSectionData, coin}) => {
+const ValueAccrualMechanisms = ({
+  getSectionData,
+  coin,
+  handleSectionContent,
+}) => {
   const styles = useVAMStyles();
   const {isDarkMode} = useContext(AppThemeContext);
   const [dataItems, setDataItems] = useState([]);
@@ -104,6 +108,10 @@ const ValueAccrualMechanisms = ({getSectionData, coin}) => {
     };
     fetchValueAccrualMechanisms(coin);
   }, [coin, isDarkMode]);
+
+  if (!loading && dataItems?.length === 0) {
+    handleSectionContent('valueAccrualMechanisms', true);
+  }
 
   return (
     <View style={styles.container}>

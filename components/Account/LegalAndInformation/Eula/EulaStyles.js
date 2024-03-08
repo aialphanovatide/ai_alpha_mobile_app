@@ -42,13 +42,14 @@ const useEulaStyles = () => {
       marginLeft: '6%',
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     privacyPolicyText: {
       marginHorizontal: 15,
       marginVertical: 1,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.font,
     },
     userIdentifier: {
       color: theme.textColor,
@@ -134,7 +135,8 @@ const useEulaStyles = () => {
       flexDirection: 'row',
     },
     boldSection: {
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
+      fontSize: theme.responsiveFontSize,
     },
     gridStyle: {
       width: 300,

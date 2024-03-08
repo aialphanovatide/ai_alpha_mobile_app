@@ -27,24 +27,24 @@ const useHomeStyles = () => {
     menuItem: {
       width: '33.33%',
       backgroundColor: theme.subMenuBgColor,
-      borderRadius: 6,
+      borderRadius: 2,
       overflow: 'hidden',
     },
     menuItemText: {
       marginVertical: 4,
       textAlign: 'center',
-      fontSize: theme.responsiveFontSize * 0.825,
+      fontSize: theme.responsiveFontSize * 0.875,
       color: theme.subMenuTextColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium
     },
     activeItem: {
       backgroundColor: theme.activeWhite,
       borderColor: theme.subMenuBgColor,
       borderWidth: 2,
-      borderRadius: 5,
+      borderRadius: 2,
     },
     activeText: {
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.subMenuTextColor,
     },
     flex: {

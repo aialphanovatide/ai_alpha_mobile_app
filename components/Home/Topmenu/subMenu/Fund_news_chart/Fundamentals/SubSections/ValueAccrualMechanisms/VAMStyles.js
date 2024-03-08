@@ -51,7 +51,7 @@ const useVAMStyles = () => {
       marginHorizontal: 8,
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize * 0.95,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
       padding: 5,
     },
     dataRow: {
@@ -76,6 +76,7 @@ const useVAMStyles = () => {
       flex: 1,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.font,
       lineHeight: 18,
       textAlign: 'left',
     },

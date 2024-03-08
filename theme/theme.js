@@ -90,6 +90,12 @@ export const lightThemeStyles = {
   activeSRButtonColor: '#80290E',
   boxesVerticalMargin: 8,
   titlesVerticalMargin: 24,
+  font: 'prompt_regular',
+  fontBold: 'prompt_bold',
+  fontItalic: 'prompt_italic',
+  fontMedium: 'prompt_medium',
+  fontSemibold: 'prompt_semibold',
+  fontBoldItalic: 'prompt_semibold_italic'
 };
 
 export const darkThemeStyles = {
@@ -180,4 +186,10 @@ export const darkThemeStyles = {
   activeSRButtonColor: '#FAFAFA',
   boxesVerticalMargin: 8,
   titlesVerticalMargin: 24,
+  font: 'prompt_regular',
+  fontBold: 'prompt_bold',
+  fontItalic: 'prompt_italic',
+  fontMedium: 'prompt_medium',
+  fontSemibold: 'prompt_semibold',
+  fontBoldItalic: 'prompt_semibold_italic'
 };

@@ -15,14 +15,15 @@ const useDailyActiveUsersStyles = () => {
     label: {
       marginHorizontal: 4,
       textAlign: 'center',
-      fontSize: theme.responsiveFontSize * 0.825,
+      fontSize: theme.responsiveFontSize * 0.9,
       color: theme.textColor,
+      fontFamily: theme.fontSemibold,
     },
     labelOrange: {
-      marginHorizontal: 24,
+      marginHorizontal: 40,
       textAlign: 'center',
-      fontWeight: 'bold',
-      fontSize: theme.titleFontSize * 0.85,
+      fontSize: theme.titleFontSize,
+      fontFamily: theme.fontSemibold,
     },
     row: {
       position: 'relative',
@@ -58,8 +59,8 @@ const useDailyActiveUsersStyles = () => {
     itemName: {
       color: theme.inactiveTextColor,
       marginHorizontal: 10,
-      fontSize: theme.responsiveFontSize * 0.875,
-      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
     },
     image: {
       flex: 1,

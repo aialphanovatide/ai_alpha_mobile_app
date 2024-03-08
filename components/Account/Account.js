@@ -69,7 +69,7 @@ const Account = ({route}) => {
   // Account menu!!
   const options = [
     {
-      name: 'Subscriptions',
+      name: 'Subscriptions Options',
       logo: require('../../assets/images/account/subscription.png'),
       screenName: 'Subscriptions',
       component: null,
@@ -109,7 +109,7 @@ const Account = ({route}) => {
       case 'Settings':
         navigation.navigate('SettingsScreen');
         break;
-      case 'Subscriptions':
+      case 'Subscriptions Options':
         navigation.navigate(option.screenName);
         break;
       case 'Legal and Information':
@@ -315,15 +315,8 @@ async function Buy_now() {
               />
             </View>
             <Text style={styles.username}>
-              {/*{userEmail || 'User not available'}*/}
               {userEmail || ' '}
             </Text>
-            {/* <Text style={styles.headline}>User Subscriptions</Text>
-          <Text style={styles.text}>
-            {userInfo.entitlements.length > 0
-              ? formatUserEntitlements(userInfo.entitlements)
-              : 'There are no active subscriptions.'}
-          </Text> */}
             <View style={styles.optionsContainer}>
               {options &&
                 options.map((option, index) => (

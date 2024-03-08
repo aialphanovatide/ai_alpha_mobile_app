@@ -29,8 +29,8 @@ const useTypeOfTokenStyles = () => {
     tokenName: {
       color: theme.textColor,
       marginHorizontal: 10,
-      fontSize: theme.responsiveFontSize * 0.9,
-      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
     },
     buttonContainer: {
       width: '100%',
@@ -52,6 +52,7 @@ const useTypeOfTokenStyles = () => {
       textAlign: 'center',
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.825,
+      fontFamily: theme.fontMedium,
     },
   });
   return styles;

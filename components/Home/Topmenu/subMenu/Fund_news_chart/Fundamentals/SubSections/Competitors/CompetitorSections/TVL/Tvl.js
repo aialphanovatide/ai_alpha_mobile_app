@@ -105,7 +105,8 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
               style={{
                 axis: {stroke: theme.chartsColor},
                 tickLabels: {
-                  fontSize: theme.responsiveFontSize * 0.825,
+                  fontSize: theme.responsiveFontSize * 0.85,
+                  fontFamily: theme.fontMedium,
                   fill: theme.titleColor,
                 },
               }}
@@ -115,7 +116,8 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
               style={{
                 axis: {stroke: theme.chartsColor},
                 tickLabels: {
-                  fontSize: theme.responsiveFontSize * 0.825,
+                  fontFamily: theme.fontMedium,
+                  fontSize: theme.responsiveFontSize * 0.85,
                   fill: theme.secondaryTextColor,
                 },
                 grid: {stroke: theme.chartsColor},

@@ -26,7 +26,7 @@ const TokenUtilityItem = ({styles, data}) => {
   );
 };
 
-const TokenUtility = ({getSectionData, coin, content}) => {
+const TokenUtility = ({getSectionData, coin, handleSectionContent}) => {
   const styles = useTokenUtilityStyles();
   const {isDarkMode} = useContext(AppThemeContext);
   const [dataItems, setDataItems] = useState([]);
@@ -93,6 +93,11 @@ const TokenUtility = ({getSectionData, coin, content}) => {
     };
     fetchTokenUtilities(coin);
   }, [coin, isDarkMode]);
+
+  if (!loading && dataItems?.length === 0) {
+    handleSectionContent('tokenUtility', true);
+  }
+
   return (
     <View style={styles.container}>
       {loading ? (

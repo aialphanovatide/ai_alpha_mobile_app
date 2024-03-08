@@ -11,7 +11,10 @@ export const AboutIcon = ({
   return (
     <TouchableOpacity
       onPress={() => handleAboutPress(description)}
-      style={[additionalStyles ? additionalStyles : {}, styles.aboutIconWrapper]}>
+      style={[
+        styles.aboutIconWrapper,
+        additionalStyles ? additionalStyles : {},
+      ]}>
       <Image
         source={require('../../../../../../assets/images/fundamentals/about-icon.png')}
         resizeMode="contain"

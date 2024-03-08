@@ -67,7 +67,7 @@ const HomeScreen = () => {
           tabBarLabelStyle: {
             marginBottom: 10,
             fontSize: theme.responsiveFontSize * 0.8,
-            fontWeight: 'bold',
+            fontFamily: theme.fontSemibold
           },
         }}>
         <Tab.Screen

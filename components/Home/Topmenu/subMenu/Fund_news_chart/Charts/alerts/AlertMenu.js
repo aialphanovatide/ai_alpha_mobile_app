@@ -8,6 +8,11 @@ import {home_static_data} from '../../../../../homeStaticData';
 const AlertMenu = ({activeAlertOption, setActiveButtons}) => {
   const {handleAboutPress} = useContext(AboutModalContext);
   const styles = useChartsStyles();
+  const aboutIconAdditionalStyles = {
+    position: 'relative',
+    marginHorizontal: 14,
+    paddingLeft: 32,
+  };
   return (
     <View style={styles.alertMenuContainer}>
       <View style={styles.titleRow}>
@@ -15,29 +20,30 @@ const AlertMenu = ({activeAlertOption, setActiveButtons}) => {
         <AboutIcon
           handleAboutPress={handleAboutPress}
           description={home_static_data.alerts.sectionDescription}
+          additionalStyles={aboutIconAdditionalStyles}
         />
-      </View>
-      <View style={styles.alertMenuButtonContainer}>
-        {['today', 'this week', 'last week'].map(option => (
-          <TouchableOpacity
-            key={option}
-            onPress={() => setActiveButtons(option)}
-            style={[
-              styles.alertMenuButton,
-              activeAlertOption === option
-                ? styles.alertMenuActiveButton
-                : null,
-            ]}>
-            <Text
-              style={
+        <View style={styles.alertMenuButtonContainer}>
+          {['today', 'this week', 'last week'].map(option => (
+            <TouchableOpacity
+              key={option}
+              onPress={() => setActiveButtons(option)}
+              style={[
+                styles.alertMenuButton,
                 activeAlertOption === option
-                  ? styles.alertMenuActiveText
-                  : styles.alertMenuInactiveText
-              }>
-              {option}
-            </Text>
-          </TouchableOpacity>
-        ))}
+                  ? styles.alertMenuActiveButton
+                  : null,
+              ]}>
+              <Text
+                style={
+                  activeAlertOption === option
+                    ? styles.alertMenuActiveText
+                    : styles.alertMenuInactiveText
+                }>
+                {option}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
     </View>
   );

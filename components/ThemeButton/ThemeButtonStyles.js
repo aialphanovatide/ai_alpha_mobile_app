@@ -39,8 +39,8 @@ const useThemeButtonStyles = () => {
       width: '60%',
       paddingVertical: '2.5%',
       paddingHorizontal: 5,
-      fontWeight: 'bold',
       fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
       color: theme.textColor,
     },
     switchContainer: {

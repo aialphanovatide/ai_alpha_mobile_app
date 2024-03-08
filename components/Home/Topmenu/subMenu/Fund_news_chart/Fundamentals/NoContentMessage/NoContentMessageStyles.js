@@ -17,9 +17,8 @@ const useNoContentMessageStyles = () => {
     message: {
       color: theme.secondaryTextColor,
       textAlign: 'center',
-      fontStyle: 'italic',
       fontSize: theme.responsiveFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontBoldItalic,
     },
   });
   return styles;

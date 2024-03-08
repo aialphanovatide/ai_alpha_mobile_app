@@ -31,19 +31,20 @@ const useCirculatingSupplyStyles = () => {
     referenceLabel: {
       width: '40%',
       marginHorizontal: 12,
-      paddingHorizontal: 8,
       paddingVertical: 2,
-      fontSize: theme.responsiveFontSize * 0.725,
+      fontSize: theme.responsiveFontSize * 0.75,
       lineHeight: 20,
       borderRadius: 4,
       color: theme.whiteTextColor,
+      fontFamily: theme.fontMedium,
       textAlign: 'center'
     },
     symbolLabel: {
       paddingHorizontal: 10,
       paddingVertical: 2,
       color: theme.textColor,
-      fontSize: theme.responsiveFontSize * 0.725,
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.font,
       borderColor: theme.textColor,
       borderWidth: 1,
       textAlign: 'left',
@@ -75,19 +76,21 @@ const useCirculatingSupplyStyles = () => {
       tintColor: theme.textColor,
     },
     valueLabel: {
-      fontSize: theme.responsiveFontSize * 0.75,
+      fontSize: theme.responsiveFontSize * 0.9,
       color: theme.secondaryTextColor,
+      fontFamily: theme.font,
     },
     labelBottom: {
       marginLeft: '45%',
       marginTop: 2,
       flex: 1,
-      fontSize: theme.responsiveFontSize * 0.925,
+      fontSize: theme.responsiveFontSize,
       color: theme.orange,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     text: {
       color: theme.textColor,
+      fontFamily: theme.fontMedium,
     },
     orange: {
       color: theme.activeOrange,
@@ -126,8 +129,8 @@ const useCirculatingSupplyStyles = () => {
     itemName: {
       color: theme.inactiveTextColor,
       marginHorizontal: 10,
-      fontSize: theme.responsiveFontSize * 0.9,
-      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
     },
     image: {
       flex: 1,
@@ -144,6 +147,7 @@ const useCirculatingSupplyStyles = () => {
     inflationaryLabel: {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
+      fontFamily: theme.fontMedium,
     },
     noVerticalMargin: {
       marginVertical: 0,

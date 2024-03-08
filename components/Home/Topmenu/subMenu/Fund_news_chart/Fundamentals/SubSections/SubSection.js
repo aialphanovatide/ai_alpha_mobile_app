@@ -6,12 +6,17 @@ import NoContentMessage from '../NoContentMessage/NoContentMessage';
 
 const SubSection = ({
   subtitle,
+  hasEmptyContent,
   content,
   hasAbout,
   handleAboutPress,
   description,
 }) => {
   const styles = useFundamentalsStyles();
+  if (hasEmptyContent === true) {
+    return <></>;
+  }
+
   return (
     <View style={styles.subSection}>
       <View style={styles.row}>

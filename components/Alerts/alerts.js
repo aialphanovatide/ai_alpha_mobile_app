@@ -66,6 +66,7 @@ const Alerts = ({route, navigation}) => {
   const {categories} = useContext(CategoriesContext);
 
   useEffect(() => {
+    console.log(activeCoin, activeSubCoin);
     if (route.params) {
       const paramsBotName = route.params.botName;
       setBotName(paramsBotName);
@@ -80,7 +81,7 @@ const Alerts = ({route, navigation}) => {
         : activeCoin.coin_bots[0].botName;
       setBotName(context_bot_name);
     }
-  }, [activeSubCoin]);
+  }, [activeSubCoin, route.params]);
 
   // This useEffect handles the content regulation
   useEffect(() => {
@@ -102,6 +103,7 @@ const Alerts = ({route, navigation}) => {
           found_subscribed_categories.push(category);
         }
       });
+      console.log('Found subscribed categories: ', found_subscribed_categories);
       setSubscribedCategories(found_subscribed_categories);
     }
   }, [activeCoin, userInfo]);
@@ -157,27 +159,13 @@ const Alerts = ({route, navigation}) => {
         setIsLoading(false);
       }
     };
-    botName && botName !== undefined
+    Object.keys(activeCoin) > 0
       ? fetchAlertsByCoin()
       : fetchAlertsBySubscriptions();
   }, [botName, activeAlertOption]);
 
   const handleOptionChange = option => {
     setActiveAlertOption(option);
-  };
-
-  const filterAlertsByCategoryBotId = (subscribedCategories, alerts) => {
-    let subscribed_bots = [];
-    subscribedCategories.forEach(category => {
-      category.coin_bots.forEach(bot => subscribed_bots.push(bot.bot_id));
-    });
-    const filtered_alerts = [];
-    alerts.forEach(alert => {
-      if (subscribed_bots.includes(alert.coin_bot_id)) {
-        filtered_alerts.push(alert);
-      }
-    });
-    return filtered_alerts;
   };
 
   return (

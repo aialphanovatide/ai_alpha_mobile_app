@@ -34,7 +34,11 @@ const GeneralTokenData = ({data, handleTokenChange, styles, colors}) => {
   );
 };
 
-const GeneralTokenAllocation = ({getSectionData, coin}) => {
+const GeneralTokenAllocation = ({
+  getSectionData,
+  coin,
+  handleSectionContent,
+}) => {
   const colors = [
     '#451205',
     '#A02E0C',
@@ -105,6 +109,10 @@ const GeneralTokenAllocation = ({getSectionData, coin}) => {
   const currentTokenIndex = percentagesData.findIndex(
     values => values.title === currentToken?.title,
   );
+
+  if (!loading && percentagesData?.length === 0) {
+    handleSectionContent('generalTokenAllocation', true);
+  }
 
   return (
     <View style={styles.container}>

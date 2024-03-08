@@ -22,8 +22,8 @@ const useCalendarSubMenuStyles = () => {
       marginVertical: 5,
       textAlign: 'center',
       fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.font,
       color: theme.subMenuTextColor,
-      fontWeight: 'bold',
     },
     activeItem: {
       backgroundColor: theme.activeWhite,
@@ -32,7 +32,7 @@ const useCalendarSubMenuStyles = () => {
       borderRadius: 4,
     },
     activeText: {
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
       color: theme.filterTextColor,
     },
   });

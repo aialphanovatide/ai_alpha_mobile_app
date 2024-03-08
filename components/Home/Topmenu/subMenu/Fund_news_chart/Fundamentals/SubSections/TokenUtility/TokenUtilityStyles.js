@@ -20,7 +20,7 @@ const useTokenUtilityStyles = () => {
       marginHorizontal: 8,
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize * 0.95,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
       padding: 5,
     },
     dataRow: {
@@ -41,6 +41,7 @@ const useTokenUtilityStyles = () => {
       flex: 1,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.font,
       textAlign: 'left',
     },
   });

@@ -9,40 +9,12 @@ const useLegalStyles = () => {
       flex: 1,
       backgroundColor: 'transparent',
     },
-    page: {
-      alignItems: 'center',
-      flex: 1,
-      justifyContent: 'space-between',
-      padding: 36,
-      color: theme.textColor,
-    },
     title: {
       marginVertical: '5%',
       marginLeft: '6%',
       color: theme.titleColor,
-      fontSize: 25,
-      fontWeight: 'bold',
-    },
-    headline: {
-      color: theme.titleColor,
-      fontFamily: 'ArialRoundedMTBold',
       fontSize: theme.titleFontSize,
-      paddingVertical: 8,
-      marginTop: 50,
-    },
-    text: {
-      color: theme.textColor,
-      fontSize: theme.responsiveFontSize * 0.8,
-      textTransform: 'capitalize',
-    },
-    userIdentifier: {
-      color: theme.textColor,
-    },
-    greenColor: {
-      color: theme.priceUpColor,
-    },
-    redColor: {
-      color: theme.priceDownColor,
+      fontFamily: theme.fontSemibold,
     },
     rightArrowContainer: {
       position: 'absolute',
@@ -86,8 +58,8 @@ const useLegalStyles = () => {
       width: '70%',
       paddingVertical: '2.5%',
       paddingHorizontal: 10,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontSize: theme.responsiveFontSize * 0.95,
+      fontFamily: theme.fontMedium,
       color: theme.textColor,
     },
     container: {
@@ -96,22 +68,8 @@ const useLegalStyles = () => {
       alignItems: 'center',
       backgroundColor: theme.mainBackgroundColor,
     },
-    alphaLogoContainer: {
-      width: 150,
-      height: 150,
-      marginVertical: theme.boxesVerticalMargin,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
     image: {
       flex: 1,
-    },
-    username: {
-      margin: theme.boxesVerticalMargin,
-      fontSize: theme.responsiveFontSize,
-      color: theme.titleColor,
-      textAlign: 'center',
-      fontWeight: 'bold',
     },
     row: {
       width: '80%',

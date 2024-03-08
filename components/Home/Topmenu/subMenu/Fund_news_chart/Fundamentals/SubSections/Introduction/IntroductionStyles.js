@@ -17,6 +17,7 @@ const useIntroductionStyles = () => {
     introText: {
       padding: 8,
       fontSize: theme.responsiveFontSize * 0.9,
+      fontFamily: theme.fontMedium,
       color: theme.textColor,
       lineHeight: 22,
     },
@@ -40,7 +41,7 @@ const useIntroductionStyles = () => {
       color: '#7B7BFF',
       textDecorationLine: 'underline',
       textDecorationColor: '#7B7BFF',
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       lineHeight: 22,
     },
   });

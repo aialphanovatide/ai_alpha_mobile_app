@@ -110,20 +110,21 @@ const useDappsStyles = () => {
     protocolName: {
       fontSize: theme.responsiveFontSize * 0.85,
       color: theme.inactiveTextColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold
     },
     tvl: {
       position: 'absolute',
       right: 0,
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.inactiveTextColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold
     },
     protocolDescription: {
       marginVertical: theme.boxesVerticalMargin,
       fontSize: theme.responsiveFontSize * 0.8,
       lineHeight: 16,
       color: theme.inactiveTextColor,
+      fontFamily: theme.fontMedium
     },
     hidden: {
       display: 'none',
@@ -137,8 +138,7 @@ const useDappsStyles = () => {
       fontSize: theme.responsiveFontSize,
       color: theme.secondaryTextColor,
       alignSelf: 'center',
-      fontWeight: 'bold',
-      fontStyle: 'italic',
+      fontFamily: theme.fontBoldItalic
     },
     emptyMessageContainer: {
       flex: 1,

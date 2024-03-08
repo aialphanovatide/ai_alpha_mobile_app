@@ -27,8 +27,8 @@ const useGTAStyles = () => {
       overflow: 'hidden',
     },
     strong: {
-      fontWeight: 'bold',
       alignSelf: 'flex-end',
+      fontFamily: theme.fontSemibold
     },
     circleDataContainer: {
       marginVertical: 24,
@@ -39,7 +39,7 @@ const useGTAStyles = () => {
       left:70,
       textAlign: 'center',
       fontSize: theme.titleFontSize * 1.35,
-      fontWeight: 'bold',
+      fontFamily: theme.fontBold,
     },
     displayNone: {
       display: 'none',

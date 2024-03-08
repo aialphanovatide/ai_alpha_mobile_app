@@ -40,10 +40,14 @@ const NewsArticle = ({route, navigation}) => {
         content,
       };
     } else {
-      return {
-        title: null,
-        content: summary,
-      };
+      const first_line_swap = summary.indexOf('\n');
+
+      return first_line_swap !== -1
+        ? {
+            title: filterText(summary.slice(0, first_line_swap)),
+            content: summary,
+          }
+        : {title: filterText(summary.slice(0, 100)), content: summary};
     }
   };
 

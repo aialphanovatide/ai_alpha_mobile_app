@@ -6,16 +6,16 @@ const useHomeAnalysisStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     mainTitle: {
-      fontWeight: 'bold',
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
+      fontFamily: theme.fontSemibold,
     },
     titleStyles: {
       maxWidth: '85%',
-      fontWeight: 'bold',
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize,
       marginBottom: 2,
+      fontFamily: theme.fontSemibold,
     },
     imageStyle: {
       width: 50,
@@ -40,6 +40,7 @@ const useHomeAnalysisStyles = () => {
     description: {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
+      fontFamily: theme.fontMedium,
     },
     arrowDown: {
       width: 15,
@@ -52,8 +53,7 @@ const useHomeAnalysisStyles = () => {
       fontSize: theme.responsiveFontSize,
       color: theme.secondaryTextColor,
       alignSelf: 'center',
-      fontWeight: 'bold',
-      fontStyle: 'italic',
+      fontFamily: theme.fontBoldItalic,
     },
     background: {
       flex: 1,
@@ -80,6 +80,7 @@ const useHomeAnalysisStyles = () => {
       color: theme.textColor,
       marginVertical: theme.boxesVerticalMargin,
       lineHeight: 16,
+      fontFamily: theme.fontMedium,
     },
     title: {
       fontSize: theme.titleFontSize,
@@ -87,7 +88,7 @@ const useHomeAnalysisStyles = () => {
       marginVertical: theme.titlesVerticalMargin * 0.8,
       marginHorizontal: 8,
       lineHeight: 22,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     backButtonWrapper: {
       margin: 16,

@@ -18,7 +18,7 @@ const usePriceActionStyles = () => {
       paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold
     },
     tableContainer: {
       flex: 1,
@@ -58,8 +58,8 @@ const usePriceActionStyles = () => {
       flex: 1,
       marginHorizontal: 5,
       padding: 5,
-      fontWeight: 'bold',
       fontSize: theme.responsiveFontSize * 0.9,
+      fontFamily: theme.fontMedium,
       color: theme.inactiveTextColor,
       textAlign: 'center',
       verticalAlign: 'middle',
@@ -81,12 +81,18 @@ const usePriceActionStyles = () => {
       fontSize: theme.responsiveFontSize * 0.75,
       textAlign: 'center',
       verticalAlign: 'middle',
+      fontFamily: theme.fontMedium
+
     },
     greenNumber: {
       color: theme.priceUpColor,
+      fontFamily: theme.fontMedium
+
     },
     redNumber: {
       color: theme.priceDownColor,
+      fontFamily: theme.fontMedium
+
     },
     displayNone: {
       display: 'none',
@@ -109,8 +115,7 @@ const usePriceActionStyles = () => {
       margin: '5%',
       fontSize: theme.responsiveFontSize * 0.85,
       color: theme.secondaryTextColor,
-      fontStyle: 'italic',
-      fontWeight: 'bold',
+      fontFamily: theme.fontBoldItalic,
       overflow: 'hidden',
       textAlign: 'center',
     },

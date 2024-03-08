@@ -31,6 +31,7 @@ const useTokenomicsStyles = () => {
       textAlign: 'left',
       color: theme.orange,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
     },
     progressBarMaxValue: {
       position: 'absolute',
@@ -39,6 +40,7 @@ const useTokenomicsStyles = () => {
       textAlign: 'right',
       color: theme.secondaryTextColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
     },
     infinityBar: {
       borderLeftWidth: 0,
@@ -74,26 +76,28 @@ const useTokenomicsStyles = () => {
       right: 10,
       color: theme.secondaryTextColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
     },
     alignLeft: {
       left: 70,
       color: theme.orange,
       fontSize: theme.responsiveFontSize * 0.8,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
     },
     tokenName: {
       width: '20%',
       paddingVertical: 8,
       fontSize: theme.responsiveFontSize,
-      fontWeight: 'bold',
       color: theme.textColor,
       textAlign: 'center',
       alignSelf: 'flex-end',
+      fontFamily: theme.fontSemibold,
     },
     text: {
+      marginLeft: 8,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
-      marginLeft: 8,
+      fontFamily: theme.fontMedium,
     },
     row: {
       position: 'relative',

@@ -37,10 +37,31 @@ const CandlestickChart = ({route}) => {
     useContext(AboutModalContext);
   const {isDarkMode} = useContext(AppThemeContext);
 
+
+  // Remove - kas missing data for binance api solver
+  const url_days =
+    selectedInterval === '1W'
+      ? 180
+      : selectedInterval === '1D'
+      ? 30
+      : selectedInterval === '4H'
+      ? 7
+      : 1;
+  const fetch_url =
+    symbol.toLowerCase() !== 'kasusdt'
+      ? `https://api3.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&limit=200&interval=${selectedInterval.toLowerCase()}`
+      : `https://pro-api.coingecko.com/api/v3/coins/kaspa/ohlc?vs_currency=usd&days=${url_days}&precision=4`;
+
+  const options = {
+    method: 'GET',
+    headers: {'x-cg-pro-api-key': 'CG-xXCJJaHa7QmvQNWyNheKmSfG'},
+  };
+
   async function fetchChartData() {
     try {
       const response = await fetch(
-        `https://api3.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&limit=200&interval=${selectedInterval.toLowerCase()}`,
+        fetch_url,
+        symbol.toLowerCase() === 'kasusdt' ? options : {},
       );
       const data = await response.json();
       const currentPrice = parseFloat(data[data.length - 1][4]);
@@ -164,6 +185,7 @@ const CandlestickChart = ({route}) => {
             />
           </View>
           <Chart
+            symbol={symbol}
             selectedInterval={selectedInterval}
             chartData={chartData}
             supportLevels={supportLevels}
