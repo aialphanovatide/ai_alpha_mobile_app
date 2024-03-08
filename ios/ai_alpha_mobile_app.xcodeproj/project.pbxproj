@@ -13,6 +13,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9D4A52982B9AAD8B001729DF /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFDA2992B659F1200E7E4B6 /* OpenSSL.xcframework */; };
+		9D4A52992B9AAD8B001729DF /* OpenSSL.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFDA2992B659F1200E7E4B6 /* OpenSSL.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9DCEDF3A2B1808A500A2A8DA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DCEDF392B1808A500A2A8DA /* StoreKit.framework */; };
 		F050964816A734697D3DB2D3 /* libPods-ai_alpha_mobile_app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A007D94C79C6CD60546C622E /* libPods-ai_alpha_mobile_app.a */; };
 /* End PBXBuildFile section */
@@ -26,6 +28,20 @@
 			remoteInfo = ai_alpha_mobile_app;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9D4A529A2B9AAD8C001729DF /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9D4A52992B9AAD8B001729DF /* OpenSSL.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* ai_alpha_mobile_appTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ai_alpha_mobile_appTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D4A52982B9AAD8B001729DF /* OpenSSL.xcframework in Frameworks */,
 				9DCEDF3A2B1808A500A2A8DA /* StoreKit.framework in Frameworks */,
 				F050964816A734697D3DB2D3 /* libPods-ai_alpha_mobile_app.a in Frameworks */,
 			);
@@ -192,6 +209,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				8191B699D97797986377F8E4 /* [CP] Embed Pods Frameworks */,
 				50EA8A3B9E27B1A2F745BB72 /* [CP] Copy Pods Resources */,
+				9D4A529A2B9AAD8C001729DF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
