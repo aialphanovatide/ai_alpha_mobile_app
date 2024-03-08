@@ -18,7 +18,7 @@ import useSignUpStyles from './SignUpStyles';
 import { useUser } from '../../../../context/UserContext';
 import { useUserId } from '../../../../context/UserIdContext';
 import { auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret } from '../../../../src/constants';
-
+import BackButton from '../../../Analysis/BackButton/BackButton';
 
 
 const SignupForm = () => {
@@ -204,6 +204,7 @@ const SignupForm = () => {
   }
   return (
     <ScrollView style={styles.scrollview} showsVerticalScrollIndicator={false}>
+      <BackButton />
       <View style={styles.root}>
         <Image source={Logo} style={styles.logo} resizeMode="contain" />
         <View style={styles.inputContainer}>
@@ -276,6 +277,7 @@ const SignupForm = () => {
           onPress={onRegisterPressed}
           disabled={!isFormValid}
         />
+        {/*
         <Separator />
         <View style={styles.loginContainer}>
           <Text style={styles.loginText}>Already have an account? </Text>
@@ -283,6 +285,8 @@ const SignupForm = () => {
             <Text style={styles.loginButton}>Log In</Text>
           </TouchableOpacity>
         </View>
+        */}
+
       </View>
     </ScrollView>
   );
