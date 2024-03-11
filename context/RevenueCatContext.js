@@ -120,6 +120,7 @@ const RevenueCatProvider = ({children}) => {
         },
       );
       console.log('Subscriptions to set:', restored_subscriptions);
+      /*
       const updatedUser = {
         id: userInfo.id,
         email: userInfo.email,
@@ -127,6 +128,7 @@ const RevenueCatProvider = ({children}) => {
         entitlements: restored_subscriptions,
       };
       setUserInfo(updatedUser);
+      */
     } catch (e) {
       console.error('Error restoring customers data: ', e);
     }

@@ -321,7 +321,15 @@ const SettingsScreen = ({route}) => {
   // Restore purchases handles
 
   const handleRestorePurchase = () => {
-    restorePurchases();
+    Alert.alert(
+      'Restore Purchases',
+      'Warning: This must only be activated when your previous account is lost, as all subscriptions will be removed from the previous account.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Restore', onPress: restorePurchases },
+      ],
+    );
+    ;
   };
 
   // Switch case for 'options' array
