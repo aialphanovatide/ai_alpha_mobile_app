@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://star-oyster-known.ngrok-free.app';
+export const API_BASE_URL = 'https://aialpha.ngrok.io/';
 export const API_BASE_URL_ALT = 'https://ntf1vmdf-9000.use.devtunnels.ms';
 
 // Function to handle HTTP errors

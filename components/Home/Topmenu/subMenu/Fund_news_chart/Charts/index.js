@@ -24,8 +24,6 @@ const CandlestickChart = ({route}) => {
   const [isPriceUp, setIsPriceUp] = useState(null);
   const [selectedInterval, setSelectedInterval] = useState(interval);
   const [lastPrice, setLastPrice] = useState(undefined);
-  const [resistanceLevels, setResistanceLevels] = useState([]);
-  const [supportLevels, setSupportLevels] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeButtons, setActiveButtons] = useState([]);
@@ -36,7 +34,6 @@ const CandlestickChart = ({route}) => {
   const {aboutDescription, aboutVisible, handleAboutPress} =
     useContext(AboutModalContext);
   const {isDarkMode} = useContext(AppThemeContext);
-
 
   // Remove - kas missing data for binance api solver
   const url_days =
@@ -90,45 +87,6 @@ const CandlestickChart = ({route}) => {
     return () => clearInterval(intervalId);
   }, [interval, symbol, selectedInterval]);
 
-  useEffect(() => {
-    async function getSupportAndResistanceData(botName, time_interval) {
-      try {
-        const supportValues = [];
-        const resistanceValues = [];
-        const data = await getService(
-          `/api/coin-support-resistance?coin_name=${botName}&temporality=${time_interval.toLowerCase()}&pair=usdt`,
-        );
-        if (data.success) {
-          const values = data.chart_values;
-          for (const key in values) {
-            if (key.includes('support')) {
-              supportValues.push(values[key]);
-            } else if (key.includes('resistance')) {
-              resistanceValues.push(values[key]);
-            }
-          }
-        }
-        return {
-          support: supportValues,
-          resistance: resistanceValues,
-        };
-      } catch (error) {
-        console.error('Error fetching support and resistance data: ', error);
-      }
-    }
-
-    getSupportAndResistanceData(coinBot, selectedInterval)
-      .then(response => {
-        if (response) {
-          setResistanceLevels(response.resistance);
-          setSupportLevels(response.support);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching support and resistance data: ', error);
-      });
-  }, [activeButtons, coinBot, selectedInterval]);
-
   // This useEffect handles the content regulation
   useEffect(() => {
     const hasCoinSubscription = findCategoryInIdentifiers(
@@ -155,10 +113,7 @@ const CandlestickChart = ({route}) => {
       angle={45}
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={styles.flex}>
-      <ScrollView
-        style={styles.scroll}
-        // keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={true}>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={true}>
         {aboutVisible && (
           <AboutModal
             description={aboutDescription}
@@ -188,10 +143,9 @@ const CandlestickChart = ({route}) => {
             symbol={symbol}
             selectedInterval={selectedInterval}
             chartData={chartData}
-            supportLevels={supportLevels}
             loading={loading}
             activeButtons={activeButtons}
-            resistanceLevels={resistanceLevels}
+            coinBot={coinBot}
           />
         </View>
 

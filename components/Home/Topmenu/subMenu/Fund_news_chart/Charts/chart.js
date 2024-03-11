@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, ImageBackground, Text} from 'react-native';
 import {
   VictoryChart,
@@ -7,25 +7,25 @@ import {
   VictoryCandlestick,
   VictoryLabel,
   VictoryLine,
-  VictoryPortal,
-  VictoryContainer,
 } from 'victory-native';
 import Loader from '../../../../../Loader/Loader';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 import useChartsStyles from './ChartsStyles';
+import {getService} from '../../../../../../services/aiAlphaApi';
 
 const Chart = ({
   symbol,
   chartData,
-  supportLevels,
-  resistanceLevels,
   loading,
   candlesToShow = 30,
   activeButtons,
   selectedInterval,
+  coinBot,
 }) => {
   const styles = useChartsStyles();
   const {theme} = useContext(AppThemeContext);
+  const [supportLevels, setSupportLevels] = useState([]);
+  const [resistanceLevels, setResistanceLevels] = useState([]);
 
   const formatNumber = num => {
     const absNum = Math.abs(num);
@@ -41,6 +41,34 @@ const Chart = ({
 
     return formattedNum + abbrev[tier];
   };
+
+  useEffect(() => {
+    async function getSupportAndResistanceData(botName, time_interval) {
+      try {
+        const supportValues = [];
+        const resistanceValues = [];
+        const data = await getService(
+          `/api/coin-support-resistance?coin_name=${botName}&temporality=${time_interval.toLowerCase()}&pair=usdt`,
+        );
+        if (data.success) {
+          const values = data.chart_values;
+          for (const key in values) {
+            if (key.includes('support')) {
+              supportValues.push(values[key]);
+            } else if (key.includes('resistance')) {
+              resistanceValues.push(values[key]);
+            }
+          }
+        }
+        setSupportLevels(supportValues);
+        setResistanceLevels(resistanceValues);
+      } catch (error) {
+        console.error('Error fetching support and resistance data: ', error);
+      }
+    }
+
+    getSupportAndResistanceData(coinBot, selectedInterval);
+  }, [activeButtons, coinBot, selectedInterval]);
 
   if (loading) {
     return (
