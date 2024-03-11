@@ -10,7 +10,6 @@ const useBackButtonStyles = () => {
       fontSize: theme.responsiveFontSize,
       color: theme.backbuttonColor,
       textDecorationColor: theme.backbuttonColor,
-      textDecorationLine: 'underline',
     },
     arrowContainer: {
       margin: 4,
