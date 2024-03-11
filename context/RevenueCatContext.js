@@ -105,6 +105,33 @@ const RevenueCatProvider = ({children}) => {
     setUserInfo(updatedUser);
   };
 
+  const restorePurchases = async () => {
+    try {
+      const restore = await Purchases.restorePurchases();
+      console.log('Restored user data: ', restore);
+      const restored_subscriptions = restore.activeSubscriptions.map(
+        identifier => {
+          const first_separator = identifier.indexOf(':');
+          const formatted_package_id =
+            first_separator !== -1
+              ? identifier.split(first_separator)[0]
+              : identifier;
+          return formatted_package_id;
+        },
+      );
+      console.log('Subscriptions to set:', restored_subscriptions);
+      const updatedUser = {
+        id: userInfo.id,
+        email: userInfo.email,
+        subscribed: userInfo.entitlements.length > 0 ? 'true' : 'false',
+        entitlements: restored_subscriptions,
+      };
+      setUserInfo(updatedUser);
+    } catch (e) {
+      console.error('Error restoring customers data: ', e);
+    }
+  };
+
   const getUserSubscriptionData = async () => {
     try {
       const customerInfo = await Purchases.getCustomerInfo();
@@ -209,6 +236,7 @@ const RevenueCatProvider = ({children}) => {
         updateUserEmail,
         findCategoryInIdentifiers,
         findProductIdInIdentifiers,
+        restorePurchases,
       }}>
       {children}
     </RevenueCatContext.Provider>

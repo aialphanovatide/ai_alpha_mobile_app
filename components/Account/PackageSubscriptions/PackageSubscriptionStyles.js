@@ -191,8 +191,23 @@ const usePackageSubscriptionStyles = () => {
       color: '#FFFFFF',
       fontFamily: theme.fontMedium,
       fontSize: theme.titleFontSize * 0.85,
-
     },
+    button: {
+      width: '35%',
+      marginTop: theme.boxesVerticalMargin * 2.5,
+      padding: 4,
+      paddingVertical: 12,
+      borderRadius: 3,
+      overflow: 'hidden',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+    },
+    buttonText: {
+      fontSize: theme.titleFontSize * 0.8,
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
+    }
   });
   return styles;
 };
