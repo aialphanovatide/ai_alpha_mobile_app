@@ -26,7 +26,8 @@ const SocialSignInButton = () => {
   const { authorize, clearSession, user, getCredentials, error, isLoading } = useAuth0(); // Using useAuth0 hook
   const { userEmail, setUserEmail } = useUser();
   const { userId, setUserId } = useUserId();
-  const redirectUri = 'com.aialphamobileapp://dev-zoejuo0jssw5jiid.us.auth0.com/ios/com.aialphamobileapp/callback';
+  const redirectUri = 'com.aialphamobileapp://dev-zoejuo0jssw5jiid.us.auth0.com/ios/com.aialphamobileapp/login/callback';
+  const apiUrl = 'https://dev-zoejuo0jssw5jiid.us.auth0.com/api/v2/users';
 
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const SocialSignInButton = () => {
   }, []);
   const signInWithGoogle = async () => {
     try {
-      /*
+      
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log('User Info --> ', userInfo);
@@ -80,33 +81,38 @@ const SocialSignInButton = () => {
         message: 'success',
         ...auth0Response.data,
       };
-
-      */
-        await GoogleSignin.hasPlayServices();
-        const userInfo = await GoogleSignin.signIn();
-        console.log('User Info --> ', userInfo);
-        setUserId(userInfo);
-        isSignedIn();
-    } catch (error) {
-      // Handle errors
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.warn('User cancelled the login flow');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.warn('Operation is in progress already');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.warn('Play services not available or outdated');
+      /*
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('User Info --> ', userInfo);
+      setUserId(userInfo);
+      const isSigned = await GoogleSignin.isSignedIn();
+      if (isSigned) {
+        console.log('Signed In correctly: ', isSigned);
+        navigation.navigate('HomeScreen');
       } else {
-        console.error('Some other error happened', error);
-        // Log the error response if available
-        if (error.response) {
-          console.error('Auth0 Error Response:', error.response.data);
-        }
+        console.error('Fail to sign in');
+      }*/
+  } catch (error) {
+    // Handle errors
+    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      console.warn('User cancelled the login flow');
+    } else if (error.code === statusCodes.IN_PROGRESS) {
+      console.warn('Operation is in progress already');
+    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      console.warn('Play services not available or outdated');
+    } else {
+      console.error('Some other error happened', error);
+      // Log the error response if available
+      if (error.response) {
+        console.error('Auth0 Error Response:', error.response.data);
       }
     }
-  };
-  
+  }
+};
 
-  
+
+
   
 
   const signInWithApple = async () => {
@@ -176,15 +182,8 @@ const SocialSignInButton = () => {
       throw error;
     }
   };
-  const isSignedIn = async () => {
-    const isSigned = await GoogleSignin.isSignedIn();
-    if (isSigned) {
-      console.log('Signed In correctly');
-      navigation.navigate('HomeScreen');
-    } else {
-      console.error('Fail to sign in');
-    }
-  };
+
+
   return (
     <Auth0Provider
       domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
@@ -196,12 +195,15 @@ const SocialSignInButton = () => {
           type="APPLE"
           disabled={loggedInUser !== null}
         />
-        <CustomButton
+        {/*
+                <CustomButton
           text="Continue with Google"
           onPress={() => signInWithGoogle()}
           type="GOOGLE"
           disabled={loggedInUser !== null}
-        />     
+        /> 
+        */}
+    
 
       </View>
     </Auth0Provider>
