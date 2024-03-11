@@ -59,6 +59,7 @@ const useCustomButtonStyles = () => {
     },
     text_PRIMARY: {
       color: theme.signUpButtonText,
+      fontWeight: 'bold',
     },
     text_TERTIARY: {
       color: theme.orange,
@@ -68,6 +69,7 @@ const useCustomButtonStyles = () => {
     },
     text_APPLE: {
       color: theme.textColor,
+      fontWeight: 'bold',
     },
   });
   return styles;
