@@ -149,7 +149,7 @@ const RevenueCatProvider = ({children}) => {
       const offerings = await Purchases.getOfferings();
       console.log('Offerings: ', offerings);
       const all_packages = [];
-
+  
       for (const key in offerings.all) {
         const currentOffering = offerings.all[key];
         const currentPackages = currentOffering?.availablePackages;
@@ -160,13 +160,25 @@ const RevenueCatProvider = ({children}) => {
           all_packages.push(...currentPackages);
         }
       }
-      const orderedPackages = orderPackages(all_packages);
+      // From below is testing
+      let filteredPackages = all_packages;
+      if (findProductIdInIdentifiers('founders', userInfo.entitlements)) {
+        filteredPackages = filteredPackages.filter(
+          pack => pack.productIdentifier.toLowerCase().includes('founders_14999_m1')
+        );
+      }
+      console.log("filtered packages after!! - > ", filteredPackages);
+      // From above is testing
+      const orderedPackages = orderPackages(filteredPackages);
       console.log('All packages from offerings: ', orderedPackages);
       setPackages(orderedPackages);
     } catch (error) {
       console.error('Error trying to get offerings: ', error);
     }
   };
+  
+  
+
 
   const purchasePackage = async pack => {
     try {

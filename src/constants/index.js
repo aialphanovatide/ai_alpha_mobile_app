@@ -27,4 +27,10 @@ export const TOP_MENU_IMAGES_URL =
   'https://aialphaicons.s3.us-east-2.amazonaws.com/';
 /*
  The entitlement ID from the RevenueCat dashboard that is activated upon successful in-app purchase for the duration of the purchase.
+ 
+ From below this point, all variables defined are for the CLONED TENANT of Auth0
  */
+
+ export const auth0ClonedGoogleAudience = 'https://aialpha-google-test';
+ export const auth0ClonedGoogleClient = 'Rr0xvkmUdxACllY2wFPq9k6CFRnq01CO';
+ export const auth0ClonedDomain = 'dev-kqugsqvoounaylft.us.auth0.com';
