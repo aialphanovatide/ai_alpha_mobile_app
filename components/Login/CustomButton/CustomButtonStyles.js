@@ -66,6 +66,7 @@ const useCustomButtonStyles = () => {
     },
     text_GOOGLE: {
       color: theme.textColor,
+      fontWeight: 'bold',
     },
     text_APPLE: {
       color: theme.textColor,
