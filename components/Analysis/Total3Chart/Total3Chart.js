@@ -1,52 +1,51 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, ImageBackground, Text} from 'react-native';
+import {View, Text, ImageBackground} from 'react-native';
 import {VictoryChart, VictoryAxis, VictoryCandlestick} from 'victory-native';
 import Loader from '../../Loader/Loader';
-import axios from 'axios';
-import BackButton from '../BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes';
-import useEthBtcStyles from './EthBtcChartStyles';
+import useTotal3Styles from './Total3ChartStyles';
 import {AppThemeContext} from '../../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
+import {getService} from '../../../services/aiAlphaApi';
+import BackButton from '../BackButton/BackButton';
 
-const EthBtcChart = ({loading, candlesToShow = 30}) => {
-  const styles = useEthBtcStyles();
+const Total3Chart = ({loading, candlesToShow = 30}) => {
+  const styles = useTotal3Styles();
   const [chartData, setChartData] = useState([]);
-  const [selectedInterval, setSelectedInterval] = useState('1D');
   const {isDarkMode, theme} = useContext(AppThemeContext);
 
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const response = await axios.get(
-          'https://api3.binance.com/api/v3/klines',
-          {
-            params: {
-              symbol: 'ETHBTC',
-              interval: selectedInterval.toLowerCase(),
-              limit: 45,
-            },
-          },
-        );
-        const data = response.data;
-        const ohlcData = data.map(entry => ({
-          x: new Date(entry[0]),
-          open: parseFloat(entry[1]),
-          high: parseFloat(entry[2]),
-          low: parseFloat(entry[3]),
-          close: parseFloat(entry[4]),
-        }));
-        setChartData(ohlcData);
+        const response = await getService('api/total_3_data');
+
+        if (response.success) {
+          // console.log(response.candlestick_data);
+          const ohlcData = response.candlestick_data
+            .slice(
+              response.candlestick_data.length - 50,
+              response.candlestick_data.length - 1,
+            )
+            .map(entry => ({
+              x: new Date(entry.timestamp),
+              open: parseFloat(entry.open),
+              high: parseFloat(entry.high),
+              low: parseFloat(entry.low),
+              close: parseFloat(entry.close),
+            }));
+          setChartData(ohlcData);
+        } else {
+          setChartData([]);
+        }
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
     };
 
     fetchChartData();
-  }, [selectedInterval]);
+  }, []);
 
-  if (loading || chartData.length === 0) {
+  if (loading || chartData?.length === 0) {
     return (
       <LinearGradient
         useAngle={true}
@@ -55,11 +54,12 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
         style={{flex: 1}}>
         <SafeAreaView style={styles.background}>
           <BackButton />
-          <Text style={styles.analysisTitle}>ETH/BTC Chart</Text>
+          <Text style={styles.title}>Total 3 Chart</Text>
           <Text style={styles.sectionDescription}>
-            The strength of ETH against BTC helps us understand how strong
-            Ethereum and its ecosystem projects are while also telling us how
-            strong the entire altcoin market is too.
+            This chart aggregates the market value of all cryptocurrencies
+            excluding Bitcoin and Ethereum. It provides an overview of the
+            health and trends of the altcoin market and is essential for
+            diversified investment strategies.
           </Text>
           <View style={styles.container}>
             <Loader />
@@ -79,10 +79,6 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
 
   const domainX = [chartData[0].x, chartData[chartData.length - 1].x];
 
-  const changeInterval = newInterval => {
-    setSelectedInterval(newInterval);
-  };
-
   return (
     <LinearGradient
       useAngle={true}
@@ -91,19 +87,13 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
       style={{flex: 1}}>
       <SafeAreaView style={styles.background}>
         <BackButton />
-        <Text style={styles.analysisTitle}>ETH/BTC Chart</Text>
+        <Text style={styles.title}>Total 3 Chart</Text>
         <Text style={styles.sectionDescription}>
-          The strength of ETH against BTC helps us understand how strong
-          Ethereum and its ecosystem projects are while also telling us how
-          strong the entire altcoin market is too.
+          This chart aggregates the market value of all cryptocurrencies
+          excluding Bitcoin and Ethereum. It provides an overview of the health
+          and trends of the altcoin market and is essential for diversified
+          investment strategies.
         </Text>
-        <View style={styles.timeframeContainer}>
-          <TimeframeSelector
-            selectedInterval={selectedInterval}
-            changeInterval={changeInterval}
-            hasHourlyTimes={true}
-          />
-        </View>
         <View style={styles.container}>
           <View style={styles.chart}>
             <ImageBackground
@@ -112,7 +102,7 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
               resizeMode="contain"
             />
             <VictoryChart
-              width={400}
+              width={375}
               domain={{x: domainX, y: domainY}}
               padding={{top: 10, bottom: 40, left: 20, right: 70}}
               domainPadding={{x: 2.5, y: 3}}
@@ -128,14 +118,14 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
                   },
                   grid: {stroke: theme.chartsGridColor},
                 }}
-                tickCount={6}
+                tickCount={4}
               />
               <VictoryAxis
                 dependentAxis
                 style={{
                   axis: {stroke: theme.chartsAxisColor},
                   tickLabels: {
-                    fontSize: theme.responsiveFontSize * 0.725,
+                    fontSize: theme.responsiveFontSize * 0.55,
                     fill: theme.titleColor,
                     fontFamily: theme.font,
                   },
@@ -166,4 +156,4 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
   );
 };
 
-export default EthBtcChart;
+export default Total3Chart;

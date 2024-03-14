@@ -72,23 +72,22 @@ const useFundamentalsStyles = () => {
     modalBackground: {
       ...StyleSheet.absoluteFillObject,
       backgroundColor: '#00000060',
-      opacity: 1,
-      zIndex: 2000,
+      zIndex: 1000,
     },
     modalContainer: {
-      ...StyleSheet.absoluteFillObject,
+      height: theme.height,
+      width: '100%',
       position: 'relative',
-      alignItems: 'flex-end',
-      backgroundColor: '#00000060',
     },
     modalContent: {
       position: 'absolute',
-      bottom: 0,
-      right: 0,
+      bottom: 24,
       left: 0,
+      right: 0,
       backgroundColor: theme.secondaryBgColor,
       padding: 24,
       borderRadius: 2,
+      zIndex: 1001,
     },
     closeButton: {
       position: 'absolute',
@@ -121,6 +120,9 @@ const useFundamentalsStyles = () => {
     },
     hidden: {
       opacity: 0,
+    },
+    flex: {
+      flex: 1,
     },
   });
   return styles;

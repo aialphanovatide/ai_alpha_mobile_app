@@ -172,10 +172,10 @@ const PackageSubscriptions = () => {
     navigation.navigate('AccountMain');
   };
 
-  const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
-    subscription.toLowerCase().includes('founders'),
-  );
-  console.log("HAS A FOUNDER PACKAGE: ", hasFoundersPackage);
+  // const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
+  //   subscription.toLowerCase().includes('founders'),
+  // );
+  // console.log("HAS A FOUNDER PACKAGE: ", hasFoundersPackage);
 
   return (
     <LinearGradient
