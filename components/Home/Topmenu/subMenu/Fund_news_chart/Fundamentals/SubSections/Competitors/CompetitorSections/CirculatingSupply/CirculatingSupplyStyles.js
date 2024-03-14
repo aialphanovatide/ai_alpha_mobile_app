@@ -1,69 +1,123 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
+import {useContext} from 'react';
 
-const {width} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
+const useCirculatingSupplyStyles = () => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    progressBarContainer: {
+      padding: 10,
+      alignItems: 'center',
+    },
+    progressBar: {
+      height: 15,
+      width: '100%',
+      marginVertical: 4,
+      borderWidth: 1,
+      borderColor: theme.secondaryTextColor,
+    },
+    progressBarFill: {
+      height: '100%',
+      backgroundColor: theme.orange,
+    },
+    infinityBar: {
+      borderRightWidth: 0,
+      borderLeftWidth: 0,
+    },
+    labelRight: {
+      position: 'absolute',
+      right: 16,
+      textAlign: 'center',
+      fontSize: theme.responsiveFontSize * 0.825,
+      color: theme.secondaryTextColor,
+    },
+    labelLeft: {
+      position: 'absolute',
+      left: 16,
+      textAlign: 'center',
+      fontSize: theme.responsiveFontSize * 0.825,
+      color: theme.orange,
+    },
+    labelBottom: {
+      marginLeft: '45%',
+      marginTop: 2,
+      flex: 1,
+      fontSize: theme.responsiveFontSize * 0.9,
+      color: theme.orange,
+    },
+    text: {
+      color: theme.textColor,
+    },
+    orange: {
+      color: theme.orange,
+    },
+    row: {
+      position: 'relative',
+      marginVertical: theme.boxesVerticalMargin,
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    logoContainer: {
+      marginLeft: 16,
+      width: 30,
+      height: 30,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme.secondaryBoxesBgColor,
+      borderRadius: 15,
+      overflow: 'hidden',
+    },
+    usersContainer: {
+      flexDirection: 'row',
+      margin: 5,
+    },
+    userImageContainer: {
+      width: 20,
+      margin: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    userImage: {
+      flex: 1,
+      tintColor: theme.thirdBoxesBgColor,
+    },
+    itemName: {
+      color: theme.inactiveTextColor,
+      marginHorizontal: 10,
+      fontSize: theme.responsiveFontSize * 0.9,
+      fontWeight: 'bold',
+    },
+    image: {
+      flex: 1,
+    },
+    dataContainer: {
+      flex: 1,
+      padding: 10,
+      backgroundColor: theme.boxesBackgroundColor,
+    },
+    inflationaryArrow: {
+      width: 12,
+      height: 12,
+      marginRight: 6,
+      tintColor: theme.textColor,
+    },
+    inflationaryLabel: {
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.textColor,
+    },
+    noVerticalMargin: {
+      marginVertical: 0,
+    },
+    circulatingSupplyItem: {
+      flex: 1,
+      marginVertical: theme.boxesVerticalMargin,
+    },
+  });
+  return styles;
+};
 
-const styles = StyleSheet.create({
-  progressBarContainer: {
-    padding: 10,
-    alignItems: 'center',
-  },
-  progressBar: {
-    height: 20,
-    width: '100%',
-    backgroundColor: '#e0e0e0',
-    marginTop: 5,
-    marginBottom: 5,
-  },
-  progressBarFill: {
-    height: '100%',
-    backgroundColor: '#F98404',
-  },
-  labelRight: {
-    flex: 1,
-    textAlign: 'right',
-    fontSize: responsiveFontSize * 0.75,
-    color: '#B8BBBC',
-  },
-  labelLeft: {
-    textAlign: 'left',
-    fontSize: responsiveFontSize * 0.75,
-    color: '#F98404',
-  },
-  labelBottom: {
-    flex: 1,
-    fontSize: responsiveFontSize * 0.9,
-    color: '#F98404',
-  },
-  row: {
-    width: '100%',
-    padding: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logoContainer: {
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 25,
-    overflow: 'hidden',
-  },
-  itemName: {
-    color: '#5F6466',
-    marginHorizontal: 10,
-    fontSize: responsiveFontSize * 0.85,
-    fontWeight: 'bold',
-  },
-  image: {
-    flex: 1,
-  },
-  dataContainer: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#F7F7F7',
-  },
-});
-
-export default styles;
+export default useCirculatingSupplyStyles;

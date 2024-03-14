@@ -1,77 +1,85 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {useContext} from 'react';
+import {StyleSheet} from 'react-native';
+import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
-const {width} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
+const useVAMStyles = () => {
+  const {theme} = useContext(AppThemeContext);
 
-const styles = StyleSheet.create({
-  container: {
-    width: width - 30,
-    alignSelf: 'center',
-    backgroundColor: '#EFEFEF',
-  },
+  const styles = StyleSheet.create({
+    container: {
+      width: '100%',
+      alignSelf: 'center',
+    },
+    menuItemContainer: {
+      width: theme.width * 0.435,
+      height: 64,
+      padding: 5,
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    },
+    menuContainer: {
+      flex: 1,
+      padding: 10,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    menuItemName: {
+      color: theme.fundamentalsMenuText,
+      textAlign: 'center',
+      fontSize: theme.responsiveFontSize * 0.8,
+    },
+    itemIcon: {
+      width: 18,
+      height: 18,
+      marginTop: 5,
+      marginBottom: 2,
+      tintColor: theme.fundamentalsMenuText,
+    },
+    activeItem: {
+      color: theme.orange,
+      fontWeight: 'bold',
+    },
+    dataContainer: {
+      width: '100%',
+      flex: 1,
+      marginVertical: theme.boxesVerticalMargin,
+      justifyContent: 'flex-start',
+    },
+    dataTitle: {
+      marginVertical: 4,
+      marginHorizontal: 8,
+      color: theme.titleColor,
+      fontSize: theme.responsiveFontSize * 0.95,
+      fontWeight: 'bold',
+      padding: 5,
+    },
+    dataRow: {
+      width: '100%',
+      flexDirection: 'row',
+      backgroundColor: theme.boxesBackgroundColor,
+    },
+    dataImageContainer: {
+      width: 'auto',
+      height: 110,
+    },
+    dataImage: {
+      flex: 1,
+    },
+    dataText: {
+      marginVertical: theme.boxesVerticalMargin,
+      marginHorizontal: 8,
+      flex: 1,
+      color: theme.textColor,
+      fontSize: theme.responsiveFontSize * 0.85,
+      lineHeight: 22,
+      textAlign: 'left',
+    },
+    activeItemBgImage: {
+      flex: 1,
+    },
+  });
+  return styles;
+};
 
-  menuItemContainer: {
-    width: width * 0.45,
-    margin: 5,
-    backgroundColor: '#F7F7F7',
-    alignItems: 'center',
-  },
-  menuContainer: {
-    width: '100%',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  menuItemName: {
-    marginVertical: 5,
-    color: '#B8BBBC',
-    textAlign: 'center',
-  },
-  iconContainer: {
-    width: 20,
-    height: 20,
-    margin: 5,
-    alignSelf: 'center',
-  },
-  itemIcon: {
-    flex: 1,
-    tintColor: '#B8BBBC',
-  },
-  activeItem: {
-    color: '#FB6822',
-    fontWeight: 'bold',
-  },
-  dataContainer: {
-    marginVertical: 10,
-  },
-  dataTitle: {
-    color: '#5F6466',
-    fontSize: responsiveFontSize * 0.95,
-    fontWeight: 'bold',
-    padding: 5,
-  },
-  dataRow: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#F7F7F7',
-  },
-  imageContainer: {
-    width: 80,
-    height: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dataImage: {
-    flex: 1,
-  },
-  dataText: {
-    flex: 1,
-    padding: 10,
-    margin: 10,
-    color: '#242427',
-    fontSize: responsiveFontSize * 0.85,
-  },
-});
-
-export default styles;
+export default useVAMStyles;

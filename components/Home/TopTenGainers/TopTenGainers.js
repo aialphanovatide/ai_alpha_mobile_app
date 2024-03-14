@@ -2,18 +2,24 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import styles from './TopTenGainersStyle.js';
+import useTopTenGainersStyles from './TopTenGainersStyle.js';
 import topTenGainersService from '../../../services/TopTenGainersService.js';
 import Loader from '../../Loader/Loader.js';
+import TOP_TEN_GAINERS_MOCK from './TopTenGainersMock.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
 const Item = ({position, coin}) => {
+  const styles = useTopTenGainersStyles();
   return (
     <View key={position} style={styles.row}>
       <Text style={styles.coinPosition}>{position}</Text>
       <View style={styles.logoContainer}>
-        <Image style={[styles.coinLogo]} source={{uri: coin.image}} />
+        <Image
+          style={[styles.coinLogo]}
+          source={{uri: coin.image, width: 30, height: 30}}
+          resizeMode="contain"
+        />
       </View>
       <View styles={styles.coinDataContainer}>
         <Text style={[styles.coinName, styles.coinData]}>{coin.name}</Text>
@@ -37,14 +43,19 @@ const Item = ({position, coin}) => {
 };
 
 const TopTenGainers = () => {
+  const styles = useTopTenGainersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
   const [loading, setLoading] = useState(true);
-  /*
+
   useEffect(() => {
+    setTopTenCoins(TOP_TEN_GAINERS_MOCK);
+    setLoading(false);
+    /*
     const fetchTopTenCoins = async () => {
       try {
         const data = await topTenGainersService.getTop10Coins();
         setTopTenCoins(data);
+        console.log('TopTenGainers data:', data);
       } catch (error) {
         console.error('Error fetching top 10 coins:', error);
       } finally {
@@ -52,8 +63,8 @@ const TopTenGainers = () => {
       }
     };
     fetchTopTenCoins();
+    */
   }, []);
-  */
   return (
     <View style={styles.topTenGainersContainer}>
       <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>

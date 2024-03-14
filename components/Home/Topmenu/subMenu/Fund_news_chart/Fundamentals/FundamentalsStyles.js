@@ -1,32 +1,45 @@
-import {StyleSheet, Dimensions} from 'react-native';
-const {width, height} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
+import {useContext} from 'react';
+import {StyleSheet} from 'react-native';
+import {AppThemeContext} from '../../../../../../context/themeContext';
 
-const styles = StyleSheet.create({
-  container: {
-    width,
-    paddingHorizontal: 10,
-    marginBottom: 600,
-  },
-  title: {
-    margin: 10,
-    fontWeight: 'bold',
-    color: '#5F6466',
-    fontSize: responsiveFontSize * 1.3,
-  },
-  subTitle: {
-    margin: 10,
-    color: '#5F6466',
-    fontWeight: 'bold',
-    fontSize: responsiveFontSize,
-  },
-  subSectionContent: {
-    flex: 1,
-    marginBottom: 20,
-    padding: 10,
-    backgroundColor: '#EFEBEF',
-    borderRadius: 5,
-  },
-});
+const useFundamentalsStyles = () => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = StyleSheet.create({
+    container: {
+      width: theme.width,
+      paddingHorizontal: 10,
+      paddingTop: 30,
+      marginBottom: 80,
+      backgroundColor: theme.mainBackgroundColor,
+    },
+    title: {
+      marginVertical: theme.titlesVerticalMargin * 0.5,
+      fontWeight: 'bold',
+      color: theme.titleColor,
+      fontSize: theme.titleFontSize,
+    },
+    subTitle: {
+      margin: theme.boxesVerticalMargin,
+      marginHorizontal: theme.boxesVerticalMargin * 2,
+      color: theme.titleColor,
+      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize,
+    },
+    subSectionContent: {
+      flex: 1,
+      marginVertical: theme.boxesVerticalMargin,
+      backgroundColor: theme.secondaryBgColor,
+      borderRadius: 4,
+    },
+    backgroundColor: {
+      backgroundColor: theme.mainBackgroundColor,
+    },
+    subSection: {
+      flex: 1,
+      marginVertical: theme.boxesVerticalMargin,
+    },
+  });
+  return styles;
+};
 
-export default styles;
+export default useFundamentalsStyles;

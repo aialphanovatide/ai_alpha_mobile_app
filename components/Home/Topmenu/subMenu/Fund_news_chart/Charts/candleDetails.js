@@ -1,44 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text} from 'react-native';
 
-const CandlestickDetails = ({ coin, lastPrice }) => {
-
+const CandlestickDetails = ({coin, lastPrice, interval, styles}) => {
+  const formatCoin = coin => {
+    const usdt_word_index = coin.indexOf('USDT');
+    const coin_word = coin.slice(0, usdt_word_index).toUpperCase();
+    return `${coin_word}/${coin.slice(usdt_word_index, coin.length)}`;
+  };
   return (
-    <View style={styles.container}>
-    <View style={styles.subContainer}>
-      <Text style={styles.label}>{coin? coin: '---' }</Text>
-      <Text style={styles.lastPrice}>${lastPrice? lastPrice : '---'}</Text>
-    </View>
+    <View style={styles.detailsContainer}>
+      <Text style={styles.detailslabel}>
+        {coin ? formatCoin(coin) : 'Loading ...'}
+      </Text>
+      <Text style={styles.lastPrice}>
+        ${lastPrice ? lastPrice : ' ...'}
+      </Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: '100%',
-    // borderColor: 'dark',
-    // borderWidth: 1,
-    paddingVertical: 10,
-  },
-  subContainer: {
-    flexDirection: 'row',
-    width: '90%',
-  },
-  label: {
-    textTransform: 'uppercase',
-
-    fontSize: 15,
-    fontWeight: 'bold'
-  },
-  lastPrice: {
-    textTransform: 'uppercase',
-    fontSize: 15,
-    marginLeft: 10,
-    fontWeight: 'bold'
-  },
-});
 
 export default CandlestickDetails;

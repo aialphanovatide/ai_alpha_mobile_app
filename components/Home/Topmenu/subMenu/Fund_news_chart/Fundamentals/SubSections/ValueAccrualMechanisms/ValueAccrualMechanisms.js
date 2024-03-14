@@ -1,18 +1,38 @@
-import {Text, View, TouchableOpacity, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from './VAMStyles';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
 import Loader from '../../../../../../../Loader/Loader';
+import useVAMStyles from './VAMStyles';
+import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
-const MechanismsMenuItem = ({item, activeOption, handleOptionChange}) => {
+const MechanismsMenuItem = ({
+  item,
+  activeOption,
+  handleOptionChange,
+  styles,
+}) => {
+  const {theme} = useContext(AppThemeContext);
   return (
     <TouchableOpacity onPress={() => handleOptionChange(item)}>
-      <View style={styles.menuItemContainer}>
+      <ImageBackground
+        source={
+          activeOption.name === item.name
+            ? require('../../../../../../../../assets/images/fundamentals/vam/active-item.png')
+            : require('../../../../../../../../assets/images/fundamentals/vam/inactive-item.png')
+        }
+        resizeMode="cover"
+        style={styles.menuItemContainer}
+        tintColor={theme.secondaryBoxesBgColor}>
         <View style={styles.iconContainer}>
           <Image
             style={[
               styles.itemIcon,
-              activeOption.name === item.name && {tintColor: '#FB6822'},
+              activeOption.name === item.name && {tintColor: '#F98404'},
             ]}
             resizeMode={'contain'}
             source={item.icon}
@@ -25,12 +45,17 @@ const MechanismsMenuItem = ({item, activeOption, handleOptionChange}) => {
           ]}>
           {item.name}
         </Text>
-      </View>
+      </ImageBackground>
     </TouchableOpacity>
   );
 };
 
-const MechanismsMenu = ({options, activeOption, handleOptionChange}) => {
+const MechanismsMenu = ({
+  options,
+  activeOption,
+  handleOptionChange,
+  styles,
+}) => {
   return (
     <View style={styles.menuContainer}>
       {options.map((item, index) => (
@@ -39,18 +64,19 @@ const MechanismsMenu = ({options, activeOption, handleOptionChange}) => {
           item={item}
           activeOption={activeOption}
           handleOptionChange={handleOptionChange}
+          styles={styles}
         />
       ))}
     </View>
   );
 };
 
-const ContentItem = ({data}) => {
+const ContentItem = ({data, styles}) => {
   return (
     <View style={styles.dataContainer}>
       <Text style={styles.dataTitle}>{data.title}</Text>
       <View style={styles.dataRow}>
-        <View style={styles.imageContainer}>
+        <View style={styles.dataImageContainer}>
           <Image
             style={styles.dataImage}
             alt={data.name}
@@ -65,6 +91,7 @@ const ContentItem = ({data}) => {
 };
 
 const ValueAccrualMechanisms = ({options, contentData}) => {
+  const styles = useVAMStyles();
   const [activeOption, setActiveOption] = useState(options[0]);
   const [filteredData, setFilteredData] = useState(null);
 
@@ -97,11 +124,12 @@ const ValueAccrualMechanisms = ({options, contentData}) => {
             options={options}
             handleOptionChange={handleOptionChange}
             activeOption={activeOption}
+            styles={styles}
           />
           <View style={styles.content}>
             {filteredData &&
               filteredData.map((data, index) => (
-                <ContentItem data={data} key={index} />
+                <ContentItem data={data} key={index} styles={styles} />
               ))}
           </View>
         </View>

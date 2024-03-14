@@ -1,0 +1,61 @@
+import { appleAuth } from '@invertase/react-native-apple-authentication';
+import axios from 'axios';
+import { auth0Client, auth0Domain, auth0Audience } from '../../../src/constants';
+
+export default async function AppleAuthentication() {
+    return new Promise(async (resolve, reject) => {
+        const appleAuthRequestResponse = await appleAuth.performRequest({
+            nonceEnabled: false,
+            requestedOperation: appleAuth.Operation.LOGIN,
+            requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL]
+        });
+
+        const credentialState = await appleAuth.getCredentialStateForUser(
+            appleAuthRequestResponse.user
+        );
+
+        if (credentialState === appleAuth.State.AUTHORIZED) {
+            const {
+                    fullName,
+                    authorizationCode,
+                    email
+                } = appleAuthRequestResponse,
+                { familyName, givenName } = fullName;
+
+            await axios({
+                url: `https://${auth0Domain}/oauth/token`,
+                method: 'POST',
+                data: {
+                    grant_type:
+                        'urn:ietf:params:oauth:grant-type:token-exchange',
+                    subject_token_type:
+                        'http://auth0.com/oauth/token-type/apple-authz-code',
+                    scope:
+                        'read:appointments openid profile email email_verified',
+                    audience: auth0Audience,
+                    subject_token: authorizationCode,
+                    client_id: auth0Client,
+                    user_profile: JSON.stringify({
+                        name: {
+                            firstName: givenName,
+                            lastName: familyName
+                        },
+                        email: email
+                    })
+                }
+            })
+                .then(async (_auth0Response) => {
+                    resolve({
+                        message: 'success',
+                        ..._auth0Response,
+                        first_name: givenName,
+                        last_name: familyName
+                    });
+                })
+                .catch((_auth0Error) => {
+                    reject({ error: true, message: 'error', detailedInformation: _auth0Error });
+                });
+        }
+    });
+}
+

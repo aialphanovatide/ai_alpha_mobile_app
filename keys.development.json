@@ -1,0 +1,12 @@
+{
+    "secure": {
+      "AUTH0_DOMAIN": "dev-zoejuo0jssw5jiid.us.auth0.com",
+      "BRANCH_API": "ABCDEF"
+    },
+    "public": {
+      "APP_NAME": "Keys Example",
+      "BUNDLE_ID": "com.aialphamobileapp",
+      "ANDROID_CODE": "50",
+      "APPLICATION_ID": "com.ai_alpha_mobile_app"
+    }
+}

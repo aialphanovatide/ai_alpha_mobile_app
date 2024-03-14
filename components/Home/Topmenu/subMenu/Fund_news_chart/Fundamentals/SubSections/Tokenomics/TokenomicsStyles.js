@@ -1,69 +1,105 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {useContext} from 'react';
+import {StyleSheet} from 'react-native';
+import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
-const {width} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
+const useTokenomicsStyles = () => {
+  const {theme} = useContext(AppThemeContext);
 
-const styles = StyleSheet.create({
-  progressBarContainer: {
-    height: 25,
-    width: '80%',
-    backgroundColor: '#e0e0e0',
-    borderRadius: 5,
-    overflow: 'hidden',
-    marginVertical: 10,
-    justifyContent: 'center',
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: '#F98404',
-  },
-  progressBarValue: {
-    position: 'absolute',
-    textAlign: 'center',
-    width: '100%',
-    lineHeight: 30,
-    color: '#000',
-    fontWeight: 'bold',
-  },
-  // Tokenomics styles
-  tokenItemsContainer: {
-    backgroundColor: '#EFEFEF',
-  },
-  tokenItem: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginVertical: 5,
-    borderRadius: 5,
-  },
-  tokenRow: {
-    marginVertical: 2.5,
-    flexDirection: 'row',
-  },
-  numberTitles: {
-    flex: 1,
-    position: 'relative',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  alignRight: {
-    right: 5,
-  },
-  alignLeft: {
-    left: 5,
-    color: '#F98404'
-  },
-  tokenName: {
-    width: '20%',
-    paddingVertical: responsiveFontSize * 0.8,
-    fontSize: responsiveFontSize,
-    fontWeight: 'bold',
-    color: '#242427',
-    textAlign: 'center',
-    verticalAlign: 'middle',
-  },
-  text: {
-    color: '#5F6466',
-  },
-});
+  const styles = StyleSheet.create({
+    progressBarContainer: {
+      height: 15,
+      width: '100%',
+      backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 2,
+      overflow: 'hidden',
+      marginVertical: 8,
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: theme.secondaryTextColor,
+    },
+    progressBarWrapper: {
+      flex: 1,
+    },
+    progressBar: {
+      height: '100%',
+      backgroundColor: theme.orange,
+    },
+    progressBarValue: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      textAlign: 'left',
+      color: theme.orange,
+      fontSize: theme.responsiveFontSize * 0.8,
+    },
+    progressBarMaxValue: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      textAlign: 'right',
+      color: theme.inactiveColor,
+      fontSize: theme.responsiveFontSize * 0.8,
+    },
+    infinityBar: {
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+    },
+    // Tokenomics styles
+    container: {
+      width: '100%',
+      paddingVertical: 10,
+    },
+    tokenItemsContainer: {
+      flex: 1,
+      marginVertical: theme.boxesVerticalMargin,
+    },
+    tokenItem: {
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      marginVertical: theme.boxesVerticalMargin * 0.6,
+      backgroundColor: theme.boxesBackgroundColor,
+    },
+    tokenRow: {
+      flexDirection: 'row',
+    },
+    numberTitles: {
+      flex: 1,
+      position: 'relative',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    alignRight: {
+      right: 10,
+      color: theme.inactiveColor,
+      fontSize: theme.responsiveFontSize * 0.8,
+    },
+    alignLeft: {
+      left: 70,
+      color: theme.orange,
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontWeight: 'bold',
+    },
+    tokenName: {
+      width: '20%',
+      paddingVertical: 8,
+      fontSize: theme.responsiveFontSize,
+      fontWeight: 'bold',
+      color: theme.textColor,
+      textAlign: 'center',
+      alignSelf: 'flex-end',
+    },
+    text: {
+      color: theme.textColor,
+      fontSize: theme.responsiveFontSize * 0.8,
+      marginLeft: 8,
+    },
+    row: {
+      position: 'relative',
+      marginBottom: 15,
+      flexDirection: 'row',
+    },
+  });
+  return styles;
+};
 
-export default styles;
+export default useTokenomicsStyles;

@@ -1,56 +1,49 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import useNewsStyles from './NewsStyles';
 
-const NewsItem = ({item, onPress}) => {
+const NewsItem = ({item, onPress, filterText}) => {
+  const styles = useNewsStyles();
+
+  // Function to extract the title from the summaries, that detects the first sentences within "", using regular expressions, and returns it. It only returns the first because it can happen that is inside the summary text another sentences within "".
+
+  const filterArticleTitle = summary => {
+    const match = summary.match(/"([^"]+)"/);
+
+    if (match && match[1]) {
+      const title = match[1];
+      const content = summary.replace(`"${title}"`, '').trim();
+
+      return {
+        title,
+        content,
+      };
+    } else {
+      return {
+        title: null,
+        content: null,
+      };
+    }
+  };
+
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onPress(item)}>
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => onPress(item)}>
+      <View style={styles.textContainer}>
+        <Text style={styles.itemTitle} numberOfLines={2}>{item.title}</Text>
+      </View>
       <Image
         source={{
-          uri: 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+          uri:
+            item.images[0].image ||
+            'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
         }}
         style={styles.image}
+        resizeMode={'contain'}
       />
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.summary}>{`${item.summary.substring(
-          0,
-          100,
-        )}...`}</Text>
-      </View>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    marginVertical: 10,
-    backgroundColor: 'white',
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    width: 50,
-    height: 50,
-    borderRadius: 5,
-    margin: 5,
-  },
-  textContainer: {
-    flex: 1,
-    marginLeft: 10,
-  },
-  title: {
-    color: '#282828',
-    fontSize: 15,
-    fontWeight: 'bold',
-    marginVertical: 5,
-  },
-  summary: {
-    fontSize: 14,
-    margin: 5,
-  },
-});
 
 export default NewsItem;

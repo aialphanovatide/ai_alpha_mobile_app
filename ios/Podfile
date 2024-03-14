@@ -32,7 +32,6 @@ target 'ai_alpha_mobile_app' do
   flags = get_default_flags()
   pod 'react-native-config/Extension', :path => '../node_modules/react-native-config'
 
-
   use_react_native!(
     :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.

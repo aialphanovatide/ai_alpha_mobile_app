@@ -1,99 +1,96 @@
 /* eslint-disable prettier/prettier */
+import {useContext} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
-const {width} = Dimensions.get('window'); 
-const responsiveFontSize = width * 0.04;
+import {AppThemeContext} from '../../../context/themeContext';
 
-const styles = StyleSheet.create({
-  topTenGainersContainer: {
-    height: 400,
-    width,
-    paddingHorizontal: 10,
-    marginVertical: 20,
-    backgroundColor: 'transparent',
-  },
-  topTenGainersTitle: {
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    color: '#282828',
-    fontSize: responsiveFontSize,
-    fontWeight: 'bold',
-  },
-  table: {
-    paddingTop: 10,
-    backgroundColor: '#EFEFEF',
-    borderWidth: 1,
-    borderColor: '#EFEFEF',
-  },
-  row: {
-    width: '100%',
-    height: 80,
-    display: 'flex',
-    flexDirection: 'row',
-    borderBottomWidth: 2,
-    borderBottomColor: '#EFEFEF',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  logoContainer: {
-    width: 50,
-    height: 50,
-    marginRight: 25,
-    alignSelf: 'flex-start',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 25,
-  },
-  coinLogo: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 25,
-  },
-  coinDataContainer: {
-    flex: 1,
-    marginTop: 20,
-    marginRight: 30,
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  coinPosition: {
-    marginRight: 10,
-    paddingLeft: 5,
-    paddingVertical: 10,
-    color: '#242427',
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  coinData: {
-    color: '#242427',
-  },
-  coinName: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  coinNumbersContainer: {
-    position: 'relative',
-    right: 0,
-    top: 0,
-    flex: 1,
-    marginLeft: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-  coinNumber: {
-    textAlign: 'right',
-    color: '#B8BBBC',
-    fontWeight: 'bold',
-  },
-  greenNumber: {
-    color: '#8EED1A',
-  },
-  redNumber: {
-    color: '#FF799F'
-  }
-});
+const useTopTenGainersStyles = () => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = StyleSheet.create({
+    topTenGainersContainer: {
+      height: 400,
+      width: theme.width,
+      paddingHorizontal: 10,
+      marginVertical: 20,
+      borderRadius: 4,
+    },
+    topTenGainersTitle: {
+      paddingVertical: 10,
+      paddingHorizontal: 5,
+      color: theme.titleColor,
+      fontSize: theme.titleFontSize,
+      fontWeight: 'bold',
+    },
+    table: {
+      paddingTop: 10,
+      backgroundColor: theme.boxesBackgroundColor,
+    },
+    row: {
+      flex: 1,
+      width: '100%',
+      marginVertical: 2.5,
+      display: 'flex',
+      flexDirection: 'row',
+      borderBottomWidth: 2,
+      borderBottomColor: theme.boxesBorderColor,
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+      alignItems: 'flex-start',
+    },
+    logoContainer: {
+      width: 30,
+      height: 30,
+      marginRight: 25,
+      alignSelf: 'flex-start',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 15,
+    },
+    coinLogo: {
+      flex: 1,
+      borderRadius: 15,
+    },
+    coinDataContainer: {
+      flex: 1,
+      marginRight: 30,
+      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    coinPosition: {
+      marginRight: 7.5,
+      paddingHorizontal: 5,
+      color: theme.textColor,
+      fontSize: theme.responsiveFontSize,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    coinData: {
+      color: theme.textColor,
+    },
+    coinName: {
+      fontSize: theme.responsiveFontSize,
+      color: theme.textColor,
+      fontWeight: 'bold',
+    },
+    coinNumbersContainer: {
+      flex: 1,
+      marginLeft: 20,
+      paddingHorizontal: 20,
+      justifyContent: 'center',
+    },
+    coinNumber: {
+      textAlign: 'right',
+      color: theme.secondaryTextColor,
+      fontWeight: 'bold',
+    },
+    greenNumber: {
+      color: theme.priceUpColor,
+    },
+    redNumber: {
+      color: theme.priceDownColor,
+    },
+  });
+  return styles;
+};
 
-export default styles;
+export default useTopTenGainersStyles;

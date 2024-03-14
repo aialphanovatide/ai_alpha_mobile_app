@@ -1,8 +1,8 @@
 import {Text, View, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
-import styles from './TypeOfTokenStyles';
+import useTypeOfTokenStyles from './TypeOfTokenStyles';
 
-const TokenItem = ({token}) => {
+const TokenItem = ({token, styles}) => {
   return (
     <View style={styles.tokenContainer}>
       <View style={styles.row}>
@@ -28,10 +28,12 @@ const TokenItem = ({token}) => {
 };
 
 const TypeOfToken = ({tokens}) => {
+  const styles = useTypeOfTokenStyles();
+
   return (
     <View>
       {tokens.map((token, index) => (
-        <TokenItem key={index} token={token} />
+        <TokenItem key={index} token={token} styles={styles} />
       ))}
     </View>
   );

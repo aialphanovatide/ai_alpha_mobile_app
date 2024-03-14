@@ -1,7 +1,12 @@
-import {Text, View, TouchableOpacity, ScrollView, Image} from 'react-native';
-import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from './CompetitorsStyles';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  ImageBackground,
+} from 'react-native';
+import React, {useContext, useState} from 'react';
 import TypeOfToken from './CompetitorSections/TypeOfToken/TypeOfToken';
 import CompetitorSection from './CompetitorSections/CompetitorSection';
 import CirculatingSupply from './CompetitorSections/CirculatingSupply/CirculatingSupply';
@@ -14,16 +19,27 @@ import Apr from './CompetitorSections/APR/Apr';
 import Revenue from './CompetitorSections/Revenue/Revenue';
 import ActiveDevelopers from './CompetitorSections/ActiveDevelopers/ActiveDevelopers';
 import InflationRate from './CompetitorSections/InflationRate/InflationRate';
+import useCompetitorsStyles from './CompetitorsStyles';
+import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
-const MenuItem = ({item, activeOption, handleOptionChange}) => {
+const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
+  const {theme} = useContext(AppThemeContext);
   return (
     <TouchableOpacity onPress={() => handleOptionChange(item)}>
-      <View style={styles.menuItemContainer}>
+      <ImageBackground
+        source={
+          activeOption.name === item.name
+            ? require('../../../../../../../../assets/images/fundamentals/competitors/competitors-active-item.png')
+            : require('../../../../../../../../assets/images/fundamentals/competitors/competitors-inactive-item.png')
+        }
+        style={styles.menuItemContainer}
+        resizeMode="contain"
+        tintColor={theme.secondaryBoxesBgColor}>
         <View style={styles.iconContainer}>
           <Image
             style={[
               styles.itemIcon,
-              activeOption.name === item.name && {tintColor: '#FB6822'},
+              activeOption.name === item.name && {tintColor: theme.orange},
             ]}
             resizeMode={'contain'}
             source={item.icon}
@@ -33,17 +49,22 @@ const MenuItem = ({item, activeOption, handleOptionChange}) => {
           style={[
             styles.menuItemName,
             activeOption.name === item.name && styles.activeItem,
-          ]}>
+          ]} numberOfLines={2}>
           {item.name}
         </Text>
-      </View>
+      </ImageBackground>
     </TouchableOpacity>
   );
 };
 
-const CompetitorsMenu = ({options, activeOption, handleOptionChange}) => {
+const CompetitorsMenu = ({
+  options,
+  activeOption,
+  handleOptionChange,
+  styles,
+}) => {
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} bounces={false}>
       <View style={styles.menuContainer}>
         {options.map((item, index) => (
           <MenuItem
@@ -51,6 +72,7 @@ const CompetitorsMenu = ({options, activeOption, handleOptionChange}) => {
             item={item}
             activeOption={activeOption}
             handleOptionChange={handleOptionChange}
+            styles={styles}
           />
         ))}
       </View>
@@ -61,6 +83,7 @@ const CompetitorsMenu = ({options, activeOption, handleOptionChange}) => {
 // Todo - Move content outside the component
 
 const Competitors = () => {
+  const styles = useCompetitorsStyles();
   const cryptosData = [
     {
       crypto: 'Ethereum',
@@ -179,7 +202,7 @@ const Competitors = () => {
     },
     {
       name: 'Inflation Rate',
-      component: <InflationRate cryptos={cryptosData}/>,
+      component: <InflationRate cryptos={cryptosData} />,
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/inflationrate.png'),
     },
     {
@@ -211,11 +234,13 @@ const Competitors = () => {
         options={content}
         activeOption={activeOption}
         handleOptionChange={handleOptionChange}
+        styles={styles}
       />
       <View style={styles.selectedOptionContent}>
         <CompetitorSection
           title={activeOption.name}
           component={activeOption.component}
+          styles={styles}
         />
       </View>
     </View>

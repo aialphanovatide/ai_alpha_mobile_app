@@ -22,6 +22,18 @@ const CategoriesContextProvider = ({children}) => {
     setCategories(newValue);
   };
 
+  // Function to set by default ETH category, locking all the others
+
+  const setDefaultCoin = (coin, categories) => {
+    let newCategories = categories.map(category => {
+      if (category.category !== coin) {
+        category.is_active = false;
+      }
+      return category;
+    });
+    return newCategories;
+  };
+
   return (
     <CategoriesContext.Provider value={{categories, updateCategories}}>
       {children}

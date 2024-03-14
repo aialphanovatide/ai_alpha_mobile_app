@@ -20,3 +20,16 @@ buildscript {
         classpath("com.google.gms:google-services:4.4.0")
     }
 }
+
+allprojects {
+    
+    // ...
+
+    def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
+
+    configurations.all {
+        resolutionStrategy {
+            force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
+        }
+    }
+}

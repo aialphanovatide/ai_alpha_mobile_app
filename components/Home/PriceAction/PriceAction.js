@@ -1,38 +1,58 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import styles from './PriceActionStyles';
 import priceActionMock from './priceActionMock';
 import priceActionService from '../../../services/PriceActionService';
 import {ScrollView} from 'react-native-gesture-handler';
 import Loader from '../../Loader/Loader';
-import menuData from '../Topmenu/mainMenu/menuData';
+import usePriceActionStyles from './PriceActionStyles';
+import {CategoriesContext} from '../../../context/categoriesContext';
+import {API_BASE_URL} from '../../../services/aiAlphaApi';
 
 const CategorySelector = ({
   categories,
   activeCategory,
   handleActiveCoins,
   coins,
+  styles,
 }) => {
   return (
     <View style={styles.categoriesContainer}>
-      <Text style={styles.categoriesTitle}>Categories</Text>
       <ScrollView
         horizontal={true}
-        style={styles.row}
+        style={[styles.row, styles.menuBg]}
         showsHorizontalScrollIndicator={false}>
         {categories.map(category => (
           <TouchableOpacity
-            style={activeCategory?.id === category.id && styles.active}
-            key={category.id}
+            style={styles.categoryWrapper}
+            key={category.category_id}
             onPress={() => handleActiveCoins(coins, category)}>
-            <Text
+            {/* <Text
               style={[
                 styles.dataCell,
                 styles.category,
-                activeCategory?.id === category.id && styles.activeText,
+                activeCategory?.category_id === category.category_id &&
+                  styles.activeText,
               ]}>
               {category.icon}
-            </Text>
+            </Text> */}
+            <View
+              style={[
+                styles.categoryIconContainer,
+                activeCategory?.category_id === category.category_id && {
+                  borderColor: category.borderColor,
+                  borderWidth: 2,
+                },
+              ]}>
+              <Image
+                source={{
+                  uri: `${API_BASE_URL}${category.icon}`,
+                  width: 30,
+                  height: 30,
+                }}
+                resizeMode="contain"
+                style={styles.categoryIcon}
+              />
+            </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -40,10 +60,9 @@ const CategorySelector = ({
   );
 };
 
-const TableItem = ({index, coin, isActive}) => {
+const TableItem = ({index, coin, isActive, styles}) => {
   return (
     <View key={index} style={isActive ? styles.dataRow : styles.displayNone}>
-      <Text style={styles.dataCell}>{''}</Text>
       <View style={styles.logoContainer}>
         <Image style={styles.coinLogo} source={{uri: coin.image}} />
       </View>
@@ -61,41 +80,44 @@ const TableItem = ({index, coin, isActive}) => {
 };
 
 const PriceAction = () => {
+  const styles = usePriceActionStyles();
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState(menuData);
-  const [activeCoins, setActiveCoins] = useState([]);
+  const {categories} = useContext(CategoriesContext);
   const [activeCategory, setActiveCategory] = useState(null);
+  const [activeCoins, setActiveCoins] = useState([]);
   useEffect(() => {
     setCoins(priceActionMock);
     setLoading(false);
-    // const fetchCoinsData = async () => {
-    //   try {
-    //     const data = await priceActionService.getAllCoinsInfo();
-    //     console.log(data);
-    //     setCoins(data);
-    //   } catch (error) {
-    //     console.error('Error fetching coins data:', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // fetchCoinsData();
+    /*
+    const fetchCoinsData = async () => {
+      try {
+        const data = await priceActionService.getAllCoinsInfo();
+        console.log(data);
+        setCoins(data);
+      } catch (error) {
+        console.error('Error fetching coins data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCoinsData();
+    */
   }, []);
 
   const findCoinsByCategory = (coins, category) => {
     let filteredCoins = [];
-    if (category.subMenuOptions) {
+    if (category.coin_bots.length > 1) {
       coins.forEach(coin => {
-        category.subMenuOptions.forEach(categoryCoin => {
-          if (categoryCoin.coin === coin.symbol.toUpperCase()) {
+        category.coin_bots.forEach(categoryCoin => {
+          if (categoryCoin.bot_name === coin.symbol) {
             filteredCoins.push(coin);
           }
         });
       });
     } else {
       let found = coins.find(
-        coin => coin.symbol.toUpperCase() === category.icon,
+        coin => coin.name.toUpperCase() === category.category.toUpperCase(),
       );
       filteredCoins.push(found);
     }
@@ -105,12 +127,11 @@ const PriceAction = () => {
   const handleActiveCoins = (coins, category) => {
     setActiveCategory(category);
     setActiveCoins(findCoinsByCategory(coins, category));
-    console.log(activeCoins);
   };
 
   return (
     <View style={[styles.priceActionContainer]}>
-      <Text style={styles.title}>Price action</Text>
+      <Text style={styles.title}>Price Action</Text>
       {loading ? (
         <Loader />
       ) : (
@@ -121,6 +142,7 @@ const PriceAction = () => {
             categories={categories}
             activeCategory={activeCategory}
             handleActiveCoins={handleActiveCoins}
+            styles={styles}
           />
           <View style={styles.headerRow}>
             <Text style={styles.headerCell}>Asset</Text>
@@ -134,14 +156,23 @@ const PriceAction = () => {
             // showsVerticalScrollIndicator={false}
           >
             {/* Datos de la tabla */}
-            {activeCoins &&
+            {activeCoins && activeCoins[0] !== undefined ? (
               activeCoins.map((coin, index) => (
                 <TableItem
                   key={index}
                   coin={coin}
                   isActive={activeCoins.includes(coin)}
+                  styles={styles}
                 />
-              ))}
+              ))
+            ) : (
+              <View
+                style={[styles.dataRow, styles.borderless, styles.alignCenter]}>
+                <Text style={styles.emptyMessage}>
+                  Select a Category to see the coins data
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       )}

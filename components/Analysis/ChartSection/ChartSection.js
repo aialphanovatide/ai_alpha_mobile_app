@@ -1,24 +1,23 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {SafeAreaView, Text} from 'react-native';
 import BackButton from '../BackButton/BackButton';
-import styles from './ChartSectionStyles';
-import NewTvChart from '../Charts/NewTvChart';
+import AdvancedTvChart from '../Charts/AdvancedTvChart';
+import useChartSectionStyles from './ChartSectionStyles';
 
-const ChartSection = ({title, symbol, widgetId, handleReturn}) => {
-
-
+const ChartSection = ({route, navigation}) => {
+  const {title, widgetId, symbol} = route.params;
+  const styles = useChartSectionStyles();
   return (
-    <View style={styles.mainSection}>
-      <BackButton handleReturn={handleReturn} />
+    <SafeAreaView style={styles.mainSection}>
+      <BackButton />
       <Text style={styles.title}>{title}</Text>
-      {/* <TradingViewChart
+      <AdvancedTvChart
         symbol={symbol}
         widgetId={widgetId}
-        width={400}
+        width={350}
         height={500}
-      /> */}
-      <NewTvChart symbol={symbol} widgetId={widgetId} width={350} height={500}/>
-    </View>
+      />
+    </SafeAreaView>
   );
 };
 

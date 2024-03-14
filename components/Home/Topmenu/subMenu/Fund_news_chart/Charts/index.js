@@ -1,15 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {ScrollView, View} from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';
 import CandlestickDetails from './candleDetails';
-import {StyleSheet} from 'react-native';
 import Chart from './chart';
 import RsButton from './S&RButtons';
 import AlertMenu from './alerts/AlertMenu';
 import AlertListComponent from './alerts/AlertListComponent';
+import {TopMenuContext} from '../../../../../../context/topMenuContext';
+import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
+import useChartsStyles from './ChartsStyles';
+import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
+import {getService} from '../../../../../../services/aiAlphaApi';
 
 const CandlestickChart = ({route}) => {
+  const styles = useChartsStyles();
   const {interval, symbol, coinBot} =
     route.params.screen === 'Charts' ? route.params.params : route.params;
 
@@ -24,9 +29,10 @@ const CandlestickChart = ({route}) => {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeButtons, setActiveButtons] = useState([]);
-
+  const [subscribed, setSubscribed] = useState(false);
+  const {activeCoin} = useContext(TopMenuContext);
+  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
   const [activeAlertOption, setActiveAlertOption] = useState('this week');
-
   async function fetchChartData() {
     try {
       const response = await fetch(
@@ -51,65 +57,98 @@ const CandlestickChart = ({route}) => {
     }
   }
 
+  async function getSupportAndResistanceData(botName) {
+    try {
+      const supportValues = [];
+      const resistanceValues = [];
+      const data = await getService(`/api/coin-support-resistance/${botName}`);
+      if (data.success) {
+        const values = data.chart_values;
+        for (const key in values) {
+          console.log('Current value:', key);
+          if (key.includes('support')) {
+            supportValues.push(values[key]);
+          } else {
+            resistanceValues.push(values[key]);
+          }
+        }
+      }
+      return {supportValues, resistanceValues};
+    } catch (error) {
+      console.error('Error fetching support and resistance data: ', error);
+    }
+  }
+
+  useEffect(() => {
+    const {supportValues, resistanceValues} =
+      getSupportAndResistanceData(coinBot);
+    setResistanceLevels(resistanceValues);
+    setSupportLevels(supportValues);
+  }, [activeButtons]);
+
   useEffect(() => {
     const intervalId = setInterval(fetchChartData, 2000);
     return () => clearInterval(intervalId);
-  }, [interval, symbol]);
+  }, [interval, symbol, selectedInterval]);
+
+  // This useEffect handles the content regulation
+  useEffect(() => {
+    const hasCoinSubscription = findCategoryInIdentifiers(
+      activeCoin.category_name,
+      userInfo.entitlements,
+    );
+    setSubscribed(hasCoinSubscription);
+  }, [activeCoin, userInfo]);
 
   const changeInterval = async newInterval => {
-    setSelectedInterval(newInterval);
     setLoading(true);
-
     try {
+      setSelectedInterval(newInterval);
       setChartData([]);
       await fetchChartData();
       setLoading(false);
     } catch (error) {
-      setLoading(false);
       console.error(`Failed to change interval: ${error}`);
     }
   };
 
-  return (
+  return subscribed ? (
     <ScrollView
       style={styles.scroll}
       // keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={true}>
-      <CandlestickDetails coin={symbol} lastPrice={lastPrice} />
-      <TimeframeSelector
-        selectedInterval={selectedInterval}
-        changeInterval={changeInterval}
-      />
-
-      <RsButton
-        activeButtons={activeButtons}
-        setActiveButtons={setActiveButtons}
-      />
-      <Chart
-        chartData={chartData}
-        supportLevels={supportLevels}
-        loading={loading}
-        activeButtons={activeButtons}
-        resistanceLevels={resistanceLevels}
-      />
+      <CandlestickDetails coin={symbol} interval={selectedInterval} lastPrice={lastPrice} styles={styles} />
+      <View style={styles.chartsWrapper}>
+        <TimeframeSelector
+          selectedInterval={selectedInterval}
+          changeInterval={changeInterval}
+        />
+        <RsButton
+          activeButtons={activeButtons}
+          setActiveButtons={setActiveButtons}
+        />
+        <Chart
+          chartData={chartData}
+          supportLevels={supportLevels}
+          loading={loading}
+          activeButtons={activeButtons}
+          resistanceLevels={resistanceLevels}
+        />
+      </View>
 
       <AlertMenu
         activeAlertOption={activeAlertOption}
         setActiveButtons={setActiveAlertOption}
       />
-
-      <AlertListComponent timeframe={activeAlertOption} botName={coinBot} />
+      <AlertListComponent
+        timeframe={activeAlertOption}
+        botName={coinBot}
+        styles={styles}
+      />
     </ScrollView>
+  ) : (
+    <UpgradeOverlay isBlockingByCoin={true} screen={'Charts'} />
   );
 };
 
 export default CandlestickChart;
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
-  scroll: {
-    width: '100%',
-  },
-});

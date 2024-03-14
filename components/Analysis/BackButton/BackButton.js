@@ -1,14 +1,25 @@
-import { TouchableOpacity, View, Text } from "react-native";
-import styles from "./BackButtonStyles";
+import {TouchableOpacity, View, Text, Image} from 'react-native';
+import useBackButtonStyles from './BackButtonStyles';
+import {useNavigation} from '@react-navigation/native';
 
-const BackButton = ({handleReturn}) => {
-    return (
-      <TouchableOpacity onPress={() => handleReturn()}>
-        <View style={[styles.backButtonContainer]}>
-          <Text style={styles.backButton}>{'< Back'}</Text>
-        </View>
-      </TouchableOpacity>
-    );
+const BackButton = ({navigationHandler = null}) => {
+  const styles = useBackButtonStyles();
+  const navigation = useNavigation();
+  const handleReturn = () => {
+    if (navigationHandler && navigationHandler !== undefined) {
+      navigationHandler();
+    } else {
+      navigation.goBack();
+    }
   };
+  return (
+    <TouchableOpacity style={styles.row} onPress={() => handleReturn()}>
+      <View style={styles.arrowContainer}>
+        <Image source={require('../../../assets/images/arrow-left.png')} resizeMode='contain' style={styles.leftArrow}/>
+      </View>
+        <Text style={styles.backButton}>{'Back'}</Text>
+    </TouchableOpacity>
+  );
+};
 
-  export default BackButton;
+export default BackButton;

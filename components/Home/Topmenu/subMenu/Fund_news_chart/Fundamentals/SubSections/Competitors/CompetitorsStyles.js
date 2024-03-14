@@ -1,59 +1,62 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {useContext} from 'react';
+import {StyleSheet} from 'react-native';
+import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
-const {width} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  menuContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    marginHorizontal: 10,
-  },
-  menuItemContainer: {
-    width: 100,
-    height: '90%',
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    marginHorizontal: 5,
-    borderRadius: 5,
-    backgroundColor: '#F7F7F7',
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconContainer: {
-    width: 15,
-    height: 15,
-    margin: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  itemIcon: {
-    flex: 1,
-    tintColor: '#B8BBBC',
-  },
-  menuItemName: {
-    padding: 5,
-    color: '#B8BBBC',
-    textAlign: 'center',
-    fontSize: responsiveFontSize * 0.9,
-  },
-  activeItem: {
-    color: '#FB6822',
-    fontWeight: 'bold',
-  },
-  competitorSection: {
-    flex: 1,
-    marginVertical: 10,
-  },
-  title: {
-    color: '#5F6466',
-    fontSize: responsiveFontSize * 0.95,
-    fontWeight: 'bold',
-    padding: 5,
-  },
-});
+const useCompetitorsStyles = () => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    menuContainer: {
+      flex: 1,
+      flexDirection: 'row',
+    },
+    menuItemContainer: {
+      width: theme.width * 0.3,
+      height: theme.height * 0.15,
+      margin: 4,
+      borderRadius: 4,
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    iconContainer: {
+      position: 'absolute',
+      top: 12,
+      width: 'auto',
+      height: 20,
+      margin: 5,
+    },
+    itemIcon: {
+      flex: 1,
+      tintColor: theme.fundamentalsMenuText,
+    },
+    menuItemName: {
+      minHeight: 25,
+      padding: 5,
+      color: theme.fundamentalsMenuText,
+      textAlign: 'center',
+      fontSize: theme.responsiveFontSize * 0.8,
+      lineHeight: 22,
+    },
+    activeItem: {
+      color: theme.orange,
+      fontWeight: 'bold',
+    },
+    competitorSection: {
+      flex: 1,
+      marginVertical: theme.boxesVerticalMargin,
+    },
+    title: {
+      margin: theme.titlesVerticalMargin * 0.5,
+      marginHorizontal: theme.titlesVerticalMargin,
+      color: theme.titleColor,
+      fontSize: theme.responsiveFontSize * 0.95,
+      fontWeight: 'bold',
+    },
+  });
+  return styles;
+};
 
-export default styles;
+export default useCompetitorsStyles;

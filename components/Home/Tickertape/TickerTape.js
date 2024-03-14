@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-
+import {AppThemeContext} from '../../../context/themeContext';
 /* Every coin to add to the TickerTape should be obtained from https://www.tradingview.com/widget/ticker-tape/
 - - - TODO - - -
   The 'coins' prop should be an array with all the coins to show, and should replace the large array on symbols, down in the component definition. These will be obtained from the ones that the user has suscribed and should have a json structure like this:
@@ -15,6 +15,7 @@ import AutoHeightWebView from 'react-native-autoheight-webview';
 */
 
 const TickerTape = ({coins}) => {
+  const {isDarkMode} = useContext(AppThemeContext);
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -173,7 +174,8 @@ const TickerTape = ({coins}) => {
               },
             ],
             showSymbolLogo: true,
-            isTransparent: true,
+            isTransparent: ${isDarkMode ? 'false' : 'true'},
+            ${isDarkMode ? "colorTheme:'dark'," : ''}
             displayMode: 'adaptive',
             locale: 'en',
           });
@@ -189,7 +191,6 @@ const TickerTape = ({coins}) => {
       <AutoHeightWebView
         style={styles.webview}
         source={{html: htmlContent, baseUrl: ''}}
-
       />
     </View>
   );

@@ -1,14 +1,21 @@
 import { Image } from 'react-native';
 import { List } from 'react-native-paper';
-import styles from '../analysisStyles';
+import useHomeAnalysisStyles from '../analysisStyles';
 
-const AnalysisItem = ({ title, description, image }) => {
+const AnalysisItem = ({title, description, imageBase64}) => {
+  const styles = useHomeAnalysisStyles();
 
   return (
     <List.Item
+      style={styles.item}
       title={title}
-      description={description}
-      left={() => <Image source={{ uri: image }} style={styles.imageStyle} />}
+      titleNumberOfLines={2}
+      left={() => (
+        <Image
+          source={{uri: `data:image/png;base64,${imageBase64}`}}
+          style={styles.imageStyle}
+        />
+      )}
       titleStyle={styles.titleStyles}
     />
   );

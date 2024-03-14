@@ -1,26 +1,53 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import styles from './menuItemStyles';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Text, TouchableOpacity, View, Image} from 'react-native';
+import useMenuItemStyles from './menuItemStyles';
+import {API_BASE_URL} from '../../../../../services/aiAlphaApi';
 
-const MenuItem = ({ onPress, icon, category, isActive }) => {
+const MenuItem = ({
+  onPress,
+  category,
+  isActive,
+  isDarkMode,
+  findCategoryInMenuData,
+}) => {
+  const styles = useMenuItemStyles();
+  const icons = {
+    light: {
+      active: `${API_BASE_URL}${category.active_light_icon}`,
+      inactive: `${API_BASE_URL}${category.inactive_light_icon}`,
+    },
+    dark: {
+      active: `${API_BASE_URL}${category.active_dark_icon}`,
+      inactive: `${API_BASE_URL}${category.inactive_dark_icon}`,
+    },
+  };
+
   return (
     <TouchableOpacity
       style={styles.buttonContainer}
-      onPress={isActive ? () => onPress(category) : null}
-      disabled={!isActive}
-    >
-      <View style={[styles.button, !isActive && styles.disabledButton]}>
-        {!isActive && (
-         <View style={styles.lockIcon}>
-            <Icon name="lock" size={25} color="white"/>
-          </View>
-        )}
+      onPress={() => onPress(category)}>
+      <View
+        style={[
+          styles.button,
+          isActive && styles.activeButton,
+          {borderColor: category.borderColor},
+        ]}>
+        <Image
+          source={{
+            uri: `${API_BASE_URL}${category.icon}`,
+            width: 60,
+            height: 60,
+          }}
+          resizeMode="contain"
+          style={styles.imageIcon}
+          fadeDuration={100}
+          alt={category.category_name}
+        />
       </View>
-      <Text 
-      numberOfLines={1}
-      ellipsizeMode="tail"
-      style={styles.buttonText}>{icon}</Text>
+
+      <Text numberOfLines={2} ellipsizeMode="tail" style={styles.buttonText}>
+        {category.category_name}
+      </Text>
     </TouchableOpacity>
   );
 };

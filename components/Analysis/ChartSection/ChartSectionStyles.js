@@ -1,26 +1,31 @@
+import {useContext} from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
+import {AppThemeContext} from '../../../context/themeContext';
 
-const {height, width} = Dimensions.get('window');
-const responsiveFontSize = width * 0.04;
-const styles = StyleSheet.create({
-  mainSection: {
-    flex: 1,
-    width,
-    height,
-  },
-  title: {
-    paddingVertical: 2.5,
-    paddingHorizontal: 15,
-    color: '#5F6466',
-    fontSize: responsiveFontSize * 1.2,
-    fontWeight: 'bold',
-  },
-  widgetContainer: {
-    marginTop: 20,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+const useChartSectionStyles = () => {
+  const {theme} = useContext(AppThemeContext);
+  const styles = StyleSheet.create({
+    mainSection: {
+      flex: 1,
+      width: theme.width,
+      height: theme.height,
+      backgroundColor: theme.mainBackgroundColor,
+    },
+    title: {
+      paddingVertical: 2.5,
+      paddingHorizontal: 15,
+      color: theme.titleColor,
+      fontSize: theme.titleFontSize,
+      fontWeight: 'bold',
+    },
+    widgetContainer: {
+      marginTop: 20,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  });
+  return styles;
+};
 
-export default styles;
+export default useChartSectionStyles;

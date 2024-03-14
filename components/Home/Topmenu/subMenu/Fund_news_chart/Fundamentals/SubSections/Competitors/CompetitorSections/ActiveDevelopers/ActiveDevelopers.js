@@ -1,17 +1,26 @@
 import {Image, Text, View} from 'react-native';
-import React from 'react';
-import styles from './ActiveDevelopersStyle';
+import React, {useContext} from 'react';
+import useActiveDevelopersStyles from './ActiveDevelopersStyle';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
-const generateActiveDevs = value => {
+const generateActiveDevs = (value, maxValue, styles, isDarkMode) => {
   const images = [];
-  const quantity = Math.ceil(value / 50);
-
-  for (let i = 0; i < quantity; i++) {
+  for (let i = 0; i < 4; i++) {
+    const colored = i < Math.ceil((value / maxValue) * 4);
     images.push(
       <View key={`activeDevs_${i}`} style={styles.devImageContainer}>
         <Image
           source={require('../../../../../../../../../../assets/dailydevelopers.png')}
-          style={styles.image}
+          style={[
+            styles.image,
+            {
+              tintColor: colored
+                ? '#F98404'
+                : isDarkMode
+                ? '#74788D'
+                : '#EFEFEF',
+            },
+          ]}
           resizeMode={'contain'}
         />
       </View>,
@@ -21,7 +30,8 @@ const generateActiveDevs = value => {
   return images;
 };
 
-const ActiveDevsItem = ({item}) => {
+const ActiveDevsItem = ({item, styles, maxValue}) => {
+  const {isDarkMode} = useContext(AppThemeContext);
   return (
     <View style={styles.itemContainer}>
       <View style={styles.row}>
@@ -35,7 +45,7 @@ const ActiveDevsItem = ({item}) => {
         <Text style={styles.itemName}>{item.crypto}</Text>
       </View>
       <View style={styles.activeDevsContainer}>
-        {generateActiveDevs(item.activeDevs)}
+        {generateActiveDevs(item.activeDevs, maxValue, styles, isDarkMode)}
         <Text style={styles.activeDevsValue}>{item.activeDevs}</Text>
       </View>
     </View>
@@ -43,10 +53,25 @@ const ActiveDevsItem = ({item}) => {
 };
 
 const ActiveDevelopers = ({cryptos}) => {
+  const styles = useActiveDevelopersStyles();
+  const findMaxActiveDevsValue = cryptos => {
+    let maxDevs = 0;
+    cryptos.forEach(item => {
+      if (item.activeDevs > maxDevs) {
+        maxDevs = item.activeDevs;
+      }
+    });
+    return maxDevs;
+  };
   return (
     <View>
       {cryptos.map((item, index) => (
-        <ActiveDevsItem key={index} item={item} />
+        <ActiveDevsItem
+          key={index}
+          item={item}
+          styles={styles}
+          maxValue={findMaxActiveDevsValue(cryptos)}
+        />
       ))}
     </View>
   );

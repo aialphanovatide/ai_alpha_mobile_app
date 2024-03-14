@@ -1,10 +1,10 @@
-import React from 'react';
-import {View, ScrollView} from 'react-native';
-import {WebView} from 'react-native-webview';
+import React, {useContext} from 'react';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import styles from './TVEconomicCalendarStyles.js';
+import {AppThemeContext} from '../../../../context/themeContext.js';
 
 const TVEconomicCalendar = ({width, height}) => {
+  const {isDarkMode} = useContext(AppThemeContext);
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -13,20 +13,20 @@ const TVEconomicCalendar = ({width, height}) => {
             <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
         </head>
     <body>
-        <div class="tradingview-widget-container__widget_economic_calendar" style={{"height": 600px}}></div>
+        <div class="tradingview-widget-container__widget_economic_calendar" style={{"width": 450, "height": 600}}></div>
         <script type="text/javascript">
             const script = document.createElement('script');
             script.type = 'text/javascript';
             script.async = 'true';
             script.src= 'https://s3.tradingview.com/external-embedding/embed-widget-events.js';
             script.innerHTML = JSON.stringify({
-                colorTheme: "light",
-                isTransparent: false,
-                width: ${width},
-                height: ${height},
+              isTransparent: ${isDarkMode ? 'false' : 'true'},
+              ${isDarkMode ? "colorTheme:'dark'," : ''}
+                width: '100%',
+                height: '100%',
                 locale: "en",
                 importanceFilter: "0,1",
-                "countryFilter": "us,ca,fr,eu,de,ru,it,gb,sa,za,tr,ar,br,mx,au,in,id,jp,kr,cn"
+                "countryFilter": "us,gb,in,jp,cn"
               });
               document.querySelector(".tradingview-widget-container__widget_economic_calendar")
             .appendChild(script)
@@ -35,14 +35,7 @@ const TVEconomicCalendar = ({width, height}) => {
     </html>`;
 
   return (
-    <View style={styles.container}>
-      {/*
-        <ScrollView
-          nestedScrollEnabled={true}
-          style={styles.container}>*/}
-      <AutoHeightWebView source={{html: htmlContent}} style={styles.widget} />
-      {/* </ScrollView> */}
-    </View>
+    <AutoHeightWebView source={{html: htmlContent}} scrollEnabled={true} />
   );
 };
 

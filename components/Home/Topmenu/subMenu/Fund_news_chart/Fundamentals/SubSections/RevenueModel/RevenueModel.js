@@ -1,9 +1,10 @@
 import {Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import styles from './RevenueModelStyles';
+import React, {useContext, useState} from 'react';
 import CircleChart from '../CircleChart/CircleChart';
+import useRevenueModelStyles from './RevenueModelStyles';
+import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
-const RevenueSelectorItem = ({item, handleItemPress, activeOption}) => {
+const RevenueSelectorItem = ({item, handleItemPress, activeOption, styles}) => {
   return (
     <View style={styles.itemContainer}>
       <TouchableOpacity onPress={() => handleItemPress(item)}>
@@ -30,7 +31,7 @@ const RevenueSelectorItem = ({item, handleItemPress, activeOption}) => {
   );
 };
 
-const RevenueSelector = ({options, activeOption, handleItemPress}) => {
+const RevenueSelector = ({options, activeOption, handleItemPress, styles}) => {
   return (
     <View style={styles.selectorContainer}>
       {options.map((item, index) => (
@@ -39,13 +40,14 @@ const RevenueSelector = ({options, activeOption, handleItemPress}) => {
           item={item}
           activeOption={activeOption}
           handleItemPress={handleItemPress}
+          styles={styles}
         />
       ))}
     </View>
   );
 };
 
-const RevenueData = ({currentPercentages, total, currentColor}) => {
+const RevenueData = ({currentPercentages, total, currentColor, styles}) => {
   return (
     <View style={styles.dataRow}>
       {currentPercentages.map((percentage, index) => (
@@ -63,7 +65,9 @@ const RevenueData = ({currentPercentages, total, currentColor}) => {
 };
 
 const RevenueModel = ({options}) => {
-  const [activeOption, setActiveOption] = useState(null);
+  const {theme} = useContext(AppThemeContext);
+  const styles = useRevenueModelStyles();
+  const [activeOption, setActiveOption] = useState(options[0]);
 
   const findCurrentPercentages = (options, activeOption) => {
     let currentPercentages = [];
@@ -81,7 +85,7 @@ const RevenueModel = ({options}) => {
     return currentPercentages;
   };
 
-  const generateChartsData = options => {
+  const generateChartsData = (options, chartBgColor) => {
     let chartQuantity = options[0].values.length;
     let chartsData = [];
     for (let i = 0; i < chartQuantity; i++) {
@@ -96,7 +100,11 @@ const RevenueModel = ({options}) => {
     for (let i = 0; i < chartQuantity; i++) {
       charts.push(
         <View key={`chart_${i}`} style={styles.chartContainer}>
-          <CircleChart data={chartsData[i]} dividerSize={5} />
+          <CircleChart
+            data={chartsData[i]}
+            dividerSize={5}
+            backgroundColor={chartBgColor}
+          />
         </View>,
       );
     }
@@ -114,14 +122,18 @@ const RevenueModel = ({options}) => {
         options={options}
         handleItemPress={handleItemPress}
         activeOption={activeOption}
+        styles={styles}
       />
       {activeOption && (
         <RevenueData
           currentPercentages={findCurrentPercentages(options, activeOption)}
           currentColor={activeOption.color}
+          styles={styles}
         />
       )}
-      <View style={styles.charts}>{generateChartsData(options)}</View>
+      <View style={styles.charts}>
+        {generateChartsData(options, theme.boxesBackgroundColor)}
+      </View>
     </View>
   );
 };

@@ -1,9 +1,12 @@
-import React from 'react';
-import {View} from 'react-native';
+import React, {useContext} from 'react';
+import {Image, View, TouchableWithoutFeedback} from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import styles from './TvChartsStyles';
+import {AppThemeContext} from '../../../context/themeContext';
+import useTvChartStyles from './TvChartsStyles';
 
 const NewTvChart = ({width, height, symbol, widgetId}) => {
+  const styles = useTvChartStyles();
+  const {isDarkMode} = useContext(AppThemeContext);
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -29,7 +32,7 @@ const NewTvChart = ({width, height, symbol, widgetId}) => {
               width: ${width},
               height: ${height},
               locale: "en",
-              colorTheme: "light",
+              colorTheme: ${isDarkMode ? '"dark"' : '"light"'},
               autosize: true,
               showVolume: false,
               showMA: false,
@@ -47,7 +50,6 @@ const NewTvChart = ({width, height, symbol, widgetId}) => {
               maLineColor: "#2962FF",
               maLineWidth: 1,
               maLength: 9,
-              fontColor: "rgba(19, 23, 34, 1)",
               backgroundColor: "rgba(255, 255, 255, 0)",
               lineType: 0,
               dateRanges: [
@@ -70,7 +72,21 @@ const NewTvChart = ({width, height, symbol, widgetId}) => {
 
   return (
     <View style={styles.container}>
-      <AutoHeightWebView source={{html: htmlContent, originWhitelist: ['*']}} />
+      <AutoHeightWebView
+        source={{html: htmlContent, originWhitelist: ['*']}}
+        scalesPageToFit={false}
+        viewportContent={'width=device-width, user-scalable=no'}
+      />
+      <TouchableWithoutFeedback
+        onPress={() => console.log('Nothing here, just Ai Alpha logo!')}>
+        <View style={styles.alphaLogo}>
+          <Image
+            resizeMode={'contain'}
+            style={styles.logoImage}
+            source={require('../../../assets/logo_3.png')}
+          />
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };

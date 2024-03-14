@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, TouchableOpacity, Text, View, ScrollView, Image, StyleSheet } from 'react-native';
+import { SafeAreaView, TouchableOpacity, Text, View, ScrollView, Image, StyleSheet, Alert, Pressable } from 'react-native';
 import Purchases from 'react-native-purchases';
 import { useNavigation } from '@react-navigation/core'
 import { ENTITLEMENT_ID } from '../../../src/constants';
@@ -23,7 +23,7 @@ const SubscriptionSelector = ({ purchasePackage, setIsPurchasing }) => {
       }
       console.log("Customer info:", customerInfo);
     } catch (error) {
-      console.error("Error purchasing package:", error);
+      console.log("Error purchasing package:", error);
       Alert.alert("Purchase Error", "There was an error completing your purchase.");
     }
   };

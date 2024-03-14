@@ -1,6 +1,6 @@
 import {Image} from 'react-native';
 import {List} from 'react-native-paper';
-import styles from '../topStoriesStyles';
+import useTopStoriesStyles from '../topStoriesStyles';
 
 const StoryItem = ({
   item,
@@ -10,15 +10,24 @@ const StoryItem = ({
   handleStoryRedirect,
   coinBotId,
 }) => {
+  console.log('Image: ', item.images[0].image);
+  const styles = useTopStoriesStyles();
   return (
     <List.Item
       title={title}
-      description={description}
-      left={() => <Image source={{uri: image}} style={styles.imageStyle} />}
+      titleNumberOfLines={2}
+      // description={description}
+      // descriptionStyle={styles.description}
+      left={() => (
+        <Image
+          source={{uri: image, width: 60}}
+          style={styles.imageStyle}
+          resizeMode="contain"
+        />
+      )}
       titleStyle={styles.titleStyles}
-      onPress={() =>
-        handleStoryRedirect({item, coinBotId})
-      }
+      onPress={() => handleStoryRedirect(item, coinBotId)}
+      style={styles.storyItem}
     />
   );
 };

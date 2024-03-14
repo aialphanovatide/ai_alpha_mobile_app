@@ -7,63 +7,54 @@ import {
   Platform,
   Appearance,
 } from 'react-native';
-import Purchases from 'react-native-purchases';
-// import {GoogleSignin} from '@react-native-google-signin/google-signin';
-// import PaywallScreen from './components/Login/Screens/PaywallScreen/PaywallScreen';
-import {IOS_API_KEY, ANDROID_API_KEY} from '@env';
-import {ENTITLEMENT_ID} from './src/constants';
-// import Router from './src/navigation/Router';
-// import {API_KEY} from './src/constants';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
+import Keys from 'react-native-keys';
 import {TopMenuContextProvider} from './context/topMenuContext';
 import {UserProvider} from './context/UserContext';
+import {UserIdProvider} from './context/UserIdContext';
 import {CategoriesContextProvider} from './context/categoriesContext';
+import {AppThemeProvider} from './context/themeContext';
+import SplashScreen from 'react-native-splash-screen';
+import {RevenueCatProvider} from './context/RevenueCatContext';
+
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
 
   useEffect(() => {
-    Purchases.setLogLevel(Purchases.LOG_LEVEL.VERBOSE);
-    if (Platform.OS === 'ios') {
-      Purchases.configure({apiKey: IOS_API_KEY});
-    } else if (Platform.OS === 'android') {
-      Purchases.configure({apiKey: ANDROID_API_KEY});
+    if (Platform.OS === 'android') {
+      SplashScreen.hide();
     }
   }, []);
 
-  console.log('Entitlement id: ', ENTITLEMENT_ID);
-
-  const showUserSubscriptionData = async () => {
-    try {
-      //const purchaseMade = await Purchases.purchasePackage(purchasePackage);
-      const customerInfo = await Purchases.getCustomerInfo();
-
-      if (
-        typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== 'undefined'
-      ) {
-        console.log('User is pro');
-      }
-      console.log('Customer info:', customerInfo);
-    } catch (error) {
-      console.error('Error purchasing package:', error);
-    }
-  };
-  showUserSubscriptionData();
-
   return (
-    <UserProvider>
-      <SafeAreaView
-        style={[
-          styles.container,
-          {backgroundColor: colorScheme === 'dark' ? '#242427' : 'white'},
-        ]}>
-        <StatusBar barStyle="dark-content" />
-        <CategoriesContextProvider>
-          <TopMenuContextProvider>
-            <Navigation />
-          </TopMenuContextProvider>
-        </CategoriesContextProvider>
-      </SafeAreaView>
-    </UserProvider>
+    <Auth0Provider
+      domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
+      clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
+      <RevenueCatProvider>
+        <UserProvider>
+          <UserIdProvider>
+            <SafeAreaView
+              style={[
+                styles.container,
+                {
+                  backgroundColor:
+                    colorScheme === 'dark' ? '#242427' : '#E7EAF1',
+                },
+              ]}>
+              <StatusBar barStyle="dark-content" />
+              <AppThemeProvider>
+                <CategoriesContextProvider>
+                  <TopMenuContextProvider>
+                    <Navigation />
+                  </TopMenuContextProvider>
+                </CategoriesContextProvider>
+              </AppThemeProvider>
+            </SafeAreaView>
+          </UserIdProvider>
+        </UserProvider>
+      </RevenueCatProvider>
+    </Auth0Provider>
   );
 };
 

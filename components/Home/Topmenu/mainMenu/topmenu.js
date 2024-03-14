@@ -1,33 +1,36 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import React, {useContext} from 'react';
+import {View, ScrollView, Text} from 'react-native';
 import MenuItem from './menuItem/menuItem';
-import styles from './topmenuStyles';
+import useTopMenuStyles from './topmenuStyles';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import {useNavigation} from '@react-navigation/core';
 import {CategoriesContext} from '../../../../context/categoriesContext';
-import Loader from '../../../Loader/Loader';
+import {AppThemeContext} from '../../../../context/themeContext';
 
-const TopMenu = () => {
-  const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
+const TopMenu = ({isAlertsMenu}) => {
+  const styles = useTopMenuStyles();
+  const {updateActiveCoin, updateActiveSubCoin, activeCoin} =
+    useContext(TopMenuContext);
   const {categories} = useContext(CategoriesContext);
   const navigation = useNavigation();
-
+  const {isDarkMode} = useContext(AppThemeContext);
   const handleButtonPress = category => {
     updateActiveCoin(category);
     updateActiveSubCoin(category.coin_bots[0].bot_name);
-    navigation.navigate('TopMenuScreen', {
-      screen: 'SubMenuScreen',
-      params: {
-        screen: 'Charts',
+    if (!isAlertsMenu) {
+      navigation.navigate('TopMenuScreen', {
+        screen: 'SubMenuScreen',
         params: {
-          interval: '1h',
-          symbol: `${category.coin_bots[0].bot_name}USDT`,
-          coinBot: category.coin_bots[0].bot_name,
+          screen: 'Charts',
+          params: {
+            interval: '1h',
+            symbol: `${category.coin_bots[0].bot_name}USDT`,
+            coinBot: category.coin_bots[0].bot_name,
+          },
         },
-      },
-    });
+      });
+    }
   };
-
   return (
     <View style={styles.container}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -35,14 +38,20 @@ const TopMenu = () => {
           categories.map(category => (
             <MenuItem
               key={category.category_id}
-              icon={category.category}
               onPress={() => handleButtonPress(category)}
               category={category}
-              isActive={category.is_active}
+              isDarkMode={isDarkMode}
+              isActive={
+                activeCoin &&
+                activeCoin !== undefined &&
+                activeCoin === category
+              }
             />
           ))
         ) : (
-          <Loader />
+          <View style={styles.loadingMessage}>
+            <Text style={styles.text}>Loading...</Text>
+          </View>
         )}
       </ScrollView>
     </View>

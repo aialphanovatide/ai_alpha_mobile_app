@@ -1,12 +1,22 @@
-import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import styles from './DAppsStyles';
+import {
+  Image,
+  ImageBackground,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useContext, useState} from 'react';
+import useDappsStyles from './DAppsStyles';
+import { AppThemeContext } from '../../../../../../../../context/themeContext';
 
 const ProtocolSelector = ({
   protocols,
   handleActiveProtocol,
   activeProtocol,
+  styles,
 }) => {
+  const {theme} = useContext(AppThemeContext);
   return (
     <ScrollView
       style={styles.itemContainer}
@@ -15,16 +25,25 @@ const ProtocolSelector = ({
       {protocols.map((protocol, index) => (
         <TouchableOpacity
           key={index}
-          style={styles.logoContainer}
           onPress={() => handleActiveProtocol(protocol)}>
-          <Image
-            style={[
-              styles.logo,
-              activeProtocol.name !== protocol.name && styles.disabled,
-            ]}
-            source={protocol.image}
-            resizeMode={'contain'}
-          />
+          <ImageBackground
+            style={styles.logoContainer}
+            source={
+              activeProtocol.name === protocol.name
+                ? require('../../../../../../../../assets/images/fundamentals/dApps/active-logo.png')
+                : require('../../../../../../../../assets/images/fundamentals/dApps/inactive-logo.png')
+            }
+            tintColor={theme.dAppsItemBg}
+            resizeMode="contain">
+            <Image
+              style={[
+                styles.logo,
+                activeProtocol.name !== protocol.name && styles.disabled,
+              ]}
+              source={protocol.image}
+              resizeMode={'contain'}
+            />
+          </ImageBackground>
         </TouchableOpacity>
       ))}
     </ScrollView>
@@ -32,6 +51,7 @@ const ProtocolSelector = ({
 };
 
 const DApps = ({protocols}) => {
+  const styles = useDappsStyles();
   const [activeProtocol, setActiveProtocol] = useState(protocols[0]);
 
   const handleActiveProtocol = protocol => {
@@ -44,10 +64,11 @@ const DApps = ({protocols}) => {
         <Image
           style={styles.mainImage}
           resizeMode={'contain'}
-          source={require('../../../../../../../../assets/images/fundamentals/dApps/dapps.jpg')}
+          source={require('../../../../../../../../assets/images/fundamentals/dApps/dapps.png')}
         />
       </View>
       <ProtocolSelector
+        styles={styles}
         protocols={protocols}
         handleActiveProtocol={handleActiveProtocol}
         activeProtocol={activeProtocol}
