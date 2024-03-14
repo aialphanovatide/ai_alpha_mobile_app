@@ -24,8 +24,6 @@
 		90C4A4822D7F4318A9FD5BB7 /* prompt_thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 373A0D6BDA2E4CA8A790A164 /* prompt_thin.ttf */; };
 		97334A2254654809BE310DC5 /* prompt_semibold_italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F12DEC47D5047458182DD35 /* prompt_semibold_italic.ttf */; };
 		9DCEDF3A2B1808A500A2A8DA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DCEDF392B1808A500A2A8DA /* StoreKit.framework */; };
-		9DF8F66B2B9BC7A0002192A1 /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFDA2992B659F1200E7E4B6 /* OpenSSL.xcframework */; };
-		9DF8F66C2B9BC7A0002192A1 /* OpenSSL.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFDA2992B659F1200E7E4B6 /* OpenSSL.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7474D1B90264C5D83276A63 /* prompt_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FA896AC600745D0B9590D52 /* prompt_medium.ttf */; };
 		ACA68005C75D441699C948F7 /* prompt_light_italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC37ED54556E443BBEC94472 /* prompt_light_italic.ttf */; };
 		B59A5885280148A9BD948C92 /* prompt_semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B6003A37B3F4B8D96AEDCE4 /* prompt_semibold.ttf */; };
@@ -46,20 +44,6 @@
 			remoteInfo = ai_alpha_mobile_app;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		9DF8F66D2B9BC7A0002192A1 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				9DF8F66C2B9BC7A0002192A1 /* OpenSSL.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* ai_alpha_mobile_appTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ai_alpha_mobile_appTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,7 +99,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DF8F66B2B9BC7A0002192A1 /* OpenSSL.xcframework in Frameworks */,
 				9DCEDF3A2B1808A500A2A8DA /* StoreKit.framework in Frameworks */,
 				F050964816A734697D3DB2D3 /* libPods-ai_alpha_mobile_app.a in Frameworks */,
 			);
@@ -271,7 +254,6 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				8191B699D97797986377F8E4 /* [CP] Embed Pods Frameworks */,
 				50EA8A3B9E27B1A2F745BB72 /* [CP] Copy Pods Resources */,
-				9DF8F66D2B9BC7A0002192A1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

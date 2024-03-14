@@ -172,6 +172,11 @@ const PackageSubscriptions = () => {
     navigation.navigate('AccountMain');
   };
 
+  const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
+    subscription.toLowerCase().includes('founders'),
+  );
+  console.log("HAS A FOUNDER PACKAGE: ", hasFoundersPackage);
+
   return (
     <LinearGradient
       useAngle={true}
@@ -213,26 +218,51 @@ const PackageSubscriptions = () => {
           </Text>
         </TouchableOpacity>
         <ScrollView style={styles.packagesContainer}>
-          {packages && packages.length >= 0 ? (
-            packages.map((item, index) => (
-              <SubscriptionItem
-                key={index}
-                item={item.product}
-                styles={styles}
-                offering={item}
-                icon={item.subscriptionIcon}
-                description={item.subscriptionDescription}
-                onItemPress={handleActiveItem}
-                activeItem={
-                  activeItem && activeItem.product.title === item.product.title
-                }
-                isFoundersPackage={item.product.identifier.includes('founders')}
-              />
-            ))
-          ) : (
-            <Loader />
-          )}
-        </ScrollView>
+  {packages && packages.length >= 0 ? (
+    hasFoundersPackage ? (
+      packages
+        .filter(item => item.product.identifier.includes('founders'))
+        .map((item, index) => (
+          <SubscriptionItem
+            key={index}
+            item={item.product}
+            styles={styles}
+            offering={item}
+            icon={item.subscriptionIcon}
+            description={item.subscriptionDescription}
+            onItemPress={handleActiveItem}
+            activeItem={
+              activeItem && activeItem.product.title === item.product.title
+            }
+            isFoundersPackage={true}
+          />
+        ))
+    ) : (
+      packages.map((item, index) => (
+        <SubscriptionItem
+          key={index}
+          item={item.product}
+          styles={styles}
+          offering={item}
+          icon={item.subscriptionIcon}
+          description={item.subscriptionDescription}
+          onItemPress={handleActiveItem}
+          activeItem={
+            activeItem && activeItem.product.title === item.product.title
+          }
+          isFoundersPackage={false}
+        />
+      ))
+    )
+  ) : (
+    <Loader />
+  )}
+</ScrollView>
+
+
+
+
+
         <SubscriptionsLoader isLoading={loading} />
       </SafeAreaView>
     </LinearGradient>

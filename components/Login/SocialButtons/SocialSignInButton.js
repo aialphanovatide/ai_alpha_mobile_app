@@ -3,7 +3,7 @@ import {Platform, View, Linking} from 'react-native';
 import CustomButton from '../CustomButton/CustomButton';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import axios from 'axios';
-import {auth0Client, auth0Domain, auth0Audience, auth0GoogleAudience} from '../../../src/constants';
+import {auth0Client, auth0Domain, auth0Audience, auth0GoogleAudience, auth0ClonedGoogleAudience, auth0ClonedGoogleClient, auth0ClonedDomain} from '../../../src/constants';
 import {useNavigation} from '@react-navigation/native';
 import auth0 from '../auth0';
 import {useAuth0, Auth0Provider} from 'react-native-auth0';
@@ -55,8 +55,8 @@ const SocialSignInButton = () => {
         grant_type: 'authorization_code',
         id_token: idToken,
         code: userInfo.serverAuthCode, // Include authorization code in the payload
-        audience: auth0GoogleAudience,
-        client_id: auth0Client,
+        audience: auth0ClonedGoogleAudience,
+        client_id: auth0ClonedGoogleClient,
         scope: 'openid profile email',
         connection: 'google-oauth2',
         redirect_uri: redirectUri,
@@ -66,9 +66,14 @@ const SocialSignInButton = () => {
       console.log("sending payload to auth0")
       // Make request to Auth0
       const auth0Response = await axios.post(
-        `https://${auth0Domain}/oauth/token`,
+        `https://${auth0ClonedDomain}/oauth/token`,
         payload,
       );
+
+      
+
+
+
       console.log('Auth0 Response:', auth0Response);
 
       const userId = auth0Response.data.user_id;
@@ -195,14 +200,14 @@ const SocialSignInButton = () => {
           type="APPLE"
           disabled={loggedInUser !== null}
         />
-        {/*
-                <CustomButton
+
+        <CustomButton
           text="Continue with Google"
           onPress={() => signInWithGoogle()}
           type="GOOGLE"
           disabled={loggedInUser !== null}
         /> 
-        */}
+
     
 
       </View>
