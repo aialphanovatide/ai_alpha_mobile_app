@@ -13,6 +13,24 @@ import {AppThemeContext} from '../../../../../../context/themeContext';
 import useChartsStyles from './ChartsStyles';
 import {getService} from '../../../../../../services/aiAlphaApi';
 
+// Format any number
+const formatNumber = num => {
+  const absNum = Math.abs(num);
+
+  const abbrev = ['', 'k', 'm', 'b', 't'];
+  const tier = (Math.log10(absNum) / 3) | 0;
+
+  // If the number is smaller than 1000, no need for abbreviation
+  if (tier === 0) return num;
+
+  const divisor = Math.pow(1000, tier);
+  const formattedNum = (num / divisor).toFixed(1);
+
+  // Concatenate the formatted number with the appropriate abbreviation
+  return formattedNum + abbrev[tier];
+};
+
+
 const Chart = ({
   symbol,
   chartData,
@@ -22,61 +40,47 @@ const Chart = ({
   selectedInterval,
   coinBot,
 }) => {
+
   const styles = useChartsStyles();
   const {theme} = useContext(AppThemeContext);
   const [supportLevels, setSupportLevels] = useState([]);
   const [resistanceLevels, setResistanceLevels] = useState([]);
 
-  const formatNumber = num => {
-    const absNum = Math.abs(num);
-    const abbrev = ['', 'k', 'm', 'b', 't'];
-    const thousand = 1000;
-
-    const tier = (Math.log10(absNum) / 3) | 0;
-
-    if (tier == 0) return num;
-
-    const divisor = Math.pow(thousand, tier);
-    const formattedNum = (num / divisor).toFixed(1);
-
-    return formattedNum + abbrev[tier];
-  };
-
+  // Call the S&R lines
   useEffect(() => {
-    async function getSupportAndResistanceData(botName, time_interval) {
-      try {
-        const supportValues = [];
-        const resistanceValues = [];
-        const data = await getService(
-          `/api/coin-support-resistance?coin_name=${botName}&temporality=${time_interval.toLowerCase()}&pair=usdt`,
-        );
-        if (data.success) {
-          const values = data.chart_values;
-          for (const key in values) {
-            if (key.includes('support')) {
-              supportValues.push(values[key]);
-            } else if (key.includes('resistance')) {
-              resistanceValues.push(values[key]);
-            }
+      const fetchSupportAndResistanceData = async () => {
+          try {
+              const data = await getService(`/api/coin-support-resistance?coin_name=${coinBot}&temporality=${selectedInterval.toLowerCase()}&pair=usdt`);
+      
+              if (data.success) {
+                  const supportValues = [];
+                  const resistanceValues = [];
+                  const values = data.chart_values;
+                  for (const key in values) {
+                      if (key.includes('support')) {
+                          supportValues.push(values[key]);
+                      } else if (key.includes('resistance')) {
+                          resistanceValues.push(values[key]);
+                      }
+                  }
+                  setSupportLevels(supportValues);
+                  setResistanceLevels(resistanceValues);
+              } else {
+                console.log(data.message)
+              }
+          } catch (error) {
+              console.error('Error fetching support and resistance data:', error);
           }
-        }
-        setSupportLevels(supportValues);
-        setResistanceLevels(resistanceValues);
-      } catch (error) {
-        console.error('Error fetching support and resistance data: ', error);
-      }
-    }
+      };
 
-    getSupportAndResistanceData(coinBot, selectedInterval);
-  }, [activeButtons, coinBot, selectedInterval]);
+      fetchSupportAndResistanceData();
+  }, [coinBot, selectedInterval]);
 
-  if (loading) {
-    return (
-      <View style={styles.chartContainer}>
-        <Loader />
-      </View>
-    );
-  }
+
+  const domainX = [
+    chartData[chartData.length - candlesToShow].x,
+    chartData && chartData[chartData.length - 1].x,
+  ];
 
   const domainY = () => {
     if (
@@ -103,10 +107,13 @@ const Chart = ({
     }
   };
 
-  const domainX = [
-    chartData[chartData.length - candlesToShow].x,
-    chartData && chartData[chartData.length - 1].x,
-  ];
+  if (loading) {
+    return (
+      <View style={styles.chartContainer}>
+        <Loader />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.chartContainer}>
@@ -255,6 +262,21 @@ const Chart = ({
 
 export default Chart;
 
+
+
+
+// const formatNumber = num => {
+//   const absNum = Math.abs(num);
+//   const abbrev = ['', 'k', 'm', 'b', 't'];
+//   const tier = (Math.log10(absNum) / 3) | 0;
+
+//   if (tier == 0) return num;
+
+//   const divisor = Math.pow(1000, tier);
+//   const formattedNum = (num / divisor).toFixed(1);
+
+//   return formattedNum + abbrev[tier];
+// };
 // this style deletes the line in the y axis
 {
   /* <VictoryAxis dependentAxis style={{ axis: { stroke: 'none' } }} /> */
