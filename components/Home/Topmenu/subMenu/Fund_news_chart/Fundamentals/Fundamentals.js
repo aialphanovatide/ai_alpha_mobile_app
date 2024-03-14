@@ -1,325 +1,290 @@
 import {Text, ScrollView, SafeAreaView} from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import SubSection from './SubSections/SubSection';
 import Introduction from './SubSections/Introduction/Introduction.js';
 import Tokenomics from './SubSections/Tokenomics/Tokenomics.js';
 import GeneralTokenAllocation from './SubSections/GeneralTokenAllocation/GeneralTokenAllocation.js';
-import VestingSchedule from './SubSections/VestingSchedule/VestingSchedule.js';
 import ValueAccrualMechanisms from './SubSections/ValueAccrualMechanisms/ValueAccrualMechanisms.js';
 import Competitors from './SubSections/Competitors/Competitors';
-import RevenueModel from './SubSections/RevenueModel/RevenueModel';
 import Hacks from './SubSections/Hacks/Hacks';
 import Upgrades from './SubSections/UpgradesSection/Upgrades';
 import DApps from './SubSections/DApps/DApps';
 import useFundamentalsStyles from './FundamentalsStyles';
 import {AppThemeContext} from '../../../../../../context/themeContext';
+import UpdatedRevenueModel from './SubSections/RevenueModel/UpdatedRevenueModel';
+import {TopMenuContext} from '../../../../../../context/topMenuContext';
+import {altGetService, getService} from '../../../../../../services/aiAlphaApi';
+import {fundamentalsMock} from './fundamentalsMock';
+import TokenUtility from './SubSections/TokenUtility/TokenUtility';
+import AboutModal from './AboutModal';
+import {fundamentals_static_content} from './fundamentalsStaticData';
+import VestingSchedule from './SubSections/VestingSchedule/VestingSchedule';
+import LinearGradient from 'react-native-linear-gradient';
 
-const Fundamentals = ({}) => {
+const initialContentState = {
+  introduction: false,
+  tokenomics: false,
+  generalTokenAllocation: false,
+  tokenUtility: false,
+  valueAccrualMechanisms: false,
+  competitors: false,
+  revenueModel: false,
+  hacks: false,
+  upgrades: false,
+  dapps: false,
+};
+
+const Fundamentals = ({route}) => {
+  const {activeSubCoin} = useContext(TopMenuContext);
+  const initial_coin = activeSubCoin;
+  const [coin, setCoin] = useState(initial_coin);
   const {isDarkMode} = useContext(AppThemeContext);
   const styles = useFundamentalsStyles();
+  const [aboutVisible, setAboutVisible] = useState(false);
+  const [aboutDescription, setAboutDescription] = useState('');
+  const [currentContent, setCurrentContent] = useState(fundamentalsMock[coin]);
+  const [sharedData, setSharedData] = useState([]);
+  const [hasContent, setHasContent] = useState(initialContentState);
+
+  const handleSectionContent = (section, value) => {
+    setHasContent({...hasContent, [section]: value});
+  };
+
+  const handleAboutPress = (description = null) => {
+    if (description) {
+      setAboutDescription(description);
+    }
+    setAboutVisible(!aboutVisible);
+  };
+
+  const getSectionData = async endpoint => {
+    const data = await getService(endpoint);
+    return data;
+  };
+
+  useEffect(() => {
+    const handleCoinUpdate = newCoin => {
+      setCurrentContent(fundamentalsMock[newCoin]);
+      setCoin(newCoin);
+      setHasContent(initialContentState);
+      console.log(`Updating content from coin ${coin} to ${newCoin}`);
+    };
+
+    handleCoinUpdate(activeSubCoin);
+  }, [coin, activeSubCoin]);
+
+  useEffect(() => {
+    const fetchTokenomicsData = async () => {
+      try {
+        const response = await getSectionData(
+          `/api/get_tokenomics?coin_name=${coin}`,
+        );
+
+        if (response?.status !== 200 || !response?.message) {
+          setSharedData([]);
+        } else {
+          console.log(response.message.tokenomics_data);
+          const parsed_cryptos = response.message.tokenomics_data;
+          setSharedData(parsed_cryptos);
+        }
+      } catch (error) {
+        console.log('Error trying to get tokenomics data: ', error);
+      }
+    };
+    fetchTokenomicsData();
+  }, [coin]);
+
   return (
-    <ScrollView nestedScrollEnabled={true} style={styles.backgroundColor}>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Fundamentals</Text>
-        <SubSection
-          subtitle={'Introduction'}
-          content={
-            <Introduction
-              description={
-                'Ethereum aims to address the limitations of traditional blockchains by enabling the creation of over 3,000 DApps and smart contracts that are currently running on the protocol.'
-              }
-              dataItems={[
-                {text: 'Market capitalization of over $25 billion'},
-                {text: '4 billion unique addresses and facilitated'},
-                {text: 'Over $150 billion in transaction volume'},
-                {text: 'Leading platform for decentralised innovation'},
-              ]}
+    <LinearGradient
+      useAngle={true}
+      angle={45}
+      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      style={styles.linearGradient}>
+      <ScrollView nestedScrollEnabled={true} style={styles.backgroundColor}>
+        <SafeAreaView style={styles.container}>
+          {aboutVisible && (
+            <AboutModal
+              description={aboutDescription}
+              onClose={handleAboutPress}
+              visible={aboutVisible}
             />
-          }
-        />
-        <SubSection subtitle={'Tokenomics'} content={<Tokenomics />} />
-        <SubSection
-          subtitle={'General Token Allocation'}
-          content={<GeneralTokenAllocation />}
-        />
-        <SubSection
-          subtitle={'Vesting Schedules'}
-          content={
-            <VestingSchedule year={2024} tokens={49999992} crypto={'ETH'} />
-          }
-        />
-        <SubSection
-          subtitle={'Value Accrual Mechanisms'}
-          content={
-            <ValueAccrualMechanisms
-              options={[
-                {
-                  name: 'Benefits',
-                  icon: require('../../../../../../assets/images/fundamentals/benefits.png'),
-                },
-                {
-                  name: 'USP',
-                  icon: require('../../../../../../assets/images/fundamentals/usp.png'),
-                },
-              ]}
-              contentData={[
-                {
-                  option: 'Benefits',
-                  content: [
-                    {
-                      title: 'Staking',
-                      image: isDarkMode
-                        ? require('../../../../../../assets/images/fundamentals/vam/StakingDark.png')
-                        : require('../../../../../../assets/Staking.png'),
-                      text: '4% to 5% per annum',
-                    },
-                    {
-                      title: 'Fee Burning',
-                      image: isDarkMode
-                        ? require('../../../../../../assets/images/fundamentals/vam/FeeBurningDark.png')
-                        : require('../../../../../../assets/FeeBurning.png'),
-                      text: 'Potential for deflationary pressure on the circulating supply',
-                    },
-                  ],
-                },
-                {
-                  option: 'USP',
-                  content: [
-                    {
-                      title: 'Staking',
-                      image: isDarkMode
-                        ? require('../../../../../../assets/images/fundamentals/vam/StakingDark.png')
-                        : require('../../../../../../assets/Staking.png'),
-                      text: 'Similar to other Proof-to-Stake cryptocurrencies',
-                    },
-                    {
-                      title: 'Fee Burning',
-                      image: isDarkMode
-                        ? require('../../../../../../assets/images/fundamentals/vam/FeeBurningDark.png')
-                        : require('../../../../../../assets/FeeBurning.png'),
-                      text: 'Unique to Ethereum',
-                    },
-                  ],
-                },
-              ]}
-            />
-          }
-        />
-        <SubSection subtitle={'Competitors'} content={<Competitors />} />
-        <SubSection
-          subtitle={'Revenue Model'}
-          content={
-            <RevenueModel
-              options={[
-                {
-                  name: 'Transaction Fees',
-                  color: '#399AEA',
-                  values: [
-                    {year: 2022, percentage: 75},
-                    {year: 2023, percentage: 65},
-                  ],
-                },
-                {
-                  name: 'Ether Burning',
-                  color: '#C539B4',
-                  values: [
-                    {year: 2022, percentage: 20},
-                    {year: 2023, percentage: 30},
-                  ],
-                },
-                {
-                  name: 'Other Sources',
-                  color: '#FFC53D',
-                  values: [
-                    {year: 2022, percentage: 0},
-                    {year: 2023, percentage: 5},
-                  ],
-                },
-              ]}
-            />
-          }
-        />
-        <SubSection
-          subtitle={'Hacks'}
-          content={
-            <Hacks
-              events={[
-                {
-                  date: 'July 2016',
-                  description:
-                    'A vulnerability in the DAO smart contract allowed an attacker to steal $60 million worth of ETH.',
-                  hasFinished: true,
-                },
-                {
-                  date: 'June 2017',
-                  description:
-                    'A bug in the Parity wallet software allowed attackers to steal $31 million worth of ETH.',
-                  hasFinished: true,
-                },
-                {
-                  date: 'November 2018',
-                  description:
-                    'A DNS hijacking attack allowed attackers to steal $17 million worth of ETH from MyEtherWallet users.',
-                  hasFinished: true,
-                },
-                {
-                  date: 'February 2019',
-                  description:
-                    'A security breach at Crypto.com allowed attackers to steal $26 million worth of ETH and other cryptocurrencies.',
-                  hasFinished: true,
-                },
-                {
-                  date: 'May 2022',
-                  description:
-                    'A cross-chain bridge between the Ethereum and Avalanche blockchains was hacked, resulting in the loss of $190 million worth of cryptocurrencies.',
-                  hasFinished: true,
-                },
-              ]}
-            />
-          }
-        />
-        <SubSection
-          subtitle={'Upgrades'}
-          content={
-            <Upgrades
-              events={[
-                {
-                  date: 'August 2021',
-                  description: 'London Hard Fork',
-                  hasFinished: true,
-                },
-                {
-                  date: 'September 2022',
-                  description: 'The Merge',
-                  hasFinished: true,
-                },
-                {
-                  date: 'April 2023',
-                  description: 'Shanghai Upgrade',
-                  hasFinished: true,
-                },
-                {
-                  date: 'Q1/Q2 2024',
-                  description: 'Cancun-Deneb',
-                  hasFinished: false,
-                },
-                {
-                  date: 'Early 2024',
-                  description: 'EIP 4844 (Potential)',
-                  hasFinished: false,
-                },
-                {
-                  date: 'Mid 2024',
-                  description: 'Mid 2024: EIP-4337 (Potential)',
-                  hasFinished: false,
-                },
-                {
-                  date: 'Late 2024/Early 2025',
-                  description: 'Surge & Shard Phase 1',
-                  hasFinished: false,
-                },
-                {
-                  date: 'Ongoing development',
-                  description:
-                    'Ongoing development: Surge & Shard Phase 2 and beyond',
-                  hasFinished: false,
-                },
-                {
-                  date: 'Long-term',
-                  description: 'Long-term: EVM 3.0 Vision',
-                  hasFinished: false,
-                },
-              ]}
-            />
-          }
-        />
-        <SubSection
-          subtitle={'DApps'}
-          content={
-            <DApps
-              protocols={[
-                {
-                  name: 'Uniswap',
-                  description:
-                    'Decentralised exchange (DEX) for trading Ethereum-based tokens',
-                  tvl: 14.6,
-                  benefits:
-                    'Decentralised and permissionless way to trade Ethereum-based tokens, which helps to increase the liquidity of these tokens and to make them more accessible to users.',
-                  image: require('../../../../../../assets/images/fundamentals/dApps/uniswap.png'),
-                },
-                {
-                  name: 'Aave',
-                  description: 'Decentralised lending and borrowing platform.',
-                  tvl: 13.2,
-                  benefits:
-                    'Decentralised and permissionless way for users to borrow and lend Ethereum-based tokens, which helps to increase the utilisation of these tokens and to create new financial products and services.',
-                  image: require('../../../../../../assets/images/fundamentals/dApps/aave.png'),
-                },
-                {
-                  name: 'MakerDAO',
-                  description: 'Decentralised stablecoin issuer.',
-                  tvl: 8.6,
-                  benefits:
-                    'MakerDAO issues the DAI stablecoin, which is one of the most popular stablecoins in the crypto ecosystem. DAI provides a stable and reliable store of value, which helps to attract users to the Ethereum ecosystem and to make it more attractive to institutional investors.',
-                  image: require('../../../../../../assets/images/fundamentals/dApps/maker.png'),
-                },
-                {
-                  name: 'Lido Finance',
-                  description:
-                    'A decentralised staking protocol that allows users to stake their ETH without having to run their own node.',
-                  tvl: 14.2,
-                  benefits:
-                    'Lido Finance makes it easier for users to participate in staking, which helps to increase the security of the Ethereum network and to provide a source of passive income for stakers.',
-                  image: require('../../../../../../assets/images/fundamentals/dApps/lido.png'),
-                },
-                {
-                  name: 'Curve',
-                  description: 'Decentralised exchange for stablecoin trading.',
-                  tvl: 12.8,
-                  benefits:
-                    'Decentralised and permissionless way to trade stablecoins, which helps to improve the stability of the Ethereum ecosystem and to make it more attractive to institutional investors.',
-                  image: require('../../../../../../assets/images/fundamentals/dApps/curve.png'),
-                },
-                {
-                  name: 'Synthetix',
-                  description:
-                    'A decentralised exchange for synthetic assets, which are tokens that track the price of real-world assets such as stocks and commodities.',
-                  tvl: 6,
-                  benefits:
-                    'Synthetix provides a decentralised and permissionless way to trade synthetic assets, which helps to expand the range of financial products and services available on Ethereum.',
-                  image: require('../../../../../../assets/images/fundamentals/dApps/synthetix.png'),
-                },
-                {
-                  name: 'dYdX',
-                  description: 'A decentralised margin trading platform.',
-                  tvl: 5.8,
-                  benefits:
-                    'dYdX provides a decentralised and permissionless way to trade crypto assets with leverage, which helps to increase the liquidity of these assets and to create new financial products and services.',
-                  image: require('../../../../../../assets/images/fundamentals/dApps/dydx.png'),
-                },
-                {
-                  name: 'OpenSea',
-                  description: 'NFT marketplace.',
-                  tvl: 7.2,
-                  benefits:
-                    'Decentralised and permissionless way to create, buy, and sell NFTs, which helps to fuel the growth of the NFT market and to bring new users to the Ethereum ecosystem.',
-                  image: require('../../../../../../assets/images/fundamentals/dApps/opensea.png'),
-                },
-                {
-                  name: 'Compound Protocol',
-                  description:
-                    'An algorithmic interest rate protocol that offers both borrowing and lending services.',
-                  tvl: 15.3,
-                  benefits:
-                    'Compound Protocol provides a decentralised and permissionless way to borrow and lend Ethereum-based tokens, which helps to increase the utilisation of these tokens and to create new financial products and services.',
-                  image: require('../../../../../../assets/images/fundamentals/dApps/compound.png'),
-                },
-              ]}
-            />
-          }
-        />
-      </SafeAreaView>
-    </ScrollView>
+          )}
+          <Text style={styles.title}>Fundamentals</Text>
+          <SubSection
+            subtitle={'Introduction'}
+            content={
+              <Introduction
+                coin={coin}
+                getSectionData={getSectionData}
+                handleSectionContent={handleSectionContent}
+              />
+            }
+            handleAboutPress={handleAboutPress}
+            hasEmptyContent={hasContent.introduction}
+          />
+          <SubSection
+            handleAboutPress={handleAboutPress}
+            subtitle={'Tokenomics'}
+            content={
+              <Tokenomics
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
+            }
+            hasAbout={true}
+            description={
+              fundamentals_static_content.tokenomics.sectionDescription
+            }
+            hasEmptyContent={hasContent.tokenomics}
+          />
+          <SubSection
+            subtitle={'Token Distribution'}
+            content={
+              <GeneralTokenAllocation
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
+            }
+            hasEmptyContent={hasContent.generalTokenAllocation}
+            hasAbout
+            handleAboutPress={handleAboutPress}
+            description={
+              fundamentals_static_content.tokenDistribution.sectionDescription
+            }
+          />
+          {/* <SubSection
+            subtitle={'Vesting Schedule'}
+            content={
+              <VestingSchedule
+                crypto={currentContent.vestingSchedules?.displayName}
+                schedules={currentContent.vestingSchedules?.schedules}
+              />
+            }
+            hasAbout
+            handleAboutPress={handleAboutPress}
+            description={
+              fundamentals_static_content.vestingSchedule.sectionDescription
+            }
+          /> */}
+          <SubSection
+            subtitle={'Token Utility'}
+            hasEmptyContent={hasContent.tokenUtility}
+            content={
+              <TokenUtility
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
+            }
+            hasAbout
+            handleAboutPress={handleAboutPress}
+            description={
+              fundamentals_static_content.tokenUtility.sectionDescription
+            }
+          />
+          <SubSection
+            subtitle={'Value Accrual Mechanisms'}
+            hasEmptyContent={hasContent.valueAccrualMechanisms}
+            content={
+              <ValueAccrualMechanisms
+                handleSectionContent={handleSectionContent}
+                getSectionData={getSectionData}
+                coin={coin}
+              />
+            }
+            hasAbout
+            handleAboutPress={handleAboutPress}
+            description={
+              fundamentals_static_content.valueAccrualMechanisms
+                .sectionDescription
+            }
+          />
+          <SubSection
+            hasEmptyContent={hasContent.competitors}
+            subtitle={'Competitors'}
+            content={
+              <Competitors
+                coin={coin}
+                getSectionData={getSectionData}
+                handleSectionContent={handleSectionContent}
+                tokenomicsData={sharedData}
+                subsectionsData={
+                  fundamentals_static_content.competitors.subsections
+                }
+                handleAboutPress={handleAboutPress}
+              />
+            }
+            hasAbout
+            handleAboutPress={handleAboutPress}
+            description={
+              fundamentals_static_content.competitors.sectionDescription
+            }
+          />
+          <SubSection
+            hasEmptyContent={hasContent.revenueModel}
+            subtitle={'Revenue Model'}
+            hasAbout
+            handleAboutPress={handleAboutPress}
+            content={
+              <UpdatedRevenueModel
+                handleSectionContent={handleSectionContent}
+                getSectionData={getSectionData}
+                coin={coin}
+              />
+            }
+            description={
+              fundamentals_static_content.revenueModel.sectionDescription
+            }
+          />
+          <SubSection
+            hasEmptyContent={hasContent.hacks}
+            hasAbout
+            handleAboutPress={handleAboutPress}
+            subtitle={'Hacks'}
+            content={
+              <Hacks
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
+            }
+            description={fundamentalsMock.eth.hacks.sectionDescription}
+          />
+          <SubSection
+            hasAbout
+            hasEmptyContent={hasContent.upgrades}
+            handleAboutPress={handleAboutPress}
+            subtitle={'Upgrades'}
+            description={
+              fundamentals_static_content.upgrades.sectionDescription
+            }
+            content={
+              <Upgrades
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
+            }
+          />
+          <SubSection
+            hasAbout
+            hasEmptyContent={hasContent.dapps}
+            handleAboutPress={handleAboutPress}
+            subtitle={'DApps'}
+            content={
+              <DApps
+                getSectionData={getSectionData}
+                coin={coin}
+                handleSectionContent={handleSectionContent}
+              />
+            }
+            description={fundamentals_static_content.dApps.sectionDescription}
+          />
+        </SafeAreaView>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 

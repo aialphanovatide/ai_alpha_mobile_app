@@ -7,17 +7,18 @@ const useBtcDominanceStyles = () => {
   const styles = StyleSheet.create({
     background: {
       flex: 1,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
       padding: 10,
+      paddingTop: 36,
     },
     container: {
       width: '100%',
-      height: 300,
+      height: theme.height * 0.45,
       marginVertical: theme.boxesVerticalMargin,
       alignSelf: 'center',
       justifyContent: 'center',
       alignItems: 'top',
-      backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 4,
     },
     chart: {
       width: '100%',
@@ -28,22 +29,36 @@ const useBtcDominanceStyles = () => {
     },
     analysisTitle: {
       marginTop: theme.titlesVerticalMargin,
+      marginHorizontal: 10,
       fontSize: theme.titleFontSize,
       color: theme.titleColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
-    backgroundImage: {
+    chartBackgroundImage: {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      width: 70,
-      height: 70,
-      opacity: 0.6
+      top: 15,
+      left: '7.5%',
+      width: 60,
+      height: 60,
+      opacity: 0.8,
+      zIndex: -10,
     },
     timeframeContainer: {
       flex: 1,
       width: '100%',
       maxHeight: '5%',
+    },
+    sectionDescription: {
+      width: '100%',
+      marginVertical: theme.boxesVerticalMargin,
+      paddingHorizontal: 8,
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
+      color: theme.textColor,
+      textAlign: 'left',
+      lineHeight: 20,
     },
   });
   return styles;

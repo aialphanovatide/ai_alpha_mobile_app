@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 import {StyleSheet} from 'react-native';
-import { AppThemeContext } from '../../../../context/themeContext';
+import {AppThemeContext} from '../../../../context/themeContext';
 
 const useTermsAndConditionsStyles = () => {
   const {theme} = useContext(AppThemeContext);
@@ -13,6 +13,7 @@ const useTermsAndConditionsStyles = () => {
     scrollview: {
       flex: 1,
       backgroundColor: 'transparent',
+      paddingVertical: 24,
     },
     container: {
       flex: 1,
@@ -41,22 +42,14 @@ const useTermsAndConditionsStyles = () => {
       marginLeft: '6%',
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     privacyPolicyText: {
       marginHorizontal: 15,
       marginVertical: 1,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
-    },
-    userIdentifier: {
-      color: theme.textColor,
-    },
-    greenColor: {
-      color: theme.priceUpColor,
-    },
-    redColor: {
-      color: theme.priceDownColor,
+      fontFamily: theme.font,
     },
     rightArrowContainer: {
       width: 20,
@@ -133,14 +126,15 @@ const useTermsAndConditionsStyles = () => {
       flexDirection: 'row',
     },
     boldSection: {
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
+      fontSize: theme.responsiveFontSize,
     },
-    gridStyle:{
+    gridStyle: {
       width: 300,
       height: 500,
       resizeMode: 'contain',
-      marginTop:10,
-    }
+      marginTop: 10,
+    },
   });
   return styles;
 };

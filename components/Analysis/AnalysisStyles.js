@@ -6,7 +6,9 @@ const useAnalysisStyles = () => {
   const styles = StyleSheet.create({
     background: {
       flex: 1,
-      backgroundColor: theme.mainBackgroundColor,
+    },
+    paddingV: {
+      paddingVertical: 8,
     },
     analysisContainer: {
       flex: 1,
@@ -20,18 +22,10 @@ const useAnalysisStyles = () => {
       width: '90%',
       display: 'flex',
       flexDirection: 'row',
-      marginVertical: 5,
-      marginHorizontal: 15,
-      padding: 15,
+      marginVertical: 6,
+      marginHorizontal: 16,
+      padding: 16,
       backgroundColor: theme.boxesBackgroundColor,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 1,
-        height: 1,
-      },
-      shadowOpacity: 0.125,
-      shadowRadius: 1,
-      elevation: 2,
     },
     analysisIconContainer: {
       width: 30,
@@ -47,9 +41,10 @@ const useAnalysisStyles = () => {
     itemText: {
       width: '60%',
       paddingHorizontal: 10,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
       fontSize: theme.responsiveFontSize,
       color: theme.textColor,
+      alignSelf: 'center',
     },
     rateValueContainer: {
       position: 'absolute',
@@ -59,20 +54,21 @@ const useAnalysisStyles = () => {
       alignSelf: 'center',
     },
     rightArrowContainer: {
-      width: 20,
-      height: 20,
+      width: 12,
+      height: 12,
       justifyContent: 'center',
       alignItems: 'center',
     },
     rightArrow: {
       flex: 1,
-      tintColor: theme.textColor,
+      tintColor: theme.secondaryGrayColor,
     },
     analysisTitle: {
-      marginHorizontal: 25,
-      marginVertical: 15,
+      marginHorizontal: 24,
+      marginVertical: 16,
+      marginTop: 64,
       fontSize: theme.responsiveFontSize * 1.5,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.titleColor,
     },
     emphasizedItem: {
@@ -93,9 +89,9 @@ const useAnalysisStyles = () => {
       textAlign: 'center',
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
+      fontFamily: theme.fontMedium,
       alignSelf: 'center',
       borderRadius: 5,
-      
     },
   });
   return styles;

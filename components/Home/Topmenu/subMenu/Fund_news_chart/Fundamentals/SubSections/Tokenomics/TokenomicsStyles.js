@@ -31,14 +31,16 @@ const useTokenomicsStyles = () => {
       textAlign: 'left',
       color: theme.orange,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
     },
     progressBarMaxValue: {
       position: 'absolute',
       right: 0,
       top: 0,
       textAlign: 'right',
-      color: theme.inactiveColor,
+      color: theme.secondaryTextColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
     },
     infinityBar: {
       borderLeftWidth: 0,
@@ -58,6 +60,8 @@ const useTokenomicsStyles = () => {
       paddingVertical: 5,
       marginVertical: theme.boxesVerticalMargin * 0.6,
       backgroundColor: theme.boxesBackgroundColor,
+      borderTopColor: theme.secondaryGrayColor,
+      borderTopWidth: 1,
     },
     tokenRow: {
       flexDirection: 'row',
@@ -70,33 +74,40 @@ const useTokenomicsStyles = () => {
     },
     alignRight: {
       right: 10,
-      color: theme.inactiveColor,
+      color: theme.secondaryTextColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
     },
     alignLeft: {
       left: 70,
       color: theme.orange,
       fontSize: theme.responsiveFontSize * 0.8,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
     },
     tokenName: {
       width: '20%',
       paddingVertical: 8,
       fontSize: theme.responsiveFontSize,
-      fontWeight: 'bold',
       color: theme.textColor,
       textAlign: 'center',
       alignSelf: 'flex-end',
+      fontFamily: theme.fontSemibold,
     },
     text: {
+      marginLeft: 8,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
-      marginLeft: 8,
+      fontFamily: theme.fontMedium,
     },
     row: {
       position: 'relative',
       marginBottom: 15,
       flexDirection: 'row',
+    },
+    inflationaryArrow: {
+      width: theme.responsiveFontSize * 0.85,
+      height: theme.responsiveFontSize * 0.85,
+      tintColor: theme.textColor,
     },
   });
   return styles;

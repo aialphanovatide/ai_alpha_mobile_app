@@ -11,25 +11,24 @@ const usePriceActionStyles = () => {
       width: theme.width,
       marginVertical: 15,
       paddingBottom: 30,
-      paddingHorizontal: 10,
       overflow: 'hidden',
     },
     title: {
       paddingVertical: 10,
-      paddingHorizontal: 5,
+      paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold
     },
     tableContainer: {
-      flex:1,
+      flex: 1,
       height: theme.height * 0.3,
       marginVertical: 10,
       backgroundColor: theme.boxesBackgroundColor,
-      borderColor: theme.boxesBorderColor,
+      borderColor: theme.secondaryGrayColor,
       overflow: 'hidden',
-      borderRadius: 6,
-      justifyContent:'center'
+      borderRadius: 2,
+      justifyContent: 'center',
     },
     tableScrollView: {
       flex: 1,
@@ -37,8 +36,9 @@ const usePriceActionStyles = () => {
     },
     headerRow: {
       flexDirection: 'row',
-      borderWidth: 1,
-      borderColor: theme.boxesBorderColor,
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderColor: theme.secondaryGrayColor,
     },
     logoContainer: {
       width: 20,
@@ -58,8 +58,8 @@ const usePriceActionStyles = () => {
       flex: 1,
       marginHorizontal: 5,
       padding: 5,
-      fontWeight: 'bold',
       fontSize: theme.responsiveFontSize * 0.9,
+      fontFamily: theme.fontMedium,
       color: theme.inactiveTextColor,
       textAlign: 'center',
       verticalAlign: 'middle',
@@ -67,7 +67,7 @@ const usePriceActionStyles = () => {
     dataRow: {
       flexDirection: 'row',
       borderBottomWidth: 1,
-      borderBottomColor: theme.boxesBorderColor,
+      borderBottomColor: theme.secondaryGrayColor,
     },
     borderless: {
       borderBottomWidth: 0,
@@ -81,21 +81,27 @@ const usePriceActionStyles = () => {
       fontSize: theme.responsiveFontSize * 0.75,
       textAlign: 'center',
       verticalAlign: 'middle',
+      fontFamily: theme.fontMedium
+
     },
     greenNumber: {
       color: theme.priceUpColor,
+      fontFamily: theme.fontMedium
+
     },
     redNumber: {
       color: theme.priceDownColor,
+      fontFamily: theme.fontMedium
+
     },
     displayNone: {
       display: 'none',
     },
     categoriesContainer: {
-      flex:1,
+      paddingVertical: 10,
       backgroundColor: theme.boxesBackgroundColor,
       overflow: 'hidden',
-      borderWidth: 1,
+      borderTopWidth: 1,
       borderColor: theme.boxesBorderColor,
     },
     category: {
@@ -109,8 +115,7 @@ const usePriceActionStyles = () => {
       margin: '5%',
       fontSize: theme.responsiveFontSize * 0.85,
       color: theme.secondaryTextColor,
-      fontStyle: 'italic',
-      fontWeight: 'bold',
+      fontFamily: theme.fontBoldItalic,
       overflow: 'hidden',
       textAlign: 'center',
     },
@@ -130,13 +135,13 @@ const usePriceActionStyles = () => {
       flex: 1,
     },
     categoryWrapper: {
-      flex: 1,
       marginHorizontal: 5,
       alignItems: 'center',
       justifyContent: 'center',
     },
-    menuBg: {
-    }
+    titleRow: {
+      flexDirection: 'row',
+    },
   });
   return styles;
 };

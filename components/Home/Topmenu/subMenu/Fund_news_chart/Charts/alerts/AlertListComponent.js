@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 import AlertDetails from './alertDetails';
 import {
-  postService,
   getService,
 } from '../../../../../../../services/aiAlphaApi';
 import Loader from '../../../../../../Loader/Loader';
@@ -12,12 +11,13 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchAlerts = async () => {
       try {
         const response = await getService(
           `/api/filter/alerts?coin=${botName}&date=${timeframe}`,
         );
-        console.log('Alerts response: ', response);
+        // console.log('Alerts response: ', response);
         if (
           response.length === 0 ||
           (response.message &&
@@ -26,7 +26,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
         ) {
           setAlerts([]);
         } else {
-          setAlerts(response.alerts);
+          setAlerts(response.alerts.slice(0, 30));
         }
       } catch (error) {
         console.error('Error fetching alerts:', error.message);
@@ -41,9 +41,13 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   return (
     <View style={styles.alertListContainer}>
       {isLoading ? (
-        <Loader />
+        <View style={styles.loaderContainer}>
+          <Loader />
+        </View>
       ) : alerts.length === 0 ? (
-        <Text style={styles.alertsTextMessage}>No alerts yet. Stay tuned for important updates!</Text>
+        <Text style={styles.alertsTextMessage}>
+          No alerts yet. Stay tuned for important updates!
+        </Text>
       ) : (
         alerts.map(alert => (
           <AlertDetails

@@ -11,6 +11,7 @@ import {
   Text,
   TouchableOpacity,
   Appearance,
+  SafeAreaView,
 } from 'react-native';
 import Logo from '../../../../assets/images/account/logoWithText.png';
 import CustomInput from '../../CustomInput/CustomInput';
@@ -28,6 +29,7 @@ import {decode as base64decode} from 'base-64';
 import {AppThemeContext} from '../../../../context/themeContext';
 import useLoginFormStyles from './LoginFormStyles';
 import {RevenueCatContext} from '../../../../context/RevenueCatContext';
+import LinearGradient from 'react-native-linear-gradient';
 
 const LoginForm = ({route}) => {
   const [username, setUsername] = useState();
@@ -37,7 +39,7 @@ const LoginForm = ({route}) => {
   const {setUserId} = useUserId();
   const [error, setError] = useState('');
   const colorScheme = Appearance.getColorScheme();
-  const {toggleDarkMode} = useContext(AppThemeContext);
+  const {toggleDarkMode, isDarkMode} = useContext(AppThemeContext);
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
   const styles = useLoginFormStyles();
 
@@ -155,49 +157,63 @@ const LoginForm = ({route}) => {
   };
 
   return (
-    <ScrollView style={styles.scrollview} showsVerticalScrollIndicator={false}>
-      <View style={styles.root}>
-        <Image source={Logo} style={styles.logo} resizeMode="contain" />
-        <View style={styles.inputContainer}>
-          <View style={styles.labelContainer}>
-            <Text style={styles.title}>Email</Text>
-            {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
-          </View>
-          <CustomInput
-            placeholder=" "
-            value={username}
-            setValue={setUsername}
-          />
-        </View>
+    <SafeAreaView style={styles.background}>
+      <LinearGradient
+        useAngle={true}
+        angle={45}
+        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        style={styles.flex}>
+        <ScrollView
+          style={styles.scrollview}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.root}>
+            <Image source={Logo} style={styles.logo} resizeMode="contain" />
+            <View style={styles.inputContainer}>
+              <View style={styles.labelContainer}>
+                {/* <Text style={styles.title}>Email</Text> */}
+                {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
+              </View>
+              <CustomInput
+                placeholder="Email"
+                value={username}
+                setValue={setUsername}
+              />
+            </View>
 
-        <View style={styles.inputContainer}>
-          <View style={styles.labelContainer}>
-            <Text style={styles.title}>Password</Text>
-            {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
+            <View style={styles.inputContainer}>
+              <View style={styles.labelContainer}>
+                {/* <Text style={styles.title}>Password</Text> */}
+                {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
+              </View>
+              <CustomPasswordInput
+                placeholder="Password"
+                value={password}
+                setValue={setPassword}
+                secureTextEntry={true}
+              />
+            </View>
+            <CustomButton
+              text="Sign In"
+              onPress={onSignInPressed}
+              type="PRIMARY"
+            />
+            <Separator />
+            <SocialSignInButton />
+            <CustomButton
+              text="Forgot Password"
+              onPress={onForgotPasswordPressed}
+              type="TERTIARY"
+            />
+            <View style={styles.signUpContainer}>
+              <Text style={styles.signUpText}>Don't have an account? </Text>
+              <TouchableOpacity onPress={onSignUpPressed}>
+                <Text style={styles.signUpButton}>Sign Up for Free</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <CustomPasswordInput
-            placeholder=" "
-            value={password}
-            setValue={setPassword}
-            secureTextEntry={true}
-          />
-        </View>
-        <CustomButton text="Sign In" onPress={onSignInPressed} type="PRIMARY" />
-        <Separator />
-        <SocialSignInButton />
-        <CustomButton
-          text="Forgot Password"
-          onPress={onForgotPasswordPressed}
-          type="TERTIARY"
-        />
-        <View style={styles.signUpContainer}>
-          <Text style={styles.signUpText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={onSignUpPressed}>
-            <Text style={styles.signUpButton}>Sign Up for Free</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+        </ScrollView>
+      </LinearGradient>
+    </SafeAreaView>
   );
 };
 

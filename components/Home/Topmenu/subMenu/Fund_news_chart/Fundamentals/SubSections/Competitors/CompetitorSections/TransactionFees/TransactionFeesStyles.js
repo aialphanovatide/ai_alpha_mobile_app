@@ -18,7 +18,7 @@ const useTransactionFeeStyles = () => {
     graphsContainer: {
       marginVertical: 10,
       padding: 10,
-      backgroundColor: theme.secondaryBoxesBgColor,
+      backgroundColor: theme.boxesBackgroundColor,
       alignItems: 'center',
     },
     activeOptionContainer: {
@@ -27,15 +27,15 @@ const useTransactionFeeStyles = () => {
       paddingVertical: 5,
       paddingHorizontal: 10,
       borderWidth: 2,
-      borderColor: theme.textColor,
+      borderColor: theme.secondaryGrayColor,
       alignItems: 'center',
       justifyContent: 'center',
       alignSelf: 'center',
     },
     activeOptionValue: {
       color: theme.textColor,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
       textAlign: 'center',
     },
     overlay: {

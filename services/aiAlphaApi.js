@@ -1,5 +1,5 @@
-export const API_BASE_URL = 'https://star-oyster-known.ngrok-free.app';
-// export const API_BASE_URL = 'https://ntf1vmdf-9000.use.devtunnels.ms';s
+export const API_BASE_URL = 'https://aialpha.ngrok.io/';
+export const API_BASE_URL_ALT = 'https://ntf1vmdf-9000.use.devtunnels.ms';
 
 // Function to handle HTTP errors
 const handleErrors = response => {
@@ -13,6 +13,32 @@ const handleErrors = response => {
 export const getService = async endpoint => {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error in GET request: ${error.message}`);
+    throw error;
+  }
+};
+
+// Function to make a GET request
+export const altGetService = async endpoint => {
+  try {
+    const response = await fetch(`${API_BASE_URL_ALT}${endpoint}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

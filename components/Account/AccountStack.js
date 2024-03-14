@@ -2,9 +2,12 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Account from './Account';
 import PackageSubscriptions from './PackageSubscriptions/PackageSubscriptions';
-import PrivacyPolicy from './PrivacyPolicy/PrivacyPolicy';
+import PrivacyPolicy from './LegalAndInformation/PrivacyPolicy/PrivacyPolicy';
 import NotificationsPanel from './NotificationsPanel/NotificationsPanel';
 import {NOTIFICATIONS_MOCK} from './NotificationsPanel/notificationsMock';
+import LegalAndInformation from './LegalAndInformation/LegalAndInformation';
+import Eula from './LegalAndInformation/Eula/Eula';
+import SettingsScreen from './SettingsScreen/SettingsScreen';
 
 const AccountStack = createNativeStackNavigator();
 
@@ -18,7 +21,11 @@ const AccountScreen = () => {
         name="Subscriptions"
         component={PackageSubscriptions}
       />
+      <AccountStack.Screen name="Legal" component={LegalAndInformation} />
       <AccountStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+      <AccountStack.Screen name="Eula" component={Eula} />
+      <AccountStack.Screen name="SettingsScreen" component={SettingsScreen} />
+
       <AccountStack.Screen
         name="Notifications"
         component={NotificationsPanel}

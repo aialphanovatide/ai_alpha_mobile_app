@@ -7,7 +7,6 @@ const useAccountStyles = () => {
   const styles = StyleSheet.create({
     backgroundColor: {
       flex: 1,
-      backgroundColor: theme.mainBackgroundColor,
     },
     page: {
       alignItems: 'center',
@@ -18,14 +17,15 @@ const useAccountStyles = () => {
     },
     headline: {
       color: theme.titleColor,
-      fontFamily: 'ArialRoundedMTBold',
       fontSize: theme.titleFontSize,
+      fontFamily: theme.fontSemibold,
       paddingVertical: 8,
       marginTop: 50,
     },
     text: {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
       textTransform: 'capitalize',
     },
     userIdentifier: {
@@ -40,8 +40,8 @@ const useAccountStyles = () => {
     rightArrowContainer: {
       position: 'absolute',
       right: 24,
-      width: 20,
-      height: 20,
+      width: 12,
+      height: 12,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -62,20 +62,11 @@ const useAccountStyles = () => {
       padding: 12,
       backgroundColor: theme.boxesBackgroundColor,
       alignItems: 'center',
-      shadowColor: '#000',
       borderRadius: 2,
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-      elevation: 3,
-
     },
     itemLogoContainer: {
-      width: 30,
-      height: 30,
+      width: 20,
+      height: 20,
       marginHorizontal: 5,
       alignItems: 'center',
       justifyContent: 'center',
@@ -88,20 +79,20 @@ const useAccountStyles = () => {
       width: '60%',
       paddingVertical: '2.5%',
       paddingHorizontal: 10,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontFamily: theme.fontMedium,
+      fontSize: theme.responsiveFontSize,
       color: theme.textColor,
     },
     container: {
       flex: 1,
       width: theme.width,
       alignItems: 'center',
-      backgroundColor: theme.mainBackgroundColor,
     },
     alphaLogoContainer: {
       width: 150,
       height: 150,
       marginVertical: theme.boxesVerticalMargin,
+      marginTop: theme.titlesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -110,14 +101,20 @@ const useAccountStyles = () => {
     },
     username: {
       margin: theme.boxesVerticalMargin,
-      fontSize: theme.responsiveFontSize,
+      marginTop: 0,
+      fontSize: theme.responsiveFontSize * 1.2,
+      fontFamily: theme.fontSemibold,
       color: theme.titleColor,
       textAlign: 'center',
-      fontWeight: 'bold',
     },
     row: {
       width: '80%',
       flexDirection: 'row',
+    },
+    gradient: {
+      flex: 1,
+      width: theme.width,
+      height: theme.height,
     },
   });
   return styles;

@@ -1,0 +1,77 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/prompt_black.ttf",
+      "sha1": "1c3cf9a9299210397ab74e9bd305847b7555aa63"
+    },
+    {
+      "path": "assets/fonts/prompt_black_italic.ttf",
+      "sha1": "257daf0808c86b419efe40c899744e5dea7dc5de"
+    },
+    {
+      "path": "assets/fonts/prompt_bold.ttf",
+      "sha1": "1f6da982f97fb51b13e31fb0ee60f1cb21b7846b"
+    },
+    {
+      "path": "assets/fonts/prompt_bold_italic.ttf",
+      "sha1": "7c8a837a5b92533f8bf4152cb5e2422ce27d5afb"
+    },
+    {
+      "path": "assets/fonts/prompt_extra_bold.ttf",
+      "sha1": "5b2098053211d81e2bdb19be9541fbcf1e5868b0"
+    },
+    {
+      "path": "assets/fonts/prompt_extra_bold_italic.ttf",
+      "sha1": "1cbae8f58342b92a68e9e847d39ce525e3b56e24"
+    },
+    {
+      "path": "assets/fonts/prompt_extra_light.ttf",
+      "sha1": "b08188281a205b58c6c818ddbef3104e4c47a2d6"
+    },
+    {
+      "path": "assets/fonts/prompt_extra_light_italic.ttf",
+      "sha1": "42d2bf05aa36d21a9d23537339b0f56bfb702c84"
+    },
+    {
+      "path": "assets/fonts/prompt_italic.ttf",
+      "sha1": "377dbb4731b32c6d3f0188fc3aeaca730f32176e"
+    },
+    {
+      "path": "assets/fonts/prompt_light.ttf",
+      "sha1": "2a673dc835eb0de60d63d00bd23b4ce52bfbb1b9"
+    },
+    {
+      "path": "assets/fonts/prompt_light_italic.ttf",
+      "sha1": "981d974393ea9f9945116d3c5a4cc76e68719489"
+    },
+    {
+      "path": "assets/fonts/prompt_medium.ttf",
+      "sha1": "ed15bfac8ac1e25dfbaef4c3e7dc6178b3347379"
+    },
+    {
+      "path": "assets/fonts/prompt_medium_italic.ttf",
+      "sha1": "79d7e9af1368b85783c6bc49a4822c6e212d011a"
+    },
+    {
+      "path": "assets/fonts/prompt_regular.ttf",
+      "sha1": "04e9ee1c1fd671b495103adca8d528d200caed2e"
+    },
+    {
+      "path": "assets/fonts/prompt_semibold.ttf",
+      "sha1": "2aecaaf602b22e3d0cb1ab7cd34e01a9421a6494"
+    },
+    {
+      "path": "assets/fonts/prompt_semibold_italic.ttf",
+      "sha1": "a2c50c5a51a34d4882a1171814f8c88a1eb817d1"
+    },
+    {
+      "path": "assets/fonts/prompt_thin.ttf",
+      "sha1": "a915d2c371760149053cf35e291a6d5450b21ba6"
+    },
+    {
+      "path": "assets/fonts/prompt_thin_italic.ttf",
+      "sha1": "4d2dec810aa0506a9ef69aa2e7f83463ed62d1d3"
+    }
+  ]
+}

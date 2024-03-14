@@ -24,7 +24,7 @@ const useSignUpStyles = () => {
     },
     mainTitle: {
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.signUpTitlesColor,
       margin: 5,
     },
@@ -35,7 +35,7 @@ const useSignUpStyles = () => {
       color: theme.textColor,
       textAlign: 'left',
       marginLeft: 0,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     loginContainer: {
       flexDirection: 'row',
@@ -43,10 +43,11 @@ const useSignUpStyles = () => {
     },
     loginText: {
       color: theme.textColor,
+      fontFamily: theme.font,
     },
     loginButton: {
       color: theme.activeOrange,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
     },
     termsContainer: {
       flexDirection: 'row',
@@ -55,11 +56,13 @@ const useSignUpStyles = () => {
     },
     termsText: {
       color: theme.textColor,
-      fontSize: 10,
+      fontFamily: theme.font,
+      fontSize: theme.responsiveFontSize * 0.75,
     },
     termsButton: {
+      fontFamily: theme.fontMedium,
       color: theme.orange,
-      fontSize: 10,
+      fontSize: theme.responsiveFontSize * 0.75,
     },
     successContainer: {
       flex: 1,
@@ -69,13 +72,24 @@ const useSignUpStyles = () => {
     },
     successText: {
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.signUpTitlesColor,
     },
     tickImage: {
       width: 120,
       height: 88,
       marginBottom: 10,
+    },
+    labelContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
+    errorLabel: {
+      color: theme.priceDownColor,
+      fontFamily: theme.fontMedium,
+      fontSize: 12,
+      marginLeft: 8,
     },
   });
   return styles;

@@ -13,7 +13,7 @@ const TVEconomicCalendar = ({width, height}) => {
             <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
         </head>
     <body>
-        <div class="tradingview-widget-container__widget_economic_calendar" style={{"width": 450, "height": 600}}></div>
+        <div class="tradingview-widget-container__widget_economic_calendar" style={{"width": 300, "height": 600}}></div>
         <script type="text/javascript">
             const script = document.createElement('script');
             script.type = 'text/javascript';
@@ -22,7 +22,7 @@ const TVEconomicCalendar = ({width, height}) => {
             script.innerHTML = JSON.stringify({
               isTransparent: ${isDarkMode ? 'false' : 'true'},
               ${isDarkMode ? "colorTheme:'dark'," : ''}
-                width: '100%',
+                width: '90%',
                 height: '100%',
                 locale: "en",
                 importanceFilter: "0,1",

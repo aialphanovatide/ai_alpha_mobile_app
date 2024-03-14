@@ -17,7 +17,7 @@ const useForgotPasswordStyles = () => {
     },
     mainTitle: {
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       color: theme.titleColor,
       margin: 40,
     },
@@ -28,7 +28,7 @@ const useForgotPasswordStyles = () => {
       color: theme.textColor,
       textAlign: 'left',
       marginLeft: 0,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     loginContainer: {
       flexDirection: 'row',
@@ -36,10 +36,11 @@ const useForgotPasswordStyles = () => {
     },
     loginText: {
       color: theme.textColor,
+      fontFamily: theme.font,
     },
     loginButton: {
       color: theme.activeOrange,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
     },
     successContainer: {
       flex: 1,
@@ -49,7 +50,7 @@ const useForgotPasswordStyles = () => {
     },
     successText: {
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
       color: theme.titleColor,
     },
     tickImage: {

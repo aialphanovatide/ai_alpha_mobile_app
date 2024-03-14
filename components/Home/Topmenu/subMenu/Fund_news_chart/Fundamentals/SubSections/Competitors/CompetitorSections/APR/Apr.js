@@ -1,10 +1,14 @@
 import {Image, Text, View} from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import CryptosSelector from '../../CryptoSelector/CryptosSelector';
 import useAprStyles from './AprStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
+import Loader from '../../../../../../../../../Loader/Loader';
+import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
+import {findCoinNameBySymbol} from '../../coinsNames';
 
-const Graph = ({value, color, styles}) => {
+const Graph = ({value, itemIndex, styles, tintColors}) => {
+  const chosenColor = tintColors[itemIndex > 3 ? itemIndex % 3 : itemIndex];
   const {isDarkMode} = useContext(AppThemeContext);
   return (
     <View style={styles.imageContainer}>
@@ -15,7 +19,7 @@ const Graph = ({value, color, styles}) => {
             ? require('../../../../../../../../../../assets/images/fundamentals/competitors/apr/apr-dark.png')
             : require('../../../../../../../../../../assets/images/fundamentals/competitors/apr/apr.png')
         }
-        resizeMode='contain'
+        resizeMode="contain"
       />
       <View
         style={[
@@ -23,48 +27,131 @@ const Graph = ({value, color, styles}) => {
           ,
           {
             height: 240 * (value / 100),
-            backgroundColor: color,
+            backgroundColor: chosenColor,
           },
         ]}></View>
     </View>
   );
 };
 
-const Apr = ({cryptos}) => {
+const Apr = ({competitorsData, isSectionWithoutData}) => {
   const styles = useAprStyles();
-  const [activeOption, setActiveOption] = useState(cryptos[0]);
+  const [cryptos, setCryptos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeOption, setActiveOption] = useState(null);
+  const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
+
+  const findActiveOptionIndex = (cryptos, active) => {
+    return cryptos.findIndex(crypto => crypto.crypto === active.crypto);
+  };
 
   const handleActiveOptionChange = option => {
     setActiveOption(option);
   };
 
+  const findKeyInCompetitorItem = (data, key, crypto) => {
+    const found = data.find(
+      item =>
+        item.competitor.token === crypto && item.competitor.key.includes(key),
+    );
+    return found && found !== undefined
+      ? found.competitor.value !== '-'
+        ? found.competitor.value
+        : ''
+      : null;
+  };
+
+  const parseAprString = stringValue => {
+    return stringValue ? Number(stringValue.replace(/\s/g, '')) : 0;
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    const apr_data = [];
+    competitorsData.forEach((item, index) => {
+      if (
+        apr_data.find(
+          mappedItem =>
+            mappedItem.crypto ===
+            item.competitor.token.replace(/\s/g, '').toUpperCase(),
+        )
+      ) {
+        return;
+      } else {
+        const mapped_crypto = {
+          id: index + 1,
+          name: findCoinNameBySymbol(
+            item.competitor.token.replace(/\s/g, '').toUpperCase(),
+          ),
+          crypto: item.competitor.token.replace(/\s/g, '').toUpperCase(),
+          apr: parseAprString(
+            findKeyInCompetitorItem(
+              competitorsData,
+              'apr',
+              item.competitor.token,
+            ),
+          ),
+        };
+        apr_data.push(mapped_crypto);
+      }
+    });
+    console.log(apr_data);
+    setCryptos(apr_data);
+    setActiveOption(apr_data[0]);
+    setLoading(false);
+  }, [competitorsData]);
+
   return (
     <View>
-      <CryptosSelector
-        cryptos={cryptos}
-        activeCrypto={activeOption}
-        handleActiveCryptoChange={handleActiveOptionChange}
-      />
-      <View
-        style={[
-          styles.activeOptionContainer,
-          activeOption && {borderColor: activeOption.color},
-        ]}>
-        <Text
-          style={[
-            styles.activeOptionValue,
-            activeOption && {color: activeOption.color},
-          ]}>
-          {`${activeOption ? activeOption.apr : 0.0}%`}
-        </Text>
-      </View>
-      <View style={styles.graphsContainer}>
-        <Graph
-          value={activeOption ? activeOption.apr : 0}
-          color={activeOption ? activeOption.color : null}
-          styles={styles}
-        />
-      </View>
+      {loading ? (
+        <Loader />
+      ) : cryptos?.length === 0 ||
+        isSectionWithoutData(competitorsData, 'apr', '-') ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          <CryptosSelector
+            cryptos={cryptos}
+            activeCrypto={activeOption}
+            handleActiveCryptoChange={handleActiveOptionChange}
+          />
+          <View
+            style={[
+              styles.activeOptionContainer,
+              // activeOption && {
+              //   borderColor:
+              //     tintColors[
+              //       findActiveOptionIndex(cryptos, activeOption) > 3
+              //         ? findActiveOptionIndex(cryptos, activeOption) % 3
+              //         : findActiveOptionIndex(cryptos, activeOption)
+              //     ],
+              // },
+            ]}>
+            <Text
+              style={[
+                styles.activeOptionValue,
+                // activeOption && {
+                //   color:
+                //     tintColors[
+                //       findActiveOptionIndex(cryptos, activeOption) > 3
+                //         ? findActiveOptionIndex(cryptos, activeOption) % 3
+                //         : findActiveOptionIndex(cryptos, activeOption)
+                //     ],
+                // },
+              ]}>
+              {`${activeOption ? activeOption.apr : 0.0}%`}
+            </Text>
+          </View>
+          <View style={styles.graphsContainer}>
+            <Graph
+              value={activeOption ? activeOption.apr : 0}
+              itemIndex={findActiveOptionIndex(cryptos, activeOption)}
+              styles={styles}
+              tintColors={tintColors}
+            />
+          </View>
+        </>
+      )}
     </View>
   );
 };

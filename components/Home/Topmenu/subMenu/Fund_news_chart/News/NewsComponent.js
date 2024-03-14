@@ -6,17 +6,16 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {
-  getService,
-  getWithBodyService,
-  postService,
-} from '../../../../../../services/aiAlphaApi';
+import {getService} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
-import BackButton from '../../../../../Analysis/BackButton/BackButton';
+import {AboutModalContext} from '../../../../../../context/AboutModalContext';
+import {AboutIcon} from '../Fundamentals/AboutIcon';
+import {home_static_data} from '../../../../homeStaticData';
+import AboutModal from '../Fundamentals/AboutModal';
 
 const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
@@ -29,6 +28,8 @@ const NewsComponent = ({route}) => {
   );
   const [activeFilter, setActiveFilter] = useState(null);
   const [activeButtons, setActiveButtons] = useState(null);
+  const {handleAboutPress, aboutDescription, aboutVisible} =
+    useContext(AboutModalContext);
 
   // Function to filter the summary or texts of the article, removing the words that are put by the prompt generated, and aren't necessary in the summary or the title.
   const filterText = summary => {
@@ -80,37 +81,60 @@ const NewsComponent = ({route}) => {
   }, [activeCoin, activeSubCoin]);
 
   useEffect(() => {
-    setNews([]);
-    setLoading(false);
-    // const fetchNews = async () => {
-    //   try {
-    //     const endpoint = activeFilter
-    //       ? `/api/get/news?coin=${botname}&time_range=${activeFilter.toLowerCase()}`
-    //       : `/api/get/news?coin=${botname}`;
-    //     const response = await getService(endpoint);
-    //     if (
-    //       (response.message &&
-    //         response.message.startsWith('No articles found')) ||
-    //       response.error
-    //     ) {
-    //       setNews([]);
-    //     } else {
-    //       const articles = response.articles.slice(0, 4);
-    //       setNews(articles);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching news:', error.message);
-    //   }
-    // };
+    // setNews([]);
+    // setLoading(false);
+    setLoading(true);
+    const fetchNews = async () => {
+      try {
+        const newsLimit =
+          activeFilter && activeFilter === 'Last Month'
+            ? 30
+            : activeFilter === 'This Week'
+            ? 20
+            : 10;
+        const endpoint = activeFilter
+          ? `/api/get/news?coin=${botname}&time_range=${activeFilter.toLowerCase()}&limit=${newsLimit}`
+          : `/api/get/news?coin=${botname}&limit=${newsLimit}`;
+        const response = await getService(endpoint);
+        if (
+          response.length === 0 ||
+          (response.message &&
+            response.message.startsWith('No articles found')) ||
+          response.error
+        ) {
+          setNews([]);
+        } else {
+          const articles = response.articles;
+          setNews(articles);
+        }
+      } catch (error) {
+        console.error('Error fetching news:', error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // fetchNews();
+    fetchNews();
   }, [botname, activeFilter]);
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
-      <Text style={styles.title}>News</Text>
+      {aboutVisible && (
+        <AboutModal
+          description={aboutDescription}
+          onClose={handleAboutPress}
+          visible={aboutVisible}
+        />
+      )}
+      <View style={styles.titleRow}>
+        <Text style={styles.title}>News</Text>
+        <AboutIcon
+          handleAboutPress={handleAboutPress}
+          description={home_static_data.news.sectionDescription}
+        />
+      </View>
       <View style={styles.filterContainer}>
-        {['Last Hour', 'Last Day', 'Last Week'].map(option => (
+        {['Today', 'This Week', 'Last Month'].map(option => (
           <TouchableOpacity
             key={option}
             onPress={() => handleFilterPress(option)}
@@ -136,7 +160,7 @@ const NewsComponent = ({route}) => {
           ListEmptyComponent={
             <View style={styles.emptyMessageContainer}>
               <Text style={styles.emptyMessage}>
-                There are no News yet. Stay tuned!
+                There aren't news to show.
               </Text>
             </View>
           }

@@ -8,14 +8,14 @@ const useDappsStyles = () => {
     itemContainer: {
       flex: 1,
       flexDirection: 'row',
+      padding: 10,
     },
     logoContainer: {
       width: 50,
-      height: 65,
+      height: 56,
       justifyContent: 'flex-start',
       alignItems: 'center',
       overflow: 'visible',
-      marginHorizontal: 4,
     },
     logo: {
       flex: 1,
@@ -26,7 +26,7 @@ const useDappsStyles = () => {
     },
     mainImageContainer: {
       height: 300,
-      marginVertical: 20,
+      marginTop: theme.boxesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -34,12 +34,12 @@ const useDappsStyles = () => {
       flex: 1,
     },
     dataContainer: {
-      margin: 10,
+      margin: theme.boxesVerticalMargin,
       padding: 10,
-      backgroundColor: theme.boxesBackgroundColor,
     },
     title: {
-      marginVertical: 5,
+      marginVertical: theme.boxesVerticalMargin,
+      marginHorizontal: 12,
       fontSize: theme.titleFontSize,
       textTransform: 'capitalize',
       color: theme.textColor,
@@ -48,19 +48,102 @@ const useDappsStyles = () => {
     text: {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
+      lineHeight: 16,
     },
     description: {
+      marginHorizontal: 10,
       marginBottom: 10,
     },
-    row: {
-      marginHorizontal: 5,
-      width: '70%',
-      flexWrap: 'wrap',
+    protocolItemContainer: {
+      position: 'relative',
+      width: '100%',
+      minHeight: 40,
+      marginVertical: theme.boxesVerticalMargin * 1.2,
       flexDirection: 'row',
-      justifyContent: 'flex-start',
+    },
+    row: {
+      position: 'relative',
+      flexDirection: 'row',
     },
     strong: {
       fontWeight: 'bold',
+    },
+    protocolImage: {
+      width: 40,
+      height: 40,
+      alignSelf: 'center',
+      zIndex: 20,
+    },
+    defaultProtocol: {
+      tintColor: theme.secondaryGrayColor,
+    },
+    line: {
+      position: 'absolute',
+      left: '10%',
+      width: '10%',
+      borderTopWidth: 6,
+      borderColor: theme.fundamentalsCompetitorsItemBg,
+      alignSelf: 'center',
+    },
+    protocolDataContainer: {
+      flex: 1,
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      marginLeft: 15,
+      width: '85%',
+      backgroundColor: theme.fundamentalsCompetitorsItemBg,
+      padding: 12,
+    },
+    arrowButton: {
+      width: 20,
+      height: 20,
+      padding: 2,
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    arrowImage: {
+      flex: 1,
+      tintColor: theme.grayArrowColor,
+    },
+    protocolName: {
+      fontSize: theme.responsiveFontSize * 0.85,
+      color: theme.inactiveTextColor,
+      fontFamily: theme.fontSemibold
+    },
+    tvl: {
+      position: 'absolute',
+      right: 0,
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.inactiveTextColor,
+      fontFamily: theme.fontSemibold
+    },
+    protocolDescription: {
+      marginVertical: theme.boxesVerticalMargin,
+      fontSize: theme.responsiveFontSize * 0.8,
+      lineHeight: 16,
+      color: theme.inactiveTextColor,
+      fontFamily: theme.fontMedium
+    },
+    hidden: {
+      display: 'none',
+    },
+    activeItem: {
+      flex: 1,
+      height: 'auto',
+    },
+    emptySectionMessage: {
+      margin: theme.boxesVerticalMargin,
+      fontSize: theme.responsiveFontSize,
+      color: theme.secondaryTextColor,
+      alignSelf: 'center',
+      fontFamily: theme.fontBoldItalic
+    },
+    emptyMessageContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
   return styles;

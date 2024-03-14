@@ -6,7 +6,7 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import TypeOfToken from './CompetitorSections/TypeOfToken/TypeOfToken';
 import CompetitorSection from './CompetitorSections/CompetitorSection';
 import CirculatingSupply from './CompetitorSections/CirculatingSupply/CirculatingSupply';
@@ -21,6 +21,9 @@ import ActiveDevelopers from './CompetitorSections/ActiveDevelopers/ActiveDevelo
 import InflationRate from './CompetitorSections/InflationRate/InflationRate';
 import useCompetitorsStyles from './CompetitorsStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
+import {fundamentalsMock} from '../../fundamentalsMock';
+import Loader from '../../../../../../../Loader/Loader';
+import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
 const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
   const {theme} = useContext(AppThemeContext);
@@ -34,7 +37,7 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
         }
         style={styles.menuItemContainer}
         resizeMode="contain"
-        tintColor={theme.secondaryBoxesBgColor}>
+        tintColor={theme.fundamentalsCompetitorsItemBg}>
         <View style={styles.iconContainer}>
           <Image
             style={[
@@ -49,7 +52,8 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
           style={[
             styles.menuItemName,
             activeOption.name === item.name && styles.activeItem,
-          ]} numberOfLines={2}>
+          ]}
+          numberOfLines={2}>
           {item.name}
         </Text>
       </ImageBackground>
@@ -64,7 +68,10 @@ const CompetitorsMenu = ({
   styles,
 }) => {
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} bounces={false}>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      bounces={false}>
       <View style={styles.menuContainer}>
         {options.map((item, index) => (
           <MenuItem
@@ -80,169 +87,224 @@ const CompetitorsMenu = ({
   );
 };
 
-// Todo - Move content outside the component
-
-const Competitors = () => {
+const Competitors = ({
+  getSectionData,
+  coin,
+  cryptosData,
+  tokenomicsData,
+  subsectionsData,
+  handleAboutPress,
+  handleSectionContent,
+}) => {
   const styles = useCompetitorsStyles();
-  const cryptosData = [
-    {
-      crypto: 'Ethereum',
-      symbol: 'ETH',
-      image: require('../../../../../../../../assets/ETH.png'),
-      maxValue: Infinity,
-      percentageValue: 100,
-      inflationary: false,
-      marketCap: [250.3, 250331978.508],
-      tvl: 26.6,
-      color: '#399AEA',
-      tps: [11.14],
-      fee: 1.3,
-      apr: 4.44,
-      revenue: 2.48,
-      activeDevs: 162.87,
-      inflationRate: [
-        {year: 2022, value: 4.5},
-        {year: 2023, value: -0.16},
-      ],
-    },
-    {
-      crypto: 'Solana',
-      symbol: 'SOL',
-      image: require('../../../../../../../../assets/SOL.png'),
-      maxValue: Infinity,
-      percentageValue: 75,
-      inflationary: null,
-      marketCap: [25.7, 25696025.115],
-      tvl: 0.67,
-      color: '#20CBDD',
-      tps: [65000],
-      fee: 0.01,
-      apr: 8.69,
-      revenue: 0.019,
-      activeDevs: 82.57,
-      inflationRate: [
-        {year: 2022, value: 8},
-        {year: 2023, value: 7},
-      ],
-    },
-    {
-      crypto: 'Cardano',
-      symbol: 'ADA',
-      image: require('../../../../../../../../assets/ADA.png'),
-      maxValue: '45 billion ADA',
-      percentageValue: 78,
-      inflationary: true,
-      marketCap: [13.4, 13412098.765],
-      tvl: 0.25,
-      color: '#895EF6',
-      tps: [1000],
-      fee: 0.07,
-      apr: 6.94,
-      revenue: 0.16,
-      activeDevs: 166.8,
-      inflationRate: [
-        {year: 2022, value: 4.72},
-        {year: 2023, value: 2.58},
-      ],
-    },
-    {
-      crypto: 'Avalanche',
-      symbol: 'AVAX',
-      image: require('../../../../../../../../assets/AVAX.png'),
-      maxValue: '720 million AVAX',
-      percentageValue: 49,
-      inflationary: false,
-      marketCap: [7.9, 7974837.865],
-      tvl: 3,
-      color: '#C539B4',
-      tps: [4500, 6500],
-      fee: 0.96,
-      apr: 3.14,
-      revenue: 0.033,
-      activeDevs: 47.17,
-      inflationRate: null,
-    },
-  ];
+  const [competitorsData, setCompetitorsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeOption, setActiveOption] = useState(null);
+
+  const isSectionWithoutData = (data, key, nullSymbol) => {
+    const has_one_key = data.find(datum => datum.competitor.key.includes(key));
+
+    if (has_one_key && has_one_key !== undefined) {
+      const found = data.find(
+        datum =>
+          datum.competitor.key.includes(key) &&
+          datum.competitor.value !== nullSymbol,
+      );
+      return found && found !== undefined ? false : true;
+    }
+
+    return true;
+  };
 
   const content = [
     {
-      name: 'Type Of Token',
-      component: <TypeOfToken tokens={cryptosData} />,
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/typeoftoken.png'),
-    },
-    {
-      name: 'Circulating Supply',
-      component: <CirculatingSupply cryptos={cryptosData} />,
-      icon: require('../../../../../../../../assets/images/fundamentals/competitors/circulatingsupply.png'),
-    },
-    {
       name: 'Current Market Cap',
-      component: <CurrentMarketCap cryptos={cryptosData} />,
+      component: (
+        <CurrentMarketCap
+          cryptos={cryptosData}
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/cmc.png'),
+      sectionDescription: subsectionsData.marketCap.sectionDescription,
+    },
+    {
+      name: 'Supply Model',
+      component: (
+        <CirculatingSupply
+          getSectionData={getSectionData}
+          competitorsData={competitorsData}
+          tokenomicsData={tokenomicsData}
+          cryptos={cryptosData}
+          coin={coin}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/circulatingsupply.png'),
+      sectionDescription: subsectionsData.supplyModel.sectionDescription,
+    },
+    {
+      name: 'Type Of Token',
+      component: (
+        <TypeOfToken
+          tokens={cryptosData}
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
+      icon: require('../../../../../../../../assets/images/fundamentals/competitors/typeoftoken.png'),
+      sectionDescription: subsectionsData.typeOfToken.sectionDescription,
     },
     {
       name: 'TVL',
-      component: <TotalValueLocked cryptos={cryptosData} />,
+      component: (
+        <TotalValueLocked
+          cryptos={cryptosData}
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/TVL.png'),
+      sectionDescription: subsectionsData.TVL.sectionDescription,
     },
     {
       name: 'Daily Active Users',
-      component: <DailyActiveUsers cryptos={cryptosData} />,
+      component: (
+        <DailyActiveUsers
+          cryptos={cryptosData}
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/dailyusers.png'),
+      sectionDescription: subsectionsData.dailyActiveUsers.sectionDescription,
     },
     {
       name: 'Transaction Fees',
-      component: <TransactionFees cryptos={cryptosData} />,
+      component: (
+        <TransactionFees
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/tfee.png'),
+      sectionDescription: subsectionsData.transactionFees.sectionDescription,
     },
     {
       name: 'Transaction Speed',
-      component: <TransactionSpeed cryptos={cryptosData} />,
+      component: (
+        <TransactionSpeed
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/tspeed.png'),
+      sectionDescription: subsectionsData.transactionSpeed.sectionDescription,
     },
     {
       name: 'Inflation Rate',
-      component: <InflationRate cryptos={cryptosData} />,
+      component: (
+        <InflationRate
+          cryptos={cryptosData}
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/inflationrate.png'),
+      sectionDescription: subsectionsData.inflationRate.sectionDescription,
     },
     {
       name: 'APR',
-      component: <Apr cryptos={cryptosData} />,
+      component: (
+        <Apr
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/apr.png'),
+      sectionDescription: subsectionsData.APR.sectionDescription,
     },
     {
       name: 'Active Developers',
-      component: <ActiveDevelopers cryptos={cryptosData} />,
+      component: (
+        <ActiveDevelopers
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/activedevs.png'),
+      sectionDescription: subsectionsData.activeDevelopers.sectionDescription,
     },
     {
       name: 'Revenue',
-      component: <Revenue cryptos={cryptosData} />,
+      component: (
+        <Revenue
+          competitorsData={competitorsData}
+          isSectionWithoutData={isSectionWithoutData}
+        />
+      ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/revenue.png'),
+      sectionDescription: subsectionsData.revenue.sectionDescription,
     },
   ];
 
-  const [activeOption, setActiveOption] = useState(content[0]);
+  useEffect(() => {
+    setLoading(true);
+    setCompetitorsData([]);
+    const fetchCompetitorsData = async coin => {
+      try {
+        const response = await getSectionData(
+          `/api/get_competitors_by_coin_name?coin_name=${coin}`,
+        );
+        if (response.status !== 200) {
+          setCompetitorsData([]);
+        } else {
+          setCompetitorsData(response.competitors);
+        }
+      } catch (error) {
+        console.log('Error trying to get competitors data: ', error);
+      } finally {
+        setActiveOption(content[0]);
+        setLoading(false);
+      }
+    };
+    fetchCompetitorsData(coin);
+  }, [coin, getSectionData]);
 
   const handleOptionChange = option => {
     setActiveOption(option);
   };
 
+  if (!loading && competitorsData?.length === 0) {
+    handleSectionContent('competitors', true);
+  }
+
   return (
     <View style={styles.container}>
-      <CompetitorsMenu
-        options={content}
-        activeOption={activeOption}
-        handleOptionChange={handleOptionChange}
-        styles={styles}
-      />
-      <View style={styles.selectedOptionContent}>
-        <CompetitorSection
-          title={activeOption.name}
-          component={activeOption.component}
-          styles={styles}
-        />
-      </View>
+      {loading ? (
+        <Loader />
+      ) : competitorsData.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          <CompetitorsMenu
+            options={content}
+            activeOption={activeOption}
+            handleOptionChange={handleOptionChange}
+            styles={styles}
+          />
+          <View style={styles.selectedOptionContent}>
+            <CompetitorSection
+              handleAboutPress={handleAboutPress}
+              title={activeOption.name}
+              description={activeOption.sectionDescription}
+              component={activeOption.component}
+              styles={styles}
+            />
+          </View>
+        </>
+      )}
     </View>
   );
 };

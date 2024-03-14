@@ -1,8 +1,11 @@
 import {Text, View, TouchableOpacity, Image} from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import CryptosSelector from '../../CryptoSelector/CryptosSelector';
 import useInflationRateStyles from './InflationRateStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
+import Loader from '../../../../../../../../../Loader/Loader';
+import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
+import {findCoinNameBySymbol} from '../../coinsNames';
 
 const SelectorItem = ({year, activeYear, handleYearChange, styles}) => {
   return (
@@ -40,8 +43,9 @@ const YearSelector = ({years, activeYear, handleYearChange, styles}) => {
   );
 };
 
-const InflationRate = ({cryptos}) => {
+const InflationRate = ({competitorsData, isSectionWithoutData}) => {
   const {isDarkMode} = useContext(AppThemeContext);
+  const [cryptos, setCryptos] = useState([]);
   const styles = useInflationRateStyles();
   const years = [
     {
@@ -50,7 +54,11 @@ const InflationRate = ({cryptos}) => {
     {
       year: 2023,
     },
+    {
+      year: 2024,
+    },
   ];
+
   const inflationValues = [
     {
       values: [0],
@@ -91,8 +99,71 @@ const InflationRate = ({cryptos}) => {
   ];
 
   const [activeYear, setActiveYear] = useState(2022);
-  const [activeCrypto, setActiveCrypto] = useState(cryptos[0]);
+  const [activeCrypto, setActiveCrypto] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [currentPercentage, setCurrentPercentage] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    const inflation_rate_data = [];
+    competitorsData.forEach((item, index) => {
+      if (
+        inflation_rate_data.find(
+          mappedItem =>
+            mappedItem.crypto ===
+            item.competitor.token.replace(/\s/g, '').toUpperCase(),
+        )
+      ) {
+        return;
+      } else {
+        const mapped_crypto = {
+          id: index + 1,
+          name: findCoinNameBySymbol(
+            item.competitor.token.replace(/\s/g, '').toUpperCase(),
+          ),
+          crypto: item.competitor.token.replace(/\s/g, '').toUpperCase(),
+          inflationRate: getInflationRateFromYears(
+            years,
+            competitorsData,
+            item.competitor.token,
+          ),
+        };
+        inflation_rate_data.push(mapped_crypto);
+      }
+    });
+    // console.log(inflation_rate_data);
+    setCryptos(inflation_rate_data);
+    setActiveCrypto(inflation_rate_data[0]);
+    setLoading(false);
+  }, [competitorsData]);
+
+  const getInflationRateFromYears = (years, competitors_data, token) => {
+    const inflationRate = [];
+    years.forEach(year => {
+      const current_year_value = {
+        year: year.year,
+        value: parseInflationRateValue(
+          findKeyInCompetitorItem(
+            competitors_data,
+            `inflation rate ${year.year}`,
+            token,
+          ),
+        ),
+      };
+      // console.log(current_year_value);
+      inflationRate.push(current_year_value);
+    });
+    return inflationRate;
+  };
+
+  const parseInflationRateValue = stringValue => {
+    if (!stringValue) {
+      return 0;
+    }
+    const filtered_string = stringValue.replace(/\s/g, '');
+    // console.log('Filtered string: ', Number(filtered_string));
+    return Number(filtered_string);
+  };
 
   const handleYearChange = year => {
     setActiveYear(year);
@@ -112,8 +183,20 @@ const InflationRate = ({cryptos}) => {
     }
   };
 
+  const findKeyInCompetitorItem = (data, key, crypto) => {
+    const found = data.find(
+      item =>
+        item.competitor.token === crypto && item.competitor.key.includes(key),
+    );
+    return found && found !== undefined
+      ? found.competitor.value !== '-'
+        ? found.competitor.value
+        : ''
+      : null;
+  };
+
   const findImageByInflationRate = rate => {
-    if (rate <= 0) {
+    if (rate <= 0 || isNaN(rate)) {
       return inflationValues[0].image;
     } else {
       let selectedImage = inflationValues.find(
@@ -125,40 +208,51 @@ const InflationRate = ({cryptos}) => {
 
   return (
     <View>
-      <YearSelector
-        years={years}
-        activeYear={activeYear}
-        handleYearChange={handleYearChange}
-        styles={styles}
-      />
-      <CryptosSelector
-        cryptos={cryptos}
-        activeCrypto={activeCrypto}
-        handleActiveCryptoChange={handleActiveCryptoChange}
-      />
-      <View style={styles.container}>
-        <Text style={styles.currentValue}>
-          {activeYear && activeCrypto
-            ? findInflationRateByYear(activeYear, activeCrypto)
-            : 0}
-          %
-        </Text>
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.inflationImage}
-            resizeMode={'contain'}
-            source={
-              activeYear && activeCrypto
-                ? findImageByInflationRate(
-                    findInflationRateByYear(activeYear, activeCrypto),
-                  )
-                : isDarkMode
-                ? require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-0-dark.png')
-                : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-0.png')
-            }
+      {loading ? (
+        <Loader />
+      ) : cryptos?.length === 0 ||
+        isSectionWithoutData(competitorsData, 'inflation rate', '-') ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          <YearSelector
+            years={years}
+            activeYear={activeYear}
+            handleYearChange={handleYearChange}
+            styles={styles}
           />
-        </View>
-      </View>
+          <CryptosSelector
+            cryptos={cryptos}
+            activeCrypto={activeCrypto}
+            handleActiveCryptoChange={handleActiveCryptoChange}
+          />
+          <View style={styles.container}>
+            <Text style={styles.currentValue}>
+              {activeYear && activeCrypto
+                ? isNaN(findInflationRateByYear(activeYear, activeCrypto))
+                  ? 0
+                  : findInflationRateByYear(activeYear, activeCrypto)
+                : 0}
+              %
+            </Text>
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.inflationImage}
+                resizeMode={'contain'}
+                source={
+                  activeYear && activeCrypto
+                    ? findImageByInflationRate(
+                        findInflationRateByYear(activeYear, activeCrypto),
+                      )
+                    : isDarkMode
+                    ? require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-0-dark.png')
+                    : require('../../../../../../../../../../assets/images/fundamentals/competitors/inflationRate/infrate-0.png')
+                }
+              />
+            </View>
+          </View>
+        </>
+      )}
     </View>
   );
 };

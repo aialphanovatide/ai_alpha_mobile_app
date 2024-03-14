@@ -31,13 +31,16 @@ const NewsItem = ({item, onPress, filterText}) => {
       style={styles.itemContainer}
       onPress={() => onPress(item)}>
       <View style={styles.textContainer}>
-        <Text style={styles.itemTitle} numberOfLines={2}>{item.title}</Text>
+        <Text style={styles.itemTitle} numberOfLines={2}>
+          {item.title}
+        </Text>
       </View>
       <Image
         source={{
           uri:
-            item.images[0].image ||
-            'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+            item.images.length > 0
+              ? `data:image/png;base64,${item.images[0].image}`
+              : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
         }}
         style={styles.image}
         resizeMode={'contain'}

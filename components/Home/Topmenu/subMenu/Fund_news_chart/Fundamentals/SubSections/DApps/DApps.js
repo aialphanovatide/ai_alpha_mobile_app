@@ -1,94 +1,200 @@
-import {
-  Image,
-  ImageBackground,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useContext, useState} from 'react';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import useDappsStyles from './DAppsStyles';
-import { AppThemeContext } from '../../../../../../../../context/themeContext';
+import Loader from '../../../../../../../Loader/Loader';
+import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
-const ProtocolSelector = ({
-  protocols,
+const ProtocolItem = ({
+  protocol,
+  styles,
   handleActiveProtocol,
   activeProtocol,
-  styles,
 }) => {
-  const {theme} = useContext(AppThemeContext);
+  const [hasImage, setHasImage] = useState(false);
+
+  useEffect(() => {
+    const checkImageURL = async url => {
+      try {
+        const response = await fetch(url);
+        if (
+          response.headers.map['content-type'] &&
+          response.headers.map['content-type'].startsWith('image/')
+        ) {
+          setHasImage(true);
+        }
+      } catch (error) {
+        console.error('Error al verificar el URL de la imagen:', error);
+        setHasImage(false);
+      }
+    };
+    checkImageURL(protocol.image);
+  }, [protocol]);
+
+  const formatNumber = num => {
+    const absNum = Math.abs(num);
+    const abbrev = ['', 'k', 'm', 'b', 't'];
+    const thousand = 1000;
+
+    const tier = (Math.log10(absNum) / 3) | 0;
+
+    if (tier === 0) return num;
+
+    const divisor = Math.pow(thousand, tier);
+    const formattedNum = (num / divisor).toFixed(1);
+
+    return formattedNum + abbrev[tier];
+  };
+
+  const calculateMarginBottom = (text, threshold) => {
+    if (text.length > threshold) {
+      return '30%';
+    } else {
+      return '15%';
+    }
+  };
+
+  const marginValue = calculateMarginBottom(protocol.description, 40);
   return (
-    <ScrollView
-      style={styles.itemContainer}
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}>
-      {protocols.map((protocol, index) => (
+    <View
+      style={[
+        styles.protocolItemContainer,
+        activeProtocol &&
+          activeProtocol.name === protocol.name &&
+          styles.activeItem && {marginBottom: marginValue},
+      ]}>
+      <Image
+        source={
+          hasImage
+            ? {uri: protocol.image, width: 40, height: 40}
+            : require('../../../../../../../../assets/images/fundamentals/dApps/protocol_default.png')
+        }
+        style={[styles.protocolImage, !hasImage && styles.defaultProtocol]}
+        resizeMode="contain"
+      />
+      <View style={styles.line} />
+      <View style={styles.protocolDataContainer}>
+        <View style={styles.row}>
+          <Text style={styles.protocolName}>{protocol.name}</Text>
+          <Text style={styles.tvl}>
+            TVL:
+            {` $${formatNumber(protocol.tvl)}`}
+          </Text>
+        </View>
+        <Text
+          style={
+            activeProtocol && activeProtocol.name === protocol.name
+              ? styles.protocolDescription
+              : styles.hidden
+          }>
+          {protocol.description}
+        </Text>
         <TouchableOpacity
-          key={index}
+          style={styles.arrowButton}
           onPress={() => handleActiveProtocol(protocol)}>
-          <ImageBackground
-            style={styles.logoContainer}
+          <Image
+            style={styles.arrowImage}
             source={
-              activeProtocol.name === protocol.name
-                ? require('../../../../../../../../assets/images/fundamentals/dApps/active-logo.png')
-                : require('../../../../../../../../assets/images/fundamentals/dApps/inactive-logo.png')
+              activeProtocol && activeProtocol.name === protocol.name
+                ? require('../../../../../../../../assets/images/arrow-up.png')
+                : require('../../../../../../../../assets/images/arrow-down.png')
             }
-            tintColor={theme.dAppsItemBg}
-            resizeMode="contain">
-            <Image
-              style={[
-                styles.logo,
-                activeProtocol.name !== protocol.name && styles.disabled,
-              ]}
-              source={protocol.image}
-              resizeMode={'contain'}
-            />
-          </ImageBackground>
+            resizeMode="contain"
+          />
         </TouchableOpacity>
-      ))}
-    </ScrollView>
+      </View>
+    </View>
   );
 };
 
-const DApps = ({protocols}) => {
+const DApps = ({getSectionData, coin, handleSectionContent}) => {
   const styles = useDappsStyles();
-  const [activeProtocol, setActiveProtocol] = useState(protocols[0]);
+  const [activeProtocol, setActiveProtocol] = useState(null);
+  const [mappedData, setMappedData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const generateImageUri = protocol => {
+    const formatted_protocol = protocol.toLowerCase().replace(/\s/g, '');
+    return `https://${coin}aialpha.s3.us-east-2.amazonaws.com/dapps/${formatted_protocol}.png`;
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    setMappedData([]);
+
+    const fetchDAppsData = async coin => {
+      try {
+        const response = await getSectionData(
+          `/api/dapps?coin_bot_name=${coin}`,
+        );
+        if (response.status !== 200) {
+          setMappedData([]);
+        } else {
+          // console.log('Dapps: ', response.message);
+          const dapps_response = response.message.map(protocol => {
+            return {
+              id: protocol.id,
+              name: protocol.dapps,
+              description: protocol.description,
+              tvl: protocol.tvl,
+              image: generateImageUri(protocol.dapps),
+            };
+          });
+          setMappedData(dapps_response);
+        }
+      } catch (error) {
+        console.log('Error trying to get dApps data: ', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDAppsData(coin);
+  }, [coin]);
 
   const handleActiveProtocol = protocol => {
-    setActiveProtocol(protocol);
+    if (activeProtocol && protocol.name === activeProtocol.name) {
+      setActiveProtocol(null);
+    } else {
+      setActiveProtocol(protocol);
+    }
   };
+
+  if (!loading && mappedData?.length === 0) {
+    handleSectionContent('dapps', true);
+  }
 
   return (
     <View>
-      <View style={styles.mainImageContainer}>
-        <Image
-          style={styles.mainImage}
-          resizeMode={'contain'}
-          source={require('../../../../../../../../assets/images/fundamentals/dApps/dapps.png')}
-        />
-      </View>
-      <ProtocolSelector
-        styles={styles}
-        protocols={protocols}
-        handleActiveProtocol={handleActiveProtocol}
-        activeProtocol={activeProtocol}
-      />
-      <View style={styles.dataContainer}>
-        <Text style={styles.title}>{activeProtocol.name}</Text>
-        <Text style={[styles.description, styles.text]}>
-          {activeProtocol.description}
-        </Text>
-        <View style={styles.row}>
-          <Text style={[styles.strong, styles.text]}>TVL:</Text>
-          <Text style={styles.text}>{activeProtocol.tvl}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={[styles.strong, styles.text]}>
-            Benefits to Ethereum:
-          </Text>
-          <Text style={styles.text}>{activeProtocol.benefits}</Text>
-        </View>
-      </View>
+      {loading ? (
+        <Loader />
+      ) : mappedData?.length === 0 ? (
+        <NoContentMessage />
+      ) : (
+        <>
+          <View style={styles.mainImageContainer}>
+            <Image
+              style={styles.mainImage}
+              resizeMode={'contain'}
+              source={{
+                uri: `https://${coin}aialpha.s3.us-east-2.amazonaws.com/dapps/dapps.png`,
+                width: 320,
+                height: 200,
+              }}
+            />
+          </View>
+          <View style={styles.dataContainer}>
+            {mappedData?.map((protocol, index) => (
+              <ProtocolItem
+                key={index}
+                coin={coin}
+                protocol={protocol}
+                styles={styles}
+                handleActiveProtocol={handleActiveProtocol}
+                activeProtocol={activeProtocol}
+              />
+            ))}
+          </View>
+        </>
+      )}
     </View>
   );
 };

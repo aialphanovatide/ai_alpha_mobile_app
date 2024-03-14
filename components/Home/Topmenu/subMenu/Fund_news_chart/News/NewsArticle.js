@@ -11,7 +11,21 @@ const NewsArticle = ({route, navigation}) => {
   const handleReturn = () => {
     navigation.goBack();
   };
-  console.log('News data: ', item);
+
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return (
+      `${year}/${month}/${day}` +
+      (hours !== '00' || minutes !== '00' ? ` ${hours}:${minutes}` : '')
+    );
+  };
+
   // Function to extract the title from the summaries, that detects the first sentences within "", using regular expressions, and returns it. It only returns the first because it can happen that is inside the summary text another sentences within "".
 
   const filterArticleTitle = summary => {
@@ -26,10 +40,14 @@ const NewsArticle = ({route, navigation}) => {
         content,
       };
     } else {
-      return {
-        title: null,
-        content: summary,
-      };
+      const first_line_swap = summary.indexOf('\n');
+
+      return first_line_swap !== -1
+        ? {
+            title: filterText(summary.slice(0, first_line_swap)),
+            content: summary,
+          }
+        : {title: filterText(summary.slice(0, 100)), content: summary};
     }
   };
 
@@ -62,9 +80,8 @@ const NewsArticle = ({route, navigation}) => {
   };
 
   const {title, content} = filterArticleTitle(item.summary);
-
   return (
-    <ScrollView style={styles.backgroundColor}>
+    <ScrollView style={[styles.container, styles.backgroundColor]}>
       <View style={styles.marginVertical}>
         <BackButton handleReturn={handleReturn} />
       </View>
@@ -74,15 +91,16 @@ const NewsArticle = ({route, navigation}) => {
           resizeMode={'contain'}
           source={{
             uri:
-              item.images[0].image ||
-              'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+              item.images.length > 0
+                ? `data:image/png;base64,${item.images[0].image}`
+                : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
             width: 300,
           }}
         />
         <Text style={styles.articleTitle}>
           {filterText(isStory ? title : item.title)}
         </Text>
-        <Text style={styles.articleDate}>{item.date}</Text>
+        <Text style={styles.articleDate}>{formatDate(item.date)}</Text>
         <Text style={styles.articleSummary}>
           {isStory ? filterText(content) : filterText(item.summary)}
         </Text>

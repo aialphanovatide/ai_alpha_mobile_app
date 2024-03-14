@@ -6,17 +6,16 @@ const useBackButtonStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     backButton: {
-      fontFamily: 'prompt',
+      fontFamily: theme.fontSemibold,
       fontSize: theme.responsiveFontSize,
-      fontWeight: 'bold',
       color: theme.backbuttonColor,
-      textDecorationLine: 'underline',
+      textDecorationColor: theme.backbuttonColor,
     },
     arrowContainer: {
-      marginTop: 2.5,
-      marginHorizontal: 2.5,
-      width: 20,
-      height: 20,
+      margin: 4,
+      marginVertical: 6,
+      width: 12,
+      height: 12,
       justifyContent: 'center',
       alignItems: 'center',
       overflow: 'hidden',
@@ -27,7 +26,7 @@ const useBackButtonStyles = () => {
     },
     row: {
       flexDirection: 'row',
-      justifyContent: 'flex-start'
+      justifyContent: 'flex-start',
     },
   });
   return styles;

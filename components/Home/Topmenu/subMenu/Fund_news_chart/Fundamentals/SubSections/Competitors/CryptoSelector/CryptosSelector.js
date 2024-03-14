@@ -4,6 +4,7 @@ import useCryptoSelectorStyles from './CryptosSelectorStyles';
 
 const CryptosSelector = ({cryptos, activeCrypto, handleActiveCryptoChange}) => {
   const styles = useCryptoSelectorStyles();
+  const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
   return (
     <View style={styles.selectorContainer}>
       {cryptos.map((item, index) => (
@@ -13,13 +14,13 @@ const CryptosSelector = ({cryptos, activeCrypto, handleActiveCryptoChange}) => {
           <View
             style={[
               styles.selectorItem,
-              {borderColor: item.color},
+              {borderColor: tintColors[index > 3 ? index % 3 : index]},
               activeCrypto &&
                 activeCrypto.crypto === item.crypto &&
                 styles.activeItem,
               activeCrypto &&
                 activeCrypto.crypto === item.crypto && {
-                  backgroundColor: item.color,
+                  backgroundColor: tintColors[index > 3 ? index % 3 : index],
                 },
             ]}>
             <Text
@@ -29,7 +30,7 @@ const CryptosSelector = ({cryptos, activeCrypto, handleActiveCryptoChange}) => {
                   activeCrypto.crypto === item.crypto &&
                   styles.activeText,
               ]}>
-              {item.crypto}
+              {item.name}
             </Text>
           </View>
         </TouchableOpacity>

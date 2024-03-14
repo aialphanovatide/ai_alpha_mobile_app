@@ -7,32 +7,27 @@ const useTimelineStyles = () => {
   const styles = StyleSheet.create({
     timelineContainer: {
       margin: '2.5%',
+      height: '100%',
       position: 'relative',
       paddingVertical: '5%',
-      paddingLeft: 20,
     },
     timelineEventContainer: {
+      position: 'relative',
       flexDirection: 'row',
       alignItems: 'flex-start',
-      marginVertical: 10,
+      marginBottom: theme.boxesVerticalMargin,
     },
     timelineDot: {
       width: 15,
       height: 15,
       marginTop: '10%',
+      marginLeft: '0.15%',
       borderRadius: 7.5,
       backgroundColor: theme.orange,
-      marginLeft: '1%',
-    },
-    futureDot: {
-      backgroundColor: 'transparent',
-      borderColor: theme.orange,
-      borderWidth: 2,
-      borderStyle: 'dashed',
     },
     timelineLine: {
-      marginTop: '12.5%',
-      width: '15%',
+      marginTop: '12%',
+      width: '17.5%',
       borderTopColor: theme.orange,
       borderTopWidth: 2,
     },
@@ -40,27 +35,64 @@ const useTimelineStyles = () => {
       borderStyle: 'dashed',
     },
     timelineContentContainer: {
-      flex: 1,
-      maxWidth: '70%',
-      paddingVertical: '5%',
-      paddingHorizontal: '2.5%',
-      backgroundColor: theme.boxesBackgroundColor,
+      position: 'absolute',
+      top: 8,
+      right: 8,
+      width: '77.5%',
+      height: '100%',
+      padding: 16,
+      backgroundColor: theme.fundamentalsCompetitorsItemBg,
+      borderRadius: 3,
+      borderWidth: 2,
+      borderColor: theme.orange,
     },
     dateText: {
-      fontWeight: 'bold',
-      marginBottom: 5,
-      fontSize: theme.responsiveFontSize,
-      color: theme.inactiveTextColor,
+      width: 40,
+      marginTop: 24,
+      paddingHorizontal: 4,
+      fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.fontSemibold,
+      color: theme.fundamentalsMenuText,
+      alignSelf: 'flex-start',
+      overflow: 'visible',
+    },
+    activeDate: {
+      color: theme.orange,
+    },
+    eventName: {
+      marginVertical: 8,
+      fontSize: theme.responsiveFontSize * 0.9,
+      color: theme.textColor,
+      lineHeight: 20,
+      fontFamily: theme.fontSemibold
     },
     descriptionText: {
       color: theme.textColor,
+      fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.fontMedium,
+      lineHeight: 20,
+    },
+    infoContainer: {
+      marginVertical: theme.boxesVerticalMargin,
+    },
+    infoTitle: {
+      color: theme.orange,
+      fontFamily: theme.fontSemibold,
+      fontSize: theme.responsiveFontSize * 0.85,
+      lineHeight: 16,
+    },
+    infoContent: {
+      color: theme.textColor,
+      fontSize: theme.responsiveFontSize * 0.825,
+      fontFamily: theme.font,
+      lineHeight: 16,
     },
     timelineArrow: {
       position: 'absolute',
       top: 0,
-      left: '1%',
+      left: '11.5%',
       width: 10,
-      height: '97.5%',
+      height: '100%',
       zIndex: -1,
     },
     arrow: {
@@ -75,7 +107,7 @@ const useTimelineStyles = () => {
     },
     arrowImage: {
       flex: 1,
-      tintColor: theme.secondaryTextColor,
+      tintColor: theme.secondaryGrayColor,
     },
     arrowTail: {
       position: 'absolute',
@@ -86,6 +118,9 @@ const useTimelineStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       zIndex: 1,
+    },
+    hidden: {
+      display: 'none',
     },
   });
   return styles;

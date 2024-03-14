@@ -17,6 +17,8 @@ import ThemeButton from '../ThemeButton/ThemeButton';
 import {API_KEY} from '../../src/constants';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
 import {NOTIFICATIONS_MOCK} from './NotificationsPanel/notificationsMock';
+import LinearGradient from 'react-native-linear-gradient';
+import {AppThemeContext} from '../../context/themeContext';
 
 const AccountItem = ({
   styles,
@@ -61,37 +63,33 @@ const Account = ({route}) => {
   const navigation = useNavigation();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const {userInfo} = useContext(RevenueCatContext);
+  const {isDarkMode} = useContext(AppThemeContext);
 
   console.log(userInfo);
-
+  // Account menu!!
   const options = [
     {
-      name: 'Subscriptions',
+      name: 'Subscriptions Options',
       logo: require('../../assets/images/account/subscription.png'),
       screenName: 'Subscriptions',
       component: null,
     },
     {
-      name: 'Privacy Policy',
+      name: 'Legal and Information',
       logo: require('../../assets/images/account/informationicon.png'),
       screenName: null,
       component: null,
-    },
+    } /*
     {
       name: 'Notifications',
       logo: require('../../assets/images/account/notifications.png'),
       screenName: 'Notifications',
       component: null,
-    },
+    }*/,
+    ,
     {
-      name: 'Dark Mode',
-      logo: require('../../assets/images/account/darkmode.png'),
-      screenName: null,
-      component: <ThemeButton />,
-    },
-    {
-      name: 'Delete Account',
-      logo: require('../../assets/images/account/delete-account.png'),
+      name: 'Settings',
+      logo: require('../../assets/images/account/settingsscreenicon.png'),
       screenName: null,
       component: null,
     },
@@ -108,17 +106,20 @@ const Account = ({route}) => {
       case 'Log Out':
         handleLogout();
         break;
-      case 'Delete Account':
-        navigation.navigate('DeleteAccountScreen');
+      case 'Settings':
+        navigation.navigate('SettingsScreen');
         break;
-      case 'Subscriptions':
+      case 'Subscriptions Options':
         navigation.navigate(option.screenName);
         break;
-      case 'Privacy Policy':
-        navigation.navigate('PrivacyPolicy');
-      case 'Notifications':
-        navigation.navigate('Notifications', {options: NOTIFICATIONS_MOCK});
+      case 'Legal and Information':
+        navigation.navigate('Legal');
         break;
+        {
+          /*case 'Notifications':
+        navigation.navigate('Notifications', {options: NOTIFICATIONS_MOCK});
+    break;*/
+        }
       default:
         console.log('Option not handled:', option.name);
     }
@@ -299,39 +300,38 @@ async function Buy_now() {
 
   return (
     <SafeAreaView style={styles.backgroundColor}>
-      <ScrollView style={styles.backgroundColor}>
-        <View style={styles.container}>
-          <View style={styles.alphaLogoContainer}>
-            <Image
-              source={require('../../assets/images/account/alphalogo.png')}
-              resizeMode="contain"
-              style={styles.image}
-            />
+      <LinearGradient
+        useAngle={true}
+        angle={45}
+        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        style={styles.gradient}>
+        <ScrollView style={styles.backgroundColor}>
+          <View style={styles.container}>
+            <View style={styles.alphaLogoContainer}>
+              <Image
+                source={require('../../assets/images/account/alphalogo.png')}
+                resizeMode="contain"
+                style={styles.image}
+              />
+            </View>
+            <Text style={styles.username}>
+              {userEmail || ' '}
+            </Text>
+            <View style={styles.optionsContainer}>
+              {options &&
+                options.map((option, index) => (
+                  <AccountItem
+                    key={index}
+                    option={option}
+                    styles={styles}
+                    handleItemTouch={handleItemTouch}
+                    itemComponent={option.component && option.component}
+                  />
+                ))}
+            </View>
           </View>
-          <Text style={styles.username}>
-            {/*{userEmail || 'User not available'}*/}
-            {userEmail || ' '}
-          </Text>
-          {/* <Text style={styles.headline}>User Subscriptions</Text>
-          <Text style={styles.text}>
-            {userInfo.entitlements.length > 0
-              ? formatUserEntitlements(userInfo.entitlements)
-              : 'There are no active subscriptions.'}
-          </Text> */}
-          <View style={styles.optionsContainer}>
-            {options &&
-              options.map((option, index) => (
-                <AccountItem
-                  key={index}
-                  option={option}
-                  styles={styles}
-                  handleItemTouch={handleItemTouch}
-                  itemComponent={option.component && option.component}
-                />
-              ))}
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </LinearGradient>
     </SafeAreaView>
   );
 };

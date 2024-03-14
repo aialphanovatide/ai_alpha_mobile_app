@@ -31,6 +31,8 @@ const AnalysisScreen = () => {
           title: 'Total 3 Chart',
           widgetId: 6,
           symbol: 'CRYPTOCAP:TOTAL3',
+          description:
+            'This chart aggregates the market value of all cryptocurrencies excluding Bitcoin and Ethereum. It provides an overview of the health and trends of the altcoin market and is essential for diversified investment strategies.',
         }}
       />
       <AnalysisStack.Screen
@@ -40,6 +42,8 @@ const AnalysisScreen = () => {
           title: 'DXY Chart',
           widgetId: 3,
           symbol: 'CAPITALCOM:DXY',
+          description:
+            'This provides the US dollar index, a crucial indicator for understanding the strength of the dollar relative to a basket of foreign currencies. When the DXY goes higher, risk on assets like cryptocurrencies often will drop in price.',
         }}
       />
       <AnalysisStack.Screen
@@ -49,6 +53,8 @@ const AnalysisScreen = () => {
           title: 'Gold Price Chart',
           widgetId: 4,
           symbol: 'CAPITALCOM:GOLD',
+          description:
+            'It shows the current price of gold, which is a key asset to compare with Bitcoin, especially in terms of it being a safe haven asset class.',
         }}
       />
       <AnalysisStack.Screen
@@ -58,6 +64,8 @@ const AnalysisScreen = () => {
           title: 'S&P 500 Chart',
           widgetId: 5,
           symbol: 'SPREADEX:SPX',
+          description:
+            'Provides the performance of the S&P 500 index, reflecting the health of the US stock market. It is an important analysis for understanding the correlation or divergence between the equity and cryptocurrency markets.',
         }}
       />
       <AnalysisStack.Screen name="FearAndGreed" component={FearAndGreed} />

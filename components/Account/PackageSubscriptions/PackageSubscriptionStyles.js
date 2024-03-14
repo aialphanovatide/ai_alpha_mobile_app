@@ -7,10 +7,14 @@ const usePackageSubscriptionStyles = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+      width: theme.width,
       padding: 10,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.subscriptions.subscriptionsBgColor,
+      backgroundColor: 'transparent',
+    },
+    flex: {
+      flex: 1,
     },
     logoContainer: {
       width: 150,
@@ -27,22 +31,55 @@ const usePackageSubscriptionStyles = () => {
       marginVertical: theme.titlesVerticalMargin,
       color: theme.titleColor,
       fontSize: theme.titleFontSize * 1.25,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
       textAlign: 'center',
       alignSelf: 'flex-start',
     },
     description: {
+      marginVertical: theme.boxesVerticalMargin,
+      marginTop: 4,
+      marginHorizontal: 16,
+    },
+    text: {
       color: theme.subscriptions.title,
       fontSize: theme.responsiveFontSize * 0.9,
-      textAlign: 'justify',
-      marginVertical: theme.boxesVerticalMargin,
-      marginHorizontal: 8,
+      fontFamily: theme.font,
+      textAlign: 'left',
+      lineHeight: 22,
+    },
+    bold: {
+      fontFamily: theme.fontBold,
+    },
+    orange: {
+      color: theme.orange,
+      marginLeft: 2,
+    },
+    secondaryText: {
+      color: theme.subscriptions.secondaryText,
+      fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.font,
+      lineHeight: 22,
+    },
+    reference: {
+      top: 30,
+      fontFamily: theme.fontItalic,
+      fontSize: theme.responsiveFontSize * 0.7,
+    },
+    foundersReference: {
+      color: theme.activeYellow,
+    },
+    textRow: {
+      flexDirection: 'row',
+    },
+    foundersText: {
+      color: theme.subscriptions.foundersText,
     },
     purchaseButton: {
       width: '35%',
       marginTop: theme.boxesVerticalMargin * 2.5,
       padding: 4,
-      borderRadius: 4,
+      paddingVertical: 12,
+      borderRadius: 3,
       overflow: 'hidden',
       backgroundColor: theme.subscriptions.purchaseButtonBgColor,
       justifyContent: 'center',
@@ -51,7 +88,8 @@ const usePackageSubscriptionStyles = () => {
     },
     purchaseButtonText: {
       color: theme.subscriptions.purchaseButtonText,
-      fontSize: theme.titleFontSize * 0.715,
+      fontSize: theme.titleFontSize * 0.8,
+      fontFamily: theme.fontMedium,
       textAlign: 'center',
     },
     itemContainer: {
@@ -59,25 +97,26 @@ const usePackageSubscriptionStyles = () => {
       marginVertical: 4,
       padding: 10,
       backgroundColor: theme.subscriptions.boxesBgColor,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-      elevation: 2,
-      borderRadius: 4,
+    },
+    selectedItem: {
+      borderWidth: 2,
+      borderColor: theme.activeOrange,
+    },
+    foundersItem: {
+      backgroundColor: theme.activeOrange,
+    },
+    selectedFounders: {
+      borderWidth: 2,
+      borderColor: theme.activeYellow,
     },
     row: {
-      position: 'relative',
       flexDirection: 'row',
-      marginBottom: theme.boxesVerticalMargin * 2,
+      marginBottom: theme.boxesVerticalMargin * 0.5,
     },
     left: {
       position: 'absolute',
       top: 0,
-      left: 4,
+      left: 50,
     },
     right: {
       position: 'absolute',
@@ -88,7 +127,7 @@ const usePackageSubscriptionStyles = () => {
       margin: 8,
       color: theme.subscriptions.text,
       fontSize: theme.titleFontSize * 0.8,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     itemDescriptionContainer: {
       paddingTop: 8,
@@ -99,11 +138,13 @@ const usePackageSubscriptionStyles = () => {
       marginHorizontal: 8,
       marginTop: 4,
       color: theme.subscriptions.text,
+      fontFamily: theme.fontMedium,
       fontSize: theme.responsiveFontSize * 0.75,
       textAlign: 'left',
       lineHeight: 22,
     },
     packagesContainer: {
+      flex: 1,
       width: theme.width,
       marginVertical: theme.boxesVerticalMargin,
       padding: 10,
@@ -124,36 +165,48 @@ const usePackageSubscriptionStyles = () => {
     },
     alignStart: {
       alignSelf: 'flex-start',
+      marginVertical: theme.boxesVerticalMargin,
     },
     itemIcon: {
-      position: 'absolute',
-      top: 4,
-      left: '24%',
-      width: 30,
-      height: 30,
+      width: 40,
+      height: 40,
+      marginHorizontal: 8,
       justifyContent: 'center',
-      borderRadius: 15,
+      borderRadius: 20,
       alignItems: 'center',
       overflow: 'hidden',
-      backgroundColor: theme.subscriptions.boxesBgColor,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-      elevation: 2,
+      backgroundColor: theme.subscriptions.iconsBgColor,
     },
     image: {
       flex: 1,
     },
+    foundersIcon: {
+      width: 30,
+      height: 30,
+    },
     activePurchaseButton: {
-      backgroundColor: theme.orange
+      backgroundColor: theme.orange,
     },
     activePurchaseButtonText: {
       color: '#FFFFFF',
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
+      fontSize: theme.titleFontSize * 0.85,
+    },
+    button: {
+      width: '35%',
+      marginTop: theme.boxesVerticalMargin * 2.5,
+      padding: 4,
+      paddingVertical: 12,
+      borderRadius: 3,
+      overflow: 'hidden',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+    },
+    buttonText: {
+      fontSize: theme.titleFontSize * 0.8,
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
     }
   });
   return styles;

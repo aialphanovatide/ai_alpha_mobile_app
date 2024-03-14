@@ -7,12 +7,16 @@ const useGTAStyles = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+      width: '100%',
+      minHeight: 300,
       flexDirection: 'row',
       backgroundColor: theme.boxesBackgroundColor,
-      justifyContent: 'center',
       borderRadius: 4,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     row: {
+      maxWidth: '50%',
       flexDirection: 'row',
     },
     tokenSelector: {
@@ -23,29 +27,27 @@ const useGTAStyles = () => {
       overflow: 'hidden',
     },
     strong: {
-      fontWeight: 'bold',
-      alignSelf: 'center',
+      alignSelf: 'flex-end',
+      fontFamily: theme.fontSemibold
     },
     circleDataContainer: {
-      padding: 10,
-      marginVertical: 20,
+      marginVertical: 24,
     },
     currentTokenPercentage: {
       position: 'absolute',
-      top: '45%',
-      left: '42%',
+      top: 175,
+      left:70,
       textAlign: 'center',
       fontSize: theme.titleFontSize * 1.35,
-      fontWeight: 'bold',
+      fontFamily: theme.fontBold,
     },
     displayNone: {
       display: 'none',
     },
-    flex: {
+    circleChartContainer: {
+      width: '50%',
       position: 'relative',
-      flex: 1,
-      padding: 10,
-      alignItems: 'center',
+      marginHorizontal: 16,
     },
   });
   return styles;

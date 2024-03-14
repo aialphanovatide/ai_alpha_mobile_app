@@ -29,25 +29,30 @@ const useTypeOfTokenStyles = () => {
     tokenName: {
       color: theme.textColor,
       marginHorizontal: 10,
-      fontSize: theme.responsiveFontSize * 0.9,
-      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
     },
     buttonContainer: {
+      width: '100%',
+      flex: 1,
+      paddingVertical: 4,
       flexDirection: 'row',
+    },
+    tokenButton: {
+      width: 100,
+      padding: 4,
+      marginHorizontal: 4,
+      backgroundColor: theme.activeWhite,
+      borderRadius: 2,
       alignItems: 'center',
       justifyContent: 'center',
     },
-    tokenButton: {
-      width: '50%',
-      margin: 5,
-      backgroundColor: theme.secondaryBoxesBgColor,
-      borderRadius: 2,
-    },
     tokenButtonText: {
-      padding: 10,
+      padding: 6,
       textAlign: 'center',
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.825,
+      fontFamily: theme.fontMedium,
     },
   });
   return styles;

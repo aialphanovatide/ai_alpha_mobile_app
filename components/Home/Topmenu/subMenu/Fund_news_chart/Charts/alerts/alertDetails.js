@@ -8,7 +8,18 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     color: timeframe.toLowerCase().includes('bullish')
       ? theme.priceUpColor
       : theme.priceDownColor,
-    marginHorizontal: 0,
+      marginTop: 4,
+  };
+
+  const formatNumber = price => {
+    const number = parseFloat(price);
+    if (isNaN(number)) {
+      return 'Invalid number';
+    }
+    return number.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
   const formatAlertTitle = title => {
@@ -44,19 +55,32 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     <View style={styles.alertDetailsContainer}>
       <View style={styles.alertDetailsLeftContent}>
         <View style={styles.alertsRow}>
-          <Text style={styles.alertDetailsTitle} numberOfLines={2}>
-            {coin_title}
+          <Text
+            style={[styles.alertDetailsTitle]}
+            numberOfLines={2}>
+            {`${coin_title.toUpperCase()} ${
+              interval_word.toUpperCase()[0] +
+              interval_word.toLowerCase().slice(1)
+            }${
+              chart_word.toUpperCase()[0] + chart_word.toLowerCase().slice(1)
+            }`}
           </Text>
-          <Text style={styles.alertDetailsTitle}>{interval_word}</Text>
-          <Text style={styles.alertDetailsTitle}>{chart_word} - </Text>
-          <Text style={[styles.alertDetailsTitle, timeframeStyle]}>{word}</Text>
+          <View style={styles.alertsPriceAndWord}>
+            <Text style={[styles.alertDetailsTitle, styles.price]}>
+              ${formatNumber(price)}
+            </Text>
+            <Text
+              style={[
+                styles.alertDetailsTitle,
+                timeframeStyle,
+              ]}>
+              {word.toUpperCase()[0] + word.toLowerCase().slice(1)}
+            </Text>
+          </View>
         </View>
         <Text style={styles.alertDetailsSubtitle} numberOfLines={2}>
           {message}
         </Text>
-      </View>
-      <View style={styles.alertDetailsRightContent}>
-        <Text style={styles.alertDetailsRightTitle}>${price}</Text>
       </View>
     </View>
   );

@@ -8,7 +8,9 @@ const useBtcFundingRatesStyles = () => {
     mainSection: {
       flex: 1,
       height: theme.height,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
+      padding: 10,
+      paddingTop: 36,
     },
     titleContainer: {
       flexDirection: 'row',
@@ -19,7 +21,7 @@ const useBtcFundingRatesStyles = () => {
       paddingHorizontal: 15,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     tableContainer: {
       flex: 1,
@@ -29,6 +31,7 @@ const useBtcFundingRatesStyles = () => {
       marginVertical: 20,
       alignItems: 'center',
       justifyContent: 'center',
+      borderRadius: 4,
     },
     tableHeader: {
       backgroundColor: theme.tableHeaderColor,
@@ -43,8 +46,7 @@ const useBtcFundingRatesStyles = () => {
       justifyContent: 'center',
     },
     exchangeLogo: {
-      width: '100%',
-      height: '100%',
+      flex: 1,
     },
     dataRow: {
       backgroundColor: theme.boxesBackgroundColor,
@@ -57,6 +59,7 @@ const useBtcFundingRatesStyles = () => {
       paddingVertical: 20,
       paddingHorizontal: theme.width * 0.05,
       fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontSemibold,
     },
     dataCell: {
       flex: 1,
@@ -66,11 +69,12 @@ const useBtcFundingRatesStyles = () => {
       marginVertical: 20,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
     },
     exchangeName: {
       color: theme.textColor,
-      fontSize: theme.responsiveFontSize,
-      fontWeight: 'bold',
+      fontSize: theme.responsiveFontSize * 1.05,
+      fontFamily: theme.fontMedium,
     },
     priceUp: {
       color: theme.priceUpColor,
@@ -78,6 +82,33 @@ const useBtcFundingRatesStyles = () => {
     priceDown: {
       color: theme.priceDownColor,
     },
+    sectionDescription: {
+      width: '100%',
+      paddingHorizontal: 8,
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.textColor,
+      textAlign: 'left',
+      fontFamily: theme.fontMedium,
+      lineHeight: 20,
+    },
+    readMoreButton: {
+      marginHorizontal: 8,
+      flex: 1,
+    },
+    readMoreText: {
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: '#7B7BFF',
+      lineHeight: 24,
+      textDecorationLine: 'underline',
+      textDecorationColor: '#7B7BFF',
+      fontFamily: theme.fontSemibold,
+    },
+    loaderWrapper: {
+      flex: 1,
+      marginBottom: '50%',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    }
   });
   return styles;
 };

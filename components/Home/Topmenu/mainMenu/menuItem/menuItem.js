@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, TouchableOpacity, View, Image} from 'react-native';
 import useMenuItemStyles from './menuItemStyles';
 import {API_BASE_URL} from '../../../../../services/aiAlphaApi';
+import {TOP_MENU_IMAGES_URL} from '../../../../../src/constants';
 
 const MenuItem = ({
   onPress,
@@ -11,17 +12,11 @@ const MenuItem = ({
   findCategoryInMenuData,
 }) => {
   const styles = useMenuItemStyles();
-  const icons = {
-    light: {
-      active: `${API_BASE_URL}${category.active_light_icon}`,
-      inactive: `${API_BASE_URL}${category.inactive_light_icon}`,
-    },
-    dark: {
-      active: `${API_BASE_URL}${category.active_dark_icon}`,
-      inactive: `${API_BASE_URL}${category.inactive_dark_icon}`,
-    },
-  };
-
+  // console.log(
+  //   `${TOP_MENU_IMAGES_URL}${isDarkMode ? 'Dark' : 'Light'}/${
+  //     isActive ? 'Active' : 'Inactive'
+  //   }/${category.category_name.toLowerCase()}`,
+  // );
   return (
     <TouchableOpacity
       style={styles.buttonContainer}
@@ -29,12 +24,19 @@ const MenuItem = ({
       <View
         style={[
           styles.button,
-          isActive && styles.activeButton,
-          {borderColor: category.borderColor},
+          // isActive && styles.activeButton,
+          // {borderColor: category.borderColor},
         ]}>
         <Image
           source={{
+            /*
             uri: `${API_BASE_URL}${category.icon}`,
+            */
+            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/${
+              isDarkMode ? 'Dark' : 'Light'
+            }/${isActive ? 'Active' : 'Inactive'}/${category.category_name
+              .replace(/\s/g, '')
+              .toLowerCase()}.png`,
             width: 60,
             height: 60,
           }}

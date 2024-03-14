@@ -1,43 +1,86 @@
-import React from 'react';
-import {View, Text, ScrollView, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import Loader from '../../../../../../../../Loader/Loader';
 import useTimelineStyles from './TimelineStyles';
 
-const Timeline = ({events}) => {
+const Timeline = ({events, textPoints}) => {
   const styles = useTimelineStyles();
+  const [activeEvent, setActiveEvent] = useState(null);
+
+  const formatDate = dateString => {
+    const words = dateString.split(/\s|-|\//g);
+    const time_words = ['ongoing', 'development', 'long', 'mid', 'early'];
+    const month = words[0];
+    const has_words = time_words.includes(month.toLowerCase());
+    const isLargeMonth = month.length > 5;
+    const shorted_month = isLargeMonth ? month.slice(0, 3) : month;
+    const formatted_date =
+      words.length > 1 ? shorted_month + ' ' + words[1] : dateString;
+
+    return has_words ? dateString : formatted_date;
+  };
+
+  const generateEventInformation = (event, topics) => {
+    const eventInformation = [];
+
+    topics.forEach(topic => {
+      eventInformation.push(
+        <View key={topic.label} style={styles.infoContainer}>
+          <Text style={styles.infoTitle}>{topic.label}</Text>
+          <Text style={styles.infoContent}>{event[topic.propName]}</Text>
+        </View>,
+      );
+    });
+    return eventInformation;
+  };
+
+  useEffect(() => {
+    if (events.length > 0) {
+      setActiveEvent(events[0]);
+    } else {
+      setActiveEvent(null);
+    }
+  }, [events]);
+
+  const handleActiveHack = event => {
+    setActiveEvent(event);
+  };
+
   return (
-    <ScrollView style={styles.timelineContainer} nestedScrollEnabled={true}>
-      {events ? (
-        events.map((event, index) => (
-          <View key={index} style={styles.timelineEventContainer}>
-            <View
-              style={[
-                styles.timelineDot,
-                event.hasFinished ? {} : styles.futureDot,
-              ]}
-            />
-            <View
-              style={[
-                styles.timelineLine,
-                event.hasFinished ? {} : styles.futureEventLine,
-              ]}
-            />
-            <View style={styles.timelineContentContainer}>
-              <Text style={styles.dateText}>{event.date}</Text>
-              <Text style={styles.descriptionText}>{event.description}</Text>
-            </View>
-          </View>
-        ))
-      ) : (
-        <Loader />
-      )}
-      {/* <View style={styles.arrowTail}>
-        <Image
-          style={styles.arrowImage}
-          source={require('../../../../../../../../../assets/images/arrow-down.png')}
-          resizeMode="contain"
-        />
-      </View> */}
+    <View style={styles.timelineContainer} nestedScrollEnabled={true}>
+      {events.map((event, index) => (
+        <View key={index} style={styles.timelineEventContainer}>
+          <Text
+            numberOfLines={2}
+            style={[
+              styles.dateText,
+              activeEvent && event?.id === activeEvent.id && styles.activeDate,
+            ]}>
+            {formatDate(event.date)}
+          </Text>
+          <TouchableOpacity
+            style={styles.timelineDot}
+            onPress={() => handleActiveHack(event)}
+          />
+          <View
+            style={
+              activeEvent && event?.id === activeEvent.id
+                ? styles.timelineLine
+                : styles.hidden
+            }
+          />
+        </View>
+      ))}
+      <View style={styles.timelineContentContainer}>
+        <Text style={styles.eventName}>
+          {activeEvent && activeEvent !== undefined
+            ? activeEvent.hack_name || activeEvent.upgrade_name
+            : ''}
+        </Text>
+        {activeEvent &&
+          activeEvent !== undefined &&
+          generateEventInformation(activeEvent, textPoints)}
+      </View>
       <View style={styles.timelineArrow}>
         <Image
           source={require('../../../../../../../../../assets/images/fundamentals/timeline.png')}
@@ -45,14 +88,7 @@ const Timeline = ({events}) => {
           style={styles.arrowImage}
         />
       </View>
-      {/* <View style={styles.arrow}>
-        <Image
-          style={styles.arrowImage}
-          source={require('../../../../../../../../../assets/images/arrow-down.png')}
-          resizeMode="contain"
-        />
-      </View> */}
-    </ScrollView>
+    </View>
   );
 };
 

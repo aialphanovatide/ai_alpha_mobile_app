@@ -1,7 +1,22 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text} from 'react-native';
+import {AboutIcon} from '../Fundamentals/AboutIcon';
+import {home_static_data} from '../../../../homeStaticData';
+import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 
-const CandlestickDetails = ({coin, lastPrice, interval, styles}) => {
+const CandlestickDetails = ({coin, lastPrice, interval, styles, isPriceUp}) => {
+  const {handleAboutPress} = useContext(AboutModalContext);
+  const formatNumber = price => {
+    const number = parseFloat(price);
+    if (isNaN(number)) {
+      return 'Invalid number';
+    }
+    return number.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
   const formatCoin = coin => {
     const usdt_word_index = coin.indexOf('USDT');
     const coin_word = coin.slice(0, usdt_word_index).toUpperCase();
@@ -12,9 +27,21 @@ const CandlestickDetails = ({coin, lastPrice, interval, styles}) => {
       <Text style={styles.detailslabel}>
         {coin ? formatCoin(coin) : 'Loading ...'}
       </Text>
-      <Text style={styles.lastPrice}>
-        ${lastPrice ? lastPrice : ' ...'}
+      <Text
+        style={[
+          styles.lastPrice,
+          isPriceUp !== null
+            ? isPriceUp
+              ? styles.priceUpColor
+              : styles.priceDownColor
+            : {},
+        ]}>
+        ${lastPrice ? formatNumber(lastPrice) : ' ...'}
       </Text>
+      <AboutIcon
+        description={home_static_data.charts.sectionDescription}
+        handleAboutPress={handleAboutPress}
+      />
     </View>
   );
 };

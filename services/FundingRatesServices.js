@@ -1,4 +1,4 @@
-import {COINALYZE_API_KEY} from '@env';
+import { COINALYZE_API_KEY } from "../src/constants";;
 const exchanges = [
   {
     name: 'Kraken',

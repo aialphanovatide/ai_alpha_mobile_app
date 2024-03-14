@@ -5,29 +5,72 @@ import {AppThemeContext} from '../../../../../../../../../../context/themeContex
 const useRevenueStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
-    chartContainer: {
+    container: {
       flex: 1,
-      backgroundColor: theme.secondaryBoxesBgColor,
-      alignSelf: 'flex-start'
+      padding: 10,
+    },
+    chartContainer: {
+      position: 'relative',
+      minHeight: 400,
+      width: '100%',
+      backgroundColor: theme.boxesBackgroundColor,
+      alignSelf: 'flex-start',
+      alignItems: 'flex-end',
     },
     selectorContainer: {
-      marginBottom: 10,
+      position: 'absolute',
+      top: 0,
+      width: '100%',
+      paddingVertical: 10,
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignSelf: 'flex-start',
+      justifyContent: 'space-evenly',
+      backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 2,
+      zIndex: 2,
+    },
+    grayRectangle: {
+      position: 'absolute',
+      bottom: 0,
+      width: '100%',
+      minHeight: 60,
+      backgroundColor: theme.boxesBackgroundColor,
+      zIndex: 2,
     },
     selectorItem: {
-      width: theme.width * 0.2,
-      marginHorizontal: 5,
-      padding: 2.5,
+      width: theme.width * 0.18,
+      paddingVertical: 2.5,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 5,
+      borderRadius: 2,
     },
     itemText: {
-      color: theme.subMenuTextColor,
-      fontSize: theme.responsiveFontSize * 0.7,
-      fontWeight: 'bold',
+      color: theme.fundamentalsCompetitorsLabelColor,
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
+      alignSelf: 'center',
+    },
+    bgImage: {
+      position: 'absolute',
+      bottom: 0,
+      flex: 1,
+      width: '100%',
+      minHeight: 300,
+      opacity: 0.4,
+    },
+    graphImage: {
+      marginHorizontal: 10,
+      minHeight: 50,
+      maxHeight: 400,
+    },
+    imagesContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'flex-end',
+    },
+    marginBottom: {
+      marginBottom: 40,
     },
   });
   return styles;

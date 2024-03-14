@@ -11,12 +11,10 @@ const RsButton = ({activeButtons, setActiveButtons}) => {
   const handlePress = buttonLabel => {
     const index = activeButtons.indexOf(buttonLabel);
     if (index !== -1) {
-      // Button is already active, remove it
       setActiveButtons(prevActiveButtons =>
         prevActiveButtons.filter(label => label !== buttonLabel),
       );
     } else {
-      // Button is not active, add it
       setActiveButtons(prevActiveButtons => [
         ...prevActiveButtons,
         buttonLabel,

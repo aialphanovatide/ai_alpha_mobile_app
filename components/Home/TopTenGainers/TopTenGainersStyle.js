@@ -9,20 +9,20 @@ const useTopTenGainersStyles = () => {
     topTenGainersContainer: {
       height: 400,
       width: theme.width,
-      paddingHorizontal: 10,
       marginVertical: 20,
       borderRadius: 4,
     },
     topTenGainersTitle: {
-      paddingVertical: 10,
-      paddingHorizontal: 5,
+      padding: 10,
+      paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontWeight: 'bold',
+      fontFamily: theme.fontSemibold,
     },
     table: {
       paddingTop: 10,
       backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 4,
     },
     row: {
       flex: 1,
@@ -30,8 +30,8 @@ const useTopTenGainersStyles = () => {
       marginVertical: 2.5,
       display: 'flex',
       flexDirection: 'row',
-      borderBottomWidth: 2,
-      borderBottomColor: theme.boxesBorderColor,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.secondaryGrayColor,
       paddingHorizontal: 20,
       paddingVertical: 10,
       alignItems: 'flex-start',
@@ -40,7 +40,7 @@ const useTopTenGainersStyles = () => {
       width: 30,
       height: 30,
       marginRight: 25,
-      alignSelf: 'flex-start',
+      alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 15,
@@ -56,21 +56,27 @@ const useTopTenGainersStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
     },
+    positionContainer: {
+      width: 30,
+      marginRight: 4,
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center',
+    },
     coinPosition: {
-      marginRight: 7.5,
-      paddingHorizontal: 5,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize,
-      fontWeight: 'bold',
-      textAlign: 'center',
+      fontFamily: theme.fontSemibold,
+      textAlign: 'left',
     },
     coinData: {
       color: theme.textColor,
+      fontFamily: theme.fontMedium,
     },
     coinName: {
-      fontSize: theme.responsiveFontSize,
+      fontSize: theme.responsiveFontSize * 1.125,
       color: theme.textColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontBold,
     },
     coinNumbersContainer: {
       flex: 1,
@@ -81,13 +87,18 @@ const useTopTenGainersStyles = () => {
     coinNumber: {
       textAlign: 'right',
       color: theme.secondaryTextColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontBold,
     },
     greenNumber: {
       color: theme.priceUpColor,
+      fontFamily: theme.fontSemibold,
     },
     redNumber: {
       color: theme.priceDownColor,
+      fontFamily: theme.fontSemibold,
+    },
+    titleRow: {
+      flexDirection: 'row',
     },
   });
   return styles;

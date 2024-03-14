@@ -6,6 +6,8 @@ import useTopTenGainersStyles from './TopTenGainersStyle.js';
 import topTenGainersService from '../../../services/TopTenGainersService.js';
 import Loader from '../../Loader/Loader.js';
 import TOP_TEN_GAINERS_MOCK from './TopTenGainersMock.js';
+import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
+import {home_static_data} from '../homeStaticData.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
@@ -13,7 +15,9 @@ const Item = ({position, coin}) => {
   const styles = useTopTenGainersStyles();
   return (
     <View key={position} style={styles.row}>
-      <Text style={styles.coinPosition}>{position}</Text>
+      <View style={styles.positionContainer}>
+        <Text style={styles.coinPosition}>{position}</Text>
+      </View>
       <View style={styles.logoContainer}>
         <Image
           style={[styles.coinLogo]}
@@ -42,7 +46,7 @@ const Item = ({position, coin}) => {
   );
 };
 
-const TopTenGainers = () => {
+const TopTenGainers = ({handleAboutPress}) => {
   const styles = useTopTenGainersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,9 +59,9 @@ const TopTenGainers = () => {
       try {
         const data = await topTenGainersService.getTop10Coins();
         setTopTenCoins(data);
-        console.log('TopTenGainers data:', data);
+        // console.log('TopTenGainers data:', data);
       } catch (error) {
-        console.error('Error fetching top 10 coins:', error);
+        console.error('Error fetching top 10 gainers:', error);
       } finally {
         setLoading(false);
       }
@@ -67,7 +71,13 @@ const TopTenGainers = () => {
   }, []);
   return (
     <View style={styles.topTenGainersContainer}>
-      <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>
+      <View style={styles.titleRow}>
+        <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>
+        <AboutIcon
+          handleAboutPress={handleAboutPress}
+          description={home_static_data.topTenGainers.sectionDescription}
+        />
+      </View>
       {loading ? (
         <Loader />
       ) : (

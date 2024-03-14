@@ -38,6 +38,7 @@ const useNotificationsStyles = () => {
       fontSize: theme.responsiveFontSize,
       color: theme.textColor,
       lineHeight: 22,
+      alignSelf: 'center'
     },
     rightContent: {
       flexDirection: 'row',
@@ -85,6 +86,14 @@ const useNotificationsStyles = () => {
       alignItems: 'flex-end',
       justifyContent: 'flex-end',
     },
+    iconImage: {
+      width: 30,
+      height: 30,
+      justifyContent: 'center',
+      alignItems: 'center',
+      overflow: 'hidden',
+      borderRadius: 15,
+    }
   });
   return styles;
 };

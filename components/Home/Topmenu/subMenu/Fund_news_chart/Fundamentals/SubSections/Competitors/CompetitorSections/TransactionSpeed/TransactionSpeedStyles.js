@@ -15,10 +15,10 @@ const useTransactionSpeedStyles = () => {
       paddingVertical: 5,
       paddingHorizontal: 10,
       color: theme.textColor,
-      fontWeight: 'bold',
-      fontSize: theme.responsiveFontSize * 0.9,
+      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
       borderWidth: 2,
-      borderColor: theme.textColor,
+      borderColor: theme.secondaryGrayColor,
     },
   });
   return styles;

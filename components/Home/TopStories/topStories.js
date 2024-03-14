@@ -2,20 +2,29 @@ import React, {useState, useEffect, useContext} from 'react';
 import {List} from 'react-native-paper';
 import StoryItem from './Storyitem/storyItem';
 import useTopStoriesStyles from './topStoriesStyles';
-import {Image, Text, View} from 'react-native';
+import {Image, Text, View, TouchableOpacity} from 'react-native';
 import {getService} from '../../../services/aiAlphaApi';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext';
 import {CategoriesContext} from '../../../context/categoriesContext';
+import Loader from '../../Loader/Loader';
+import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import {home_static_data} from '../homeStaticData';
 
-const TopStories = () => {
+const TopStories = ({handleAboutPress}) => {
   const styles = useTopStoriesStyles();
   const [expanded, setExpanded] = useState(false);
-  const handlePress = () => setExpanded(!expanded);
+  const [loading, setLoading] = useState(true);
   const [stories, setStories] = useState([]);
   const navigation = useNavigation();
   const {categories} = useContext(CategoriesContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
+  const aboutIconStyles = {
+    top: 12.5,
+  };
+  const handlePress = () => {
+    setExpanded(!expanded);
+  };
 
   // This function finds the category and coin bot that belongs to the story, passing through the parameters the coin bot id and the coins where find it.
   const findCoinById = (coins, coinBotId) => {
@@ -35,7 +44,6 @@ const TopStories = () => {
 
   const filterArticleTitle = summary => {
     const match = summary.match(/"([^"]+)"/);
-
     if (match && match[1]) {
       const title = match[1];
       const content = summary.replace(`"${title}"`, '').trim();
@@ -46,8 +54,8 @@ const TopStories = () => {
       };
     } else {
       return {
-        title: null,
-        content: null,
+        title: filterText(summary.slice(0, 120)),
+        content: summary,
       };
     }
   };
@@ -106,66 +114,48 @@ const TopStories = () => {
   };
 
   useEffect(() => {
-    setStories([]);
-    // const fetchTopStories = async () => {
-    //   try {
-    //     const data = await getService(`/api/get/allTopStories`);
-    //     if (!data || data['top stories'] === undefined) {
-    //       setStories([]);
-    //     } else {
-    //       setStories(data['top stories']);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching top stories:', error.message);
-    //   }
-    // };
+    // setStories([]);
+    setLoading(true);
+    const fetchTopStories = async () => {
+      try {
+        const data = await getService(`/api/get/allTopStories`);
+        if (!data || data.top_stories === undefined) {
+          setStories([]);
+        } else {
+          // console.log(data.top_stories);
 
-    // fetchTopStories();
+          setStories(data.top_stories);
+        }
+      } catch (error) {
+        console.error('Error fetching top stories:', error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTopStories();
   }, []);
 
   return (
     <List.Section title="Top Stories" titleStyle={styles.mainTitle}>
-      {stories.length === 0 ? (
-        <Text style={styles.emptyMessage}>There are no Stories to show...</Text>
+      <AboutIcon
+        handleAboutPress={handleAboutPress}
+        description={home_static_data.topStories.sectionDescription}
+        additionalStyles={aboutIconStyles}
+      />
+      {loading ? (
+        <Loader />
+      ) : stories.length === 0 ? (
+        <Text style={styles.emptyMessage}>There aren't stories to show</Text>
       ) : (
-        <View style={styles.background}>
-          <List.Accordion
-            style={styles.storyItem}
-            titleStyle={styles.titleStyles}
-            title={stories ? filterText(stories[0].summary) : 'Loading'}
-            titleNumberOfLines={2}
-            // description={
-            //   stories
-            //     ? filterArticleTitle(filterText(stories[0].summary)).content
-            //     : 'Loading'
-            // }
-            // descriptionStyle={styles.description}
-            right={() => (
-              <Image
-                source={
-                  expanded
-                    ? require('../../../assets/images/arrow-up.png')
-                    : require('../../../assets/images/arrow-down.png')
-                }
-                style={styles.arrowDown}
-                resizeMode="contain"
-              />
-            )}
-            left={() => (
-              <Image
-                source={{
-                  uri:
-                    stories[0].images[0].image ||
-                    'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
-                  width: 60,
-                }}
-                style={styles.imageStyle}
-                resizeMode="contain"
-              />
-            )}
-            expanded={expanded}
-            onPress={handlePress}>
-            {stories?.map((story, i) => (
+        <View style={[styles.storiesContainer]}>
+          {stories?.slice(0, 10).map((story, i) => (
+            <View
+              key={i}
+              style={[
+                styles.storyWrapper,
+                i > 0 && !expanded ? styles.hidden : {},
+              ]}>
               <StoryItem
                 item={story}
                 key={i}
@@ -174,14 +164,28 @@ const TopStories = () => {
                   filterArticleTitle(filterText(story.summary)).content
                 }
                 image={
-                  story.images[0].image ||
-                  'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
+                  story.images.length > 0
+                    ? story.images[0].image
+                    : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
                 }
                 handleStoryRedirect={handleStoryRedirect}
                 coinBotId={story.coin_bot_id}
               />
-            ))}
-          </List.Accordion>
+              <TouchableOpacity
+                style={[styles.arrowContainer, i > 0 ? styles.hidden : {}]}
+                onPress={() => handlePress()}>
+                <Image
+                  source={
+                    expanded
+                      ? require('../../../assets/images/arrow-up.png')
+                      : require('../../../assets/images/arrow-down.png')
+                  }
+                  style={styles.arrowDown}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+          ))}
         </View>
       )}
     </List.Section>

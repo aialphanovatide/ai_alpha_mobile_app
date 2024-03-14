@@ -20,6 +20,36 @@ const RevenueCatProvider = ({children}) => {
     subscribed: false,
   });
 
+  // This function order the packages in the Figma defined order.
+
+  const orderPackages = data => {
+    const order = [
+      'Founders_14999_m1',
+      'Bitcoin_4999_m1',
+      'Ethereum_4999_m1',
+      'Baseblock_4999_m1',
+      'Corechain_4999_m1',
+      'Rootlink_4999_m1',
+      'XPayments_4999_m1',
+      'Lsds_4999_m1',
+      'Boostlayer_4999_m1',
+      'Truthnodes_4999_m1',
+      'Cycleswap_4999_m1',
+      'Nextrade_4999_m1',
+      'Diversefi_4999_m1',
+      'Intellichain_4999_m1',
+    ];
+
+    const compare = (objA, objB) => {
+      const indexA = order.indexOf(objA.offeringIdentifier);
+      const indexB = order.indexOf(objB.offeringIdentifier);
+      return indexA - indexB;
+    };
+
+    data.sort(compare);
+    return data;
+  };
+
   const init = async userId => {
     if (Platform.OS === 'ios') {
       Purchases.configure({apiKey: REVENUECAT_IOS_API_KEY, appUserID: userId});
@@ -75,6 +105,35 @@ const RevenueCatProvider = ({children}) => {
     setUserInfo(updatedUser);
   };
 
+  const restorePurchases = async () => {
+    try {
+      const restore = await Purchases.restorePurchases();
+      console.log('Restored user data: ', restore);
+      const restored_subscriptions = restore.activeSubscriptions.map(
+        identifier => {
+          const first_separator = identifier.indexOf(':');
+          const formatted_package_id =
+            first_separator !== -1
+              ? identifier.split(first_separator)[0]
+              : identifier;
+          return formatted_package_id;
+        },
+      );
+      console.log('Subscriptions to set:', restored_subscriptions);
+      /*
+      const updatedUser = {
+        id: userInfo.id,
+        email: userInfo.email,
+        subscribed: userInfo.entitlements.length > 0 ? 'true' : 'false',
+        entitlements: restored_subscriptions,
+      };
+      setUserInfo(updatedUser);
+      */
+    } catch (e) {
+      console.error('Error restoring customers data: ', e);
+    }
+  };
+
   const getUserSubscriptionData = async () => {
     try {
       const customerInfo = await Purchases.getCustomerInfo();
@@ -96,18 +155,21 @@ const RevenueCatProvider = ({children}) => {
         const currentPackages = currentOffering?.availablePackages;
         currentPackages[0].subscriptionDescription =
           currentOffering.metadata.description;
-        currentPackages[0].subscriptionIcon =
-          currentOffering.metadata.icon;
+        currentPackages[0].subscriptionIcon = currentOffering.metadata.icon;
         if (currentPackages && Array.isArray(currentPackages)) {
           all_packages.push(...currentPackages);
         }
       }
-      console.log('All packages from offerings: ', all_packages);
-      setPackages(all_packages);
+      const orderedPackages = orderPackages(all_packages);
+      console.log('All packages from offerings: ', orderedPackages);
+      setPackages(orderedPackages);
     } catch (error) {
       console.error('Error trying to get offerings: ', error);
     }
   };
+  
+  
+
 
   const purchasePackage = async pack => {
     try {
@@ -179,6 +241,7 @@ const RevenueCatProvider = ({children}) => {
         updateUserEmail,
         findCategoryInIdentifiers,
         findProductIdInIdentifiers,
+        restorePurchases,
       }}>
       {children}
     </RevenueCatContext.Provider>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useMemo} from 'react';
 import {ScrollView, View} from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';
@@ -12,20 +12,18 @@ import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
 import useChartsStyles from './ChartsStyles';
 import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
 import {getService} from '../../../../../../services/aiAlphaApi';
+import {AboutModalContext} from '../../../../../../context/AboutModalContext';
+import AboutModal from '../Fundamentals/AboutModal';
+import LinearGradient from 'react-native-linear-gradient';
+import {AppThemeContext} from '../../../../../../context/themeContext';
 
 const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
   const {interval, symbol, coinBot} =
     route.params.screen === 'Charts' ? route.params.params : route.params;
-
+  const [isPriceUp, setIsPriceUp] = useState(null);
   const [selectedInterval, setSelectedInterval] = useState(interval);
   const [lastPrice, setLastPrice] = useState(undefined);
-  const [resistanceLevels, setResistanceLevels] = useState([
-    43200, 43500, 43800, 44100,
-  ]);
-  const [supportLevels, setSupportLevels] = useState([
-    40600, 41000, 41500, 41800,
-  ]);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeButtons, setActiveButtons] = useState([]);
@@ -33,14 +31,41 @@ const CandlestickChart = ({route}) => {
   const {activeCoin} = useContext(TopMenuContext);
   const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
   const [activeAlertOption, setActiveAlertOption] = useState('this week');
+  const {aboutDescription, aboutVisible, handleAboutPress} =
+    useContext(AboutModalContext);
+  const {isDarkMode} = useContext(AppThemeContext);
+
+  // Remove - kas missing data for binance api solver
+  const url_days =
+    selectedInterval === '1W'
+      ? 180
+      : selectedInterval === '1D'
+      ? 30
+      : selectedInterval === '4H'
+      ? 7
+      : 1;
+  const fetch_url =
+    symbol.toLowerCase() !== 'kasusdt'
+      ? `https://api3.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&limit=200&interval=${selectedInterval.toLowerCase()}`
+      : `https://pro-api.coingecko.com/api/v3/coins/kaspa/ohlc?vs_currency=usd&days=${url_days}&precision=4`;
+
+  const options = {
+    method: 'GET',
+    headers: {'x-cg-pro-api-key': 'CG-xXCJJaHa7QmvQNWyNheKmSfG'},
+  };
+
   async function fetchChartData() {
     try {
       const response = await fetch(
-        `https://api3.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&limit=200&interval=${selectedInterval.toLowerCase()}`,
+        fetch_url,
+        symbol.toLowerCase() === 'kasusdt' ? options : {},
       );
       const data = await response.json();
-
-      setLastPrice(parseFloat(data[data.length - 1][4]));
+      const currentPrice = parseFloat(data[data.length - 1][4]);
+      data[data.length - 1][4] >= data[data.length - 2][4]
+        ? setIsPriceUp(true)
+        : setIsPriceUp(false);
+      setLastPrice(currentPrice);
       const formattedChartData = data.map(item => ({
         x: moment(item[0]),
         open: parseFloat(item[1]),
@@ -50,44 +75,15 @@ const CandlestickChart = ({route}) => {
       }));
 
       setChartData(formattedChartData);
-      setLoading(false);
     } catch (error) {
       console.error(`Failed to fetch data: ${error}`);
+    } finally {
       setLoading(false);
     }
   }
 
-  async function getSupportAndResistanceData(botName) {
-    try {
-      const supportValues = [];
-      const resistanceValues = [];
-      const data = await getService(`/api/coin-support-resistance/${botName}`);
-      if (data.success) {
-        const values = data.chart_values;
-        for (const key in values) {
-          console.log('Current value:', key);
-          if (key.includes('support')) {
-            supportValues.push(values[key]);
-          } else {
-            resistanceValues.push(values[key]);
-          }
-        }
-      }
-      return {supportValues, resistanceValues};
-    } catch (error) {
-      console.error('Error fetching support and resistance data: ', error);
-    }
-  }
-
   useEffect(() => {
-    const {supportValues, resistanceValues} =
-      getSupportAndResistanceData(coinBot);
-    setResistanceLevels(resistanceValues);
-    setSupportLevels(supportValues);
-  }, [activeButtons]);
-
-  useEffect(() => {
-    const intervalId = setInterval(fetchChartData, 2000);
+    const intervalId = setInterval(() => fetchChartData(), 5000);
     return () => clearInterval(intervalId);
   }, [interval, symbol, selectedInterval]);
 
@@ -105,49 +101,73 @@ const CandlestickChart = ({route}) => {
     try {
       setSelectedInterval(newInterval);
       setChartData([]);
-      await fetchChartData();
-      setLoading(false);
+      // await fetchChartData();
     } catch (error) {
       console.error(`Failed to change interval: ${error}`);
     }
   };
 
   return subscribed ? (
-    <ScrollView
-      style={styles.scroll}
-      // keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={true}>
-      <CandlestickDetails coin={symbol} interval={selectedInterval} lastPrice={lastPrice} styles={styles} />
-      <View style={styles.chartsWrapper}>
-        <TimeframeSelector
-          selectedInterval={selectedInterval}
-          changeInterval={changeInterval}
+    <LinearGradient
+      useAngle={true}
+      angle={45}
+      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      style={styles.flex}>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={true}>
+        {aboutVisible && (
+          <AboutModal
+            description={aboutDescription}
+            onClose={handleAboutPress}
+            visible={aboutVisible}
+          />
+        )}
+        <CandlestickDetails
+          coin={symbol}
+          interval={selectedInterval}
+          lastPrice={lastPrice}
+          styles={styles}
+          isPriceUp={isPriceUp}
         />
-        <RsButton
-          activeButtons={activeButtons}
-          setActiveButtons={setActiveButtons}
-        />
-        <Chart
-          chartData={chartData}
-          supportLevels={supportLevels}
-          loading={loading}
-          activeButtons={activeButtons}
-          resistanceLevels={resistanceLevels}
-        />
-      </View>
+        <View style={styles.chartsWrapper}>
+          <View style={styles.chartsRow}>
+            <RsButton
+              activeButtons={activeButtons}
+              setActiveButtons={setActiveButtons}
+            />
+            <TimeframeSelector
+              selectedInterval={selectedInterval}
+              changeInterval={changeInterval}
+            />
+          </View>
+          <Chart
+            symbol={symbol}
+            selectedInterval={selectedInterval}
+            chartData={chartData}
+            loading={loading}
+            activeButtons={activeButtons}
+            coinBot={coinBot}
+          />
+        </View>
 
-      <AlertMenu
-        activeAlertOption={activeAlertOption}
-        setActiveButtons={setActiveAlertOption}
-      />
-      <AlertListComponent
-        timeframe={activeAlertOption}
-        botName={coinBot}
-        styles={styles}
-      />
-    </ScrollView>
+        <AlertMenu
+          activeAlertOption={activeAlertOption}
+          setActiveButtons={setActiveAlertOption}
+        />
+        <AlertListComponent
+          timeframe={activeAlertOption}
+          botName={coinBot}
+          styles={styles}
+        />
+      </ScrollView>
+    </LinearGradient>
   ) : (
-    <UpgradeOverlay isBlockingByCoin={true} screen={'Charts'} />
+    <LinearGradient
+      useAngle={true}
+      angle={45}
+      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      style={{flex: 1}}>
+      <UpgradeOverlay isBlockingByCoin={true} screen={'Charts'} />
+    </LinearGradient>
   );
 };
 
