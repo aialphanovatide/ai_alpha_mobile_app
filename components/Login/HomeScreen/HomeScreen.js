@@ -55,13 +55,13 @@ const HomeScreen = () => {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: theme.navbarBgColor,
-            shadowColor: isDarkMode ? 'transparent' : '#000000',
-            shadowOffset: isDarkMode
-              ? {width: 0, height: 0}
-              : {width: 2, height: 4},
-            shadowOpacity: isDarkMode ? 0 : 0.125,
-            shadowRadius: isDarkMode ? 0 : 6,
-            elevation: isDarkMode ? 0 : 64,
+            // shadowColor: isDarkMode ? 'transparent' : '#000000',
+            // shadowOffset: isDarkMode
+            //   ? {width: 0, height: 0}
+            //   : {width: 2, height: 4},
+            // shadowOpacity: isDarkMode ? 0 : 0.125,
+            // shadowRadius: isDarkMode ? 0 : 6,
+            elevation: 0,
           },
           tabBarActiveTintColor: theme.activeOrange,
           tabBarLabelStyle: {

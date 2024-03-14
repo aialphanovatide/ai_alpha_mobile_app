@@ -142,6 +142,10 @@ const PackageSubscriptions = () => {
 
   console.log('Packages: ', packages);
 
+  const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
+    subscription.toLowerCase().includes('founders'),
+  );
+
   const handlePurchase = async pack => {
     setLoading(true);
     if (pack === null) {

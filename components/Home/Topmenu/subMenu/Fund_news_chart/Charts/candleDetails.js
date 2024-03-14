@@ -4,7 +4,7 @@ import {AboutIcon} from '../Fundamentals/AboutIcon';
 import {home_static_data} from '../../../../homeStaticData';
 import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 
-const CandlestickDetails = ({coin, lastPrice, interval, styles, isPriceUp}) => {
+const CandlestickDetails = ({coin, lastPrice, styles, isPriceUp, loading}) => {
   const {handleAboutPress} = useContext(AboutModalContext);
   const formatNumber = price => {
     const number = parseFloat(price);
@@ -24,9 +24,7 @@ const CandlestickDetails = ({coin, lastPrice, interval, styles, isPriceUp}) => {
   };
   return (
     <View style={styles.detailsContainer}>
-      <Text style={styles.detailslabel}>
-        {coin ? formatCoin(coin) : 'Loading ...'}
-      </Text>
+      <Text style={styles.detailslabel}>{formatCoin(coin)}</Text>
       <Text
         style={[
           styles.lastPrice,
@@ -36,7 +34,7 @@ const CandlestickDetails = ({coin, lastPrice, interval, styles, isPriceUp}) => {
               : styles.priceDownColor
             : {},
         ]}>
-        ${lastPrice ? formatNumber(lastPrice) : ' ...'}
+        ${lastPrice && !loading ? formatNumber(lastPrice) : ' ...'}
       </Text>
       <AboutIcon
         description={home_static_data.charts.sectionDescription}

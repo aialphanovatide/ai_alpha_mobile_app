@@ -1,24 +1,17 @@
 import React from 'react';
-import {
-  Image,
-  Modal,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, Modal, Text, TouchableOpacity, View} from 'react-native';
 import useFundamentalsStyles from './FundamentalsStyles';
 
 const AboutModal = ({onClose, visible, description}) => {
   const styles = useFundamentalsStyles();
 
   return (
-    <>
-      <View style={[visible ? styles.modalBackground : styles.hidden]} />
-      <Modal
-        animationType="slide"
-        style={styles.modalContainer}
-        transparent
-        visible={visible}>
+    <Modal
+      animationType="slide"
+      transparent
+      visible={visible}>
+      <TouchableOpacity onPress={onClose} style={styles.modalBackground} />
+      <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <TouchableOpacity
             onPress={() => onClose()}
@@ -35,8 +28,8 @@ const AboutModal = ({onClose, visible, description}) => {
             <Text style={styles.readMoreText}>Read more</Text>
           </TouchableOpacity>
         </View>
-      </Modal>
-    </>
+      </View>
+    </Modal>
   );
 };
 

@@ -1,6 +1,7 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 const {width, height} = Dimensions.get('window');
 const responsiveFontSize = width * 0.04; // Font size: 15.70909090909091
+const isAndroid = Platform.OS === 'android' ? true : false;
 
 export const lightThemeStyles = {
   width: width,
@@ -34,7 +35,7 @@ export const lightThemeStyles = {
   inactiveTextColor: '#5F6466',
   inactiveMenuBgColor: '#D9D9D9',
   buttonColor: '#FFFFFF',
-  upgradeOverlayBgColor: '#47474770',
+  upgradeOverlayBgColor: '#A3A3A370',
   activePink: '#E6007A',
   activePurple: '#49346B',
   activeBlack: '#151515',
@@ -56,15 +57,14 @@ export const lightThemeStyles = {
   dAppsInactiveItem: '#E1E5EE',
   dAppsItemBg: '#FFFFFF',
   orangeTextColor: '#FF9521',
-  whiteTextColor: '#F9FAFC',
+  whiteTextColor: '#F7F7F7',
   grayLabelColor: '#7D82A0',
-  orangeLabelColor: '#FF9521',
   inactiveGrayText: '#9CA2B0',
   notificationsWSwitchColor: '#333333',
-  lockIconColor: '#A3A3A3',
+  lockIconColor: '#FFFFFF',
   grayArrowColor: '#A6ACC4',
   loaderColor: '#5F6466',
-  loaderBgColor: '#FFFFFF60',
+  loaderBgColor: '#FFFFFF',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {
@@ -90,12 +90,14 @@ export const lightThemeStyles = {
   activeSRButtonColor: '#80290E',
   boxesVerticalMargin: 8,
   titlesVerticalMargin: 24,
-  font: 'Prompt-Regular',
-  fontBold: 'Prompt-Bold',
-  fontItalic: 'Prompt-Italic',
-  fontMedium: 'Prompt-Medium',
-  fontSemibold: 'Prompt-SemiBold',
-  fontBoldItalic: 'Prompt-SemiBold-Italic'
+  font: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
+  fontBold: isAndroid ? 'prompt_bold' : 'Prompt-Bold',
+  fontItalic: isAndroid ? 'prompt_italic' : 'Prompt-Italic',
+  fontMedium: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
+  fontSemibold: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+  fontBoldItalic: isAndroid
+  ? 'prompt_semibold_italic'
+  : 'Prompt-SemiBold-Italic',
 };
 
 export const darkThemeStyles = {
@@ -121,7 +123,7 @@ export const darkThemeStyles = {
   activeSubMenuText: '#F9FAFC',
   priceUpColor: '#09C283',
   priceDownColor: '#E93334',
-  navbarBgColor: '#262626',
+  navbarBgColor: '#0A0A0A',
   boxesBorderColor: '#525252',
   tableHeaderColor: '#525252',
   secondaryTextColor: '#A3A3A3',
@@ -129,8 +131,8 @@ export const darkThemeStyles = {
   secondaryGrayColor: '#737373',
   inactiveTextColor: '#F9FAFC',
   inactiveMenuBgColor: '#74788D',
-  buttonColor: '#FFFFFF',
-  upgradeOverlayBgColor: '#21213090',
+  buttonColor: '#451205',
+  upgradeOverlayBgColor: '#0A0A0A70',
   activePink: '#E6007A',
   activePurple: '#49346B',
   activeBlack: '#151515',
@@ -152,15 +154,15 @@ export const darkThemeStyles = {
   dAppsInactiveItem: '#F9FAFC',
   dAppsItemBg: '#74788D',
   orangeTextColor: '#FF9521',
-  whiteTextColor: '#F9FAFC',
+  whiteTextColor: '#F7F7F7',
   grayLabelColor: '#7D82A0',
   orangeLabelColor: '#FF9521',
   inactiveGrayText: '#BCC4EE',
   grayArrowColor: '#A7A9B4',
   loaderColor: '#C4CADA',
-  loaderBgColor: '#42444560',
+  loaderBgColor: '#424445',
   notificationsWSwitchColor: '#D9D9D9',
-  lockIconColor: '#F9FAFC',
+  lockIconColor: '#737373',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {
@@ -186,10 +188,12 @@ export const darkThemeStyles = {
   activeSRButtonColor: '#FAFAFA',
   boxesVerticalMargin: 8,
   titlesVerticalMargin: 24,
-  font: 'Prompt-Regular',
-  fontBold: 'Prompt-Bold',
-  fontItalic: 'Prompt-Italic',
-  fontMedium: 'Prompt-Medium',
-  fontSemibold: 'Prompt-SemiBold',
-  fontBoldItalic: 'Prompt-SemiBold-Italic'
+  font: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
+  fontBold: isAndroid ? 'prompt_bold' : 'Prompt-Bold',
+  fontItalic: isAndroid ? 'prompt_italic' : 'Prompt-Italic',
+  fontMedium: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
+  fontSemibold: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+  fontBoldItalic: isAndroid
+    ? 'prompt_semibold_italic'
+    : 'Prompt-SemiBold-Italic',
 };

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {useContext} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useTopTenGainersStyles = () => {
