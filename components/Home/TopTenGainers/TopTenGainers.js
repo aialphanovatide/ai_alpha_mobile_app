@@ -50,6 +50,9 @@ const TopTenGainers = ({handleAboutPress}) => {
   const styles = useTopTenGainersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
   const [loading, setLoading] = useState(true);
+  const additionalAboutStyles = {
+    marginRight: 20,
+  };
 
   useEffect(() => {
     setTopTenCoins(TOP_TEN_GAINERS_MOCK);
@@ -76,6 +79,7 @@ const TopTenGainers = ({handleAboutPress}) => {
         <AboutIcon
           handleAboutPress={handleAboutPress}
           description={home_static_data.topTenGainers.sectionDescription}
+          additionalStyles={additionalAboutStyles}
         />
       </View>
       {loading ? (

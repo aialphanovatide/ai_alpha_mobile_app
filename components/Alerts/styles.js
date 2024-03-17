@@ -122,6 +122,7 @@ const useAlertsStyles = () => {
       right: 0,
       margin: 4,
       padding: 2,
+      alignItems: 'flex-end',
     },
   });
   return styles;

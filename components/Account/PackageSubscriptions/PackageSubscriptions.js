@@ -142,6 +142,10 @@ const PackageSubscriptions = () => {
 
   console.log('Packages: ', packages);
 
+  const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
+    subscription.toLowerCase().includes('founders'),
+  );
+
   const handlePurchase = async pack => {
     setLoading(true);
     if (pack === null) {
@@ -168,9 +172,9 @@ const PackageSubscriptions = () => {
     navigation.navigate('AccountMain');
   };
 
-  const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
-    subscription.toLowerCase().includes('founders'),
-  );
+  // const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
+  //   subscription.toLowerCase().includes('founders'),
+  // );
   console.log("HAS A FOUNDER PACKAGE: ", hasFoundersPackage);
 
   return (

@@ -26,35 +26,32 @@ const useUpgradeOverlayStyles = () => {
     analysisOverlayContent: {
       flex: 1,
       marginVertical: '25%',
-      borderRadius: 5,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
     upgradeButton: {
-      marginTop: 20,
+      marginTop: 16,
       backgroundColor: theme.orange,
       borderRadius: 4,
     },
     buttonText: {
-      paddingVertical: 14,
+      paddingVertical: 10,
       paddingHorizontal: 24,
       color: theme.buttonColor,
-      fontWeight: 'bold',
+      fontFamily: theme.fontMedium,
       fontSize: theme.responsiveFontSize,
     },
-    lockContainer: {
-      width: 40,
-      height: 40,
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflow: 'hidden',
-    },
     lockIcon: {
-      flex: 1,
+      width: 42,
+      height: 42,
+      overflow: 'hidden',
       tintColor: theme.lockIconColor,
     },
     secondLockIcon: {
-      flex: 1,
+      width: 40,
+      height: 40,
+      overflow: 'hidden',
+      tintColor: theme.lockIconColor,
     },
     none: {
       display: 'none',

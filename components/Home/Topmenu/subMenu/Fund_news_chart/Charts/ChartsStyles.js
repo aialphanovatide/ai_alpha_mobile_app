@@ -58,6 +58,9 @@ const useChartsStyles = () => {
       borderWidth: 2,
       borderRadius: 4,
     },
+    shortTimeFrame: {
+      width: '45%',
+    },
     timeFrameButtonText: {
       color: theme.subMenuTextColor,
       textTransform: 'uppercase',
@@ -110,7 +113,15 @@ const useChartsStyles = () => {
       alignItems: 'top',
       width: '100%',
       height: 300,
-      borderRadius: 2,
+
+    },
+    loaderContainer: {
+      flex: 1,
+      width: '100%',
+      minHeight: theme.height,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme.mainBackgroundColor,
     },
     chart: {
       width: '100%',
@@ -118,6 +129,8 @@ const useChartsStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
+      // borderColor: 'black',
+      // borderWidth: 2
     },
     chartBackgroundImage: {
       justifyContent: 'center',
@@ -181,8 +194,8 @@ const useChartsStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
     },
     alertListContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
+      // justifyContent: 'center',
+      // alignItems: 'center',
       width: '100%',
       marginVertical: 15,
     },
@@ -190,6 +203,7 @@ const useChartsStyles = () => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      minHeight: 300
     },
     alertsTextMessage: {
       textAlign: 'center',
@@ -253,10 +267,11 @@ const useChartsStyles = () => {
       right: 0,
       margin: 4,
       padding: 2,
+      alignItems: 'flex-end'
     },
     price: {
       fontSize: theme.responsiveFontSize * 0.9,
-      fontFamily: theme.fontSemibold
+      fontFamily: theme.fontSemibold,
     },
     priceUpColor: {
       color: theme.priceUpColor,

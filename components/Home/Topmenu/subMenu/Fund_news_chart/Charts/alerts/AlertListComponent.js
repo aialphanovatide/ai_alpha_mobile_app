@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import AlertDetails from './alertDetails';
-import {
-  getService,
-} from '../../../../../../../services/aiAlphaApi';
+import {getService} from '../../../../../../../services/aiAlphaApi';
 import Loader from '../../../../../../Loader/Loader';
 
 const AlertListComponent = ({botName, timeframe, styles}) => {
@@ -12,10 +10,18 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
 
   useEffect(() => {
     setIsLoading(true);
+    const limit =
+      timeframe === '4h'
+        ? 5
+        : timeframe === 'today'
+        ? 10
+        : timeframe === 'this week'
+        ? 20
+        : 30;
     const fetchAlerts = async () => {
       try {
         const response = await getService(
-          `/api/filter/alerts?coin=${botName}&date=${timeframe}`,
+          `/api/filter/alerts?coin=${botName}&date=${timeframe}&limit=${limit}`,
         );
         // console.log('Alerts response: ', response);
         if (
@@ -26,7 +32,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
         ) {
           setAlerts([]);
         } else {
-          setAlerts(response.alerts.slice(0, 30));
+          setAlerts(response.alerts);
         }
       } catch (error) {
         console.error('Error fetching alerts:', error.message);
@@ -39,14 +45,14 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   }, [timeframe, botName]);
 
   return (
-    <View style={styles.alertListContainer}>
+    <ScrollView style={styles.alertListContainer}>
       {isLoading ? (
         <View style={styles.loaderContainer}>
           <Loader />
         </View>
       ) : alerts.length === 0 ? (
         <Text style={styles.alertsTextMessage}>
-          No alerts yet. Stay tuned for important updates!
+          There aren't alerts to show
         </Text>
       ) : (
         alerts.map(alert => (
@@ -59,7 +65,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
           />
         ))
       )}
-    </View>
+    </ScrollView>
   );
 };
 

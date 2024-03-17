@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {View, ImageBackground, Text} from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, ImageBackground, Text } from 'react-native';
 import {
   VictoryChart,
   VictoryAxis,
@@ -9,9 +9,10 @@ import {
   VictoryLine,
 } from 'victory-native';
 import Loader from '../../../../../Loader/Loader';
-import {AppThemeContext} from '../../../../../../context/themeContext';
+import { AppThemeContext } from '../../../../../../context/themeContext';
 import useChartsStyles from './ChartsStyles';
-import {getService} from '../../../../../../services/aiAlphaApi';
+import { getService } from '../../../../../../services/aiAlphaApi';
+import Fibonacci from './fibonacci';
 
 // Format any number
 const formatNumber = num => {
@@ -31,6 +32,14 @@ const formatNumber = num => {
 };
 
 
+function formatLabelNumber(number, decimalPlaces=2) {
+  if (number >= 1) {
+      return number.toFixed(decimalPlaces).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  } else {
+      return number
+  }
+}
+
 const Chart = ({
   symbol,
   chartData,
@@ -40,47 +49,50 @@ const Chart = ({
   selectedInterval,
   coinBot,
 }) => {
-
   const styles = useChartsStyles();
-  const {theme} = useContext(AppThemeContext);
+  const { theme } = useContext(AppThemeContext);
   const [supportLevels, setSupportLevels] = useState([]);
   const [resistanceLevels, setResistanceLevels] = useState([]);
 
-  // Call the S&R lines
-  useEffect(() => {
-      const fetchSupportAndResistanceData = async () => {
-          try {
-              const data = await getService(`/api/coin-support-resistance?coin_name=${coinBot}&temporality=${selectedInterval.toLowerCase()}&pair=usdt`);
+  // Fetch support and resistance data from the API
+  const getSupportAndResistanceData = async (coinBot, time_interval) => {
+    try {
       
-              if (data.success) {
-                  const supportValues = [];
-                  const resistanceValues = [];
-                  const values = data.chart_values;
-                  for (const key in values) {
-                      if (key.includes('support')) {
-                          supportValues.push(values[key]);
-                      } else if (key.includes('resistance')) {
-                          resistanceValues.push(values[key]);
-                      }
-                  }
-                  setSupportLevels(supportValues);
-                  setResistanceLevels(resistanceValues);
-              } else {
-                console.log(data.message)
-              }
-          } catch (error) {
-              console.error('Error fetching support and resistance data:', error);
-          }
-      };
+      const response = await getService(
+        `/api/coin-support-resistance?coin_name=${coinBot}&temporality=${time_interval.toLowerCase()}&pair=usdt`
+      );
 
-      fetchSupportAndResistanceData();
+      const supportValues = [];
+      const resistanceValues = [];
+      
+      if (response.success) {
+        // Extract support and resistance values from the response
+        const values = response.chart_values;
+        for (const key in values) {
+          if (key.includes('support')) {
+            supportValues.push(values[key]);
+          } else if (key.includes('resistance')) {
+            resistanceValues.push(values[key]);
+          }
+        }
+  
+        setSupportLevels(supportValues);
+        setResistanceLevels(resistanceValues);
+      } else {
+        console.info("---response S&R----", response.message);
+      }
+    } catch (error) {
+      console.error('Error fetching support and resistance data: ', error);
+    }
+  };
+  
+
+  useEffect(() => {
+    if (coinBot && selectedInterval){
+      getSupportAndResistanceData(coinBot, selectedInterval);
+    }
   }, [coinBot, selectedInterval]);
 
-
-  const domainX = [
-    chartData[chartData.length - candlesToShow].x,
-    chartData && chartData[chartData.length - 1].x,
-  ];
 
   const domainY = () => {
     if (
@@ -90,7 +102,7 @@ const Chart = ({
     ) {
       return chartData.slice(-candlesToShow).reduce(
         (acc, dataPoint) => {
-          const {open, close, high, low} = dataPoint;
+          const { open, close, high, low } = dataPoint;
           return [
             Math.min(acc[0], open, close, high, low),
             Math.max(acc[1], open, close, high, low),
@@ -107,13 +119,20 @@ const Chart = ({
     }
   };
 
+  const domainX = [
+    chartData[chartData.length - candlesToShow]?.x,
+    chartData && chartData[chartData.length - 1]?.x,
+  ];
+
   if (loading) {
     return (
-      <View style={styles.chartContainer}>
+      <View style={styles.loaderContainer}>
         <Loader />
       </View>
     );
   }
+
+  // console.log('----chartData----', chartData)
 
   return (
     <View style={styles.chartContainer}>
@@ -124,55 +143,67 @@ const Chart = ({
           resizeMode="contain"
         />
 
+        {/* CHART WRAPPER COMPONENT */}
         <VictoryChart
           width={400}
-          containerComponent={<VictoryZoomContainer zoomDimension="x" />}
-          domain={{x: domainX, y: domainY()}}
-          padding={{top: 20, bottom: 60, left: 20, right: 65}}
+          containerComponent={<VictoryZoomContainer />}
+          domain={{ x: domainX, y: domainY() }}
+          padding={{ top: 20, bottom: 60, left: 20, right: 65 }}
           domainPadding={{
-            x: 10,
-            y:
+            x: 1,
+            y: 
               symbol.toLowerCase() === 'atomusdt' && selectedInterval === '1W'
                 ? 0
                 : 10,
           }}
-          scale={{x: 'time', y: 'log'}}
+          scale={{ x: 'time', y: 'log' }}
           height={340}>
+          
+          {/* X AXIS */}
           <VictoryAxis
             style={{
-              axis: {stroke: theme.chartsAxisColor},
+              axis: { stroke: theme.chartsAxisColor },
               tickLabels: {
                 fontSize: theme.responsiveFontSize * 0.725,
                 fill: theme.titleColor,
                 fontFamily: theme.font,
                 maxWidth: 10,
               },
-              grid: {stroke: theme.chartsGridColor},
+              grid: { stroke: theme.chartsGridColor },
             }}
-            tickCount={
-              selectedInterval === '1W' || selectedInterval === '1D' ? 4 : 6
-            }
+            tickCount={3}
+            tickFormat={(t) => {
+              const year = t.getFullYear();
+              const month = (t.getMonth() + 1).toString().padStart(2, '0');
+              const day = t.getDate().toString().padStart(2, '0');
+              const hour = t.getHours().toString().padStart(2, '0');
+              const minute = t.getMinutes().toString().padStart(2, '0');
+              return `${year}-${day}-${month}`;
+            }}
           />
+          
+           {/* Y AXIS */}
           <VictoryAxis
             dependentAxis
             style={{
-              axis: {stroke: theme.chartsAxisColor},
+              axis: { stroke: theme.chartsAxisColor },
               tickLabels: {
                 fontSize: theme.responsiveFontSize * 0.725,
                 fontFamily: theme.font,
                 fill: theme.titleColor,
               },
-              grid: {stroke: theme.chartsGridColor},
+              grid: { stroke: theme.chartsGridColor },
             }}
-            tickCount={selectedInterval === '1W' ? 10 : 8}
+            tickCount={8}
             tickFormat={t => (t > 0.01 ? `$${formatNumber(t)}` : t)}
             orientation="right"
           />
 
+          {/* DISPLAY DATA COMPONENT */}
           <VictoryCandlestick
             data={chartData}
-            candleRatio={2.5}
-            candleColors={{positive: '#09C283', negative: '#E93334'}}
+            candleRatio={0.9}
+            candleColors={{ positive: '#09C283', negative: '#E93334' }}
             style={{
               data: {
                 strokeWidth: 0.75,
@@ -182,35 +213,39 @@ const Chart = ({
             }}
           />
 
+          <Fibonacci candlestickData={chartData}/>
+
+  
+          {/* RESISTANCE LEVELS */}
           {resistanceLevels &&
             activeButtons.includes('Resistance') &&
             resistanceLevels?.map((level, index) => (
               <VictoryLine
                 data={[
-                  {x: domainX[0], y: level},
-                  {x: domainX[1], y: level},
+                  { x: domainX[0], y: level },
+                  { x: domainX[1], y: level },
                 ]}
                 key={`resistance-${index}`}
-                style={{data: {stroke: '#F9B208', strokeWidth: 2}}}
-                labels={() => [`$${level.toString()} `]}
+                // styles for the line itself
+                style={{ data: { stroke: '#F9B208', strokeWidth: 2 } }}
+                labels={() => [`$${formatLabelNumber(level)} `]}
                 labelComponent={
                   <VictoryLabel
                     dy={5}
-                    dx={260}
+                    dx={10}
                     textAnchor="start"
                     inline={true}
                     style={{
-                      fill: '#F7F7F7',
+                      fill: '#fff',
                       fontSize: 11,
                       fontFamily: theme.fontMedium,
                     }}
-                    backgroundPadding={[0]}
+                    backgroundPadding={[{ top: -1, bottom: 6, left: 2.3, right: 0 }]}
                     backgroundStyle={[
                       {
                         fill: '#F9B208',
-                        borderRadius: 4,
-                      },
-                      {fill: 'transparent'},
+                        opacity: 0.8
+                      }
                     ]}
                   />
                 }
@@ -221,33 +256,32 @@ const Chart = ({
             supportLevels?.map((level, index) => (
               <VictoryLine
                 data={[
-                  {x: domainX[0], y: level},
-                  {x: domainX[1], y: level},
+                  { x: domainX[0], y: level },
+                  { x: domainX[1], y: level },
                 ]}
                 key={`support-${index}`}
                 style={{
-                  data: {stroke: '#FC5404', strokeWidth: 2},
+                  data: { stroke: '#FC5404', strokeWidth: 2 },
                 }}
-                labels={() => [`$${level.toString()} `]}
+                labels={() => [`$${formatLabelNumber(level)} `]}
                 labelComponent={
                   <VictoryLabel
                     dy={5}
-                    dx={260}
+                    dx={10}
                     textAnchor="start"
                     inline={true}
-                    backgroundPadding={[0, 0]}
-                    backgroundStyle={[
-                      {
-                        fill: '#FC5404',
-                        borderRadius: 2,
-                      },
-                      {fill: 'transparent'},
-                    ]}
+                    backgroundPadding={[{ top: -1, bottom: 6, left: 2.3, right: 0 }]}
                     style={[
                       {
                         fill: '#F7F7F7',
                         fontSize: 11,
                         fontFamily: theme.fontMedium,
+                      },
+                    ]}
+                    backgroundStyle={[
+                      {
+                        fill: '#FC5404',
+                        opacity: 0.8
                       },
                     ]}
                   />
@@ -265,18 +299,7 @@ export default Chart;
 
 
 
-// const formatNumber = num => {
-//   const absNum = Math.abs(num);
-//   const abbrev = ['', 'k', 'm', 'b', 't'];
-//   const tier = (Math.log10(absNum) / 3) | 0;
 
-//   if (tier == 0) return num;
-
-//   const divisor = Math.pow(1000, tier);
-//   const formattedNum = (num / divisor).toFixed(1);
-
-//   return formattedNum + abbrev[tier];
-// };
 // this style deletes the line in the y axis
 {
   /* <VictoryAxis dependentAxis style={{ axis: { stroke: 'none' } }} /> */

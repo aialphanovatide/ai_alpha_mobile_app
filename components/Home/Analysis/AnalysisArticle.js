@@ -18,7 +18,7 @@ const AnalysisArticle = ({route}) => {
       isDarkMode ? 'rgb(250, 250, 250)' : 'rgb(64, 64, 64)',
     );
     const titles_changed_content = colors_changed_content.replace(
-      /rgb\(13, 13, 13\)/g,
+      /rgb\([0-9]+, [0-9]+, [0-9]+\)/g,
       isDarkMode ? 'rgb(255, 255, 255)' : 'rgb(23, 23, 23)',
     );
     return titles_changed_content;
