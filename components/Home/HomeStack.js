@@ -13,8 +13,6 @@ import {AppThemeContext} from '../../context/themeContext';
 import {Animated, TouchableOpacity, View} from 'react-native';
 import useHomeStyles from './HomeStyles';
 import AnalysisArticle from './Analysis/AnalysisArticle';
-import AboutModal from './Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
-import {AboutModalContext} from '../../context/AboutModalContext';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -99,6 +97,7 @@ const SubMenuScreen = () => {
       initialRouteName="Charts"
       backBehavior={'none'}
       screenOptions={{
+        lazy: true,
         swipeEnabled: false,
       }}
       tabBar={props => <FundNewsChartsMenu {...props} />}>

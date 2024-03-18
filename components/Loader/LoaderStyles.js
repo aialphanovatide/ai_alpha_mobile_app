@@ -9,11 +9,13 @@ const useLoaderStyles = () => {
   const styles = StyleSheet.create({
     loaderContainer: {
       flex: 1,
+      width: '100%',
       minHeight: theme.height * 0.25,
       padding: '25%',
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
+      backgroundColor: theme.mainBackgroundColor,
     },
     loadingText: {
       marginTop: 10,

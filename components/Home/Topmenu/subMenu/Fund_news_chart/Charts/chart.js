@@ -68,11 +68,11 @@ const Chart = ({
     }
 
     getSupportAndResistanceData(coinBot, selectedInterval);
-  }, [activeButtons, coinBot, selectedInterval]);
+  }, [symbol, activeButtons, coinBot, selectedInterval]);
 
   if (loading) {
     return (
-      <View style={styles.chartContainer}>
+      <View style={styles.loaderContainer}>
         <Loader />
       </View>
     );
@@ -164,7 +164,7 @@ const Chart = ({
 
           <VictoryCandlestick
             data={chartData}
-            candleRatio={2.5}
+            candleRatio={0.9}
             candleColors={{positive: '#09C283', negative: '#E93334'}}
             style={{
               data: {

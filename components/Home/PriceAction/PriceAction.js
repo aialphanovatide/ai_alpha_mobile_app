@@ -79,6 +79,9 @@ const PriceAction = ({handleAboutPress}) => {
   const {categories} = useContext(CategoriesContext);
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeCoins, setActiveCoins] = useState([]);
+  const additionalAboutStyles = {
+    marginRight: 20,
+  };
   useEffect(() => {
     setCoins(priceActionMock);
     setLoading(false);
@@ -130,6 +133,7 @@ const PriceAction = ({handleAboutPress}) => {
         <AboutIcon
           description={home_static_data.priceAction.sectionDescription}
           handleAboutPress={handleAboutPress}
+          additionalStyles={additionalAboutStyles}
         />
       </View>
       {loading ? (

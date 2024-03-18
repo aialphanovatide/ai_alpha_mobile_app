@@ -11,11 +11,12 @@ import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
 import useChartsStyles from './ChartsStyles';
 import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
-import {getService} from '../../../../../../services/aiAlphaApi';
 import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 import AboutModal from '../Fundamentals/AboutModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../../../../context/themeContext';
+import Loader from '../../../../../Loader/Loader';
+import {COINGECKO_PRO_KEY} from '../../../../../../src/constants';
 
 const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
@@ -35,7 +36,14 @@ const CandlestickChart = ({route}) => {
     useContext(AboutModalContext);
   const {isDarkMode} = useContext(AppThemeContext);
 
-  // Remove - kas missing data for binance api solver
+  // Restart the last price on every coin update
+
+  useEffect(() => {
+    setLoading(true);
+    setLastPrice(undefined);
+  }, [activeCoin]);
+
+  // This temporaly handles the kas missing data for binance api 
   const url_days =
     selectedInterval === '1W'
       ? 180
@@ -46,12 +54,12 @@ const CandlestickChart = ({route}) => {
       : 1;
   const fetch_url =
     symbol.toLowerCase() !== 'kasusdt'
-      ? `https://api3.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&limit=200&interval=${selectedInterval.toLowerCase()}`
+      ? `https://api3.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&limit=50&interval=${selectedInterval.toLowerCase()}`
       : `https://pro-api.coingecko.com/api/v3/coins/kaspa/ohlc?vs_currency=usd&days=${url_days}&precision=4`;
 
   const options = {
     method: 'GET',
-    headers: {'x-cg-pro-api-key': 'CG-xXCJJaHa7QmvQNWyNheKmSfG'},
+    headers: {'x-cg-pro-api-key': COINGECKO_PRO_KEY},
   };
 
   async function fetchChartData() {
@@ -83,7 +91,7 @@ const CandlestickChart = ({route}) => {
   }
 
   useEffect(() => {
-    const intervalId = setInterval(() => fetchChartData(), 5000);
+    const intervalId = setInterval(() => fetchChartData(), 3500);
     return () => clearInterval(intervalId);
   }, [interval, symbol, selectedInterval]);
 
@@ -94,6 +102,8 @@ const CandlestickChart = ({route}) => {
       userInfo.entitlements,
     );
     setSubscribed(hasCoinSubscription);
+    // setLoading(true);
+    // setLastPrice(undefined);
   }, [activeCoin, userInfo]);
 
   const changeInterval = async newInterval => {
@@ -101,7 +111,6 @@ const CandlestickChart = ({route}) => {
     try {
       setSelectedInterval(newInterval);
       setChartData([]);
-      // await fetchChartData();
     } catch (error) {
       console.error(`Failed to change interval: ${error}`);
     }
@@ -122,6 +131,7 @@ const CandlestickChart = ({route}) => {
           />
         )}
         <CandlestickDetails
+          loading={loading}
           coin={symbol}
           interval={selectedInterval}
           lastPrice={lastPrice}
@@ -137,6 +147,7 @@ const CandlestickChart = ({route}) => {
             <TimeframeSelector
               selectedInterval={selectedInterval}
               changeInterval={changeInterval}
+              hasHourlyTimes={symbol.toLowerCase() === 'btcusdt'}
             />
           </View>
           <Chart

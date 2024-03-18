@@ -91,13 +91,11 @@ const UpgradeOverlay = ({isBlockingByCoin, screen}) => {
   ) : (
     <View style={styles.overlayContainer}>
       <View style={styles.analysisOverlayContent}>
-        <View style={styles.lockContainer}>
-          <Image
-            resizeMode="contain"
-            style={styles.secondLockIcon}
-            source={require('../../assets/images/lock.png')}
-          />
-        </View>
+        <Image
+          resizeMode="contain"
+          style={styles.secondLockIcon}
+          source={require('../../assets/images/lock.png')}
+        />
         <TouchableOpacity
           style={styles.upgradeButton}
           onPress={onUpgradePressed}>

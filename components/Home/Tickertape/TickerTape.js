@@ -174,7 +174,7 @@ const TickerTape = ({coins}) => {
               },
             ],
             showSymbolLogo: true,
-            isTransparent: ${isDarkMode ? 'false' : 'true'},
+            isTransparent: ${isDarkMode ? 'true' : 'true'},
             ${isDarkMode ? "colorTheme:'dark'," : ''}
             displayMode: 'adaptive',
             locale: 'en',
