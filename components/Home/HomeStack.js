@@ -112,7 +112,7 @@ const SubMenuScreen = () => {
         name="Charts"
         component={CandlestickChart}
         initialParams={{
-          interval: '1h',
+          interval: '1d',
           symbol: `${activeSubCoin}USDT`,
           coinBot: activeSubCoin,
         }}

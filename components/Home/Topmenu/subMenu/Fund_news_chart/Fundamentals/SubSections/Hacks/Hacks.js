@@ -31,9 +31,11 @@ const Hacks = ({getSectionData, coin, handleSectionContent}) => {
     fetchHacksData();
   }, [coin]);
 
-  if (!loading && events?.length === 0) {
-    handleSectionContent('hacks', true);
-  }
+  useEffect(() => {
+    if (!loading && events?.length === 0) {
+      handleSectionContent('hacks', true);
+    }
+  }, [events, loading, handleSectionContent]);
 
   return (
     <View style={{flex: 1, minHeight: 500}}>

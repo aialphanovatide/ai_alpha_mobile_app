@@ -33,6 +33,9 @@ const useCompetitorsStyles = () => {
       flex: 1,
       tintColor: theme.fundamentalsMenuText,
     },
+    none: {
+      display: 'none',
+    },
     menuItemName: {
       minHeight: 25,
       padding: 5,

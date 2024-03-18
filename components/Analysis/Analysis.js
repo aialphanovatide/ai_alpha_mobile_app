@@ -12,13 +12,13 @@ import UpgradeOverlay from '../UpgradeOverlay/UpgradeOverlay';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
+
+// Component to render an item for each section, that redirects the user to the assigned section of the item
+
 const AnalysisItem = ({id, sectionName, handleItemTouch, icon, styles}) => {
   return (
     <TouchableOpacity onPress={() => handleItemTouch(id)}>
-      <View
-        style={[
-          id === 'calendar' ? styles.emphasizedItem : styles.itemContainer,
-        ]}>
+      <View style={styles.itemContainer}>
         <View style={styles.analysisIconContainer}>
           <Image
             style={styles.analysisIcon}
@@ -40,6 +40,8 @@ const AnalysisItem = ({id, sectionName, handleItemTouch, icon, styles}) => {
     </TouchableOpacity>
   );
 };
+
+// Component that generates the main Analysis screen, which renders multiple items that redirects to other sections
 
 const Analysis = () => {
   const styles = useAnalysisStyles();

@@ -7,13 +7,13 @@ const SubMenuItem = ({selectedInterval, intervalData, handlePress, styles}) => {
     <TouchableOpacity
       style={[
         styles.menuItem,
-        selectedInterval === intervalData && styles.activeItem,
+        selectedInterval.textName === intervalData.textName && styles.activeItem,
       ]}
       onPress={() => handlePress(intervalData)}>
       <Text
         style={[
           styles.menuItemText,
-          selectedInterval === intervalData && styles.activeText,
+          selectedInterval.textName === intervalData.textName && styles.activeText,
         ]}>
         {intervalData.textName}
       </Text>

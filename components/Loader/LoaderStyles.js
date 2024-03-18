@@ -15,7 +15,7 @@ const useLoaderStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
-      backgroundColor: theme.mainBackgroundColor,
+      // backgroundColor: theme.mainBackgroundColor,
     },
     loadingText: {
       marginTop: 10,

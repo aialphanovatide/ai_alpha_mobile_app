@@ -10,12 +10,16 @@ import useEthBtcStyles from './EthBtcChartStyles';
 import {AppThemeContext} from '../../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
 
+// This component generates a chart with ETH/BTC pairing data coming from the binance API
+
 const EthBtcChart = ({loading, candlesToShow = 30}) => {
   const styles = useEthBtcStyles();
   const [chartData, setChartData] = useState([]);
   const [selectedInterval, setSelectedInterval] = useState('1D');
   const {isDarkMode, theme} = useContext(AppThemeContext);
 
+
+  // Use Effect that gets the chart data from the Binance API, mapping it to the Victory Chart necessary format
   useEffect(() => {
     const fetchChartData = async () => {
       try {
@@ -46,6 +50,8 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
     fetchChartData();
   }, [selectedInterval]);
 
+
+  // If the chart data is loading, then display a loader
   if (loading || chartData.length === 0) {
     return (
       <LinearGradient
@@ -68,7 +74,7 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
       </LinearGradient>
     );
   }
-
+ // Function that generates the Y-Axis domain with the charts data
   const domainY = chartData.reduce(
     (acc, dataPoint) => [
       Math.min(acc[0], dataPoint.low),
@@ -76,9 +82,11 @@ const EthBtcChart = ({loading, candlesToShow = 30}) => {
     ],
     [Infinity, -Infinity],
   );
+ // Function that generates the X-Axis domain with the charts data
 
   const domainX = [chartData[0].x, chartData[chartData.length - 1].x];
 
+  // Function to change the time interval of the chart
   const changeInterval = newInterval => {
     setSelectedInterval(newInterval);
   };

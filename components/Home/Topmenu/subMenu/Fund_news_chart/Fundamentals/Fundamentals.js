@@ -47,7 +47,10 @@ const Fundamentals = ({route}) => {
   const [hasContent, setHasContent] = useState(initialContentState);
 
   const handleSectionContent = (section, value) => {
-    setHasContent({...hasContent, [section]: value});
+    setHasContent((prevState) => ({
+      ...prevState,
+      [section]: value,
+    }));
   };
 
   const handleAboutPress = (description = null) => {

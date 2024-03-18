@@ -66,6 +66,8 @@ const CompetitorsMenu = ({
   activeOption,
   handleOptionChange,
   styles,
+  competitorsData,
+  isSectionWithoutData,
 }) => {
   return (
     <ScrollView
@@ -73,15 +75,19 @@ const CompetitorsMenu = ({
       showsHorizontalScrollIndicator={false}
       bounces={false}>
       <View style={styles.menuContainer}>
-        {options.map((item, index) => (
-          <MenuItem
-            key={index}
-            item={item}
-            activeOption={activeOption}
-            handleOptionChange={handleOptionChange}
-            styles={styles}
-          />
-        ))}
+        {options.map((item, index) =>
+          !isSectionWithoutData(competitorsData, item.keyName, '-') ? (
+            <MenuItem
+              key={index}
+              item={item}
+              activeOption={activeOption}
+              handleOptionChange={handleOptionChange}
+              styles={styles}
+            />
+          ) : (
+            <View key={index} style={styles.none} />
+          ),
+        )}
       </View>
     </ScrollView>
   );
@@ -121,12 +127,14 @@ const Competitors = ({
       name: 'Current Market Cap',
       component: (
         <CurrentMarketCap
+          coin={coin}
           cryptos={cryptosData}
           competitorsData={competitorsData}
           isSectionWithoutData={isSectionWithoutData}
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/cmc.png'),
+      keyName: 'current market cap',
       sectionDescription: subsectionsData.marketCap.sectionDescription,
     },
     {
@@ -142,6 +150,7 @@ const Competitors = ({
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/circulatingsupply.png'),
+      keyName: 'circulating supply',
       sectionDescription: subsectionsData.supplyModel.sectionDescription,
     },
     {
@@ -154,6 +163,7 @@ const Competitors = ({
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/typeoftoken.png'),
+      keyName: 'type of token',
       sectionDescription: subsectionsData.typeOfToken.sectionDescription,
     },
     {
@@ -166,6 +176,7 @@ const Competitors = ({
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/TVL.png'),
+      keyName: 'tvl',
       sectionDescription: subsectionsData.TVL.sectionDescription,
     },
     {
@@ -178,6 +189,7 @@ const Competitors = ({
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/dailyusers.png'),
+      keyName: 'daily active users',
       sectionDescription: subsectionsData.dailyActiveUsers.sectionDescription,
     },
     {
@@ -189,6 +201,7 @@ const Competitors = ({
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/tfee.png'),
+      keyName: 'transaction fees',
       sectionDescription: subsectionsData.transactionFees.sectionDescription,
     },
     {
@@ -200,6 +213,7 @@ const Competitors = ({
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/tspeed.png'),
+      keyName: 'transaction speed',
       sectionDescription: subsectionsData.transactionSpeed.sectionDescription,
     },
     {
@@ -212,6 +226,7 @@ const Competitors = ({
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/inflationrate.png'),
+      keyName: 'inflation rate',
       sectionDescription: subsectionsData.inflationRate.sectionDescription,
     },
     {
@@ -223,6 +238,7 @@ const Competitors = ({
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/apr.png'),
+      keyName: 'apr',
       sectionDescription: subsectionsData.APR.sectionDescription,
     },
     {
@@ -234,6 +250,7 @@ const Competitors = ({
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/activedevs.png'),
+      keyName: 'active developers',
       sectionDescription: subsectionsData.activeDevelopers.sectionDescription,
     },
     {
@@ -245,6 +262,7 @@ const Competitors = ({
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/revenue.png'),
+      keyName: 'revenue',
       sectionDescription: subsectionsData.revenue.sectionDescription,
     },
   ];
@@ -276,9 +294,11 @@ const Competitors = ({
     setActiveOption(option);
   };
 
-  if (!loading && competitorsData?.length === 0) {
-    handleSectionContent('competitors', true);
-  }
+  useEffect(() => {
+    if (!loading && competitorsData?.length === 0) {
+      handleSectionContent('competitors', true);
+    }
+  }, [competitorsData, loading, handleSectionContent]);
 
   return (
     <View style={styles.container}>
@@ -293,16 +313,22 @@ const Competitors = ({
             activeOption={activeOption}
             handleOptionChange={handleOptionChange}
             styles={styles}
+            competitorsData={competitorsData}
+            isSectionWithoutData={isSectionWithoutData}
           />
-          <View style={styles.selectedOptionContent}>
-            <CompetitorSection
-              handleAboutPress={handleAboutPress}
-              title={activeOption.name}
-              description={activeOption.sectionDescription}
-              component={activeOption.component}
-              styles={styles}
-            />
-          </View>
+          {isSectionWithoutData(competitorsData, activeOption.keyName, '-') ? (
+            <></>
+          ) : (
+            <View style={styles.selectedOptionContent}>
+              <CompetitorSection
+                handleAboutPress={handleAboutPress}
+                title={activeOption.name}
+                description={activeOption.sectionDescription}
+                component={activeOption.component}
+                styles={styles}
+              />
+            </View>
+          )}
         </>
       )}
     </View>

@@ -167,9 +167,6 @@ const RevenueCatProvider = ({children}) => {
       console.error('Error trying to get offerings: ', error);
     }
   };
-  
-  
-
 
   const purchasePackage = async pack => {
     try {

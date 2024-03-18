@@ -15,7 +15,6 @@ import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 import AboutModal from '../Fundamentals/AboutModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../../../../context/themeContext';
-import Loader from '../../../../../Loader/Loader';
 import {COINGECKO_PRO_KEY} from '../../../../../../src/constants';
 
 const CandlestickChart = ({route}) => {
@@ -35,15 +34,20 @@ const CandlestickChart = ({route}) => {
   const {aboutDescription, aboutVisible, handleAboutPress} =
     useContext(AboutModalContext);
   const {isDarkMode} = useContext(AppThemeContext);
+  const pairings = coinBot !== 'btc' ? ['USDT', 'BTC'] : ['USDT'];
+  const [selectedPairing, setSelectedPairing] = useState(pairings[0]);
 
   // Restart the last price on every coin update
 
   useEffect(() => {
     setLoading(true);
+    setSelectedPairing(pairings[0]);
     setLastPrice(undefined);
-  }, [activeCoin]);
+    setSelectedInterval('1D');
+  }, [activeCoin, coinBot]);
 
-  // This temporaly handles the kas missing data for binance api 
+  // This temporaly handles the kas and velo missing data for binance api
+
   const url_days =
     selectedInterval === '1W'
       ? 180
@@ -53,20 +57,27 @@ const CandlestickChart = ({route}) => {
       ? 7
       : 1;
   const fetch_url =
-    symbol.toLowerCase() !== 'kasusdt'
-      ? `https://api3.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&limit=50&interval=${selectedInterval.toLowerCase()}`
-      : `https://pro-api.coingecko.com/api/v3/coins/kaspa/ohlc?vs_currency=usd&days=${url_days}&precision=4`;
-
+    coinBot.toLowerCase() !== 'kas' && coinBot.toLowerCase() !== 'velo'
+      ? `https://api3.binance.com/api/v3/klines?symbol=${coinBot.toUpperCase()}${selectedPairing}&limit=50&interval=${selectedInterval.toLowerCase()}`
+      : `https://pro-api.coingecko.com/api/v3/coins/${
+          coinBot.toLowerCase() === 'kas' ? 'kaspa' : 'velo'
+        }/ohlc?vs_currency=${
+          selectedPairing === 'USDT' ? 'usd' : selectedPairing.toLowerCase()
+        }&days=${url_days}&precision=${selectedPairing === 'BTC' ? 14 : 4}`;
   const options = {
     method: 'GET',
     headers: {'x-cg-pro-api-key': COINGECKO_PRO_KEY},
   };
 
+  // Function to fetch the data from Binance and from Coingecko for KAS and VELO, since that coins doesn't have data on the first one, and map it for using it with VictoryChart's components
+
   async function fetchChartData() {
     try {
       const response = await fetch(
         fetch_url,
-        symbol.toLowerCase() === 'kasusdt' ? options : {},
+        coinBot.toLowerCase() === 'kas' || coinBot.toLowerCase() === 'velo'
+          ? options
+          : {},
       );
       const data = await response.json();
       const currentPrice = parseFloat(data[data.length - 1][4]);
@@ -81,7 +92,6 @@ const CandlestickChart = ({route}) => {
         high: parseFloat(item[2]),
         low: parseFloat(item[3]),
       }));
-
       setChartData(formattedChartData);
     } catch (error) {
       console.error(`Failed to fetch data: ${error}`);
@@ -90,21 +100,23 @@ const CandlestickChart = ({route}) => {
     }
   }
 
+  // UseEffects that updates the charts data every 3.5s, before it was every 1s but for performance reasons it was increased
+
   useEffect(() => {
     const intervalId = setInterval(() => fetchChartData(), 3500);
     return () => clearInterval(intervalId);
-  }, [interval, symbol, selectedInterval]);
+  }, [interval, coinBot, selectedInterval, selectedPairing]);
 
-  // This useEffect handles the content regulation
+  // This useEffect handles the content regulation with the subscriptions from the user
   useEffect(() => {
     const hasCoinSubscription = findCategoryInIdentifiers(
       activeCoin.category_name,
       userInfo.entitlements,
     );
     setSubscribed(hasCoinSubscription);
-    // setLoading(true);
-    // setLastPrice(undefined);
   }, [activeCoin, userInfo]);
+
+  // Function to handle the time interval changes, executing again the data fetching
 
   const changeInterval = async newInterval => {
     setLoading(true);
@@ -114,6 +126,13 @@ const CandlestickChart = ({route}) => {
     } catch (error) {
       console.error(`Failed to change interval: ${error}`);
     }
+  };
+
+  // Function to handle the currency-pair for the coins that haves USDT and BTC pairings
+
+  const handlePairingChange = pairing => {
+    setLoading(true);
+    setSelectedPairing(pairing);
   };
 
   return subscribed ? (
@@ -132,11 +151,14 @@ const CandlestickChart = ({route}) => {
         )}
         <CandlestickDetails
           loading={loading}
-          coin={symbol}
+          coin={coinBot}
           interval={selectedInterval}
           lastPrice={lastPrice}
           styles={styles}
           isPriceUp={isPriceUp}
+          selectedPairing={selectedPairing}
+          pairings={pairings}
+          handlePairingChange={handlePairingChange}
         />
         <View style={styles.chartsWrapper}>
           <View style={styles.chartsRow}>
@@ -147,7 +169,7 @@ const CandlestickChart = ({route}) => {
             <TimeframeSelector
               selectedInterval={selectedInterval}
               changeInterval={changeInterval}
-              hasHourlyTimes={symbol.toLowerCase() === 'btcusdt'}
+              hasHourlyTimes={coinBot.toLowerCase() === 'btc'}
             />
           </View>
           <Chart

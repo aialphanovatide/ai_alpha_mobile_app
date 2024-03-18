@@ -84,6 +84,9 @@ const PriceAction = ({handleAboutPress}) => {
   };
   useEffect(() => {
     setCoins(priceActionMock);
+    categories.length > 0
+      ? handleActiveCoins(priceActionMock, categories[0])
+      : {};
     setLoading(false);
     /*
     setLoading(true);
@@ -92,6 +95,7 @@ const PriceAction = ({handleAboutPress}) => {
         const data = await priceActionService.getAllCoinsInfo();
         console.log(data);
         setCoins(data);
+        handleActiveCoins(data, categories[0]);
       } catch (error) {
         console.error('Error fetching price action data:', error);
       } finally {
@@ -100,7 +104,7 @@ const PriceAction = ({handleAboutPress}) => {
     };
     fetchCoinsData();
     */
-  }, []);
+  }, [categories]);
 
   const findCoinsByCategory = (coins, category) => {
     let filteredCoins = [];

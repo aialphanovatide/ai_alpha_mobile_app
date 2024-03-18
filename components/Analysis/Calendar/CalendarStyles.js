@@ -7,6 +7,7 @@ const useCalendarStyles = () => {
     container: {
       flex: 1,
       width: theme.width,
+      height: 'auto',
       paddingTop: 36,
       backgroundColor: 'transparent',
     },
@@ -60,6 +61,9 @@ const useCalendarStyles = () => {
       alignItems: 'center',
       justifyContent: 'center',
       marginLeft: '12.5%',
+    },
+    marginBottom: {
+      marginBottom: '10%',
     },
   });
   return styles;

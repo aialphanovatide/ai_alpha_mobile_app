@@ -26,6 +26,8 @@ const Chart = ({
   const {theme} = useContext(AppThemeContext);
   const [supportLevels, setSupportLevels] = useState([]);
   const [resistanceLevels, setResistanceLevels] = useState([]);
+  const usesAlternativeSource =
+    coinBot === 'velo' || coinBot === 'kas' ? true : false;
 
   const formatNumber = num => {
     const absNum = Math.abs(num);
@@ -97,7 +99,7 @@ const Chart = ({
     } else {
       const levels = [...supportLevels, ...resistanceLevels];
       // Remove: atom usdt issue solver.
-      return symbol.toLowerCase() === 'atomusdt' && selectedInterval === '1W'
+      return coinBot.toLowerCase() === 'atom' && selectedInterval === '1W'
         ? [1, Math.max(...levels)]
         : [Math.min(...levels), Math.max(...levels)];
     }
@@ -125,7 +127,7 @@ const Chart = ({
           domainPadding={{
             x: 10,
             y:
-              symbol.toLowerCase() === 'atomusdt' && selectedInterval === '1W'
+              coinBot.toLowerCase() === 'atom' && selectedInterval === '1W'
                 ? 0
                 : 10,
           }}
@@ -158,13 +160,21 @@ const Chart = ({
               grid: {stroke: theme.chartsGridColor},
             }}
             tickCount={selectedInterval === '1W' ? 10 : 8}
-            tickFormat={t => (t > 0.01 ? `$${formatNumber(t)}` : t)}
+            tickFormat={t =>
+              t > 0.01
+                ? `$${formatNumber(t)}`
+                : t < 0.0001
+                ? `$${t.toExponential()}`
+                : `$${t}`
+            }
             orientation="right"
           />
 
           <VictoryCandlestick
             data={chartData}
-            candleRatio={0.9}
+            candleRatio={
+              usesAlternativeSource && selectedInterval !== '1W' ? 2.75 : 0.9
+            }
             candleColors={{positive: '#09C283', negative: '#E93334'}}
             style={{
               data: {

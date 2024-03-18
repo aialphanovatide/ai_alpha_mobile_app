@@ -1,4 +1,4 @@
-import {Image, Text, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useTokenomicsStyles from './TokenomicsStyles';
 import Loader from '../../../../../../../Loader/Loader';
@@ -65,9 +65,19 @@ const HorizontalProgressBar = ({maxValue, value, styles}) => {
             ? formatNumber(value)
             : formatNumber(value) + ' (' + Math.round(percentage) + ')%'
         }`}</Text>
-        <Text style={styles.progressBarMaxValue}>
-          {maxValue === Infinity ? '∞' : formatNumber(maxValue)}
-        </Text>
+        {maxValue === Infinity ? (
+          <TouchableOpacity
+            onPress={() => console.log('Clicked infinity button.')}
+            style={styles.infinityButton}>
+            <Text style={[styles.progressBarMaxValue, styles.infinityLabel]}>
+              {'∞'}
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <Text style={styles.progressBarMaxValue}>
+            {formatNumber(maxValue)}
+          </Text>
+        )}
       </View>
 
       <View
@@ -139,9 +149,11 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
     fetchTokenomicsData();
   }, [coin]);
 
-  if (!loading && cryptos?.length === 0) {
-    handleSectionContent('tokenomics', true);
-  }
+  useEffect(() => {
+    if (!loading && cryptos?.length === 0) {
+      handleSectionContent('tokenomics', true);
+    }
+  }, [cryptos, loading, handleSectionContent]);
 
   return (
     <View style={styles.container}>
