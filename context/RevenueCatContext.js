@@ -218,7 +218,8 @@ const RevenueCatProvider = ({children}) => {
       return false;
     }
 
-    const categoryKeyword = category.toLowerCase();
+    const categoryKeyword = category.toLowerCase().replace(/\s/g, '');
+
     return identifiers.some(identifier => {
       const lowercaseIdentifier = identifier.toLowerCase();
       if (lowercaseIdentifier.includes('founders')) {

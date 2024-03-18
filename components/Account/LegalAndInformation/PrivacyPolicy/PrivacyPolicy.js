@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {View, ScrollView, Text, Image} from 'react-native';
-import usePrivacyPolicyStyles from './styles';
+import usePrivacyPolicyStyles from './PrivacyPolicyStyles';
 import BackButton from '../../../Analysis/BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';

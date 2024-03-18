@@ -1,6 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Navigation from './navigation/Navigation';
 import {
+  View,
+  Button,
+  Alert,
   SafeAreaView,
   StyleSheet,
   StatusBar,
@@ -17,6 +20,7 @@ import {AppThemeProvider} from './context/themeContext';
 import SplashScreen from 'react-native-splash-screen';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 import {AboutModalProvider} from './context/AboutModalContext';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
@@ -33,6 +37,17 @@ const App = () => {
   const handleStatusBarChange = theme => {
     setBarScheme(theme);
   };
+  const handleNotification = () => {
+    console.log("Button pressed, sending notification...");
+    PushNotificationIOS.addNotificationRequest({
+      id: '1', // Unique ID for the notification
+      title: 'Hello',
+      body: 'This is a notification!',
+      userInfo: {}, // Optional additional data
+      fireDate: new Date().getTime() + 1000 // Ensures the notification is scheduled for immediate delivery
+    });
+};
+
 
   return (
     <Auth0Provider
@@ -55,6 +70,11 @@ const App = () => {
                   <TopMenuContextProvider>
                     <AboutModalProvider>
                       <Navigation />
+                      {/*
+                      <View >
+                        <Button title="Trigger Notification" onPress={handleNotification} />
+                      </View>
+                      */}
                     </AboutModalProvider>
                   </TopMenuContextProvider>
                 </CategoriesContextProvider>
