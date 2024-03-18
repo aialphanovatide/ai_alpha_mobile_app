@@ -8,7 +8,7 @@ const usePriceActionStyles = () => {
 
   const styles = StyleSheet.create({
     priceActionContainer: {
-      width: theme.width,
+      width: '100%',
       marginVertical: 15,
       paddingBottom: 30,
       overflow: 'hidden',
