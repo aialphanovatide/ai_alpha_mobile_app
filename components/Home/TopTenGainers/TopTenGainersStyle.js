@@ -8,7 +8,7 @@ const useTopTenGainersStyles = () => {
   const styles = StyleSheet.create({
     topTenGainersContainer: {
       height: 400,
-      width: theme.width,
+      width: '100%',
       marginVertical: 20,
       borderRadius: 4,
     },

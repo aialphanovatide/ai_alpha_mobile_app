@@ -234,7 +234,7 @@ const PackageSubscriptions = () => {
             activeItem={
               activeItem && activeItem.product.title === item.product.title
             }
-            isFoundersPackage={true}
+            isFoundersPackage={true || item.product.identifier.includes('founders')}
           />
         ))
     ) : (
@@ -250,7 +250,7 @@ const PackageSubscriptions = () => {
           activeItem={
             activeItem && activeItem.product.title === item.product.title
           }
-          isFoundersPackage={false}
+          isFoundersPackage={false || item.product.identifier.includes('founders')}
         />
       ))
     )
@@ -258,10 +258,6 @@ const PackageSubscriptions = () => {
     <Loader />
   )}
 </ScrollView>
-
-
-
-
 
         <SubscriptionsLoader isLoading={loading} />
       </SafeAreaView>

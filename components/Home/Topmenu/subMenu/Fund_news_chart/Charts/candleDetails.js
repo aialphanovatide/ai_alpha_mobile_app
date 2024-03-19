@@ -1,11 +1,19 @@
 import React, {useContext} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {AboutIcon} from '../Fundamentals/AboutIcon';
 import {home_static_data} from '../../../../homeStaticData';
 import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 
-const CandlestickDetails = ({coin, lastPrice, styles, isPriceUp, loading}) => {
-  
+const CandlestickDetails = ({
+  coin,
+  lastPrice,
+  styles,
+  isPriceUp,
+  loading,
+  pairings,
+  selectedPairing,
+  handlePairingChange,
+}) => {
   const {handleAboutPress} = useContext(AboutModalContext);
 
   // Format the prices
@@ -20,16 +28,48 @@ const CandlestickDetails = ({coin, lastPrice, styles, isPriceUp, loading}) => {
     });
   };
 
-  // Format the coin
-  const formatCoin = coin => {
-    const usdt_word_index = coin.indexOf('USDT');
-    const coin_word = coin.slice(0, usdt_word_index).toUpperCase();
-    return `${coin_word}/${coin.slice(usdt_word_index, coin.length)}`;
+  const formatCoin = (coin, pairing) => {
+    const pairing_word_index = coin.indexOf(pairing);
+    const coin_word = coin.slice(0, pairing_word_index).toUpperCase();
+    return `${coin_word}/${coin.slice(pairing_word_index, coin.length)}`;
   };
-
-  return (
+  
+  return pairings.length > 1 ? (
+    <View style={[styles.detailsContainer, styles.column]}>
+      <Text style={[styles.detailslabel, styles.capitalize]}>Charts</Text>
+      <AboutIcon
+        description={home_static_data.charts.sectionDescription}
+        handleAboutPress={handleAboutPress}
+      />
+      <View style={styles.pairingsMenuContainer}>
+        {pairings.map((pairing, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.pairingButton,
+              selectedPairing === pairing && styles.pairingActiveButton,
+            ]}
+            onPress={() => handlePairingChange(pairing)}>
+            <Text
+              style={[
+                styles.pairingButtonText,
+                selectedPairing === pairing && styles.pairingActiveText,
+              ]}>
+              {
+                `${coin.toUpperCase()}/${pairing.toUpperCase()}` /* {formatCoin(coin, pairing)} */
+              }
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  ) : (
     <View style={styles.detailsContainer}>
-      <Text style={styles.detailslabel}>{formatCoin(coin)}</Text>
+      <Text style={styles.detailslabel}>
+        {
+          `${coin.toUpperCase()}/${pairings[0].toUpperCase()}` /* {formatCoin(coin, pairings[0])} */
+        }
+      </Text>
       <Text
         style={[
           styles.lastPrice,

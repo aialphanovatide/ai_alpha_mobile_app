@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useRef} from 'react';
 import {ScrollView, SafeAreaView} from 'react-native';
 import TickerTape from './Tickertape/TickerTape';
 import TopStories from './TopStories/topStories';
@@ -9,12 +9,16 @@ import useHomeStyles from './HomeStyles';
 import AboutModal from './Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
+import {useScrollToTop} from '@react-navigation/native';
 
 const Home = () => {
   const styles = useHomeStyles();
   const [aboutVisible, setAboutVisible] = useState(false);
   const [aboutDescription, setAboutDescription] = useState('');
   const {isDarkMode} = useContext(AppThemeContext);
+  const ref = useRef(null);
+
+  useScrollToTop(ref);
 
   const handleAboutPress = (description = null) => {
     if (description) {
@@ -41,7 +45,8 @@ const Home = () => {
           bounces={false}
           alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
-          style={styles.paddingH}>
+          style={styles.paddingH}
+          ref={ref}>
           <TickerTape />
           <TopStories handleAboutPress={handleAboutPress} />
           <Analysis handleAboutPress={handleAboutPress} />

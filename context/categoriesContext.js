@@ -10,7 +10,7 @@ const CategoriesContextProvider = ({children}) => {
     const fetchCategories = async () => {
       try {
         const data = await getService('/get_categories');
-        // console.log(data.categories);
+        console.log("Data categories: ", data.categories);
         setCategories(data.categories);
       } catch (error) {
         console.error('Error fetching categories:', error.message);

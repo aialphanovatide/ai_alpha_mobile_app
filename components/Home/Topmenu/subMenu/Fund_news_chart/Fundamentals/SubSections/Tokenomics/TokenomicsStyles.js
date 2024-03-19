@@ -46,6 +46,15 @@ const useTokenomicsStyles = () => {
       borderLeftWidth: 0,
       borderRightWidth: 0,
     },
+    infinityLabel: {
+      fontSize: theme.responsiveFontSize * 1.2,
+    },
+    infinityButton: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      zIndex: 2,
+    },
     // Tokenomics styles
     container: {
       width: '100%',

@@ -267,7 +267,7 @@ const useChartsStyles = () => {
       right: 0,
       margin: 4,
       padding: 2,
-      alignItems: 'flex-end'
+      alignItems: 'flex-end',
     },
     price: {
       fontSize: theme.responsiveFontSize * 0.9,
@@ -288,7 +288,46 @@ const useChartsStyles = () => {
       // borderColor: '#282828',
       // borderWidth: 2,
       // flex: 1
-    }
+    },
+    pairingsMenuContainer: {
+      flex: 1,
+      maxWidth: '100%',
+      marginVertical: 4,
+      marginTop: 8,
+      flexDirection: 'row',
+      backgroundColor: theme.subMenuBgColor,
+      borderRadius: 2,
+    },
+    pairingButton: {
+      width: '50%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 4,
+    },
+    pairingActiveButton: {
+      backgroundColor: theme.activeWhite,
+      borderColor: theme.subMenuBgColor,
+      borderWidth: 2,
+    },
+    pairingButtonText: {
+      color: theme.subMenuTextColor,
+      textTransform: 'uppercase',
+      fontSize: theme.responsiveFontSize * 0.9,
+      fontFamily: theme.fontMedium,
+    },
+    pairingActiveText: {
+      fontFamily: theme.fontSemibold,
+    },
+    menuRow: {
+      width: '100%',
+      flexDirection: 'row',
+    },
+    column: {
+      flexDirection: 'column',
+    },
+    capitalize: {
+      textTransform: 'capitalize',
+    },
   });
   return styles;
 };

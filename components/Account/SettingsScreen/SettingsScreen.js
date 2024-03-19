@@ -77,6 +77,12 @@ const SettingsScreen = ({route}) => {
       component: <ThemeButton />,
     },
     {
+      name: 'Current Packages',
+      logo: require('../../../assets/images/account/currentpackages.png'),
+      screenName: null,
+      component: null,
+    },
+    {
       name: 'Restore Purchases',
       logo: require('../../../assets/images/account/restorepurchases.png'),
       screenName: null,
@@ -344,6 +350,8 @@ const SettingsScreen = ({route}) => {
       case 'Restore Purchases':
         handleRestorePurchase();
         break;
+      case 'Current Packages':
+        navigation.navigate('CurrentPackages');
       default:
         console.log('Option not handled:', option.name);
     }

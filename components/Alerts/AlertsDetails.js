@@ -1,6 +1,9 @@
 import React, {useContext} from 'react';
 import {Text, View} from 'react-native';
 import {AppThemeContext} from '../../context/themeContext';
+
+// Component that renders the Alert item itself, with all the data: the price and main alert word on the top-right corner, the title, and the message of the alert below.
+
 const AlertDetails = ({message, price, timeframe, styles}) => {
   const {theme} = useContext(AppThemeContext);
   const timeframeStyle = {
@@ -8,7 +11,7 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
       ? theme.priceUpColor
       : theme.priceDownColor,
   };
-
+  // Function to separate and format the property that will show as a title for each alert, it separates the currency, the "Chart" word, and the hour 
   const formatAlertTitle = title => {
     const usdt_word_index = title.indexOf('USDT');
     const coin_word = title.slice(0, usdt_word_index).toUpperCase();
@@ -21,6 +24,7 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     };
   };
 
+  // Function that separates the main alert word from the rest of the alert title, since they come in the same prop data from the backend.
   const parseTimeframeString = timeFrameString => {
     const match = timeFrameString.match(
       /^(.*?)\s+(BULLISH|BEARISH|OVERBOUGHT|OVERSOLD|GOLDEN CROSS)$/i,
@@ -34,6 +38,7 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     }
   };
 
+  // Function to format the alert pricing, adding the punctuation symbols before the decimals.
   const formatNumber = price => {
     const number = parseFloat(price);
     if (isNaN(number)) {

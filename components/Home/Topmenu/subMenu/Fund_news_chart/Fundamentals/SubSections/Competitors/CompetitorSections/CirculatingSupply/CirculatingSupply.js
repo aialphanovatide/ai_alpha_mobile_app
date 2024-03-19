@@ -1,4 +1,4 @@
-import {Image, Text, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useCirculatingSupplyStyles from './CirculatingSupplyStyles';
 import Loader from '../../../../../../../../../Loader/Loader';
@@ -6,6 +6,7 @@ import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
 
 const CirculatingSupplyItem = ({item, styles}) => {
+  console.log(`https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.crypto.toLowerCase()}.png`)
   return (
     <View style={styles.circulatingSupplyItem}>
       <View style={styles.row}>
@@ -65,9 +66,17 @@ const ProgressBar = ({maxValue, percentageValue, styles, crypto}) => {
   return (
     <View style={styles.progressBarContainer}>
       <View style={[styles.row, styles.noVerticalMargin, styles.noPaddingH]}>
-        <Text style={styles.valueLabel}>
-          {maxValue === Infinity ? '∞' : `${formatNumber(maxValue)} ${crypto}`}
-        </Text>
+        {maxValue === Infinity ? (
+          <TouchableOpacity
+            onPress={() => console.log('Clicked infinity button.')}
+            style={styles.infinityButton}>
+            <Text style={[styles.valueLabel, styles.infinityLabel]}>{'∞'}</Text>
+          </TouchableOpacity>
+        ) : (
+          <Text style={[styles.valueLabel]}>
+            {`${formatNumber(maxValue)} ${crypto}`}
+          </Text>
+        )}
       </View>
       <View
         style={[

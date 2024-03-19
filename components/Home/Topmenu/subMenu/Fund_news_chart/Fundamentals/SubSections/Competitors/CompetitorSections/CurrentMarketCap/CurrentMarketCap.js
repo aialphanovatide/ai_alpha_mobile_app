@@ -11,7 +11,7 @@ import {AppThemeContext} from '../../../../../../../../../../context/themeContex
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 
-const CurrentMarketCap = ({competitorsData}) => {
+const CurrentMarketCap = ({competitorsData, coin}) => {
   const {theme} = useContext(AppThemeContext);
   const styles = useChartStyles();
   const [loading, setLoading] = useState(true);
@@ -51,7 +51,7 @@ const CurrentMarketCap = ({competitorsData}) => {
               fill: theme.textColor,
             },
           }}
-          />
+        />
         <VictoryAxis
           dependentAxis
           style={{
@@ -119,15 +119,16 @@ const CurrentMarketCap = ({competitorsData}) => {
     console.log('Mapped competitors: ', mapped_competitors_data);
     setCryptos(mapped_competitors_data);
     setLoading(false);
-  }, [competitorsData]);
+  }, [coin]);
 
   return (
     <View style={styles.chartContainer}>
-      {loading ? (
+      {loading || cryptos?.length === 0 ? (
         <Loader />
-      ) : cryptos?.length === 0 ? (
-        <NoContentMessage />
       ) : (
+        // cryptos?.length === 0 ? (
+        // <NoContentMessage />
+        // ) :
         generateMarketCapChart(cryptos, tintColors)
       )}
     </View>

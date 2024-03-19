@@ -69,9 +69,11 @@ const UpdatedRevenueModel = ({getSectionData, coin, handleSectionContent}) => {
     fetchRevenueModelData(coin);
   }, [coin]);
 
-  if (!loading && revenues?.length === 0) {
-    handleSectionContent('revenueModel', true);
-  }
+  useEffect(() => {
+    if (!loading && revenues?.length === 0) {
+      handleSectionContent('revenueModel', true);
+    }
+  }, [revenues, loading, handleSectionContent]);
 
   return (
     <View style={styles.container}>

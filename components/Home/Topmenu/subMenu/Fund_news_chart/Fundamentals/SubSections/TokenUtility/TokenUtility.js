@@ -94,9 +94,11 @@ const TokenUtility = ({getSectionData, coin, handleSectionContent}) => {
     fetchTokenUtilities(coin);
   }, [coin, isDarkMode]);
 
-  if (!loading && dataItems?.length === 0) {
-    handleSectionContent('tokenUtility', true);
-  }
+  useEffect(() => {
+    if (!loading && dataItems?.length === 0) {
+      handleSectionContent('tokenUtility', true);
+    }
+  }, [dataItems, loading, handleSectionContent]);
 
   return (
     <View style={styles.container}>

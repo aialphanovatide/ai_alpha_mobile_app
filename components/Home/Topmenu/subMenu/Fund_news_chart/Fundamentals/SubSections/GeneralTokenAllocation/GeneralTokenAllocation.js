@@ -39,15 +39,36 @@ const GeneralTokenAllocation = ({
   coin,
   handleSectionContent,
 }) => {
-  const colors = [
-    '#451205',
-    '#A02E0C',
-    '#80290E',
-    '#C93A05',
-    '#FC5404',
+  const {isDarkMode} = useContext(AppThemeContext);
+  const colors = isDarkMode ? [
+    '#CD1900',
+    '#FF3D00',
+    '#FF7000',
+    '#FF6C0D',
+    '#FF9900',
     '#FF8D34',
-    '#FFB76E',
-    '#FFD5A7',
+    '#FFB546',
+    '#FFCC7E',
+    '#FFE3B8',
+    '#FFF7EB',
+    '#C539B4',
+    '#DE57D1',
+    '#EC86E2',
+    '#F4B3EF',
+    '#F9D5F8',
+    '#FDEAFD',
+    '#FEF5FE',
+  ] : [
+    '#451205',
+    '#80290E',
+    '#A02E0C',
+    '#C93A05',
+    '#FF1F00',
+    '#FF3D00',
+    '#FF7000',
+    '#FF9900',
+    '#FFB546',
+    '#FFCC7E',
     '#460C3C',
     '#6C235F',
     '#832574',
@@ -110,9 +131,11 @@ const GeneralTokenAllocation = ({
     values => values.title === currentToken?.title,
   );
 
-  if (!loading && percentagesData?.length === 0) {
-    handleSectionContent('generalTokenAllocation', true);
-  }
+  useEffect(() => {
+    if (!loading && percentagesData?.length === 0) {
+      handleSectionContent('generalTokenAllocation', true);
+    }
+  }, [percentagesData, loading, handleSectionContent]);
 
   return (
     <View style={styles.container}>

@@ -109,9 +109,11 @@ const ValueAccrualMechanisms = ({
     fetchValueAccrualMechanisms(coin);
   }, [coin, isDarkMode]);
 
-  if (!loading && dataItems?.length === 0) {
-    handleSectionContent('valueAccrualMechanisms', true);
-  }
+  useEffect(() => {
+    if (!loading && dataItems?.length === 0) {
+      handleSectionContent('valueAccrualMechanisms', true);
+    }
+  }, [dataItems, loading, handleSectionContent]);
 
   return (
     <View style={styles.container}>

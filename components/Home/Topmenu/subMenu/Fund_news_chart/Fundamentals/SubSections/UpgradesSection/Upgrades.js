@@ -42,9 +42,11 @@ const Upgrades = ({getSectionData, coin, handleSectionContent}) => {
     fetchUpgradesData();
   }, [coin]);
 
-  if (!loading && events?.length === 0) {
-    handleSectionContent('upgrades', true);
-  }
+  useEffect(() => {
+    if (!loading && events?.length === 0) {
+      handleSectionContent('upgrades', true);
+    }
+  }, [events, loading, handleSectionContent]);
 
   return (
     <SafeAreaView style={{flex: 1}}>

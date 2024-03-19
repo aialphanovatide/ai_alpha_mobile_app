@@ -16,9 +16,10 @@ const ProtocolItem = ({
     const checkImageURL = async url => {
       try {
         const response = await fetch(url);
+        // console.log('Dapps images function response: ', response.headers);
         if (
           response.headers.map['content-type'] &&
-          response.headers.map['content-type'].startsWith('image/')
+          response.headers.map['content-type'].startsWith('image/png')
         ) {
           setHasImage(true);
         }
@@ -158,9 +159,11 @@ const DApps = ({getSectionData, coin, handleSectionContent}) => {
     }
   };
 
-  if (!loading && mappedData?.length === 0) {
-    handleSectionContent('dapps', true);
-  }
+  useEffect(() => {
+    if (!loading && mappedData?.length === 0) {
+      handleSectionContent('dapps', true);
+    }
+  }, [mappedData, loading, handleSectionContent]);
 
   return (
     <View>

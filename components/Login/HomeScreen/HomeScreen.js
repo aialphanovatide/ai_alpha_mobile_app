@@ -30,12 +30,13 @@ const MenuIcon = ({color, iconSource}) => {
 };
 
 const HomeScreen = () => {
-  const {updateActiveSubCoin, activeCoin, activeSubCoin} =
+  const {updateActiveCoin, updateActiveSubCoin, activeCoin, activeSubCoin} =
     useContext(TopMenuContext);
   const navigation = useNavigation();
   const {theme, isDarkMode} = useContext(AppThemeContext);
   const {userId} = useUserId();
   const {init} = useContext(RevenueCatContext);
+
 
   useEffect(() => {
     init(userId);
@@ -67,7 +68,7 @@ const HomeScreen = () => {
           tabBarLabelStyle: {
             marginBottom: 10,
             fontSize: theme.responsiveFontSize * 0.8,
-            fontFamily: theme.fontSemibold
+            fontFamily: theme.fontSemibold,
           },
         }}>
         <Tab.Screen

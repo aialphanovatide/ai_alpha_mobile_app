@@ -7,6 +7,7 @@ const RsButton = ({activeButtons, setActiveButtons}) => {
   const buttons = [
     {label: 'Resistance', color: '#F9B208'},
     {label: 'Support', color: '#FC5404'},
+    {label: 'Support', color: '#FC5404'},
   ];
   const handlePress = buttonLabel => {
     const index = activeButtons.indexOf(buttonLabel);

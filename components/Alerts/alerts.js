@@ -18,7 +18,8 @@ import {RevenueCatContext} from '../../context/RevenueCatContext';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import {CategoriesContext} from '../../context/categoriesContext';
-// This component render general alerts from each selected category
+
+// Component that renders when there are no alerts on the server's response
 const NoAlertsView = ({styles}) => (
   <View style={styles.noAlertsContainer}>
     <Text style={styles.noAlerts}>
@@ -27,6 +28,7 @@ const NoAlertsView = ({styles}) => (
   </View>
 );
 
+// Component that renders the menu to switch between 'today' and 'this week' alert intervals.
 const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
   return (
     <View style={styles.buttonContainer}>
@@ -50,6 +52,8 @@ const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
   );
 };
 
+// Component to display all the content, with the menu and the alerts fetched for each coin or for all the categories that the user has subscribed
+
 const Alerts = ({route, navigation}) => {
   const options = ['today', 'this week'];
   const [activeAlertOption, setActiveAlertOption] = useState(options[0]);
@@ -57,16 +61,16 @@ const Alerts = ({route, navigation}) => {
   const [subscribed, setSubscribed] = useState(null);
   const [subscribedCategories, setSubscribedCategories] = useState([]);
   const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
-  const {updateActiveSubCoin, activeCoin, activeSubCoin} =
-    useContext(TopMenuContext);
+  const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
   const styles = useAlertsStyles();
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const {isDarkMode} = useContext(AppThemeContext);
   const {categories} = useContext(CategoriesContext);
 
+  // Use effect to load the current active coin from the route (when navigating from Home with an active coin) or from the bottom menu, in which case, there is not active coin. Also for the case where the coin switches from the alerts section
   useEffect(() => {
-    console.log(activeCoin, activeSubCoin);
+    setAlerts([]);
     if (route.params) {
       const paramsBotName = route.params.botName;
       setBotName(paramsBotName);
@@ -81,9 +85,9 @@ const Alerts = ({route, navigation}) => {
         : activeCoin.coin_bots[0].botName;
       setBotName(context_bot_name);
     }
-  }, [activeSubCoin, route.params]);
+  }, [activeCoin, activeSubCoin, route.params]);
 
-  // This useEffect handles the content regulation
+  // This useEffect handles the content regulation with the user's subscriptions
   useEffect(() => {
     if (Object.keys(activeCoin).length !== 0) {
       const hasCoinSubscription = findCategoryInIdentifiers(
@@ -103,19 +107,21 @@ const Alerts = ({route, navigation}) => {
           found_subscribed_categories.push(category);
         }
       });
-      console.log('Found subscribed categories: ', found_subscribed_categories);
+      // console.log('Found subscribed categories: ', found_subscribed_categories);
       setSubscribedCategories(found_subscribed_categories);
     }
   }, [activeCoin, userInfo]);
 
+  // Use Effect to load the alerts, making different requests to the server depending on if there is an active coin or if its not, in which case, the request fetch alerts for all the categories that the user has subscribed
   useEffect(() => {
-    if (!isLoading) {
-      setIsLoading(true);
-    }
+    setIsLoading(true);
+    // Function to fetch alerts filtering by the active coin of the top menu
     const fetchAlertsByCoin = async () => {
       try {
         const response = await getService(
-          `/api/filter/alerts?coin=${botName}&date=${activeAlertOption}`,
+          `/api/filter/alerts?coin=${botName}&date=${activeAlertOption}&limit=${
+            activeAlertOption === 'today' ? 20 : 40
+          }`,
         );
 
         if (
@@ -136,19 +142,20 @@ const Alerts = ({route, navigation}) => {
       }
     };
 
+    // Function to fetch alerts for all the user's subscribed categories
+
     const fetchAlertsBySubscriptions = async () => {
       try {
         const body = subscribedCategories.map(category => category.category);
         const response = await postService(`/api/tv/multiple_alerts`, {
           categories: body,
         });
-
         if (!response.message || response.message === undefined) {
           const mapped_alerts = [];
           for (const key in response) {
-            response[key].slice(0, 20).map(alert => mapped_alerts.push(alert));
+            response[key].slice(0, 10).map(alert => mapped_alerts.push(alert));
           }
-          console.log(mapped_alerts);
+          // console.log(mapped_alerts);
           setAlerts(mapped_alerts);
         } else {
           setAlerts([]);
@@ -159,11 +166,12 @@ const Alerts = ({route, navigation}) => {
         setIsLoading(false);
       }
     };
-    Object.keys(activeCoin) > 0
+    Object.keys(activeCoin).length > 0
       ? fetchAlertsByCoin()
       : fetchAlertsBySubscriptions();
-  }, [botName, activeAlertOption]);
+  }, [botName, activeAlertOption, activeCoin]);
 
+  // Function to handle the alerts menu option switching
   const handleOptionChange = option => {
     setActiveAlertOption(option);
   };
@@ -178,16 +186,18 @@ const Alerts = ({route, navigation}) => {
         <TopMenu isAlertsMenu={true} />
         <SubMenu isAlertsMenu={true} />
         <Text style={styles.title}>Alerts</Text>
-        {isLoading ? (
-          <Loader />
-        ) : subscribed ? (
-          <View style={styles.background}>
-            <AlertMenu
-              options={options}
-              setActiveOption={handleOptionChange}
-              styles={styles}
-              activeOption={activeAlertOption}
-            />
+        <View style={styles.background}>
+          <AlertMenu
+            options={options}
+            setActiveOption={handleOptionChange}
+            styles={styles}
+            activeOption={activeAlertOption}
+          />
+          {isLoading ? (
+            // Display the loader if the data requests didn't finish
+            <Loader />
+          ) : subscribed || subscribedCategories.length > 0 ? (
+            // If the user has at least one subscription, it will render alerts for all the coins from the categories that has subscribed
             <FlatList
               data={alerts}
               renderItem={({item}) => (
@@ -202,29 +212,11 @@ const Alerts = ({route, navigation}) => {
               keyExtractor={item => item.alert_id.toString()}
               ListEmptyComponent={<NoAlertsView styles={styles} />}
             />
-          </View>
-        ) : (
-          <View style={styles.background}>
-            {Object.keys(activeCoin).length === 0 ? (
-              <FlatList
-                data={alerts}
-                renderItem={({item}) => (
-                  <AlertDetails
-                    key={item.alert_id}
-                    message={item.alert_message}
-                    timeframe={item.alert_name}
-                    price={item.price}
-                    styles={styles}
-                  />
-                )}
-                keyExtractor={item => item.alert_id.toString()}
-                ListEmptyComponent={<NoAlertsView styles={styles} />}
-              />
-            ) : (
-              <UpgradeOverlay isBlockingByCoin={true} screen={'Alerts'} />
-            )}
-          </View>
-        )}
+          ) : (
+            // If the user isn't subscribed to any package, it will display the overlay
+            <UpgradeOverlay isBlockingByCoin={true} screen={'Alerts'} />
+          )}
+        </View>
       </LinearGradient>
     </SafeAreaView>
   );

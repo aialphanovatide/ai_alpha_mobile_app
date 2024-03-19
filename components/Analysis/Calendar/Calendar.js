@@ -7,6 +7,7 @@ import SubMenu from './SubMenu/SubMenu.js';
 import useCalendarStyles from './CalendarStyles.js';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext.js';
+import MacroEconomicCalendar from './MacroEconomicsCalendar/MacroEconomicCalendar.js';
 
 const Intervals = {
   today: {
@@ -31,6 +32,10 @@ const Calendar = ({handleReturn}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   const handleCryptoPress = interval => {
     setCryptoSelectedInterval(interval);
+  };
+
+  const handleEconomicEventPress = interval => {
+    setEconomicSelectedInterval(interval);
   };
 
   return (
@@ -64,15 +69,20 @@ const Calendar = ({handleReturn}) => {
             <CryptoCalendar selectedInterval={cryptoSelectedInterval.days} />
           </View>
           <Text style={styles.subTitle}>Macroeconomics</Text>
-          <View style={styles.paddingH}>
-            <View
-              style={[styles.calendarContent, styles.macroeconomicsContainer]}>
-              <TVEconomicCalendar
+          <View style={[styles.calendarContent, styles.marginBottom]}>
+            <SubMenu
+              Intervals={Intervals}
+              handlePress={handleEconomicEventPress}
+              selectedInterval={economicSelectedInterval}
+            />
+            {/* <TVEconomicCalendar
                 selectedInterval={economicSelectedInterval}
                 width={300}
                 height={300}
-              />
-            </View>
+              /> */}
+            <MacroEconomicCalendar
+              selectedInterval={economicSelectedInterval}
+            />
           </View>
         </ScrollView>
       </LinearGradient>

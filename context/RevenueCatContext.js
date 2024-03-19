@@ -167,9 +167,6 @@ const RevenueCatProvider = ({children}) => {
       console.error('Error trying to get offerings: ', error);
     }
   };
-  
-  
-
 
   const purchasePackage = async pack => {
     try {
@@ -221,7 +218,8 @@ const RevenueCatProvider = ({children}) => {
       return false;
     }
 
-    const categoryKeyword = category.toLowerCase();
+    const categoryKeyword = category.toLowerCase().replace(/\s/g, '');
+
     return identifiers.some(identifier => {
       const lowercaseIdentifier = identifier.toLowerCase();
       if (lowercaseIdentifier.includes('founders')) {

@@ -37,7 +37,7 @@ const useCirculatingSupplyStyles = () => {
       borderRadius: 4,
       color: theme.whiteTextColor,
       fontFamily: theme.fontMedium,
-      textAlign: 'center'
+      textAlign: 'center',
     },
     symbolLabel: {
       paddingHorizontal: 10,
@@ -79,6 +79,17 @@ const useCirculatingSupplyStyles = () => {
       fontSize: theme.responsiveFontSize * 0.9,
       color: theme.secondaryTextColor,
       fontFamily: theme.font,
+    },
+    infinityLabel: {
+      fontSize: theme.responsiveFontSize * 1.2,
+    },
+    infinityButton: {
+      paddingHorizontal: 5,
+      borderWidth: 1,
+      borderRadius: 14,
+      borderColor: theme.secondaryTextColor,
+    },
+    none: {
     },
     labelBottom: {
       marginLeft: '45%',
