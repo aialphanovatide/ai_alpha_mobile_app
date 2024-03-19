@@ -41,6 +41,7 @@ const NotificationItem = ({
 
       <Text style={styles.itemName}>{item.name}</Text>
       <View style={styles.rightContent}>
+        {/*}
         <View style={styles.switchContainer}>
           <Switch
             style={styles.switch}
@@ -49,6 +50,7 @@ const NotificationItem = ({
             thumbColor={'#F6F7FB'}
           />
         </View>
+        */}
         <View style={styles.switchContainer}>
           <Switch
             style={styles.switch}
@@ -71,9 +73,10 @@ const NotificationsPanel = ({route, options = null}) => {
   return (
     <SafeAreaView style={styles.container}>
       <BackButton />
+      <ScrollView>
       <Text style={styles.title}>Notifications</Text>
       <View style={styles.row}>
-        <Text style={styles.subtitle}>News</Text>
+        {/*<Text style={styles.subtitle}>News</Text>*/}
         <Text style={styles.subtitle}>Alerts</Text>
       </View>
       <View style={styles.allNotificationsItem}>
@@ -101,6 +104,7 @@ const NotificationsPanel = ({route, options = null}) => {
             <View key={`line_${item.name}`} style={styles.horizontalLine} />
           </React.Fragment>
         ))}
+      </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );

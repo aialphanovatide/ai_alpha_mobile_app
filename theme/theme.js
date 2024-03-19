@@ -98,6 +98,14 @@ export const lightThemeStyles = {
   fontBoldItalic: isAndroid
   ? 'prompt_semibold_italic'
   : 'Prompt-SemiBold-Italic',
+  fontUnbounded: isAndroid ? 'unbounded_regular' : 'Unbounded-Regular',
+  fontUnboundedMedium: isAndroid ? 'unbounded_medium' : 'Unbounded-Medium',
+  fontUnboundedLight: isAndroid ? 'unbounded_light' : 'Unbounded-Light',
+  fontUnboundedExtraLight: isAndroid ? 'unbounded_extra_light' : 'Unbounded-Extra-Light',
+  fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
+  fontUnboundedExtraBold: isAndroid ? 'unbounded_extra_bold' : 'Unbounded-Extra-Bold',
+  fontUnboundedSemibold: isAndroid ? 'unbounded_semibold' : 'Unbounded-SemiBold',
+  fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
 };
 
 export const darkThemeStyles = {
@@ -196,4 +204,12 @@ export const darkThemeStyles = {
   fontBoldItalic: isAndroid
     ? 'prompt_semibold_italic'
     : 'Prompt-SemiBold-Italic',
+  fontUnbounded: isAndroid ? 'unbounded_regular' : 'Unbounded-Regular',
+  fontUnboundedMedium: isAndroid ? 'unbounded_medium' : 'Unbounded-Medium',
+  fontUnboundedLight: isAndroid ? 'unbounded_light' : 'Unbounded-Light',
+  fontUnboundedExtraLight: isAndroid ? 'unbounded_extra_light' : 'Unbounded-Extra-Light',
+  fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
+  fontUnboundedExtraBold: isAndroid ? 'unbounded_extra_bold' : 'Unbounded-Extra-Bold',
+  fontUnboundedSemibold: isAndroid ? 'unbounded_semibold' : 'Unbounded-SemiBold',
+  fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
 };

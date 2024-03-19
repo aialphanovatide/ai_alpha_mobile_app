@@ -9,6 +9,7 @@ const useHomeAnalysisStyles = () => {
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
       fontFamily: theme.fontSemibold,
+      fontWeight: '600',
     },
     titleStyles: {
       maxWidth: '85%',

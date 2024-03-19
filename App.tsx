@@ -70,11 +70,9 @@ const App = () => {
                   <TopMenuContextProvider>
                     <AboutModalProvider>
                       <Navigation />
-                      {/*
                       <View >
                         <Button title="Trigger Notification" onPress={handleNotification} />
                       </View>
-                      */}
                     </AboutModalProvider>
                   </TopMenuContextProvider>
                 </CategoriesContextProvider>

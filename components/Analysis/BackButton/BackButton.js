@@ -17,7 +17,7 @@ const BackButton = ({navigationHandler = null}) => {
       <View style={styles.arrowContainer}>
         <Image source={require('../../../assets/images/arrow-left.png')} resizeMode='contain' style={styles.leftArrow}/>
       </View>
-        <Text style={styles.backButton}>{'Back'}</Text>
+      <Text style={styles.backButton}>{'Back'}</Text>
     </TouchableOpacity>
   );
 };
