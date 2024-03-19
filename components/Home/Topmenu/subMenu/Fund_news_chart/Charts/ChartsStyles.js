@@ -113,7 +113,7 @@ const useChartsStyles = () => {
       alignItems: 'top',
       width: '100%',
       height: 300,
-
+      position: 'relative'
     },
     loaderContainer: {
       flex: 1,
@@ -283,6 +283,12 @@ const useChartsStyles = () => {
       width: '100%',
       flexDirection: 'row',
     },
+    fibonacciContainer: {
+      position: 'relative',
+      // borderColor: '#282828',
+      // borderWidth: 2,
+      // flex: 1
+    }
   });
   return styles;
 };

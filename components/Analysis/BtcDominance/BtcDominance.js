@@ -126,6 +126,7 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
           <TimeframeSelector
             selectedInterval={selectedInterval}
             changeInterval={changeInterval}
+            hasHourlyTimes={true}
           />
         </View>
         <View style={styles.container}>
@@ -143,6 +144,7 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
                   tickLabels: {
                     fontSize: theme.responsiveFontSize * 0.7,
                     fill: theme.titleColor,
+                    fontFamily: theme.font,
                   },
                   grid: {stroke: theme.chartsGridColor},
                 }}
@@ -155,6 +157,7 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
                   tickLabels: {
                     fontSize: theme.responsiveFontSize * 0.725,
                     fill: theme.titleColor,
+                    fontFamily: theme.font,
                   },
                   grid: {stroke: theme.chartsGridColor},
                 }}

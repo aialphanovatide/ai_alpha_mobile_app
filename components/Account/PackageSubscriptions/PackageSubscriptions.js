@@ -175,7 +175,7 @@ const PackageSubscriptions = () => {
   // const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
   //   subscription.toLowerCase().includes('founders'),
   // );
-  console.log("HAS A FOUNDER PACKAGE: ", hasFoundersPackage);
+  // console.log("HAS A FOUNDER PACKAGE: ", hasFoundersPackage);
 
   return (
     <LinearGradient

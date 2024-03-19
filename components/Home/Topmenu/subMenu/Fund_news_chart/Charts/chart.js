@@ -12,7 +12,7 @@ import Loader from '../../../../../Loader/Loader';
 import { AppThemeContext } from '../../../../../../context/themeContext';
 import useChartsStyles from './ChartsStyles';
 import { getService } from '../../../../../../services/aiAlphaApi';
-import Fibonacci from './fibonacci';
+
 
 // Format any number
 const formatNumber = num => {
@@ -39,6 +39,14 @@ function formatLabelNumber(number, decimalPlaces=2) {
       return number
   }
 }
+
+
+// Function to calculate Fibonacci retracement levels
+const fibonacciRetracement = (low, high) => {
+  const range = high - low;
+  const retracementLevels = [0, 0.236, 0.382, 0.5, 0.618, 1];
+  return retracementLevels.map(level => low + range * level);
+};
 
 const Chart = ({
   symbol,
@@ -85,6 +93,16 @@ const Chart = ({
       console.error('Error fetching support and resistance data: ', error);
     }
   };
+
+
+  // Extracting low and high values from candlestick data
+  const lows = chartData.map(d => d.low);
+  const highs = chartData.map(d => d.high);
+
+  // Calculate Fibonacci retracement levels
+  const low = Math.min(...lows);
+  const high = Math.max(...highs);
+  const retracementLevels = fibonacciRetracement(low, high);
   
 
   useEffect(() => {
@@ -158,6 +176,43 @@ const Chart = ({
           }}
           scale={{ x: 'time', y: 'log' }}
           height={340}>
+
+          {/* Plot of the Fibonacci lines */}
+          {retracementLevels && retracementLevels?.map(level => (
+            <VictoryLine
+              key={level}
+              padding={{ top: 0, bottom: 0, left: 20, right: 60}}
+              labels={() => "1.6%"}
+              data={[
+                { x: domainX[0], y: level },
+                { x: domainX[1], y: level },
+              ]}
+              style={{
+                data: { stroke: 'blue' },
+                labels: {fontSize: 12}
+              }}
+              labelComponent={
+                <VictoryLabel
+                  dy={5}
+                  dx={10}
+                  textAnchor="start"
+                  inline={true}
+                  style={{
+                    fill: '#fff',
+                    fontSize: 11,
+                    fontFamily: theme.fontMedium,
+                  }}
+                  backgroundPadding={[{ top: -1, bottom: 6, left: 2.3, right: 0 }]}
+                  backgroundStyle={[
+                    {
+                      fill: 'blue',
+                      opacity: 0.8
+                    }
+                  ]}
+                />
+              }
+            />
+          ))}
           
           {/* X AXIS */}
           <VictoryAxis
@@ -213,7 +268,7 @@ const Chart = ({
             }}
           />
 
-          <Fibonacci candlestickData={chartData}/>
+        
 
   
           {/* RESISTANCE LEVELS */}
