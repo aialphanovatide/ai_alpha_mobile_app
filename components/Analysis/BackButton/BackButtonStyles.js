@@ -12,16 +12,14 @@ const useBackButtonStyles = () => {
       textDecorationColor: theme.backbuttonColor,
     },
     arrowContainer: {
-      margin: 4,
-      marginVertical: 6,
       width: 12,
       height: 12,
+      margin: 6,
       justifyContent: 'center',
       alignItems: 'center',
       overflow: 'hidden',
     },
     leftArrow: {
-      flex: 1,
       tintColor: theme.backbuttonColor,
     },
     row: {

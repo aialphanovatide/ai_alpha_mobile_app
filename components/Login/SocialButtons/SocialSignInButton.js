@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Platform, View, Linking} from 'react-native';
 import CustomButton from '../CustomButton/CustomButton';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
@@ -119,75 +120,79 @@ const SocialSignInButton = () => {
 
 
   
-
-  const signInWithApple = async () => {
-    try {
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        nonceEnabled: false,
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-      });
-      console.log('Apple Auth Response:', appleAuthRequestResponse);
-      const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user,
-      );
+const signInWithApple = async () => {
+  try {
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      nonceEnabled: false,
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+    });
+    console.log('Apple Auth Response:', appleAuthRequestResponse);
+    const credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user,
+    );
+    const {fullName, email, authorizationCode, user} =
+      appleAuthRequestResponse;
+    console.log('User !Email:', email);
+    if (credentialState === appleAuth.State.AUTHORIZED) {
       const {fullName, email, authorizationCode, user} =
         appleAuthRequestResponse;
-      console.log('User !Email:', email);
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        const {fullName, email, authorizationCode, user} =
-          appleAuthRequestResponse;
-        const {familyName, givenName} = fullName || {};
-        console.log('User Data:', user);
-        console.log('Full Name:', fullName);
-        console.log('User Email:', user?.email);
-        console.log('User2 Email:', email);
-        const payload = {
-          grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
-          subject_token_type:
-            'http://auth0.com/oauth/token-type/apple-authz-code',
-          scope: 'read:appointments openid profile email email_verified',
-          audience: auth0Audience,
-          subject_token: authorizationCode,
-          client_id: auth0Client,
-          user_profile: JSON.stringify({
-            name: {
-              firstName: givenName,
-              lastName: familyName,
-            },
-            email,
-          }),
-        };
-        console.log('Auth0 Request Payload:', payload);
-        const auth0Response = await axios.post(
-          `https://${auth0Domain}/oauth/token`,
-          payload,
-        );
-        console.log('Auth0 Response:', auth0Response.data);
-        console.log("User id is: ", user);
-        let newUser = "apple|" + user;
-        console.log("New User id is: ", newUser);
-        navigation.navigate('HomeScreen');
-        setUserId(newUser);
-        //setUserEmail(email);
-        console.log("auth0Response.data._id", auth0Response.data._id);
-        console.log("email!: ", email);
-        console.log('After navigation');
-        return {
-          message: 'success',
-          ...auth0Response.data,
-          first_name: givenName,
-          last_name: familyName,
-        };
-      } else {
-        throw new Error('Apple Sign-In not authorized');
-      }
-    } catch (error) {
-      console.error('Apple Sign-In Error:', error);
-      throw error;
-    }
-  };
+      const {familyName, givenName} = fullName || {};
+      console.log('User Data:', user);
+      console.log('Full Name:', fullName);
+      console.log('User Email:', user?.email);
+      console.log('User2 Email:', email);
+      const payload = {
+        grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
+        subject_token_type:
+          'http://auth0.com/oauth/token-type/apple-authz-code',
+        scope: 'read:appointments openid profile email email_verified',
+        audience: auth0Audience,
+        subject_token: authorizationCode,
+        client_id: auth0Client,
+        user_profile: JSON.stringify({
+          name: {
+            firstName: givenName,
+            lastName: familyName,
+          },
+          email,
+        }),
+      };
+      console.log('Auth0 Request Payload:', payload);
+      const auth0Response = await axios.post(
+        `https://${auth0Domain}/oauth/token`,
+        payload,
+      );
+      console.log('Auth0 Response:', auth0Response.data);
+      console.log('Acess tokenn!!', auth0Response.data.access_token);
+      console.log("User id is: ", user);
+      let newUser = "apple|" + user;
+      console.log("New User id is: ", newUser);
 
+      await AsyncStorage.setItem('access_token', auth0Response.data.access_token);
+      await AsyncStorage.setItem('id_token', auth0Response.data.id_token);
+      await AsyncStorage.setItem('UserId', newUser);
+
+      navigation.navigate('HomeScreen');
+      setUserId(newUser);
+      //setUserEmail(email);
+      console.log("auth0Response.data._id", auth0Response.data._id);
+      console.log("email!: ", email);
+      console.log('After navigation');
+      return {
+        message: 'success',
+        ...auth0Response.data,
+        first_name: givenName,
+        last_name: familyName,
+      };
+    } else {
+      throw new Error('Apple Sign-In not authorized');
+    }
+  } catch (error) {
+    console.error('Apple Sign-In Error:', error);
+    throw error;
+  }
+};
 
   return (
     <Auth0Provider
