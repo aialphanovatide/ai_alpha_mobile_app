@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, ImageBackground, Text } from 'react-native';
+import { View, ImageBackground } from 'react-native';
 import {
   VictoryChart,
   VictoryAxis,
@@ -7,6 +7,7 @@ import {
   VictoryCandlestick,
   VictoryLabel,
   VictoryLine,
+  VictoryTooltip,
 } from 'victory-native';
 import Loader from '../../../../../Loader/Loader';
 import { AppThemeContext } from '../../../../../../context/themeContext';
@@ -14,7 +15,7 @@ import useChartsStyles from './ChartsStyles';
 import { getService } from '../../../../../../services/aiAlphaApi';
 
 
-// Format any number
+// Format any number, including 0.0000
 const formatNumber = num => {
   const absNum = Math.abs(num);
 
@@ -40,12 +41,30 @@ function formatLabelNumber(number, decimalPlaces=2) {
   }
 }
 
+// Format of date: yeay-month-day hour:minutes
+function formatDate(dateString) {
+ 
+  const date = new Date(dateString);
+  
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+  return `${month}/${day} ${hours}:${minutes}`;
+}
 
-// Function to calculate Fibonacci retracement levels
+
 const fibonacciRetracement = (low, high) => {
   const range = high - low;
-  const retracementLevels = [0, 0.236, 0.382, 0.5, 0.618, 1];
-  return retracementLevels.map(level => low + range * level);
+  const retracementLevels = [0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618];
+  
+  return retracementLevels.reduce((result, level) => {
+    result[level] = low + range * level;
+    return result;
+  }, {});
 };
 
 const Chart = ({
@@ -57,10 +76,12 @@ const Chart = ({
   selectedInterval,
   coinBot,
 }) => {
+
   const styles = useChartsStyles();
   const { theme } = useContext(AppThemeContext);
   const [supportLevels, setSupportLevels] = useState([]);
   const [resistanceLevels, setResistanceLevels] = useState([]);
+
   const usesAlternativeSource =
     coinBot === 'velo' || coinBot === 'kas' ? true : false;
 
@@ -152,7 +173,8 @@ const Chart = ({
     );
   }
 
-  // console.log('----chartData----', chartData)
+  const lastCandle = chartData[chartData.length - 1]; // Get the last candlestick data
+
 
   return (
     <View style={styles.chartContainer}>
@@ -179,42 +201,45 @@ const Chart = ({
           scale={{ x: 'time', y: 'log' }}
           height={340}>
 
-          {/* Plot of the Fibonacci lines */}
-          {retracementLevels && retracementLevels?.map(level => (
+        {/* Plot of the Fibonacci lines */}
+        {activeButtons.includes('Fibonacci') && Object.keys(retracementLevels).length > 0 && (
+          Object.keys(retracementLevels).map(level => (
             <VictoryLine
-              key={level}
-              padding={{ top: 0, bottom: 0, left: 20, right: 60}}
-              labels={() => "1.6%"}
-              data={[
-                { x: domainX[0], y: level },
-                { x: domainX[1], y: level },
-              ]}
-              style={{
-                data: { stroke: 'blue' },
-                labels: {fontSize: 12}
-              }}
-              labelComponent={
-                <VictoryLabel
-                  dy={5}
-                  dx={10}
-                  textAnchor="start"
-                  inline={true}
-                  style={{
-                    fill: '#fff',
-                    fontSize: 11,
-                    fontFamily: theme.fontMedium,
-                  }}
-                  backgroundPadding={[{ top: -1, bottom: 6, left: 2.3, right: 0 }]}
-                  backgroundStyle={[
-                    {
-                      fill: 'blue',
-                      opacity: 0.8
-                    }
-                  ]}
-                />
-              }
-            />
-          ))}
+            key={level}
+            padding={{ top: 0, bottom: 0, left: 20, right: 60}}
+            labels={() => `${level}% $${formatLabelNumber(retracementLevels[level])}`}
+            data={[
+              { x: domainX[0], y: retracementLevels[level] },
+              { x: domainX[1], y: retracementLevels[level] },
+            ]}
+            style={{
+              data: { stroke: 'blue' },
+              labels: {fontSize: 12}
+            }}
+            labelComponent={
+              <VictoryLabel
+                dy={5}
+                dx={10}
+                textAnchor="start"
+                inline={true}
+                style={{
+                  fill: '#fff',
+                  fontSize: 11,
+                  fontFamily: theme.fontMedium,
+                }}
+                backgroundPadding={[{ top: -1, bottom: 6, left: 2.3, right: 0 }]}
+                backgroundStyle={[
+                  {
+                    fill: 'blue',
+                    opacity: 0.8
+                  }
+                ]}
+              />
+            }
+          />
+          ))
+        )}
+
           
           {/* X AXIS */}
           <VictoryAxis
@@ -252,13 +277,7 @@ const Chart = ({
               grid: { stroke: theme.chartsGridColor },
             }}
             tickCount={selectedInterval === '1W' ? 10 : 8}
-            tickFormat={t =>
-              t > 0.01
-                ? `$${formatNumber(t)}`
-                : t < 0.0001
-                ? `$${t.toExponential()}`
-                : `$${t}`
-            }
+            tickFormat={(t) => formatNumber(t)}
             orientation="right"
           />
 
@@ -268,6 +287,40 @@ const Chart = ({
             candleRatio={
               usesAlternativeSource && selectedInterval !== '1W' ? 2.75 : 0.9
             }
+            labels={({ datum }) => `Date: ${formatDate(datum.x)}\nHigh: ${formatLabelNumber(datum.high)}\nLow: ${formatLabelNumber(datum.low)}\nClose: ${formatLabelNumber(datum.close)}\nOpen: ${formatLabelNumber(datum.open)}`}
+            labelComponent={
+              <VictoryTooltip
+                constrainToVisibleArea 
+                dx={0}
+                dy={-10}
+                renderInPortal={false}
+                center={{ x: 90, y: 90 }}
+                flyoutWidth={100}
+                flyoutPadding={{ top: -5, bottom: 15, left: 0, right: 0 }}
+                cornerRadius={5}
+                flyoutStyle={{stroke: "#282828", 
+                              strokeWidth: 2,
+                              fill: "#282828",
+                            }}
+                labelComponent={
+                  <VictoryLabel
+                  textAnchor='middle'
+                  style={{
+                    fill: '#fff',
+                    fontSize: 10,
+                    fontFamily: theme.fontMedium,
+                  }}
+                  backgroundStyle={[
+                    {
+                      fill: '#282828'
+                    }
+                  ]}
+                  backgroundPadding={[{ top: 0, bottom: 5 }]}
+                />
+                }
+              />
+            }
+          
             candleColors={{positive: '#09C283', negative: '#E93334'}}
             style={{
               data: {
@@ -277,6 +330,43 @@ const Chart = ({
               },
             }}
           />
+
+
+          {/* TREND LINE */}
+          <VictoryLine
+                data={[
+                  { x: chartData[25].x, y: 52000 },
+                  { x: chartData[33].x, y: 68000 },
+                ]}
+                key={`trendline`}
+                style={{
+                  data: { stroke: '#13B4C7', strokeWidth: 2 },
+                }}
+                labels={[formatLabelNumber(52000), formatLabelNumber(68000)]}
+                labelComponent={
+                  <VictoryLabel
+                    dy={0}
+                    dx={0}
+                    // angle={-36}
+                    textAnchor="end"
+                    inline={true}
+                    backgroundPadding={[{ top: -1, bottom: 6, left: 2.5, right: 8 }]}
+                    style={[
+                      {
+                        fill: '#fff',
+                        fontSize: 11,
+                        fontFamily: theme.fontMedium,
+                      },
+                    ]}
+                    backgroundStyle={[
+                      {
+                        fill: '#13B4C7',
+                        opacity: 1
+                      },
+                    ]}
+                  />
+                }
+              />
 
         
 
@@ -292,7 +382,7 @@ const Chart = ({
                 ]}
                 key={`resistance-${index}`}
                 // styles for the line itself
-                style={{ data: { stroke: '#F9B208', strokeWidth: 2 } }}
+                style={{ data: { stroke: '#F012A1', strokeWidth: 2 } }}
                 labels={() => [`$${formatLabelNumber(level)} `]}
                 labelComponent={
                   <VictoryLabel
@@ -308,7 +398,7 @@ const Chart = ({
                     backgroundPadding={[{ top: -1, bottom: 6, left: 2.3, right: 0 }]}
                     backgroundStyle={[
                       {
-                        fill: '#F9B208',
+                        fill: '#F012A1',
                         opacity: 0.8
                       }
                     ]}
@@ -316,6 +406,8 @@ const Chart = ({
                 }
               />
             ))}
+
+           {/* SUPPORT LEVELS */}
           {supportLevels &&
             activeButtons.includes('Support') &&
             supportLevels?.map((level, index) => (
@@ -363,102 +455,3 @@ export default Chart;
 
 
 
-
-
-// this style deletes the line in the y axis
-{
-  /* <VictoryAxis dependentAxis style={{ axis: { stroke: 'none' } }} /> */
-}
-
-// {chartData.length == 0 ? <View style={styles.loadingContainer}><Text style={styles.loading}>Loading...</Text></View> :
-//         <View style={styles.chart}>
-//           <ImageBackground source={require('../../../../assets/logo_3.png')} style={styles.background}>
-//             <VictoryChart
-//               scale={{ x: 'time', y: 'log' }}
-//               height={400}
-//               width={420}
-//               domainPadding={{x:60, y: 3}}
-//               containerComponent={<VictoryZoomContainer />}
-//               theme={VictoryTheme.material}
-//             >
-
-//               {/* Y */}
-//               <VictoryAxis
-//                 label={'USD'}
-//                 tickCount={6}
-//                 dependentAxis
-//                 axisLabelComponent={<VictoryLabel dy={-30} dx={0} />}
-//                 style={{ tickLabels: { fill: '#282828' } }}
-//               />
-
-//               {/* X */}
-//               <VictoryAxis
-//                 tickCount={4}
-//                 label={'Time'}
-//                 tickFormat={(t) => moment.unix(t).format('MMM DD')}
-//                 axisLabelComponent={<VictoryLabel dy={25} />}
-//                 style={{
-//                   tickLabels: {
-//                     padding: 5,
-//                     fontSize: 12, fill: '#282828'
-//                   }
-//                 }} />
-
-//               {/* global */}
-//               <VictoryCandlestick
-//                domain={{
-//                 x: [chartData.length - 20, chartData.length],
-//                  }}
-//                 labels={({ datum, index }) => (index === chartData.length - 1 ? `${datum.close}` : '')}
-//                 open="open"
-//                 high="high"
-//                 low="low"
-//                 close="close"
-//                 style={{
-//                   data: {
-//                     margin: 6,
-//                     padding: 10,
-//                     stroke: 'red',
-//                     strokeWidth: 1,
-//                   },
-//                   labels: {
-//                     fill: ({ datum }) => datum.close > datum.open
-//                         ? "green"
-//                           : "red"
-//                     }
-//                 }}
-//                 candleRatio={6}
-//                 data={chartData}
-//                 candleColors={{ positive: '#4caf50', negative: '#f44336' }}
-//               />
-
-//               { resistanceLevels && resistanceLevels?.map((level, index) => (
-//               <VictoryLine
-//               domain={{
-//                 x: [chartData.length, chartData.length],
-//                 }}
-//                 // labels={`Resistance ${index+1} - ${level}`}
-//                 key={`resistance-${index}`}
-//                 data={[{ x: 0, y: level }, { x: chartData.length, y: level }]}
-//                 style={{ data: { stroke: 'red', strokeWidth: 1 } }}
-//                 labelComponent={<VictoryLabel dy={0}/>}
-//               />
-//             ))}
-
-//               { supportLevels && supportLevels?.map((level, index) => (
-//               <VictoryLine
-//               domain={{
-//                 x: [chartData.length, chartData.length],
-//                 }}
-//                 // labels={`Support ${index+1} - ${level}`}
-//                 key={`support-${index}`}
-//                 labelComponent={<VictoryLabel dy={0}/>}
-//                 data={[{ x: 0, y: level }, { x: chartData.length, y: level }]}
-//                 style={{ data: { stroke: 'blue', strokeWidth: 1} }}
-//               />
-//             ))}
-
-//             </VictoryChart>
-//           </ImageBackground>
-//         </View>
-//       }

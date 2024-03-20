@@ -3,12 +3,16 @@ import {View, TouchableOpacity, Text} from 'react-native';
 import useChartsStyles from './ChartsStyles';
 
 const RsButton = ({activeButtons, setActiveButtons}) => {
+  
   const styles = useChartsStyles();
+  
   const buttons = [
-    {label: 'Resistance', color: '#F9B208'},
     {label: 'Support', color: '#FC5404'},
-    {label: 'Support', color: '#FC5404'},
+    {label: 'Resistance', color: '#F012A1'},
+    {label: 'Fibonacci', color: '#783AED'},
+    {label: 'Trend Lines', color: '#13B4C7'},
   ];
+  
   const handlePress = buttonLabel => {
     const index = activeButtons.indexOf(buttonLabel);
     if (index !== -1) {
@@ -22,6 +26,7 @@ const RsButton = ({activeButtons, setActiveButtons}) => {
       ]);
     }
   };
+
 
   return (
     <View style={styles.rsButtonContainer}>
@@ -37,15 +42,18 @@ const RsButton = ({activeButtons, setActiveButtons}) => {
               borderColor: activeButtons.includes(button.label)
                 ? 'transparent'
                 : button.color,
+              opacity: button.label === 'Trend Lines' ? 0.2 : 1, // Disable the button while it doesn't have a functionality
             },
           ]}
-          onPress={() => handlePress(button.label)}>
+          onPress={() => handlePress(button.label)}
+          disabled={button.label === 'Trend Lines'} // Disable the button while it doesn't have a functionality
+          >
           <Text
-            style={[
+             style={[
               styles.rsButtonText,
               activeButtons.includes(button.label)
                 ? styles.activeRsButtonText
-                : {},
+                : { color: button.color },
             ]}>
             {button.label}
           </Text>

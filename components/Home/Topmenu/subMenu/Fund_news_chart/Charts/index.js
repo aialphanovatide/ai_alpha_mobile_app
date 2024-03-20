@@ -162,14 +162,14 @@ const CandlestickChart = ({route}) => {
         <View style={styles.chartsWrapper}>
        
           <View style={styles.chartsRow}>
-            <RsButton
-              activeButtons={activeButtons}
-              setActiveButtons={setActiveButtons}
-            />
             <TimeframeSelector
               selectedInterval={selectedInterval}
               changeInterval={changeInterval}
               hasHourlyTimes={coinBot.toLowerCase() === 'btc'}
+            />
+            <RsButton
+              activeButtons={activeButtons}
+              setActiveButtons={setActiveButtons}
             />
           </View>
           <Chart
