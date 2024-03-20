@@ -118,7 +118,7 @@ const Analysis = ({handleAboutPress}) => {
         <Text style={styles.emptyMessage}>There aren't analysis to show.</Text>
       ) : (
         <View style={styles.itemsContainer}>
-          {analysisData?.map((story, index) => (
+          {analysisData?.slice(0,5).map((story, index) => (
             <View
               style={[
                 styles.itemWrapper,

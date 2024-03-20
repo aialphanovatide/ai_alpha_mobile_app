@@ -39,12 +39,12 @@ export const macroeconomic_events = [
 
 export const countries_mock = [
   {
-    name: 'USA',
+    name: 'US',
     full_name: 'United States',
     image: require('../../../../assets/images/analysis/macroeconomics/usa.png'),
   },
   {
-    name: 'UK',
+    name: 'GB',
     full_name: 'United Kingdom',
     image: require('../../../../assets/images/analysis/macroeconomics/uk.png'),
   },

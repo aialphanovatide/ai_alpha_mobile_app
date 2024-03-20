@@ -104,7 +104,7 @@ const useNewsStyles = () => {
       backgroundColor: theme.subMenuBgColor,
     },
     filterButton: {
-      width: '33.33%',
+      width: '50%',
       padding: 5,
       justifyContent: 'center',
       alignItems: 'center',

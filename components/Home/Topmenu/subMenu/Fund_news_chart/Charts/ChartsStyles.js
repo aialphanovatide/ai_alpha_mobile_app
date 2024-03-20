@@ -319,6 +319,9 @@ const useChartsStyles = () => {
     capitalize: {
       textTransform: 'capitalize',
     },
+    flexRow: {
+      flexDirection: 'row',
+    }
   });
   return styles;
 };

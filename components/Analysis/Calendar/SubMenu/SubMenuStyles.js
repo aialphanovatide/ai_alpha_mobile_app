@@ -23,7 +23,7 @@ const useCalendarSubMenuStyles = () => {
       textAlign: 'center',
       fontSize: theme.responsiveFontSize * 0.75,
       fontFamily: theme.font,
-      color: theme.subMenuTextColor,
+      color: theme.secondaryTextColor,
     },
     activeItem: {
       backgroundColor: theme.activeWhite,
@@ -33,7 +33,7 @@ const useCalendarSubMenuStyles = () => {
     },
     activeText: {
       fontFamily: theme.fontMedium,
-      color: theme.filterTextColor,
+      color: theme.subMenuTextColor,
     },
   });
   return styles;

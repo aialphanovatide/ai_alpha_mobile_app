@@ -2,6 +2,7 @@ export const API_KEY = 'appl_HblzZuTEedJuLQDVVgdOyoGZCxW';
 export const COINGECKO_API_KEY = 'CG-YFJkhA5AKwM4SSq8a8515bKQ';
 export const COINGECKO_PRO_KEY = 'CG-xXCJJaHa7QmvQNWyNheKmSfG';
 export const TRADING_ECONOMICS_API_KEY = '4c0755aeafff43c:fwjsrmbyzwup8tg';
+export const PROFIT_COM_API_KEY = 'f5b148c5fa2e4b228731a9a2becd50fe';
 export const CAPITAL_COM_API_KEY = 'FXLJ0d62n5ueU8eL'; // Change this when creating the Novatide team account
 export const CAPITAL_COM_PASSWORD = 'Bitcoin91235+'; // Change this when creating the Novatide team account
 export const CAPITAL_COM_ID = 'f.mizzau@novatidelabs.com'; // Change this when creating the Novatide team account
@@ -37,6 +38,6 @@ export const TOP_MENU_IMAGES_URL =
  From below this point, all variables defined are for the CLONED TENANT of Auth0
  */
 
- export const auth0ClonedGoogleAudience = 'https://aialpha-google-test';
- export const auth0ClonedGoogleClient = 'Rr0xvkmUdxACllY2wFPq9k6CFRnq01CO';
- export const auth0ClonedDomain = 'dev-kqugsqvoounaylft.us.auth0.com';
+export const auth0ClonedGoogleAudience = 'https://aialpha-google-test';
+export const auth0ClonedGoogleClient = 'Rr0xvkmUdxACllY2wFPq9k6CFRnq01CO';
+export const auth0ClonedDomain = 'dev-kqugsqvoounaylft.us.auth0.com';

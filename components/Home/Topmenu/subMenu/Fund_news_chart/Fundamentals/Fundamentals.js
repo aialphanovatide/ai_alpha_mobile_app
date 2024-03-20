@@ -1,5 +1,5 @@
 import {Text, ScrollView, SafeAreaView} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import SubSection from './SubSections/SubSection';
 import Introduction from './SubSections/Introduction/Introduction.js';
 import Tokenomics from './SubSections/Tokenomics/Tokenomics.js';
@@ -20,6 +20,7 @@ import AboutModal from './AboutModal';
 import {fundamentals_static_content} from './fundamentalsStaticData';
 import VestingSchedule from './SubSections/VestingSchedule/VestingSchedule';
 import LinearGradient from 'react-native-linear-gradient';
+import {useScrollToTop} from '@react-navigation/native';
 
 const initialContentState = {
   introduction: false,
@@ -45,9 +46,12 @@ const Fundamentals = ({route}) => {
   const [currentContent, setCurrentContent] = useState(fundamentalsMock[coin]);
   const [sharedData, setSharedData] = useState([]);
   const [hasContent, setHasContent] = useState(initialContentState);
+  const ref = useRef(null);
+
+  useScrollToTop(ref);
 
   const handleSectionContent = (section, value) => {
-    setHasContent((prevState) => ({
+    setHasContent(prevState => ({
       ...prevState,
       [section]: value,
     }));
@@ -103,7 +107,10 @@ const Fundamentals = ({route}) => {
       angle={45}
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={styles.linearGradient}>
-      <ScrollView nestedScrollEnabled={true} style={styles.backgroundColor}>
+      <ScrollView
+        nestedScrollEnabled={true}
+        style={styles.backgroundColor}
+        ref={ref}>
         <SafeAreaView style={styles.container}>
           {aboutVisible && (
             <AboutModal

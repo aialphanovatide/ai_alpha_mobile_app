@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -18,6 +18,7 @@ import {RevenueCatContext} from '../../context/RevenueCatContext';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import {CategoriesContext} from '../../context/categoriesContext';
+import {useScrollToTop} from '@react-navigation/native';
 
 // Component that renders when there are no alerts on the server's response
 const NoAlertsView = ({styles}) => (
@@ -67,10 +68,13 @@ const Alerts = ({route, navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const {isDarkMode} = useContext(AppThemeContext);
   const {categories} = useContext(CategoriesContext);
+  const ref = useRef(null);
+
+  useScrollToTop(ref);
 
   // Use effect to load the current active coin from the route (when navigating from Home with an active coin) or from the bottom menu, in which case, there is not active coin. Also for the case where the coin switches from the alerts section
   useEffect(() => {
-    setAlerts([]);
+    setActiveAlertOption(options[0]);
     if (route.params) {
       const paramsBotName = route.params.botName;
       setBotName(paramsBotName);
@@ -114,6 +118,7 @@ const Alerts = ({route, navigation}) => {
 
   // Use Effect to load the alerts, making different requests to the server depending on if there is an active coin or if its not, in which case, the request fetch alerts for all the categories that the user has subscribed
   useEffect(() => {
+    setAlerts([]);
     setIsLoading(true);
     // Function to fetch alerts filtering by the active coin of the top menu
     const fetchAlertsByCoin = async () => {
@@ -177,7 +182,7 @@ const Alerts = ({route, navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer} ref={ref}>
       <LinearGradient
         useAngle={true}
         angle={45}
@@ -199,6 +204,7 @@ const Alerts = ({route, navigation}) => {
           ) : subscribed || subscribedCategories.length > 0 ? (
             // If the user has at least one subscription, it will render alerts for all the coins from the categories that has subscribed
             <FlatList
+              ref={ref}
               data={alerts}
               renderItem={({item}) => (
                 <AlertDetails

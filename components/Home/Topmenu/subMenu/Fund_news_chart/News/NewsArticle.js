@@ -13,6 +13,11 @@ const NewsArticle = ({route, navigation}) => {
   };
 
   const formatDate = dateString => {
+
+    if (dateString.includes('ago')){
+      return dateString;
+    }
+
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -33,7 +38,7 @@ const NewsArticle = ({route, navigation}) => {
 
     if (match && match[1]) {
       const title = match[1];
-      const content = summary.replace(`"${title}"`, '').trim();
+      const content = summary.replace(`"${match}"`, '').trim();
 
       return {
         title,
@@ -67,6 +72,9 @@ const NewsArticle = ({route, navigation}) => {
     const filteredText = summary
       .split('\n')
       .map(line => {
+        if (line.trim() === '') {
+          return '';
+        }
         for (const keyword of keywords_to_remove) {
           if (line.includes(keyword)) {
             line = line.replace(keyword, '');
@@ -74,6 +82,7 @@ const NewsArticle = ({route, navigation}) => {
         }
         return line.trim();
       })
+      .filter(line => line !== '')
       .join('\n');
 
     return filteredText;

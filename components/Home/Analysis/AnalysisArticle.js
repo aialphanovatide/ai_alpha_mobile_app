@@ -11,6 +11,7 @@ const AnalysisArticle = ({route}) => {
   const styles = useHomeAnalysisStyles();
   const {theme} = useContext(AppThemeContext);
 
+
   const findHtmlContent = content => {
     const replacedContent = content.replace(/\\/g, '');
     const colors_changed_content = replacedContent.replace(
@@ -21,7 +22,13 @@ const AnalysisArticle = ({route}) => {
       /rgb\([0-9]+, [0-9]+, [0-9]+\)/g,
       isDarkMode ? 'rgb(255, 255, 255)' : 'rgb(23, 23, 23)',
     );
-    return titles_changed_content;
+    const bullet_lists_updated_content = titles_changed_content.replace(
+      /<ul>/g,
+      `<ul style="color: ${
+        isDarkMode ? 'rgb(255, 255, 255)' : 'rgb(23, 23, 23)'
+      }`,
+    );
+    return bullet_lists_updated_content;
   };
 
   const html_source = {

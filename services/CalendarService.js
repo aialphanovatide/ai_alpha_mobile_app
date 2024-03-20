@@ -1,6 +1,12 @@
+import {PROFIT_COM_API_KEY} from '../src/constants';
+
 const COINDAR_API_KEY = '78201:QAGjCPV2ddtwztI0U1x';
-// Helpers
-// Function to get the date range for using it on CoinDar
+/*
+const PROFIT_COM_API_KEY = 'f5b148c5fa2e4b228731a9a2becd50fe';
+
+Helpers
+Function to get the date range for using it on CoinDar
+*/
 function getEndDate(days) {
   const actualDate = new Date();
   actualDate.setDate(actualDate.getDate() + days);
@@ -10,6 +16,20 @@ function getEndDate(days) {
   const dd = String(actualDate.getDate()).padStart(2, '0');
 
   return `${yyyy}-${mm}-${dd}`;
+}
+
+// Function to get the date minus the quantity of days received
+
+function getDaysBefore(days) {
+  let current_date = new Date();
+
+  current_date.setDate(current_date.getDate() - days);
+
+  let year = current_date.getFullYear();
+  let month = String(current_date.getMonth() + 1).padStart(2, '0');
+  let day = String(current_date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
 }
 
 // - - - COINDAR API - - -
@@ -97,30 +117,64 @@ async function getEventsData(daysInterval) {
   }
 }
 
-// - - - TRADING ECONOMICS API - - -
-/*
-async function getCurrenciesPercentages() {
-  try {
-    const response = await fetch(
-      `https://currencydatafeed.com/api/data.php?currency=DXY/USD+XAG/USD+SP500/USD&token=n67jgdddvkwagvxgie3w`,
-    );
+async function getEconomicEvents(days = 1) {
+  const interestingCountries = [
+    {
+      country: 'US',
+      currency: 'USD',
+    },
+    {
+      country: 'GB',
+      currency: 'GBP',
+    },
+    {
+      country: 'CN',
+      currency: 'CNY',
+    },
+  ];
+  const date = getDaysBefore(days);
+  const end_date = getEndDate(0);
+  const forexPromises = interestingCountries.map(async item => {
+    try {
+      const response = await fetch(
+        `https://api.profit.com/data-api/economic_calendar/forex?token=${PROFIT_COM_API_KEY}&country_iso=${item.country}&currency=${item.currency}&start_date=${date}&impact=high&impact=medium&end_date=${end_date}`,
+      );
+      return response.json();
+    } catch (error) {
+      console.error(`Error getting the data from the country ${item.country}`);
+      return null;
+    }
+  });
 
-    if (!response.ok)
-      throw new Error('Error trying to get data from CurrencyDataFeed API.');
+  const commoditiesPromises = interestingCountries.map(async item => {
+    try {
+      const response = await fetch(
+        `https://api.profit.com/data-api/economic_calendar/commodities?token=${PROFIT_COM_API_KEY}&country_iso=${item.country}&start_date=${date}&end_date=${end_date}`,
+      );
+      return response.json();
+    } catch (error) {
+      console.error(
+        `Error getting the commodities data from the country ${item.country}`,
+      );
+      return null;
+    }
+  });
 
-    const data = await response.json();
-    console.log(data);
-    return data;
-  } catch (error) {
-    console.error('Error:', error);
-    return [];
-  }
+  const forexResponses = await Promise.all(forexPromises);
+  const commoditiesResponses = await Promise.all(commoditiesPromises);
+
+  const filteredForex = forexResponses.filter(response => response !== null);
+  const filteredCommodities = commoditiesResponses.filter(
+    response => response !== null,
+  );
+
+  return [...filteredForex, ...filteredCommodities];
 }
 
 /*
 - - - TEST ONLY - - -
 async function main() {
-  const data = await getAvailableCoins();
+  const data = await getEconomicEvents();
   console.log(data);
   // await getEventsData(7);
   //   getCurrenciesPercentages();
@@ -128,10 +182,10 @@ async function main() {
 
 main();
 */
-
 const calendarService = {
   getAvailableCoins,
   getEventsData,
+  getEconomicEvents,
 };
 
 export default calendarService;

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useMemo} from 'react';
+import React, {useState, useEffect, useContext, useMemo, useRef} from 'react';
 import {ScrollView, View} from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';
@@ -16,6 +16,7 @@ import AboutModal from '../Fundamentals/AboutModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 import {COINGECKO_PRO_KEY} from '../../../../../../src/constants';
+import { useScrollToTop } from '@react-navigation/native';
 
 const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
@@ -36,6 +37,12 @@ const CandlestickChart = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   const pairings = coinBot !== 'btc' ? ['USDT', 'BTC'] : ['USDT'];
   const [selectedPairing, setSelectedPairing] = useState(pairings[0]);
+  
+  // This ref object allows to scroll to top on every tab press
+
+  const ref = useRef(null);
+
+  useScrollToTop(ref);
 
   // Restart the last price on every coin update
 
@@ -141,7 +148,7 @@ const CandlestickChart = ({route}) => {
       angle={45}
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={styles.flex}>
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={true}>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={true} ref={ref}>
         {aboutVisible && (
           <AboutModal
             description={aboutDescription}

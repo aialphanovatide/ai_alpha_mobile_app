@@ -31,14 +31,31 @@ const CandlestickDetails = ({
     const coin_word = coin.slice(0, pairing_word_index).toUpperCase();
     return `${coin_word}/${coin.slice(pairing_word_index, coin.length)}`;
   };
-  
+
   return pairings.length > 1 ? (
     <View style={[styles.detailsContainer, styles.column]}>
-      <Text style={[styles.detailslabel, styles.capitalize]}>Charts</Text>
-      <AboutIcon
-        description={home_static_data.charts.sectionDescription}
-        handleAboutPress={handleAboutPress}
-      />
+      <View style={styles.flexRow}>
+        <Text style={styles.detailslabel}>
+          {
+            `${coin.toUpperCase()}/${selectedPairing.toUpperCase()}` /* {formatCoin(coin, pairings[0])} */
+          }
+        </Text>
+        <Text
+          style={[
+            styles.lastPrice,
+            isPriceUp !== null
+              ? isPriceUp
+                ? styles.priceUpColor
+                : styles.priceDownColor
+              : {},
+          ]}>
+          ${lastPrice && !loading ? formatNumber(lastPrice) : ' ...'}
+        </Text>
+        <AboutIcon
+          description={home_static_data.charts.sectionDescription}
+          handleAboutPress={handleAboutPress}
+        />
+      </View>
       <View style={styles.pairingsMenuContainer}>
         {pairings.map((pairing, index) => (
           <TouchableOpacity

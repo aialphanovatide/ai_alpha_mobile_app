@@ -6,6 +6,7 @@ import {
   macroeconomic_events,
 } from './macroEconomicCalendarMock';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import calendarService from '../../../../services/CalendarService';
 
 const CountryItem = ({option, activeOption, handleCountryTouch, styles}) => {
   return (
@@ -52,12 +53,12 @@ const CountriesFilter = ({countries, selectedCountry, handleCountryTouch}) => {
   );
 };
 
-const CalendarItem = ({event, country, styles}) => {
+const CalendarItem = ({event, styles}) => {
   return (
     <View style={styles.calendarItem}>
       <View style={styles.itemIconContainer}>
-        <Image style={styles.itemIconImage} source={country.image} />
-        <Text style={styles.coinName}>{country.name}</Text>
+        <Image style={styles.itemIconImage} source={event.country.image} />
+        <Text style={styles.coinName}>{event.country.name}</Text>
       </View>
       <View style={styles.dataColumn}>
         <View style={styles.topDataRow}>
@@ -84,9 +85,9 @@ const CalendarItem = ({event, country, styles}) => {
         </View>
         <Text style={styles.itemTitle}>{event.title}</Text>
         <View style={styles.row}>
-          <Text style={styles.dataText}>A: {event.actual}%</Text>
-          <Text style={styles.dataText}>F: {event.forecast}%</Text>
-          <Text style={styles.dataText}>P: {event.previous}%</Text>
+          <Text style={styles.dataText}>A: {event.actual}</Text>
+          <Text style={styles.dataText}>F: {event.forecast}</Text>
+          <Text style={styles.dataText}>P: {event.previous}</Text>
         </View>
       </View>
     </View>
@@ -100,10 +101,27 @@ const MacroEconomicCalendar = ({selectedInterval}) => {
   const [selectedCountry, setSelectedCountry] = useState(countries_mock[0]);
   const styles = useMacroEconomicCalendarStyles();
 
+  // Function to parse the events data from seconds to a formatted date and hour strings
+
+  function parseSecondsToDateAndHour(secs) {
+    const date = new Date(secs * 1000);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hour = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return {
+      date: `${year}-${month}-${day}`,
+      hour: `${hour}:${minutes}`,
+    };
+  }
+
   // Function to find a event's country data
 
   const findCountryDataByEventsCountry = eventCountry => {
-    return countries.find(country => country.name === eventCountry);
+    const found = countries.find(country => country.name === eventCountry);
+    return found !== undefined ? found : null;
   };
 
   // Function to verify if the given date is equal to the current date
@@ -142,7 +160,7 @@ const MacroEconomicCalendar = ({selectedInterval}) => {
   // Function to filter events by country
 
   const filterEventsByCountry = (country, events) => {
-    return events.filter(event => event.country === country.name);
+    return events.filter(event => event.country.name === country.name);
   };
 
   // Country filter change handler
@@ -154,13 +172,43 @@ const MacroEconomicCalendar = ({selectedInterval}) => {
   };
 
   useEffect(() => {
-    const updated_events = filterEventsByDate(selectedInterval, originalEvents);
-    const events_by_country = filterEventsByCountry(
-      selectedCountry,
-      updated_events,
-    );
-    setEvents(events_by_country);
-  }, [selectedInterval, originalEvents]);
+    const day_interval = selectedInterval.textName === 'This week' ? 7 : 1;
+    const fetchEvents = async () => {
+      try {
+        const data = await calendarService.getEconomicEvents(day_interval);
+        if (data && data.length > 0) {
+          const mapped_data = [];
+          data.forEach(array => {
+            array.forEach(event => {
+              const mapped_event = {
+                country: findCountryDataByEventsCountry(event.country_iso),
+                title: event.name,
+                actual: event.actual ? `${event.actual}%` : 'N/A',
+                forecast: event.estimate ? `${event.estimate}%` : 'N/A',
+                previous: event.previous ? `${event.previous}%` : 'N/A',
+                date: parseSecondsToDateAndHour(event.time).date,
+                hour: parseSecondsToDateAndHour(event.time).hour,
+              };
+              mapped_data.push(mapped_event);
+            });
+          });
+          setOriginalEvents(mapped_data);
+          const events_by_country = filterEventsByCountry(
+            selectedCountry,
+            mapped_data,
+          );
+          setEvents(events_by_country);
+        } else {
+          setOriginalEvents([]);
+          setEvents([]);
+        }
+      } catch (error) {
+        console.error('Error trying to get econoomic calendar data:', error);
+        setEvents([]);
+      }
+    };
+    fetchEvents();
+  }, [selectedInterval, selectedCountry]);
 
   return (
     <View style={styles.container}>
@@ -178,12 +226,7 @@ const MacroEconomicCalendar = ({selectedInterval}) => {
           </View>
         ) : (
           events.map((event, index) => (
-            <CalendarItem
-              key={index}
-              event={event}
-              country={findCountryDataByEventsCountry(event.country)}
-              styles={styles}
-            />
+            <CalendarItem key={index} event={event} styles={styles} />
           ))
         )}
       </ScrollView>

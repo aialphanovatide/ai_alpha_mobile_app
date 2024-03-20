@@ -134,7 +134,11 @@ const NewsComponent = ({route}) => {
         />
       </View>
       <View style={styles.filterContainer}>
-        {['Today', 'This Week', 'Last Month'].map(option => (
+        {[
+          'Today',
+          'This Week',
+          // , 'Last Month'
+        ].map(option => (
           <TouchableOpacity
             key={option}
             onPress={() => handleFilterPress(option)}

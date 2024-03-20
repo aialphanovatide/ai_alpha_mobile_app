@@ -73,7 +73,7 @@ const useMacroEconomicCalendarStyles = () => {
       position: 'relative',
       paddingVertical: 5,
       marginVertical: 10,
-      marginHorizontal: 20,
+      marginRight: 8,
       flexDirection: 'row',
     },
     date: {
@@ -99,8 +99,9 @@ const useMacroEconomicCalendarStyles = () => {
       tintColor: theme.textColor,
     },
     itemTitle: {
+      width: '80%',
       paddingVertical: 10,
-      marginHorizontal: theme.width * 0.05,
+      marginHorizontal: 8,
       fontFamily: theme.fontSemibold,
       fontSize: theme.responsiveFontSize,
       color: theme.titleColor,
@@ -144,12 +145,12 @@ const useMacroEconomicCalendarStyles = () => {
       backgroundColor: theme.activeWhite,
     },
     activeCountryName: {
-      color: theme.secondaryTextColor,
+      color: theme.subMenuTextColor,
       fontFamily: theme.fontSemibold,
     },
     countryName: {
       fontSize: theme.responsiveFontSize * 0.7,
-      color: theme.subMenuTextColor,
+      color: theme.secondaryTextColor,
       fontFamily: theme.fontMedium,
       textAlign: 'center',
     },
@@ -178,8 +179,9 @@ const useMacroEconomicCalendarStyles = () => {
     },
     row: {
       flexDirection: 'row',
-      width: '100%',
-      justifyContent: 'center',
+      width: '90%',
+      marginRight: 8,
+      justifyContent: 'space-between',
     },
   });
   return styles;
