@@ -333,7 +333,7 @@ const Chart = ({
 
 
           {/* TREND LINE */}
-          <VictoryLine
+          {/* <VictoryLine
                 data={[
                   { x: chartData[25].x, y: 52000 },
                   { x: chartData[33].x, y: 68000 },
@@ -366,7 +366,7 @@ const Chart = ({
                     ]}
                   />
                 }
-              />
+              /> */}
 
         
 
