@@ -6,6 +6,7 @@ import {AboutModalContext} from '../../../../../../../context/AboutModalContext'
 import {home_static_data} from '../../../../../homeStaticData';
 
 const AlertMenu = ({activeAlertOption, setActiveButtons}) => {
+
   const {handleAboutPress} = useContext(AboutModalContext);
   const styles = useChartsStyles();
   const aboutIconAdditionalStyles = {
@@ -13,6 +14,7 @@ const AlertMenu = ({activeAlertOption, setActiveButtons}) => {
     marginHorizontal: 14,
     paddingLeft: 32,
   };
+  
   return (
     <View style={styles.alertMenuContainer}>
       <View style={styles.titleRow}>

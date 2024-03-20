@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image} from 'react-native';
+import {Platform, View, Text, Image} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenGainersStyles from './TopTenGainersStyle.js';
 import topTenGainersService from '../../../services/TopTenGainersService.js';
@@ -50,8 +50,9 @@ const TopTenGainers = ({handleAboutPress}) => {
   const styles = useTopTenGainersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
   const [loading, setLoading] = useState(true);
+  
   const additionalAboutStyles = {
-    marginRight: 20,
+    marginRight: Platform.OS === 'android' ? 20 : 0,
   };
 
   useEffect(() => {

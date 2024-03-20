@@ -13,13 +13,16 @@ const useChartsStyles = () => {
       width: theme.width,
       backgroundColor: 'transparent',
       paddingHorizontal: 10,
+      paddingBottom: 10,
     },
     detailsContainer: {
       flex: 1,
       marginVertical: theme.titlesVerticalMargin,
-      marginBottom: 8,
+      marginBottom: 0,
       flexDirection: 'row',
       width: '100%',
+      // borderWidth: 2,
+      // borderColor: '#282828'
     },
     detailslabel: {
       marginHorizontal: 10,
@@ -75,14 +78,20 @@ const useChartsStyles = () => {
     },
     rsButtonContainer: {
       flexDirection: 'row',
-      width: '50%',
+      width: '100%',
+      flexWrap: 'wrap',
+      marginTop: 10,
+      alignItems: 'flex-start',
     },
     rsButton: {
-      paddingHorizontal: 8,
+      paddingHorizontal: 4,
       paddingVertical: 4,
       borderWidth: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
       borderRadius: 4,
-      margin: 4,
+      margin: 1.5,
+      width: '24%',
       backgroundColor: theme.secondaryBoxesBgColor,
     },
     rsButtonText: {
@@ -92,13 +101,15 @@ const useChartsStyles = () => {
       fontFamily: theme.font,
     },
     activeRsButtonText: {
-      color: theme.supportAndResistanceText,
+      color: '#fff',
       fontFamily: theme.fontMedium,
     },
     chartsRow: {
       flex: 1,
-      flexDirection: 'row',
+      width: 370,
+      flexDirection: 'column',
       marginBottom: 16,
+      marginTop: 10,
       justifyContent: 'flex-start',
     },
     lineLabel: {
@@ -113,7 +124,7 @@ const useChartsStyles = () => {
       alignItems: 'top',
       width: '100%',
       height: 300,
-      borderRadius: 2,
+      position: 'relative'
     },
     loaderContainer: {
       flex: 1,
@@ -129,6 +140,8 @@ const useChartsStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
+      // borderColor: 'black',
+      // borderWidth: 2
     },
     chartBackgroundImage: {
       justifyContent: 'center',
@@ -142,12 +155,13 @@ const useChartsStyles = () => {
     },
     chartsWrapper: {
       flex: 1,
-      padding: 8,
+      padding: 0,
       alignItems: 'center',
+      justifyContent: 'center',
       borderRadius: 2,
     },
     alertMenuContainer: {
-      paddingVertical: 6,
+      paddingVertical: 0,
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -192,23 +206,20 @@ const useChartsStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
     },
     alertListContainer: {
-      // justifyContent: 'center',
-      // alignItems: 'center',
       width: '100%',
-      marginVertical: 15,
+      marginBottom: 15,
+      minHeight: 50,
     },
     loaderContainer: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      minHeight: 300
     },
     alertsTextMessage: {
-      textAlign: 'center',
-      textAlignVertical: 'center',
       fontSize: theme.responsiveFontSize,
       fontFamily: theme.fontBoldItalic,
       color: theme.secondaryTextColor,
-      alignSelf: 'center',
     },
     alertDetailsContainer: {
       position: 'relative',
@@ -216,7 +227,7 @@ const useChartsStyles = () => {
       flexDirection: 'row',
       backgroundColor: theme.boxesBackgroundColor,
       marginVertical: 4,
-      borderRadius: 2,
+      borderRadius: 5,
       padding: 6,
       paddingVertical: 8,
       flex: 1,
@@ -279,6 +290,9 @@ const useChartsStyles = () => {
     titleRow: {
       width: '100%',
       flexDirection: 'row',
+    },
+    fibonacciContainer: {
+      position: 'relative',
     },
     pairingsMenuContainer: {
       flex: 1,

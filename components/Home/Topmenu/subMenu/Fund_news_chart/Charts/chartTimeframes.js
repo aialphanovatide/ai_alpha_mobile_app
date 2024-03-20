@@ -9,6 +9,7 @@ const TimeframeSelector = ({
 }) => {
   const timeframes = hasHourlyTimes ? ['1h', '4h', '1D', '1W'] : ['1D', '1W'];
   const styles = useChartsStyles();
+  
   return (
     <View style={styles.timeFrameContainer}>
       {timeframes.map(interval => (

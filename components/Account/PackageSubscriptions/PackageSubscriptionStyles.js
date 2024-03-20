@@ -5,13 +5,16 @@ import {useContext} from 'react';
 const usePackageSubscriptionStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
+    backgroundContainer: {
+      backgroundColor: 'black',
+    },
     container: {
       flex: 1,
       width: theme.width,
       padding: 10,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'transparent',
+      backgroundColor: theme.mainBackgroundColor,
     },
     flex: {
       flex: 1,
@@ -42,10 +45,19 @@ const usePackageSubscriptionStyles = () => {
     },
     text: {
       color: theme.subscriptions.title,
-      fontSize: theme.responsiveFontSize * 0.9,
-      fontFamily: theme.font,
-      textAlign: 'left',
+      fontSize: theme.responsiveFontSize * 0.91,
+      fontFamily: theme.fontUnboundedMedium,
+      textAlign: 'center',
+      marginBottom: 10,
       lineHeight: 22,
+    },
+    bigText: {
+      color: '#FF9521',
+      fontSize: theme.responsiveFontSize * 1.5,
+      fontFamily: theme.fontUnbounded,
+      textAlign: 'center',
+      marginBottom: 20,
+      lineHeight: 32,
     },
     bold: {
       fontFamily: theme.fontBold,
@@ -59,6 +71,7 @@ const usePackageSubscriptionStyles = () => {
       fontSize: theme.responsiveFontSize * 0.75,
       fontFamily: theme.font,
       lineHeight: 22,
+      textAlign: 'center',
     },
     reference: {
       top: 30,
@@ -69,7 +82,10 @@ const usePackageSubscriptionStyles = () => {
       color: theme.activeYellow,
     },
     textRow: {
-      flexDirection: 'row',
+      textAlign: 'center',
+    },
+    textRowContainer: {
+      marginBottom: 15,
     },
     foundersText: {
       color: theme.subscriptions.foundersText,

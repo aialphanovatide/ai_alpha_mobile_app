@@ -80,6 +80,14 @@
 		<string>prompt_semibold_italic.ttf</string>
 		<string>prompt_thin.ttf</string>
 		<string>prompt_thin_italic.ttf</string>
+		<string>unbounded_black.ttf</string>
+		<string>unbounded_bold.ttf</string>
+		<string>unbounded_extra_bold.ttf</string>
+		<string>unbounded_extra_light.ttf</string>
+		<string>unbounded_light.ttf</string>
+		<string>unbounded_medium.ttf</string>
+		<string>unbounded_regular.ttf</string>
+		<string>unbounded_semibold.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

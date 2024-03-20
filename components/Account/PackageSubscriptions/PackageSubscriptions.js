@@ -29,6 +29,9 @@ const SubscriptionItem = ({
   const formatCoinTitles = title => {
     let first_space = title.indexOf(' ');
     let package_display_name = title.slice(0, first_space);
+    if (package_display_name == 'Founder'){
+      package_display_name = 'AI Alpha Founders';
+    }
     return package_display_name;
   };
   const [expanded, setExpanded] = useState(false);
@@ -178,6 +181,7 @@ const PackageSubscriptions = () => {
   // console.log("HAS A FOUNDER PACKAGE: ", hasFoundersPackage);
 
   return (
+    <ScrollView style={styles.backgroundContainer}>
     <LinearGradient
       useAngle={true}
       angle={45}
@@ -190,17 +194,26 @@ const PackageSubscriptions = () => {
         <Text style={styles.mainTitle}>Subscriptions Options</Text>
         <View style={styles.description}>
           <View style={styles.textRow}>
-            <Text style={[styles.text, styles.bold]}>
+            <Text style={styles.text}>
               Unlock premium features now with a
             </Text>
-            <Text style={[styles.text, styles.bold, styles.orange]}>
-              7-day free trial
+          </View>
+          <View>
+          <Text style={styles.bigText}>
+              7 DAY FREE TRIAL
+            </Text>
+          </View>
+          <View style={styles.textRowContainer}>
+          <View style={styles.textRow}>
+            <Text style={styles.secondaryText}>
+              Monthly subscription activates post-trial.
             </Text>
           </View>
           <View style={styles.textRow}>
             <Text style={styles.secondaryText}>
-              Monthly subscription begins after. Cancel anytime hussle-free.
+              Cancel anytime hussle-free
             </Text>
+          </View>
           </View>
         </View>
         <TouchableOpacity
@@ -217,7 +230,7 @@ const PackageSubscriptions = () => {
             Purchase
           </Text>
         </TouchableOpacity>
-        <ScrollView style={styles.packagesContainer}>
+        <View style={styles.packagesContainer}>
   {packages && packages.length >= 0 ? (
     hasFoundersPackage ? (
       packages
@@ -257,11 +270,13 @@ const PackageSubscriptions = () => {
   ) : (
     <Loader />
   )}
-</ScrollView>
+</View>
 
         <SubscriptionsLoader isLoading={loading} />
       </SafeAreaView>
     </LinearGradient>
+    </ScrollView>
+
   );
 };
 

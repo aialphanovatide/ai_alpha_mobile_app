@@ -136,7 +136,6 @@ const CandlestickChart = ({route}) => {
   };
 
   // Function to handle the currency-pair for the coins that haves USDT and BTC pairings
-
   const handlePairingChange = pairing => {
     setLoading(true);
     setSelectedPairing(pairing);
@@ -168,15 +167,16 @@ const CandlestickChart = ({route}) => {
           handlePairingChange={handlePairingChange}
         />
         <View style={styles.chartsWrapper}>
+       
           <View style={styles.chartsRow}>
-            <RsButton
-              activeButtons={activeButtons}
-              setActiveButtons={setActiveButtons}
-            />
             <TimeframeSelector
               selectedInterval={selectedInterval}
               changeInterval={changeInterval}
               hasHourlyTimes={coinBot.toLowerCase() === 'btc'}
+            />
+            <RsButton
+              activeButtons={activeButtons}
+              setActiveButtons={setActiveButtons}
             />
           </View>
           <Chart

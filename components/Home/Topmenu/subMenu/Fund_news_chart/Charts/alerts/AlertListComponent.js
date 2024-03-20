@@ -5,29 +5,37 @@ import {getService} from '../../../../../../../services/aiAlphaApi';
 import Loader from '../../../../../../Loader/Loader';
 
 const AlertListComponent = ({botName, timeframe, styles}) => {
+
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Fetches the alerts
   useEffect(() => {
-    setIsLoading(true);
-    const limit =
-      timeframe === '4h'
-        ? 5
-        : timeframe === 'today'
-        ? 10
-        : timeframe === 'this week'
-        ? 20
-        : 30;
+  setIsLoading(true);
+
+    // Determine the limit based on the selected timeframe
+    let limit;
+    if (timeframe === '4h') {
+      limit = 5;
+    } else if (timeframe === 'today') {
+      limit = 10;
+    } else if (timeframe === 'this week') {
+      limit = 20;
+    } else {
+      limit = 30; // Default limit
+    }
+
     const fetchAlerts = async () => {
       try {
+        // Fetch alerts based on coin, date, and limit
         const response = await getService(
-          `/api/filter/alerts?coin=${botName}&date=${timeframe}&limit=${limit}`,
+          `/api/filter/alerts?coin=${botName}&date=${timeframe}&limit=${limit}`
         );
-        // console.log('Alerts response: ', response);
+
+        // Check if response is empty or contains no alerts
         if (
           response.length === 0 ||
-          (response.message &&
-            response.message.startsWith('No alerts found')) ||
+          (response.message && response.message.startsWith('No alerts found')) ||
           response.alerts.length === 0
         ) {
           setAlerts([]);
@@ -41,18 +49,23 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
       }
     };
 
+    // Call fetchAlerts function
     fetchAlerts();
   }, [timeframe, botName]);
 
+
   return (
-    <ScrollView style={styles.alertListContainer}>
+    <ScrollView
+      contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+      style={styles.alertListContainer}
+    >
       {isLoading ? (
         <View style={styles.loaderContainer}>
           <Loader />
         </View>
       ) : alerts.length === 0 ? (
         <Text style={styles.alertsTextMessage}>
-          There aren't alerts to show
+          There aren't any alerts to show
         </Text>
       ) : (
         alerts.map(alert => (
@@ -66,7 +79,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
         ))
       )}
     </ScrollView>
-  );
+  );  
 };
 
 export default AlertListComponent;

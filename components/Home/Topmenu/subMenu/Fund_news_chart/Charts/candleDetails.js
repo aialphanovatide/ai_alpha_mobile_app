@@ -15,6 +15,8 @@ const CandlestickDetails = ({
   handlePairingChange,
 }) => {
   const {handleAboutPress} = useContext(AboutModalContext);
+
+  // Format the prices
   const formatNumber = price => {
     const number = parseFloat(price);
     if (isNaN(number)) {

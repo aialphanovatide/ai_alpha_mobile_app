@@ -21,7 +21,6 @@ const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
                 styles[activeButtonColors[index]],
             ]}
             onPress={() => {
-              console.log('activeSubcoin: ', coin.bot_name);
               handleCoinPress(coin.bot_name);
             }}>
             <View style={styles.buttonContainer}>

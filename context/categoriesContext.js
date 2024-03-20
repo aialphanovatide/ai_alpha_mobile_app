@@ -10,7 +10,6 @@ const CategoriesContextProvider = ({children}) => {
     const fetchCategories = async () => {
       try {
         const data = await getService('/get_categories');
-        console.log("Data categories: ", data.categories);
         setCategories(data.categories);
       } catch (error) {
         console.error('Error fetching categories:', error.message);
@@ -24,7 +23,6 @@ const CategoriesContextProvider = ({children}) => {
   };
 
   // Function to set by default ETH category, locking all the others
-
   const setDefaultCoin = (coin, categories) => {
     let newCategories = categories.map(category => {
       if (category.category !== coin) {
