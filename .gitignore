@@ -69,7 +69,7 @@ yarn-error.log
 /coverage
 .env
 ios/tmp.xcconfig
-keys.development.json
+keys*.json
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
