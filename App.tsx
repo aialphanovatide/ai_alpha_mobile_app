@@ -47,8 +47,6 @@ const App = () => {
       fireDate: new Date().getTime() + 1000 // Ensures the notification is scheduled for immediate delivery
     });
 };
-
-
   return (
     <Auth0Provider
       domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
@@ -70,9 +68,11 @@ const App = () => {
                   <TopMenuContextProvider>
                     <AboutModalProvider>
                       <Navigation />
+                      {/*
                       <View >
                         <Button title="Trigger Notification" onPress={handleNotification} />
                       </View>
+                      */}
                     </AboutModalProvider>
                   </TopMenuContextProvider>
                 </CategoriesContextProvider>

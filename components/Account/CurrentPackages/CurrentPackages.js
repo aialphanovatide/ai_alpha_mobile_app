@@ -56,10 +56,9 @@ const SubscriptionItem = ({
     Nextrade: ['uni', 'sushi', 'cake'],
     Diversefi: ['aave', 'pendle', '1inch'],
     Intellichain: ['ocean', 'fet', 'rndr'],
-
   };
   const coinNames = coinNamesMap[formatCoinTitles(item.title)] || [];
-  console.log("coin names! -> ", coinNames)
+  console.log("coin names! -> ", coinNames);
   return (
       <View
         style={[

@@ -136,6 +136,8 @@ const useCurrentPackagesStyles = () => {
     },
     subCoin: {
         marginRight: 5,
+        width: 20,
+        height: 20,
     },
     subCoinContainer: {
         flexDirection: 'row',
