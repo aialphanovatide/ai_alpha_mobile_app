@@ -80,7 +80,7 @@ const PriceAction = ({handleAboutPress}) => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeCoins, setActiveCoins] = useState([]);
   const additionalAboutStyles = {
-    marginRight: 20,
+    marginRight: Platform.OS === 'android' ? 20 : 0,
   };
   useEffect(() => {
     setCoins(priceActionMock);

@@ -39,6 +39,9 @@ const SubscriptionItem = ({
     let first_space = title.indexOf(' ');
     let package_display_name = title.slice(0, first_space);
     console.log("Word formatting -> ", package_display_name)
+    if (package_display_name == 'Founder'){
+      package_display_name = 'AI Alpha Founders';
+    }
     return package_display_name;
   };
   const coinNamesMap = {
@@ -58,7 +61,6 @@ const SubscriptionItem = ({
   const coinNames = coinNamesMap[formatCoinTitles(item.title)] || [];
   console.log("coin names! -> ", coinNames)
   return (
-
       <View
         style={[
           styles.itemContainer,
@@ -135,6 +137,13 @@ const SubscriptionItem = ({
           />
         </View>
         </View>
+        {isFoundersPackage && (
+        <View style={styles.foundersLabelContainer}>
+          <Text style={styles.foundersLabel}>
+          Congratulations! You are part of the exclusive group of AI Alpha Founders
+          </Text>
+        </View>
+      )}
 
       </View>
   );

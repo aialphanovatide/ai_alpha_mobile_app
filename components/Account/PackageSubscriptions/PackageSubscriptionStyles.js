@@ -6,7 +6,7 @@ const usePackageSubscriptionStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     backgroundContainer: {
-      backgroundColor: 'black',
+      backgroundColor: theme.mainBackgroundColor,
     },
     container: {
       flex: 1,
@@ -223,6 +223,40 @@ const usePackageSubscriptionStyles = () => {
       fontSize: theme.titleFontSize * 0.8,
       fontFamily: theme.fontMedium,
       textAlign: 'center',
+    },
+    subscriptionImage: {
+      width:390,
+      height:270,
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+    },
+    textFounders: {
+      color: theme.subscriptions.title,
+      fontSize: theme.responsiveFontSize * 0.91,
+      fontFamily: theme.fontUnboundedMedium,
+      textAlign: 'center',
+      marginBottom: 10,
+      lineHeight: 22,
+      fontWeight: 'bold',
+    },
+    bigTextFounders: {
+      color: '#FF9521',
+      fontSize: theme.responsiveFontSize * 1.3,
+      fontFamily: theme.fontUnbounded,
+      textAlign: 'center',
+      marginBottom: 20,
+      lineHeight: 32,
+    },
+    secondaryTextFounders: {
+      color: theme.subscriptions.secondaryText,
+      fontSize: theme.responsiveFontSize * 0.95,
+      fontFamily: theme.font,
+      lineHeight: 22,
+      textAlign: 'center',
+    },
+    foundersContainer: {
+      backgroundColor: theme.mainBackgroundColor,
     }
   });
   return styles;

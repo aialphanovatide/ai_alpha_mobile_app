@@ -73,7 +73,7 @@ const useCurrentPackagesStyles = () => {
       flexDirection: 'row',
     },
     foundersText: {
-      marginTop: -3,
+      marginTop: 7,
       marginLeft: 15,
       color: theme.subscriptions.foundersText,
     },
@@ -235,6 +235,16 @@ const useCurrentPackagesStyles = () => {
       color: theme.secondaryTextColor,
       alignSelf: 'center',
     },
+    foundersLabelContainer: {
+      marginTop: 5,
+      marginLeft: 10,
+    },
+    foundersLabel: {
+      color: '#FFFFFF',
+      fontSize: 15,
+      fontFamily: theme.font,
+      fontWeight: '500',
+    }
   });
   return styles;
 };
