@@ -257,7 +257,18 @@ const usePackageSubscriptionStyles = () => {
     },
     foundersContainer: {
       backgroundColor: theme.mainBackgroundColor,
-    }
+    },
+    subCoin: {
+      marginRight: 5,
+      width: 20,
+      height: 20,
+  },
+  subCoinContainer: {
+      flexDirection: 'row',
+      marginTop: 32,
+      marginLeft: 5,
+      alignItems: 'center',
+    },
   });
   return styles;
 };

@@ -21,10 +21,14 @@ import SplashScreen from 'react-native-splash-screen';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 import {AboutModalProvider} from './context/AboutModalContext';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import NetInfo from "@react-native-community/netinfo";
+import RNRestart from 'react-native-restart';
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
   const [barScheme, setBarScheme] = useState('default');
+  const [isConnected, setIsConnected] = useState(true);
+
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -33,6 +37,31 @@ const App = () => {
     const bar_theme = colorScheme === 'dark' ? 'dark-content' : 'light-content';
     setBarScheme(bar_theme);
   }, []);
+
+
+    const unsubscribe = NetInfo.addEventListener(state => {
+      if (state.isConnected === false){
+        //console.log("Not connected");
+        Alert.alert('Unable to Connect', 'Please check your internet connection and try again', [
+          {
+          text: 'Try Again',
+          onPress: () => RNRestart.restart(),
+          },
+      ]);
+      } else if (state.isConnected === true){
+        console.log("Connected to Internet")
+      }
+    
+    // Examples on what's seen on console are:
+    // 'Connection type', 'wifi'
+    // 'Connection type', 'none'
+    });
+
+    useEffect(() => {
+      unsubscribe();
+    }, []);
+
+  
 
   const handleStatusBarChange = theme => {
     setBarScheme(theme);
@@ -46,6 +75,7 @@ const App = () => {
       userInfo: {}, // Optional additional data
       fireDate: new Date().getTime() + 1000 // Ensures the notification is scheduled for immediate delivery
     });
+  
 };
   return (
     <Auth0Provider

@@ -34,6 +34,22 @@ const SubscriptionItem = ({
     }
     return package_display_name;
   };
+
+  const coinNamesMap = {
+    BaseBlock: ['ada', 'sol', 'avax'],
+    CoreChain: ['near', 'ftm', 'kas'],
+    RootLink: ['atom', 'dot', 'qnt'],
+    XPayments: ['xlm', 'algo', 'xrp'],
+    LSDs: ['ldo', 'rpl', 'fxs'],
+    BoostLayer: ['matic', 'arb', 'op'],
+    Truthnodes: ['link', 'api3', 'band'],
+    CycleSwap: ['dydx', 'velo', 'gmx'],
+    Nextrade: ['uni', 'sushi', 'cake'],
+    Diversefi: ['aave', 'pendle', '1inch'],
+    Intellichain: ['ocean', 'fet', 'rndr'],
+  };
+  const coinNames = coinNamesMap[formatCoinTitles(item.title)] || [];
+  console.log("coin names! -> ", coinNames);
   const [expanded, setExpanded] = useState(false);
 
   const handleExpand = value => {
@@ -94,6 +110,32 @@ const SubscriptionItem = ({
             ]}>
             Monthly Subscription *
           </Text>
+          <View style={styles.subCoinContainer}>
+        <Image
+          source={{
+            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coinNames[0]}.png`,
+            width: 20,
+            height: 20,
+          }}
+          style={styles.subCoin}
+          />
+        <Image
+          source={{
+            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coinNames[1]}.png`,
+            width: 20,
+            height: 20,
+          }}
+          style={styles.subCoin}
+          />
+        <Image
+          source={{
+            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coinNames[2]}.png`,
+            width: 20,
+            height: 20,
+          }}
+          style={styles.subCoin}
+          />
+        </View>
         </View>
         <View style={styles.itemDescriptionContainer}>
         <Text

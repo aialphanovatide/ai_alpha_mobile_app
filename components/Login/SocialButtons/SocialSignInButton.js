@@ -24,7 +24,7 @@ import {
 const SocialSignInButton = () => {
   const [loggedInUser, setloggedInUser] = useState(null);
   const navigation = useNavigation();
-  const { authorize, clearSession, user, getCredentials, error, isLoading } = useAuth0(); // Using useAuth0 hook
+  const { authorize } = useAuth0(); // Using useAuth0 hook
   const { userEmail, setUserEmail } = useUser();
   const { userId, setUserId } = useUserId();
   const redirectUri = 'com.aialphamobileapp://dev-zoejuo0jssw5jiid.us.auth0.com/ios/com.aialphamobileapp/login/callback';
@@ -40,18 +40,10 @@ const SocialSignInButton = () => {
   }, []);
   const signInWithGoogle = async () => {
     try {
-      
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log('User Info --> ', userInfo);
-
-      // Extract necessary user data
+      console.log('User Info: ', userInfo);
       const { idToken, user } = userInfo;
-      const authorizationCode = userInfo.serverAuthCode; // Capture authorization code
-      console.log("idtoken: ", idToken);
-      console.log("authorizationCode: ", authorizationCode);
-
-      // Send user data to Auth0
       const payload = {
         grant_type: 'authorization_code',
         id_token: idToken,
@@ -64,57 +56,15 @@ const SocialSignInButton = () => {
       };
 
       console.log("payload: ", payload);
-      console.log("sending payload to auth0")
       // Make request to Auth0
       const auth0Response = await axios.post(
         `https://${auth0ClonedDomain}/oauth/token`,
         payload,
       );
-
-      
-
-
-
-      console.log('Auth0 Response:', auth0Response);
-
-      const userId = auth0Response.data.user_id;
-      navigation.navigate('HomeScreen');
-
-      // Update state or context with user ID
-      setUserId(userId);
-
-      return {
-        message: 'success',
-        ...auth0Response.data,
-      };
-      /*
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log('User Info --> ', userInfo);
-      setUserId(userInfo);
-      const isSigned = await GoogleSignin.isSignedIn();
-      if (isSigned) {
-        console.log('Signed In correctly: ', isSigned);
-        navigation.navigate('HomeScreen');
-      } else {
-        console.error('Fail to sign in');
-      }*/
-  } catch (error) {
-    // Handle errors
-    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      console.warn('User cancelled the login flow');
-    } else if (error.code === statusCodes.IN_PROGRESS) {
-      console.warn('Operation is in progress already');
-    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      console.warn('Play services not available or outdated');
-    } else {
-      console.error('Some other error happened', error);
-      // Log the error response if available
-      if (error.response) {
-        console.error('Auth0 Error Response:', error.response.data);
+      } catch (e) {
+      console.log(e);
+      console.error('Auth0 Error Response:', e.response.data);
       }
-    }
-  }
 };
 
 

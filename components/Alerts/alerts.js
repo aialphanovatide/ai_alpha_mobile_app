@@ -137,7 +137,7 @@ const Alerts = ({route, navigation}) => {
         ) {
           setAlerts([]);
         } else {
-          // console.log('Alerts: ', response.alerts);
+          //console.log('Alerts: ', response.alerts);
           setAlerts(response.alerts);
         }
       } catch (error) {
