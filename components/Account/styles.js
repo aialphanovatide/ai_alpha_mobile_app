@@ -65,8 +65,8 @@ const useAccountStyles = () => {
       borderRadius: 2,
     },
     itemLogoContainer: {
-      width: 20,
-      height: 20,
+      width: 28,
+      height: 28,
       marginHorizontal: 5,
       alignItems: 'center',
       justifyContent: 'center',

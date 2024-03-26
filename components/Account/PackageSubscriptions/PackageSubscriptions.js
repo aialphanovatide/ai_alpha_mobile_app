@@ -34,6 +34,22 @@ const SubscriptionItem = ({
     }
     return package_display_name;
   };
+
+  const coinNamesMap = {
+    BaseBlock: ['ada', 'sol', 'avax'],
+    CoreChain: ['near', 'ftm', 'kas'],
+    RootLink: ['atom', 'dot', 'qnt'],
+    XPayments: ['xlm', 'algo', 'xrp'],
+    LSDs: ['ldo', 'rpl', 'fxs'],
+    BoostLayer: ['matic', 'arb', 'op'],
+    Truthnodes: ['link', 'api3', 'band'],
+    CycleSwap: ['dydx', 'velo', 'gmx'],
+    Nextrade: ['uni', 'sushi', 'cake'],
+    Diversefi: ['aave', 'pendle', '1inch'],
+    Intellichain: ['ocean', 'fet', 'rndr'],
+  };
+  const coinNames = coinNamesMap[formatCoinTitles(item.title)] || [];
+  console.log("coin names! -> ", coinNames);
   const [expanded, setExpanded] = useState(false);
 
   const handleExpand = value => {
@@ -94,9 +110,35 @@ const SubscriptionItem = ({
             ]}>
             Monthly Subscription *
           </Text>
+          <View style={styles.subCoinContainer}>
+        <Image
+          source={{
+            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coinNames[0]}.png`,
+            width: 20,
+            height: 20,
+          }}
+          style={styles.subCoin}
+          />
+        <Image
+          source={{
+            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coinNames[1]}.png`,
+            width: 20,
+            height: 20,
+          }}
+          style={styles.subCoin}
+          />
+        <Image
+          source={{
+            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coinNames[2]}.png`,
+            width: 20,
+            height: 20,
+          }}
+          style={styles.subCoin}
+          />
+        </View>
         </View>
         <View style={styles.itemDescriptionContainer}>
-          <Text
+        <Text
             style={[
               styles.itemDescription,
               isFoundersPackage && styles.foundersText,
@@ -104,28 +146,31 @@ const SubscriptionItem = ({
             numberOfLines={expanded ? 0 : 2}>
             {expanded ? `${description}` : `${description.slice(0, 100)}...`}
           </Text>
-          {expanded ? (
+          {/* Conditionally render the 'arrow-down' image */}
+          {!isFoundersPackage && (
             <>
-              <TouchableOpacity
-                style={styles.seeMoreButton}
-                onPress={() => handleExpand(false)}>
-                <Image
-                  source={require('../../../assets/images/arrow-up.png')}
-                  resizeMode={'contain'}
-                  style={styles.seeMoreIcon}
-                />
-              </TouchableOpacity>
+              {expanded ? (
+                <TouchableOpacity
+                  style={styles.seeMoreButton}
+                  onPress={() => handleExpand(false)}>
+                  <Image
+                    source={require('../../../assets/images/arrow-up.png')}
+                    resizeMode={'contain'}
+                    style={styles.seeMoreIcon}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.seeMoreButton}
+                  onPress={() => handleExpand(true)}>
+                  <Image
+                    source={require('../../../assets/images/arrow-down.png')}
+                    resizeMode={'contain'}
+                    style={styles.seeMoreIcon}
+                  />
+                </TouchableOpacity>
+              )}
             </>
-          ) : (
-            <TouchableOpacity
-              style={styles.seeMoreButton}
-              onPress={() => handleExpand(true)}>
-              <Image
-                source={require('../../../assets/images/arrow-down.png')}
-                resizeMode={'contain'}
-                style={styles.seeMoreIcon}
-              />
-            </TouchableOpacity>
           )}
         </View>
       </View>
@@ -168,7 +213,9 @@ const PackageSubscriptions = () => {
   };
 
   const handleActiveItem = item => {
-    setActiveItem(item);
+    setActiveItem(prevActiveItem =>
+      prevActiveItem === item ? null : item
+    );
   };
 
   const navigateBack = () => {
@@ -182,41 +229,69 @@ const PackageSubscriptions = () => {
 
   return (
     <ScrollView style={styles.backgroundContainer}>
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
-      style={styles.flex}>
-      <SafeAreaView style={styles.container}>
+      <LinearGradient
+        useAngle={true}
+        angle={45}
+        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        style={styles.flex}
+      >
+        <SafeAreaView style={styles.container}>
         <View style={styles.alignStart}>
           <BackButton navigationHandler={navigateBack} />
         </View>
-        <Text style={styles.mainTitle}>Subscriptions Options</Text>
-        <View style={styles.description}>
-          <View style={styles.textRow}>
-            <Text style={styles.text}>
-              Unlock premium features now with a
-            </Text>
+          {hasFoundersPackage ? (
+            <View style={styles.foundersContainer}>
+            <Text style={styles.mainTitle}>Subscriptions Options</Text>
+
+            <Image
+              source={isDarkMode ? require('../../../assets/images/account/subscriptionicondark-removebg.png') : require('../../../assets/images/account/subscriptioniconlight-removebg.png')}
+              resizeMode="contain"
+              style={styles.subscriptionImage}
+            />
+            <View style={styles.textRow}>
+              <Text style={styles.textFounders}>
+                Exclusive new content
+              </Text>
+            </View>
+            <View>
+            <Text style={styles.bigTextFounders}>
+                ONLY FOR OUR FOUNDERS
+              </Text>
+              <View style={styles.textRow}>
+              <Text style={styles.secondaryTextFounders}>
+              As an OG AI Alpha Founder watch this space for access to exclusive new content and packages
+              </Text>
+            </View>
+            </View>
+            </ View>
+          ) : (
+            <>
+              <Text style={styles.mainTitle}>Subscriptions Options</Text>
+              <View style={styles.description}>
+            <View style={styles.textRow}>
+              <Text style={styles.text}>
+                Unlock premium features now with a
+              </Text>
+            </View>
+            <View>
+            <Text style={styles.bigText}>
+                7 DAY FREE TRIAL
+              </Text>
+            </View>
+            <View style={styles.textRowContainer}>
+            <View style={styles.textRow}>
+              <Text style={styles.secondaryText}>
+                Monthly subscription activates post-trial.
+              </Text>
+            </View>
+            <View style={styles.textRow}>
+              <Text style={styles.secondaryText}>
+                Cancel anytime hussle-free
+              </Text>
+            </View>
+            </View>
           </View>
-          <View>
-          <Text style={styles.bigText}>
-              7 DAY FREE TRIAL
-            </Text>
-          </View>
-          <View style={styles.textRowContainer}>
-          <View style={styles.textRow}>
-            <Text style={styles.secondaryText}>
-              Monthly subscription activates post-trial.
-            </Text>
-          </View>
-          <View style={styles.textRow}>
-            <Text style={styles.secondaryText}>
-              Cancel anytime hussle-free
-            </Text>
-          </View>
-          </View>
-        </View>
-        <TouchableOpacity
+          <TouchableOpacity
           style={[
             styles.purchaseButton,
             activeItem ? styles.activePurchaseButton : {},
@@ -230,13 +305,11 @@ const PackageSubscriptions = () => {
             Purchase
           </Text>
         </TouchableOpacity>
-        <View style={styles.packagesContainer}>
-  {packages && packages.length >= 0 ? (
-    hasFoundersPackage ? (
-      packages
-        .filter(item => item.product.identifier.includes('founders'))
-        .map((item, index) => (
-          <SubscriptionItem
+              <View style={styles.packagesContainer}>
+                {packages && packages.length > 0 ? (
+                  packages.map((item, index) => (
+                    <View key={index}>
+                              <SubscriptionItem
             key={index}
             item={item.product}
             styles={styles}
@@ -247,36 +320,20 @@ const PackageSubscriptions = () => {
             activeItem={
               activeItem && activeItem.product.title === item.product.title
             }
-            isFoundersPackage={true || item.product.identifier.includes('founders')}
+            isFoundersPackage={false || item.product.identifier.includes('founders')}
           />
-        ))
-    ) : (
-      packages.map((item, index) => (
-        <SubscriptionItem
-          key={index}
-          item={item.product}
-          styles={styles}
-          offering={item}
-          icon={item.subscriptionIcon}
-          description={item.subscriptionDescription}
-          onItemPress={handleActiveItem}
-          activeItem={
-            activeItem && activeItem.product.title === item.product.title
-          }
-          isFoundersPackage={false || item.product.identifier.includes('founders')}
-        />
-      ))
-    )
-  ) : (
-    <Loader />
-  )}
-</View>
-
-        <SubscriptionsLoader isLoading={loading} />
-      </SafeAreaView>
-    </LinearGradient>
+                    </View>
+                  ))
+                ) : (
+                  <Loader />
+                )}
+              </View>
+              <SubscriptionsLoader isLoading={loading} />
+            </>
+          )}
+        </SafeAreaView>
+      </LinearGradient>
     </ScrollView>
-
   );
 };
 

@@ -31,8 +31,9 @@
 		9D5B26A62BAA133A008599E7 /* unbounded_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B269E2BAA133A008599E7 /* unbounded_bold.ttf */; };
 		9D5B26A72BAA133A008599E7 /* unbounded_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B269F2BAA133A008599E7 /* unbounded_regular.ttf */; };
 		9D5B26A82BAA133A008599E7 /* unbounded_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B26A02BAA133A008599E7 /* unbounded_black.ttf */; };
-		9D5B26A92BAA3664008599E7 /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFDA2992B659F1200E7E4B6 /* OpenSSL.xcframework */; };
-		9D5B26AA2BAA3664008599E7 /* OpenSSL.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFDA2992B659F1200E7E4B6 /* OpenSSL.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9D5B26B02BACD2FB008599E7 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B26AF2BACD2FB008599E7 /* Config.xcconfig */; };
+		9D64D47A2BB22BEB0045C636 /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFDA2992B659F1200E7E4B6 /* OpenSSL.xcframework */; };
+		9D64D47B2BB22BEB0045C636 /* OpenSSL.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFDA2992B659F1200E7E4B6 /* OpenSSL.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9D96EE922BA384CB0096A71A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9D96EE912BA384CB0096A71A /* PrivacyInfo.xcprivacy */; };
 		9DCEDF3A2B1808A500A2A8DA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DCEDF392B1808A500A2A8DA /* StoreKit.framework */; };
 		A7474D1B90264C5D83276A63 /* prompt_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FA896AC600745D0B9590D52 /* prompt_medium.ttf */; };
@@ -57,13 +58,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9D5B26AB2BAA3664008599E7 /* Embed Frameworks */ = {
+		9D64D47C2BB22BEB0045C636 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9D5B26AA2BAA3664008599E7 /* OpenSSL.xcframework in Embed Frameworks */,
+				9D64D47B2BB22BEB0045C636 /* OpenSSL.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,6 +107,7 @@
 		9D5B269E2BAA133A008599E7 /* unbounded_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = unbounded_bold.ttf; path = ../assets/fonts/unbounded_bold.ttf; sourceTree = "<group>"; };
 		9D5B269F2BAA133A008599E7 /* unbounded_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = unbounded_regular.ttf; path = ../assets/fonts/unbounded_regular.ttf; sourceTree = "<group>"; };
 		9D5B26A02BAA133A008599E7 /* unbounded_black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = unbounded_black.ttf; path = ../assets/fonts/unbounded_black.ttf; sourceTree = "<group>"; };
+		9D5B26AF2BACD2FB008599E7 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		9D96EE912BA384CB0096A71A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		9D9C75792B55DBA600C06EF8 /* ai_alpha_mobile_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ai_alpha_mobile_app.entitlements; path = ai_alpha_mobile_app/ai_alpha_mobile_app.entitlements; sourceTree = "<group>"; };
 		9DCEDF392B1808A500A2A8DA /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -133,7 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D5B26A92BAA3664008599E7 /* OpenSSL.xcframework in Frameworks */,
+				9D64D47A2BB22BEB0045C636 /* OpenSSL.xcframework in Frameworks */,
 				9DCEDF3A2B1808A500A2A8DA /* StoreKit.framework in Frameworks */,
 				F050964816A734697D3DB2D3 /* libPods-ai_alpha_mobile_app.a in Frameworks */,
 			);
@@ -196,6 +198,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				9D5B26AF2BACD2FB008599E7 /* Config.xcconfig */,
 				13B07FAE1A68108700A75B9A /* ai_alpha_mobile_app */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ai_alpha_mobile_appTests */,
@@ -298,7 +301,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				8191B699D97797986377F8E4 /* [CP] Embed Pods Frameworks */,
 				50EA8A3B9E27B1A2F745BB72 /* [CP] Copy Pods Resources */,
-				9D5B26AB2BAA3664008599E7 /* Embed Frameworks */,
+				9D64D47C2BB22BEB0045C636 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -374,6 +377,7 @@
 				BBBD53ED48F64181821B122F /* prompt_italic.ttf in Resources */,
 				40E30348EB1A424090E677DB /* prompt_light.ttf in Resources */,
 				9D5B26A72BAA133A008599E7 /* unbounded_regular.ttf in Resources */,
+				9D5B26B02BACD2FB008599E7 /* Config.xcconfig in Resources */,
 				ACA68005C75D441699C948F7 /* prompt_light_italic.ttf in Resources */,
 				9D5B26A42BAA133A008599E7 /* unbounded_semibold.ttf in Resources */,
 				A7474D1B90264C5D83276A63 /* prompt_medium.ttf in Resources */,
@@ -694,6 +698,7 @@
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9D5B26AF2BACD2FB008599E7 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
