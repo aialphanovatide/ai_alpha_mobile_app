@@ -8,16 +8,16 @@ const useFearAndGreedStyles = () => {
     mainSection: {
       flex: 1,
       width: theme.width,
-      height: theme.height * 0.8,
       backgroundColor: 'transparent',
       padding: 10,
       paddingTop: 36,
     },
-    fearAndGreedWidgetContainer: {
+    scrollView: {
       flex: 1,
+    },
+    fearAndGreedWidgetContainer: {
+      paddingTop: 32,
       margin: theme.boxesVerticalMargin,
-      justifyContent: 'center',
-      alignItems: 'center',
       borderRadius: 4,
       backgroundColor: theme.boxesBackgroundColor,
     },
@@ -65,6 +65,62 @@ const useFearAndGreedStyles = () => {
       color: theme.textColor,
       textAlign: 'left',
       lineHeight: 20,
+    },
+    referencesContainer: {
+      flex: 1,
+      marginVertical: theme.titlesVerticalMargin,
+      width: '100%',
+      margin: 8,
+      borderRadius: 6,
+    },
+    subTitle: {
+      marginTop: theme.boxesVerticalMargin,
+      paddingHorizontal: 16,
+      color: theme.titleColor,
+      fontSize: theme.titleFontSize,
+      fontFamily: theme.fontMedium,
+    },
+    referenceItem: {
+      flex: 1,
+      width: '95%',
+      marginVertical: 4,
+      backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 6,
+
+    },
+    referenceImage: {
+      minHeight: 196,
+      height: 'auto',
+      width: '100%',
+      borderTopLeftRadius: 6,
+      borderTopRightRadius: 6,
+    },
+    referenceTitle: {
+      marginTop: 14,
+      marginBottom: 4,
+      marginHorizontal: 16,
+      fontFamily: theme.fontMedium,
+      fontSize: theme.responsiveFontSize,
+      color: theme.textColor,
+      textAlign: 'left',
+    },
+    textContainer: {
+      margin: 4,
+      marginHorizontal: 14,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    descriptionText: {
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.font,
+      color: theme.textColor,
+      lineHeight: 22,
+    },
+    line: {
+      width: '90%',
+      borderTopColor: theme.secondaryTextColor,
+      borderTopWidth: 1,
+      margin: 16,
     },
   });
   return styles;

@@ -37,6 +37,13 @@ const HomeScreen = () => {
   const {userId} = useUserId();
   const {init} = useContext(RevenueCatContext);
 
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', e => {
+        e.preventDefault();
+      }),
+    [navigation],
+  );
 
   useEffect(() => {
     init(userId);

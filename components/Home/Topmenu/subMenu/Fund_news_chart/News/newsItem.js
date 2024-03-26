@@ -37,10 +37,11 @@ const NewsItem = ({item, onPress, filterText}) => {
       </View>
       <Image
         source={{
-          uri:
-            item.images.length > 0
-              ? `data:image/png;base64,${item.images[0].image}`
-              : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+          uri: item.article_id
+            ? `https://apparticleimages.s3.us-east-2.amazonaws.com/${item.article_id}.jpg`
+            : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+          width: 80,
+          height: 80,
         }}
         style={styles.image}
         resizeMode={'contain'}
