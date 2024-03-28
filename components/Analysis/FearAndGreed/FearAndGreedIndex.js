@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Image} from 'react-native';
 
-const FearAndGreedIndex = ({styles}) => {
+const FearAndGreedIndex = ({styles, currentDate}) => {
   // const fearAndGreedValues = [
   //   {range: [0, 20], label: 'Extreme fear', color: '#ff0000'},
   //   {range: [21, 40], label: 'Fear', color: '#ff4500'},
@@ -20,7 +20,7 @@ const FearAndGreedIndex = ({styles}) => {
   const getFormattedDate = () => {
     const actualDate = new Date();
     const yyyy = actualDate.getFullYear();
-    const mm = String(actualDate.getMonth() + 1).padStart(2, '0');
+    const mm = String(actualDate.getMonth() + 1);
     const dd = String(actualDate.getDate()).padStart(2, '0');
 
     return `${yyyy}-${mm}-${dd}`;
@@ -32,7 +32,7 @@ const FearAndGreedIndex = ({styles}) => {
         <Image
           style={styles.widget}
           source={{
-            uri: `https://alternative.me/crypto/fear-and-greed-index.png`,
+            uri: `https://alternative.me/images/fng/crypto-fear-and-greed-index-${date}.png`,
           }}
           alt="Latest Crypto Fear & Greed Index"
           fadeDuration={500}

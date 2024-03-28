@@ -49,6 +49,11 @@ const Analysis = () => {
   const {isDarkMode} = useContext(AppThemeContext);
   const sections = [
     {
+      id: 'History',
+      sectionName: 'History',
+      icon: require('../../assets/images/analysis/history.png'),
+    },
+    {
       id: 'Calendar',
       sectionName: 'Calendar',
       icon: require('../../assets/images/analysis/calendar.png'),

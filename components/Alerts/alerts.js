@@ -31,6 +31,7 @@ const NoAlertsView = ({styles}) => (
 
 // Component that renders the menu to switch between 'today' and 'this week' alert intervals.
 const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
+  const button_width = 100 / options.length;
   return (
     <View style={styles.buttonContainer}>
       {options.map(option => (
@@ -39,6 +40,7 @@ const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
           onPress={() => setActiveOption(option)}
           style={[
             styles.button,
+            {width: `${button_width}%`},
             activeOption === option ? styles.activeButton : null,
           ]}>
           <Text
@@ -56,7 +58,7 @@ const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
 // Component to display all the content, with the menu and the alerts fetched for each coin or for all the categories that the user has subscribed
 
 const Alerts = ({route, navigation}) => {
-  const options = ['today', 'this week'];
+  const options = ['1H', '4H', '1D', '1W'];
   const [activeAlertOption, setActiveAlertOption] = useState(options[0]);
   const [botName, setBotName] = useState(null);
   const [subscribed, setSubscribed] = useState(null);
@@ -71,6 +73,14 @@ const Alerts = ({route, navigation}) => {
   const ref = useRef(null);
 
   useScrollToTop(ref);
+
+  // Function to filter the alerts by the time interval date, for the case that the sections shows the subscriptions alerts, since it doesn't have a filter from the server side
+
+  const filterAlertsByDate = (alerts, timeInterval) => {
+    return alerts.filter(alert =>
+      alert.alert_name.includes(timeInterval.toUpperCase()),
+    );
+  };
 
   // Use effect to load the current active coin from the route (when navigating from Home with an active coin) or from the bottom menu, in which case, there is not active coin. Also for the case where the coin switches from the alerts section
   useEffect(() => {
@@ -120,12 +130,30 @@ const Alerts = ({route, navigation}) => {
   useEffect(() => {
     setAlerts([]);
     setIsLoading(true);
+    let alerts_date_filter;
+    switch (activeAlertOption) {
+      case '1H':
+        alerts_date_filter = '1h';
+        break;
+      case '4H':
+        alerts_date_filter = '4h';
+        break;
+      case '1D':
+        alerts_date_filter = 'today';
+        break;
+      case '1W':
+        alerts_date_filter = 'last week';
+        break;
+      default:
+        alerts_date_filter = 'today';
+        break;
+    }
     // Function to fetch alerts filtering by the active coin of the top menu
     const fetchAlertsByCoin = async () => {
       try {
         const response = await getService(
-          `/api/filter/alerts?coin=${botName}&date=${activeAlertOption}&limit=${
-            activeAlertOption === 'today' ? 20 : 40
+          `/api/filter/alerts?coin=${botName}&date=${alerts_date_filter}&limit=${
+            alerts_date_filter === 'last week' ? 40 : 20
           }`,
         );
 
@@ -161,7 +189,11 @@ const Alerts = ({route, navigation}) => {
             response[key].slice(0, 10).map(alert => mapped_alerts.push(alert));
           }
           // console.log(mapped_alerts);
-          setAlerts(mapped_alerts);
+          const filtered_alerts = filterAlertsByDate(
+            mapped_alerts,
+            activeAlertOption,
+          );
+          setAlerts(filtered_alerts);
         } else {
           setAlerts([]);
         }

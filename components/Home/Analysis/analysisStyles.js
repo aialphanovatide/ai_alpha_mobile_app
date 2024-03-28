@@ -21,8 +21,9 @@ const useHomeAnalysisStyles = () => {
     imageStyle: {
       width: 50,
       height: 50,
-      borderRadius: 2,
+      borderRadius: 25,
       marginLeft: 10,
+      alignSelf: 'center',
     },
     item: {
       flex: 1,
@@ -120,6 +121,29 @@ const useHomeAnalysisStyles = () => {
       right: 20,
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    articleDate: {
+      marginHorizontal: 20,
+      marginTop: 16,
+      textAlign: 'left',
+      fontSize: theme.responsiveFontSize * 0.825,
+      color: theme.secondaryTextColor,
+      fontFamily: theme.fontSemibold,
+      lineHeight: 22,
+    },
+    seeAllButton: {
+      width: '100%',
+      padding: 8,
+      paddingHorizontal: 12,
+      backgroundColor: theme.boxesBackgroundColor,
+      alignItems: 'flex-end',
+    },
+    seeAllText: {
+      color: theme.secondaryTextColor,
+      fontSize: theme.responsiveFontSize * 0.825,
+      textDecorationLine: 'underline',
+      textDecorationColor: theme.secondaryTextColor,
+      fontFamily: theme.fontMedium,
     },
   });
   return styles;

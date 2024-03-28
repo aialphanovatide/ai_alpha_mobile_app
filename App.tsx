@@ -26,6 +26,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 import {AboutModalProvider} from './context/AboutModalContext';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import {AnalysisContextProvider} from './context/AnalysisContext';
 import NetInfo from "@react-native-community/netinfo";
 import RNRestart from 'react-native-restart';
 import useWebSocket, {ReadyState}  from 'react-native-use-websocket';
@@ -71,16 +72,16 @@ const App = () => {
     setBarScheme(theme);
   };
   const handleNotification = () => {
-    console.log("Button pressed, sending notification...");
+    console.log('Button pressed, sending notification...');
     PushNotificationIOS.addNotificationRequest({
       id: '1', // Unique ID for the notification
       title: 'Hello',
       body: 'This is a notification!',
       userInfo: {}, // Optional additional data
-      fireDate: new Date().getTime() + 1000 // Ensures the notification is scheduled for immediate delivery
+      fireDate: new Date().getTime() + 1000, // Ensures the notification is scheduled for immediate delivery
     });
-  
-};
+  };
+
   return (
     <Auth0Provider
       domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
@@ -100,10 +101,10 @@ const App = () => {
                 <StatusBar barStyle={barScheme} />
                 <CategoriesContextProvider>
                   <TopMenuContextProvider>
-                    <AboutModalProvider>
-                      <Navigation />
-                      {/*
-                      <View >
+                    <AnalysisContextProvider>
+                      <AboutModalProvider>
+                        <Navigation />
+                        {/* <View >
                         <Button title="Trigger Notification" onPress={handleNotification} />
                       </View>
                       */}
@@ -134,6 +135,7 @@ const App = () => {
                         </View>
                       </Modal>
                     </AboutModalProvider>
+                    </AnalysisContextProvider>
                   </TopMenuContextProvider>
                 </CategoriesContextProvider>
               </SafeAreaView>
