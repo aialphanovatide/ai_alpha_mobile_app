@@ -70,16 +70,33 @@ const LoginForm = ({route}) => {
       const userEmail = await AsyncStorage.getItem('userEmail');
       const userId = await AsyncStorage.getItem('userId');
 
+      const loginMethod = await AsyncStorage.getItem('loginMethod');
+      if (loginMethod !== 'username-password') {
+        // User didn't log in using username-password last time
+        return;
+      }
+
       if (userEmail) {
         updateUserEmail(userEmail);
       }
+/*
+      console.log("LoginForm Checking persistence...");
+      console.log("LoginForm accestoken ->", accessToken);
+      console.log("LoginForm refreshtoken ->", refreshToken);
+      console.log("LoginForm userEmail ->", userEmail);
+      console.log("LoginForm userID ->", userId);
+*/
 
       if (accessToken && refreshToken) {
+        //console.log("LoginForm Entered accesToken");
         const user_id = formatUserId(userId);
+        //console.log("LoginForm NEWuserEmail ->", userEmail);
+        //console.log("LoginForm NEWuserID ->", user_id);
         setUserEmail(userEmail);
         setUserId(user_id);
         navigation.navigate('HomeScreen');
       } else {
+        //console.log("LoginForm Entered else");
         navigation.navigate('SignIn');
       }
     };
@@ -124,6 +141,8 @@ const LoginForm = ({route}) => {
           await AsyncStorage.setItem('refreshToken', credentials.refreshToken);
           await AsyncStorage.setItem('userEmail', username);
           await AsyncStorage.setItem('userId', formatted_id);
+          await AsyncStorage.setItem('loginMethod', 'username-password');
+
 
           setUserEmail(username);
           setUserId(formatted_id);

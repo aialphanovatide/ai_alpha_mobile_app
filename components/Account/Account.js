@@ -19,6 +19,7 @@ import {RevenueCatContext} from '../../context/RevenueCatContext';
 import {NOTIFICATIONS_MOCK} from './NotificationsPanel/notificationsMock';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
+import useWebSocket from 'react-native-use-websocket';
 
 const AccountItem = ({
   styles,
@@ -99,6 +100,7 @@ const Account = ({route}) => {
       component: null,
     },
   ];
+  
 
   const handleItemTouch = option => {
     switch (option.name) {
@@ -143,15 +145,19 @@ const Account = ({route}) => {
       resetForm: () => {
         setUsername('');
         setPassword('');
+        setUserId('');
         setUserEmail(null);
       },
     });
   };
   const handleLogout = async () => {
     try {
+      console.log("Logged out")
       await AsyncStorage.removeItem('accessToken');
       await AsyncStorage.removeItem('refreshToken');
       await AsyncStorage.removeItem('userEmail');
+      await AsyncStorage.removeItem('userId');
+      await AsyncStorage.removeItem('loginMethod');
       resetLoginForm();
       navigation.navigate('SignIn', {resetForm: true});
     } catch (e) {
