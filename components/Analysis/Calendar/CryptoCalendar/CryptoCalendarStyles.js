@@ -115,7 +115,7 @@ const useCryptoCalendarStyles = () => {
       borderRadius: 3,
     },
     cryptoItem: {
-      width: theme.width * 0.125,
+      width: theme.width * 0.175,
       marginVertical: 4,
       marginHorizontal: 4,
       padding: 2.5,
@@ -142,7 +142,7 @@ const useCryptoCalendarStyles = () => {
       fontFamily: theme.fontSemibold,
     },
     cryptoName: {
-      fontSize: theme.responsiveFontSize * 0.7,
+      fontSize: theme.responsiveFontSize * 0.6,
       color: theme.subMenuTextColor,
       fontFamily: theme.fontMedium,
       textAlign: 'center',

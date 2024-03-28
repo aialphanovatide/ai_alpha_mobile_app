@@ -1,10 +1,24 @@
-import React, {createContext, useEffect, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import {getService} from '../services/aiAlphaApi';
+import {CategoriesContext} from './categoriesContext';
 
 const AnalysisContext = createContext();
 
 const AnalysisContextProvider = ({children}) => {
+  const {categories} = useContext(CategoriesContext);
   const [analysisItems, setAnalysisItems] = useState([]);
+
+  const findCoinByCategoriesAndBotId = (categories, coin_id) => {
+    let found;
+    categories.forEach(category => {
+      category.coin_bots.forEach(coin => {
+        if (coin.bot_id === coin_id) {
+          found = coin.bot_name;
+        }
+      });
+    });
+    return found && found !== undefined ? found : null;
+  };
 
   const parseAnalysisContent = content => {
     const replacedContent = content.replace(/<br>/g, '\n');
@@ -72,10 +86,12 @@ const AnalysisContextProvider = ({children}) => {
               raw_analysis: item.analysis,
               id: item.analysis_id,
               coin_bot_id: item.coin_bot_id,
+              coin_bot_name: findCoinByCategoriesAndBotId(
+                categories,
+                item.coin_bot_id,
+              ),
               created_at: item.created_at,
-              category: item.category_name
-                ? item.category_name.toLowerCase()
-                : 'bitcoin',
+              category: item.category_name,
               title: extractFirstTitleAndImage(item.analysis).title,
               image: extractFirstTitleAndImage(item.analysis).imageSrc,
             };
@@ -89,23 +105,23 @@ const AnalysisContextProvider = ({children}) => {
       }
     };
     getAnalysisData();
-  }, []);
+  }, [categories]);
 
-  const updateAnalysisItems = newItem => {
-    const foundIndex = analysisItems.findIndex(item => item.id === newItem.id);
+  // const updateAnalysisItems = newItem => {
+  //   const foundIndex = analysisItems.findIndex(item => item.id === newItem.id);
 
-    if (foundIndex !== -1) {
-      const newItems = [...analysisItems];
-      const repeatedItem = newItems.splice(foundIndex, 1)[0];
-      newItems.unshift(repeatedItem);
-      setAnalysisItems(newItems);
-    } else {
-      setAnalysisItems([newItem, ...analysisItems]);
-    }
-  };
+  //   if (foundIndex !== -1) {
+  //     const newItems = [...analysisItems];
+  //     const repeatedItem = newItems.splice(foundIndex, 1)[0];
+  //     newItems.unshift(repeatedItem);
+  //     setAnalysisItems(newItems);
+  //   } else {
+  //     setAnalysisItems([newItem, ...analysisItems]);
+  //   }
+  // };
 
   return (
-    <AnalysisContext.Provider value={{analysisItems, updateAnalysisItems}}>
+    <AnalysisContext.Provider value={{analysisItems}}>
       {children}
     </AnalysisContext.Provider>
   );

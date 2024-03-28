@@ -11,20 +11,19 @@ const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
         <View style={styles.cryptoIconContainer}>
           <Image
             style={styles.cryptoIcon}
-            source={
-              isDarkMode
-                ? active
-                  ? option.iconImage.dark.active
-                  : option.iconImage.dark.inactive
-                : active
-                ? option.iconImage.light.active
-                : option.iconImage.light.inactive
-            }
+            source={{
+              uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/${
+                isDarkMode ? 'Dark' : 'Light'
+              }/${active ? 'Active' : 'Inactive'}/${option.category_name
+                .toLowerCase()
+                .replace(/\s/g, '')}.png`,
+              width: 35,
+            }}
             resizeMode={'contain'}
           />
         </View>
         <Text style={[styles.cryptoName, active && styles.activeCryptoName]}>
-          {option.icon}
+          {option.category_name}
         </Text>
       </View>
     </TouchableOpacity>
@@ -43,7 +42,7 @@ const CryptoFilter = ({options, currentFilter, handleOptionTouch}) => {
         style={styles.flex}>
         {options.map(option => (
           <CryptoItem
-            key={option.id}
+            key={option.category}
             option={option}
             active={option === currentFilter}
             handleOptionTouch={handleOptionTouch}

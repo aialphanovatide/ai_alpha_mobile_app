@@ -3,8 +3,11 @@ import React, {useEffect, useState} from 'react';
 import useTokenomicsStyles from './TokenomicsStyles';
 import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
+import SupplyModal from '../SupplyModal/SupplyModal';
+import {fundamentals_static_content} from '../../fundamentalsStaticData';
+import {findCoinNameBySymbol} from '../Competitors/coinsNames';
 
-const TokenItem = ({item, styles}) => {
+const TokenItem = ({item, styles, handleSupplyDataPress}) => {
   return (
     <View style={styles.tokenItem}>
       <View style={styles.tokenRow}>
@@ -13,6 +16,9 @@ const TokenItem = ({item, styles}) => {
           value={item.circulatingSupply}
           maxValue={item.maxSupply}
           styles={styles}
+          handleSupplyDataPress={handleSupplyDataPress}
+          name={item.name}
+          crypto={item.symbol}
         />
       </View>
       <View style={styles.tokenRow}>
@@ -39,7 +45,14 @@ const TokenItem = ({item, styles}) => {
   );
 };
 
-const HorizontalProgressBar = ({maxValue, value, styles}) => {
+const HorizontalProgressBar = ({
+  maxValue,
+  value,
+  styles,
+  handleSupplyDataPress,
+  crypto,
+}) => {
+  const name = findCoinNameBySymbol(crypto.toUpperCase());
   const percentage = maxValue === Infinity ? 65 : (value / maxValue) * 100;
 
   function formatNumber(value) {
@@ -67,7 +80,13 @@ const HorizontalProgressBar = ({maxValue, value, styles}) => {
         }`}</Text>
         {maxValue === Infinity ? (
           <TouchableOpacity
-            onPress={() => console.log('Clicked infinity button.')}
+            onPress={() =>
+              handleSupplyDataPress(
+                `${name} circulating supply`,
+                fundamentals_static_content.competitors.subsections.supplyModel
+                  .supplyDescriptions[crypto.toLowerCase()],
+              )
+            }
             style={styles.infinityButton}>
             <Text style={[styles.progressBarMaxValue, styles.infinityLabel]}>
               {'∞'}
@@ -95,6 +114,16 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
   const styles = useTokenomicsStyles();
   const [cryptos, setCryptos] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [supplyDataVisible, setSupplyDataVisible] = useState(false);
+  const [supplyData, setSupplyData] = useState({title: '', description: ''});
+
+  const handleSupplyDataPress = (title = null, description = null) => {
+    if (description) {
+      const new_supply_data = {title, description};
+      setSupplyData(new_supply_data);
+    }
+    setSupplyDataVisible(!supplyDataVisible);
+  };
 
   const parseNumberFromString = str => {
     const cleanedStr = str.replace(/\s|,/g, '');
@@ -163,6 +192,14 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
         <NoContentMessage hasSectionName={false} />
       ) : (
         <>
+          {supplyDataVisible && (
+            <SupplyModal
+              description={supplyData.description}
+              title={supplyData.title}
+              onClose={handleSupplyDataPress}
+              visible={supplyDataVisible}
+            />
+          )}
           <View style={styles.numberTitles}>
             <Text style={styles.alignLeft}>Circulating supply</Text>
             <Text style={styles.alignRight}>Total Supply</Text>
@@ -170,7 +207,12 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
           <View style={styles.tokenItemsContainer}>
             {cryptos &&
               cryptos.map((crypto, index) => (
-                <TokenItem key={index} item={crypto} styles={styles} />
+                <TokenItem
+                  key={index}
+                  item={crypto}
+                  styles={styles}
+                  handleSupplyDataPress={handleSupplyDataPress}
+                />
               ))}
           </View>
         </>

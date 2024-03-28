@@ -1,6 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, ImageBackground} from 'react-native';
-import {VictoryChart, VictoryAxis, VictoryCandlestick} from 'victory-native';
+import {
+  VictoryChart,
+  VictoryAxis,
+  VictoryCandlestick,
+  VictoryLine,
+} from 'victory-native';
 import Loader from '../../Loader/Loader';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import useTotal3Styles from './Total3ChartStyles';
@@ -9,36 +14,28 @@ import LinearGradient from 'react-native-linear-gradient';
 import {getService} from '../../../services/aiAlphaApi';
 import BackButton from '../BackButton/BackButton';
 
-const Total3Chart = ({loading, candlesToShow = 30}) => {
+const Total3Chart = ({candlesToShow = 30}) => {
   const styles = useTotal3Styles();
   const [chartData, setChartData] = useState([]);
   const {isDarkMode, theme} = useContext(AppThemeContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const fetchChartData = async () => {
       try {
         const response = await getService('api/total_3_data');
-
-        if (response.success) {
+        if (response.data) {
           // console.log(response.candlestick_data);
-          const ohlcData = response.candlestick_data
-            .slice(
-              response.candlestick_data.length - 50,
-              response.candlestick_data.length - 1,
-            )
-            .map(entry => ({
-              x: new Date(entry.timestamp),
-              open: parseFloat(entry.open),
-              high: parseFloat(entry.high),
-              low: parseFloat(entry.low),
-              close: parseFloat(entry.close),
-            }));
+          const ohlcData = response.data;
           setChartData(ohlcData);
         } else {
           setChartData([]);
         }
       } catch (error) {
         console.error('Failed to fetch data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -69,15 +66,15 @@ const Total3Chart = ({loading, candlesToShow = 30}) => {
     );
   }
 
-  const domainY = chartData.reduce(
-    (acc, dataPoint) => [
-      Math.min(acc[0], dataPoint.low),
-      Math.max(acc[1], dataPoint.high),
-    ],
-    [Infinity, -Infinity],
-  );
+  // const domainY = chartData.reduce(
+  //   (acc, dataPoint) => [
+  //     Math.min(acc[0], dataPoint.low),
+  //     Math.max(acc[1], dataPoint.high),
+  //   ],
+  //   [Infinity, -Infinity],
+  // );
 
-  const domainX = [chartData[0].x, chartData[chartData.length - 1].x];
+  // const domainX = [chartData[0].x, chartData[chartData.length - 1].x];
 
   return (
     <LinearGradient
@@ -101,7 +98,7 @@ const Total3Chart = ({loading, candlesToShow = 30}) => {
               style={styles.chartBackgroundImage}
               resizeMode="contain"
             />
-            <VictoryChart
+            {/* <VictoryChart
               width={375}
               domain={{x: domainX, y: domainY}}
               padding={{top: 10, bottom: 40, left: 20, right: 70}}
@@ -147,6 +144,41 @@ const Total3Chart = ({loading, candlesToShow = 30}) => {
                       datum.close < datum.open ? '#09C283' : '#E93334',
                   },
                 }}
+              />
+            </VictoryChart> */}
+            <VictoryChart width={375} domainPadding={{x: 10, y: 10}}>
+              <VictoryLine
+                data={chartData.map((value, index) => ({x: index, y: value}))}
+                style={{
+                  data: {stroke: '#C43A31'},
+                }}
+              />
+              <VictoryAxis
+                style={{
+                  axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
+                  tickLabels: {
+                    fontSize: theme.responsiveFontSize * 0.7,
+                    fill: theme.titleColor,
+                    fontFamily: theme.font,
+                  },
+                  grid: {stroke: theme.chartsGridColor},
+                }}
+                tickCount={4}
+              />
+              <VictoryAxis
+                dependentAxis
+                style={{
+                  axis: {stroke: theme.chartsAxisColor},
+                  tickLabels: {
+                    fontSize: theme.responsiveFontSize * 0.55,
+                    fill: theme.titleColor,
+                    fontFamily: theme.font,
+                  },
+                  grid: {stroke: theme.chartsGridColor},
+                }}
+                orientation="right"
+                tickCount={8}
+                tickFormat={t => `$${t}`}
               />
             </VictoryChart>
           </View>

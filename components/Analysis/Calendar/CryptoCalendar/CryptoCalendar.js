@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState, useEffect, useContext} from 'react';
 import {View, Text, ScrollView, Image} from 'react-native';
 import calendarService from '../../../../services/CalendarService';
 import Loader from '../../../Loader/Loader';
@@ -6,6 +6,7 @@ import CryptoFilter from './CryptoFilter';
 import menuData from '../../../Home/Topmenu/mainMenu/menuData';
 import calendarCryptos from './calendarCryptos';
 import useCryptoCalendarStyles from './CryptoCalendarStyles';
+import {CategoriesContext} from '../../../../context/categoriesContext';
 
 const eventTags = [
   {
@@ -88,6 +89,7 @@ const CalendarItem = ({event, coin, styles}) => {
 };
 
 const CryptoCalendar = ({selectedInterval}) => {
+  const {categories} = useContext(CategoriesContext);
   const [originalEvents, setOriginalEvents] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -96,8 +98,8 @@ const CryptoCalendar = ({selectedInterval}) => {
   const styles = useCryptoCalendarStyles();
 
   useEffect(() => {
-    setOptions(menuData);
-  }, []);
+    setOptions(categories);
+  }, [categories]);
 
   const fetchEventsData = async () => {
     try {
@@ -135,29 +137,23 @@ const CryptoCalendar = ({selectedInterval}) => {
 
   const filterEventsByCoins = (currentFilter, eventsToFilter) => {
     const findCoinInSubMenuOptions = (subMenuOptions, coin) => {
-      return subMenuOptions.find(option => option.coin === coin.symbol);
+      return subMenuOptions.find(
+        option => option.bot_name === coin.symbol.toLowerCase(),
+      );
     };
     let filterCoins = [];
-    if (currentFilter.subMenuOptions) {
-      filterCoins = calendarCryptos.map(coin => {
-        if (findCoinInSubMenuOptions(currentFilter.subMenuOptions, coin)) {
-          return parseInt(coin.id);
-        } else {
-          return;
-        }
-      });
-    } else {
-      const coin = calendarCryptos.find(
-        crypto => crypto.symbol === currentFilter.icon,
-      );
-      filterCoins.push(coin.id);
-    }
+    filterCoins = calendarCryptos.map(coin => {
+      if (findCoinInSubMenuOptions(currentFilter.coin_bots, coin)) {
+        return parseInt(coin.id);
+      } else {
+        return;
+      }
+    });
 
     const filteredCoins = filterCoins.filter(coin => coin !== undefined);
     const filteredEvents = eventsToFilter.filter(event => {
       return filteredCoins.includes(parseInt(event.coin_id));
     });
-
     return filteredEvents;
   };
 

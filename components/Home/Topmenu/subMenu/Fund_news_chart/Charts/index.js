@@ -16,10 +16,11 @@ import AboutModal from '../Fundamentals/AboutModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 import {COINGECKO_PRO_KEY} from '../../../../../../src/constants';
-import { useScrollToTop } from '@react-navigation/native';
+import {useScrollToTop} from '@react-navigation/native';
 
 const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
+  const timeframeOptions = ['1h', '4h', '1d', '1w'];
   const {interval, symbol, coinBot} =
     route.params.screen === 'Charts' ? route.params.params : route.params;
   const [isPriceUp, setIsPriceUp] = useState(null);
@@ -31,13 +32,13 @@ const CandlestickChart = ({route}) => {
   const [subscribed, setSubscribed] = useState(false);
   const {activeCoin} = useContext(TopMenuContext);
   const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
-  const [activeAlertOption, setActiveAlertOption] = useState('this week');
+  const [activeAlertOption, setActiveAlertOption] = useState('1w');
   const {aboutDescription, aboutVisible, handleAboutPress} =
     useContext(AboutModalContext);
   const {isDarkMode} = useContext(AppThemeContext);
   const pairings = coinBot !== 'btc' ? ['USDT', 'BTC'] : ['USDT'];
   const [selectedPairing, setSelectedPairing] = useState(pairings[0]);
-  
+
   // This ref object allows to scroll to top on every tab press
 
   const ref = useRef(null);
@@ -50,7 +51,7 @@ const CandlestickChart = ({route}) => {
     setLoading(true);
     setSelectedPairing(pairings[0]);
     setLastPrice(undefined);
-    setSelectedInterval('1D');
+    setSelectedInterval(coinBot.toLowerCase() !== 'btc' ? '1W' : '1D');
   }, [activeCoin, coinBot]);
 
   // This temporaly handles the kas and velo missing data for binance api
@@ -147,7 +148,10 @@ const CandlestickChart = ({route}) => {
       angle={45}
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={styles.flex}>
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={true} ref={ref}>
+      <ScrollView
+        style={styles.scroll}
+        showsVerticalScrollIndicator={true}
+        ref={ref}>
         {aboutVisible && (
           <AboutModal
             description={aboutDescription}
@@ -167,9 +171,9 @@ const CandlestickChart = ({route}) => {
           handlePairingChange={handlePairingChange}
         />
         <View style={styles.chartsWrapper}>
-       
           <View style={styles.chartsRow}>
             <TimeframeSelector
+              selectedPairing={selectedPairing}
               selectedInterval={selectedInterval}
               changeInterval={changeInterval}
               hasHourlyTimes={coinBot.toLowerCase() === 'btc'}
@@ -192,6 +196,7 @@ const CandlestickChart = ({route}) => {
         <AlertMenu
           activeAlertOption={activeAlertOption}
           setActiveButtons={setActiveAlertOption}
+          timeframeOptions={timeframeOptions}
         />
         <AlertListComponent
           timeframe={activeAlertOption}

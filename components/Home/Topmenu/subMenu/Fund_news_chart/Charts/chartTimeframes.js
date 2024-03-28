@@ -4,12 +4,17 @@ import useChartsStyles from './ChartsStyles';
 
 const TimeframeSelector = ({
   selectedInterval,
+  selectedPairing,
   changeInterval,
   hasHourlyTimes,
 }) => {
-  const timeframes = hasHourlyTimes ? ['1h', '4h', '1D', '1W'] : ['1D', '1W'];
+  const timeframes = hasHourlyTimes
+    ? ['1h', '4h', '1D', '1W']
+    : selectedPairing.toLowerCase() === 'btc'
+    ? ['1W']
+    : ['1D', '1W'];
   const styles = useChartsStyles();
-  
+  const timeframe_width = 100 / timeframes.length - 1;
   return (
     <View style={styles.timeFrameContainer}>
       {timeframes.map(interval => (
@@ -19,7 +24,7 @@ const TimeframeSelector = ({
             selectedInterval === interval
               ? styles.timeFrameActiveButton
               : styles.timeFrameButton,
-            hasHourlyTimes ? {} : styles.shortTimeFrame,
+            {width: `${timeframe_width}%`},
           ]}
           onPress={() => changeInterval(interval)}>
           <Text

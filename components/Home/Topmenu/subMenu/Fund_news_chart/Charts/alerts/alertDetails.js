@@ -2,13 +2,26 @@ import React, {useContext} from 'react';
 import {View, Text} from 'react-native';
 import {AppThemeContext} from '../../../../../../../context/themeContext';
 
-const AlertDetails = ({message, price, timeframe, styles}) => {
+const AlertDetails = ({message, date, price, timeframe, styles}) => {
   const {theme} = useContext(AppThemeContext);
   const timeframeStyle = {
     color: timeframe.toLowerCase().includes('bullish')
       ? theme.priceUpColor
       : theme.priceDownColor,
-      marginTop: 4,
+    marginTop: 4,
+  };
+
+  // Function to get the correct date string from the alert created_at prop
+
+  const simplifyDateTime = dateTimeString => {
+    const dateTime = new Date(dateTimeString);
+    const year = dateTime.getFullYear();
+    const month = String(dateTime.getMonth() + 1).padStart(2, '0');
+    const day = String(dateTime.getDate()).padStart(2, '0');
+    const hours = String(dateTime.getHours()).padStart(2, '0');
+    const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+
+    return {date: `${day}-${month}-${year}`, hour: `${hours}:${minutes}`};
   };
 
   const formatNumber = price => {
@@ -55,9 +68,7 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     <View style={styles.alertDetailsContainer}>
       <View style={styles.alertDetailsLeftContent}>
         <View style={styles.alertsRow}>
-          <Text
-            style={[styles.alertDetailsTitle]}
-            numberOfLines={2}>
+          <Text style={[styles.alertDetailsTitle]} numberOfLines={2}>
             {`${coin_title.toUpperCase()} ${
               interval_word.toUpperCase()[0] +
               interval_word.toLowerCase().slice(1)
@@ -69,11 +80,7 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
             <Text style={[styles.alertDetailsTitle, styles.price]}>
               ${formatNumber(price)}
             </Text>
-            <Text
-              style={[
-                styles.alertDetailsTitle,
-                timeframeStyle,
-              ]}>
+            <Text style={[styles.alertDetailsTitle, timeframeStyle]}>
               {word.toUpperCase()[0] + word.toLowerCase().slice(1)}
             </Text>
           </View>

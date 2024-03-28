@@ -59,12 +59,17 @@ const useHomeAnalysisStyles = () => {
     },
     background: {
       flex: 1,
-      backgroundColor: theme.mainBackgroundColor,
-      padding: 10,
     },
     container: {
       flex: 1,
+      width: theme.width,
+      padding: 12,
+      backgroundColor: theme.mainBackgroundColor,
+    },
+    article: {
+      flex: 1,
       width: '100%',
+      paddingVertical: 4,
       paddingHorizontal: 16,
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
@@ -123,7 +128,6 @@ const useHomeAnalysisStyles = () => {
       alignItems: 'center',
     },
     articleDate: {
-      marginHorizontal: 20,
       marginTop: 16,
       textAlign: 'left',
       fontSize: theme.responsiveFontSize * 0.825,
@@ -144,6 +148,12 @@ const useHomeAnalysisStyles = () => {
       textDecorationLine: 'underline',
       textDecorationColor: theme.secondaryTextColor,
       fontFamily: theme.fontMedium,
+    },
+    articleImage: {
+      width: theme.width,
+      height: 350,
+      alignSelf: 'center',
+      overflow: 'hidden',
     },
   });
   return styles;
