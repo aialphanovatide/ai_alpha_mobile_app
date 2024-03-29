@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  Alert,
   SafeAreaView,
 } from 'react-native';
 import Purchases from 'react-native-purchases';
@@ -20,6 +21,7 @@ import {NOTIFICATIONS_MOCK} from './NotificationsPanel/notificationsMock';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import useWebSocket from 'react-native-use-websocket';
+import RNRestart from 'react-native-restart';
 
 const AccountItem = ({
   styles,
@@ -105,7 +107,8 @@ const Account = ({route}) => {
   const handleItemTouch = option => {
     switch (option.name) {
       case 'Log Out':
-        handleLogout();
+        logoutWarning();
+        navigation.navigate('SignIn');
         break;
       case 'Settings':
         navigation.navigate('SettingsScreen');
@@ -150,21 +153,37 @@ const Account = ({route}) => {
       },
     });
   };
+
+  const logoutWarning = async () =>{
+    Alert.alert(
+      'Log Out',
+      'Are you sure you want to log out?',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Log Out', onPress: handleLogout},
+      ],
+    );
+  };
+
   const handleLogout = async () => {
     try {
-      console.log("Logged out")
+      console.log("Logging out...");
+      console.log("Removing login data...");
       await AsyncStorage.removeItem('accessToken');
       await AsyncStorage.removeItem('refreshToken');
       await AsyncStorage.removeItem('userEmail');
       await AsyncStorage.removeItem('userId');
       await AsyncStorage.removeItem('loginMethod');
+      console.log("Successfully removed login data...");
       resetLoginForm();
+      console.log("After loginForm reset");
       navigation.navigate('SignIn', {resetForm: true});
+      RNRestart.restart();
+      console.log("After logout navigation");
     } catch (e) {
       console.error('Logout failed', e);
     }
   };
-
   // useEffect(() => {
   //   if (route.params?.userEmail) {
   //     setUserEmail(route.params.userEmail);

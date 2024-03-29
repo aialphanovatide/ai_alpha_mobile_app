@@ -28,7 +28,7 @@ import {AboutModalProvider} from './context/AboutModalContext';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {AnalysisContextProvider} from './context/AnalysisContext';
 import NetInfo from "@react-native-community/netinfo";
-import RNRestart from 'react-native-restart';
+//import RNRestart from 'react-native-restart';
 import useWebSocket, {ReadyState}  from 'react-native-use-websocket';
 import ThemeButton from './components/ThemeButton/ThemeButton';
 import {AppThemeContext} from './context/themeContext';
@@ -36,9 +36,11 @@ import {AppThemeContext} from './context/themeContext';
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
+  //console.log("color scheme ->", colorScheme);
   const [barScheme, setBarScheme] = useState('default');
   const [isConnected, setIsConnected] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
 
 
@@ -46,26 +48,31 @@ const App = () => {
     if (Platform.OS === 'android') {
       SplashScreen.hide();
     }
-    const bar_theme = colorScheme === 'dark' ? 'dark-content' : 'light-content';
+    const bar_theme = colorScheme === 'dark' ? 'light-content' : 'dark-content';
     setBarScheme(bar_theme);
-  }, []);
-
+  }, [colorScheme]); 
 
 
   useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+      setModalVisible(!state.isConnected); // Show modal when not connected
+      if (state.isConnected) {
+        //console.log("Connected to Internet");
+        setRefreshTrigger(prev => prev + 1);
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-  const unsubscribe = NetInfo.addEventListener(state => {
-    setIsConnected(state.isConnected);
-    setModalVisible(!state.isConnected); // Show modal when not connected
-    if (state.isConnected) {
-      console.log("Connected to Internet");
+
+  useEffect(() => {
+    if (refreshTrigger > 0) {
+      //console.log('Internet is back, refreshing content...');
     }
-  });
-  return () => {
-    unsubscribe();
-  };
-}, []);
-
+  }, [refreshTrigger]);
   
 
   const handleStatusBarChange = theme => {
@@ -82,6 +89,18 @@ const App = () => {
     });
   };
 
+  const checkConnectivityAndCloseModal = async () => {
+    const state = await NetInfo.fetch();
+    setIsConnected(state.isConnected);
+    // If the internet is back, close the modal
+    if (state.isConnected) {
+      setModalVisible(false);
+    } else {
+      // Optionally, you can alert the user that they're still offline
+      Alert.alert('No Internet Connection', 'You are still offline. Please check your internet connection.');
+    }
+  };
+
   return (
     <Auth0Provider
       domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
@@ -95,10 +114,10 @@ const App = () => {
                   styles.container,
                   {
                     backgroundColor:
-                      colorScheme === 'dark' ? '#0A0A0A' : '#EDEDED',
+                      colorScheme === 'dark' ? '#0b0b0a' : '#fbfbfa',
                   },
                 ]}>
-                <StatusBar barStyle={barScheme} />
+                <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
                 <CategoriesContextProvider>
                   <TopMenuContextProvider>
                     <AnalysisContextProvider>
@@ -127,9 +146,9 @@ const App = () => {
                             </View>
                             <View style={styles.row}>
                               <Image source={require('./assets/images/login/reloadsymbol.png')} style={styles.imageStyle2} />
-                              <TouchableOpacity onPress={() => RNRestart.restart()}>
-                              <Text style={styles.labelText2}>Reload</Text>
-                              </TouchableOpacity>
+                              <TouchableOpacity onPress={checkConnectivityAndCloseModal}>
+  <Text style={styles.labelText2}>Reload</Text>
+</TouchableOpacity>
                             </View>
                           </View>
                         </View>
@@ -165,14 +184,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF7EC',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column', // Changed to stack rows vertically
+    flexDirection: 'column',
     padding: 20,
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'center', // Ensures content within the row is centered
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 5, // Adds vertical padding between rows
+    paddingVertical: 5,
   },
   imageStyle1: {
     width: 35,
