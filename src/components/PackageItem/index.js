@@ -21,7 +21,7 @@ const PackageItem = ({ purchasePackage, setIsPurchasing }) => {
         console.log("User is pro");
         navigation.navigate('SignIn');
       }
-      console.log("Customer info:", customerInfo);
+      console.log("\nCustomer info:", customerInfo);
     } catch (error) {
       console.log("Error purchasing package:", error);
       Alert.alert("Purchase Error", "There was an error completing your purchase.");

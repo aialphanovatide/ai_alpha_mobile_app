@@ -9,6 +9,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+
   // Fetches the alerts
   useEffect(() => {
   setIsLoading(true);
@@ -18,7 +19,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
     if (timeframe === '4h') {
       limit = 5;
     } else if (timeframe === 'today') {
-      limit = 10;
+      limit = 5;
     } else if (timeframe === 'this week') {
       limit = 20;
     } else {
