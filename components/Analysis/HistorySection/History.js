@@ -39,12 +39,13 @@ const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
     <View style={styles.historyItemContainer}>
       <Image
         source={{
-          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/${
-            isDarkMode ? 'Dark' : 'Light'
-          }/Inactive/${
-            item.category.toLowerCase() === 'total 3'
-              ? 'bitcoin'
-              : item.category
+          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
+            isDarkMode ? 'dark' : 'light'
+          }/${
+            item.category !== null &&
+            item.category.toLowerCase().replace(/\s/g, '') === 'total3'
+              ? 'total3'
+              : item.coin_bot_name
           }.png`,
           width: 50,
         }}
@@ -141,11 +142,30 @@ const History = () => {
   }, [analysisItems]);
 
   const filterItemsByCategory = (category, items) => {
-    const filtered_items = items.filter(
-      item =>
-        item.category.toLowerCase().replace(/\s/g, '') ===
-        category.name.toLowerCase().replace(/\s/g, ''),
-    );
+    console.log('Category: ', category);
+    const filtered_items = [];
+    if (category.category_name.toLowerCase().replace(/\s/g, '') === 'total3') {
+      items.forEach(item => {
+        if (
+          item.category &&
+          item.category.toLowerCase().replace(/\s/g, '') === 'total3'
+        ) {
+          filtered_items.push(item);
+        }
+      });
+      return filtered_items;
+    }
+
+    category.coin_bots.forEach(coin => {
+      items.forEach(item => {
+        if (
+          item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===
+          coin.bot_name.toLowerCase().replace(/\s/g, '')
+        ) {
+          filtered_items.push(item);
+        }
+      });
+    });
     return filtered_items;
   };
 

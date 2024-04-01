@@ -4,9 +4,10 @@ import useCirculatingSupplyStyles from './CirculatingSupplyStyles';
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
+import {fundamentals_static_content} from '../../../../fundamentalsStaticData';
+import SupplyModal from '../../../SupplyModal/SupplyModal';
 
-const CirculatingSupplyItem = ({item, styles}) => {
-  console.log(`https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.crypto.toLowerCase()}.png`)
+const CirculatingSupplyItem = ({item, styles, handleSupplyDataPress}) => {
   return (
     <View style={styles.circulatingSupplyItem}>
       <View style={styles.row}>
@@ -36,17 +37,26 @@ const CirculatingSupplyItem = ({item, styles}) => {
       </View>
       <View style={styles.dataContainer}>
         <ProgressBar
+          name={item.name}
           maxValue={item.maxValue}
           percentageValue={item.percentageValue}
           styles={styles}
           crypto={item.crypto}
+          handleSupplyDataPress={handleSupplyDataPress}
         />
       </View>
     </View>
   );
 };
 
-const ProgressBar = ({maxValue, percentageValue, styles, crypto}) => {
+const ProgressBar = ({
+  name,
+  maxValue,
+  percentageValue,
+  styles,
+  crypto,
+  handleSupplyDataPress,
+}) => {
   function formatNumber(value) {
     const suffixes = ['', 'thousand', 'million', 'billion', 'trillion'];
 
@@ -68,7 +78,13 @@ const ProgressBar = ({maxValue, percentageValue, styles, crypto}) => {
       <View style={[styles.row, styles.noVerticalMargin, styles.noPaddingH]}>
         {maxValue === Infinity ? (
           <TouchableOpacity
-            onPress={() => console.log('Clicked infinity button.')}
+            onPress={() =>
+              handleSupplyDataPress(
+                `${name} circulating supply`,
+                fundamentals_static_content.competitors.subsections.supplyModel
+                  .supplyDescriptions[crypto.toLowerCase()],
+              )
+            }
             style={styles.infinityButton}>
             <Text style={[styles.valueLabel, styles.infinityLabel]}>{'∞'}</Text>
           </TouchableOpacity>
@@ -105,6 +121,16 @@ const CirculatingSupply = ({
   const [mappedData, setMappedData] = useState([]);
   const styles = useCirculatingSupplyStyles();
   const [loading, setLoading] = useState(true);
+  const [supplyDataVisible, setSupplyDataVisible] = useState(false);
+  const [supplyData, setSupplyData] = useState({title: '', description: ''});
+
+  const handleSupplyDataPress = (title = null, description = null) => {
+    if (description) {
+      const new_supply_data = {title, description};
+      setSupplyData(new_supply_data);
+    }
+    setSupplyDataVisible(!supplyDataVisible);
+  };
 
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
@@ -210,6 +236,14 @@ const CirculatingSupply = ({
         <NoContentMessage />
       ) : (
         <>
+          {supplyDataVisible && (
+            <SupplyModal
+              description={supplyData.description}
+              title={supplyData.title}
+              onClose={handleSupplyDataPress}
+              visible={supplyDataVisible}
+            />
+          )}
           <View style={styles.row}>
             <Text style={[styles.referenceLabel, styles.labelLeft]}>
               Circulating Supply
@@ -248,7 +282,12 @@ const CirculatingSupply = ({
 
           <View style={styles.itemsContainer}>
             {mappedData.map((item, index) => (
-              <CirculatingSupplyItem item={item} key={index} styles={styles} />
+              <CirculatingSupplyItem
+                item={item}
+                key={index}
+                styles={styles}
+                handleSupplyDataPress={handleSupplyDataPress}
+              />
             ))}
           </View>
         </>

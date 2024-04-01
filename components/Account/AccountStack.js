@@ -9,6 +9,7 @@ import LegalAndInformation from './LegalAndInformation/LegalAndInformation';
 import Eula from './LegalAndInformation/Eula/Eula';
 import CurrentPackages from './CurrentPackages/CurrentPackages';
 import SettingsScreen from './SettingsScreen/SettingsScreen';
+import { LoginForm } from '../../src/components';
 
 const AccountStack = createNativeStackNavigator();
 

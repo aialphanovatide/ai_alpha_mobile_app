@@ -26,6 +26,7 @@ import BackButton from '../../Analysis/BackButton/BackButton';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import RNRestart from 'react-native-restart';
 
 const SettingsItem = ({
   styles,
@@ -208,7 +209,8 @@ const SettingsScreen = ({route}) => {
         await AsyncStorage.removeItem('refreshToken');
         await AsyncStorage.removeItem('userEmail');
         resetLoginForm();
-        navigation.navigate('SignIn', {resetForm: true});
+        RNRestart.restart();
+        //navigation.navigate('SignIn', {resetForm: true});
       } else {
         throw new Error('Account deletion failed');
       }
@@ -251,12 +253,14 @@ const SettingsScreen = ({route}) => {
           const identities = emailCheckResponse.data[0].identities;
 
           identities.forEach(identity => {
+            console.log("identityconnection -> ", identity.connection)
             if (identity.connection === 'Username-Password-Authentication') {
               isUsernamePasswordAuthenticationUser = true;
             }
           });
         }
         console.log('got before here!');
+        console.log("isUsernamePasswordAuthenticationUser ->", isUsernamePasswordAuthenticationUser);
 
         if (isUsernamePasswordAuthenticationUser) {
           console.log('got here!');
@@ -303,6 +307,15 @@ const SettingsScreen = ({route}) => {
               },
             ],
             'secure-text',
+          );
+        } else {
+          Alert.alert(
+            'Delete Account',
+            'Are you sure you want to permanently delete your account? This action cannot be undone.',
+            [
+              {text: 'Cancel', style: 'cancel'},
+              {text: 'Delete', onPress: deleteUserAccount},
+            ],
           );
         }
       } catch (error) {

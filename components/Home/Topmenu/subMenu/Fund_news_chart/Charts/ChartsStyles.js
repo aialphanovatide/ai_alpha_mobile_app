@@ -61,9 +61,6 @@ const useChartsStyles = () => {
       borderWidth: 2,
       borderRadius: 4,
     },
-    shortTimeFrame: {
-      width: '45%',
-    },
     timeFrameButtonText: {
       color: theme.subMenuTextColor,
       textTransform: 'uppercase',
@@ -177,12 +174,12 @@ const useChartsStyles = () => {
       width: '65%',
       marginVertical: theme.boxesVerticalMargin * 2.8,
       padding: 1,
+      paddingHorizontal: 2,
       flexDirection: 'row',
       backgroundColor: theme.subMenuBgColor,
       borderRadius: 2,
     },
     alertMenuButton: {
-      width: '33.33%',
       paddingHorizontal: 5,
       justifyContent: 'center',
       alignItems: 'center',

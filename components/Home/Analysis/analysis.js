@@ -28,7 +28,7 @@ const Analysis = ({handleAboutPress}) => {
   const handleAnalysisNavigation = analysis => {
     navigation.navigate('AnalysisArticleScreen', {
       analysis_content: analysis.raw_analysis,
-      coin_bot_id: analysis.coin_bot_id,
+      analysis_id: analysis.id,
       date: analysis.created_at,
     });
   };
@@ -80,13 +80,17 @@ const Analysis = ({handleAboutPress}) => {
               </TouchableOpacity>
             </View>
           ))}
-          <View style={styles.seeAllButton}>
-            <Text
-              style={styles.seeAllText}
-              onPress={() => handleSeeAllNavigation()}>
-              See all articles
-            </Text>
-          </View>
+          {expanded ? (
+            <View style={styles.seeAllButton}>
+              <Text
+                style={styles.seeAllText}
+                onPress={() => handleSeeAllNavigation()}>
+                See all articles
+              </Text>
+            </View>
+          ) : (
+            <></>
+          )}
         </View>
       )}
     </List.Section>

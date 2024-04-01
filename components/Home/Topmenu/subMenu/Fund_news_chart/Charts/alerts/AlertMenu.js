@@ -5,16 +5,16 @@ import {AboutIcon} from '../../Fundamentals/AboutIcon';
 import {AboutModalContext} from '../../../../../../../context/AboutModalContext';
 import {home_static_data} from '../../../../../homeStaticData';
 
-const AlertMenu = ({activeAlertOption, setActiveButtons}) => {
-
+const AlertMenu = ({timeframeOptions, activeAlertOption, setActiveButtons}) => {
   const {handleAboutPress} = useContext(AboutModalContext);
   const styles = useChartsStyles();
+  const option_width = (100 / timeframeOptions.length) - 0.33;
   const aboutIconAdditionalStyles = {
     position: 'relative',
     marginHorizontal: 14,
     paddingLeft: 32,
   };
-  
+
   return (
     <View style={styles.alertMenuContainer}>
       <View style={styles.titleRow}>
@@ -25,12 +25,13 @@ const AlertMenu = ({activeAlertOption, setActiveButtons}) => {
           additionalStyles={aboutIconAdditionalStyles}
         />
         <View style={styles.alertMenuButtonContainer}>
-          {['today', 'this week', 'last week'].map(option => (
+          {timeframeOptions.map(option => (
             <TouchableOpacity
               key={option}
               onPress={() => setActiveButtons(option)}
               style={[
                 styles.alertMenuButton,
+                {width: `${option_width}%`},
                 activeAlertOption === option
                   ? styles.alertMenuActiveButton
                   : null,

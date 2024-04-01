@@ -64,6 +64,8 @@ const Fundamentals = ({route}) => {
     setAboutVisible(!aboutVisible);
   };
 
+
+
   const getSectionData = async endpoint => {
     const data = await getService(endpoint);
     return data;

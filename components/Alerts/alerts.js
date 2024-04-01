@@ -159,14 +159,13 @@ const Alerts = ({route, navigation}) => {
 
         if (
           response.length === 0 ||
-          (response.message &&
-            response.message.startsWith('No alerts found')) ||
+          response.message ||
           response.alerts.length === 0
         ) {
           setAlerts([]);
         } else {
           //console.log('Alerts: ', response.alerts);
-          setAlerts(response.alerts);
+          setAlerts(filterAlertsByDate(response.alerts, activeAlertOption));
         }
       } catch (error) {
         console.error('Error fetching alerts:', error.message);
