@@ -12,6 +12,7 @@ import {
 import Purchases from 'react-native-purchases';
 import {useNavigation} from '@react-navigation/core';
 import {useUser} from '../../context/UserContext';
+import { useRawUserId } from '../../context/RawUserIdContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAccountStyles from './styles';
 import ThemeButton from '../ThemeButton/ThemeButton';
@@ -67,6 +68,7 @@ const Account = ({route}) => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const {userInfo} = useContext(RevenueCatContext);
   const {isDarkMode} = useContext(AppThemeContext);
+  const {rawUserId, setRawUserId} = useRawUserId();
 
   console.log(userInfo);
   // Account menu!!
@@ -149,6 +151,7 @@ const Account = ({route}) => {
         setUsername('');
         setPassword('');
         setUserId('');
+        setRawUserId('');
         setUserEmail(null);
       },
     });
@@ -173,6 +176,7 @@ const Account = ({route}) => {
       await AsyncStorage.removeItem('refreshToken');
       await AsyncStorage.removeItem('userEmail');
       await AsyncStorage.removeItem('userId');
+      await AsyncStorage.removeItem('rawUserId');
       await AsyncStorage.removeItem('loginMethod');
       console.log("Successfully removed login data...");
       resetLoginForm();

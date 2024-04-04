@@ -20,6 +20,7 @@ import auth0 from '../../Login/auth0';
 import {useNavigation} from '@react-navigation/core';
 import {useUser} from '../../../context/UserContext';
 import {useUserId} from '../../../context/UserIdContext';
+import {useRawUserId} from '../../../context/RawUserIdContext';
 import useSettingsScreenStyles from './SettingsScreenStyles';
 import ThemeButton from '../../ThemeButton/ThemeButton';
 import BackButton from '../../Analysis/BackButton/BackButton';
@@ -66,8 +67,9 @@ const SettingsScreen = ({route}) => {
   const navigation = useNavigation();
   // Below are the state variables that come from the previous DeleteUserForm
   const [isProcessing, setIsProcessing] = useState(false);
-  const {userId} = useUserId();
+  const {userId, setUserId} = useUserId();
   const {userEmail} = useUser();
+  const {rawUserId, setRawUserId} = useRawUserId();
   const {restorePurchases} = useContext(RevenueCatContext);
 
   const options = [
@@ -134,6 +136,8 @@ const SettingsScreen = ({route}) => {
       resetForm: () => {
         setUsername('');
         setPassword('');
+        setUserId('');
+        setRawUserId('');
         setUserEmail(null);
       },
     });
@@ -157,7 +161,7 @@ const SettingsScreen = ({route}) => {
 
       let prefix;
 
-      if (userId.startsWith('apple')) {
+      if (rawUserId.startsWith('apple')) {
         prefix = '';
       } else {
         prefix = 'auth0|';
@@ -168,14 +172,14 @@ const SettingsScreen = ({route}) => {
 
       console.log(
         'url: ',
-        `https://${auth0Domain}/api/v2/users/${prefix}${encodeURIComponent(
-          userId,
+        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(
+          rawUserId,
         )}`,
       );
 
       const userFetch = await fetch(
-        `https://${auth0Domain}/api/v2/users/${prefix}${encodeURIComponent(
-          userId,
+        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(
+          rawUserId,
         )}`,
         {
           method: 'GET',
@@ -191,8 +195,8 @@ const SettingsScreen = ({route}) => {
       console.log('User Data!!:', userData);
 
       const response = await fetch(
-        `https://${auth0Domain}/api/v2/users/${prefix}${encodeURIComponent(
-          userId,
+        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(
+          rawUserId,
         )}`,
         {
           method: 'DELETE',
@@ -208,6 +212,8 @@ const SettingsScreen = ({route}) => {
         await AsyncStorage.removeItem('accessToken');
         await AsyncStorage.removeItem('refreshToken');
         await AsyncStorage.removeItem('userEmail');
+        await AsyncStorage.removeItem('userId');
+        await AsyncStorage.removeItem('rawUserId');
         resetLoginForm();
         RNRestart.restart();
         //navigation.navigate('SignIn', {resetForm: true});
@@ -225,45 +231,20 @@ const SettingsScreen = ({route}) => {
     try {
       console.log('User id: ', {userId});
       console.log('User email: ', {userEmail});
-
-      const token = await getManagementApiToken();
+      console.log('Raw user ID: ', rawUserId);
 
       // Case for Username-Password users
       try {
         console.log('starting');
-        console.log('userEmail: ', userEmail);
-        const emailCheckResponse = await axios.get(
-          `https://${auth0Domain}/api/v2/users-by-email`,
-          {
-            params: {
-              email: userEmail,
-            },
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        console.log('starting here!');
-
-        console.log('emailcheckresponse: ', emailCheckResponse);
-
         let isUsernamePasswordAuthenticationUser = false;
 
-        if (emailCheckResponse.data.length > 0) {
-          const identities = emailCheckResponse.data[0].identities;
-
-          identities.forEach(identity => {
-            console.log("identityconnection -> ", identity.connection)
-            if (identity.connection === 'Username-Password-Authentication') {
-              isUsernamePasswordAuthenticationUser = true;
-            }
-          });
+        if (rawUserId && rawUserId.startsWith('auth0|')) {
+          isUsernamePasswordAuthenticationUser = true;
         }
-        console.log('got before here!');
         console.log("isUsernamePasswordAuthenticationUser ->", isUsernamePasswordAuthenticationUser);
 
         if (isUsernamePasswordAuthenticationUser) {
-          console.log('got here!');
+          console.log('Entered true line of auth type!');
           Alert.prompt(
             'Delete Account',
             'Enter your password to delete your account',
@@ -309,27 +290,25 @@ const SettingsScreen = ({route}) => {
             'secure-text',
           );
         } else {
+          // Case for Google/Apple users
+          console.log('Entered false line of auth type!');
+          console.log('Will proceed in passwordless delete process');
           Alert.alert(
             'Delete Account',
             'Are you sure you want to permanently delete your account? This action cannot be undone.',
             [
-              {text: 'Cancel', style: 'cancel'},
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
               {text: 'Delete', onPress: deleteUserAccount},
             ],
           );
         }
       } catch (error) {
-        // Handle specific error for this block
-        console.log('Error getting user by email: ', error);
-        console.log('Will proceed in passwordless delete process');
-        Alert.alert(
-          'Delete Account',
-          'Are you sure you want to permanently delete your account? This action cannot be undone.',
-          [
-            {text: 'Cancel', style: 'cancel'},
-            {text: 'Delete', onPress: deleteUserAccount},
-          ],
-        );
+        // Case for Apple users that don't provide an email
+        console.log("Entered error catch");
       }
     } catch (error) {
       // Handle errors from the outer try block

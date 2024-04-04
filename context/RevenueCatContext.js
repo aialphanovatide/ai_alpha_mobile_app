@@ -161,7 +161,7 @@ const RevenueCatProvider = ({children}) => {
         }
       }
       const orderedPackages = orderPackages(all_packages);
-      console.log('All packages from offerings: ', orderedPackages);
+      //console.log('All packages from offerings: ', orderedPackages);
       setPackages(orderedPackages);
     } catch (error) {
       console.error('Error trying to get offerings: ', error);
