@@ -1,8 +1,14 @@
 import React, {useContext} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import {AppThemeContext} from '../../../../../../../context/themeContext';
 
-const AlertDetails = ({message, date, price, timeframe, styles}) => {
+const AlertDetails = ({
+  message,
+  date,
+  price,
+  timeframe,
+  styles,
+}) => {
   const {theme} = useContext(AppThemeContext);
   const timeframeStyle = {
     color: timeframe.toLowerCase().includes('bullish')
@@ -60,9 +66,27 @@ const AlertDetails = ({message, date, price, timeframe, styles}) => {
     }
   };
 
+  // Function to format the alerts date, generating the date from the created_at datum, separating the date from the hour, and returning this data in the required format
+
+  const formatAlertDate = dateTimeString => {
+    const dateTime = new Date(dateTimeString);
+    const year = dateTime.getFullYear();
+    const month = String(dateTime.getMonth() + 1).padStart(2, '0');
+    const day = String(dateTime.getDate()).padStart(2, '0');
+    const hours = String(dateTime.getHours()).padStart(2, '0');
+    const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+
+    return {
+      alert_date: `${day}-${month}-${year}`,
+      hour: ` ${hours}:${minutes}`,
+    };
+  };
+
   const {leftText, word} = parseTimeframeString(timeframe);
 
   const {coin_title, chart_word, interval_word} = formatAlertTitle(leftText);
+
+  const {alert_date, hour} = formatAlertDate(date);
 
   return (
     <View style={styles.alertDetailsContainer}>
@@ -88,6 +112,24 @@ const AlertDetails = ({message, date, price, timeframe, styles}) => {
         <Text style={styles.alertDetailsSubtitle} numberOfLines={2}>
           {message}
         </Text>
+        <View style={[styles.dateRow, styles.alertsDateContainer]}>
+          <View style={styles.row}>
+            <Image
+              source={require('../../../../../../../assets/images/analysis/calendar-time.png')}
+              resizeMode="contain"
+              style={styles.dateIcon}
+            />
+            <Text style={styles.alertsSecondaryData}>{hour}</Text>
+          </View>
+          <View style={styles.row}>
+            <Image
+              source={require('../../../../../../../assets/images/analysis/calendar.png')}
+              resizeMode="contain"
+              style={styles.dateIcon}
+            />
+            <Text style={styles.alertsSecondaryData}>{alert_date}</Text>
+          </View>
+        </View>
       </View>
     </View>
   );

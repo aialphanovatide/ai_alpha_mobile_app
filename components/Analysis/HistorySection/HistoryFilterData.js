@@ -180,7 +180,7 @@ const historyFilterData = [
     coin_bots: [
       {
         bot_id: 16,
-        bot_name: 'matic',
+        bot_name: 'polygon',
         created_at: '2024-01-25T18:34:15.555363',
         image: 'No Image',
       },

@@ -8,7 +8,8 @@ const useTokenomicsStyles = () => {
   const styles = StyleSheet.create({
     progressBarContainer: {
       height: 15,
-      width: '100%',
+      width: '96%',
+      alignSelf: 'flex-end',
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 2,
       overflow: 'hidden',
@@ -26,7 +27,6 @@ const useTokenomicsStyles = () => {
     },
     progressBarValue: {
       position: 'absolute',
-      left: 0,
       top: 0,
       textAlign: 'left',
       color: theme.orange,
@@ -36,7 +36,8 @@ const useTokenomicsStyles = () => {
     progressBarMaxValue: {
       position: 'absolute',
       right: 0,
-      top: 0,
+      top: 24,
+      marginVertical: 8,
       textAlign: 'right',
       color: theme.secondaryTextColor,
       fontSize: theme.responsiveFontSize * 0.8,
@@ -52,7 +53,7 @@ const useTokenomicsStyles = () => {
     infinityButton: {
       position: 'absolute',
       right: 0,
-      top: 0,
+      top: 4,
       zIndex: 2,
     },
     // Tokenomics styles
@@ -67,10 +68,10 @@ const useTokenomicsStyles = () => {
     tokenItem: {
       paddingHorizontal: 10,
       paddingVertical: 5,
-      marginVertical: theme.boxesVerticalMargin * 0.6,
+      marginVertical: theme.boxesVerticalMargin,
       backgroundColor: theme.boxesBackgroundColor,
-      borderTopColor: theme.secondaryGrayColor,
-      borderTopWidth: 1,
+      // borderTopColor: theme.secondaryGrayColor,
+      // borderTopWidth: 1,
     },
     tokenRow: {
       flexDirection: 'row',
@@ -78,28 +79,59 @@ const useTokenomicsStyles = () => {
     numberTitles: {
       flex: 1,
       position: 'relative',
+      marginVertical: 8,
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
+    itemIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      alignSelf: 'center',
+      margin: 8,
+    },
+    column: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+    button: {
+      width: '45%',
+      padding: 8,
+      borderRadius: 4,
+      alignItems: 'center',
+    },
+    activeOrangeButton: {
+      backgroundColor: theme.orangeTextColor,
+      borderColor: 'transparent',
+    },
+    activeText: {
+      color: theme.subscriptions.foundersText,
+      fontFamily: theme.fontSemibold,
+    },
     alignRight: {
       right: 10,
-      color: theme.secondaryTextColor,
+      backgroundColor: theme.grayButtonColor,
+    },
+    alignLeft: {
+      left: 10,
+      backgroundColor: theme.orangeButton,
+      borderWidth: 2,
+      borderColor: theme.orangeTextColor,
+    },
+    supplyText: {
+      color: theme.orangeTextColor,
       fontSize: theme.responsiveFontSize * 0.8,
       fontFamily: theme.fontMedium,
     },
-    alignLeft: {
-      left: 70,
-      color: theme.orange,
+    totalText: {
+      color: theme.boxesBackgroundColor,
       fontSize: theme.responsiveFontSize * 0.8,
       fontFamily: theme.fontMedium,
     },
     tokenName: {
-      width: '20%',
-      paddingVertical: 8,
       fontSize: theme.responsiveFontSize,
       color: theme.textColor,
-      textAlign: 'center',
-      alignSelf: 'flex-end',
+      textAlign: 'left',
       fontFamily: theme.fontSemibold,
     },
     text: {
@@ -114,9 +146,12 @@ const useTokenomicsStyles = () => {
       flexDirection: 'row',
     },
     inflationaryArrow: {
-      width: theme.responsiveFontSize * 0.85,
-      height: theme.responsiveFontSize * 0.85,
+      width: theme.responsiveFontSize * 0.875,
+      height: theme.responsiveFontSize * 0.875,
       tintColor: theme.textColor,
+    },
+    none: {
+      display: 'none',
     },
   });
   return styles;

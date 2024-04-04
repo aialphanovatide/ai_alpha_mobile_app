@@ -1,17 +1,17 @@
 import React, {useContext} from 'react';
-import {Text, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import {AppThemeContext} from '../../context/themeContext';
 
 // Component that renders the Alert item itself, with all the data: the price and main alert word on the top-right corner, the title, and the message of the alert below.
 
-const AlertDetails = ({message, price, timeframe, styles}) => {
+const AlertDetails = ({message, price, timeframe, styles, created_at}) => {
   const {theme} = useContext(AppThemeContext);
   const timeframeStyle = {
     color: timeframe.toLowerCase().includes('bullish')
       ? theme.priceUpColor
       : theme.priceDownColor,
   };
-  // Function to separate and format the property that will show as a title for each alert, it separates the currency, the "Chart" word, and the hour 
+  // Function to separate and format the property that will show as a title for each alert, it separates the currency, the "Chart" word, and the hour
   const formatAlertTitle = title => {
     const usdt_word_index = title.indexOf('USDT');
     const coin_word = title.slice(0, usdt_word_index).toUpperCase();
@@ -50,10 +50,23 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
     });
   };
 
+  // Function to format the alerts date, generating the date from the created_at datum, separating the date from the hour, and returning this data in the required format
+
+  const formatAlertDate = dateTimeString => {
+    const dateTime = new Date(dateTimeString);
+    const year = dateTime.getFullYear();
+    const month = String(dateTime.getMonth() + 1).padStart(2, '0');
+    const day = String(dateTime.getDate()).padStart(2, '0');
+    const hours = String(dateTime.getHours()).padStart(2, '0');
+    const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+
+    return {date: `${day}-${month}-${year}`, hour: ` ${hours}:${minutes}`};
+  };
+
   const {leftText, word} = parseTimeframeString(timeframe);
 
   const {coin_title, chart_word, interval_word} = formatAlertTitle(leftText);
-
+  const {date, hour} = formatAlertDate(created_at);
   return (
     <View style={styles.itemsContainer}>
       <View style={styles.leftContent}>
@@ -86,6 +99,24 @@ const AlertDetails = ({message, price, timeframe, styles}) => {
         <Text style={styles.subtitle} numberOfLines={2}>
           {message}
         </Text>
+        <View style={[styles.row, styles.dateContainer]}>
+          <View style={styles.row}>
+            <Image
+              source={require('../../assets/images/analysis/calendar-time.png')}
+              resizeMode="contain"
+              style={styles.dateIcon}
+            />
+            <Text style={styles.secondaryData}>{hour}</Text>
+          </View>
+          <View style={styles.row}>
+            <Image
+              source={require('../../assets/images/analysis/calendar.png')}
+              resizeMode="contain"
+              style={styles.dateIcon}
+            />
+            <Text style={styles.secondaryData}>{date}</Text>
+          </View>
+        </View>
       </View>
     </View>
   );

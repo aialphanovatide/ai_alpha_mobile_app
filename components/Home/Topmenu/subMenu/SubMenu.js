@@ -28,6 +28,7 @@ const SubMenu = ({isAlertsMenu}) => {
   return (
     <View style={styles.container}>
       {activeCoin &&
+        activeCoin.category !== 'bitcoin' &&
         activeCoin.coin_bots &&
         activeCoin.coin_bots.length >= 1 && (
           <CoinMenu

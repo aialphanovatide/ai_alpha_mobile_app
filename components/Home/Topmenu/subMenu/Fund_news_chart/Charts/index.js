@@ -66,7 +66,9 @@ const CandlestickChart = ({route}) => {
       : 1;
   const fetch_url =
     coinBot.toLowerCase() !== 'kas' && coinBot.toLowerCase() !== 'velo'
-      ? `https://api3.binance.com/api/v3/klines?symbol=${coinBot.toUpperCase()}${selectedPairing}&limit=50&interval=${selectedInterval.toLowerCase()}`
+      ? `https://api3.binance.com/api/v3/klines?symbol=${
+          coinBot === 'polygon' ? 'MATIC' : coinBot.toUpperCase()
+        }${selectedPairing}&limit=50&interval=${selectedInterval.toLowerCase()}`
       : `https://pro-api.coingecko.com/api/v3/coins/${
           coinBot.toLowerCase() === 'kas' ? 'kaspa' : 'velo'
         }/ohlc?vs_currency=${

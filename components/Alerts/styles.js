@@ -35,7 +35,7 @@ const useAlertsStyles = () => {
     },
     itemsContainer: {
       position: 'relative',
-      minHeight: 80,
+      minHeight: 90,
       flexDirection: 'row',
       backgroundColor: theme.boxesBackgroundColor,
       marginVertical: 4,
@@ -122,6 +122,27 @@ const useAlertsStyles = () => {
       margin: 4,
       padding: 2,
       alignItems: 'flex-end',
+    },
+    dateContainer: {
+      marginVertical: 4,
+      paddingTop: 4,
+      justifyContent: 'space-between',
+    },
+    secondaryData: {
+      fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.fontMedium,
+      color: theme.secondaryTextColor,
+    },
+    dateIcon: {
+      width: 14,
+      height: 14,
+      alignSelf: 'center',
+      marginHorizontal: 4,
+      tintColor: theme.secondaryTextColor,
+    },
+    column: {
+      flex: 1,
+      flexDirection: 'column',
     },
   });
   return styles;

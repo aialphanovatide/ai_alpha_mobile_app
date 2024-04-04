@@ -130,30 +130,12 @@ const Alerts = ({route, navigation}) => {
   useEffect(() => {
     setAlerts([]);
     setIsLoading(true);
-    let alerts_date_filter;
-    switch (activeAlertOption) {
-      case '1H':
-        alerts_date_filter = '1h';
-        break;
-      case '4H':
-        alerts_date_filter = '4h';
-        break;
-      case '1D':
-        alerts_date_filter = 'today';
-        break;
-      case '1W':
-        alerts_date_filter = 'last week';
-        break;
-      default:
-        alerts_date_filter = 'today';
-        break;
-    }
     // Function to fetch alerts filtering by the active coin of the top menu
     const fetchAlertsByCoin = async () => {
       try {
         const response = await getService(
-          `/api/filter/alerts?coin=${botName}&date=${alerts_date_filter}&limit=${
-            alerts_date_filter === 'last week' ? 40 : 20
+          `/api/filter/alerts?coin=${botName}&date=${activeAlertOption.toLowerCase()}&limit=${
+            activeAlertOption.toLowerCase() === '24h' ? 40 : 20
           }`,
         );
 
@@ -179,9 +161,14 @@ const Alerts = ({route, navigation}) => {
     const fetchAlertsBySubscriptions = async () => {
       try {
         const body = subscribedCategories.map(category => category.category);
-        const response = await postService(`/api/tv/multiple_alerts`, {
-          categories: body,
-        });
+        const response = await postService(
+          `/api/tv/multiple_alert?date=${activeAlertOption.toLowerCase()}&limit=${
+            activeAlertOption.toLowerCase() === '1w' ? 40 : 20
+          }`,
+          {
+            categories: body,
+          },
+        );
         if (!response.message || response.message === undefined) {
           const mapped_alerts = [];
           for (const key in response) {
@@ -244,6 +231,7 @@ const Alerts = ({route, navigation}) => {
                   timeframe={item.alert_name}
                   price={item.price}
                   styles={styles}
+                  created_at={item.created_at}
                 />
               )}
               keyExtractor={item => item.alert_id.toString()}
