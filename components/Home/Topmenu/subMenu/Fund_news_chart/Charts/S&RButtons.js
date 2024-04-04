@@ -9,8 +9,8 @@ const RsButton = ({activeButtons, setActiveButtons}) => {
   const buttons = [
     {label: 'Support', color: '#FC5404'},
     {label: 'Resistance', color: '#F012A1'},
-    {label: 'Fibonacci', color: '#783AED'},
-    {label: 'Trend Lines', color: '#13B4C7'},
+    // {label: 'Fibonacci', color: '#783AED'}, Uncomment when fibonacci functionality is ready
+    // {label: 'Trend Lines', color: '#13B4C7'}, Uncomment when trend lines functionality is ready
   ];
   
   const handlePress = buttonLabel => {
