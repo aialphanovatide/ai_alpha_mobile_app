@@ -21,7 +21,7 @@ const SubscriptionSelector = ({ purchasePackage, setIsPurchasing }) => {
         console.log("User is pro");
         navigation.goBack();
       }
-      console.log("Customer info:", customerInfo);
+      console.log("\nCustomer info:", customerInfo);
     } catch (error) {
       console.log("Error purchasing package:", error);
       Alert.alert("Purchase Error", "There was an error completing your purchase.");

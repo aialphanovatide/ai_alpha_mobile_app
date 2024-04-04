@@ -21,8 +21,6 @@ const useChartsStyles = () => {
       marginBottom: 0,
       flexDirection: 'row',
       width: '100%',
-      // borderWidth: 2,
-      // borderColor: '#282828'
     },
     detailslabel: {
       marginHorizontal: 10,

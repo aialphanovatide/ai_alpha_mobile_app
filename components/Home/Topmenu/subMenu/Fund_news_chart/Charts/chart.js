@@ -8,11 +8,13 @@ import {
   VictoryLabel,
   VictoryLine,
   VictoryTooltip,
+  VictoryContainer
 } from 'victory-native';
 import Loader from '../../../../../Loader/Loader';
 import { AppThemeContext } from '../../../../../../context/themeContext';
 import useChartsStyles from './ChartsStyles';
 import { getService } from '../../../../../../services/aiAlphaApi';
+
 
 
 // Format any number, including 0.0000
@@ -32,7 +34,7 @@ const formatNumber = num => {
   return formattedNum + abbrev[tier];
 };
 
-
+// Format number in shorten way
 function formatLabelNumber(number, decimalPlaces=2) {
   if (number >= 1) {
       return number.toFixed(decimalPlaces).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -56,7 +58,7 @@ function formatDate(dateString) {
   return `${month}/${day} ${hours}:${minutes}`;
 }
 
-
+// Calculate fibonacci lines
 const fibonacciRetracement = (low, high) => {
   const range = high - low;
   const retracementLevels = [0, 0.236, 0.382, 0.5, 0.618, 0.786, 1, 1.618];
@@ -66,6 +68,7 @@ const fibonacciRetracement = (low, high) => {
     return result;
   }, {});
 };
+
 
 const Chart = ({
   symbol,
@@ -81,6 +84,8 @@ const Chart = ({
   const { theme } = useContext(AppThemeContext);
   const [supportLevels, setSupportLevels] = useState([]);
   const [resistanceLevels, setResistanceLevels] = useState([]);
+  const [isToolTipActive, setIsToolTipActive] = useState(false);
+  const [activePoint, setActivePoint] = useState(null);
 
   const usesAlternativeSource =
     coinBot === 'velo' || coinBot === 'kas' ? true : false;
@@ -175,6 +180,10 @@ const Chart = ({
 
   const lastCandle = chartData[chartData.length - 1]; // Get the last candlestick data
 
+  const handlePointClick = (datum) => {
+    setActivePoint(datum);
+  };
+
 
   return (
     <View style={styles.chartContainer}>
@@ -201,44 +210,7 @@ const Chart = ({
           scale={{ x: 'time', y: 'log' }}
           height={340}>
 
-        {/* Plot of the Fibonacci lines */}
-        {activeButtons.includes('Fibonacci') && Object.keys(retracementLevels).length > 0 && (
-          Object.keys(retracementLevels).map(level => (
-            <VictoryLine
-            key={level}
-            padding={{ top: 0, bottom: 0, left: 20, right: 60}}
-            labels={() => `${level}% $${formatLabelNumber(retracementLevels[level])}`}
-            data={[
-              { x: domainX[0], y: retracementLevels[level] },
-              { x: domainX[1], y: retracementLevels[level] },
-            ]}
-            style={{
-              data: { stroke: 'blue' },
-              labels: {fontSize: 12}
-            }}
-            labelComponent={
-              <VictoryLabel
-                dy={5}
-                dx={10}
-                textAnchor="start"
-                inline={true}
-                style={{
-                  fill: '#fff',
-                  fontSize: 11,
-                  fontFamily: theme.fontMedium,
-                }}
-                backgroundPadding={[{ top: -1, bottom: 6, left: 2.3, right: 0 }]}
-                backgroundStyle={[
-                  {
-                    fill: 'blue',
-                    opacity: 0.8
-                  }
-                ]}
-              />
-            }
-          />
-          ))
-        )}
+  
 
           
           {/* X AXIS */}
@@ -276,7 +248,7 @@ const Chart = ({
               },
               grid: { stroke: theme.chartsGridColor },
             }}
-            tickCount={selectedInterval === '1W' ? 10 : 8}
+            tickCount={selectedInterval === '1W' ? 7 : 5}
             tickFormat={(t) => formatNumber(t)}
             orientation="right"
           />
@@ -284,43 +256,57 @@ const Chart = ({
           {/* DISPLAY DATA COMPONENT */}
           <VictoryCandlestick
             data={chartData}
-            candleRatio={
-              usesAlternativeSource && selectedInterval !== '1W' ? 2.75 : 0.9
-            }
-            labels={({ datum }) => `Date: ${formatDate(datum.x)}\nHigh: ${formatLabelNumber(datum.high)}\nLow: ${formatLabelNumber(datum.low)}\nClose: ${formatLabelNumber(datum.close)}\nOpen: ${formatLabelNumber(datum.open)}`}
+            candleRatio={usesAlternativeSource && selectedInterval !== '1W' ? 2.75 : 0.9}
+            labels={({ datum }) => {
+              const date = `Date: `;
+              const open = `Open: `;
+              const high = `High: `;
+              const low = `Low: `;
+              const close = `Close: `;
+            
+              const formattedDate = `${date}${formatDate(datum.x)}`
+              const formattedOpen = `${open} $${formatLabelNumber(datum.open)}`
+              const formattedHigh = `${high}  $${formatLabelNumber(datum.high)}`
+              const formattedLow = ` ${low}   $${formatLabelNumber(datum.low)}`
+              const formattedClose = `${close} $${formatLabelNumber(datum.close)}`
+            
+              return `${formattedDate}\n${formattedOpen}\n${formattedHigh}\n${formattedLow}\n${formattedClose}`;
+            }}
             labelComponent={
-              <VictoryTooltip
-                constrainToVisibleArea 
-                dx={0}
-                dy={-10}
-                renderInPortal={false}
-                center={{ x: 90, y: 90 }}
-                flyoutWidth={100}
-                flyoutPadding={{ top: -5, bottom: 15, left: 0, right: 0 }}
-                cornerRadius={5}
-                flyoutStyle={{stroke: "#282828", 
-                              strokeWidth: 2,
-                              fill: "#282828",
-                            }}
-                labelComponent={
-                  <VictoryLabel
-                  textAnchor='middle'
-                  style={{
-                    fill: '#fff',
-                    fontSize: 10,
-                    fontFamily: theme.fontMedium,
-                  }}
-                  backgroundStyle={[
-                    {
-                      fill: '#282828'
-                    }
-                  ]}
-                  backgroundPadding={[{ top: 0, bottom: 5 }]}
-                />
-                }
+             <VictoryTooltip
+              constrainToVisibleArea 
+              dx={0}
+              dy={-20}
+              events={{
+                onPressIn: () => ({ active: true }),
+                onPressOut: () => ({ active: false })
+              }}
+              renderInPortal={false}
+              center={{ x: 90, y: 90 }}
+              flyoutPadding={{ top: -5, bottom: 15, left: 0, right: 0 }}   
+              cornerRadius={5}
+              flyoutStyle={{stroke: "#d4d4d5", 
+                            strokeWidth: 1,
+                            fill: "#fff",
+                          }}
+              labelComponent={
+                <VictoryLabel
+                textAnchor='middle'
+                style={{
+                  fill: '#282828',
+                  fontSize: 10,
+                  fontFamily: theme.fontMedium,
+                }}
+                backgroundStyle={[
+                  {
+                    fill: '#fff'
+                  }
+                ]}
+                backgroundPadding={[{ top: 0, bottom: 5 }]}
               />
+              }
+            />
             }
-          
             candleColors={{positive: '#09C283', negative: '#E93334'}}
             style={{
               data: {
@@ -332,45 +318,6 @@ const Chart = ({
           />
 
 
-          {/* TREND LINE */}
-          {/* <VictoryLine
-                data={[
-                  { x: chartData[25].x, y: 52000 },
-                  { x: chartData[33].x, y: 68000 },
-                ]}
-                key={`trendline`}
-                style={{
-                  data: { stroke: '#13B4C7', strokeWidth: 2 },
-                }}
-                labels={[formatLabelNumber(52000), formatLabelNumber(68000)]}
-                labelComponent={
-                  <VictoryLabel
-                    dy={0}
-                    dx={0}
-                    // angle={-36}
-                    textAnchor="end"
-                    inline={true}
-                    backgroundPadding={[{ top: -1, bottom: 6, left: 2.5, right: 8 }]}
-                    style={[
-                      {
-                        fill: '#fff',
-                        fontSize: 11,
-                        fontFamily: theme.fontMedium,
-                      },
-                    ]}
-                    backgroundStyle={[
-                      {
-                        fill: '#13B4C7',
-                        opacity: 1
-                      },
-                    ]}
-                  />
-                }
-              /> */}
-
-        
-
-  
           {/* RESISTANCE LEVELS */}
           {resistanceLevels &&
             activeButtons.includes('Resistance') &&
@@ -455,3 +402,121 @@ export default Chart;
 
 
 
+
+
+
+
+      // {/* Plot of the Fibonacci lines */}
+      // {activeButtons.includes('Fibonacci') && Object.keys(retracementLevels).length > 0 && (
+      //   Object.keys(retracementLevels).map(level => (
+      //     <VictoryLine
+      //     key={level}
+      //     padding={{ top: 0, bottom: 0, left: 20, right: 60}}
+      //     labels={() => `${level}% $${formatLabelNumber(retracementLevels[level])}`}
+      //     data={[
+      //       { x: domainX[0], y: retracementLevels[level] },
+      //       { x: domainX[1], y: retracementLevels[level] },
+      //     ]}
+      //     style={{
+      //       data: { stroke: 'blue' },
+      //       labels: {fontSize: 12}
+      //     }}
+      //     labelComponent={
+      //       <VictoryLabel
+      //         dy={5}
+      //         dx={10}
+      //         textAnchor="start"
+      //         inline={true}
+      //         style={{
+      //           fill: '#fff',
+      //           fontSize: 11,
+      //           fontFamily: theme.fontMedium,
+      //         }}
+      //         backgroundPadding={[{ top: -1, bottom: 6, left: 2.3, right: 0 }]}
+      //         backgroundStyle={[
+      //           {
+      //             fill: 'blue',
+      //             opacity: 0.8
+      //           }
+      //         ]}
+      //       />
+      //     }
+      //   />
+      //   ))
+      // )}
+
+
+
+  // events={[
+            //   {
+            //     target: 'data',
+            //     eventHandlers: {
+            //       onPressIn:  () => {
+            //         setIsToolTipActive(true);
+            //         return [
+            //           {
+            //             target: 'data',
+            //             mutation: props => {
+            //               return {
+            //                 style: {
+            //                   ...props.style, // Keep existing styles
+            //                   stroke: '#FFD700',
+            //                   strokeWidth: 2
+            //                 }
+            //               };
+            //             },
+            //           },
+            //         ];
+            //       },
+            //       onPressOut: () => {
+            //         setIsToolTipActive(false);
+            //         return [
+            //           {
+            //             target: 'data',
+            //             mutation: () => {
+            //               return null; 
+            //             },
+            //           },
+            //         ];
+            //       },
+            //     },
+            //   },
+            // ]}
+
+
+            
+          {/* TREND LINE */}
+          {/* <VictoryLine
+                data={[
+                  { x: chartData[25].x, y: 52000 },
+                  { x: chartData[33].x, y: 68000 },
+                ]}
+                key={`trendline`}
+                style={{
+                  data: { stroke: '#13B4C7', strokeWidth: 2 },
+                }}
+                labels={[formatLabelNumber(52000), formatLabelNumber(68000)]}
+                labelComponent={
+                  <VictoryLabel
+                    dy={0}
+                    dx={0}
+                    // angle={-36}
+                    textAnchor="end"
+                    inline={true}
+                    backgroundPadding={[{ top: -1, bottom: 6, left: 2.5, right: 8 }]}
+                    style={[
+                      {
+                        fill: '#fff',
+                        fontSize: 11,
+                        fontFamily: theme.fontMedium,
+                      },
+                    ]}
+                    backgroundStyle={[
+                      {
+                        fill: '#13B4C7',
+                        opacity: 1
+                      },
+                    ]}
+                  />
+                }
+              /> */}

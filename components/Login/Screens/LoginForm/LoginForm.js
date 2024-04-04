@@ -24,6 +24,7 @@ import auth0 from '../../auth0';
 import Purchases from 'react-native-purchases';
 import {useUser} from '../../../../context/UserContext';
 import {useUserId} from '../../../../context/UserIdContext';
+import { useRawUserId } from '../../../../context/RawUserIdContext';
 import jwtDecode from 'jwt-decode';
 import {decode as base64decode} from 'base-64';
 import {AppThemeContext} from '../../../../context/themeContext';
@@ -37,6 +38,7 @@ const LoginForm = ({route}) => {
   const navigation = useNavigation();
   const {setUserEmail} = useUser();
   const {setUserId} = useUserId();
+  const {setRawUserId} = useRawUserId();
   const [error, setError] = useState('');
   const colorScheme = Appearance.getColorScheme();
   const {toggleDarkMode, isDarkMode} = useContext(AppThemeContext);
@@ -68,6 +70,7 @@ const LoginForm = ({route}) => {
       const accessToken = await AsyncStorage.getItem('accessToken');
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       const userEmail = await AsyncStorage.getItem('userEmail');
+      const rawUserId = await AsyncStorage.getItem('rawUserId');
       const userId = await AsyncStorage.getItem('userId');
 
       const loginMethod = await AsyncStorage.getItem('loginMethod');
@@ -94,6 +97,7 @@ const LoginForm = ({route}) => {
         //console.log("LoginForm NEWuserID ->", user_id);
         setUserEmail(userEmail);
         setUserId(user_id);
+        setRawUserId(rawUserId);
         navigation.navigate('HomeScreen');
       } else {
         //console.log("LoginForm Entered else");
@@ -141,11 +145,13 @@ const LoginForm = ({route}) => {
           await AsyncStorage.setItem('refreshToken', credentials.refreshToken);
           await AsyncStorage.setItem('userEmail', username);
           await AsyncStorage.setItem('userId', formatted_id);
+          await AsyncStorage.setItem('rawUserId', userId);
           await AsyncStorage.setItem('loginMethod', 'username-password');
 
 
           setUserEmail(username);
           setUserId(formatted_id);
+          setRawUserId(userId);
           updateUserEmail(username);
 
           navigation.navigate('HomeScreen');

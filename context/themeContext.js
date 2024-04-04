@@ -8,6 +8,7 @@ const AppThemeProvider = ({children}) => {
   const theme = isDarkMode ? darkThemeStyles : lightThemeStyles;
 
   const toggleDarkMode = () => {
+    console.log("isDarkMode -> ", !isDarkMode);
     setIsDarkMode(!isDarkMode);
   };
 

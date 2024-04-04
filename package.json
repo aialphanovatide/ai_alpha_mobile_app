@@ -63,6 +63,7 @@
     "react-native-webview": "^13.6.3",
     "react-secure-storage": "^1.3.2",
     "rn-secure-storage": "^3.0.0",
+    "socket.io-client": "^4.7.5",
     "victory": "^36.7.0",
     "victory-native": "^36.7.0",
     "victory-zoom-container": "^36.7.0"

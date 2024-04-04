@@ -13,8 +13,11 @@ import {
   GOOGLE_CLIENT_IOS_ID,
   GOOGLE_CLIENT_WEB_ID,
 } from '../../../src/constants';
+
 import { useUser } from '../../../context/UserContext';
 import { useUserId } from '../../../context/UserIdContext';
+import { useRawUserId } from '../../../context/RawUserIdContext';
+
 import { RevenueCatContext } from '../../../context/RevenueCatContext';
 import {
   GoogleSignin,
@@ -28,6 +31,7 @@ const SocialSignInButton = () => {
   const { authorize } = useAuth0(); // Using useAuth0 hook
   const { userEmail, setUserEmail } = useUser();
   const { userId, setUserId } = useUserId();
+  const { rawUserId, setRawUserId } = useRawUserId();
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
 
 
@@ -56,6 +60,8 @@ const SocialSignInButton = () => {
       const accessToken = await AsyncStorage.getItem('accessToken');
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       const userEmail = await AsyncStorage.getItem('userEmail');
+      const rawUserId = await AsyncStorage.getItem('rawUserId');
+      console.log("useEffected RAW ID -> ", rawUserId);
       const userId = await AsyncStorage.getItem('userId');
 
       if (userEmail) {
@@ -75,6 +81,7 @@ const SocialSignInButton = () => {
         //console.log("NEWuserEmail ->", userEmail);
         //console.log("NEWuserID ->", user_id);
         setUserEmail(userEmail);
+        setRawUserId(rawUserId);
         setUserId(user_id);
         navigation.navigate('HomeScreen');
       } else {
@@ -109,10 +116,12 @@ const SocialSignInButton = () => {
       
       await AsyncStorage.setItem('accessToken', authResult.accessToken);
       await AsyncStorage.setItem('userEmail', userProfile.email);
+      await AsyncStorage.setItem('rawUserId', userId);
       await AsyncStorage.setItem('userId', formatted_id);
 
       setUserEmail(userProfile.email);
       setUserId(formatted_id);
+      setRawUserId(userId);
       updateUserEmail(userProfile.email);
       
 
@@ -180,7 +189,8 @@ const signInWithApple = async () => {
       await AsyncStorage.setItem('UserId', newUser);
 
       navigation.navigate('HomeScreen');
-      setUserId(newUser);
+      setUserId(user);
+      setRawUserId(newUser);
       //setUserEmail(email);
       console.log("auth0Response.data._id", auth0Response.data._id);
       console.log("email!: ", email);
