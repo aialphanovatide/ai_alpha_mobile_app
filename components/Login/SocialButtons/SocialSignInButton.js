@@ -72,6 +72,7 @@ const SocialSignInButton = () => {
       console.log("accestoken ->", accessToken);
       console.log("refreshtoken ->", refreshToken);
       console.log("userEmail ->", userEmail);
+      console.log("RawuserID ->", rawUserId);
       console.log("userID ->", userId);
 */
 
@@ -184,9 +185,10 @@ const signInWithApple = async () => {
       let newUser = "apple|" + user;
       console.log("New User id is: ", newUser);
 
-      await AsyncStorage.setItem('access_token', auth0Response.data.access_token);
-      await AsyncStorage.setItem('id_token', auth0Response.data.id_token);
-      await AsyncStorage.setItem('UserId', newUser);
+      await AsyncStorage.setItem('accessToken', auth0Response.data.access_token);
+      //await AsyncStorage.setItem('id_token', auth0Response.data.id_token);
+      await AsyncStorage.setItem('rawUserId', newUser);
+      await AsyncStorage.setItem('userId', user);
 
       navigation.navigate('HomeScreen');
       setUserId(user);

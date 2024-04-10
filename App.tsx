@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, Component} from 'react';
 import Navigation from './navigation/Navigation';
 import {
   View,
@@ -36,6 +36,7 @@ import {AppThemeContext} from './context/themeContext';
 import { getService } from './services/aiAlphaApi';
 import { SocketProvider } from './components/Alerts/Socket';
 import { SocketContext } from './components/Alerts/Socket';
+import io from 'socket.io-client';
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
@@ -45,7 +46,7 @@ const App = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [serverError, setServerError] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  const {socket} = useContext(SocketContext);
+  //const {socket} = useContext(SocketContext);
   const [serverWentDown, setServerWentDown] = useState(0);
 
 /*
@@ -65,6 +66,18 @@ const App = () => {
     }
   }, [socket]); // Re-run the effect if `socket` changes
   */
+
+  useEffect(() => {
+    console.log("NEw INITIALIZING SOCKET");
+    const socket = io('https://aialpha.ngrok.io/');
+    socket.on("new_alert", (messageData) => {
+      console.log("Received message:", messageData);
+      console.log("SOCKET ID --->", socket.id);
+      handleNotification(messageData);
+    });
+    
+  }, []);
+
 
 
   useEffect(() => {
@@ -123,16 +136,34 @@ const App = () => {
   const handleStatusBarChange = theme => {
     setBarScheme(theme);
   };
-  const handleNotification = () => {
-    console.log('Button pressed, sending notification...');
+
+  const handleNotification = (messageData) => {
+    console.log('Sending notification...');
+    console.log('Received message:', messageData);
+  
+    const data = typeof messageData === 'string' ? JSON.parse(messageData) : messageData;
+    console.log("Data after JSON ->", data);
+    const { alert_name, message } = data;
+  
+    let { last_price } = data;
+    last_price = last_price.replace(/\.$/, '');
+  
+    console.log("Alert name:", alert_name);
+    console.log("Message:", message);
+    console.log("Price:", last_price);
+  
     PushNotificationIOS.addNotificationRequest({
-      id: '1', // Unique ID for the notification
-      title: 'Hello',
-      body: 'This is a notification!',
+      id: '1',
+      title: 'AI Alpha',
+      body: `${alert_name} - ${message} - ${last_price}`,
       userInfo: {}, // Optional additional data
-      fireDate: new Date().getTime() + 1000, // Ensures the notification is scheduled for immediate delivery
+      fireDate: new Date().getTime() + 1000, // Schedules for immediate delivery
     });
   };
+  
+  
+  
+  
 
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();
