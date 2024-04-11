@@ -28,17 +28,6 @@ const useCirculatingSupplyStyles = () => {
       borderRightWidth: 0,
       borderLeftWidth: 0,
     },
-    referenceLabel: {
-      width: '40%',
-      marginHorizontal: 12,
-      paddingVertical: 2,
-      fontSize: theme.responsiveFontSize * 0.75,
-      lineHeight: 20,
-      borderRadius: 4,
-      color: theme.whiteTextColor,
-      fontFamily: theme.fontMedium,
-      textAlign: 'center',
-    },
     symbolLabel: {
       paddingHorizontal: 10,
       paddingVertical: 2,
@@ -70,34 +59,37 @@ const useCirculatingSupplyStyles = () => {
       alignItems: 'center',
       justifyContent: 'center',
     },
-    referenceIconImage: {
-      width: 14,
-      height: 14,
-      tintColor: theme.textColor,
-    },
     valueLabel: {
-      fontSize: theme.responsiveFontSize * 0.9,
+      position: 'absolute',
+      right: 16,
+      top: 16,
+      marginVertical: 8,
+      textAlign: 'right',
       color: theme.secondaryTextColor,
-      fontFamily: theme.font,
+      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
     },
     infinityLabel: {
+      color: theme.secondaryTextColor,
+      fontFamily: theme.fontMedium,
       fontSize: theme.responsiveFontSize * 1.2,
     },
     infinityButton: {
-      paddingHorizontal: 5,
+      position: 'absolute',
+      right: 24,
+      top: 16,
+      zIndex: 2,
+      paddingHorizontal: 6,
       borderWidth: 1,
       borderRadius: 14,
       borderColor: theme.secondaryTextColor,
     },
-    none: {
-    },
     labelBottom: {
-      marginLeft: '45%',
       marginTop: 2,
       flex: 1,
       fontSize: theme.responsiveFontSize,
       color: theme.orange,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
     text: {
       color: theme.textColor,
@@ -106,13 +98,16 @@ const useCirculatingSupplyStyles = () => {
     orange: {
       color: theme.activeOrange,
     },
+    transparent: {
+      color: 'transparent'
+    },
     row: {
+      flex: 1,
       position: 'relative',
-      marginVertical: theme.boxesVerticalMargin,
-      width: '100%',
-      paddingHorizontal: 10,
+      marginVertical: 8,
+      paddingHorizontal: 4,
       flexDirection: 'row',
-      alignItems: 'center',
+      justifyContent: 'space-between',
     },
     logoContainer: {
       marginLeft: 16,
@@ -143,12 +138,18 @@ const useCirculatingSupplyStyles = () => {
       fontSize: theme.responsiveFontSize,
       fontFamily: theme.fontMedium,
     },
+    itemRow: {
+      flexDirection: 'row',
+    },
     image: {
-      flex: 1,
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      alignSelf: 'center',
+      margin: 8,
     },
     dataContainer: {
       flex: 1,
-      padding: 10,
     },
     inflationaryArrow: {
       width: 14,
@@ -165,7 +166,69 @@ const useCirculatingSupplyStyles = () => {
     },
     circulatingSupplyItem: {
       flex: 1,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
       marginVertical: theme.boxesVerticalMargin,
+    },
+    itemIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      alignSelf: 'center',
+      margin: 8,
+    },
+    marginLeft: {
+      marginLeft: 8,
+    },
+    column: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+    button: {
+      width: '45%',
+      padding: 8,
+      borderRadius: 4,
+      alignItems: 'center',
+    },
+    activeOrangeButton: {
+      backgroundColor: theme.orangeTextColor,
+      borderColor: 'transparent',
+    },
+    activeText: {
+      color: theme.subscriptions.foundersText,
+      fontFamily: theme.fontSemibold,
+    },
+    alignRight: {
+      right: 10,
+      backgroundColor: theme.grayButtonColor,
+    },
+    alignLeft: {
+      left: 10,
+      backgroundColor: theme.orangeButton,
+      borderWidth: 1,
+      borderColor: theme.orangeTextColor,
+    },
+    supplyText: {
+      color: theme.orangeTextColor,
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
+    },
+    totalText: {
+      color: theme.boxesBackgroundColor,
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
+    },
+    tokenName: {
+      fontSize: theme.responsiveFontSize,
+      color: theme.textColor,
+      textAlign: 'left',
+      fontFamily: theme.fontSemibold,
+    },
+    none: {
+      display: 'none',
+    },
+    inflationaryRow: {
+      flexDirection: 'row',
     },
   });
   return styles;

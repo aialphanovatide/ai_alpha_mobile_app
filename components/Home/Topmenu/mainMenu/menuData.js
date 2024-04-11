@@ -205,7 +205,7 @@ const menuData = [
     subMenuOptions: [
       {
         id: 81,
-        coin: 'MATIC',
+        coin: 'POLYGON',
         imageUri: 'https://cdn-icons-png.flaticon.com/512/3393/3393948.png',
       },
       {

@@ -235,6 +235,30 @@ const useChartsStyles = () => {
       position: 'relative',
       flexDirection: 'row',
     },
+    dateRow: {
+      flexDirection: 'row'
+    },
+    alertsDateContainer: {
+      marginVertical: 4,
+      paddingTop: 4,
+      justifyContent: 'space-between',
+    },
+    alertsSecondaryData: {
+      fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.fontMedium,
+      color: theme.secondaryTextColor,
+    },
+    dateIcon: {
+      width: 14,
+      height: 14,
+      alignSelf: 'center',
+      marginHorizontal: 4,
+      tintColor: theme.secondaryTextColor,
+    },
+    column: {
+      flex: 1,
+      flexDirection: 'column',
+    },
     alertDetailsRightContent: {
       position: 'absolute',
       right: 12,

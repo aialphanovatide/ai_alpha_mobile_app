@@ -137,7 +137,7 @@ const RevenueCatProvider = ({children}) => {
   const getUserSubscriptionData = async () => {
     try {
       const customerInfo = await Purchases.getCustomerInfo();
-      console.log('\nCustomer info:', customerInfo);
+      //console.log('\nCustomer info:', customerInfo);
       updateCustomerInformation(customerInfo);
     } catch (error) {
       console.log('Error purchasing package:', error);
@@ -147,7 +147,7 @@ const RevenueCatProvider = ({children}) => {
   const loadOfferings = async () => {
     try {
       const offerings = await Purchases.getOfferings();
-      console.log('Offerings: ', offerings);
+      //console.log('Offerings: ', offerings);
       const all_packages = [];
 
       for (const key in offerings.all) {
@@ -161,7 +161,7 @@ const RevenueCatProvider = ({children}) => {
         }
       }
       const orderedPackages = orderPackages(all_packages);
-      console.log('All packages from offerings: ', orderedPackages);
+      //console.log('All packages from offerings: ', orderedPackages);
       setPackages(orderedPackages);
     } catch (error) {
       console.error('Error trying to get offerings: ', error);

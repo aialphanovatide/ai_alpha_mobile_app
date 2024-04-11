@@ -35,6 +35,8 @@ export const lightThemeStyles = {
   inactiveTextColor: '#5F6466',
   inactiveMenuBgColor: '#D9D9D9',
   buttonColor: '#FFFFFF',
+  orangeButton: '#FFF7EC',
+  grayButtonColor: '#D4D4D4',
   upgradeOverlayBgColor: '#A3A3A370',
   activePink: '#E6007A',
   activePurple: '#49346B',
@@ -96,15 +98,21 @@ export const lightThemeStyles = {
   fontMedium: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
   fontSemibold: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
   fontBoldItalic: isAndroid
-  ? 'prompt_semibold_italic'
-  : 'Prompt-SemiBold-Italic',
+    ? 'prompt_semibold_italic'
+    : 'Prompt-SemiBold-Italic',
   fontUnbounded: isAndroid ? 'unbounded_regular' : 'Unbounded-Regular',
   fontUnboundedMedium: isAndroid ? 'unbounded_medium' : 'Unbounded-Medium',
   fontUnboundedLight: isAndroid ? 'unbounded_light' : 'Unbounded-Light',
-  fontUnboundedExtraLight: isAndroid ? 'unbounded_extra_light' : 'Unbounded-Extra-Light',
+  fontUnboundedExtraLight: isAndroid
+    ? 'unbounded_extra_light'
+    : 'Unbounded-Extra-Light',
   fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
-  fontUnboundedExtraBold: isAndroid ? 'unbounded_extra_bold' : 'Unbounded-Extra-Bold',
-  fontUnboundedSemibold: isAndroid ? 'unbounded_semibold' : 'Unbounded-SemiBold',
+  fontUnboundedExtraBold: isAndroid
+    ? 'unbounded_extra_bold'
+    : 'Unbounded-Extra-Bold',
+  fontUnboundedSemibold: isAndroid
+    ? 'unbounded_semibold'
+    : 'Unbounded-SemiBold',
   fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
 };
 
@@ -140,6 +148,8 @@ export const darkThemeStyles = {
   inactiveTextColor: '#F9FAFC',
   inactiveMenuBgColor: '#74788D',
   buttonColor: '#451205',
+  orangeButton: '#451205',
+  grayButtonColor: '#A3A3A3',
   upgradeOverlayBgColor: '#0A0A0A70',
   activePink: '#E6007A',
   activePurple: '#49346B',
@@ -207,9 +217,15 @@ export const darkThemeStyles = {
   fontUnbounded: isAndroid ? 'unbounded_regular' : 'Unbounded-Regular',
   fontUnboundedMedium: isAndroid ? 'unbounded_medium' : 'Unbounded-Medium',
   fontUnboundedLight: isAndroid ? 'unbounded_light' : 'Unbounded-Light',
-  fontUnboundedExtraLight: isAndroid ? 'unbounded_extra_light' : 'Unbounded-Extra-Light',
+  fontUnboundedExtraLight: isAndroid
+    ? 'unbounded_extra_light'
+    : 'Unbounded-Extra-Light',
   fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
-  fontUnboundedExtraBold: isAndroid ? 'unbounded_extra_bold' : 'Unbounded-Extra-Bold',
-  fontUnboundedSemibold: isAndroid ? 'unbounded_semibold' : 'Unbounded-SemiBold',
+  fontUnboundedExtraBold: isAndroid
+    ? 'unbounded_extra_bold'
+    : 'Unbounded-Extra-Bold',
+  fontUnboundedSemibold: isAndroid
+    ? 'unbounded_semibold'
+    : 'Unbounded-SemiBold',
   fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
 };

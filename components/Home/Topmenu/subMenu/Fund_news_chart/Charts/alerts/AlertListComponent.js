@@ -19,34 +19,15 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   useEffect(() => {
     setIsLoading(true);
 
-    let alerts_date_filter;
-    switch (timeframe) {
-      case '1h':
-        alerts_date_filter = '1h';
-        break;
-      case '4h':
-        alerts_date_filter = '4h';
-        break;
-      case '1d':
-        alerts_date_filter = 'today';
-        break;
-      case '1w':
-        alerts_date_filter = 'last week';
-        break;
-      default:
-        alerts_date_filter = 'today';
-        break;
-    }
-
-    const fetchAlerts = async () => {
+      const fetchAlerts = async () => {
       setAlerts([]);
       setIsLoading(true);
 
       try {
         // Fetch alerts based on coin, date, and limit
         const response = await getService(
-          `/api/filter/alerts?coin=${botName}&date=${alerts_date_filter}&limit=${
-            alerts_date_filter === 'last week' ? 40 : 20
+          `/api/filter/alerts?coin=${botName}&date=24h&limit=${
+            timeframe.toLowerCase() === '1w' ? 40 : 20
           }`,
         );
 

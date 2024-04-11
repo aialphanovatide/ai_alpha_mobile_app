@@ -7,55 +7,11 @@ import {findCoinNameBySymbol} from '../../coinsNames';
 import {fundamentals_static_content} from '../../../../fundamentalsStaticData';
 import SupplyModal from '../../../SupplyModal/SupplyModal';
 
-const CirculatingSupplyItem = ({item, styles, handleSupplyDataPress}) => {
-  return (
-    <View style={styles.circulatingSupplyItem}>
-      <View style={styles.row}>
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.crypto.toLowerCase()}.png`,
-              width: 30,
-              height: 30,
-            }}
-            resizeMode={'contain'}
-          />
-        </View>
-        <Text style={styles.itemName}>{item.crypto}</Text>
-        <Image
-          style={styles.inflationaryArrow}
-          resizeMode="contain"
-          source={
-            item.inflationary === null
-              ? require('../../../../../../../../../../assets/images/fundamentals/competitors/circulatingSupply/hybrid.png')
-              : item.inflationary
-              ? require('../../../../../../../../../../assets/images/fundamentals/competitors/circulatingSupply/inflationary.png')
-              : require('../../../../../../../../../../assets/images/fundamentals/competitors/circulatingSupply/deflationary.png')
-          }
-        />
-      </View>
-      <View style={styles.dataContainer}>
-        <ProgressBar
-          name={item.name}
-          maxValue={item.maxValue}
-          percentageValue={item.percentageValue}
-          styles={styles}
-          crypto={item.crypto}
-          handleSupplyDataPress={handleSupplyDataPress}
-        />
-      </View>
-    </View>
-  );
-};
-
-const ProgressBar = ({
-  name,
-  maxValue,
-  percentageValue,
+const CirculatingSupplyItem = ({
+  item,
   styles,
-  crypto,
   handleSupplyDataPress,
+  activeSupply,
 }) => {
   function formatNumber(value) {
     const suffixes = ['', 'thousand', 'million', 'billion', 'trillion'];
@@ -74,37 +30,113 @@ const ProgressBar = ({
   }
 
   return (
-    <View style={styles.progressBarContainer}>
-      <View style={[styles.row, styles.noVerticalMargin, styles.noPaddingH]}>
-        {maxValue === Infinity ? (
+    <View style={styles.circulatingSupplyItem}>
+      <View style={styles.itemRow}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.crypto.toLowerCase()}.png`,
+            width: 30,
+            height: 30,
+          }}
+          resizeMode={'contain'}
+        />
+        <View style={styles.column}>
+          <Text style={styles.tokenName}>{item.name}</Text>
+          <View style={styles.inflationaryRow}>
+            <Image
+              style={styles.inflationaryArrow}
+              resizeMode="contain"
+              source={
+                item.inflationary === null
+                  ? require('../../../../../../../../../../assets/images/fundamentals/tokenomics/hybrid.png')
+                  : item.inflationary
+                  ? require('../../../../../../../../../../assets/images/fundamentals/tokenomics/inflationary.png')
+                  : require('../../../../../../../../../../assets/images/fundamentals/tokenomics/deflationary.png')
+              }
+            />
+            <Text style={[styles.text, styles.marginLeft]}>
+              {item.inflationary === null
+                ? 'Hybrid'
+                : item.inflationary === true
+                ? 'Inflationary'
+                : 'Deflationary'}
+            </Text>
+          </View>
+        </View>
+        {item.maxValue === Infinity ? (
           <TouchableOpacity
             onPress={() =>
               handleSupplyDataPress(
-                `${name} circulating supply`,
+                `${item.name} circulating supply`,
                 fundamentals_static_content.competitors.subsections.supplyModel
-                  .supplyDescriptions[crypto.toLowerCase()],
+                  .supplyDescriptions[item.crypto.toLowerCase()],
               )
             }
             style={styles.infinityButton}>
-            <Text style={[styles.valueLabel, styles.infinityLabel]}>{'∞'}</Text>
+            <Text style={[styles.infinityLabel]}>{'∞'}</Text>
           </TouchableOpacity>
         ) : (
           <Text style={[styles.valueLabel]}>
-            {`${formatNumber(maxValue)} ${crypto}`}
+            {`${formatNumber(item.maxValue)} ${item.crypto}`}
           </Text>
         )}
       </View>
+      <View style={styles.dataContainer}>
+        <ProgressBar
+          maxValue={item.maxValue}
+          percentageValue={item.percentageValue}
+          styles={styles}
+          activeSupply={activeSupply}
+        />
+      </View>
+    </View>
+  );
+};
+
+const ProgressBar = ({maxValue, percentageValue, styles, activeSupply}) => {
+  function formatNumber(value) {
+    const suffixes = ['', 'thousand', 'million', 'billion', 'trillion'];
+
+    const formatRecursive = (num, suffixIndex) => {
+      if (num < 1000 || suffixIndex === suffixes.length - 1) {
+        return (
+          num.toFixed(2).replace(/\.00$/, '') + ' ' + suffixes[suffixIndex]
+        );
+      } else {
+        return formatRecursive(num / 1000, suffixIndex + 1);
+      }
+    };
+
+    return formatRecursive(value, 0);
+  }
+
+  return (
+    <View style={styles.progressBarContainer}>
       <View
         style={[
           styles.progressBar,
           maxValue === Infinity ? styles.infinityBar : {},
         ]}>
         <View
-          style={[{width: `${percentageValue}%`}, styles.progressBarFill]}
+          style={[
+            activeSupply ? {} : styles.none,
+            {width: `${percentageValue}%`},
+            styles.progressBarFill,
+          ]}
         />
       </View>
       <View style={[styles.row, styles.noVerticalMargin]}>
-        <Text style={styles.labelBottom}>{`${percentageValue}%`}</Text>
+        <Text
+          style={[
+            styles.labelBottom,
+            {
+              marginLeft: `${
+                percentageValue < 25 ? percentageValue + 10 : percentageValue - 15
+              }%`,
+            },
+            activeSupply ? {} : styles.transparent,
+          ]}>{`${percentageValue}%`}</Text>
       </View>
     </View>
   );
@@ -123,6 +155,11 @@ const CirculatingSupply = ({
   const [loading, setLoading] = useState(true);
   const [supplyDataVisible, setSupplyDataVisible] = useState(false);
   const [supplyData, setSupplyData] = useState({title: '', description: ''});
+  const [activeSupply, setActiveSupply] = useState(false);
+
+  const handleSupplyButton = () => {
+    setActiveSupply(!activeSupply);
+  };
 
   const handleSupplyDataPress = (title = null, description = null) => {
     if (description) {
@@ -245,41 +282,22 @@ const CirculatingSupply = ({
             />
           )}
           <View style={styles.row}>
-            <Text style={[styles.referenceLabel, styles.labelLeft]}>
-              Circulating Supply
-            </Text>
-            <Text style={[styles.referenceLabel, styles.labelRight]}>
-              Total tokens in Supply
-            </Text>
-          </View>
-          <View style={styles.row}>
-            <Text style={[styles.referenceLabel, styles.symbolLabel]}>
-              <View style={styles.symbolWrapper}>
-                <Image
-                  source={require('../../../../../../../../../../assets/images/fundamentals/competitors/circulatingSupply/deflationary.png')}
-                  style={styles.referenceIconImage}
-                  resizeMode="contain"
-                />
-              </View>
-              Deflationary
-            </Text>
-            <Text
+            <TouchableOpacity
               style={[
-                styles.referenceLabel,
-                styles.symbolLabel,
-                styles.noMargin,
-              ]}>
-              <View style={styles.symbolWrapper}>
-                <Image
-                  source={require('../../../../../../../../../../assets/images/fundamentals/competitors/circulatingSupply/inflationary.png')}
-                  style={styles.referenceIconImage}
-                  resizeMode="contain"
-                />
-              </View>
-              Inflationary
-            </Text>
+                styles.button,
+                styles.alignLeft,
+                activeSupply && styles.activeOrangeButton,
+              ]}
+              onPress={() => handleSupplyButton()}>
+              <Text
+                style={[styles.supplyText, activeSupply && styles.activeText]}>
+                Circulating supply
+              </Text>
+            </TouchableOpacity>
+            <View style={[styles.button, styles.alignRight]}>
+              <Text style={styles.totalText}>Total Tokens in Supply</Text>
+            </View>
           </View>
-
           <View style={styles.itemsContainer}>
             {mappedData.map((item, index) => (
               <CirculatingSupplyItem
@@ -287,6 +305,7 @@ const CirculatingSupply = ({
                 key={index}
                 styles={styles}
                 handleSupplyDataPress={handleSupplyDataPress}
+                activeSupply={activeSupply}
               />
             ))}
           </View>
