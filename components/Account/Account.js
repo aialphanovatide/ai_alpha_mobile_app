@@ -341,7 +341,7 @@ async function Buy_now() {
               />
             </View>
             <Text style={styles.username}>
-              {userEmail || ' '}
+              {userEmail || 'Linked to Apple ID'}
             </Text>
             <View style={styles.optionsContainer}>
               {options &&
