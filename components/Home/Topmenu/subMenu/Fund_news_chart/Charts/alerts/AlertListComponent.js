@@ -46,7 +46,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
           setAlerts(filtered_alerts);
         }
       } catch (error) {
-        console.error('Error fetching alerts:', error.message);
+        console.error('Error fetching alerts:', error.message);  
       } finally {
         setIsLoading(false);
       }
