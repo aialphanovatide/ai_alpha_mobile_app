@@ -142,8 +142,8 @@ const useCirculatingSupplyStyles = () => {
       flexDirection: 'row',
     },
     image: {
-      width: 40,
-      height: 40,
+      width: 30,
+      height: 30,
       borderRadius: 20,
       alignSelf: 'center',
       margin: 8,

@@ -7,16 +7,16 @@ const useNoContentMessageStyles = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      minHeight: 200,
+      minHeight: 150,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       justifyContent: 'center',
-      paddingVertical: '30%',
-      paddingHorizontal: '25%',
+      paddingVertical: '15%',
+      paddingHorizontal: '10%',
     },
     message: {
       color: theme.secondaryTextColor,
-      textAlign: 'center',
+      textAlign: 'left',
       fontSize: theme.responsiveFontSize,
       fontFamily: theme.fontBoldItalic,
     },

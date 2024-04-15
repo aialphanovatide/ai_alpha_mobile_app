@@ -30,6 +30,7 @@ const Analysis = ({handleAboutPress}) => {
       analysis_content: analysis.raw_analysis,
       analysis_id: analysis.id,
       date: analysis.created_at,
+      isHistoryArticle: false,
     });
   };
 

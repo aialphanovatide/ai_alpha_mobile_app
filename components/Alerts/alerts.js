@@ -134,9 +134,7 @@ const Alerts = ({route, navigation}) => {
     const fetchAlertsByCoin = async () => {
       try {
         const response = await getService(
-          `/api/filter/alerts?coin=${botName}&date=${activeAlertOption.toLowerCase()}&limit=${
-            activeAlertOption.toLowerCase() === '24h' ? 40 : 20
-          }`,
+          `/api/filter/alerts?coin=${botName}&date=${activeAlertOption.toLowerCase()}&limit=${25}`,
         );
 
         if (
@@ -162,9 +160,7 @@ const Alerts = ({route, navigation}) => {
       try {
         const body = subscribedCategories.map(category => category.category);
         const response = await postService(
-          `/api/tv/multiple_alert?date=${activeAlertOption.toLowerCase()}&limit=${
-            activeAlertOption.toLowerCase() === '1w' ? 40 : 20
-          }`,
+          `/api/tv/multiple_alert?date=${activeAlertOption.toLowerCase()}&limit=${25}`,
           {
             categories: body,
           },

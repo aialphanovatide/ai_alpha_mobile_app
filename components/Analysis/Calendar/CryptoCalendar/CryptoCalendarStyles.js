@@ -132,7 +132,9 @@ const useCryptoCalendarStyles = () => {
       alignItems: 'center',
     },
     cryptoIcon: {
-      flex: 1,
+      width: 35,
+      height: 35,
+      borderRadius: 17.5,
     },
     activeCryptoItem: {
       backgroundColor: theme.activeWhite,

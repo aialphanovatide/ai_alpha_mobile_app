@@ -77,6 +77,7 @@ const TopStories = ({handleAboutPress}) => {
               summary: story.summary,
               images: story.images,
               date: story.story_date,
+              top_story_id: story.top_story_id,
             },
             isStory: true,
           },

@@ -82,7 +82,7 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
         mapped_tvl.push(current);
       }
     });
-    console.log('Mapped tvl: ', mapped_tvl);
+    // console.log('Mapped tvl: ', mapped_tvl);
     setCryptos(mapped_tvl);
     setLoading(false);
   }, [competitorsData]);

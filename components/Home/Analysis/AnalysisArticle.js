@@ -11,10 +11,12 @@ import useHomeAnalysisStyles from './analysisStyles';
 import BackButton from '../../Analysis/BackButton/BackButton';
 import RenderHTML, {defaultSystemFonts} from 'react-native-render-html';
 import {AppThemeContext} from '../../../context/themeContext';
+import FastImage from 'react-native-fast-image';
+import {useNavigation} from '@react-navigation/core';
 
 const AnalysisArticle = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
-  const {analysis_content, analysis_id, date} = route?.params;
+  const {analysis_content, analysis_id, date, isHistoryArticle} = route?.params;
   const styles = useHomeAnalysisStyles();
   const {theme} = useContext(AppThemeContext);
   const isAndroid = Platform.OS === 'android' ? true : false;
@@ -23,6 +25,7 @@ const AnalysisArticle = ({route}) => {
     isAndroid ? 'prompt_regular' : 'Prompt-Regular',
     isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
   ];
+  const navigation = useNavigation();
 
   const simplifyDateTime = dateTimeString => {
     const dateTime = new Date(dateTimeString);
@@ -76,6 +79,13 @@ const AnalysisArticle = ({route}) => {
   };
 
   // console.log(findHtmlContent(analysis_content));
+  const handleBackNavigation = () => {
+    navigation.goBack();
+    navigation.navigate('Analysis', {
+      screen: 'History',
+      params: {},
+    });
+  };
 
   const html_styles = {
     p: {
@@ -121,18 +131,20 @@ const AnalysisArticle = ({route}) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.backButtonWrapper}>
-        <BackButton />
+        <BackButton
+          navigationHandler={isHistoryArticle ? handleBackNavigation : null}
+        />
       </View>
       <View style={styles.article}>
-        <Image
+        <FastImage
           style={styles.articleImage}
           resizeMode={'contain'}
           source={{
-            uri: analysis_id
-              ? `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`
-              : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
-            width: 300,
+            uri: `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
+            priority: FastImage.priority.normal,
           }}
+          defaultSource={require('../../../assets/images/home/default_news.png')}
+          fallback={true}
         />
         <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>
         <RenderHTML

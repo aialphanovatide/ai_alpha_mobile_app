@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react';
 import useDappsStyles from './DAppsStyles';
 import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
+import {findMessageByCoin} from '../../NoContentMessage/staticNoContentDescriptions';
+import FastImage from 'react-native-fast-image';
 
 const ProtocolItem = ({
   protocol,
@@ -63,15 +65,24 @@ const ProtocolItem = ({
           activeProtocol.name === protocol.name &&
           styles.activeItem && {marginBottom: marginValue},
       ]}>
-      <Image
-        source={
-          hasImage
-            ? {uri: protocol.image, width: 40, height: 40}
-            : require('../../../../../../../../assets/images/fundamentals/dApps/protocol_default.png')
-        }
-        style={[styles.protocolImage, !hasImage && styles.defaultProtocol]}
-        resizeMode="contain"
-      />
+      {hasImage ? (
+        <FastImage
+          source={{
+            uri: protocol.image,
+            priority: FastImage.priority.normal,
+          }}
+          style={styles.protocolImage}
+          resizeMode="contain"
+          fallback={true}
+        />
+      ) : (
+        <Image
+          source={require('../../../../../../../../assets/images/fundamentals/dApps/protocol_default.png')}
+          style={[styles.protocolImage, styles.defaultProtocol]}
+          resizeMode="contain"
+        />
+      )}
+
       <View style={styles.line} />
       <View style={styles.protocolDataContainer}>
         <View style={styles.row}>
@@ -160,28 +171,30 @@ const DApps = ({getSectionData, coin, handleSectionContent}) => {
   };
 
   useEffect(() => {
-    if (!loading && mappedData?.length === 0) {
+    if (!loading && !findMessageByCoin(coin) && mappedData?.length === 0) {
       handleSectionContent('dapps', true);
     }
   }, [mappedData, loading, handleSectionContent]);
+
+  console.log(mappedData);
 
   return (
     <View>
       {loading ? (
         <Loader />
-      ) : mappedData?.length === 0 ? (
-        <NoContentMessage />
+      ) : mappedData?.length === 0 && findMessageByCoin(coin) ? (
+        <NoContentMessage coin={coin} />
       ) : (
         <>
           <View style={styles.mainImageContainer}>
-            <Image
+            <FastImage
               style={styles.mainImage}
               resizeMode={'contain'}
               source={{
                 uri: `https://${coin}aialpha.s3.us-east-2.amazonaws.com/dapps/dapps.png`,
-                width: 320,
-                height: 200,
+                priority: FastImage.priority.high,
               }}
+              fallback={true}
             />
           </View>
           <View style={styles.dataContainer}>

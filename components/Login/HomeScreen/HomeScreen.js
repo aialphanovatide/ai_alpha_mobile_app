@@ -14,6 +14,8 @@ import AccountScreen from '../../Account/AccountStack';
 import {useNavigation} from '@react-navigation/core';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import {useUserId} from '../../../context/UserIdContext';
+import SearchScreen from '../../Search/SearchStack';
+import {CommonActions} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
@@ -183,6 +185,42 @@ const HomeScreen = () => {
             tabPress: e => {
               navigation.navigate('Account', {screen: 'AccountMain'});
             },
+          }}
+        />
+        <Tab.Screen
+          name="Search"
+          component={SearchScreen}
+          listeners={{
+            tabPress: e => {
+              navigation.navigate('Search', {updatedSection: true});
+            },
+            // navigation.dispatch(
+            //   CommonActions.reset({
+            //     index: 4,
+            //     routes: [
+            //       {name: 'Home'},
+            //       {
+            //         name: 'Alerts',
+            //       },
+            //       {name: 'Analysis'},
+            //       {name: 'Account'},
+            //       {name: 'Search'},
+            //     ],
+            //   }),
+            // ),
+          }}
+          options={{
+            tabBarLabel: 'Search',
+            tabBarIcon: ({focused, color, size}) => (
+              <MenuIcon
+                color={color}
+                iconSource={
+                  focused
+                    ? require('../../../assets/images/bottomMenu/search-active.png')
+                    : require('../../../assets/images/bottomMenu/search.png')
+                }
+              />
+            ),
           }}
         />
       </Tab.Navigator>

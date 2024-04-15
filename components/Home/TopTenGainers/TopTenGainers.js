@@ -8,6 +8,7 @@ import Loader from '../../Loader/Loader.js';
 import TOP_TEN_GAINERS_MOCK from './TopTenGainersMock.js';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
 import {home_static_data} from '../homeStaticData.js';
+import FastImage from 'react-native-fast-image';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
@@ -19,10 +20,11 @@ const Item = ({position, coin}) => {
         <Text style={styles.coinPosition}>{position}</Text>
       </View>
       <View style={styles.logoContainer}>
-        <Image
-          style={[styles.coinLogo]}
-          source={{uri: coin.image, width: 30, height: 30}}
+        <FastImage
+          style={styles.coinLogo}
+          source={{uri: coin.image, priority: FastImage.priority.high}}
           resizeMode="contain"
+          fallback={true}
         />
       </View>
       <View styles={styles.coinDataContainer}>
@@ -50,14 +52,12 @@ const TopTenGainers = ({handleAboutPress}) => {
   const styles = useTopTenGainersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const additionalAboutStyles = {
     marginRight: Platform.OS === 'android' ? 20 : 0,
   };
 
   useEffect(() => {
-    setTopTenCoins(TOP_TEN_GAINERS_MOCK);
-    setLoading(false);
     /*
     const fetchTopTenCoins = async () => {
       try {
@@ -72,6 +72,8 @@ const TopTenGainers = ({handleAboutPress}) => {
     };
     fetchTopTenCoins();
     */
+    setTopTenCoins(TOP_TEN_GAINERS_MOCK);
+    setLoading(false);
   }, []);
   return (
     <View style={styles.topTenGainersContainer}>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import useNewsStyles from './NewsStyles';
+import FastImage from 'react-native-fast-image';
 
 const NewsItem = ({item, onPress, filterText}) => {
   const styles = useNewsStyles();
@@ -35,16 +36,16 @@ const NewsItem = ({item, onPress, filterText}) => {
           {item.title}
         </Text>
       </View>
-      <Image
+      <FastImage
         source={{
           uri: item.article_id
             ? `https://apparticleimages.s3.us-east-2.amazonaws.com/${item.article_id}.jpg`
             : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
-          width: 80,
-          height: 80,
+          priority: FastImage.priority.normal,
         }}
         style={styles.image}
         resizeMode={'contain'}
+        fallback={true}
       />
     </TouchableOpacity>
   );

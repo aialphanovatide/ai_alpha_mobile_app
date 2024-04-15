@@ -24,7 +24,8 @@ const useTypeOfTokenStyles = () => {
       alignItems: 'center',
     },
     tokenImage: {
-      flex: 1,
+      width: 30,
+      height: 30,
     },
     tokenName: {
       color: theme.textColor,

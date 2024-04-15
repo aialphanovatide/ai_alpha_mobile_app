@@ -5,6 +5,7 @@ import {AppThemeContext} from '../../../../../../../../../../context/themeContex
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
+import FastImage from 'react-native-fast-image';
 
 const generateActiveDevs = (
   value,
@@ -47,11 +48,10 @@ const ActiveDevsItem = ({item, styles, maxValue, itemIndex}) => {
     <View style={styles.itemContainer}>
       <View style={styles.row}>
         <View style={styles.logoContainer}>
-          <Image
+          <FastImage
             source={{
               uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.crypto.toLowerCase()}.png`,
-              width: 30,
-              height: 30,
+              priority: FastImage.priority.normal,
             }}
             style={styles.image}
             resizeMode={'contain'}

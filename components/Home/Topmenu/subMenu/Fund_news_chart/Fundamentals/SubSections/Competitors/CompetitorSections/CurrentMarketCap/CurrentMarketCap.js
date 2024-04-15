@@ -116,7 +116,7 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
         mapped_competitors_data.push(current);
       }
     });
-    console.log('Mapped competitors: ', mapped_competitors_data);
+    // console.log('Mapped competitors: ', mapped_competitors_data);
     setCryptos(mapped_competitors_data);
     setLoading(false);
   }, [coin]);

@@ -48,6 +48,7 @@ const useRevenueStyles = () => {
       fontSize: theme.responsiveFontSize * 0.8,
       fontFamily: theme.fontMedium,
       alignSelf: 'center',
+      zIndex: 5,
     },
     bgImage: {
       position: 'absolute',
@@ -72,6 +73,9 @@ const useRevenueStyles = () => {
     marginBottom: {
       marginBottom: 40,
     },
+    graphItemContainer: {
+      marginTop: 14,
+    }
   });
   return styles;
 };

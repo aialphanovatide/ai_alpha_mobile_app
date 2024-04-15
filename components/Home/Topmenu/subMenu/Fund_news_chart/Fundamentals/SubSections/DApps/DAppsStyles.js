@@ -25,13 +25,14 @@ const useDappsStyles = () => {
       tintColor: theme.dAppsInactiveItem,
     },
     mainImageContainer: {
-      height: 300,
+      flex: 1,
       marginTop: theme.boxesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'center',
     },
     mainImage: {
-      flex: 1,
+      width: 320,
+      height: 300,
     },
     dataContainer: {
       margin: theme.boxesVerticalMargin,
@@ -110,21 +111,21 @@ const useDappsStyles = () => {
     protocolName: {
       fontSize: theme.responsiveFontSize * 0.85,
       color: theme.inactiveTextColor,
-      fontFamily: theme.fontSemibold
+      fontFamily: theme.fontSemibold,
     },
     tvl: {
       position: 'absolute',
       right: 0,
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.inactiveTextColor,
-      fontFamily: theme.fontSemibold
+      fontFamily: theme.fontSemibold,
     },
     protocolDescription: {
       marginVertical: theme.boxesVerticalMargin,
       fontSize: theme.responsiveFontSize * 0.8,
       lineHeight: 16,
       color: theme.inactiveTextColor,
-      fontFamily: theme.fontMedium
+      fontFamily: theme.fontMedium,
     },
     hidden: {
       display: 'none',
@@ -138,7 +139,7 @@ const useDappsStyles = () => {
       fontSize: theme.responsiveFontSize,
       color: theme.secondaryTextColor,
       alignSelf: 'center',
-      fontFamily: theme.fontBoldItalic
+      fontFamily: theme.fontBoldItalic,
     },
     emptyMessageContainer: {
       flex: 1,

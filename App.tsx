@@ -75,6 +75,8 @@ const App = () => {
     setBarScheme(bar_theme);
   }, [colorScheme]); 
 
+// useEffect that checks the Server status for showing the "server down" pop-up, it sends a request to the categories endpoint since it is the one that gives the data used across all the app, and which is the most visible indicator of the server status
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {

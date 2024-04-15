@@ -46,7 +46,9 @@ const useBtcFundingRatesStyles = () => {
       justifyContent: 'center',
     },
     exchangeLogo: {
-      flex: 1,
+      width: 30,
+      height: 30,
+      borderRadius: 15,
     },
     dataRow: {
       backgroundColor: theme.boxesBackgroundColor,
@@ -108,7 +110,7 @@ const useBtcFundingRatesStyles = () => {
       marginBottom: '50%',
       alignItems: 'center',
       justifyContent: 'flex-start',
-    }
+    },
   });
   return styles;
 };

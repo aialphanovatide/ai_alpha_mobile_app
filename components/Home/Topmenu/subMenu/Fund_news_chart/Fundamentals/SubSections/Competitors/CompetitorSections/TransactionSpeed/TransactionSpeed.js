@@ -24,7 +24,7 @@ const TransactionSpeed = ({competitorsData}) => {
       return 0;
     }
     const match = str.replace(/,/g, '').match(/\d+/);
-    console.log(match);
+    // console.log(match);
     if (match) {
       const number = Number(match[0]);
       return number;
@@ -75,7 +75,7 @@ const TransactionSpeed = ({competitorsData}) => {
         transaction_speed.push(mapped_crypto);
       }
     });
-    console.log(transaction_speed);
+    // console.log(transaction_speed);
     setLoading(false);
     setCryptos(transaction_speed);
     setActiveCrypto(transaction_speed[0]);

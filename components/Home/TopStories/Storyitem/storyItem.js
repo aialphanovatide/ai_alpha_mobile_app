@@ -1,6 +1,7 @@
 import {Image} from 'react-native';
 import {List} from 'react-native-paper';
 import useTopStoriesStyles from '../topStoriesStyles';
+import FastImage from 'react-native-fast-image';
 
 const StoryItem = ({item, title, image, handleStoryRedirect, coinBotId}) => {
   const styles = useTopStoriesStyles();
@@ -9,10 +10,14 @@ const StoryItem = ({item, title, image, handleStoryRedirect, coinBotId}) => {
       title={title}
       titleNumberOfLines={2}
       left={() => (
-        <Image
-          source={{uri: `data:image/png;base64,${image}`, width: 60}}
+        <FastImage
+          source={{
+            uri: `data:image/png;base64,${image}`,
+            priority: FastImage.priority.high,
+          }}
           style={styles.imageStyle}
           resizeMode="contain"
+          fallback={true}
         />
       )}
       titleStyle={styles.titleStyles}

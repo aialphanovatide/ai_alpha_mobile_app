@@ -9,6 +9,7 @@ import {findCoinNameBySymbol} from '../../coinsNames';
 
 const Graph = ({value, itemIndex, styles, tintColors}) => {
   const chosenColor = tintColors[itemIndex > 3 ? itemIndex % 3 : itemIndex];
+  const calculus_value = isNaN(value) ? 0 : value;
   const {isDarkMode} = useContext(AppThemeContext);
   return (
     <View style={styles.imageContainer}>
@@ -26,7 +27,7 @@ const Graph = ({value, itemIndex, styles, tintColors}) => {
           styles.overlay,
           ,
           {
-            height: 240 * (value / 100),
+            height: 240 * (calculus_value / 100),
             backgroundColor: chosenColor,
           },
         ]}></View>
@@ -95,7 +96,7 @@ const Apr = ({competitorsData, isSectionWithoutData}) => {
         apr_data.push(mapped_crypto);
       }
     });
-    console.log(apr_data);
+    // console.log(apr_data);
     setCryptos(apr_data);
     setActiveOption(apr_data[0]);
     setLoading(false);
@@ -115,31 +116,15 @@ const Apr = ({competitorsData, isSectionWithoutData}) => {
             activeCrypto={activeOption}
             handleActiveCryptoChange={handleActiveOptionChange}
           />
-          <View
-            style={[
-              styles.activeOptionContainer,
-              // activeOption && {
-              //   borderColor:
-              //     tintColors[
-              //       findActiveOptionIndex(cryptos, activeOption) > 3
-              //         ? findActiveOptionIndex(cryptos, activeOption) % 3
-              //         : findActiveOptionIndex(cryptos, activeOption)
-              //     ],
-              // },
-            ]}>
-            <Text
-              style={[
-                styles.activeOptionValue,
-                // activeOption && {
-                //   color:
-                //     tintColors[
-                //       findActiveOptionIndex(cryptos, activeOption) > 3
-                //         ? findActiveOptionIndex(cryptos, activeOption) % 3
-                //         : findActiveOptionIndex(cryptos, activeOption)
-                //     ],
-                // },
-              ]}>
-              {`${activeOption ? activeOption.apr : 0.0}%`}
+          <View style={[styles.activeOptionContainer]}>
+            <Text style={[styles.activeOptionValue]}>
+              {`${
+                activeOption
+                  ? isNaN(activeOption.apr)
+                    ? 0.0
+                    : activeOption.apr
+                  : 0.0
+              }%`}
             </Text>
           </View>
           <View style={styles.graphsContainer}>

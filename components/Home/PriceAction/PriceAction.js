@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, Platform} from 'react-native';
 import priceActionMock from './priceActionMock';
 import priceActionService from '../../../services/PriceActionService';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -9,6 +9,7 @@ import {CategoriesContext} from '../../../context/categoriesContext';
 import {API_BASE_URL} from '../../../services/aiAlphaApi';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
+import FastImage from 'react-native-fast-image';
 
 const CategorySelector = ({
   categories,
@@ -36,11 +37,10 @@ const CategorySelector = ({
                   borderWidth: 2,
                 },
               ]}>
-              <Image
+              <FastImage
                 source={{
                   uri: `${API_BASE_URL}${category.icon}`,
-                  width: 30,
-                  height: 30,
+                  priority: FastImage.priority.high,
                 }}
                 resizeMode="contain"
                 style={styles.categoryIcon}
@@ -57,7 +57,11 @@ const TableItem = ({index, coin, isActive, styles}) => {
   return (
     <View key={index} style={isActive ? styles.dataRow : styles.displayNone}>
       <View style={styles.logoContainer}>
-        <Image style={styles.coinLogo} source={{uri: coin.image}} />
+        <FastImage
+          style={styles.coinLogo}
+          source={{uri: coin.image, priority: FastImage.priority.high}}
+          resizeMode="contain"
+        />
       </View>
       <Text style={styles.dataCell}>{coin.symbol.toUpperCase()}</Text>
       <Text style={styles.dataCell}>${coin.currentPrice}</Text>

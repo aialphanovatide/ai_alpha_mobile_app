@@ -131,7 +131,7 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
         inflation_rate_data.push(mapped_crypto);
       }
     });
-    // console.log(inflation_rate_data);
+    console.log('Inflation rate data: ', inflation_rate_data);
     setCryptos(inflation_rate_data);
     setActiveCrypto(inflation_rate_data[0]);
     setLoading(false);
@@ -145,7 +145,8 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
         value: parseInflationRateValue(
           findKeyInCompetitorItem(
             competitors_data,
-            `inflation rate ${year.year}`,
+            'inflation rate',
+            `${year.year}`,
             token,
           ),
         ),
@@ -153,6 +154,7 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
       // console.log(current_year_value);
       inflationRate.push(current_year_value);
     });
+    console.log(inflationRate);
     return inflationRate;
   };
 
@@ -160,8 +162,13 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
     if (!stringValue) {
       return 0;
     }
-    const filtered_string = stringValue.replace(/\s/g, '');
-    // console.log('Filtered string: ', Number(filtered_string));
+    const filtered_string = stringValue.replace(/\s/g, '').replace(/,/g, '');
+    console.log(
+      'Filtered string: ',
+      Number(filtered_string),
+      ' string value: ',
+      stringValue,
+    );
     return Number(filtered_string);
   };
 
@@ -183,10 +190,12 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
     }
   };
 
-  const findKeyInCompetitorItem = (data, key, crypto) => {
+  const findKeyInCompetitorItem = (data, key, year, crypto) => {
     const found = data.find(
       item =>
-        item.competitor.token === crypto && item.competitor.key.includes(key),
+        item.competitor.token === crypto &&
+        item.competitor.key.includes(key) &&
+        item.competitor.key.includes(year),
     );
     return found && found !== undefined
       ? found.competitor.value !== '-'
@@ -199,6 +208,9 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
     if (rate <= 0 || isNaN(rate)) {
       return inflationValues[0].image;
     } else {
+      if (rate > 10) {
+        return inflationValues[inflationValues.length - 1].image;
+      }
       let selectedImage = inflationValues.find(
         obj => rate > obj.values[0] && rate <= obj.values[1],
       );

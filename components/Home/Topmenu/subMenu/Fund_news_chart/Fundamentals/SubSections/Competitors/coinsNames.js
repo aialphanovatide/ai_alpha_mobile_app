@@ -38,4 +38,17 @@ const findCoinNameBySymbol = symbol => {
   return found !== undefined ? found.name : symbol;
 };
 
-export {coins_names, findCoinNameBySymbol};
+const findCoinMatch = value => {
+  const found = coins_names.find(
+    coin => coin.symbol === value || coin.name.toLowerCase().includes(value.toLowerCase()),
+  );
+  const alt_found = coins_names.find(coin => coin.symbol.includes(value));
+  // console.log('Found: ', found, ' Alternative found: ', alt_found);
+  return found !== undefined
+    ? found
+    : alt_found && alt_found !== undefined
+    ? alt_found
+    : null;
+};
+
+export {coins_names, findCoinNameBySymbol, findCoinMatch};
