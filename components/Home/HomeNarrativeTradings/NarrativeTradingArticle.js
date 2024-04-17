@@ -1,23 +1,16 @@
 import React, {useContext} from 'react';
-import {
-  Image,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
-import useHomeAnalysisStyles from './analysisStyles';
+import {Platform, ScrollView, Text, View} from 'react-native';
 import BackButton from '../../Analysis/BackButton/BackButton';
 import RenderHTML, {defaultSystemFonts} from 'react-native-render-html';
 import {AppThemeContext} from '../../../context/themeContext';
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/core';
+import useHomeNarrativeTradingStyles from './NarrativeTradingsStyles';
 
-const AnalysisArticle = ({route}) => {
+const NarrativeTradingArticle = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
-  const {analysis_content, analysis_id, date, isHistoryArticle} = route?.params;
-  const styles = useHomeAnalysisStyles();
+  const {item_content, id, date, isNavigateFromHome} = route?.params;
+  const styles = useHomeNarrativeTradingStyles();
   const {theme} = useContext(AppThemeContext);
   const isAndroid = Platform.OS === 'android' ? true : false;
   const systemFonts = [
@@ -56,19 +49,15 @@ const AnalysisArticle = ({route}) => {
       };"`,
     );
 
-    const span_changed = paragraphs_changed.replace(
-      /<span style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);">/g,
-      `<span style="color: ${
-        isDarkMode ? 'rgb(255, 255, 255) ' : 'rgb(64, 64, 64)'
-      };">`,
-    ).replace(/style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);"/g, '');
+    const span_changed = paragraphs_changed
+      .replace(
+        /<span style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);">/g,
+        `<span style="color: ${
+          isDarkMode ? 'rgb(255, 255, 255) ' : 'rgb(64, 64, 64)'
+        };">`,
+      )
+      .replace(/style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);"/g, '');
 
-    // const titles_changed_content = span_changed.replace(
-    //   /><strong style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);">/g,
-    //   ` style="color: ${
-    //     isDarkMode ? 'rgb(255, 255, 255) ' : 'rgb(23, 23, 23)'
-    //   };">`,
-    // );
     const bullet_lists_updated_content = span_changed.replace(
       /<ul>/g,
       `<ul style="color: ${
@@ -82,7 +71,7 @@ const AnalysisArticle = ({route}) => {
   const handleBackNavigation = () => {
     navigation.goBack();
     navigation.navigate('Analysis', {
-      screen: 'History',
+      screen: 'NarrativeTrading',
       params: {},
     });
   };
@@ -117,35 +106,35 @@ const AnalysisArticle = ({route}) => {
       color: theme.titleColor,
       fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
     },
-    'ql-size-small': {
-      fontSize: theme.responsiveFontSize * 0.65,
-      color: theme.textColor,
-      fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
-    },
     bold: {
       fontSize: theme.responsiveFontSize * 0.8,
       color: theme.textColor,
       fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
     },
+    'ql-size-small': {
+      fontSize: theme.responsiveFontSize * 0.65,
+      color: theme.textColor,
+      fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
+    },
   };
 
   const html_source = {
-    html: findHtmlContent(analysis_content),
+    html: findHtmlContent(item_content),
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.backButtonWrapper}>
         <BackButton
-          navigationHandler={isHistoryArticle ? handleBackNavigation : null}
+          navigationHandler={isNavigateFromHome ? null : handleBackNavigation}
         />
       </View>
       <View style={styles.article}>
         <FastImage
-          style={styles.articleImage}
+          style={styles.articleFullImage}
           resizeMode={'contain'}
           source={{
-            uri: `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
+            uri: `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
             priority: FastImage.priority.normal,
           }}
           defaultSource={require('../../../assets/images/home/default_news.png')}
@@ -164,4 +153,4 @@ const AnalysisArticle = ({route}) => {
   );
 };
 
-export default AnalysisArticle;
+export default NarrativeTradingArticle;

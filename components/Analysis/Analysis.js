@@ -54,6 +54,11 @@ const Analysis = () => {
       icon: require('../../assets/images/analysis/history.png'),
     },
     {
+      id: 'NarrativeTrading',
+      sectionName: 'Narrative Trading',
+      icon: require('../../assets/images/analysis/narrative-trading.png'),
+    },
+    {
       id: 'Calendar',
       sectionName: 'Calendar',
       icon: require('../../assets/images/analysis/calendar.png'),

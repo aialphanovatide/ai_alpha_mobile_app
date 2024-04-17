@@ -9,6 +9,7 @@ import FearAndGreed from './FearAndGreed/FearAndGreed';
 import BtcDominanceChart from './BtcDominance/BtcDominance';
 import Total3Chart from './Total3Chart/Total3Chart';
 import History from './HistorySection/History';
+import NarrativeTrading from './NarrativeTrading/NarrativeTrading';
 
 const AnalysisStack = createNativeStackNavigator();
 
@@ -19,6 +20,10 @@ const AnalysisScreen = () => {
       screenOptions={{headerShown: 'false', header: () => null}}>
       <AnalysisStack.Screen name="AnalysisMain" component={Analysis} />
       <AnalysisStack.Screen name="History" component={History} />
+      <AnalysisStack.Screen
+        name="NarrativeTrading"
+        component={NarrativeTrading}
+      />
       <AnalysisStack.Screen name="Calendar" component={Calendar} />
       <AnalysisStack.Screen
         name="BTCFundingRates"
