@@ -158,7 +158,6 @@ const App = () => {
       fireDate: new Date().getTime() + 1000, // Schedules for immediate delivery
     });
   };
-
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();
     setIsConnected(state.isConnected);
@@ -173,6 +172,7 @@ const App = () => {
       );
     }
   };
+
 
   return (
     <SocketProvider>
@@ -332,6 +332,8 @@ const App = () => {
 };
 
 export default App;
+
+
 
 const styles = StyleSheet.create({
   container: {

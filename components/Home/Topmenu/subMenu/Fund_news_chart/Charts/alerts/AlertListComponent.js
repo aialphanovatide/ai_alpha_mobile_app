@@ -9,7 +9,6 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Filter the alerts by the alert date, finding the alert names that includes the selected time interval
-
   const filterAlertsByDate = (alerts, timeInterval) => {
     return alerts.filter(alert =>
       alert.alert_name.includes(timeInterval.toUpperCase()),
@@ -45,7 +44,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
           setAlerts(filtered_alerts);
         }
       } catch (error) {
-        console.error('Error fetching alerts:', error.message);
+        console.error('Error fetching alerts:', error.message);  
       } finally {
         setIsLoading(false);
       }

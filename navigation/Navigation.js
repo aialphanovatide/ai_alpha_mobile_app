@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginForm from '../components/Login/Screens/LoginForm/LoginForm';
@@ -11,7 +11,7 @@ import TermsAndConditions from '../components/Login/Screens/TermsAndConditions/T
 
 const Stack = createNativeStackNavigator();
 
-const Navigation = ({handleStatusBarChange}) => {
+const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>

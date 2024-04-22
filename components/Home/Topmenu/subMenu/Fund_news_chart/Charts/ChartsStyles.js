@@ -37,21 +37,19 @@ const useChartsStyles = () => {
       fontFamily: theme.fontSemibold,
     },
     timeFrameContainer: {
-      flex: 1,
-      maxWidth: '40%',
-      marginVertical: 4,
+      marginVertical: 5,
       flexDirection: 'row',
+      marginLeft: 1,
       backgroundColor: theme.subMenuBgColor,
       borderRadius: 2,
+      marginRight: 20
     },
     timeFrameButton: {
-      width: '25%',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 4,
     },
     timeFrameActiveButton: {
-      width: '25%',
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: theme.activeWhite,
@@ -73,9 +71,7 @@ const useChartsStyles = () => {
     },
     rsButtonContainer: {
       flexDirection: 'row',
-      width: '100%',
       flexWrap: 'wrap',
-      marginTop: 10,
       alignItems: 'flex-start',
     },
     rsButton: {
@@ -86,7 +82,7 @@ const useChartsStyles = () => {
       alignItems: 'center',
       borderRadius: 4,
       margin: 1.5,
-      width: '24%',
+      width: '25%',
       backgroundColor: theme.secondaryBoxesBgColor,
     },
     rsButtonText: {
@@ -101,8 +97,9 @@ const useChartsStyles = () => {
     },
     chartsRow: {
       flex: 1,
-      width: 370,
-      flexDirection: 'column',
+      width: '98%',
+      // borderColor: '#282828',
+      // borderWidth: 2,
       marginBottom: 16,
       marginTop: 10,
       justifyContent: 'flex-start',
@@ -119,7 +116,8 @@ const useChartsStyles = () => {
       alignItems: 'top',
       width: '100%',
       height: 300,
-      position: 'relative'
+      position: 'relative',
+      elevation: 10
     },
     loaderContainer: {
       flex: 1,
@@ -135,8 +133,6 @@ const useChartsStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
-      // borderColor: 'black',
-      // borderWidth: 2
     },
     chartBackgroundImage: {
       justifyContent: 'center',
@@ -148,9 +144,15 @@ const useChartsStyles = () => {
       height: 60,
       opacity: 0.8,
     },
+    chartMainContainer: {
+      width: '100vw',
+      height: '100vh'
+    },
     chartsWrapper: {
       flex: 1,
       padding: 0,
+      width: '100%',
+      position: 'relative',
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 2,
