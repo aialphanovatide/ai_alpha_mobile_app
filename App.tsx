@@ -37,6 +37,7 @@ import { getService } from './services/aiAlphaApi';
 import { SocketProvider } from './components/Alerts/Socket';
 import { SocketContext } from './components/Alerts/Socket';
 import io from 'socket.io-client';
+import { RotateProvider } from './context/rotateContext';
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
@@ -162,9 +163,6 @@ const App = () => {
   };
   
   
-  
-  
-
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();
     setIsConnected(state.isConnected);
@@ -177,12 +175,14 @@ const App = () => {
     }
   };
 
+
   return (
     <SocketProvider>
     <Auth0Provider
       domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
       clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
       <RevenueCatProvider>
+        <RotateProvider>
         <UserProvider>
           <UserIdProvider>
             <RawUserIdProvider>
@@ -262,6 +262,7 @@ const App = () => {
             </RawUserIdProvider>
           </UserIdProvider>
         </UserProvider>
+        </RotateProvider>
       </RevenueCatProvider>
     </Auth0Provider>
     </SocketProvider>
@@ -269,6 +270,8 @@ const App = () => {
 };
 
 export default App;
+
+
 
 const styles = StyleSheet.create({
   container: {

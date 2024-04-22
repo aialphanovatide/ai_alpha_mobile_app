@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, ImageBackground } from 'react-native';
+import { View, ImageBackground, Dimensions, Tex, Image } from 'react-native';
 import {
   VictoryChart,
   VictoryAxis,
@@ -8,12 +8,14 @@ import {
   VictoryLabel,
   VictoryLine,
   VictoryTooltip,
-  VictoryContainer
 } from 'victory-native';
 import Loader from '../../../../../Loader/Loader';
 import { AppThemeContext } from '../../../../../../context/themeContext';
 import useChartsStyles from './ChartsStyles';
 import { getService } from '../../../../../../services/aiAlphaApi';
+import DataRenderer from './clickOnCandleDetails';
+import { type } from 'os';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 
@@ -78,14 +80,14 @@ const Chart = ({
   activeButtons,
   selectedInterval,
   coinBot,
+  handleRotatePress
 }) => {
 
   const styles = useChartsStyles();
   const { theme } = useContext(AppThemeContext);
   const [supportLevels, setSupportLevels] = useState([]);
   const [resistanceLevels, setResistanceLevels] = useState([]);
-  const [isToolTipActive, setIsToolTipActive] = useState(false);
-  const [activePoint, setActivePoint] = useState(null);
+  const [selectedCandle, setSelectedCandle] = useState(null);
 
   const usesAlternativeSource =
     coinBot === 'velo' || coinBot === 'kas' ? true : false;
@@ -170,6 +172,25 @@ const Chart = ({
     chartData && chartData[chartData.length - 1]?.x,
   ];
 
+  const lastCandle = chartData[chartData.length - 1]; // Get the last candlestick data
+
+   // Function to handle candle click events
+   const handleCandleClick = (event, data) => {
+    setSelectedCandle(data);
+  };
+
+  const handleCandlePressOut = () => {
+    setSelectedCandle(null); // Clear the selected candle state
+  };
+  
+
+  const calculateCandleMiddle = (candle) => {
+    return (candle.open + candle.close) / 2;
+  }
+
+  // Gets the dimensation of the phone
+  const {height, width} = Dimensions.get('window');
+
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
@@ -178,16 +199,10 @@ const Chart = ({
     );
   }
 
-  const lastCandle = chartData[chartData.length - 1]; // Get the last candlestick data
-
-  const handlePointClick = (datum) => {
-    setActivePoint(datum);
-  };
-
 
   return (
     <View style={styles.chartContainer}>
-      <View style={styles.chart}>
+      <View style={[styles.chart, {width: '100%'}]}>
         <ImageBackground
           source={require('../../../../../../assets/images/chart_alpha_logo.png')}
           style={styles.chartBackgroundImage}
@@ -196,9 +211,19 @@ const Chart = ({
 
         {/* CHART WRAPPER COMPONENT */}
         <VictoryChart
-          width={400}
+          style={styles.chartMainContainer}
+          width={width > 500 ? 860 : 400}
           containerComponent={<VictoryZoomContainer />}
           domain={{ x: domainX, y: domainY() }}
+          events={[{
+            target: "parent",
+            eventHandlers: {
+              onPressOut: () => {
+                handleCandlePressOut();
+                return [];
+              }
+            }
+          }]}
           padding={{ top: 20, bottom: 60, left: 20, right: 65 }}
           domainPadding={{
             x: 1,
@@ -210,9 +235,34 @@ const Chart = ({
           scale={{ x: 'time', y: 'log' }}
           height={340}>
 
-  
+          {/* HORIZONTAL LINE */}
+          {selectedCandle && (
+            <VictoryLine
+              data={[
+                {x: domainX[0], y: calculateCandleMiddle(selectedCandle)},
+                {x: domainX[1], y: calculateCandleMiddle(selectedCandle)},
+              ]}
+              style={{
+                data: {stroke: 'red', strokeWidth: 1, strokeDasharray: [4, 4]},
+              }}
+            />
+          )}
 
-          
+
+          {/* VERTICAL LINE */}
+          {selectedCandle && (
+            <VictoryLine
+              data={[
+                {x: new Date(selectedCandle.x), y: high},
+                {x: new Date(selectedCandle.x), y: low},
+              ]}
+              style={{
+                data: {stroke: 'red', strokeWidth: 1, strokeDasharray: [4, 4]},
+              }}
+            />
+          )}
+      
+
           {/* X AXIS */}
           <VictoryAxis
             style={{
@@ -256,57 +306,16 @@ const Chart = ({
           {/* DISPLAY DATA COMPONENT */}
           <VictoryCandlestick
             data={chartData}
-            candleRatio={usesAlternativeSource && selectedInterval !== '1W' ? 2.75 : 0.9}
-            labels={({ datum }) => {
-              const date = `Date: `;
-              const open = `Open: `;
-              const high = `High: `;
-              const low = `Low: `;
-              const close = `Close: `;
-            
-              const formattedDate = `${date}${formatDate(datum.x)}`
-              const formattedOpen = `${open} $${formatLabelNumber(datum.open)}`
-              const formattedHigh = `${high}  $${formatLabelNumber(datum.high)}`
-              const formattedLow = ` ${low}   $${formatLabelNumber(datum.low)}`
-              const formattedClose = `${close} $${formatLabelNumber(datum.close)}`
-            
-              return `${formattedDate}\n${formattedOpen}\n${formattedHigh}\n${formattedLow}\n${formattedClose}`;
-            }}
-            labelComponent={
-             <VictoryTooltip
-              constrainToVisibleArea 
-              dx={0}
-              dy={-20}
-              events={{
-                onPressIn: () => ({ active: true }),
-                onPressOut: () => ({ active: false })
-              }}
-              renderInPortal={false}
-              center={{ x: 90, y: 90 }}
-              flyoutPadding={{ top: -5, bottom: 15, left: 0, right: 0 }}   
-              cornerRadius={5}
-              flyoutStyle={{stroke: "#d4d4d5", 
-                            strokeWidth: 1,
-                            fill: "#fff",
-                          }}
-              labelComponent={
-                <VictoryLabel
-                textAnchor='middle'
-                style={{
-                  fill: '#282828',
-                  fontSize: 10,
-                  fontFamily: theme.fontMedium,
-                }}
-                backgroundStyle={[
-                  {
-                    fill: '#fff'
-                  }
-                ]}
-                backgroundPadding={[{ top: 0, bottom: 5 }]}
-              />
+            events={[{
+              target: "data",
+              eventHandlers: {
+                onPressIn: (event, props) => {
+                  handleCandleClick(event, props.datum);
+                  return []; // Return an empty array to avoid any state mutation on the chart itself
+                },
               }
-            />
-            }
+            }]}
+            candleRatio={usesAlternativeSource && selectedInterval !== '1W' ? 2.75 : 0.9}
             candleColors={{positive: '#09C283', negative: '#E93334'}}
             style={{
               data: {
@@ -365,7 +374,7 @@ const Chart = ({
                 ]}
                 key={`support-${index}`}
                 style={{
-                  data: { stroke: '#FC5404', strokeWidth: 2 },
+                  data: { stroke: '#FC5404', strokeWidth: 2},
                 }}
                 labels={() => [`$${formatLabelNumber(level)} `]}
                 labelComponent={
@@ -394,6 +403,13 @@ const Chart = ({
             ))}
         </VictoryChart>
       </View>
+      <TouchableOpacity onPress={handleRotatePress}>
+            <Image
+              style={{ width: 20, height: 20, position: 'absolute', bottom: 50, left: 20 }}
+              source={require('./icons/expand.png')}
+            />
+      </TouchableOpacity>
+      <DataRenderer domainX={domainX} data={selectedCandle && selectedCandle}/>
     </View>
   );
 };

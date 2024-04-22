@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext, useMemo, useRef} from 'react';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, View, Dimensions, Text, Image, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';
 import CandlestickDetails from './candleDetails';
@@ -38,6 +38,11 @@ const CandlestickChart = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   const pairings = coinBot !== 'btc' ? ['USDT', 'BTC'] : ['USDT'];
   const [selectedPairing, setSelectedPairing] = useState(pairings[0]);
+  const [isRotated, setIsRotated] = useState(false);
+
+  const handleRotatePress = () => {
+    setIsRotated(!isRotated);
+  };
 
   // This ref object allows to scroll to top on every tab press
 
@@ -144,14 +149,17 @@ const CandlestickChart = ({route}) => {
     setSelectedPairing(pairing);
   };
 
+  // Show the height and width of the phone
+  const {height, width} = Dimensions.get('window');
+
   return subscribed ? (
     <LinearGradient
       useAngle={true}
       angle={45}
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
-      style={styles.flex}>
+      style={[styles.flex]}>
       <ScrollView
-        style={styles.scroll}
+        style={[styles.scroll, {width:'100%'} ]}
         showsVerticalScrollIndicator={true}
         ref={ref}>
         {aboutVisible && (
@@ -161,19 +169,20 @@ const CandlestickChart = ({route}) => {
             visible={aboutVisible}
           />
         )}
-        <CandlestickDetails
-          loading={loading}
-          coin={coinBot}
-          interval={selectedInterval}
-          lastPrice={lastPrice}
-          styles={styles}
-          isPriceUp={isPriceUp}
-          selectedPairing={selectedPairing}
-          pairings={pairings}
-          handlePairingChange={handlePairingChange}
-        />
-        <View style={styles.chartsWrapper}>
-          <View style={styles.chartsRow}>
+       
+       <View style={[styles.chartsWrapper, isRotated && { transform: [{ rotate: '90deg' }] }]}>
+          <CandlestickDetails
+            loading={loading}
+            coin={coinBot}
+            interval={selectedInterval}
+            lastPrice={lastPrice}
+            styles={styles}
+            isPriceUp={isPriceUp}
+            selectedPairing={selectedPairing}
+            pairings={pairings}
+            handlePairingChange={handlePairingChange}
+          />
+          <View style={[styles.chartsRow, {flexDirection: width > 500 ? 'row': 'column'}]}>
             <TimeframeSelector
               selectedPairing={selectedPairing}
               selectedInterval={selectedInterval}
@@ -192,8 +201,10 @@ const CandlestickChart = ({route}) => {
             loading={loading}
             activeButtons={activeButtons}
             coinBot={coinBot}
+            handleRotatePress={handleRotatePress}
           />
-        </View>
+          </View>
+
 
         <AlertMenu
           activeAlertOption={activeAlertOption}
