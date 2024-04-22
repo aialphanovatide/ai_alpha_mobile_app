@@ -1,7 +1,7 @@
 package com.ai_alpha_mobile_app;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
-
+import org.wonday.orientation.OrientationActivityLifecycle;
 import android.app.Application;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -59,5 +59,6 @@ public class MainApplication extends Application implements ReactApplication {
       DefaultNewArchitectureEntryPoint.load();
     }
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
   }
 }

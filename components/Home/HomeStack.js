@@ -14,6 +14,7 @@ import {Animated, TouchableOpacity, View} from 'react-native';
 import useHomeStyles from './HomeStyles';
 import AnalysisArticle from './Analysis/AnalysisArticle';
 import NarrativeTradingArticle from './HomeNarrativeTradings/NarrativeTradingArticle';
+import {useScreenOrientation} from '../../hooks/useScreenOrientation';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -91,7 +92,13 @@ const FundNewsChartsMenu = ({state, descriptors, navigation, position}) => {
 
 const SubMenuScreen = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
-  const {theme} = useContext(AppThemeContext);
+
+  const {isLandscape} = useScreenOrientation();
+  const [horizontalChartView, setHorizontalChartView] = useState(true);
+
+  const handleHorizontalChartChange = value => {
+    setHorizontalChartView(value);
+  };
 
   return (
     <SubMenuStack.Navigator
@@ -101,7 +108,11 @@ const SubMenuScreen = () => {
         lazy: true,
         swipeEnabled: false,
       }}
-      tabBar={props => <FundNewsChartsMenu {...props} />}>
+      tabBar={props =>
+        isLandscape && horizontalChartView ? null : (
+          <FundNewsChartsMenu {...props} />
+        )
+      }>
       <SubMenuStack.Screen
         name="Fundamentals"
         component={Fundamentals}
@@ -128,6 +139,13 @@ const TopmenuScreen = () => {
   const [forceUpdate, setForceUpdate] = useState(false);
   const {theme} = useContext(AppThemeContext);
 
+  const {isLandscape} = useScreenOrientation();
+  const [horizontalChartView, setHorizontalChartView] = useState(true);
+
+  const handleHorizontalChartChange = value => {
+    setHorizontalChartView(value);
+  };
+
   useEffect(() => {
     setForceUpdate(prevState => !prevState);
   }, [activeSubCoin, activeCoin]);
@@ -136,7 +154,10 @@ const TopmenuScreen = () => {
       initialRouteName={'SubMenuScreen'}
       backBehavior="initialRoute"
       screenOptions={{
-        header: () => <SubMenu isAlertsMenu={false} />,
+        header: () =>
+          isLandscape && horizontalChartView ? null : (
+            <SubMenu isAlertsMenu={false} />
+          ),
         headerStyle: {
           backgroundColor: theme.mainBackgroundColor,
         },
@@ -152,13 +173,22 @@ const TopmenuScreen = () => {
 
 const HomeStackScreen = () => {
   const {updateActiveCoin} = useContext(TopMenuContext);
+  const {isLandscape} = useScreenOrientation();
+  const [horizontalChartView, setHorizontalChartView] = useState(true);
+
+  const handleHorizontalChartChange = value => {
+    setHorizontalChartView(value);
+  };
 
   return (
     <HomeStack.Navigator
       initialRouteName="InitialHome"
       backBehavior="initialRoute"
       screenOptions={{
-        header: () => <TopMenu isAlertsMenu={false} />,
+        header: () =>
+          isLandscape && horizontalChartView ? null : (
+            <TopMenu isAlertsMenu={false} />
+          ),
       }}>
       <HomeStack.Screen
         name="InitialHome"

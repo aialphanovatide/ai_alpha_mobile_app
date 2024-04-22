@@ -38,6 +38,7 @@ import {SocketProvider} from './components/Alerts/Socket';
 import {SocketContext} from './components/Alerts/Socket';
 import io from 'socket.io-client';
 import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext';
+import {SingletonHooksContainer} from 'react-singleton-hook';
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
@@ -198,6 +199,7 @@ const App = () => {
                           : 'dark-content'
                       }
                     />
+                    <SingletonHooksContainer />
                     <CategoriesContextProvider>
                       <TopMenuContextProvider>
                         <NarrativeTradingContextProvider>

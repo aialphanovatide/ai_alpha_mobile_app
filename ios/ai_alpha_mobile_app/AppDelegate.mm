@@ -4,6 +4,7 @@
 #import <RNCPushNotificationIOS.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
+#import "Orientation.h"
 
 @implementation AppDelegate
 
@@ -70,6 +71,10 @@
 // Called when a notification is about to be presented to the user.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center openSettingsForNotification:(UNNotification *)notification {
     // You can handle notification settings here if needed.
+}
+
+(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 
 

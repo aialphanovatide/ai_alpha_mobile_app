@@ -39,19 +39,16 @@ const SearchCryptoItem = ({
       style={styles.cryptoItem}>
       <FastImage
         source={{
-          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/${
-            isDarkMode ? 'Dark' : 'Light'
-          }/Inactive/${category.category_name
-            .replace(/\s/g, '')
-            .toLowerCase()}.png`,
+          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${crypto.bot_name}.png`,
           priority: FastImage.priority.normal,
         }}
         resizeMode="contain"
         style={styles.cryptoItemImage}
       />
       <View style={styles.row}>
-        <Text style={styles.cryptoName}>
-          {name}/{crypto.bot_name.toUpperCase()}
+        <Text style={styles.cryptoName}>{name}</Text>
+        <Text style={styles.cryptoAcronym}>
+          {crypto.bot_name.toUpperCase()}
         </Text>
       </View>
       <Image
@@ -110,7 +107,7 @@ const SearchAlertSection = ({currentText}) => {
     if (match && match !== undefined) {
       fetchAlertsByCoin(match);
     } else {
-      setFoundAlerts([])
+      setFoundAlerts([]);
     }
   }, [currentText]);
 
@@ -280,8 +277,10 @@ const Search = ({route}) => {
         </View>
         {searchText && (
           <ScrollView style={styles.searchContainer} nestedScrollEnabled>
-            <View style={styles.horizontalLine} />
-            <Text style={styles.searchSubTitle}>Cryptocurrencies</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.searchSubTitle}>Cryptocurrencies</Text>
+              <View style={styles.horizontalLine} />
+            </View>
             <ScrollView style={styles.cryptoSearch} nestedScrollEnabled>
               {cryptoSearchResult &&
                 cryptoSearchResult.length > 0 &&
@@ -296,8 +295,10 @@ const Search = ({route}) => {
                   />
                 ))}
             </ScrollView>
-            <View style={styles.horizontalLine} />
-            <Text style={styles.searchSubTitle}>Analysis</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.searchSubTitle}>Analysis</Text>
+              <View style={styles.horizontalLine} />
+            </View>
             <ScrollView style={styles.cryptoSearch} nestedScrollEnabled>
               {analysisSearchResult &&
                 analysisSearchResult.length > 0 &&
@@ -310,11 +311,15 @@ const Search = ({route}) => {
                   />
                 ))}
             </ScrollView>
-            <View style={styles.horizontalLine} />
-            <Text style={styles.searchSubTitle}>Narrative Trading</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.searchSubTitle}>Narrative Tradings</Text>
+              <View style={styles.horizontalLine} />
+            </View>
             <View style={styles.cryptoSearch}></View>
-            <View style={styles.horizontalLine} />
-            <Text style={styles.searchSubTitle}>Alerts</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.searchSubTitle}>Alerts</Text>
+              <View style={styles.horizontalLine} />
+            </View>
             <SearchAlertSection currentText={searchText} />
           </ScrollView>
         )}

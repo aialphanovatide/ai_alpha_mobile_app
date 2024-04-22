@@ -56,8 +56,6 @@ const useSearchStyles = () => {
       paddingHorizontal: 8,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
-      borderBottomColor: theme.boxesBorderColor,
-      borderBottomWidth: 1,
       borderRadius: 2,
     },
     analysisTitle: {
@@ -71,11 +69,13 @@ const useSearchStyles = () => {
     },
     searchSubTitle: {
       marginVertical: theme.boxesVerticalMargin,
-      marginHorizontal: 16,
+      marginHorizontal: 8,
       fontFamily: theme.fontMedium,
-      fontSize: theme.responsiveFontSize,
-      color: theme.titleColor,
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.orange,
       textAlign: 'left',
+      textDecorationLine: 'underline',
+      textDecorationColor: theme.orange,
     },
     row: {
       flexDirection: 'row',
@@ -93,18 +93,16 @@ const useSearchStyles = () => {
     cryptoItem: {
       width: '100%',
       flexDirection: 'row',
+      marginVertical: 4,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
-      borderBottomColor: theme.boxesBorderColor,
-      borderBottomWidth: 1,
       borderRadius: 2,
     },
     cryptoItemImage: {
-      width: 50,
-      height: 50,
-      borderRadius: 25,
+      width: 40,
+      height: 40,
+      borderRadius: 20,
       marginHorizontal: 14,
-      marginVertical: 8
     },
     cryptoName: {
       marginHorizontal: 8,
@@ -124,8 +122,9 @@ const useSearchStyles = () => {
       tintColor: theme.secondaryGrayColor,
     },
     horizontalLine: {
-      width: '95%',
-      marginVertical: 8,
+      flex: 1,
+      minWidth: '40%',
+      marginHorizontal: 4,
       borderBottomColor: theme.secondaryItemColor,
       borderBottomWidth: 1,
       alignSelf: 'center',
@@ -135,6 +134,25 @@ const useSearchStyles = () => {
       height: 'auto',
       padding: 4,
       marginTop: theme.boxesVerticalMargin,
+    },
+    searchContainer: {
+      backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 2,
+    },
+    titleContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 8,
+      marginBottom: 4,
+      paddingHorizontal: 4,
+    },
+    cryptoAcronym: {
+      marginHorizontal: 4,
+      color: theme.secondaryTextColor,
+      fontSize: theme.responsiveFontSize * 0.7,
+      textTransform: 'uppercase',
+      alignSelf: 'center',
+      fontFamily: theme.fontRegular,
     },
   });
   return styles;

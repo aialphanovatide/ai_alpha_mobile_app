@@ -141,7 +141,6 @@ const PriceAction = ({handleAboutPress}) => {
         <AboutIcon
           description={home_static_data.priceAction.sectionDescription}
           handleAboutPress={handleAboutPress}
-          additionalStyles={additionalAboutStyles}
         />
       </View>
       {loading ? (

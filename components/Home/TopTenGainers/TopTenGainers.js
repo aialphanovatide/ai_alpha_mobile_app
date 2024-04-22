@@ -82,7 +82,6 @@ const TopTenGainers = ({handleAboutPress}) => {
         <AboutIcon
           handleAboutPress={handleAboutPress}
           description={home_static_data.topTenGainers.sectionDescription}
-          additionalStyles={additionalAboutStyles}
         />
       </View>
       {loading ? (

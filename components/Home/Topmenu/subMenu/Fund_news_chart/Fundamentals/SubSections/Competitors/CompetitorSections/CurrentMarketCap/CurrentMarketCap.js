@@ -31,6 +31,9 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
   };
 
   const parseNumberString = numberString => {
+    if (!numberString || numberString === undefined) {
+      return [0, 0];
+    }
     const numberWithoutSign = numberString.replace(/\s|,/g, '');
     const numericValue = parseFloat(numberWithoutSign);
     const valueInBillions = numericValue / 1e9;
@@ -116,7 +119,7 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
         mapped_competitors_data.push(current);
       }
     });
-    // console.log('Mapped competitors: ', mapped_competitors_data);
+    console.log('Mapped competitors: ', mapped_competitors_data);
     setCryptos(mapped_competitors_data);
     setLoading(false);
   }, [coin]);

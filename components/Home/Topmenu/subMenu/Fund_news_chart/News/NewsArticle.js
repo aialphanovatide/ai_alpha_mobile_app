@@ -102,11 +102,10 @@ const NewsArticle = ({route, navigation}) => {
           style={styles.articleImage}
           resizeMode={'contain'}
           source={{
-            uri: `https://apparticleimages.s3.us-east-2.amazonaws.com/${item_id}.png`,
+            uri: `https://apparticleimages.s3.us-east-2.amazonaws.com/${item_id}.jpg`,
             priority: FastImage.priority.normal,
           }}
           fallback={true}
-          defaultSource={require('../../../../../../assets/images/home/default_news.jpg')}
         />
         <Text style={styles.articleTitle}>
           {filterText(isStory ? title : item.title)}
