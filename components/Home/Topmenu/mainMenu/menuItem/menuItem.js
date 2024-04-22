@@ -3,6 +3,7 @@ import {Text, TouchableOpacity, View, Image} from 'react-native';
 import useMenuItemStyles from './menuItemStyles';
 import {API_BASE_URL} from '../../../../../services/aiAlphaApi';
 import {TOP_MENU_IMAGES_URL} from '../../../../../src/constants';
+import FastImage from 'react-native-fast-image';
 
 const MenuItem = ({
   onPress,
@@ -12,26 +13,13 @@ const MenuItem = ({
   findCategoryInMenuData,
 }) => {
   const styles = useMenuItemStyles();
-  // console.log(
-  //   `${TOP_MENU_IMAGES_URL}${isDarkMode ? 'Dark' : 'Light'}/${
-  //     isActive ? 'Active' : 'Inactive'
-  //   }/${category.category_name.toLowerCase()}`,
-  // );
   return (
     <TouchableOpacity
       style={styles.buttonContainer}
       onPress={() => onPress(category)}>
-      <View
-        style={[
-          styles.button,
-          // isActive && styles.activeButton,
-          // {borderColor: category.borderColor},
-        ]}>
-        <Image
+      <View style={[styles.button]}>
+        <FastImage
           source={{
-            /*
-            uri: `${API_BASE_URL}${category.icon}`,
-            */
             uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/${
               isDarkMode ? 'Dark' : 'Light'
             }/${isActive ? 'Active' : 'Inactive'}/${category.category_name
@@ -39,11 +27,13 @@ const MenuItem = ({
               .toLowerCase()}.png`,
             width: 60,
             height: 60,
+            priority: FastImage.priority.high,
           }}
           resizeMode="contain"
           style={styles.imageIcon}
           fadeDuration={100}
-          alt={category.category_name}
+          fallback={true}
+          // alt={category.category_name}
         />
       </View>
 

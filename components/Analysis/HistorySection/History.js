@@ -13,8 +13,9 @@ import {AppThemeContext} from '../../../context/themeContext';
 import useHistoryStyles from './HistoryStyles';
 import CryptoFilter from '../Calendar/CryptoCalendar/CryptoFilter';
 import {AnalysisContext} from '../../../context/AnalysisContext';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/core';
 import historyFilterData from './HistoryFilterData';
+import FastImage from 'react-native-fast-image';
 
 const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -37,7 +38,7 @@ const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
 
   return (
     <View style={styles.historyItemContainer}>
-      <Image
+      <FastImage
         source={{
           uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
             isDarkMode ? 'dark' : 'light'
@@ -47,9 +48,10 @@ const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
               ? 'total3'
               : item.coin_bot_name
           }.png`,
-          width: 50,
+          priority: FastImage.priority.normal,
         }}
         style={styles.itemImage}
+        fallback={true}
       />
       <View style={styles.dataContainer}>
         <View style={styles.topRow}>
@@ -204,8 +206,10 @@ const History = () => {
       screen: 'AnalysisArticleScreen',
       params: {
         analysis_content: analysis.raw_analysis,
-        coin_bot_id: analysis.coin_bot_id,
+        analysis_id: analysis.id,
         date: analysis.created_at,
+        coin_bot_id: analysis.coin_bot_id,
+        isHistoryArticle: true,
       },
     });
   };

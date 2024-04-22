@@ -19,16 +19,14 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
   useEffect(() => {
     setIsLoading(true);
 
-      const fetchAlerts = async () => {
+    const fetchAlerts = async () => {
       setAlerts([]);
       setIsLoading(true);
 
       try {
         // Fetch alerts based on coin, date, and limit
         const response = await getService(
-          `/api/filter/alerts?coin=${botName}&date=24h&limit=${
-            timeframe.toLowerCase() === '1w' ? 40 : 20
-          }`,
+          `/api/filter/alerts?coin=${botName}&date=24h&limit=${25}`,
         );
 
         // Check if response is empty or contains no alerts

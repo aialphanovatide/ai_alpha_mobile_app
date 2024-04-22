@@ -76,7 +76,7 @@ const Fundamentals = ({route}) => {
       setCurrentContent(fundamentalsMock[newCoin]);
       setCoin(newCoin);
       setHasContent(initialContentState);
-      console.log(`Updating content from coin ${coin} to ${newCoin}`);
+      // console.log(`Updating content from coin ${coin} to ${newCoin}`);
     };
 
     handleCoinUpdate(activeSubCoin);
@@ -92,7 +92,7 @@ const Fundamentals = ({route}) => {
         if (response?.status !== 200 || !response?.message) {
           setSharedData([]);
         } else {
-          console.log(response.message.tokenomics_data);
+          // console.log(response.message.tokenomics_data);
           const parsed_cryptos = response.message.tokenomics_data;
           setSharedData(parsed_cryptos);
         }

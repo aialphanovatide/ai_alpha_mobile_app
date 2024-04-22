@@ -6,6 +6,7 @@ import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
 import {fundamentals_static_content} from '../../../../fundamentalsStaticData';
 import SupplyModal from '../../../SupplyModal/SupplyModal';
+import FastImage from 'react-native-fast-image';
 
 const CirculatingSupplyItem = ({
   item,
@@ -32,12 +33,11 @@ const CirculatingSupplyItem = ({
   return (
     <View style={styles.circulatingSupplyItem}>
       <View style={styles.itemRow}>
-        <Image
+        <FastImage
           style={styles.image}
           source={{
             uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.crypto.toLowerCase()}.png`,
-            width: 30,
-            height: 30,
+            priority: FastImage.priority.normal,
           }}
           resizeMode={'contain'}
         />
@@ -132,7 +132,9 @@ const ProgressBar = ({maxValue, percentageValue, styles, activeSupply}) => {
             styles.labelBottom,
             {
               marginLeft: `${
-                percentageValue < 25 ? percentageValue + 10 : percentageValue - 15
+                percentageValue < 25
+                  ? percentageValue + 10
+                  : percentageValue - 15
               }%`,
             },
             activeSupply ? {} : styles.transparent,

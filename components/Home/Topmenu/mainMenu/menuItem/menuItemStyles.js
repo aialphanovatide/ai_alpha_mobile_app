@@ -30,6 +30,8 @@ const useMenuItemStyles = () => {
     },
     imageIcon: {
       flex: 1,
+      width: 60,
+      height: 60,
     },
     activeButton: {
       borderWidth: 2,

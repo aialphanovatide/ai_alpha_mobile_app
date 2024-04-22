@@ -4,17 +4,18 @@ import useTypeOfTokenStyles from './TypeOfTokenStyles';
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
+import FastImage from 'react-native-fast-image';
+
 const TokenItem = ({crypto, styles}) => {
   return (
     <View style={styles.tokenContainer}>
       <View style={styles.row}>
         <View style={styles.tokenImageContainer}>
-          <Image
+          <FastImage
             style={styles.tokenImage}
             source={{
               uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${crypto.crypto.toLowerCase()}.png`,
-              width: 30,
-              height: 30,
+              priority: FastImage.priority.normal,
             }}
             resizeMode={'contain'}
           />

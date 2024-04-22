@@ -10,6 +10,7 @@ import AboutModal from './Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModa
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import {useScrollToTop} from '@react-navigation/native';
+import NarrativeTradings from './HomeNarrativeTradings/NarrativeTradings';
 
 const Home = () => {
   const styles = useHomeStyles();
@@ -50,6 +51,7 @@ const Home = () => {
           <TickerTape />
           <TopStories handleAboutPress={handleAboutPress} />
           <Analysis handleAboutPress={handleAboutPress} />
+          <NarrativeTradings handleAboutPress={handleAboutPress}/>
           <TopTenGainers handleAboutPress={handleAboutPress} />
           <PriceAction handleAboutPress={handleAboutPress} />
         </ScrollView>

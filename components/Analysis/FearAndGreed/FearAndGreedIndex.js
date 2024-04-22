@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Image} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 const FearAndGreedIndex = ({styles, currentDate}) => {
   // const fearAndGreedValues = [
@@ -29,12 +30,16 @@ const FearAndGreedIndex = ({styles, currentDate}) => {
   return (
     date && (
       <View style={styles.container}>
-        <Image
+        <FastImage
           style={styles.widget}
           source={{
-            uri: `https://alternative.me/images/fng/crypto-fear-and-greed-index-${date}.png`,
+            // uri: `https://alternative.me/images/fng/crypto-fear-and-greed-index-${date}.png`,
+            uri: 'https://alternative.me/crypto/fear-and-greed-index.png',
+            priority: FastImage.priority.normal,
+            cache: FastImage.cacheControl.immutable,
           }}
           alt="Latest Crypto Fear & Greed Index"
+          fallback={true}
           fadeDuration={500}
         />
       </View>

@@ -103,7 +103,6 @@ const TransactionFees = ({competitorsData, isSectionWithoutData}) => {
       item =>
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
-    console.log(found);
     return found && found !== undefined
       ? found.competitor.value !== '-'
         ? found.competitor.value
@@ -137,6 +136,17 @@ const TransactionFees = ({competitorsData, isSectionWithoutData}) => {
               item.competitor.token,
             ),
           ),
+          display_transaction_fee: findKeyInCompetitorItem(
+            competitorsData,
+            'transaction fees',
+            item.competitor.token,
+          )
+            ? findKeyInCompetitorItem(
+                competitorsData,
+                'transaction fees',
+                item.competitor.token,
+              ).replace(/\s/g, '')
+            : null,
         };
         transaction_fees_data.push(mapped_crypto);
       }
@@ -162,7 +172,11 @@ const TransactionFees = ({competitorsData, isSectionWithoutData}) => {
           />
           <View style={styles.activeOptionContainer}>
             <Text style={styles.activeOptionValue}>
-              {`$${activeOption ? activeOption.fee : 0.0} USD`}
+              {`$${
+                activeOption && activeOption.display_transaction_fee
+                  ? activeOption.display_transaction_fee.toUpperCase()
+                  : 0.0
+              }`}
             </Text>
           </View>
           <View style={styles.graphsContainer}>

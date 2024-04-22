@@ -4,6 +4,7 @@ import Loader from '../../../../../../../Loader/Loader';
 import useVAMStyles from './VAMStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
+import FastImage from 'react-native-fast-image';
 
 const ContentItem = ({data, styles}) => {
   return (
@@ -11,15 +12,21 @@ const ContentItem = ({data, styles}) => {
       <Text style={styles.dataTitle}>{data.title}</Text>
       <View style={styles.dataRow}>
         <View style={styles.dataImageContainer}>
-          <Image
-            style={styles.dataImage}
+          <FastImage
+            style={[
+              styles.dataImage,
+              {
+                width: data?.imageSize.width,
+                height: data?.imageSize.height,
+              },
+            ]}
             alt={data.title}
             source={{
               uri: data?.image,
-              width: data?.imageSize.width,
-              height: data?.imageSize.height,
+              priority: FastImage.priority.high,
             }}
             resizeMode={'cover'}
+            fallback={true}
           />
         </View>
         <Text style={styles.dataText}>{data.text}</Text>

@@ -13,6 +13,7 @@ import {AppThemeContext} from '../../context/themeContext';
 import {Animated, TouchableOpacity, View} from 'react-native';
 import useHomeStyles from './HomeStyles';
 import AnalysisArticle from './Analysis/AnalysisArticle';
+import NarrativeTradingArticle from './HomeNarrativeTradings/NarrativeTradingArticle';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -172,6 +173,10 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="AnalysisArticleScreen"
         component={AnalysisArticle}
+      />
+      <HomeStack.Screen
+        name="NarrativeTradingArticleScreen"
+        component={NarrativeTradingArticle}
       />
     </HomeStack.Navigator>
   );

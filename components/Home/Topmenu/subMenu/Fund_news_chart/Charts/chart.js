@@ -190,6 +190,8 @@ const Chart = ({
 
   // Gets the dimensation of the phone
   const {height, width} = Dimensions.get('window');
+  const chartWidth = width > 500 ? 860 : 400
+  const chartHeight = 340
 
   if (loading) {
     return (
@@ -212,7 +214,7 @@ const Chart = ({
         {/* CHART WRAPPER COMPONENT */}
         <VictoryChart
           style={styles.chartMainContainer}
-          width={width > 500 ? 860 : 400}
+          width={chartWidth}
           containerComponent={<VictoryZoomContainer />}
           domain={{ x: domainX, y: domainY() }}
           events={[{
@@ -233,7 +235,7 @@ const Chart = ({
                 : 10,
           }}
           scale={{ x: 'time', y: 'log' }}
-          height={340}>
+          height={chartHeight}>
 
           {/* HORIZONTAL LINE */}
           {selectedCandle && (
@@ -247,6 +249,15 @@ const Chart = ({
               }}
             />
           )}
+
+              <DataRenderer 
+              domainX={domainX} 
+              yPoint={selectedCandle && calculateCandleMiddle(selectedCandle)} 
+              domainY={domainY} 
+              chartWidth={chartWidth}
+              screenWidth={width}
+              chartHeight={chartHeight}
+              data={selectedCandle && selectedCandle}/>
 
 
           {/* VERTICAL LINE */}
@@ -405,11 +416,10 @@ const Chart = ({
       </View>
       <TouchableOpacity onPress={handleRotatePress}>
             <Image
-              style={{ width: 20, height: 20, position: 'absolute', bottom: 50, left: 20 }}
+              style={{ width: 20, height: 20, position: 'absolute', bottom: 50, left: 25 }}
               source={require('./icons/expand.png')}
             />
       </TouchableOpacity>
-      <DataRenderer domainX={domainX} data={selectedCandle && selectedCandle}/>
     </View>
   );
 };

@@ -28,38 +28,34 @@ function formatLabelNumber(number, decimalPlaces=2) {
   }
 
 
-const DataRenderer = ({ data, domainX }) => {
+const DataRenderer = ({ data, domainX, domainY, yPoint, chartWidth, chartHeight, screenWidth }) => {
 
+  const yDomain = domainY()
+  const maxTop = yDomain[1]
+  const minTop = yDomain[0]
 
-// Function to convert date string to CSS position
-const calculatePosition = (dateString, minXDomain, maxXDomain) => {
-    const date = new Date(dateString);
-    const minDate = new Date(minXDomain);
-    const maxDate = new Date(maxXDomain);
-    
-    // Ensure date is within the domain range
-    if (date < minDate) {
-      return 0; // If date is before minDate, position at the start
-    } else if (date > maxDate) {
-      return 1; // If date is after maxDate, position at the end
-    } else {
-      const dateDifference = date.getTime() - minDate.getTime();
-      const maxDifference = maxDate.getTime() - minDate.getTime();
-      const position = dateDifference / maxDifference;
-      return position;
+  const minLeft = domainX[0]
+  const maxLeft = domainX[1]
+
+  const isCandleClosestToMinDate = (data, domainX) => {
+    if (data && data.x){
+      // Calculate the absolute differences between xPoint and each value in domainX
+      const diff1 = Math.abs(new Date(data.x) - new Date(domainX[0]));
+      const diff2 = Math.abs(new Date(data.x) - new Date(domainX[1]));
+
+        // Check which difference is smaller
+        if (diff1 < diff2) {
+        return true;
+        } else {
+            return false;
+        }
     }
-  };
+  }
 
-  const maxXDomain = domainX && domainX.length>0 && domainX[1]
-  const minXDomain = domainX && domainX.length>0 && domainX[0]
-  const componentPosition = data && calculatePosition(data.x, minXDomain, maxXDomain)
+  const candlePosition = isCandleClosestToMinDate(data, domainX)
 
-  
     return (
-        <View style={[styles.container]}>
-        {/* <View style={[styles.container, { 
-            left: componentPosition < 0 ? '100%' : `${componentPosition * 100}%` 
-          }]}> */}
+      <View style={[styles.container, { left: candlePosition ? '45%': '10%'}]}>
         {data &&
           Object.entries(data)
             .slice(5) 
@@ -87,13 +83,13 @@ const calculatePosition = (dateString, minXDomain, maxXDomain) => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    marginVertical: 10,
+    position: 'relative',
+    top: '75%',
     borderColor: '#D4D4D4',
     width: 150,
-    borderRadius: 5,
+    paddingBottom: 5,
+    paddingTop: 8,
+    borderRadius: 8,
     backgroundColor: '#fff'
   },
   row: {
@@ -120,3 +116,36 @@ const styles = StyleSheet.create({
 });
 
 export default DataRenderer;
+
+
+
+//   // Function to convert date string to CSS position
+//   const calculatePosition = (dateString, minXDomain, maxXDomain) => {
+//     const date = new Date(dateString);
+//     const minDate = new Date(minXDomain);
+//     const maxDate = new Date(maxXDomain);
+
+//     // Calculate the distance of the date from minDate and maxDate
+//     const totalDomain = maxDate - minDate;
+//     const distanceFromMin = date - minDate;
+//     const distanceFromMax = maxDate - date;
+
+//     // Calculate the percentage of distance from minDate and maxDate
+//     const percentageFromMin = (distanceFromMin / totalDomain);
+//     const percentageFromMax = (distanceFromMax / totalDomain);
+
+//     // Determine the CSS position based on the relative position of the date
+//     let position;
+//     if (percentageFromMin < percentageFromMax) {
+//         // Date is closer to minDate, render to the right
+//         position = percentageFromMin;
+//     } else {
+//         // Date is closer to maxDate, render to the left
+//         position = Number('-' + percentageFromMax);
+//     }
+
+//     return position;
+// };
+
+// const maxXDomain = domainX && domainX.length>0 && domainX[1]
+// const minXDomain = domainX && domainX.length>0 && domainX[0]

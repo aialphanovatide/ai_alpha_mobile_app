@@ -25,6 +25,8 @@ const useActiveDevelopersStyles = () => {
     },
     image: {
       flex: 1,
+      width: 30,
+      height: 30,
     },
     row: {
       flexDirection: 'row',

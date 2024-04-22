@@ -2,6 +2,7 @@ import {Image, ScrollView, Text, View} from 'react-native';
 import React from 'react';
 import BackButton from '../../../../../Analysis/BackButton/BackButton';
 import useNewsStyles from './NewsStyles';
+import FastImage from 'react-native-fast-image';
 
 const NewsArticle = ({route, navigation}) => {
   const styles = useNewsStyles();
@@ -88,21 +89,24 @@ const NewsArticle = ({route, navigation}) => {
   };
 
   const {title, content} = filterArticleTitle(item.summary);
+
+  const item_id = isStory ? item.top_story_id : item.article_id;
+
   return (
     <ScrollView style={[styles.container, styles.backgroundColor]}>
       <View style={styles.marginVertical}>
         <BackButton handleReturn={handleReturn} />
       </View>
       <View style={styles.article}>
-        <Image
+        <FastImage
           style={styles.articleImage}
           resizeMode={'contain'}
           source={{
-            uri: item.article_id
-              ? `https://apparticleimages.s3.us-east-2.amazonaws.com/${item.article_id}.jpg`
-              : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
-            width: 300,
+            uri: `https://apparticleimages.s3.us-east-2.amazonaws.com/${item_id}.png`,
+            priority: FastImage.priority.normal,
           }}
+          fallback={true}
+          defaultSource={require('../../../../../../assets/images/home/default_news.jpg')}
         />
         <Text style={styles.articleTitle}>
           {filterText(isStory ? title : item.title)}

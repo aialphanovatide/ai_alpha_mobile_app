@@ -41,6 +41,7 @@
     "react-native-autoheight-webview": "^1.6.5",
     "react-native-config": "^1.5.1",
     "react-native-dotenv": "^3.4.9",
+    "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.14.0",
     "react-native-keys": "^0.7.10",
     "react-native-linear-gradient": "^2.8.3",

@@ -8,21 +8,23 @@ const useCryptoSelectorStyles = () => {
     selectorContainer: {
       marginVertical: 20,
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      justifyContent: 'space-evenly',
     },
     selectorItem: {
-      width: theme.width * 0.2,
+      width: 70,
+      maxHeight: 50,
       marginHorizontal: 5,
       padding: 2.5,
       justifyContent: 'center',
       alignItems: 'center',
       borderWidth: 1,
-      borderRadius: 2.5,
+      borderRadius: 3,
     },
     itemText: {
       color: theme.cryptoSelectorText,
       fontSize: theme.responsiveFontSize * 0.75,
       fontFamily: theme.fontMedium,
+      textAlign: 'center',
     },
     activeText: {
       color: theme.activeCryptoSelector,

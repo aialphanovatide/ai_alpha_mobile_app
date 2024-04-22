@@ -47,6 +47,8 @@ const useTopTenGainersStyles = () => {
     },
     coinLogo: {
       flex: 1,
+      width: 30,
+      height: 30,
       borderRadius: 15,
     },
     coinDataContainer: {

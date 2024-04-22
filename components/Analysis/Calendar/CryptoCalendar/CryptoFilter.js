@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {Image, Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import useCryptoCalendarStyles from './CryptoCalendarStyles';
 import {AppThemeContext} from '../../../../context/themeContext';
+import FastImage from 'react-native-fast-image';
 
 const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -9,7 +10,7 @@ const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
     <TouchableOpacity onPress={() => handleOptionTouch(option)}>
       <View style={[styles.cryptoItem, active && styles.activeCryptoItem]}>
         <View style={styles.cryptoIconContainer}>
-          <Image
+          <FastImage
             style={styles.cryptoIcon}
             source={{
               uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/${
@@ -17,9 +18,10 @@ const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
               }/${active ? 'Active' : 'Inactive'}/${option.category_name
                 .toLowerCase()
                 .replace(/\s/g, '')}.png`,
-              width: 35,
+              priority: FastImage.priority.high,
             }}
             resizeMode={'contain'}
+            fallback={true}
           />
         </View>
         <Text style={[styles.cryptoName, active && styles.activeCryptoName]}>

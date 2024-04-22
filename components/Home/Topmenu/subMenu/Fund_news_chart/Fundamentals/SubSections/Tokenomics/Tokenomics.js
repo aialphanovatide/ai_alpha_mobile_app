@@ -6,6 +6,7 @@ import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SupplyModal from '../SupplyModal/SupplyModal';
 import {fundamentals_static_content} from '../../fundamentalsStaticData';
 import {findCoinNameBySymbol} from '../Competitors/coinsNames';
+import FastImage from 'react-native-fast-image';
 
 const TokenItem = ({item, styles, handleSupplyDataPress, activeSupply}) => {
   const percentage =
@@ -30,10 +31,10 @@ const TokenItem = ({item, styles, handleSupplyDataPress, activeSupply}) => {
   return (
     <View style={styles.tokenItem}>
       <View style={styles.tokenRow}>
-        <Image
+        <FastImage
           source={{
             uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.symbol.toLowerCase()}.png`,
-            width: 30,
+            priority: FastImage.priority.high,
           }}
           style={styles.itemIcon}
           resizeMode="contain"

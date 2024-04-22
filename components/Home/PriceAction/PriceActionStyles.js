@@ -18,7 +18,7 @@ const usePriceActionStyles = () => {
       paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold
+      fontFamily: theme.fontSemibold,
     },
     tableContainer: {
       flex: 1,
@@ -41,8 +41,7 @@ const usePriceActionStyles = () => {
       borderColor: theme.secondaryGrayColor,
     },
     logoContainer: {
-      width: 20,
-      height: 20,
+      flex: 1,
       marginTop: 5,
       marginLeft: 5,
       borderRadius: 10,
@@ -51,8 +50,9 @@ const usePriceActionStyles = () => {
       justifyContent: 'center',
     },
     coinLogo: {
-      width: '100%',
-      height: '100%',
+      width: 20,
+      height: 20,
+      borderRadius: 10,
     },
     headerCell: {
       flex: 1,
@@ -81,18 +81,15 @@ const usePriceActionStyles = () => {
       fontSize: theme.responsiveFontSize * 0.75,
       textAlign: 'center',
       verticalAlign: 'middle',
-      fontFamily: theme.fontMedium
-
+      fontFamily: theme.fontMedium,
     },
     greenNumber: {
       color: theme.priceUpColor,
-      fontFamily: theme.fontMedium
-
+      fontFamily: theme.fontMedium,
     },
     redNumber: {
       color: theme.priceDownColor,
-      fontFamily: theme.fontMedium
-
+      fontFamily: theme.fontMedium,
     },
     displayNone: {
       display: 'none',
@@ -133,6 +130,8 @@ const usePriceActionStyles = () => {
     },
     categoryIcon: {
       flex: 1,
+      width: 30,
+      height: 30,
     },
     categoryWrapper: {
       marginHorizontal: 5,

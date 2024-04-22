@@ -10,7 +10,7 @@ import {findCoinNameBySymbol} from '../../coinsNames';
 const GraphItem = ({value, scale, color, imageNumber, styles}) => {
   const imagePath = revenueImagesUrls[color][imageNumber - 1];
   return (
-    <View>
+    <View style={styles.graphItemContainer}>
       <Text style={styles.itemText}>${value}</Text>
       <Image
         source={imagePath}
@@ -75,7 +75,7 @@ const Revenue = ({competitorsData, isSectionWithoutData}) => {
       item =>
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
-    console.log('Key received: ', key, 'Revenue value found: ', found);
+    // console.log('Key received: ', key, 'Revenue value found: ', found);
     return found && found !== undefined
       ? found.competitor.value !== '-'
         ? found.competitor.value

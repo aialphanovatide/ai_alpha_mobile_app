@@ -4,21 +4,26 @@ import useTokenUtilityStyles from './TokenUtilityStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
+import FastImage from 'react-native-fast-image';
 
 const TokenUtilityItem = ({styles, data}) => {
   return (
     <View style={styles.dataContainer}>
       <Text style={styles.dataTitle}>{data.title}</Text>
       <View style={styles.dataRow}>
-        <Image
-          style={styles.dataImage}
+        <FastImage
+          style={[
+            styles.dataImage,
+            {width: data.imageSize.width, height: data.imageSize.height},
+          ]}
           alt={data.title}
           source={{
             uri: data.image,
-            width: data.imageSize.width,
-            height: data.imageSize.height,
+            priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.web,
           }}
           resizeMode={'cover'}
+          fallback={true}
         />
         <Text style={styles.dataText}>{data.text}</Text>
       </View>
