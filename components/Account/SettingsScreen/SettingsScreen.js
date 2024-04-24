@@ -97,6 +97,12 @@ const SettingsScreen = ({route}) => {
       screenName: null,
       component: null,
     },
+    {
+      name: 'Personalise Profile',
+      logo: require('../../../assets/images/account/personalise-profile.png'),
+      screenName: null,
+      component: null,
+    },
   ];
 
   // Elements from previous 'DeleteUserForm'
@@ -139,6 +145,10 @@ const SettingsScreen = ({route}) => {
         setUserId('');
         setRawUserId('');
         setUserEmail(null);
+        setFullName('');
+        setUsername('');
+        setBirthDate('');
+        setIsEditing(null);
       },
     });
   };
@@ -214,6 +224,9 @@ const SettingsScreen = ({route}) => {
         await AsyncStorage.removeItem('userEmail');
         await AsyncStorage.removeItem('userId');
         await AsyncStorage.removeItem('rawUserId');
+        await AsyncStorage.removeItem('fullName');
+        await AsyncStorage.removeItem('username');
+        await AsyncStorage.removeItem('birthDate');
         resetLoginForm();
         RNRestart.restart();
         //navigation.navigate('SignIn', {resetForm: true});
@@ -344,6 +357,10 @@ const SettingsScreen = ({route}) => {
         break;
       case 'Current Packages':
         navigation.navigate('CurrentPackages');
+        break;
+      case 'Personalise Profile':
+        navigation.navigate('PersonaliseProfile');
+        break;
       default:
         console.log('Option not handled:', option.name);
     }

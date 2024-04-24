@@ -98,6 +98,12 @@ const Account = ({route}) => {
       component: null,
     },
     {
+      name: 'FAQs',
+      logo: require('../../assets/images/account/faqslogo.png'),
+      screenName: null,
+      component: null,
+    },
+    {
       name: 'Log Out',
       logo: require('../../assets/images/account/logout.png'),
       screenName: null,
@@ -153,6 +159,10 @@ const Account = ({route}) => {
         setUserId('');
         setRawUserId('');
         setUserEmail(null);
+        setFullName('');
+        setUsername('');
+        setBirthDate('');
+        setIsEditing(null);
       },
     });
   };
@@ -178,6 +188,9 @@ const Account = ({route}) => {
       await AsyncStorage.removeItem('userId');
       await AsyncStorage.removeItem('rawUserId');
       await AsyncStorage.removeItem('loginMethod');
+      await AsyncStorage.removeItem('fullName');
+      await AsyncStorage.removeItem('username');
+      await AsyncStorage.removeItem('birthDate');
       console.log("Successfully removed login data...");
       resetLoginForm();
       console.log("After loginForm reset");
