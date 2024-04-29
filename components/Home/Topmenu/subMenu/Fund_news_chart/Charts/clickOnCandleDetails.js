@@ -87,8 +87,6 @@ const styles = StyleSheet.create({
     top: '75%',
     borderColor: '#D4D4D4',
     width: 150,
-    paddingBottom: 5,
-    paddingTop: 8,
     borderRadius: 8,
     backgroundColor: '#fff'
   },
@@ -96,7 +94,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    // paddingVertical: 2
   },
   icon: {
     marginRight: 10,

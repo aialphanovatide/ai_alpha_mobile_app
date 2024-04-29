@@ -174,7 +174,7 @@ const useChartsStyles = () => {
       width: '65%',
       marginVertical: theme.boxesVerticalMargin * 2.8,
       padding: 1,
-      paddingHorizontal: 2,
+      // paddingHorizontal: 2,
       flexDirection: 'row',
       backgroundColor: theme.subMenuBgColor,
       borderRadius: 2,
