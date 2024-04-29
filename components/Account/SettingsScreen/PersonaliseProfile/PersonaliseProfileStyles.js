@@ -24,10 +24,11 @@ const usePersonaliseProfileStyles = () => {
       marginBottom: 20,
     },
     mainTitle: {
+      marginVertical: '5%',
+      marginLeft: '6%',
+      color: theme.titleColor,
       fontSize: theme.titleFontSize,
       fontFamily: theme.fontSemibold,
-      color: theme.signUpTitlesColor,
-      margin: 5,
     },
     inputContainer: {
       alignSelf: 'stretch',
@@ -109,7 +110,27 @@ const usePersonaliseProfileStyles = () => {
     infoText:{
         fontSize:16,
         marginBottom:10,
-    }
+    },
+    optionalLabel: {
+      color: 'grey',
+      fontSize: theme.responsiveFontSize * 0.75,
+      marginLeft: 5,
+      fontFamily: theme.font,
+    },
+    labelRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    backgroundColor: {
+      flex: 1,
+      backgroundColor: theme.mainBackgroundColor,
+    },
+    sendMailButton: {
+      color: '#FF6C0D',
+      fontSize: theme.responsiveFontSize * 0.85,
+      textDecorationLine: 'underline',
+      marginBottom: 80,
+    },
   });
   return styles;
 };

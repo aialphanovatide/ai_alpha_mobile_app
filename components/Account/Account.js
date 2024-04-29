@@ -127,6 +127,9 @@ const Account = ({route}) => {
       case 'Legal and Information':
         navigation.navigate('Legal');
         break;
+      case 'FAQs':
+        navigation.navigate('FAQs');
+        break;
       case 'Notifications':
         navigation.navigate('Notifications', {options: NOTIFICATIONS_MOCK});
         break;

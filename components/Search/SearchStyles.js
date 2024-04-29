@@ -30,11 +30,17 @@ const useSearchStyles = () => {
       borderRadius: 3,
       fontFamily: theme.fontMedium,
       fontSize: theme.responsiveFontSize,
+      color: theme.searchPlaceHolderColor,
     },
     textInputContainer: {
       flexDirection: 'row',
       position: 'relative',
-      marginHorizontal: 4,
+    },
+    textInputContainerIOS: {
+      flexDirection: 'row',
+      position: 'relative',
+      marginHorizontal: 14,
+      height: 60,
     },
     none: {
       display: 'none',
@@ -47,7 +53,7 @@ const useSearchStyles = () => {
       height: 24,
       marginHorizontal: 4,
       zIndex: 1100,
-      tintColor: theme.secondaryTextColor,
+      tintColor: theme.searchPlaceHolderColor,
     },
     analysisItem: {
       position: 'relative',

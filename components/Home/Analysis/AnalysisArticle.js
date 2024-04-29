@@ -148,7 +148,6 @@ const AnalysisArticle = ({route}) => {
             uri: `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
             priority: FastImage.priority.normal,
           }}
-          defaultSource={require('../../../assets/images/home/default_news.png')}
           fallback={true}
         />
         <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>

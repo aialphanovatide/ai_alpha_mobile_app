@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
@@ -260,7 +261,10 @@ const Search = ({route}) => {
       style={styles.flex}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Search</Text>
-        <View style={styles.textInputContainer}>
+        <View style={Platform.select({
+            ios: styles.textInputContainerIOS,
+            android: styles.textInputContainer
+          })}>
           <Image
             source={require('../../assets/images/home/search_icon.png')}
             style={[searchText !== '' ? styles.none : styles.magnifierIcon]}
@@ -272,7 +276,7 @@ const Search = ({route}) => {
             value={searchText}
             onChangeText={text => handleTextChange(text)}
             placeholder="Search AI Alpha"
-            placeholderTextColor={theme.secondaryTextColor}
+            placeholderTextColor={theme.searchPlaceHolderColor}
           />
         </View>
         {searchText && (

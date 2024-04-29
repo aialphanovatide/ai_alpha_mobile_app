@@ -1,24 +1,30 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, View, Text, Image } from 'react-native';
+import { ScrollView, View, Text, Image, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
 import CustomInput from '../../../Login/CustomInput/CustomInput';
-import CustomButton from '../../../Login/CustomButton/CustomButton';
+import SaveButton from './SaveButton';
 import BackButton from '../../../Analysis/BackButton/BackButton';
 import usePersonaliseProfileStyles from './PersonaliseProfileStyles';
 import { useRawUserId } from '../../../../context/RawUserIdContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret } from '../../../../src/constants';
-
+import GreenTick from '../../../../assets/images/greenTick.png';
+import {useNavigation} from '@react-navigation/core';
+import auth0 from '../../../Login/auth0';
 
 const PersonaliseProfile = () => {
   const styles = usePersonaliseProfileStyles();
-  const [isEditing, setIsEditing] = useState(true);  // Default to editing mode initially
+  const [isEditing, setIsEditing] = useState(true);
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [userImage, setUserImage] = useState(null);
   const [error, setError] = useState('');
-  const [saveDisabled, setSaveDisabled] = useState(false);
+  const [saveDisabled, setSaveDisabled] = useState(true);
+  const [resetPasswordSuccesful, setresetPasswordSuccesful] = useState(false);
   const { rawUserId } = useRawUserId();
+  const navigation = useNavigation();
+  const [userEmail, setUserEmail] = useState();
+
 
   useEffect(() => {
     const loadStoredData = async () => {
@@ -141,20 +147,87 @@ const PersonaliseProfile = () => {
     return data.access_token;
   };
 
+  const resetPasswordButton = async () =>{
+
+    Alert.alert(
+      'Reset Password',
+      'Are you sure you want to receive a password reset email? This may take a couple minutes to be sent',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Send Email', onPress: onForgotPasswordPressed},
+      ],
+    );
+  };
+
+
+  const onForgotPasswordPressed = async () => {
+    console.log("rawUserId ->", rawUserId);
+    const token = await getManagementApiToken();
+    const userFetch = await fetch(
+      `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  
+    if (userFetch.ok) {
+      const userData = await userFetch.json();
+      console.log("User data ->", userData);
+      const extractedEmail = userData.email;
+      setUserEmail(extractedEmail); // Update state for other potential uses not immediately following this update
+      
+      // Use extractedEmail directly here
+      console.log("Email to use for reset ->", extractedEmail);
+      try {
+        await auth0.auth.resetPassword({
+          email: extractedEmail,
+          connection: 'Username-Password-Authentication',
+        });
+        console.log('Reset password email sent.');
+        setresetPasswordSuccesful(true);
+  
+        setTimeout(() => {
+          navigation.navigate('SettingsScreen');
+        }, 2000);
+
+        console.log("after all")
+
+      } catch (error) {
+        console.error('Failed to send reset password email:', error);
+      }
+    } else {
+      console.error('Failed to fetch user:', userFetch.status);
+      const errorResponse = await userFetch.text();
+      console.error('Error details:', errorResponse);
+    }
+  };
+
+  if (resetPasswordSuccesful) {
+    return (
+      <View style={styles.successContainer}>
+        <Image source={GreenTick} style={styles.tickImage} />
+        <Text style={styles.successText}>Reset Password Link Sent</Text>
+      </View>
+    );
+  }
 
   
 
   return (
+    <SafeAreaView style={styles.backgroundColor}>
     <ScrollView style={styles.scrollview}>
       <BackButton />
+      <Text style={styles.mainTitle}>Personalise Profile</Text>
       <View style={styles.root}>
         {userImage && (
           <View style={styles.imageContainer}>
             <Image source={{ uri: userImage }} style={styles.userImage} />
           </View>
         )}
-        {isEditing ? (
-          <>
             <View style={styles.inputContainer}>
               <Text style={styles.title}>Full Name</Text>
               <CustomInput
@@ -172,7 +245,10 @@ const PersonaliseProfile = () => {
               />
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.title}>Birth Date</Text>
+            <View style={styles.labelRow}>
+                <Text style={styles.title}>Birth Date</Text>
+                <Text style={styles.optionalLabel}>(optional)</Text>
+              </View>
               <CustomInput
                 placeholder="DD/MM/YYYY"
                 value={birthDate}
@@ -181,32 +257,22 @@ const PersonaliseProfile = () => {
                 onError={handleDateError}
               />
             </View>
-          </>
-        ) : (
-          <>
             <View style={styles.inputContainer}>
-              <Text style={styles.infoTitle}>Full Name</Text>
-              <Text style={styles.infoText}>{fullName}</Text>
+              <TouchableOpacity onPress={resetPasswordButton}>
+                <Text style={styles.sendMailButton}>Edit Password</Text>
+              </TouchableOpacity>
             </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.infoTitle}>Username</Text>
-              <Text style={styles.infoText}>{username}</Text>
-            </View>
-            {birthDate && (
-            <View style={styles.inputContainer}>
-              <Text style={styles.infoTitle}>Birth Date</Text>
-              <Text style={styles.infoText}>{birthDate}</Text>
-            </View>
-          )}
-          </>
-        )}
-        <CustomButton
+
+
+        <SaveButton
           onPress={toggleEditSave}
-          text={isEditing ? "Save" : "Edit"}
+          text={"Save"}
           disabled={saveDisabled}
         />
       </View>
     </ScrollView>
+    </SafeAreaView>
+
   );
 };
 
