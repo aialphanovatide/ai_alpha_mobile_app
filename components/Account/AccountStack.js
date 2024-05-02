@@ -10,6 +10,8 @@ import Eula from './LegalAndInformation/Eula/Eula';
 import CurrentPackages from './CurrentPackages/CurrentPackages';
 import SettingsScreen from './SettingsScreen/SettingsScreen';
 import { LoginForm } from '../../src/components';
+import PersonaliseProfile from './SettingsScreen/PersonaliseProfile/PersonaliseProfile';
+import FAQs from './FAQs/FAQs';
 
 const AccountStack = createNativeStackNavigator();
 
@@ -28,6 +30,9 @@ const AccountScreen = () => {
       <AccountStack.Screen name="Eula" component={Eula} />
       <AccountStack.Screen name="CurrentPackages" component={CurrentPackages} />
       <AccountStack.Screen name="SettingsScreen" component={SettingsScreen} />
+      <AccountStack.Screen name="PersonaliseProfile" component={PersonaliseProfile} />
+      <AccountStack.Screen name="FAQs" component={FAQs} />
+
 
       <AccountStack.Screen
         name="Notifications"

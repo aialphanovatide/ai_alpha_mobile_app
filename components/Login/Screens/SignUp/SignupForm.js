@@ -22,7 +22,6 @@ import BackButton from '../../../Analysis/BackButton/BackButton';
 
 
 const SignupForm = () => {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
@@ -58,7 +57,6 @@ const SignupForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const formIsValid =
-      username &&
       email &&
       emailRegex.test(email) &&
       password &&
@@ -74,7 +72,6 @@ const SignupForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const formIsValid =
-      username &&
       email &&
       emailRegex.test(email) &&
       password &&
@@ -83,7 +80,7 @@ const SignupForm = () => {
       passwordRegex.test(password);
 
     setIsFormValid(formIsValid);
-  }, [username, email, password, passwordRepeat]);
+  }, [email, password, passwordRepeat]);
 
   const updatePasswordStrength = (value) => {
     const lowercaseRegex = /[a-z]/;
@@ -176,9 +173,6 @@ const SignupForm = () => {
             email: email,
             password: password,
             connection: 'Username-Password-Authentication',
-            user_metadata: {
-              username: username,
-            },
           },
         );
         console.log("here!!!")
@@ -207,14 +201,6 @@ const SignupForm = () => {
       <BackButton />
       <View style={styles.root}>
         <Image source={Logo} style={styles.logo} resizeMode="contain" />
-        <View style={styles.inputContainer}>
-          <Text style={styles.title}>Username</Text>
-          <CustomInput
-            placeholder=""
-            value={username}
-            setValue={setUsername}
-          />
-        </View>
         <View style={styles.inputContainer}>
         <View style={styles.labelContainer}>
             <Text style={styles.title}>Email</Text>

@@ -65,7 +65,7 @@
 // Called when a notification is delivered to a foreground app.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
     NSLog(@"Will present notification: %@", notification);
-    completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge);
+    completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner | UNNotificationPresentationOptionBadge);
 }
 
 // Called when a notification is about to be presented to the user.
@@ -73,9 +73,9 @@
     // You can handle notification settings here if needed.
 }
 
-(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-  return [Orientation getOrientation];
-}
+//(UIInterfaceOrientationMask);UIApplication:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+//  return [Orientation getOrientation];
+//}
 
 
 @end
