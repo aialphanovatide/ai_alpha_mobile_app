@@ -5,6 +5,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
 #import "Orientation.h"
+#import <FirebaseCore/FirebaseCore.h>
+#import <UIKit/UIKit.h>
 
 @implementation AppDelegate
 
@@ -15,7 +17,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.moduleName = @"ai_alpha_mobile_app";
     self.initialProps = @{};
-
+    [FIRApp configure];
     // Define UNUserNotificationCenter and set delegate
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;

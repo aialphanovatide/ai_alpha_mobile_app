@@ -1,3 +1,9 @@
+use_modular_headers!
+
+source 'https://github.com/invertase/react-native-firebase.git'
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '15.0'
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -6,10 +12,8 @@ require Pod::Executable.execute_command('node', ['-p',
   )', __dir__]).strip
 
 #platform :ios, min_ios_version_supported
-platform :ios, '15.0'
 prepare_react_native_project!
-source 'https://github.com/invertase/react-native-firebase.git'
-source 'https://github.com/CocoaPods/Specs.git'
+
 
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
@@ -33,7 +37,13 @@ target 'ai_alpha_mobile_app' do
   config = use_native_modules!
   # Flags change depending on the env values.
   flags = get_default_flags()
+  # Pods for React Native
   pod 'react-native-config/Extension', :path => '../node_modules/react-native-config'
+  pod 'Firebase/Core'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/AppCheck'  # Include this if you are using App Check features
+
+
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -44,10 +54,19 @@ target 'ai_alpha_mobile_app' do
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    :flipper_configuration => flipper_config,
+    #:flipper_configuration => flipper_config,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+
+
+  # Flipper Pods can be included conditionally
+  #use_react_native!(
+  #  :path => config[:reactNativePath],
+  #  :hermes_enabled => true,
+  #  :fabric_enabled => true,
+  #  :flipper_configuration => flipper_config
+  #)
 
   target 'ai_alpha_mobile_appTests' do
     inherit! :complete
