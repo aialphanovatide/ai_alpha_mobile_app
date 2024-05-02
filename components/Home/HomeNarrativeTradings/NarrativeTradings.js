@@ -57,7 +57,9 @@ const NarrativeTradingItem = ({title, image, item, handleNavigation}) => {
         resizeMode="contain"
         fallback={true}
       />
-      <Text style={styles.titleStyles} numberOfLines={2}>{title}</Text>
+      <Text style={styles.titleStyles} numberOfLines={2}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -69,17 +71,13 @@ const NarrativeTradings = ({handleAboutPress}) => {
   const [expanded, setExpanded] = useState(false);
   const navigation = useNavigation();
   const aboutIconStyles = {
-    top: 12.5,
+    top: 34,
   };
 
   useEffect(() => {
-    console.log('Narrative Tradings: ', narrativeTradingData)
+    // console.log('Narrative Tradings: ', narrativeTradingData);
     setNarrativeTradingItems(narrativeTradingData);
   }, [narrativeTradingData]);
-
-  // useEffect(() => {
-  //   setNarrativeTradingItems(narrativeTradingMock);
-  // }, []);
 
   const handlePress = () => setExpanded(!expanded);
 

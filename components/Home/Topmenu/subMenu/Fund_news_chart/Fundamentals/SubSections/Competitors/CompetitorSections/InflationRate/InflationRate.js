@@ -131,7 +131,7 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
         inflation_rate_data.push(mapped_crypto);
       }
     });
-    console.log('Inflation rate data: ', inflation_rate_data);
+    // console.log('Inflation rate data: ', inflation_rate_data);
     setCryptos(inflation_rate_data);
     setActiveCrypto(inflation_rate_data[0]);
     setLoading(false);
@@ -151,10 +151,8 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
           ),
         ),
       };
-      // console.log(current_year_value);
       inflationRate.push(current_year_value);
     });
-    console.log(inflationRate);
     return inflationRate;
   };
 
@@ -163,12 +161,12 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
       return 0;
     }
     const filtered_string = stringValue.replace(/\s/g, '').replace(/,/g, '');
-    console.log(
-      'Filtered string: ',
-      Number(filtered_string),
-      ' string value: ',
-      stringValue,
-    );
+    // console.log(
+    //   'Filtered string: ',
+    //   Number(filtered_string),
+    //   ' string value: ',
+    //   stringValue,
+    // );
     return Number(filtered_string);
   };
 

@@ -20,7 +20,7 @@ const TopStories = ({handleAboutPress}) => {
   const {categories} = useContext(CategoriesContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const aboutIconStyles = {
-    top: 12.5,
+    top: 10,
   };
   const handlePress = () => {
     setExpanded(!expanded);
@@ -124,7 +124,6 @@ const TopStories = ({handleAboutPress}) => {
           setStories([]);
         } else {
           // console.log(data.top_stories);
-
           setStories(data.top_stories);
         }
       } catch (error) {
@@ -138,7 +137,7 @@ const TopStories = ({handleAboutPress}) => {
   }, []);
 
   return (
-    <List.Section title="Top Stories" titleStyle={styles.mainTitle}>
+    <List.Section title="Top Stories" titleStyle={styles.mainTitle} style={styles.margin}>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.topStories.sectionDescription}

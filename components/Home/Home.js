@@ -46,7 +46,7 @@ const Home = () => {
           bounces={false}
           alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
-          style={styles.paddingH}
+          style={[styles.paddingH, styles.paddingB]}
           ref={ref}>
           <TickerTape />
           <TopStories handleAboutPress={handleAboutPress} />

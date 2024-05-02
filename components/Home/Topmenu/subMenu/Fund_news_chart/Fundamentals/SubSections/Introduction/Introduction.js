@@ -32,9 +32,6 @@ const Introduction = ({getSectionData, coin, handleSectionContent}) => {
     isAndroid ? 'prompt_regular' : 'Prompt-Regular',
     isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
   ];
-  const mocked_introduction =
-    '<p><strong>Chainlink</strong>, a decentralised oracle network, provides secure data feeds for smart contracts, expanding their applications. <strong>Chainlink 2.0 </strong> introduces <strong> Decentralised Oracle Networks (DONs) </strong>, enhancing capabilities with secure off-chain computations. With a market cap of <strong>$11.6B</strong> and daily volume of <strong>$657M</strong>, Chainlink leads the blockchain oracle space, empowering innovation in smart contract development.</p>';
-
   const parseHtmlTags = content => {
     const replacedContent = content.replace(/\\/g, '');
     const strong_changed_content = replacedContent
@@ -79,13 +76,6 @@ const Introduction = ({getSectionData, coin, handleSectionContent}) => {
         isDarkMode ? 'rgb(255, 255, 255) ' : 'rgb(64, 64, 64)'
       };">`,
     );
-
-    // const titles_changed_content = span_changed.replace(
-    //   /><strong style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);">/g,
-    //   ` style="color: ${
-    //     isDarkMode ? 'rgb(255, 255, 255) ' : 'rgb(23, 23, 23)'
-    //   };">`,
-    // );
     const bullet_lists_updated_content = span_changed.replace(
       /<ul>/g,
       `<ul style="color: ${
@@ -160,10 +150,6 @@ const Introduction = ({getSectionData, coin, handleSectionContent}) => {
     handleSectionContent('introduction', true);
   }
 
-  if (content) {
-    console.log(parseHtmlTags(content.description));
-  }
-
   return (
     <View style={styles.container}>
       {loading ? (
@@ -172,7 +158,6 @@ const Introduction = ({getSectionData, coin, handleSectionContent}) => {
         <NoContentMessage hasSectionName={false} />
       ) : (
         <>
-          {/* <Text style={styles.introText}>{content.description}</Text> */}
           <RenderHTML
             source={{
               html: parseHtmlTags(content.description),

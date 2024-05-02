@@ -10,6 +10,7 @@ const usePriceActionStyles = () => {
     priceActionContainer: {
       width: '100%',
       marginVertical: 15,
+      marginBottom: 64,
       paddingBottom: 30,
       overflow: 'hidden',
     },

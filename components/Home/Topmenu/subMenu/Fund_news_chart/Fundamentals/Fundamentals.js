@@ -13,7 +13,7 @@ import useFundamentalsStyles from './FundamentalsStyles';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 import UpdatedRevenueModel from './SubSections/RevenueModel/UpdatedRevenueModel';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
-import {altGetService, getService} from '../../../../../../services/aiAlphaApi';
+import { getService} from '../../../../../../services/aiAlphaApi';
 import {fundamentalsMock} from './fundamentalsMock';
 import TokenUtility from './SubSections/TokenUtility/TokenUtility';
 import AboutModal from './AboutModal';
@@ -92,7 +92,6 @@ const Fundamentals = ({route}) => {
         if (response?.status !== 200 || !response?.message) {
           setSharedData([]);
         } else {
-          // console.log(response.message.tokenomics_data);
           const parsed_cryptos = response.message.tokenomics_data;
           setSharedData(parsed_cryptos);
         }

@@ -5,11 +5,15 @@ import {AppThemeContext} from '../../../context/themeContext';
 const useHomeAnalysisStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
+    margin: {
+      marginVertical: 24,
+    },
     mainTitle: {
+      marginBottom: 8,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
       fontFamily: theme.fontSemibold,
-      fontWeight: '600',
+
     },
     titleStyles: {
       maxWidth: '85%',
@@ -48,7 +52,7 @@ const useHomeAnalysisStyles = () => {
       width: 15,
       height: 15,
       marginTop: 10,
-      tintColor: theme.textColor,
+      tintColor: theme.secondaryGrayColor,
     },
     emptyMessage: {
       margin: theme.boxesVerticalMargin,

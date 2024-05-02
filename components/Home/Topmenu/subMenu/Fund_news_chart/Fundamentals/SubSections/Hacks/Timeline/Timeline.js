@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import Loader from '../../../../../../../../Loader/Loader';
 import useTimelineStyles from './TimelineStyles';
 
 const Timeline = ({events, textPoints}) => {

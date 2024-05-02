@@ -1,4 +1,3 @@
-import {Image} from 'react-native';
 import {List} from 'react-native-paper';
 import useTopStoriesStyles from '../topStoriesStyles';
 import FastImage from 'react-native-fast-image';

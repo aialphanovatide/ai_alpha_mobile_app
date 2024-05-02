@@ -147,7 +147,6 @@ const PriceAction = ({handleAboutPress}) => {
         <Loader />
       ) : (
         <View style={styles.tableContainer}>
-          {/* Encabezados de columnas */}
           <CategorySelector
             coins={coins}
             categories={categories}
@@ -160,12 +159,7 @@ const PriceAction = ({handleAboutPress}) => {
             <Text style={styles.headerCell}>Price{' (USD)'}</Text>
             <Text style={styles.headerCell}>24H</Text>
           </View>
-          <View
-            style={styles.tableScrollView}
-            // bounces={false}
-            // alwaysBounceVertical={false}
-            // showsVerticalScrollIndicator={false}
-          >
+          <View style={styles.tableScrollView}>
             {/* Datos de la tabla */}
             {activeCoins && activeCoins[0] !== undefined ? (
               activeCoins.map((coin, index) => (

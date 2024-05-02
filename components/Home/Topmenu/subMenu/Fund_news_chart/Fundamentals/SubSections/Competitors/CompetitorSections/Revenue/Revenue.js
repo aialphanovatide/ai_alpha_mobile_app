@@ -41,7 +41,6 @@ const RevenueGraphReferences = ({cryptos, styles}) => {
 const Revenue = ({competitorsData, isSectionWithoutData}) => {
   const [cryptos, setCryptos] = useState([]);
   const [valuesData, setValuesData] = useState(null);
-  const {theme} = useContext(AppThemeContext);
   const styles = useRevenueStyles();
   const colors = ['blue', 'cyan', 'purple', 'magenta'];
   const tintColors = ['#20CBDD', '#895EF6', '#FF3BC3', '#C539B4'];
@@ -75,7 +74,6 @@ const Revenue = ({competitorsData, isSectionWithoutData}) => {
       item =>
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
-    // console.log('Key received: ', key, 'Revenue value found: ', found);
     return found && found !== undefined
       ? found.competitor.value !== '-'
         ? found.competitor.value

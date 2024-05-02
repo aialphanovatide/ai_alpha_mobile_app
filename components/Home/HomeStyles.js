@@ -24,6 +24,9 @@ const useHomeStyles = () => {
     paddingH: {
       paddingHorizontal: 10,
     },
+    marginB: {
+      marginBottom: 32,
+    },
     menuItem: {
       width: '33.33%',
       backgroundColor: theme.subMenuBgColor,

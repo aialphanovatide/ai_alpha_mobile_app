@@ -1,4 +1,4 @@
-import {Text, View, Image, ScrollView} from 'react-native';
+import {Text, View, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useTypeOfTokenStyles from './TypeOfTokenStyles';
 import Loader from '../../../../../../../../../Loader/Loader';
@@ -82,7 +82,7 @@ const TypeOfToken = ({competitorsData}) => {
       }
     });
     setLoading(false);
-    console.log('Type of token data: ', type_of_token_data);
+    // console.log('Type of token data: ', type_of_token_data);
     setMappedData(type_of_token_data);
   }, [competitorsData]);
 

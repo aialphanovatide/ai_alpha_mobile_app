@@ -218,7 +218,7 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
           setCryptos(parsed_cryptos);
         }
       } catch (error) {
-        console.log('Error trying to get tokenomics data: ', error);
+        console.error('Error trying to get tokenomics data: ', error);
       } finally {
         setLoading(false);
       }

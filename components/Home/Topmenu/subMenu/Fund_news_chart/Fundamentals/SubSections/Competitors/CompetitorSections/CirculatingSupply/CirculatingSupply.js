@@ -148,9 +148,6 @@ const CirculatingSupply = ({
   cryptos,
   tokenomicsData,
   competitorsData,
-  getSectionData,
-  coin,
-  isSectionWithoutData,
 }) => {
   const [mappedData, setMappedData] = useState([]);
   const styles = useCirculatingSupplyStyles();

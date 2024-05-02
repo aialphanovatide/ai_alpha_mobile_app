@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Image, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import useTokenUtilityStyles from './TokenUtilityStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../Loader/Loader';
@@ -44,9 +44,7 @@ const TokenUtility = ({getSectionData, coin, handleSectionContent}) => {
       .join('');
     const longitude_shape = description.length >= 200 ? 'R' : 'S';
     const theme_word = isDarkMode ? 'Dark' : 'Light';
-    console.log(
-      `https://${coin}aialpha.s3.us-east-2.amazonaws.com/${formatted_title}${theme_word}${longitude_shape}.jpg`,
-    );
+
     return `https://${coin}aialpha.s3.us-east-2.amazonaws.com/${formatted_title}${theme_word}${longitude_shape}.jpg`;
   };
 
@@ -91,7 +89,7 @@ const TokenUtility = ({getSectionData, coin, handleSectionContent}) => {
           setDataItems(parsed_data);
         }
       } catch (error) {
-        console.log('Error trying to get Token Utilities data: ', error);
+        console.error('Error trying to get Token Utilities data: ', error);
       } finally {
         setLoading(false);
       }

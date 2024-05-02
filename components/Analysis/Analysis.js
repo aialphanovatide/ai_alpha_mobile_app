@@ -115,11 +115,9 @@ const Analysis = () => {
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={{flex: 1}}>
       <SafeAreaView style={styles.background}>
-        <ScrollView
-          style={[styles.background, styles.paddingV]}
-          nestedScrollEnabled={true}>
+        <ScrollView style={styles.background} nestedScrollEnabled={true}>
           <Text style={styles.analysisTitle}>Analysis</Text>
-          <View style={styles.analyisisContainer}>
+          <View style={[styles.analyisisContainer, styles.paddingBottom]}>
             {sections.map(section => (
               <AnalysisItem
                 handleItemTouch={handleItemTouch}

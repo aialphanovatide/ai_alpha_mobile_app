@@ -9,6 +9,9 @@ const useTopStoriesStyles = () => {
       width: '100%',
       backgroundColor: 'transparent',
     },
+    margin: {
+      marginVertical: 24,
+    },
     storyWrapper: {
       flex: 1,
       flexDirection: 'row',
@@ -18,10 +21,10 @@ const useTopStoriesStyles = () => {
       display: 'none',
     },
     mainTitle: {
+      marginBottom: 8,
       fontFamily: theme.fontSemibold,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontWeight: '600',
     },
     titleStyles: {
       maxWidth: '85%',
@@ -55,7 +58,7 @@ const useTopStoriesStyles = () => {
       width: 15,
       height: 15,
       marginTop: 10,
-      tintColor: theme.textColor,
+      tintColor: theme.secondaryGrayColor,
     },
     arrowContainer: {
       flex: 1,

@@ -6,14 +6,15 @@ const useAnalysisStyles = () => {
   const styles = StyleSheet.create({
     background: {
       flex: 1,
+      height: 'auto',
     },
-    paddingV: {
-      paddingVertical: 8,
+    paddingBottom: {
+      paddingBottom: 32,
     },
     analysisContainer: {
       flex: 1,
       width: theme.width,
-      height: theme.height,
+      height: 'auto',
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -65,8 +66,8 @@ const useAnalysisStyles = () => {
     },
     analysisTitle: {
       marginHorizontal: 24,
-      marginVertical: 16,
       marginTop: 64,
+      marginBottom: 32,
       fontSize: theme.responsiveFontSize * 1.5,
       fontFamily: theme.fontSemibold,
       color: theme.titleColor,

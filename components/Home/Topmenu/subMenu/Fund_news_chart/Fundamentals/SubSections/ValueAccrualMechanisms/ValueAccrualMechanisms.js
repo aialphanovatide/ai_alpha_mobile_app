@@ -1,4 +1,4 @@
-import {Text, View, Image} from 'react-native';
+import {Text, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import Loader from '../../../../../../../Loader/Loader';
 import useVAMStyles from './VAMStyles';
@@ -105,7 +105,7 @@ const ValueAccrualMechanisms = ({
           setDataItems(parsed_data);
         }
       } catch (error) {
-        console.log(
+        console.error(
           'Error trying to get Value Accrual Mechanisms data: ',
           error,
         );

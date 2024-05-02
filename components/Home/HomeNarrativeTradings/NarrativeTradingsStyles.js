@@ -7,7 +7,7 @@ const useHomeNarrativeTradingStyles = () => {
   const styles = StyleSheet.create({
     mainTitle: {
       marginHorizontal: 16,
-      marginVertical: theme.boxesVerticalMargin,
+      marginVertical: 18,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
       fontFamily: theme.fontSemibold,
@@ -50,7 +50,7 @@ const useHomeNarrativeTradingStyles = () => {
       width: 15,
       height: 15,
       marginTop: 10,
-      tintColor: theme.textColor,
+      tintColor: theme.secondaryGrayColor,
     },
     emptyMessage: {
       margin: theme.boxesVerticalMargin,

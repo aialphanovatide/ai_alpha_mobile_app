@@ -90,7 +90,6 @@ const TransactionFees = ({competitorsData, isSectionWithoutData}) => {
     }
     const formatted_string = stringValue.replace(/\s/g, '');
     const number = Number(formatted_string.replace(/,/g, '.'));
-    // console.log('Formatted transaction fees value: ', number);
     return isNaN(number) ? 0 : number;
   };
 

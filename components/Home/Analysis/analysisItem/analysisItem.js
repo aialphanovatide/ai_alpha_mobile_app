@@ -1,11 +1,10 @@
-import {Image} from 'react-native';
 import {List} from 'react-native-paper';
 import useHomeAnalysisStyles from '../analysisStyles';
 import {useContext} from 'react';
 import {AppThemeContext} from '../../../../context/themeContext';
 import FastImage from 'react-native-fast-image';
 
-const AnalysisItem = ({title, image, item, handleAnalysisNavigation}) => {
+const AnalysisItem = ({title, item, handleAnalysisNavigation}) => {
   const styles = useHomeAnalysisStyles();
   const {isDarkMode} = useContext(AppThemeContext);
 

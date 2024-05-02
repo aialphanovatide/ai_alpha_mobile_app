@@ -14,15 +14,21 @@ import AccountScreen from '../../Account/AccountStack';
 import {useNavigation} from '@react-navigation/core';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import {useUserId} from '../../../context/UserIdContext';
-import { RotateContext } from '../../../context/rotateContext';
+import {RotateContext} from '../../../context/rotateContext';
 import SearchScreen from '../../Search/SearchStack';
 import {CommonActions} from '@react-navigation/native';
+import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 
 const Tab = createBottomTabNavigator();
 
 const MenuIcon = ({color, iconSource}) => {
+  const {isLandscape, isHorizontal} = useScreenOrientation();
   return (
-    <View style={styles.iconContainer}>
+    <View
+      style={[
+        styles.iconContainer,
+        isLandscape && isHorizontal && {display: 'none'},
+      ]}>
       <Image
         style={[styles.icon, {tintColor: color}]}
         resizeMode={'contain'}
@@ -33,12 +39,13 @@ const MenuIcon = ({color, iconSource}) => {
 };
 
 const HomeScreen = () => {
-
-  const {updateActiveCoin, updateActiveSubCoin, activeCoin, activeSubCoin} = useContext(TopMenuContext);
+  const {updateActiveCoin, updateActiveSubCoin, activeCoin, activeSubCoin} =
+    useContext(TopMenuContext);
   const navigation = useNavigation();
   const {theme, isDarkMode} = useContext(AppThemeContext);
   const {userId} = useUserId();
   const {init} = useContext(RevenueCatContext);
+  const {isLandscape, isHorizontal} = useScreenOrientation();
 
   useEffect(
     () =>
@@ -55,15 +62,15 @@ const HomeScreen = () => {
     };
   }, []);
 
-
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
+    <GestureHandlerRootView style={[{flex: 1}]}>
       <Tab.Navigator
         initialRouteName={Home}
+        backBehavior={isLandscape && isHorizontal ? 'none' : 'initialRoute'}
         screenOptions={{
           headerShown: false,
           tabBarStyle: {
-            height: 70,
+            height: isLandscape && isHorizontal ? 0 : 70,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: theme.navbarBgColor,

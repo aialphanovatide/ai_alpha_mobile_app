@@ -81,7 +81,6 @@ const GeneralTokenAllocation = ({
   ];
   const styles = useGTAStyles();
   const [percentagesData, setPercentagesData] = useState([]);
-  const {theme} = useContext(AppThemeContext);
   const [loading, setLoading] = useState(true);
   const [currentToken, setCurrentToken] = useState(null);
   const handleTokenChange = token => {
@@ -100,7 +99,7 @@ const GeneralTokenAllocation = ({
         if (response.status !== 200) {
           setPercentagesData([]);
         } else {
-          console.log(response.message.token_distribution);
+          // console.log(response.message.token_distribution);
           const parsed_data = response.message.token_distribution.map(
             distribution => {
               return {
@@ -114,7 +113,7 @@ const GeneralTokenAllocation = ({
               };
             },
           );
-          console.log('Parsed data:', parsed_data);
+          // console.log('Parsed data:', parsed_data);
           setPercentagesData(parsed_data);
           setCurrentToken(parsed_data[0]);
         }

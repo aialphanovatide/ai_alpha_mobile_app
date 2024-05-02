@@ -95,7 +95,7 @@ const ActiveDevelopers = ({competitorsData, isSectionWithoutData}) => {
       item =>
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
-    console.log('Key received: ', key, 'Apr value found: ', found);
+    // console.log('Key received: ', key, 'Apr value found: ', found);
     return found && found !== undefined
       ? found.competitor.value !== '-'
         ? found.competitor.value
@@ -145,7 +145,7 @@ const ActiveDevelopers = ({competitorsData, isSectionWithoutData}) => {
         active_devs_data.push(mapped_crypto);
       }
     });
-    console.log(active_devs_data);
+    // console.log(active_devs_data);
     setCryptos(active_devs_data);
     setLoading(false);
   }, [competitorsData]);

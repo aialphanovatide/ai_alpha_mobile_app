@@ -16,6 +16,7 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
   const styles = useChartStyles();
   const [cryptos, setCryptos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [maxTvlValue, setMaxTvlValue] = useState(0);
 
   const parseNumberString = numberString => {
     const numberWithoutSign = numberString.replace(/\s|,/g, '');
@@ -24,23 +25,6 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
     return isNaN(valueInBillions) && isNaN(numericValue)
       ? [0, 0]
       : [valueInBillions, numericValue];
-  };
-
-  const parseLargeNumberString = numberString => {
-    const numberWithoutSign = numberString.replace(/\$/g, '');
-    const decimalNumberString = numberWithoutSign.replace(/,/g, '.');
-    const [numberPart, unitPart] = decimalNumberString.split(/(?=[a-zA-Z])/);
-    const numericValue = Number(numberPart);
-    const unitValues = {
-      k: 100000,
-      m: 1000000,
-      b: 1000000000,
-      t: 1000000000000,
-    };
-
-    const scaledValue = numericValue * unitValues[unitPart.toLowerCase()];
-    const valueInBillions = scaledValue / 1000000000;
-    return parseFloat(valueInBillions.toFixed(3));
   };
 
   const findKeyInCompetitorItem = (data, key, crypto) => {
@@ -82,9 +66,16 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
         mapped_tvl.push(current);
       }
     });
-    // console.log('Mapped tvl: ', mapped_tvl);
     setCryptos(mapped_tvl);
     setLoading(false);
+    let maxTvl = 0;
+
+    mapped_tvl.forEach(tvl => {
+      if (tvl.tvl[0] > maxTvl) {
+        maxTvl = tvl.tvl[0];
+      }
+    });
+    setMaxTvlValue(maxTvl);
   }, [competitorsData]);
 
   const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
@@ -133,8 +124,14 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
                 },
               }}
               alignment={'middle'}
-              domain={{x: [0, 5], y: [0, 20]}}
-              domainPadding={{x: 1, y: 1.5}}
+              domain={{
+                x: [0, 5],
+                y: [0, maxTvlValue < 5 ? maxTvlValue + 1 : maxTvlValue + 15],
+              }}
+              domainPadding={{
+                x: 1,
+                y: maxTvlValue < 5 ? 0.5 : maxTvlValue > 100 ? 10 : 2.5,
+              }}
               data={cryptos.map((crypto, index) => ({
                 x: crypto.symbol,
                 y: crypto.tvl[0],

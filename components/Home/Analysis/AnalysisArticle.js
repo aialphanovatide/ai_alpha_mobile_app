@@ -1,8 +1,6 @@
 import React, {useContext} from 'react';
 import {
-  Image,
   Platform,
-  SafeAreaView,
   ScrollView,
   Text,
   View,
@@ -63,12 +61,6 @@ const AnalysisArticle = ({route}) => {
       };">`,
     ).replace(/style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);"/g, '');
 
-    // const titles_changed_content = span_changed.replace(
-    //   /><strong style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);">/g,
-    //   ` style="color: ${
-    //     isDarkMode ? 'rgb(255, 255, 255) ' : 'rgb(23, 23, 23)'
-    //   };">`,
-    // );
     const bullet_lists_updated_content = span_changed.replace(
       /<ul>/g,
       `<ul style="color: ${
@@ -78,7 +70,6 @@ const AnalysisArticle = ({route}) => {
     return bullet_lists_updated_content;
   };
 
-  // console.log(findHtmlContent(analysis_content));
   const handleBackNavigation = () => {
     navigation.goBack();
     navigation.navigate('Analysis', {

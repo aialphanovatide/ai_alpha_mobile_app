@@ -67,7 +67,6 @@ const NarrativeTradingArticle = ({route}) => {
     return bullet_lists_updated_content;
   };
 
-  // console.log(findHtmlContent(analysis_content));
   const handleBackNavigation = () => {
     navigation.goBack();
     navigation.navigate('Analysis', {

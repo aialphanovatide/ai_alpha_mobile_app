@@ -53,24 +53,21 @@ const useCustomButtonStyles = () => {
       borderColor: theme.orange,
     },
     text: {
-      fontFamily: theme.fontMedium,
+      fontFamily: theme.fontSemibold,
       fontSize: 15,
       color: theme.signUpButtonText,
     },
     text_PRIMARY: {
       color: theme.signUpButtonText,
-      fontWeight: 'bold',
     },
     text_TERTIARY: {
       color: theme.orange,
     },
     text_GOOGLE: {
       color: theme.textColor,
-      fontWeight: 'bold',
     },
     text_APPLE: {
       color: theme.textColor,
-      fontWeight: 'bold',
     },
   });
   return styles;

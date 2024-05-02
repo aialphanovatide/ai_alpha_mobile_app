@@ -24,6 +24,7 @@ import {useIsFocused} from '@react-navigation/native';
 import AlertDetails from '../Alerts/AlertsDetails';
 import {getService} from '../../services/aiAlphaApi';
 import useAlertsStyles from '../Alerts/styles';
+import {NarrativeTradingContext} from '../../context/NarrativeTradingContext';
 
 const SearchCryptoItem = ({
   crypto,
@@ -100,7 +101,6 @@ const SearchAlertSection = ({currentText}) => {
   const [foundAlerts, setFoundAlerts] = useState([]);
   const styles = useSearchStyles();
   const alertsStyles = useAlertsStyles();
-  // console.log(match);
 
   useEffect(() => {
     const match = findCoinMatch(currentText.toUpperCase());
@@ -149,14 +149,49 @@ const SearchAlertSection = ({currentText}) => {
   );
 };
 
+const SearchNTItem = ({styles, handleNarrativeTradingsNavigation, item}) => {
+  const {isDarkMode} = useContext(AppThemeContext);
+  return (
+    <TouchableOpacity
+      onPress={() => handleNarrativeTradingsNavigation(item)}
+      style={styles.analysisItem}>
+      <FastImage
+        source={{
+          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/${
+            isDarkMode ? 'Dark' : 'Light'
+          }/Inactive/${
+            item.category !== null ? 'ai' : item.category.toLowerCase()
+          }.png`,
+          priority: FastImage.priority.high,
+        }}
+        style={styles.imageStyle}
+        resizeMode="contain"
+        fallback={true}
+      />
+      <View style={styles.analysisRow}>
+        <Text style={styles.analysisTitle} numberOfLines={2}>
+          {item.title}
+        </Text>
+      </View>
+      <Image
+        source={require('../../assets/images/arrow-right.png')}
+        style={styles.rightArrowImage}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
+  );
+};
+
 const Search = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   const styles = useSearchStyles();
+  const {narrativeTradingData} = useContext(NarrativeTradingContext);
   const {categories} = useContext(CategoriesContext);
   const {analysisItems} = useContext(AnalysisContext);
   const [searchText, setSearchText] = useState('');
   const [cryptoSearchResult, setCryptoSearchResult] = useState([]);
   const [analysisSearchResult, setAnalysisSearchResult] = useState([]);
+  const [ntSearchResult, setNtSearchResult] = useState([]);
   const {theme} = useContext(AppThemeContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const navigation = useNavigation();
@@ -174,6 +209,7 @@ const Search = ({route}) => {
     setSearchText(value);
     handleCryptosSearch(categories, value);
     handleAnalysisSearch(analysisItems, value);
+    handleNTSearch(narrativeTradingData, value);
   };
 
   const handleCryptosSearch = (categories, currentText) => {
@@ -217,9 +253,27 @@ const Search = ({route}) => {
       : setAnalysisSearchResult([]);
   };
 
+  const handleNTSearch = (narrativeTradings, currentText) => {
+    const found_narrative_tradings = [];
+    narrativeTradings.forEach(item => {
+      if (
+        item.coin_bot_name.toLowerCase().includes(currentText.toLowerCase()) ||
+        findCoinNameBySymbol(item.coin_bot_name.toUpperCase())
+          .toLowerCase()
+          .includes(currentText.toLowerCase())
+      ) {
+        found_narrative_tradings.push(item);
+      }
+    });
+    found_narrative_tradings && found_narrative_tradings !== undefined
+      ? setNtSearchResult(found_narrative_tradings)
+      : setNtSearchResult([]);
+  };
+
   const handleCryptoItemNavigation = (category, coin) => {
     setCryptoSearchResult([]);
     setAnalysisSearchResult([]);
+    setNtSearchResult([]);
     updateActiveCoin(category);
     updateActiveSubCoin(coin.coin_bot_name);
     navigation.navigate('Home', {
@@ -248,6 +302,20 @@ const Search = ({route}) => {
         analysis_id: analysisItem.id,
         date: analysisItem.created_at,
         isHistoryArticle: false,
+      },
+    });
+  };
+
+  const handleNarrativeTradingsNavigation = narrativeTrading => {
+    updateActiveCoin({});
+    updateActiveSubCoin(null);
+    navigation.navigate('Home', {
+      screen: 'NarrativeTradingArticleScreen',
+      params: {
+        item_content: narrativeTrading.content,
+        id: narrativeTrading.id,
+        date: narrativeTrading.created_at,
+        isNavigateFromHome: false,
       },
     });
   };
@@ -315,7 +383,20 @@ const Search = ({route}) => {
               <Text style={styles.searchSubTitle}>Narrative Tradings</Text>
               <View style={styles.horizontalLine} />
             </View>
-            <View style={styles.cryptoSearch}></View>
+            <View style={styles.cryptoSearch}>
+              {ntSearchResult &&
+                ntSearchResult.length > 0 &&
+                ntSearchResult.map((item, index) => (
+                  <SearchNTItem
+                    styles={styles}
+                    item={item}
+                    key={index}
+                    handleNarrativeTradingsNavigation={
+                      handleNarrativeTradingsNavigation
+                    }
+                  />
+                ))}
+            </View>
             <View style={styles.titleContainer}>
               <Text style={styles.searchSubTitle}>Alerts</Text>
               <View style={styles.horizontalLine} />

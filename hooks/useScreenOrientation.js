@@ -17,6 +17,7 @@ export const useScreenOrientation = singletonHook(
     const [screenOrientation, setScreenOrientation] = useState(
       Orientation.getInitialOrientation(),
     );
+    const [isManuallyHorizontal, setIsManuallyHorizontal] = useState(false);
 
     useEffect(() => {
       const onChange = result => {
@@ -46,9 +47,21 @@ export const useScreenOrientation = singletonHook(
       };
     }, []);
 
+    const handleScreenOrientationChange = orientation => {
+      if (orientation === 'PORTRAIT') {
+        Orientation.unlockAllOrientations();
+        setIsManuallyHorizontal(false);
+      } else {
+        setIsManuallyHorizontal(true);
+        Orientation.lockToLandscape();
+      }
+    };
+
     return {
       isLandscape: screenOrientation.includes(LANDSCAPE),
+      isHorizontal: isManuallyHorizontal,
       screenOrientation,
+      handleScreenOrientationChange: handleScreenOrientationChange,
     };
   },
 );

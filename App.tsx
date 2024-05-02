@@ -1,15 +1,13 @@
-import React, {useContext, useEffect, useState, Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import Navigation from './navigation/Navigation';
 import {
   View,
-  Button,
   Alert,
   SafeAreaView,
   StyleSheet,
   StatusBar,
   Platform,
   Appearance,
-  Dimensions,
   Text,
   TouchableOpacity,
   Modal,
@@ -30,19 +28,18 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {AnalysisContextProvider} from './context/AnalysisContext';
 import NetInfo from '@react-native-community/netinfo';
 import RNRestart from 'react-native-restart';
-import useWebSocket, {ReadyState} from 'react-native-use-websocket';
-import ThemeButton from './components/ThemeButton/ThemeButton';
-import {AppThemeContext} from './context/themeContext';
 import {getService} from './services/aiAlphaApi';
 import {SocketProvider} from './components/Alerts/Socket';
-import {SocketContext} from './components/Alerts/Socket';
 import io from 'socket.io-client';
 import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext';
 import {SingletonHooksContainer} from 'react-singleton-hook';
+import messaging from '@react-native-firebase/messaging';
+import {PermissionsAndroid} from 'react-native';
+
+PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
 const App = () => {
   const colorScheme = Appearance.getColorScheme();
-  //console.log("color scheme ->", colorScheme);
   const [barScheme, setBarScheme] = useState('default');
   const [isConnected, setIsConnected] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
@@ -93,7 +90,6 @@ const App = () => {
     const fetchCategories = async () => {
       try {
         const data = await getService('/get_categories');
-        //console.log("CATEGORIES -> ", data)
         setServerError(false);
         if (serverWentDown == 1) {
           RNRestart.restart();
@@ -108,6 +104,29 @@ const App = () => {
     fetchCategories();
     const intervalId = setInterval(fetchCategories, 120000); // 120000 milliseconds = 2 minutes
     return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const getUserNotificationsToken = async () => {
+      await messaging().registerDeviceForRemoteMessages();
+      const token = await messaging().getToken();
+      console.log('User token: ', token);
+    };
+    const pushNotificationsSubscriber = messaging().onMessage(
+      async remoteMessage => {
+        Alert.alert(
+          `${remoteMessage.notification?.title}`,
+          `${remoteMessage.notification?.body}`,
+          [{text: 'Got it!', onPress: () => null, style: 'destructive'}],
+        );
+      },
+    );
+
+    getUserNotificationsToken();
+
+    return () => {
+      pushNotificationsSubscriber;
+    };
   }, []);
 
   useEffect(() => {
@@ -157,7 +176,12 @@ const App = () => {
       userInfo: {}, // Optional additional data
       fireDate: new Date().getTime() + 1000, // Schedules for immediate delivery
     });
+
+    if (Platform.OS === 'android') {
+      Alert.alert(alert_name, `${message}\nPrice${last_price}`);
+    }
   };
+
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();
     setIsConnected(state.isConnected);
@@ -172,7 +196,6 @@ const App = () => {
       );
     }
   };
-
 
   return (
     <SocketProvider>
@@ -332,8 +355,6 @@ const App = () => {
 };
 
 export default App;
-
-
 
 const styles = StyleSheet.create({
   container: {

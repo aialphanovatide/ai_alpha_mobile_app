@@ -2,8 +2,6 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useDappsStyles from './DAppsStyles';
 import Loader from '../../../../../../../Loader/Loader';
-import NoContentMessage from '../../NoContentMessage/NoContentMessage';
-import {findMessageByCoin} from '../../NoContentMessage/staticNoContentDescriptions';
 import FastImage from 'react-native-fast-image';
 
 const ProtocolItem = ({
@@ -18,7 +16,6 @@ const ProtocolItem = ({
     const checkImageURL = async url => {
       try {
         const response = await fetch(url);
-        // console.log('Dapps images function response: ', response.headers);
         if (
           response.headers.map['content-type'] &&
           response.headers.map['content-type'].startsWith('image/png')
@@ -171,19 +168,15 @@ const DApps = ({getSectionData, coin, handleSectionContent}) => {
   };
 
   useEffect(() => {
-    if (!loading && !findMessageByCoin(coin) && mappedData?.length === 0) {
+    if (!loading && mappedData?.length === 0) {
       handleSectionContent('dapps', true);
     }
   }, [mappedData, loading, handleSectionContent]);
-
-  console.log(mappedData);
 
   return (
     <View>
       {loading ? (
         <Loader />
-      ) : mappedData?.length === 0 && findMessageByCoin(coin) ? (
-        <NoContentMessage coin={coin} />
       ) : (
         <>
           <View style={styles.mainImageContainer}>

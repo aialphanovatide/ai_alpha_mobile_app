@@ -42,7 +42,7 @@ const useChartsStyles = () => {
       marginLeft: 1,
       backgroundColor: theme.subMenuBgColor,
       borderRadius: 2,
-      marginRight: 20
+      marginRight: 20,
     },
     timeFrameButton: {
       justifyContent: 'center',
@@ -117,7 +117,7 @@ const useChartsStyles = () => {
       width: '100%',
       height: 300,
       position: 'relative',
-      elevation: 10
+      elevation: 10,
     },
     loaderContainer: {
       flex: 1,
@@ -146,7 +146,7 @@ const useChartsStyles = () => {
     },
     chartMainContainer: {
       width: '100vw',
-      height: '100vh'
+      height: '100vh',
     },
     chartsWrapper: {
       flex: 1,
@@ -156,6 +156,22 @@ const useChartsStyles = () => {
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 2,
+    },
+    chartsHorizontalButton: {
+      width: 20,
+      height: 20,
+      position: 'absolute',
+      bottom: 50,
+      left: 25,
+      tintColor: theme.textColor,
+    },
+    chartBackButton: {
+      width: 35,
+      height: 35,
+      position: 'absolute',
+      bottom: 280,
+      right: 30,
+      tintColor: theme.textColor,
     },
     alertMenuContainer: {
       paddingVertical: 0,
@@ -211,7 +227,7 @@ const useChartsStyles = () => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      minHeight: 300
+      minHeight: 300,
     },
     alertsTextMessage: {
       fontSize: theme.responsiveFontSize,
@@ -238,7 +254,7 @@ const useChartsStyles = () => {
       flexDirection: 'row',
     },
     dateRow: {
-      flexDirection: 'row'
+      flexDirection: 'row',
     },
     alertsDateContainer: {
       marginVertical: 4,
@@ -356,7 +372,7 @@ const useChartsStyles = () => {
     },
     flexRow: {
       flexDirection: 'row',
-    }
+    },
   });
   return styles;
 };

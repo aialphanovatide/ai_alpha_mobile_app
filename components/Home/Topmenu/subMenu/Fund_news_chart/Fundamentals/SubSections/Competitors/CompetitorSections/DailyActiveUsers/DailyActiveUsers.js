@@ -1,4 +1,3 @@
-// DailyActiveUsers.js
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import CryptoSection from './CryptoSection';
@@ -40,7 +39,7 @@ const DailyActiveUsers = ({competitorsData, isSectionWithoutData}) => {
         mapped_data.push(current);
       }
     });
-    console.log('Daily active users data: ', mapped_data);
+    // console.log('Daily active users data: ', mapped_data);
     setCryptos(mapped_data);
     setLoading(false);
   }, [competitorsData]);
@@ -50,7 +49,7 @@ const DailyActiveUsers = ({competitorsData, isSectionWithoutData}) => {
       item =>
         item.competitor.token === crypto && item.competitor.key.includes(key),
     );
-    console.log('Daily active users value found: ', found);
+    // console.log('Daily active users value found: ', found);
     return found && found !== undefined
       ? found.competitor.value !== '-'
         ? found.competitor.value

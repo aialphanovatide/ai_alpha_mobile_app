@@ -9,13 +9,13 @@ import {
 import useChartStyles from './ChartStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../../../Loader/Loader';
-import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 
 const CurrentMarketCap = ({competitorsData, coin}) => {
   const {theme} = useContext(AppThemeContext);
   const styles = useChartStyles();
   const [loading, setLoading] = useState(true);
   const [cryptos, setCryptos] = useState([]);
+  const [maxMarketCap, setMaxMarketCap] = useState(0);
   const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
 
   const findKeyInCompetitorItem = (data, key, crypto) => {
@@ -40,7 +40,7 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
     return [valueInBillions, numericValue];
   };
 
-  const generateMarketCapChart = (cryptos, tintColors) => {
+  const generateMarketCapChart = (cryptos, tintColors, maxCapValue) => {
     return (
       <VictoryChart
         height={450}
@@ -77,8 +77,11 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
             },
           }}
           alignment={'middle'}
-          domain={{x: [0, 5], y: [0, 300]}}
-          domainPadding={{x: 1, y: 10}}
+          domain={{
+            x: [0, 5],
+            y: [0, maxCapValue < 5 ? maxCapValue + 2.5 : maxCapValue + 15],
+          }}
+          domainPadding={{x: 1, y: maxCapValue < 2.5 ? 1 : 10}}
           data={cryptos.map((crypto, index) => ({
             x: crypto.symbol,
             y: crypto.marketCap[0],
@@ -119,9 +122,16 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
         mapped_competitors_data.push(current);
       }
     });
-    console.log('Mapped competitors: ', mapped_competitors_data);
+    // console.log('Mapped competitors: ', mapped_competitors_data);
     setCryptos(mapped_competitors_data);
     setLoading(false);
+    let maxNumber = 0;
+    mapped_competitors_data.forEach(marketCap => {
+      if (marketCap.marketCap[0] > maxNumber) {
+        maxNumber = marketCap.marketCap[0];
+      }
+      setMaxMarketCap(maxNumber);
+    });
   }, [coin]);
 
   return (
@@ -129,10 +139,11 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
       {loading || cryptos?.length === 0 ? (
         <Loader />
       ) : (
-        // cryptos?.length === 0 ? (
-        // <NoContentMessage />
-        // ) :
-        generateMarketCapChart(cryptos, tintColors)
+        generateMarketCapChart(
+          cryptos,
+          tintColors,
+          maxMarketCap !== 0 ? maxMarketCap : 100,
+        )
       )}
     </View>
   );

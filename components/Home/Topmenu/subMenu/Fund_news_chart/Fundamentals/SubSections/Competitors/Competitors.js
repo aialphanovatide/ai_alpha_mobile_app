@@ -21,7 +21,6 @@ import ActiveDevelopers from './CompetitorSections/ActiveDevelopers/ActiveDevelo
 import InflationRate from './CompetitorSections/InflationRate/InflationRate';
 import useCompetitorsStyles from './CompetitorsStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
-import {fundamentalsMock} from '../../fundamentalsMock';
 import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 
@@ -281,7 +280,7 @@ const Competitors = ({
           setCompetitorsData(response.competitors);
         }
       } catch (error) {
-        console.log('Error trying to get competitors data: ', error);
+        console.error('Error trying to get competitors data: ', error);
       } finally {
         setActiveOption(content[0]);
         setLoading(false);

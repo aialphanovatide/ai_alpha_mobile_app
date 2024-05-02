@@ -1,5 +1,12 @@
 import React, {useState, useEffect, useContext, useMemo, useRef} from 'react';
-import {ScrollView, View, Dimensions, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  ScrollView,
+  View,
+  Dimensions,
+  Text,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';
 import CandlestickDetails from './candleDetails';
@@ -17,6 +24,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 import {COINGECKO_PRO_KEY} from '../../../../../../src/constants';
 import {useScrollToTop} from '@react-navigation/native';
+import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
+import {useNavigation} from '@react-navigation/core';
 
 const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
@@ -38,11 +47,17 @@ const CandlestickChart = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   const pairings = coinBot !== 'btc' ? ['USDT', 'BTC'] : ['USDT'];
   const [selectedPairing, setSelectedPairing] = useState(pairings[0]);
-  const [isRotated, setIsRotated] = useState(false);
+  const navigation = useNavigation();
+  const {isLandscape, isHorizontal, handleScreenOrientationChange} =
+    useScreenOrientation();
 
-  const handleRotatePress = () => {
-    setIsRotated(!isRotated);
-  };
+  useEffect(() => {
+    navigation.addListener('beforeRemove', e => {
+      if (isLandscape || isHorizontal) {
+        handleScreenOrientationChange('PORTRAIT');
+      }
+    });
+  }, [isLandscape, isHorizontal, navigation]);
 
   // This ref object allows to scroll to top on every tab press
 
@@ -159,7 +174,7 @@ const CandlestickChart = ({route}) => {
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={[styles.flex]}>
       <ScrollView
-        style={[styles.scroll, {width:'100%'} ]}
+        style={[styles.scroll, {width: '100%'}]}
         showsVerticalScrollIndicator={true}
         ref={ref}>
         {aboutVisible && (
@@ -169,8 +184,7 @@ const CandlestickChart = ({route}) => {
             visible={aboutVisible}
           />
         )}
-       
-       <View style={[styles.chartsWrapper, isRotated && { transform: [{ rotate: '90deg' }] }]}>
+        <View style={[styles.chartsWrapper]}>
           <CandlestickDetails
             loading={loading}
             coin={coinBot}
@@ -182,7 +196,11 @@ const CandlestickChart = ({route}) => {
             pairings={pairings}
             handlePairingChange={handlePairingChange}
           />
-          <View style={[styles.chartsRow, {flexDirection: width > 500 ? 'row': 'column'}]}>
+          <View
+            style={[
+              styles.chartsRow,
+              {flexDirection: width > 500 ? 'row' : 'column'},
+            ]}>
             <TimeframeSelector
               selectedPairing={selectedPairing}
               selectedInterval={selectedInterval}
@@ -201,10 +219,8 @@ const CandlestickChart = ({route}) => {
             loading={loading}
             activeButtons={activeButtons}
             coinBot={coinBot}
-            handleRotatePress={handleRotatePress}
           />
-          </View>
-
+        </View>
 
         <AlertMenu
           activeAlertOption={activeAlertOption}

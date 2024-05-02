@@ -9,11 +9,11 @@ const useTopTenGainersStyles = () => {
     topTenGainersContainer: {
       height: 400,
       width: '100%',
-      marginVertical: 20,
+      marginVertical: 32,
       borderRadius: 4,
     },
     topTenGainersTitle: {
-      padding: 10,
+      marginVertical: 16,
       paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
@@ -100,6 +100,7 @@ const useTopTenGainersStyles = () => {
       fontFamily: theme.fontSemibold,
     },
     titleRow: {
+      marginVertical: 4,
       flexDirection: 'row',
     },
   });

@@ -3,7 +3,6 @@ import {List} from 'react-native-paper';
 import AnalysisItem from './analysisItem/analysisItem';
 import useHomeAnalysisStyles from './analysisStyles';
 import {Image, View, Text, TouchableOpacity} from 'react-native';
-// import {analysis_mock} from './analysis_mock';
 import {getService} from '../../../services/aiAlphaApi';
 import {useNavigation} from '@react-navigation/core';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
@@ -16,7 +15,7 @@ const Analysis = ({handleAboutPress}) => {
   const [expanded, setExpanded] = React.useState(false);
   const navigation = useNavigation();
   const aboutIconStyles = {
-    top: 12.5,
+    top: 10,
   };
 
   React.useEffect(() => {
@@ -42,7 +41,10 @@ const Analysis = ({handleAboutPress}) => {
   };
 
   return (
-    <List.Section title="Analysis" titleStyle={styles.mainTitle}>
+    <List.Section
+      title="Analysis"
+      titleStyle={styles.mainTitle}
+      style={styles.margin}>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.analysis.sectionDescription}

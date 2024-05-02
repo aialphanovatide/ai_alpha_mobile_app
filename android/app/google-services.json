@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "396673673378",
+    "project_id": "ai-alpha-app",
+    "storage_bucket": "ai-alpha-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396673673378:android:072211fe29b9c00b228ffb",
+        "android_client_info": {
+          "package_name": "com.ai_alpha_mobile_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUYfkBYNHlSkVw_r1S6ZT60HEDRaLS77E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

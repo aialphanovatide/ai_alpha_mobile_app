@@ -1,30 +1,20 @@
-import React, {createContext, useState, useEffect} from 'react';
-import {Dimensions} from 'react-native'
+import React, {createContext, useState} from 'react';
+import { useScreenOrientation } from '../hooks/useScreenOrientation';
 
 const RotateContext = createContext();
 
 const RotateProvider = ({children}) => {
-
+  const {isLandscape} = useScreenOrientation();
   const [isHorizontal, setIsHorizontal] = useState(false);
 
-  useEffect(() => {
-    const updateOrientation = () => {
-      const { width, height } = Dimensions.get('window');
-      setIsHorizontal(width > height);
-    };
-  
-    Dimensions.addEventListener('change', updateOrientation);
-    updateOrientation(); // Initial orientation check
-  
-    return () => {
-      Dimensions.removeEventListener('change', updateOrientation);
-    };
-  }, []);
-  
+  const handleRotateChange = value => {
+    if (value){
+      
+    }
+  };
 
   return (
-    <RotateContext.Provider
-      value={{isHorizontal}}>
+    <RotateContext.Provider value={{isHorizontal, handleRotateChange}}>
       {children}
     </RotateContext.Provider>
   );
