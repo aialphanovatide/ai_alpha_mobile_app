@@ -57,7 +57,7 @@ const useChartSectionStyles = () => {
     timeframeContainer: {
       flex: 1,
       width: '100%',
-      maxHeight: '5%',
+      maxHeight: '10%',
     },
     sectionDescription: {
       width: '100%',
@@ -68,6 +68,32 @@ const useChartSectionStyles = () => {
       color: theme.textColor,
       textAlign: 'left',
       lineHeight: 20,
+    },
+    rsButtonContainer: {
+      marginVertical: 8,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    },
+    rsButton: {
+      paddingHorizontal: 4,
+      paddingVertical: 4,
+      borderWidth: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 4,
+      margin: 1.5,
+      width: '25%',
+      backgroundColor: theme.secondaryBoxesBgColor,
+    },
+    rsButtonText: {
+      textTransform: 'capitalize',
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.supportAndResistanceText,
+      fontFamily: theme.font,
+    },
+    activeRsButtonText: {
+      color: '#fff',
+      fontFamily: theme.fontMedium,
     },
   });
   return styles;

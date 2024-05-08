@@ -343,11 +343,10 @@ const Search = ({route}) => {
             style={[styles.searchInput, searchText !== '' && {paddingLeft: 12}]}
             value={searchText}
             onChangeText={text => handleTextChange(text)}
-            placeholder="Search AI Alpha"
+            placeholder="Search Token"
             placeholderTextColor={theme.searchPlaceHolderColor}
           />
         </View>
-        {searchText && (
           <ScrollView style={styles.searchContainer} nestedScrollEnabled>
             <View style={styles.titleContainer}>
               <Text style={styles.searchSubTitle}>Cryptocurrencies</Text>
@@ -407,7 +406,6 @@ const Search = ({route}) => {
             </View>
             <SearchAlertSection currentText={searchText} />
           </ScrollView>
-        )}
       </SafeAreaView>
     </LinearGradient>
   );

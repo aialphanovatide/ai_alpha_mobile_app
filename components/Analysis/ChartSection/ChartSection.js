@@ -10,8 +10,17 @@ import {
   getCapitalComPrices,
   postCCSession,
 } from '../../../services/CapitalComServices';
-import {VictoryAxis, VictoryCandlestick, VictoryChart} from 'victory-native';
+import {
+  VictoryAxis,
+  VictoryCandlestick,
+  VictoryChart,
+  VictoryLabel,
+  VictoryLine,
+} from 'victory-native';
 import Loader from '../../Loader/Loader';
+import {getService} from '../../../services/aiAlphaApi';
+import ChartButton from './ChartButtons';
+import ChartButtons from './ChartButtons';
 
 const initialSessionData = {
   security_token: null,
@@ -26,6 +35,48 @@ const ChartSection = ({route, navigation}) => {
   const [sessionData, setSessionData] = useState(initialSessionData);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
+  // S&R State variables
+  const [activeButtons, setActiveButtons] = useState([]);
+  const [supportLevels, setSupportLevels] = useState([]);
+  const [resistanceLevels, setResistanceLevels] = useState([]);
+
+  // Format number in shorten way
+  function formatLabelNumber(number, decimalPlaces = 2) {
+    if (number >= 1) {
+      return number
+        .toFixed(decimalPlaces)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    } else {
+      return number;
+    }
+  }
+
+  const getSupportAndResistanceData = async (coinBot, time_interval) => {
+    try {
+      const response = await getService(
+        `/api/coin-support-resistance?coin_name=${coinBot}&temporality=${time_interval.toLowerCase()}&pair=usdt`,
+      );
+
+      const supportValues = [];
+      const resistanceValues = [];
+
+      if (response.success) {
+        // Extract support and resistance values from the response
+        const values = response.chart_values;
+        for (const key in values) {
+          if (key.includes('support')) {
+            supportValues.push(values[key]);
+          } else if (key.includes('resistance')) {
+            resistanceValues.push(values[key]);
+          }
+        }
+        setSupportLevels(supportValues);
+        setResistanceLevels(resistanceValues);
+      }
+    } catch (error) {
+      console.error('Error fetching support and resistance data: ', error);
+    }
+  };
 
   const fetchCapitalComChartData = async (security_token, security_cst) => {
     const adapted_interval =
@@ -44,7 +95,7 @@ const ChartSection = ({route, navigation}) => {
         security_token,
         security_cst,
       );
-      console.log('Prices response: ', response?.prices);
+      // console.log('Prices response: ', response?.prices);
       const mapped_prices = response?.prices?.map(price => {
         const mapped_hour = new Date(price?.snapshotTime);
         const hour_to_seconds = mapped_hour.getTime();
@@ -69,7 +120,7 @@ const ChartSection = ({route, navigation}) => {
     const loadChartsData = async () => {
       try {
         const response = await postCCSession();
-        console.log('Session data: ', response);
+        // console.log('Session data: ', response);
         const {security_token, security_cst} = response;
         setSessionData({security_token, security_cst});
 
@@ -81,6 +132,11 @@ const ChartSection = ({route, navigation}) => {
     };
     setLoading(true);
     loadChartsData();
+  }, [symbol, selectedInterval]);
+
+  useEffect(() => {
+    const coinBot = symbol === 'US500' ? 'sp500' : 'DXY';
+    getSupportAndResistanceData(coinBot, selectedInterval);
   }, [symbol, selectedInterval]);
 
   if (loading || chartData?.length === 0) {
@@ -102,13 +158,33 @@ const ChartSection = ({route, navigation}) => {
     );
   }
 
-  const domainY = chartData.reduce(
-    (acc, dataPoint) => [
-      Math.min(acc[0], dataPoint.low),
-      Math.max(acc[1], dataPoint.high),
-    ],
-    [Infinity, -Infinity],
-  );
+  const domainY = () => {
+    if (
+      activeButtons.length === 0 ||
+      (activeButtons.length > 0 &&
+        (supportLevels.length === 0 || resistanceLevels.length === 0))
+    ) {
+      return chartData?.reduce(
+        (acc, dataPoint) => {
+          return [
+            Math.min(acc[0], dataPoint.low),
+            Math.max(acc[1], dataPoint.high),
+          ];
+        },
+        [Infinity, -Infinity],
+      );
+    } else {
+      const levels = [];
+      if (supportLevels.length > 0) {
+        levels.push(...supportLevels);
+      }
+      if (resistanceLevels.length > 0) {
+        levels.push(...resistanceLevels);
+      }
+      return [Math.min(...levels), Math.max(...levels)];
+    }
+  };
+
 
   const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
 
@@ -132,6 +208,13 @@ const ChartSection = ({route, navigation}) => {
             changeInterval={changeInterval}
             hasHourlyTimes={true}
           />
+          {(selectedInterval.toUpperCase() === '1W' ||
+            selectedInterval.toUpperCase() === '1D') && (
+            <ChartButtons
+              activeButtons={activeButtons}
+              setActiveButtons={setActiveButtons}
+            />
+          )}
         </View>
         <View style={styles.container}>
           <View style={styles.chart}>
@@ -142,7 +225,7 @@ const ChartSection = ({route, navigation}) => {
             />
             <VictoryChart
               width={375}
-              domain={{x: domainX, y: domainY}}
+              domain={{x: domainX, y: domainY()}}
               padding={{top: 10, bottom: 40, left: 20, right: 70}}
               domainPadding={{x: 5, y: 3}}
               scale={{x: 'time', y: 'linear'}}
@@ -187,6 +270,84 @@ const ChartSection = ({route, navigation}) => {
                   },
                 }}
               />
+              {/* RESISTANCE LEVELS */}
+              {resistanceLevels &&
+                activeButtons.includes('Resistance') &&
+                resistanceLevels?.map((level, index) => (
+                  <VictoryLine
+                    data={[
+                      {x: domainX[0], y: level},
+                      {x: domainX[1], y: level},
+                    ]}
+                    key={`resistance-${index}`}
+                    // styles for the line itself
+                    style={{data: {stroke: '#F012A1', strokeWidth: 2}}}
+                    labels={() => [`$${formatLabelNumber(level)} `]}
+                    labelComponent={
+                      <VictoryLabel
+                        dy={5}
+                        dx={10}
+                        textAnchor="start"
+                        inline={true}
+                        style={{
+                          fill: '#fff',
+                          fontSize: 11,
+                          fontFamily: theme.fontMedium,
+                        }}
+                        backgroundPadding={[
+                          {top: -1, bottom: 6, left: 2.3, right: 0},
+                        ]}
+                        backgroundStyle={[
+                          {
+                            fill: '#F012A1',
+                            opacity: 0.8,
+                          },
+                        ]}
+                      />
+                    }
+                  />
+                ))}
+
+              {/* SUPPORT LEVELS */}
+              {supportLevels &&
+                activeButtons.includes('Support') &&
+                supportLevels?.map((level, index) => (
+                  <VictoryLine
+                    data={[
+                      {x: domainX[0], y: level},
+                      {x: domainX[1], y: level},
+                    ]}
+                    key={`support-${index}`}
+                    style={{
+                      data: {stroke: '#C539B4', strokeWidth: 2},
+                    }}
+                    labels={() => [`$${formatLabelNumber(level)} `]}
+                    labelComponent={
+                      <VictoryLabel
+                        dy={5}
+                        dx={10}
+                        textAnchor="start"
+                        inline={true}
+                        backgroundPadding={[
+                          {top: -1, bottom: 6, left: 2.3, right: 0},
+                        ]}
+                        style={[
+                          {
+                            fill: '#F7F7F7',
+                            fontSize: 11,
+                            fontFamily: theme.fontMedium,
+                          },
+                        ]}
+                        backgroundStyle={[
+                          {
+                            fill: '#C539B4',
+                            opacity: 0.8,
+                          },
+                        ]}
+                      />
+                    }
+                  />
+                ))}
             </VictoryChart>
           </View>
         </View>

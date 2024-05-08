@@ -3,9 +3,6 @@ import {
   ScrollView,
   View,
   Dimensions,
-  Text,
-  Image,
-  TouchableOpacity,
 } from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';

@@ -48,26 +48,26 @@ const Hacks = ({getSectionData, coin, handleSectionContent}) => {
       October: 10,
       November: 11,
       December: 12,
-      Early: 2, // Febrero
-      Mid: 6, // Junio
-      Late: 11, // Noviembre
+      Early: 3, 
+      Mid: 6, 
+      Late: 12, 
     };
 
     const parseDate = dateStr => {
-      const parts = dateStr.split(/[\s-]+/); // Split por espacio o guion
+      const parts = dateStr.split(/[\s-]+/); 
       if (parts.length === 1) {
-        // "Long-term" o cualquier otra palabra, va al final del array
+        // "Long-term" or any other word, goes to the end of the array
         return Infinity;
       } else if (parts.length === 2) {
-        // Formato: Mes Año
+        // First case: Month-Year format
         const month = monthOrder[parts[0]];
         const year = parseInt(parts[1]);
-        return new Date(year, month - 1); // Restamos 1 al mes porque los meses en JavaScript son indexados desde 0
+        return new Date(year, month - 1);
       } else {
-        // Formato: Early/Mid/Late Año
+        // Early-Mid-Late format
         const month = monthOrder[parts[0]];
         const year = parseInt(parts[1]);
-        return new Date(year, month - 1); // Restamos 1 al mes porque los meses en JavaScript son indexados desde 0
+        return new Date(year, month - 1);
       }
     };
 

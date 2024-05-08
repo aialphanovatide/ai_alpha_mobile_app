@@ -102,12 +102,12 @@ const NarrativeTradings = ({handleAboutPress}) => {
       <Text style={styles.mainTitle}>Narrative Trading</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
-        description={home_static_data.analysis.sectionDescription}
+        description={home_static_data.narrativeTradings.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
       {narrativeTradingItems?.length === 0 ? (
         <Text style={styles.emptyMessage}>
-          There aren't narrative tradings to show.
+          {home_static_data.narrativeTradings.noContentMessage}
         </Text>
       ) : (
         <View style={styles.itemsContainer}>

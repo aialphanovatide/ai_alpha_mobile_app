@@ -9,6 +9,7 @@ const useNewsStyles = () => {
       flex: 1,
       width: theme.width,
       padding: 12,
+      paddingBottom: 24,
     },
     backgroundColor: {
       backgroundColor: theme.mainBackgroundColor,

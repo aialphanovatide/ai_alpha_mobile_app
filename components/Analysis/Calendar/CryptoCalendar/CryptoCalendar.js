@@ -174,7 +174,7 @@ const CryptoCalendar = ({selectedInterval}) => {
             {events.length === 0 ? (
               <View style={styles.messageContainer}>
                 <Text style={styles.emptyEventsMessage}>
-                  No events were found...
+                  No events were found.
                 </Text>
               </View>
             ) : (

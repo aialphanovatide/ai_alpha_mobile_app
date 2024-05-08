@@ -9,10 +9,11 @@ import {findCoinNameBySymbol} from '../Competitors/coinsNames';
 import FastImage from 'react-native-fast-image';
 
 const TokenItem = ({item, styles, handleSupplyDataPress, activeSupply}) => {
-  const percentage =
-    item.maxSupply === Infinity
-      ? 65
-      : (item.circulatingSupply / item.maxSupply) * 100;
+  const descriptionName =
+    fundamentals_static_content.competitors.subsections.supplyModel
+      .supplyDescriptions[item.symbol.toLowerCase()] ||
+    fundamentals_static_content.competitors.subsections.supplyModel
+      .supplyDescriptions.default;
   function formatNumber(value) {
     const suffixes = ['', 'thousand', 'million', 'billion', 'trillion'];
 
@@ -68,8 +69,7 @@ const TokenItem = ({item, styles, handleSupplyDataPress, activeSupply}) => {
             onPress={() =>
               handleSupplyDataPress(
                 `${item.name} circulating supply`,
-                fundamentals_static_content.competitors.subsections.supplyModel
-                  .supplyDescriptions[item.crypto.toLowerCase()],
+                descriptionName,
               )
             }
             style={styles.infinityButton}>
@@ -156,7 +156,7 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
   const [loading, setLoading] = useState(true);
   const [supplyDataVisible, setSupplyDataVisible] = useState(false);
   const [supplyData, setSupplyData] = useState({title: '', description: ''});
-  const [activeSupply, setActiveSupply] = useState(false);
+  const [activeSupply, setActiveSupply] = useState(true);
 
   const handleSupplyButton = () => {
     setActiveSupply(!activeSupply);

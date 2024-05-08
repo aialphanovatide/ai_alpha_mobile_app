@@ -150,6 +150,15 @@ const useNarrativeTradingStyles = () => {
     backButtonWrapper: {
       paddingHorizontal: 14,
     },
+    sectionDescription: {
+      width: '95%',
+      marginHorizontal: 16,
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
+      color: theme.textColor,
+      textAlign: 'left',
+      lineHeight: 20,
+    },
   });
   return styles;
 };

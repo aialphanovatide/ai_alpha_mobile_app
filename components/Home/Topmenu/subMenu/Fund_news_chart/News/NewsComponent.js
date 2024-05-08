@@ -26,7 +26,7 @@ const NewsComponent = ({route}) => {
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin.bot_name,
   );
-  const [activeFilter, setActiveFilter] = useState(null);
+  const [activeFilter, setActiveFilter] = useState('Today');
   const [activeButtons, setActiveButtons] = useState(null);
   const {handleAboutPress, aboutDescription, aboutVisible} =
     useContext(AboutModalContext);
@@ -137,7 +137,6 @@ const NewsComponent = ({route}) => {
         {[
           'Today',
           'This Week',
-          // , 'Last Month'
         ].map(option => (
           <TouchableOpacity
             key={option}

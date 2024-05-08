@@ -134,7 +134,7 @@ const NarrativeTrading = () => {
 
   useEffect(() => {
     setNarrativeTradingItems(narrativeTradingData);
-    console.log(narrativeTradingItems);
+    // console.log(narrativeTradingItems);
   }, [narrativeTradingData]);
 
   useEffect(() => {
@@ -146,7 +146,7 @@ const NarrativeTrading = () => {
 
   const filterItemsByCategory = (category, items) => {
     // console.log('Category: ', category);
-    console.log(items);
+    // console.log(items);
     const filtered_items = [];
     if (category.category_name.toLowerCase().replace(/\s/g, '') === 'total3') {
       items.forEach(item => {
@@ -162,7 +162,7 @@ const NarrativeTrading = () => {
 
     category.coin_bots.forEach(coin => {
       items.forEach(item => {
-        console.log('Coin bot: ', coin.bot_name, ' Item: ', item.coin_bot_name);
+        // console.log('Coin bot: ', coin.bot_name, ' Item: ', item.coin_bot_name);
         if (
           item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===
           coin.bot_name.toLowerCase().replace(/\s/g, '')
@@ -176,7 +176,7 @@ const NarrativeTrading = () => {
 
   const filterItemsByTime = (interval, items) => {
     const currentDate = new Date();
-    console.log(items);
+    // console.log(items);
 
     const filteredArray = items.filter(item => {
       const createdAtDate = new Date(item.created_at);
@@ -252,6 +252,10 @@ const NarrativeTrading = () => {
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Narrative Trading</Text>
           </View>
+          <Text style={styles.sectionDescription}>
+            Analyzing specific cryptocurrency sectors (e.g. RWA) and trends
+            (SocialFi) in order to capitalise on their momentum.
+          </Text>
           <View style={styles.menusContainer}>
             <TimeMenu
               options={options}

@@ -1,10 +1,12 @@
 export const home_static_data = {
   topStories: {
-    sectionDescription: 'Current Highlights in the the Crypto Space.',
+    sectionDescription: 'Current Highlights in the Crypto Space.',
+    noContentMessage: 'There are currently no Top Stories to share',
   },
   analysis: {
     sectionDescription:
       'Detailed insights and analytical breakdowns covering diverse cryptocurrency topics, including market movements and impactful events.',
+    noContentMessage: 'There is currently no Analysis to share',
   },
   topTenGainers: {
     sectionDescription:
@@ -25,5 +27,11 @@ export const home_static_data = {
   alerts: {
     sectionDescription:
       'Receive real-time notifications based on specific criteria, customisable for various cryptocurrencies, helping to capture opportunities and manage risks.',
+    noContentMessage: 'At present there are no Alerts to share.',
+  },
+  narrativeTradings: {
+    sectionDescription:
+      'Analyzing specific cryptocurrency sectors (e.g. RWA) and trends (SocialFi) in order to capitalise on their momentum.',
+    noContentMessage: 'The Narrative Trading section is currently empty',
   },
 };

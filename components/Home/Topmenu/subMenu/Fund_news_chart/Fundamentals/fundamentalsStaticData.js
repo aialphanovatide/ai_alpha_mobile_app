@@ -39,6 +39,7 @@ export const fundamentals_static_content = {
         sectionDescription:
           'Presents the mechanism by which new tokens are introduced into circulation and how the total supply of cryptocurrency is managed over time.',
         supplyDescriptions: {
+          default: 'Inflationary tokens continuously increase their circulating supply over time, symbolized by an infinity symbol to represent the absence of a maximum supply limit.',
           eth: "Ethereum's unlimited issuance model is moderated by EIP-1559, which burns a portion of transaction fees. As a result, Ethereum's inflation or deflation depends on the interplay between new ETH issued to stakers and ETH burned. High network activity, burn rate exceeds issuance, and Ethereum experiences deflation.",
           sol: 'Solana adopts an unlimited supply to encourage participation, starting with an annual inflation rate of 8%, decreasing by 15% per year to a stable rate of 1.5%. To mitigate inflation, 50% of transaction fees are burned, reducing the number of SOL tokens in circulation.',
         },

@@ -28,8 +28,8 @@ const useSearchStyles = () => {
       paddingLeft: 48,
       backgroundColor: theme.secondaryBoxesBgColor,
       borderRadius: 3,
-      fontFamily: theme.fontMedium,
-      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontRegular,
+      fontSize: theme.responsiveFontSize * 0.925,
       color: theme.searchPlaceHolderColor,
     },
     textInputContainer: {
@@ -90,10 +90,10 @@ const useSearchStyles = () => {
       flexDirection: 'row',
     },
     imageStyle: {
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-      marginLeft: 10,
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      marginLeft: 14,
       alignSelf: 'center',
     },
     cryptoItem: {
@@ -143,6 +143,7 @@ const useSearchStyles = () => {
     },
     searchContainer: {
       backgroundColor: theme.boxesBackgroundColor,
+      marginVertical: 16,
       borderRadius: 2,
     },
     titleContainer: {

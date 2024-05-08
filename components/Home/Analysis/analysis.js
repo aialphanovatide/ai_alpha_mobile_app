@@ -51,7 +51,9 @@ const Analysis = ({handleAboutPress}) => {
         additionalStyles={aboutIconStyles}
       />
       {analysisData?.length === 0 ? (
-        <Text style={styles.emptyMessage}>There aren't analysis to show.</Text>
+        <Text style={styles.emptyMessage}>
+          {home_static_data.analysis.noContentMessage}
+        </Text>
       ) : (
         <View style={styles.itemsContainer}>
           {analysisData?.slice(0, 5).map((story, index) => (

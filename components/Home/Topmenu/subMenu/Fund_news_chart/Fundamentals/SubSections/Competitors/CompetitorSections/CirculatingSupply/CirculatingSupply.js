@@ -14,9 +14,14 @@ const CirculatingSupplyItem = ({
   handleSupplyDataPress,
   activeSupply,
 }) => {
+  const descriptionName =
+    fundamentals_static_content.competitors.subsections.supplyModel
+      .supplyDescriptions[item.crypto.toLowerCase()] ||
+    fundamentals_static_content.competitors.subsections.supplyModel
+      .supplyDescriptions.default;
+
   function formatNumber(value) {
     const suffixes = ['', 'thousand', 'million', 'billion', 'trillion'];
-
     const formatRecursive = (num, suffixIndex) => {
       if (num < 1000 || suffixIndex === suffixes.length - 1) {
         return (
@@ -26,7 +31,6 @@ const CirculatingSupplyItem = ({
         return formatRecursive(num / 1000, suffixIndex + 1);
       }
     };
-
     return formatRecursive(value, 0);
   }
 
@@ -69,8 +73,7 @@ const CirculatingSupplyItem = ({
             onPress={() =>
               handleSupplyDataPress(
                 `${item.name} circulating supply`,
-                fundamentals_static_content.competitors.subsections.supplyModel
-                  .supplyDescriptions[item.crypto.toLowerCase()],
+                descriptionName,
               )
             }
             style={styles.infinityButton}>
@@ -144,17 +147,13 @@ const ProgressBar = ({maxValue, percentageValue, styles, activeSupply}) => {
   );
 };
 
-const CirculatingSupply = ({
-  cryptos,
-  tokenomicsData,
-  competitorsData,
-}) => {
+const CirculatingSupply = ({cryptos, tokenomicsData, competitorsData}) => {
   const [mappedData, setMappedData] = useState([]);
   const styles = useCirculatingSupplyStyles();
   const [loading, setLoading] = useState(true);
   const [supplyDataVisible, setSupplyDataVisible] = useState(false);
   const [supplyData, setSupplyData] = useState({title: '', description: ''});
-  const [activeSupply, setActiveSupply] = useState(false);
+  const [activeSupply, setActiveSupply] = useState(true);
 
   const handleSupplyButton = () => {
     setActiveSupply(!activeSupply);

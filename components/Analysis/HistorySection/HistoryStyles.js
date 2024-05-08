@@ -149,7 +149,16 @@ const useHistoryStyles = () => {
     },
     backButtonWrapper: {
       paddingHorizontal: 14,
-    }
+    },
+    sectionDescription: {
+      width: '92.5%',
+      marginHorizontal: 20,
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.fontMedium,
+      color: theme.textColor,
+      textAlign: 'left',
+      lineHeight: 20,
+    },
   });
   return styles;
 };

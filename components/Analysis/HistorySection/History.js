@@ -144,7 +144,6 @@ const History = () => {
   }, [analysisItems]);
 
   const filterItemsByCategory = (category, items) => {
-    console.log('Category: ', category);
     const filtered_items = [];
     if (category.category_name.toLowerCase().replace(/\s/g, '') === 'total3') {
       items.forEach(item => {
@@ -239,6 +238,11 @@ const History = () => {
           <View style={styles.titleContainer}>
             <Text style={styles.title}>History</Text>
           </View>
+          <Text style={styles.sectionDescription}>
+            The history section consolidates all analysis conducted on a
+            specific coin, allowing users to access today's and the week's
+            insights conveniently categorized in one place.
+          </Text>
           <View style={styles.menusContainer}>
             <HistoryTimeMenu
               options={options}
@@ -264,7 +268,7 @@ const History = () => {
               ))
             ) : (
               <Text style={styles.emptyMessage}>
-                There aren't analysis to show.
+                There isn't any analysis to show at the moment
               </Text>
             )}
           </ScrollView>

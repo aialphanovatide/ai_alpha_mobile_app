@@ -24,7 +24,7 @@ import {useScrollToTop} from '@react-navigation/native';
 const NoAlertsView = ({styles}) => (
   <View style={styles.noAlertsContainer}>
     <Text style={styles.noAlerts}>
-      No alerts yet. Stay tuned for important updates!
+    There are no Alerts yet. Stay tuned for important updates.
     </Text>
   </View>
 );

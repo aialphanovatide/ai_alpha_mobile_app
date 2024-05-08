@@ -1,7 +1,6 @@
 import {React, useContext, useState} from 'react';
 import {View, Text, ScrollView, SafeAreaView} from 'react-native';
 import CryptoCalendar from './CryptoCalendar/CryptoCalendar.js';
-import TVEconomicCalendar from './MacroEconomicsCalendar/TVEconomicCalendar.js';
 import BackButton from '../BackButton/BackButton.js';
 import SubMenu from './SubMenu/SubMenu.js';
 import useCalendarStyles from './CalendarStyles.js';

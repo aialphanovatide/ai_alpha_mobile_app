@@ -103,13 +103,13 @@ const useAlertsStyles = () => {
     activeText: {
       color: theme.subMenuTextColor,
       fontSize: theme.responsiveFontSize * 0.875,
-      textTransform: 'capitalize',
+      textTransform: 'uppercase',
       fontFamily: theme.fontMedium,
     },
     inactiveText: {
       color: theme.subMenuTextColor,
       fontSize: theme.responsiveFontSize * 0.875,
-      textTransform: 'capitalize',
+      textTransform: 'uppercase',
       fontFamily: theme.font,
     },
     row: {

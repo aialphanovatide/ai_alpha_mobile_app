@@ -137,7 +137,10 @@ const TopStories = ({handleAboutPress}) => {
   }, []);
 
   return (
-    <List.Section title="Top Stories" titleStyle={styles.mainTitle} style={styles.margin}>
+    <List.Section
+      title="Top Stories"
+      titleStyle={styles.mainTitle}
+      style={styles.margin}>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.topStories.sectionDescription}
@@ -146,7 +149,9 @@ const TopStories = ({handleAboutPress}) => {
       {loading ? (
         <Loader />
       ) : stories.length === 0 ? (
-        <Text style={styles.emptyMessage}>There aren't stories to show</Text>
+        <Text style={styles.emptyMessage}>
+          {home_static_data.topStories.noContentMessage}
+        </Text>
       ) : (
         <View style={[styles.storiesContainer]}>
           {stories?.slice(0, 10).map((story, i) => (
