@@ -8,6 +8,7 @@ import {Platform} from 'react-native';
 import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 import {CustomerInfo} from 'react-native-purchases';
 import {useUserId} from './UserIdContext';
+import messaging from '@react-native-firebase/messaging';
 
 const RevenueCatContext = createContext();
 
@@ -93,6 +94,9 @@ const RevenueCatProvider = ({children}) => {
         updatedUser.entitlements.push(
           customerInfo?.entitlements.active[key].productIdentifier,
         );
+        subscribeTopic(
+          customerInfo?.entitlements.active[key].productIdentifier
+        );
       }
     }
     console.log(
@@ -142,6 +146,15 @@ const RevenueCatProvider = ({children}) => {
     } catch (error) {
       console.log('Error purchasing package:', error);
     }
+  };
+
+  const subscribeTopic = async topic => {
+    messaging()
+      .subscribeToTopic(topic)
+      .then(() => console.log('Subscribed to topic:', topic))
+      .catch(e => {
+        console.log(e);
+      });
   };
 
   const loadOfferings = async () => {

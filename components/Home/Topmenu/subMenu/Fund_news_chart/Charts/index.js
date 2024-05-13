@@ -1,9 +1,5 @@
-import React, {useState, useEffect, useContext, useMemo, useRef} from 'react';
-import {
-  ScrollView,
-  View,
-  Dimensions,
-} from 'react-native';
+import React, {useState, useEffect, useContext, useRef} from 'react';
+import {ScrollView, View, Dimensions} from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';
 import CandlestickDetails from './candleDetails';
@@ -19,10 +15,10 @@ import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 import AboutModal from '../Fundamentals/AboutModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../../../../context/themeContext';
-import {COINGECKO_PRO_KEY} from '../../../../../../src/constants';
 import {useScrollToTop} from '@react-navigation/native';
 import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/core';
+import useChartsSource from '../../../../../../hooks/useChartsSource';
 
 const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
@@ -42,8 +38,12 @@ const CandlestickChart = ({route}) => {
   const {aboutDescription, aboutVisible, handleAboutPress} =
     useContext(AboutModalContext);
   const {isDarkMode} = useContext(AppThemeContext);
-  const pairings = coinBot !== 'btc' ? ['USDT', 'BTC'] : ['USDT'];
-  const [selectedPairing, setSelectedPairing] = useState(pairings[0]);
+  const [selectedPairing, setSelectedPairing] = useState(null);
+  const pairings = useChartsSource(
+    coinBot.toLowerCase(),
+    selectedPairing,
+    selectedInterval,
+  ).pairings;
   const navigation = useNavigation();
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
@@ -66,46 +66,46 @@ const CandlestickChart = ({route}) => {
 
   useEffect(() => {
     setLoading(true);
-    setSelectedPairing(pairings[0]);
     setLastPrice(undefined);
-    setSelectedInterval(coinBot.toLowerCase() !== 'btc' ? '1W' : '1D');
+    setSelectedPairing(pairings[0]);
+    setSelectedInterval('1W');
   }, [activeCoin, coinBot]);
 
-  // This temporaly handles the kas and velo missing data for binance api
+  // Old ways to get the source and URL configuration for every coin [REPLACED]
 
-  const url_days =
-    selectedInterval === '1W'
-      ? 180
-      : selectedInterval === '1D'
-      ? 30
-      : selectedInterval === '4H'
-      ? 7
-      : 1;
-  const fetch_url =
-    coinBot.toLowerCase() !== 'kas' && coinBot.toLowerCase() !== 'velo'
-      ? `https://api3.binance.com/api/v3/klines?symbol=${
-          coinBot === 'polygon' ? 'MATIC' : coinBot.toUpperCase()
-        }${selectedPairing}&limit=50&interval=${selectedInterval.toLowerCase()}`
-      : `https://pro-api.coingecko.com/api/v3/coins/${
-          coinBot.toLowerCase() === 'kas' ? 'kaspa' : 'velo'
-        }/ohlc?vs_currency=${
-          selectedPairing === 'USDT' ? 'usd' : selectedPairing.toLowerCase()
-        }&days=${url_days}&precision=${selectedPairing === 'BTC' ? 14 : 4}`;
-  const options = {
-    method: 'GET',
-    headers: {'x-cg-pro-api-key': COINGECKO_PRO_KEY},
-  };
+  // const url_days =
+  //   selectedInterval === '1W'
+  //     ? 180
+  //     : selectedInterval === '1D'
+  //     ? 30
+  //     : selectedInterval === '4H'
+  //     ? 7
+  //     : 1;
+  // const fetch_url =
+  //   coinBot.toLowerCase() !== 'kas' && coinBot.toLowerCase() !== 'velo'
+  //     ? `https://api3.binance.com/api/v3/klines?symbol=${
+  //         coinBot === 'polygon' ? 'MATIC' : coinBot.toUpperCase()
+  //       }${selectedPairing}&limit=50&interval=${selectedInterval.toLowerCase()}`
+  //     : `https://pro-api.coingecko.com/api/v3/coins/${
+  //         coinBot.toLowerCase() === 'kas' ? 'kaspa' : 'velo'
+  //       }/ohlc?vs_currency=${
+  //         selectedPairing === 'USDT' ? 'usd' : selectedPairing.toLowerCase()
+  //       }&days=${url_days}&precision=${selectedPairing === 'BTC' ? 14 : 4}`;
+  // const options = {
+  //   method: 'GET',
+  //   headers: {'x-cg-pro-api-key': COINGECKO_PRO_KEY},
+  // };
+  const {url, options} = useChartsSource(
+    coinBot,
+    selectedPairing,
+    selectedInterval,
+  );
 
   // Function to fetch the data from Binance and from Coingecko for KAS and VELO, since that coins doesn't have data on the first one, and map it for using it with VictoryChart's components
 
   async function fetchChartData() {
     try {
-      const response = await fetch(
-        fetch_url,
-        coinBot.toLowerCase() === 'kas' || coinBot.toLowerCase() === 'velo'
-          ? options
-          : {},
-      );
+      const response = await fetch(url, options);
       const data = await response.json();
       const currentPrice = parseFloat(data[data.length - 1][4]);
       data[data.length - 1][4] >= data[data.length - 2][4]

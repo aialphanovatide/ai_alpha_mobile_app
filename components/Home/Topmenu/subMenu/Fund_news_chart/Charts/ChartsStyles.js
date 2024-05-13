@@ -341,7 +341,6 @@ const useChartsStyles = () => {
       borderRadius: 2,
     },
     pairingButton: {
-      width: '50%',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 4,

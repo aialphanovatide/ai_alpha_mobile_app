@@ -24,16 +24,18 @@ const formatNumber = num => {
   const absNum = Math.abs(num);
 
   const abbrev = ['', 'k', 'm', 'b', 't'];
-  const tier = (Math.log10(absNum) / 3) | 0;
+  const tier = Math.log10(absNum) / 3 || 0;
 
   // If the number is smaller than 1000, no need for abbreviation
-  if (tier === 0) return num;
+  if (tier === 0) return num ;
 
-  const divisor = Math.pow(1000, tier);
-  const formattedNum = (num / divisor).toFixed(1);
+  if (num <= 0.01) return num.toExponential();
+
+  const divisor = Math.pow(1000, Math.round(tier));
+  const formattedNum = (num / divisor).toFixed(3);
 
   // Concatenate the formatted number with the appropriate abbreviation
-  return formattedNum + abbrev[tier];
+  return formattedNum + abbrev[Math.round(tier)];
 };
 
 // Format number in shorten way
@@ -305,7 +307,7 @@ const Chart = ({
             style={{
               axis: {stroke: theme.chartsAxisColor},
               tickLabels: {
-                fontSize: theme.responsiveFontSize * 0.725,
+                fontSize: theme.responsiveFontSize * 0.67,
                 fontFamily: theme.font,
                 fill: theme.titleColor,
               },

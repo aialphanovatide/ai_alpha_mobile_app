@@ -22,6 +22,14 @@ const CandlestickDetails = ({
     if (isNaN(number)) {
       return 'Invalid number';
     }
+
+    if (number < 0.01) {
+      return number.toLocaleString(undefined, {
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 6,
+      });
+    }
+
     return number.toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -64,6 +72,7 @@ const CandlestickDetails = ({
             key={index}
             style={[
               styles.pairingButton,
+              {width: `${100 / pairings.length}%`},
               selectedPairing === pairing && styles.pairingActiveButton,
             ]}
             onPress={() => handlePairingChange(pairing)}>
