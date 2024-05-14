@@ -35,6 +35,7 @@ import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -84,7 +85,9 @@ const App = () => {
     setBarScheme(bar_theme);
   }, [colorScheme]);
 
-  // useEffect that checks the Server status for showing the "server down" pop-up, it sends a request to the categories endpoint since it is the one that gives the data used across all the app, and which is the most visible indicator of the server status
+  // useEffect that checks the Server status for showing the "server down" pop-up, it sends a request
+  // to the categories endpoint since it is the one that gives the data used across all the app, and
+  // which is the most visible indicator of the server status
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -105,6 +108,17 @@ const App = () => {
     const intervalId = setInterval(fetchCategories, 120000); // 120000 milliseconds = 2 minutes
     return () => clearInterval(intervalId);
   }, []);
+
+  // Funtion to subscribe a user to a Topic
+  //const subscribeTopic = async (topic : string) => {
+  //  messaging()
+  //    .subscribeToTopic(topic)
+  //    .then(() => console.log("Subscribed to topic:", topic))
+  //    .catch((e) => {
+  //      console.log(e);
+  //    });
+  //};
+  //subscribeTopic('all')
 
   useEffect(() => {
     const getUserNotificationsToken = async () => {
@@ -153,6 +167,7 @@ const App = () => {
     setBarScheme(theme);
   };
 
+  /*
   const handleNotification = messageData => {
     console.log('Sending notification...');
     console.log('Received message:', messageData);
@@ -181,7 +196,7 @@ const App = () => {
       Alert.alert(alert_name, `${message}\nPrice${last_price}`);
     }
   };
-
+*/
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();
     setIsConnected(state.isConnected);
