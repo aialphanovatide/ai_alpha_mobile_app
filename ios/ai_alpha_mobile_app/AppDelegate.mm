@@ -6,8 +6,10 @@
 #import <React/RCTLinkingManager.h>
 #import "Orientation.h"
 #import <FirebaseCore/FirebaseCore.h>
+#import <FirebaseMessaging/FirebaseMessaging.h>
 #import <UIKit/UIKit.h>
-
+@interface AppDelegate () <FIRMessagingDelegate>
+@end
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
@@ -17,21 +19,37 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.moduleName = @"ai_alpha_mobile_app";
     self.initialProps = @{};
+
+    // Configure Firebase
     [FIRApp configure];
-    // Define UNUserNotificationCenter and set delegate
+
+    // Set up UNUserNotificationCenter
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
+    
+    // Request authorization for notifications
+    UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
+    [center requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        if (!granted) {
+            NSLog(@"Permission not granted to show notifications");
+        }
+    }];
 
-    // Request permission to display notifications
-[center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
-    if (!granted) {
-        NSLog(@"Permission not granted to display notifications");
-    }
-}];
-
+    // Register for remote notifications
+    [application registerForRemoteNotifications];
+  
+    // Set FIRMessaging's delegate
+    [FIRMessaging messaging].delegate = self;
 
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
+
+
+
+
+
+
+
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
 #if DEBUG
@@ -78,6 +96,11 @@
 //(UIInterfaceOrientationMask);UIApplication:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
 //  return [Orientation getOrientation];
 //}
+- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
+    NSLog(@"Firebase registration token: %@", fcmToken);
+    // Optionally, you can send the token to your application server.
+    // This token is also used for topic subscription/unsubscription.
+}
 
 
 @end
