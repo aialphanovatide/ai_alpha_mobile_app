@@ -203,6 +203,9 @@ const CandlestickChart = ({route}) => {
               selectedInterval={selectedInterval}
               changeInterval={changeInterval}
               hasHourlyTimes={coinBot.toLowerCase() === 'btc'}
+              additionalStyles={{
+                marginLeft: 0,
+              }}
             />
             <RsButton
               activeButtons={activeButtons}

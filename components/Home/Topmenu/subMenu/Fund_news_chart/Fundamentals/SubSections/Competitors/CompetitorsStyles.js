@@ -52,6 +52,10 @@ const useCompetitorsStyles = () => {
       flex: 1,
       marginVertical: theme.boxesVerticalMargin,
     },
+    selectedOptionContent: {
+      flex: 1,
+      height: 600,
+    },
     title: {
       marginBottom: theme.titlesVerticalMargin * 0.5,
       marginHorizontal: theme.titlesVerticalMargin,

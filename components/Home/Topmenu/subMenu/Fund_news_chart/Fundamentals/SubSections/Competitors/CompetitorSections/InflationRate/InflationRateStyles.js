@@ -5,6 +5,9 @@ import {AppThemeContext} from '../../../../../../../../../../context/themeContex
 const useInflationRateStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
+    mainContainer: {
+      height: '100%',
+    },
     yearSelectorContainer: {
       flexDirection: 'row',
       width: '70%',
@@ -35,16 +38,13 @@ const useInflationRateStyles = () => {
       fontFamily: theme.fontSemibold,
     },
     container: {
-      flex: 1,
-      marginVertical: 10,
+      marginVertical: 8,
       marginHorizontal: 20,
       alignItems: 'center',
-      justifyContent: 'center',
     },
     currentValue: {
       width: '30%',
-      marginVertical: 10,
-      paddingVertical: 8,
+      marginVertical: 8,
       paddingHorizontal: 16,
       color: theme.textColor,
       fontFamily: theme.fontMedium,
@@ -55,8 +55,9 @@ const useInflationRateStyles = () => {
       alignSelf: 'center',
     },
     imageContainer: {
+      marginVertical: 8,
       width: 300,
-      height: 450,
+      height: 350,
       alignItems: 'center',
       justifyContent: 'center',
     },

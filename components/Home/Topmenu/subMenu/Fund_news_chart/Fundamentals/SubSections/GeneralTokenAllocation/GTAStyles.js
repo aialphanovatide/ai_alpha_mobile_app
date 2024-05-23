@@ -9,6 +9,7 @@ const useGTAStyles = () => {
       flex: 1,
       width: '100%',
       minHeight: 300,
+      maxHeight: 425,
       flexDirection: 'row',
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
@@ -16,7 +17,8 @@ const useGTAStyles = () => {
       alignItems: 'center',
     },
     row: {
-      maxWidth: '50%',
+      maxWidth: '80%',
+      marginVertical: 3,
       flexDirection: 'row',
     },
     tokenSelector: {
@@ -24,22 +26,29 @@ const useGTAStyles = () => {
       height: 20,
       margin: 5,
       borderRadius: 5,
+      alignSelf: 'center',
       overflow: 'hidden',
     },
     strong: {
-      alignSelf: 'flex-end',
-      fontFamily: theme.fontSemibold
+      marginTop: 10,
+      alignSelf: 'center',
+      fontFamily: theme.fontMedium,
+      fontSize: theme.responsiveFontSize * 0.8,
+      lineHeight: 16,
     },
     circleDataContainer: {
+      maxWidth: '30%',
       marginVertical: 24,
+      marginHorizontal: 24,
+      justifyContent: 'center',
     },
     currentTokenPercentage: {
       position: 'absolute',
       top: 175,
-      left:70,
+      left: 95,
       textAlign: 'center',
-      fontSize: theme.titleFontSize * 1.35,
-      fontFamily: theme.fontBold,
+      fontSize: theme.titleFontSize * 1.50,
+      fontFamily: theme.fontMedium,
     },
     displayNone: {
       display: 'none',
@@ -47,8 +56,12 @@ const useGTAStyles = () => {
     circleChartContainer: {
       width: '50%',
       position: 'relative',
-      marginHorizontal: 16,
+      marginLeft: 12,
+      marginRight: 32,
     },
+    chart: {
+      marginLeft: 12,
+    }
   });
   return styles;
 };

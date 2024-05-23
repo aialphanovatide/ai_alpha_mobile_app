@@ -71,8 +71,9 @@ const useFundamentalsStyles = () => {
     },
     modalBackground: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: '#00000060',
+      backgroundColor: '#00000050',
       zIndex: 1000,
+      opacity: 0,
     },
     modalContainer: {
       height: theme.height,
@@ -99,10 +100,6 @@ const useFundamentalsStyles = () => {
     closeButtonImage: {
       flex: 1,
       tintColor: theme.textColor,
-    },
-    overlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: '#33333360',
     },
     modalDescription: {
       fontSize: theme.responsiveFontSize * 0.8,

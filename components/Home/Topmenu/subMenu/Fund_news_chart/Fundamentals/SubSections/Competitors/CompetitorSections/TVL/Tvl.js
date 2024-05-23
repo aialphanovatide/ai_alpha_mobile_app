@@ -91,7 +91,8 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
         <>
           <VictoryChart
             height={450}
-            padding={{left: 55, right: 50, bottom: 40, top: 40}}>
+            width={375}
+            padding={{left: 75, right: 50, bottom: 40, top: 40}}>
             <VictoryAxis
               style={{
                 axis: {stroke: theme.chartsColor},
@@ -130,7 +131,7 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
               }}
               domainPadding={{
                 x: 1,
-                y: maxTvlValue < 5 ? 0.5 : maxTvlValue > 100 ? 10 : 2.5,
+                y: maxTvlValue < 5 ? 0.5 : maxTvlValue > 100 ? 20 : 2.5,
               }}
               data={cryptos.map((crypto, index) => ({
                 x: crypto.symbol,

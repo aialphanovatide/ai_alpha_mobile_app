@@ -10,14 +10,14 @@ import useBtcDominanceStyles from './BtcDominanceStyles';
 import {AppThemeContext} from '../../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
 
-const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
+const BtcDominanceChart = ({candlesToShow = 30}) => {
   const [chartData, setChartData] = useState([]);
   const [selectedInterval, setSelectedInterval] = useState('1D');
-  const [loadingState, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const styles = useBtcDominanceStyles();
   const {isDarkMode, theme} = useContext(AppThemeContext);
 
-  const fetchChartData = async (interval = selectedInterval) => {
+  async function fetchChartData(interval = selectedInterval) {
     try {
       const response = await axios.get(
         'https://fapi.binance.com/fapi/v1/klines',
@@ -43,10 +43,14 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
       console.error('Failed to fetch data:', error);
       setLoading(false);
     }
-  };
+  }
 
   useEffect(() => {
-    fetchChartData();
+    const intervalId = setInterval(
+      () => fetchChartData(selectedInterval),
+      3500,
+    );
+    return () => clearInterval(intervalId);
   }, [selectedInterval]);
 
   const changeInterval = async newInterval => {
@@ -71,7 +75,9 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
         colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
         style={{flex: 1}}>
         <SafeAreaView style={styles.background}>
-          <BackButton />
+          <View style={styles.backButtonWrapper}>
+            <BackButton />
+          </View>
           <Text style={styles.analysisTitle}>BTC Dominance Chart</Text>
           <Text style={styles.sectionDescription}>
             Reflects the proportion of the total cryptocurrency market held by
@@ -115,7 +121,9 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={{flex: 1}}>
       <SafeAreaView style={styles.background}>
-        <BackButton />
+        <View style={styles.backButtonWrapper}>
+          <BackButton />
+        </View>
         <Text style={styles.analysisTitle}>BTC Dominance Chart</Text>
         <Text style={styles.sectionDescription}>
           Reflects the proportion of the total cryptocurrency market held by
@@ -127,12 +135,13 @@ const BtcDominanceChart = ({loading, candlesToShow = 30}) => {
             selectedInterval={selectedInterval}
             changeInterval={changeInterval}
             hasHourlyTimes={true}
+            additionalStyles={{marginVertical: 0}}
           />
         </View>
         <View style={styles.container}>
           <View style={styles.chart}>
             <VictoryChart
-              width={400}
+              width={375}
               domain={{x: domainX, y: domainY}}
               padding={{top: 10, bottom: 40, left: 20, right: 70}}
               domainPadding={{x: 5, y: 3}}

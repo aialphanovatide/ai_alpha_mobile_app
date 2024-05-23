@@ -26,8 +26,8 @@ const NewsComponent = ({route}) => {
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin.bot_name,
   );
-  const [activeFilter, setActiveFilter] = useState('Today');
-  const [activeButtons, setActiveButtons] = useState(null);
+  const options = ['Today', 'This Week'];
+  const [activeFilter, setActiveFilter] = useState(options[0]);
   const {handleAboutPress, aboutDescription, aboutVisible} =
     useContext(AboutModalContext);
 
@@ -65,7 +65,6 @@ const NewsComponent = ({route}) => {
   };
 
   const handleFilterPress = option => {
-    setActiveButtons(option);
     setActiveFilter(option);
   };
 
@@ -134,21 +133,18 @@ const NewsComponent = ({route}) => {
         />
       </View>
       <View style={styles.filterContainer}>
-        {[
-          'Today',
-          'This Week',
-        ].map(option => (
+        {options.map(option => (
           <TouchableOpacity
             key={option}
             onPress={() => handleFilterPress(option)}
             style={[
               styles.filterButton,
-              activeButtons === option ? styles.activeOption : null,
+              activeFilter === option ? styles.activeOption : null,
             ]}>
             <Text
               style={[
                 styles.filterText,
-                activeButtons === option ? styles.activeButtonText : null,
+                activeFilter === option ? styles.activeButtonText : null,
               ]}>
               {option}
             </Text>

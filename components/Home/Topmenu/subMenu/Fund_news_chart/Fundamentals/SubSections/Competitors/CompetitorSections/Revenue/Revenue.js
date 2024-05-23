@@ -1,7 +1,6 @@
 import {Image, ImageBackground, Text, View} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useRevenueStyles from './RevenueStyles';
-import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import {revenueImagesUrls} from './revenueImagesUrl';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import Loader from '../../../../../../../../../Loader/Loader';
@@ -43,7 +42,7 @@ const Revenue = ({competitorsData, isSectionWithoutData}) => {
   const [valuesData, setValuesData] = useState(null);
   const styles = useRevenueStyles();
   const colors = ['blue', 'cyan', 'purple', 'magenta'];
-  const tintColors = ['#20CBDD', '#895EF6', '#FF3BC3', '#C539B4'];
+  const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
   const [loading, setLoading] = useState(true);
 
   const getRequiredValues = cryptos => {
@@ -123,14 +122,36 @@ const Revenue = ({competitorsData, isSectionWithoutData}) => {
               item.competitor.token,
             ),
           ),
-          color:
-            tintColors[artificial_id > 3 ? artificial_id % 3 : artificial_id],
+          color: tintColors[artificial_id % colors.length],
         };
         revenue_data.push(mapped_crypto);
         artificial_id += 1;
       }
     });
-    setCryptos(revenue_data);
+    const filtered_revenues = revenue_data.filter(item => {
+      return item.value !== 0;
+    });
+    let counter = 0;
+    setCryptos(
+      filtered_revenues.length === 1
+        ? revenue_data.filter(item => {
+            if (item.value !== 0) {
+              item.color = tintColors[0];
+              return true;
+            } else {
+              return false;
+            }
+          })
+        : revenue_data.filter(item => {
+            if (item.value !== 0) {
+              item.color = tintColors[counter];
+              counter ++;
+              return true;
+            } else {
+              return false;
+            }
+          }),
+    );
     getRequiredValues(revenue_data);
     setLoading(false);
   }, [competitorsData]);

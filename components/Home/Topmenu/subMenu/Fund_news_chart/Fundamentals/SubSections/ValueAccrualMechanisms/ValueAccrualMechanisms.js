@@ -7,6 +7,7 @@ import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import FastImage from 'react-native-fast-image';
 
 const ContentItem = ({data, styles}) => {
+
   return (
     <View style={styles.dataContainer}>
       <Text style={styles.dataTitle}>{data.title}</Text>
@@ -56,19 +57,16 @@ const ValueAccrualMechanisms = ({
   };
 
   const calculateImageSize = section => {
-    return section.length >= 200
-      ? section.length >= 350
-        ? {
-            width: 124,
-            height: 272,
-          }
+    return section.length >= 160
+      ? section.length >= 300
+        ? {width: 148, height: 348}
         : {
             width: 124,
-            height: 208,
+            height: 236,
           }
       : {
-          width: 124,
-          height: 111,
+          width: 148,
+          height: 148,
         };
   };
 

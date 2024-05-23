@@ -26,7 +26,7 @@ const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
             <View style={styles.buttonContainer}>
               <Image
                 source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/512/3393/3393948.png',
+                  uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coin.bot_name}.png`,
                 }}
                 style={styles.buttonImage}
               />

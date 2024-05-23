@@ -17,8 +17,7 @@ const useChartSectionStyles = () => {
       flex: 1,
       backgroundColor: 'transparent',
       width: theme.width,
-      padding: 10,
-      paddingTop: 36
+      paddingTop: 36,
     },
     container: {
       width: '100%',
@@ -38,10 +37,15 @@ const useChartSectionStyles = () => {
     },
     title: {
       marginTop: theme.titlesVerticalMargin,
-      marginHorizontal: 10,
-      fontSize: theme.titleFontSize,
+      marginVertical: theme.boxesVerticalMargin * 2,
+      marginHorizontal: 28,
       color: theme.titleColor,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
+      textAlign: 'left',
+    },
+    backButtonWrapper: {
+      marginHorizontal: 20,
     },
     chartBackgroundImage: {
       justifyContent: 'center',
@@ -56,15 +60,16 @@ const useChartSectionStyles = () => {
     },
     timeframeContainer: {
       flex: 1,
-      width: '100%',
-      maxHeight: '10%',
+      width: '50%',
+      maxHeight: '5%',
+      marginHorizontal: 16,
     },
     sectionDescription: {
-      width: '100%',
-      marginVertical: theme.boxesVerticalMargin,
-      paddingHorizontal: 8,
-      fontSize: theme.responsiveFontSize * 0.8,
-      fontFamily: theme.fontMedium,
+      width: '90%',
+      marginHorizontal: 28,
+      marginBottom: 28,
+      fontSize: 14,
+      fontFamily: theme.font,
       color: theme.textColor,
       textAlign: 'left',
       lineHeight: 20,
@@ -94,6 +99,9 @@ const useChartSectionStyles = () => {
     activeRsButtonText: {
       color: '#fff',
       fontFamily: theme.fontMedium,
+    },
+    backButtonWrapper: {
+      marginHorizontal: 20,
     },
   });
   return styles;

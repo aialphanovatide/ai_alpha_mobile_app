@@ -65,7 +65,7 @@ async function getCapitalComPrices(
     );
 
     const data = await response.json();
-    console.log(`${symbol} price data: `, data);
+    // console.log(`${symbol} price data: `, data);
     return data;
   } catch (error) {
     console.error('Error:', error.message);

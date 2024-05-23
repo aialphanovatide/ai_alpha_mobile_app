@@ -83,7 +83,6 @@ const useFearAndGreedStyles = () => {
     referenceItem: {
       flex: 1,
       width: '95%',
-      marginVertical: 4,
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 6,
 

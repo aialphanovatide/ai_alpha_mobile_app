@@ -10,7 +10,7 @@ const useCoinMenuStyles = () => {
       borderRadius: 20,
       width: '96%',
       backgroundColor: theme.mainBackgroundColor,
-      marginBottom: 16,
+      marginBottom: 12,
     },
     subMenu: {
       flexDirection: 'row',
@@ -48,14 +48,14 @@ const useCoinMenuStyles = () => {
       alignItems: 'center',
     },
     buttonImage: {
-      width: 15,
-      height: 15,
+      width: 18,
+      height: 18,
       marginRight: 8,
     },
     buttonText: {
       color: theme.secondaryTextColor,
       textTransform: 'uppercase',
-      fontSize: theme.responsiveFontSize * 0.925,
+      fontSize: 13.33333,
       fontFamily: theme.fontMedium,
     },
     activeButtonText: {

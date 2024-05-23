@@ -6,7 +6,7 @@ const useTypeOfTokenStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     tokenContainer: {
-      flex: 1,
+      height: 110,
       margin: 10,
     },
     tokenImageContainer: {
@@ -41,7 +41,8 @@ const useTypeOfTokenStyles = () => {
     },
     tokenButton: {
       width: 100,
-      padding: 4,
+      height: 36,
+      paddingVertical: 4,
       marginHorizontal: 4,
       backgroundColor: theme.activeWhite,
       borderRadius: 2,
@@ -49,7 +50,7 @@ const useTypeOfTokenStyles = () => {
       justifyContent: 'center',
     },
     tokenButtonText: {
-      padding: 6,
+      margin: 6,
       textAlign: 'center',
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.825,

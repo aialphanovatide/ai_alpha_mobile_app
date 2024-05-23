@@ -15,7 +15,7 @@ import {AppThemeContext} from '../../../context/themeContext';
 */
 
 const TickerTape = ({coins}) => {
-  const {isDarkMode} = useContext(AppThemeContext);
+  const {isDarkMode, theme} = useContext(AppThemeContext);
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -186,6 +186,18 @@ const TickerTape = ({coins}) => {
     </html>
   `;
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.boxesBackgroundColor,
+      marginBottom: 16,
+    },
+    webview: {
+      flex: 1,
+      width: 600,
+    },
+  });
+
   return (
     <View style={styles.container} pointerEvents={'none'}>
       <AutoHeightWebView
@@ -195,15 +207,5 @@ const TickerTape = ({coins}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  webview: {
-    flex: 1,
-    width: 600,
-  },
-});
 
 export default TickerTape;

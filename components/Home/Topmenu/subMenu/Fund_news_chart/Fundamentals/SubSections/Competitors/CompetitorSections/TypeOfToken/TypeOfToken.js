@@ -87,7 +87,7 @@ const TypeOfToken = ({competitorsData}) => {
   }, [competitorsData]);
 
   return (
-    <View>
+    <View style={{flex: 1, height: '100%'}}>
       {loading ? (
         <Loader />
       ) : mappedData?.length === 0 ? (

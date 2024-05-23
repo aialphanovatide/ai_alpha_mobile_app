@@ -6,9 +6,8 @@ const useTransactionSpeedStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      height: '100%',
       alignItems: 'center',
-      justifyContent: 'center',
     },
     activeCryptoValue: {
       marginVertical: 15,

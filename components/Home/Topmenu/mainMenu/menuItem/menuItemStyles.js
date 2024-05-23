@@ -21,12 +21,12 @@ const useMenuItemStyles = () => {
       backgroundColor: theme.topMenuActiveBg,
     },
     buttonText: {
-      maxWidth: 60,
-      fontSize: theme.responsiveFontSize * 0.65,
+      maxWidth: '100%',
+      fontSize: 13.33333,
       color: theme.titleColor,
       textTransform: 'capitalize',
       textAlign: 'center',
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
     imageIcon: {
       flex: 1,

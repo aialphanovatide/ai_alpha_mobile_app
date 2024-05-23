@@ -18,7 +18,8 @@ const useTopMenuStyles = () => {
     },
     text: {
       color: theme.textColor,
-      fontSize: theme.responsiveFontSize,
+      fontSize: theme.responsiveFontSize * 0.825,
+      fontFamily: theme.fontMedium,
       textAlign: 'center',
     },
   });

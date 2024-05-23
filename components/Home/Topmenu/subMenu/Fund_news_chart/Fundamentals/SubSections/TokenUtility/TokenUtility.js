@@ -49,14 +49,16 @@ const TokenUtility = ({getSectionData, coin, handleSectionContent}) => {
   };
 
   const calculateImageSize = section => {
-    return section.length >= 200
-      ? {
-          width: 124,
-          height: 208,
-        }
+    return section.length >= 160
+      ? section.length >= 300
+        ? {width: 148, height: 348}
+        : {
+            width: 124,
+            height: 236,
+          }
       : {
-          width: 124,
-          height: 111,
+          width: 148,
+          height: 148,
         };
   };
 

@@ -55,7 +55,9 @@ const ProtocolItem = ({
 
   const marginValue = calculateMarginBottom(protocol.description, 40);
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => handleActiveProtocol(protocol)}
+      activeOpacity={1}
       style={[
         styles.protocolItemContainer,
         activeProtocol &&
@@ -97,9 +99,7 @@ const ProtocolItem = ({
           }>
           {protocol.description}
         </Text>
-        <TouchableOpacity
-          style={styles.arrowButton}
-          onPress={() => handleActiveProtocol(protocol)}>
+        <View style={styles.arrowButton}>
           <Image
             style={styles.arrowImage}
             source={
@@ -109,9 +109,9 @@ const ProtocolItem = ({
             }
             resizeMode="contain"
           />
-        </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

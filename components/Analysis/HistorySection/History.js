@@ -37,7 +37,7 @@ const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
   const {date, hour} = formatItemDate(item.created_at);
 
   return (
-    <View style={styles.historyItemContainer}>
+    <TouchableOpacity onPress={() => handleHistoryNavigation(item)} style={styles.historyItemContainer}>
       <FastImage
         source={{
           uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
@@ -57,7 +57,7 @@ const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
         <View style={styles.topRow}>
           <View style={styles.dataRow}>
             <Image
-              style={styles.dataIcon}
+              style={[styles.dataIcon, styles.iconSpacing]}
               resizeMode="contain"
               source={require('../../../assets/images/analysis/calendar-time.png')}
             />
@@ -74,20 +74,20 @@ const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
         </View>
         <View style={styles.row}>
           <Text numberOfLines={2} style={styles.itemTitle}>
-            {item.title.slice(0, 90)}...
+            {item.title.length >= 90
+              ? `${item.title.slice(0, 90)}...`
+              : item.title}
           </Text>
-          <TouchableOpacity
-            onPress={() => handleHistoryNavigation(item)}
-            style={styles.rightArrowContainer}>
+          <View style={styles.rightArrowContainer}>
             <Image
               style={styles.rightArrow}
               resizeMode="contain"
               source={require('../../../assets/images/analysis/right-arrow.png')}
             />
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

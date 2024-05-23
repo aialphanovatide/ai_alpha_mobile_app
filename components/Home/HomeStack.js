@@ -24,11 +24,15 @@ const NewsStack = createNativeStackNavigator();
 
 const NewsScreen = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
+
   return (
     <NewsStack.Navigator
       initialRouteName="NewsMain"
       backBehavior={'none'}
-      screenOptions={{headerShown: false}}>
+      screenOptions={{
+        animation: 'none',
+        headerShown: false,
+      }}>
       <NewsStack.Screen
         name="NewsMain"
         component={NewsComponent}
@@ -121,6 +125,7 @@ const SubMenuScreen = () => {
       }
       initialRouteName="Charts"
       screenOptions={{
+        animation: 'none',
         lazy: true,
         swipeEnabled: false,
         gestureEnabled: isLandscape && isHorizontal ? false : true,
@@ -163,6 +168,7 @@ const TopmenuScreen = () => {
     <TopmenuStack.Navigator
       initialRouteName={'SubMenuScreen'}
       screenOptions={{
+        animation: 'none',
         gestureEnabled: isLandscape && isHorizontal ? false : true,
         header: () =>
           isLandscape && isHorizontal ? null : <SubMenu isAlertsMenu={false} />,
@@ -186,6 +192,7 @@ const HomeStackScreen = () => {
     <HomeStack.Navigator
       initialRouteName="InitialHome"
       screenOptions={{
+        animation: 'none',
         header: () =>
           isLandscape && isHorizontal ? null : <TopMenu isAlertsMenu={false} />,
       }}>

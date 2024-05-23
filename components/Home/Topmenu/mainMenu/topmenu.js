@@ -3,7 +3,7 @@ import {View, ScrollView, Text} from 'react-native';
 import MenuItem from './menuItem/menuItem';
 import useTopMenuStyles from './topmenuStyles';
 import {TopMenuContext} from '../../../../context/topMenuContext';
-import {useNavigation} from '@react-navigation/core';
+import {useNavigation, useRoute} from '@react-navigation/core';
 import {CategoriesContext} from '../../../../context/categoriesContext';
 import {AppThemeContext} from '../../../../context/themeContext';
 
@@ -18,6 +18,7 @@ const TopMenu = ({isAlertsMenu}) => {
     updateActiveCoin(category);
     updateActiveSubCoin(category.coin_bots[0].bot_name);
     if (!isAlertsMenu) {
+      navigation.pop(1);
       navigation.navigate('TopMenuScreen', {
         screen: 'SubMenuScreen',
         params: {

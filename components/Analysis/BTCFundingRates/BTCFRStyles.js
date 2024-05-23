@@ -9,19 +9,19 @@ const useBtcFundingRatesStyles = () => {
       flex: 1,
       height: theme.height,
       backgroundColor: 'transparent',
-      padding: 10,
       paddingTop: 36,
     },
     titleContainer: {
       flexDirection: 'row',
-      padding: 10,
+      paddingHorizontal: 28,
+      marginTop: theme.titlesVerticalMargin,
+      marginVertical: theme.boxesVerticalMargin * 2,
     },
     title: {
-      paddingVertical: 2.5,
-      paddingHorizontal: 15,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
+      textAlign: 'left',
     },
     tableContainer: {
       flex: 1,
@@ -85,12 +85,12 @@ const useBtcFundingRatesStyles = () => {
       color: theme.priceDownColor,
     },
     sectionDescription: {
-      width: '100%',
-      paddingHorizontal: 8,
-      fontSize: theme.responsiveFontSize * 0.8,
+      width: '90%',
+      marginHorizontal: 28,
+      fontSize: 14,
+      fontFamily: theme.font,
       color: theme.textColor,
       textAlign: 'left',
-      fontFamily: theme.fontMedium,
       lineHeight: 20,
     },
     readMoreButton: {
@@ -111,6 +111,9 @@ const useBtcFundingRatesStyles = () => {
       alignItems: 'center',
       justifyContent: 'flex-start',
     },
+    backButtonWrapper: {
+      marginHorizontal: 20,
+    }
   });
   return styles;
 };

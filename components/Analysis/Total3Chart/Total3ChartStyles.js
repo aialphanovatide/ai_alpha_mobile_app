@@ -10,14 +10,12 @@ const useChartSectionStyles = () => {
       width: theme.width,
       height: theme.height,
       backgroundColor: 'transparent',
-      padding: 10,
       paddingTop: 36,
     },
     background: {
       flex: 1,
       backgroundColor: 'transparent',
       width: theme.width,
-      padding: 10,
       paddingTop: 36
     },
     container: {
@@ -31,17 +29,19 @@ const useChartSectionStyles = () => {
     chart: {
       width: '100%',
       height: '100%',
-      margin: '0%',
+      paddingRight: 48,
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
     },
     title: {
       marginTop: theme.titlesVerticalMargin,
-      marginHorizontal: 10,
-      fontSize: theme.titleFontSize,
+      marginVertical: theme.boxesVerticalMargin * 2,
+      marginHorizontal: 28,
       color: theme.titleColor,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
+      textAlign: 'left',
     },
     chartBackgroundImage: {
       justifyContent: 'center',
@@ -60,15 +60,17 @@ const useChartSectionStyles = () => {
       maxHeight: '5%',
     },
     sectionDescription: {
-      width: '100%',
-      marginVertical: theme.boxesVerticalMargin,
-      paddingHorizontal: 8,
-      fontSize: theme.responsiveFontSize * 0.8,
-      fontFamily: theme.fontMedium,
+      width: '90%',
+      marginHorizontal: 28,
+      fontSize: 14,
+      fontFamily: theme.font,
       color: theme.textColor,
       textAlign: 'left',
       lineHeight: 20,
     },
+    backButtonWrapper: {
+      marginHorizontal: 20,
+    }
   });
   return styles;
 };
