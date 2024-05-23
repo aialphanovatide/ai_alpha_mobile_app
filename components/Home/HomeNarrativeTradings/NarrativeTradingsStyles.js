@@ -10,7 +10,7 @@ const useHomeNarrativeTradingStyles = () => {
       marginVertical: 18,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
     titleStyles: {
       maxWidth: '70%',
@@ -18,7 +18,7 @@ const useHomeNarrativeTradingStyles = () => {
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize,
       marginBottom: 2,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
     imageStyle: {
       width: 50,

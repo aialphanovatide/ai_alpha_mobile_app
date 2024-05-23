@@ -7,13 +7,13 @@ const useHomeAnalysisStyles = () => {
   const styles = StyleSheet.create({
     margin: {
       marginVertical: 24,
+      fontFamily: theme.fontMedium,
     },
     mainTitle: {
       marginBottom: 8,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
-
+      fontFamily: theme.fontBold,
     },
     titleStyles: {
       maxWidth: '85%',

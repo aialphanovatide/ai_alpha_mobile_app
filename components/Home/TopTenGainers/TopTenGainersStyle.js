@@ -17,7 +17,7 @@ const useTopTenGainersStyles = () => {
       paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
     table: {
       paddingTop: 10,

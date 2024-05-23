@@ -94,9 +94,7 @@ const RevenueCatProvider = ({children}) => {
         updatedUser.entitlements.push(
           customerInfo?.entitlements.active[key].productIdentifier,
         );
-        subscribeTopic(
-          customerInfo?.entitlements.active[key].productIdentifier
-        );
+
       }
     }
     console.log(

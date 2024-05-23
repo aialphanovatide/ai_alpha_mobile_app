@@ -22,13 +22,13 @@ const useTopStoriesStyles = () => {
     },
     mainTitle: {
       marginBottom: 8,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
     },
     titleStyles: {
       maxWidth: '85%',
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
       color: theme.titleColor,
       marginBottom: 2,
       fontSize: theme.responsiveFontSize,
