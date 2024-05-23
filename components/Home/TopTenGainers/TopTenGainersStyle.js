@@ -9,14 +9,15 @@ const useTopTenGainersStyles = () => {
     topTenGainersContainer: {
       height: 400,
       width: '100%',
-      marginVertical: 32,
+      marginTop: 8,
+      marginBottom: 16,
       borderRadius: 4,
     },
     topTenGainersTitle: {
       marginVertical: 16,
       paddingHorizontal: 16,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
+      fontSize: 21.3333,
       fontFamily: theme.fontSemibold,
     },
     table: {

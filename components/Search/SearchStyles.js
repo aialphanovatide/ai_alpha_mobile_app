@@ -59,19 +59,21 @@ const useSearchStyles = () => {
       position: 'relative',
       width: '100%',
       flexDirection: 'row',
-      paddingHorizontal: 8,
+      marginVertical: 4,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       borderRadius: 2,
+      borderBottomColor: theme.secondaryItemColor,
+      borderBottomWidth: 1,
     },
     analysisTitle: {
-      maxWidth: '80%',
+      maxWidth: '85%',
       marginLeft: 14,
+      marginBottom: 2,
       paddingVertical: 16,
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize * 0.95,
-      marginBottom: 2,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
     searchSubTitle: {
       marginVertical: theme.boxesVerticalMargin,
@@ -82,6 +84,10 @@ const useSearchStyles = () => {
       textAlign: 'left',
       textDecorationLine: 'underline',
       textDecorationColor: theme.orange,
+    },
+    inactiveSubtitle: {
+      color: theme.secondaryGrayColor,
+      textDecorationLine: 'none'
     },
     row: {
       flexDirection: 'row',
@@ -100,15 +106,19 @@ const useSearchStyles = () => {
       width: '100%',
       flexDirection: 'row',
       marginVertical: 4,
+      paddingVertical: 6,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       borderRadius: 2,
+      borderBottomColor: theme.secondaryItemColor,
+      borderBottomWidth: 1,
     },
     cryptoItemImage: {
       width: 40,
       height: 40,
       borderRadius: 20,
       marginHorizontal: 14,
+      alignSelf: 'center',
     },
     cryptoName: {
       marginHorizontal: 8,
@@ -143,7 +153,7 @@ const useSearchStyles = () => {
     },
     searchContainer: {
       backgroundColor: theme.boxesBackgroundColor,
-      marginVertical: 16,
+      marginVertical: 8,
       borderRadius: 2,
     },
     titleContainer: {

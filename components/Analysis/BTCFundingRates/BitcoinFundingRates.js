@@ -76,7 +76,9 @@ const BitcoinFundingRates = ({handleReturn}) => {
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={{flex: 1}}>
       <SafeAreaView style={styles.mainSection}>
-        <BackButton handleReturn={handleReturn} />
+        <View style={styles.backButtonWrapper}>
+          <BackButton handleReturn={handleReturn} />
+        </View>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>BTC Funding Rates</Text>
         </View>

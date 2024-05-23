@@ -217,7 +217,7 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
   };
 
   return (
-    <View>
+    <View style={styles.mainContainer}>
       {loading ? (
         <Loader />
       ) : cryptos?.length === 0 ||

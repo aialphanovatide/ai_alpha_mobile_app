@@ -33,12 +33,13 @@ const SearchCryptoItem = ({
   styles,
   handleCryptoItemNavigation,
   isDarkMode,
+  isLastItem,
 }) => {
   const name = findCoinNameBySymbol(crypto.bot_name.toUpperCase());
   return (
     <TouchableOpacity
       onPress={() => handleCryptoItemNavigation(category, crypto)}
-      style={styles.cryptoItem}>
+      style={[styles.cryptoItem, isLastItem ? {borderBottomWidth: 0} : {}]}>
       <FastImage
         source={{
           uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${crypto.bot_name}.png`,
@@ -62,12 +63,17 @@ const SearchCryptoItem = ({
   );
 };
 
-const SearchAnalysisItem = ({analysis, handleAnalysisNavigation, styles}) => {
+const SearchAnalysisItem = ({
+  analysis,
+  handleAnalysisNavigation,
+  styles,
+  isLastItem,
+}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   return (
     <TouchableOpacity
       onPress={() => handleAnalysisNavigation(analysis)}
-      style={styles.analysisItem}>
+      style={[styles.analysisItem, isLastItem ? {borderBottomWidth: 0} : {}]}>
       <FastImage
         source={{
           uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
@@ -85,7 +91,7 @@ const SearchAnalysisItem = ({analysis, handleAnalysisNavigation, styles}) => {
         fallback={true}
       />
       <View style={styles.analysisRow}>
-        <Text style={styles.analysisTitle} numberOfLines={2}>
+        <Text style={styles.analysisTitle} numberOfLines={1}>
           {analysis.title}
         </Text>
       </View>
@@ -150,12 +156,17 @@ const SearchAlertSection = ({currentText}) => {
   );
 };
 
-const SearchNTItem = ({styles, handleNarrativeTradingsNavigation, item}) => {
+const SearchNTItem = ({
+  styles,
+  handleNarrativeTradingsNavigation,
+  item,
+  isLastItem,
+}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   return (
     <TouchableOpacity
       onPress={() => handleNarrativeTradingsNavigation(item)}
-      style={styles.analysisItem}>
+      style={[styles.analysisItem, isLastItem ? {borderBottomWidth: 0} : {}]}>
       <FastImage
         source={{
           uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/${
@@ -170,7 +181,7 @@ const SearchNTItem = ({styles, handleNarrativeTradingsNavigation, item}) => {
         fallback={true}
       />
       <View style={styles.analysisRow}>
-        <Text style={styles.analysisTitle} numberOfLines={2}>
+        <Text style={styles.analysisTitle} numberOfLines={1}>
           {item.title}
         </Text>
       </View>
@@ -203,8 +214,17 @@ const Search = ({route}) => {
       setSearchText('');
       setAnalysisSearchResult([]);
       setCryptoSearchResult([]);
+      setNtSearchResult([]);
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    if (!searchText || searchText === '') {
+      handleCryptosSearch(categories, 'c');
+      handleAnalysisSearch(analysisItems, 'c');
+      handleNTSearch(narrativeTradingData, 'c');
+    }
+  }, []);
 
   const handleTextChange = value => {
     setSearchText(value);
@@ -321,6 +341,10 @@ const Search = ({route}) => {
     });
   };
 
+  const handleSubtitleNavigation = (sectionName, options) => {
+    navigation.navigate(sectionName, options);
+  };
+
   return (
     <LinearGradient
       useAngle={true}
@@ -329,9 +353,10 @@ const Search = ({route}) => {
       style={styles.flex}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Search</Text>
-        <View style={Platform.select({
+        <View
+          style={Platform.select({
             ios: styles.textInputContainerIOS,
-            android: styles.textInputContainer
+            android: styles.textInputContainer,
           })}>
           <Image
             source={require('../../assets/images/home/search_icon.png')}
@@ -347,65 +372,92 @@ const Search = ({route}) => {
             placeholderTextColor={theme.searchPlaceHolderColor}
           />
         </View>
-          <ScrollView style={styles.searchContainer} nestedScrollEnabled>
-            <View style={styles.titleContainer}>
-              <Text style={styles.searchSubTitle}>Cryptocurrencies</Text>
-              <View style={styles.horizontalLine} />
-            </View>
-            <ScrollView style={styles.cryptoSearch} nestedScrollEnabled>
-              {cryptoSearchResult &&
-                cryptoSearchResult.length > 0 &&
-                cryptoSearchResult.map(crypto => (
-                  <SearchCryptoItem
-                    key={crypto.coin.bot_id}
-                    crypto={crypto.coin}
-                    category={crypto.category}
-                    styles={styles}
-                    handleCryptoItemNavigation={handleCryptoItemNavigation}
-                    isDarkMode={isDarkMode}
-                  />
-                ))}
-            </ScrollView>
-            <View style={styles.titleContainer}>
-              <Text style={styles.searchSubTitle}>Analysis</Text>
-              <View style={styles.horizontalLine} />
-            </View>
-            <ScrollView style={styles.cryptoSearch} nestedScrollEnabled>
-              {analysisSearchResult &&
-                analysisSearchResult.length > 0 &&
-                analysisSearchResult.map((item, index) => (
-                  <SearchAnalysisItem
-                    key={index}
-                    analysis={item}
-                    styles={styles}
-                    handleAnalysisNavigation={handleAnalysisNavigation}
-                  />
-                ))}
-            </ScrollView>
-            <View style={styles.titleContainer}>
-              <Text style={styles.searchSubTitle}>Narrative Tradings</Text>
-              <View style={styles.horizontalLine} />
-            </View>
-            <View style={styles.cryptoSearch}>
-              {ntSearchResult &&
-                ntSearchResult.length > 0 &&
-                ntSearchResult.map((item, index) => (
-                  <SearchNTItem
-                    styles={styles}
-                    item={item}
-                    key={index}
-                    handleNarrativeTradingsNavigation={
-                      handleNarrativeTradingsNavigation
-                    }
-                  />
-                ))}
-            </View>
-            <View style={styles.titleContainer}>
-              <Text style={styles.searchSubTitle}>Alerts</Text>
-              <View style={styles.horizontalLine} />
-            </View>
-            <SearchAlertSection currentText={searchText} />
+        <ScrollView style={styles.searchContainer} nestedScrollEnabled>
+          <View style={styles.titleContainer}>
+            <Text style={[styles.searchSubTitle, styles.inactiveSubtitle]}>
+              Cryptocurrencies
+            </Text>
+            <View style={styles.horizontalLine} />
+          </View>
+          <ScrollView style={styles.cryptoSearch} nestedScrollEnabled>
+            {cryptoSearchResult &&
+              cryptoSearchResult.length > 0 &&
+              cryptoSearchResult.map((crypto, index) => (
+                <SearchCryptoItem
+                  key={crypto.coin.bot_id}
+                  crypto={crypto.coin}
+                  category={crypto.category}
+                  styles={styles}
+                  handleCryptoItemNavigation={handleCryptoItemNavigation}
+                  isDarkMode={isDarkMode}
+                  isLastItem={index === cryptoSearchResult.length - 1}
+                />
+              ))}
           </ScrollView>
+          <View style={styles.titleContainer}>
+            <Text
+              style={styles.searchSubTitle}
+              onPress={() =>
+                handleSubtitleNavigation('Analysis', {
+                  screen: 'History',
+                  params: {},
+                })
+              }>
+              Analysis
+            </Text>
+            <View style={styles.horizontalLine} />
+          </View>
+          <ScrollView style={styles.cryptoSearch} nestedScrollEnabled>
+            {analysisSearchResult &&
+              analysisSearchResult.length > 0 &&
+              analysisSearchResult.map((item, index) => (
+                <SearchAnalysisItem
+                  key={index}
+                  analysis={item}
+                  styles={styles}
+                  isLastItem={index === analysisSearchResult.length - 1}
+                  handleAnalysisNavigation={handleAnalysisNavigation}
+                />
+              ))}
+          </ScrollView>
+          <View style={styles.titleContainer}>
+            <Text
+              style={styles.searchSubTitle}
+              onPress={() =>
+                handleSubtitleNavigation('Analysis', {
+                  screen: 'NarrativeTrading',
+                  params: {},
+                })
+              }>
+              Narrative Tradings
+            </Text>
+            <View style={styles.horizontalLine} />
+          </View>
+          <View style={styles.cryptoSearch}>
+            {ntSearchResult &&
+              ntSearchResult.length > 0 &&
+              ntSearchResult.map((item, index) => (
+                <SearchNTItem
+                  styles={styles}
+                  item={item}
+                  key={index}
+                  handleNarrativeTradingsNavigation={
+                    handleNarrativeTradingsNavigation
+                  }
+                  isLastItem={index === ntSearchResult.length - 1}
+                />
+              ))}
+          </View>
+          <View style={styles.titleContainer}>
+            <Text
+              style={styles.searchSubTitle}
+              onPress={() => handleSubtitleNavigation('Alerts', {})}>
+              Alerts
+            </Text>
+            <View style={styles.horizontalLine} />
+          </View>
+          <SearchAlertSection currentText={searchText} />
+        </ScrollView>
       </SafeAreaView>
     </LinearGradient>
   );

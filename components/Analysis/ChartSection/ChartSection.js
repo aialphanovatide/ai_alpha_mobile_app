@@ -19,7 +19,6 @@ import {
 } from 'victory-native';
 import Loader from '../../Loader/Loader';
 import {getService} from '../../../services/aiAlphaApi';
-import ChartButton from './ChartButtons';
 import ChartButtons from './ChartButtons';
 
 const initialSessionData = {
@@ -78,7 +77,7 @@ const ChartSection = ({route, navigation}) => {
     }
   };
 
-  const fetchCapitalComChartData = async (security_token, security_cst) => {
+  async function fetchCapitalComChartData(security_token, security_cst) {
     const adapted_interval =
       selectedInterval.toUpperCase() === '1H'
         ? 'HOUR'
@@ -114,24 +113,30 @@ const ChartSection = ({route, navigation}) => {
       setSessionData({security_token: null, security_cst: null});
       setChartData([]);
     }
-  };
+  }
+
+  async function loadChartsData() {
+    try {
+      const response = await postCCSession();
+      const {security_token, security_cst} = response;
+      setSessionData({security_token, security_cst});
+
+      fetchCapitalComChartData(security_token, security_cst);
+    } catch (error) {
+      console.error('Error creating the new session', error);
+      setSessionData({security_token: null, security_cst: null});
+    }
+  }
+
+  // This chart was configured to update every 30s since the source is an external API which has limitation parameters in terms of requests per minute.
 
   useEffect(() => {
-    const loadChartsData = async () => {
-      try {
-        const response = await postCCSession();
-        // console.log('Session data: ', response);
-        const {security_token, security_cst} = response;
-        setSessionData({security_token, security_cst});
+    const intervalId = setInterval(() => loadChartsData(), 15000);
+    return () => clearInterval(intervalId);
+  }, [symbol, selectedInterval]);
 
-        fetchCapitalComChartData(security_token, security_cst);
-      } catch (error) {
-        console.error('Error creating the new session', error);
-        setSessionData({security_token: null, security_cst: null});
-      }
-    };
+  useEffect(() => {
     setLoading(true);
-    loadChartsData();
   }, [symbol, selectedInterval]);
 
   useEffect(() => {
@@ -147,7 +152,9 @@ const ChartSection = ({route, navigation}) => {
         colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
         style={{flex: 1}}>
         <SafeAreaView style={styles.background}>
-          <BackButton />
+          <View style={styles.backButtonWrapper}>
+            <BackButton />
+          </View>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.sectionDescription}>{description}</Text>
           <View style={styles.container}>
@@ -185,11 +192,20 @@ const ChartSection = ({route, navigation}) => {
     }
   };
 
-
   const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
 
-  const changeInterval = newInterval => {
+  const changeInterval = async newInterval => {
     setSelectedInterval(newInterval);
+    setLoading(true);
+
+    try {
+      setChartData([]);
+      await fetchCapitalComChartData(s);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error('Failed to change interval: ${error}');
+    }
   };
 
   return (

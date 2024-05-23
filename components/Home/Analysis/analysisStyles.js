@@ -6,12 +6,13 @@ const useHomeAnalysisStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     margin: {
-      marginVertical: 24,
+      marginTop: 8,
+      marginBottom: 16,
     },
     mainTitle: {
-      marginBottom: 8,
+      marginVertical: 8,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
+      fontSize: 21.3333,
       fontFamily: theme.fontSemibold,
 
     },
@@ -30,9 +31,8 @@ const useHomeAnalysisStyles = () => {
       alignSelf: 'center',
     },
     item: {
-      flex: 1,
       width: '100%',
-      paddingLeft: 8,
+      paddingLeft: 12,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       borderBottomColor: theme.boxesBorderColor,

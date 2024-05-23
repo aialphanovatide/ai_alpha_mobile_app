@@ -6,7 +6,7 @@ const useRevenueStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      height: '100%',
       padding: 10,
     },
     chartContainer: {
@@ -53,7 +53,6 @@ const useRevenueStyles = () => {
     bgImage: {
       position: 'absolute',
       bottom: 0,
-      flex: 1,
       width: '100%',
       minHeight: 300,
       opacity: 0.4,
@@ -64,7 +63,6 @@ const useRevenueStyles = () => {
       maxHeight: 400,
     },
     imagesContainer: {
-      flex: 1,
       flexDirection: 'row',
       width: '100%',
       justifyContent: 'center',

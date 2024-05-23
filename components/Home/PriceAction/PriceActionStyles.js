@@ -9,16 +9,16 @@ const usePriceActionStyles = () => {
   const styles = StyleSheet.create({
     priceActionContainer: {
       width: '100%',
-      marginVertical: 15,
+      marginTop: 8,
       marginBottom: 64,
       paddingBottom: 30,
       overflow: 'hidden',
     },
     title: {
-      paddingVertical: 10,
+      marginVertical: 8,
       paddingHorizontal: 16,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
+      fontSize: 21.3333,
       fontFamily: theme.fontSemibold,
     },
     tableContainer: {

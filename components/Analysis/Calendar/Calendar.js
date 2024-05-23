@@ -49,7 +49,9 @@ const Calendar = ({handleReturn}) => {
           nestedScrollEnabled={true}
           bounces={false}
           alwaysBounceVertical={false}>
-          <BackButton handleReturn={handleReturn} />
+          <View style={styles.backbuttonContainer}>
+            <BackButton handleReturn={handleReturn} />
+          </View>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Calendar</Text>
           </View>

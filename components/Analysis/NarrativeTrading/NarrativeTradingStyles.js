@@ -20,14 +20,14 @@ const useNarrativeTradingStyles = () => {
       flex: 1,
     },
     titleContainer: {
-      paddingHorizontal: 26,
+      paddingHorizontal: 28,
       marginTop: theme.titlesVerticalMargin,
-      marginVertical: theme.boxesVerticalMargin,
+      marginVertical: theme.boxesVerticalMargin * 2,
     },
     title: {
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
       textAlign: 'left',
     },
     marginBottom: {
@@ -65,7 +65,7 @@ const useNarrativeTradingStyles = () => {
     },
     itemsContainer: {
       width: '100%',
-      marginVertical: theme.boxesVerticalMargin,
+      paddingBottom: 32,
       paddingHorizontal: 14,
       backgroundColor: 'transparent',
     },
@@ -74,13 +74,13 @@ const useNarrativeTradingStyles = () => {
       flexDirection: 'row',
       alignSelf: 'flex-start',
       backgroundColor: theme.boxesBackgroundColor,
-      marginBottom: 6,
+      marginBottom: 12,
     },
     itemImage: {
-      width: 70,
-      height: 70,
-      borderRadius: 35,
-      marginLeft: 12,
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      marginLeft: 10,
       alignSelf: 'center',
     },
     dataContainer: {
@@ -93,8 +93,8 @@ const useNarrativeTradingStyles = () => {
     topRow: {
       width: '100%',
       flexDirection: 'row',
-      paddingHorizontal: 14,
-      paddingRight: 26,
+      paddingHorizontal: 8,
+      paddingRight: 16,
       justifyContent: 'space-between',
     },
     dataRow: {
@@ -107,8 +107,8 @@ const useNarrativeTradingStyles = () => {
       color: theme.secondaryTextColor,
     },
     dataIcon: {
-      width: 18,
-      height: 18,
+      width: 15,
+      height: 15,
       tintColor: theme.secondaryTextColor,
       marginRight: 4,
     },
@@ -121,7 +121,8 @@ const useNarrativeTradingStyles = () => {
       justifyContent: 'space-between',
     },
     itemTitle: {
-      width: '90%',
+      width: '85%',
+      height: 48,
       fontSize: theme.responsiveFontSize,
       fontFamily: theme.fontMedium,
       color: theme.textColor,
@@ -138,7 +139,7 @@ const useNarrativeTradingStyles = () => {
     },
     rightArrow: {
       flex: 1,
-      tintColor: theme.secondaryTextColor,
+      tintColor: theme.secondaryGrayColor,
     },
     emptyMessage: {
       margin: theme.boxesVerticalMargin,
@@ -148,16 +149,21 @@ const useNarrativeTradingStyles = () => {
       fontFamily: theme.fontBoldItalic,
     },
     backButtonWrapper: {
-      paddingHorizontal: 14,
+      paddingHorizontal: 20,
     },
     sectionDescription: {
-      width: '95%',
-      marginHorizontal: 16,
-      fontSize: theme.responsiveFontSize * 0.8,
-      fontFamily: theme.fontMedium,
+      width: '90%',
+      marginHorizontal: 28,
+      fontSize: 14,
+      fontFamily: theme.font,
       color: theme.textColor,
       textAlign: 'left',
       lineHeight: 20,
+    },
+    spacing: {
+      height: 18,
+      width: '100%',
+      backgroundColor: 'transparent',
     },
   });
   return styles;

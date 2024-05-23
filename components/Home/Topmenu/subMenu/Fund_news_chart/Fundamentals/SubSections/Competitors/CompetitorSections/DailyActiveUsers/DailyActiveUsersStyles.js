@@ -6,10 +6,10 @@ const useDailyActiveUsersStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      height: '100%',
+      marginVertical: 8,
     },
     dailyActiveUsersItem: {
-      flex: 1,
       marginVertical: theme.boxesVerticalMargin,
     },
     label: {
@@ -59,8 +59,9 @@ const useDailyActiveUsersStyles = () => {
     itemName: {
       color: theme.inactiveTextColor,
       marginHorizontal: 10,
-      fontSize: theme.responsiveFontSize,
-      fontFamily: theme.fontMedium,
+      marginLeft: 0,
+      fontSize: 16,
+      fontFamily: theme.font,
     },
     image: {
       flex: 1,

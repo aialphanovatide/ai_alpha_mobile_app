@@ -1,5 +1,5 @@
 import {Image, ScrollView, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import BackButton from '../../../../../Analysis/BackButton/BackButton';
 import useNewsStyles from './NewsStyles';
 import FastImage from 'react-native-fast-image';
@@ -8,7 +8,6 @@ const NewsArticle = ({route, navigation}) => {
   const styles = useNewsStyles();
   const item = route.params.item;
   const isStory = route.params.isStory;
-
   const handleReturn = () => {
     navigation.goBack();
   };

@@ -4,6 +4,7 @@ import CryptoSection from './CryptoSection';
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
+import styles from '../../../../../../../../../Login/HomeScreen/HomeScreenStyles';
 
 const DailyActiveUsers = ({competitorsData, isSectionWithoutData}) => {
   const [cryptos, setCryptos] = useState([]);
@@ -79,7 +80,7 @@ const DailyActiveUsers = ({competitorsData, isSectionWithoutData}) => {
   const max_value = findMaxUsersValue(cryptos);
 
   return (
-    <View>
+    <View style={styles.container}>
       {loading ? (
         <Loader />
       ) : cryptos?.length === 0 ||

@@ -29,11 +29,14 @@ const References = ({references, activeReference}) => {
   const styles = useFearAndGreedStyles();
   return (
     <ScrollView style={styles.referencesContainer}>
-      {activeReference ? (
+      {/* {activeReference ? (
         <ReferenceItem item={activeReference} styles={styles} />
       ) : (
         <Text style={styles.descriptionText}>No active reference</Text>
-      )}
+      )} */}
+      {references.map((item, index) => (
+        <ReferenceItem item={item} key={index} styles={styles} />
+      ))}
     </ScrollView>
   );
 };

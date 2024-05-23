@@ -6,7 +6,8 @@ const useCirculatingSupplyStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      height: '100%',
+      marginVertical: 8,
     },
     progressBarContainer: {
       padding: 10,
@@ -66,8 +67,8 @@ const useCirculatingSupplyStyles = () => {
       marginVertical: 8,
       textAlign: 'right',
       color: theme.secondaryTextColor,
-      fontSize: theme.responsiveFontSize,
-      fontFamily: theme.fontMedium,
+      fontSize: 14,
+      fontFamily: theme.font,
     },
     infinityLabel: {
       color: theme.secondaryTextColor,
@@ -102,7 +103,6 @@ const useCirculatingSupplyStyles = () => {
       color: 'transparent'
     },
     row: {
-      flex: 1,
       position: 'relative',
       marginVertical: 8,
       paddingHorizontal: 4,
@@ -165,10 +165,9 @@ const useCirculatingSupplyStyles = () => {
       marginVertical: 0,
     },
     circulatingSupplyItem: {
-      flex: 1,
       paddingHorizontal: 10,
       paddingVertical: 5,
-      marginVertical: theme.boxesVerticalMargin,
+      marginVertical: 28,
     },
     itemIcon: {
       width: 40,

@@ -88,7 +88,15 @@ const UpdatedRevenueModel = ({getSectionData, coin, handleSectionContent}) => {
               return;
             } else {
               return (
-                <View key={index} style={styles.itemContainer}>
+                <View
+                  key={index}
+                  style={[
+                    styles.itemContainer,
+                    index ===
+                    (revenues.filter(rev => rev.value !== null).length) - 1
+                      ? {borderBottomWidth: 0}
+                      : {},
+                  ]}>
                   <Image
                     style={styles.revenueImage}
                     resizeMode="contain"

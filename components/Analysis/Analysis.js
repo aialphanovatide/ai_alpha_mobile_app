@@ -113,9 +113,9 @@ const Analysis = () => {
       useAngle={true}
       angle={45}
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
-      style={{flex: 1}}>
+      style={{flex: 1, justifyContent: 'center'}}>
       <SafeAreaView style={styles.background}>
-        <ScrollView style={styles.background} nestedScrollEnabled={true}>
+        <ScrollView style={[styles.background, {padding: 10,}]} nestedScrollEnabled={true}>
           <Text style={styles.analysisTitle}>Analysis</Text>
           <View style={[styles.analyisisContainer, styles.paddingBottom]}>
             {sections.map(section => (
