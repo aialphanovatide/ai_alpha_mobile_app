@@ -96,26 +96,20 @@ const NotificationsPanel = ({ route, options = null }) => {
         const newSubscriptions = { ...subscriptions };
 
         for (const id of productIdentifiers) {
-          let firstTimePurchase = false;
           const storedStatus = await AsyncStorage.getItem(`@subscription_${id}`);
           console.log("storedStatus->", storedStatus, "for->", `@subscription_${id}`);
-
-          if (storedStatus === null) {
-            firstTimePurchase = true;
+          console.log("storedStatus type->", typeof storedStatus, "for->", `@subscription_${id}`)
+          if (storedStatus == 'null') {
+            console.log("Entered null validator");
             await AsyncStorage.setItem(`@subscription_${id}`, 'true');
             newSubscriptions[id] = true;
+            console.log("Subscribing to new topic:", id);
+            await messaging().subscribeToTopic(id);
           } else {
             newSubscriptions[id] = storedStatus === 'true';
           }
 
-          if (!(id in userSubscriptions)) {
-            userSubscriptionsStatus[id] = true;
-            if (firstTimePurchase) {
-              console.log("It's first time");
-              await handleToggleSubscription(id, true);
-            }
-          }
-          console.log("first time?", firstTimePurchase, "id:", id)
+          userSubscriptionsStatus[id] = true;
         }
 
         const expiredSubscriptions = Object.keys(subscriptions).filter(id => !productIdentifiers.includes(id));
@@ -157,6 +151,33 @@ const NotificationsPanel = ({ route, options = null }) => {
     }
   };
 
+  const handleToggleAllNotifications = async () => {
+    try {
+      const anyActive = Object.values(subscriptions).some(value => value);
+      const newStatus = !anyActive; // If any switch is active, we turn everything off, otherwise turn everything on
+      console.log("* Toggling all notifications to:", newStatus);
+      const newSubscriptions = { ...subscriptions };
+      for (const [topic, hasSubscription] of Object.entries(userSubscriptions)) {
+        if (hasSubscription) {
+          console.log(`* Toggling ${topic} to ${newStatus}`);
+          if (newStatus) {
+            console.log(`* Subscribing to ${topic}`);
+            await messaging().subscribeToTopic(topic);
+          } else {
+            console.log(`* Unsubscribing from ${topic}`);
+            await messaging().unsubscribeFromTopic(topic);
+          }
+          newSubscriptions[topic] = newStatus;
+          await AsyncStorage.setItem(`@subscription_${topic}`, newStatus.toString());
+        }
+      }
+      setSubscriptions(newSubscriptions);
+      console.log("* New subscriptions state after toggling all:", newSubscriptions);
+    } catch (error) {
+      console.error('Failed to toggle all subscriptions:', error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <BackButton />
@@ -175,9 +196,7 @@ const NotificationsPanel = ({ route, options = null }) => {
                 ios_backgroundColor={theme.notificationsSwitchColor}
                 thumbColor={'#F6F7FB'}
                 value={Object.values(subscriptions).some(Boolean)}
-                onValueChange={() => {
-                  Object.keys(subscriptions).forEach(topic => handleToggleSubscription(topic));
-                }}
+                onValueChange={handleToggleAllNotifications}
                 disabled={Object.values(userSubscriptions).every(val => !val)}
               />
             </View>
