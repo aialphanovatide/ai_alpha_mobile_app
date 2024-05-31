@@ -101,7 +101,7 @@
 		9DC43E662BE2C186005CE186 /* libFirebaseCoreInternal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCoreInternal.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DC43E6E2BE2C2A8005CE186 /* libFlipperKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFlipperKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DCEDF392B1808A500A2A8DA /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		9DFDA2992B659F1200E7E4B6 /* OpenSSL.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:67RAULRX93:Marcin Krzyzanowski"; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = "Pods/OpenSSL-Universal/Frameworks/OpenSSL.xcframework"; sourceTree = "<group>"; };
+		9DFDA2992B659F1200E7E4B6 /* OpenSSL.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = "Pods/OpenSSL-Universal/Frameworks/OpenSSL.xcframework"; sourceTree = "<group>"; };
 		A8216EE3A6EA64D1FAE35ABF /* Pods-ai_alpha_mobile_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ai_alpha_mobile_app.release.xcconfig"; path = "Target Support Files/Pods-ai_alpha_mobile_app/Pods-ai_alpha_mobile_app.release.xcconfig"; sourceTree = "<group>"; };
 		B5334A170382FAA7C6C94309 /* Pods_ai_alpha_mobile_app_ai_alpha_mobile_appTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ai_alpha_mobile_app_ai_alpha_mobile_appTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC37ED54556E443BBEC94472 /* prompt_light_italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = prompt_light_italic.ttf; path = ../assets/fonts/prompt_light_italic.ttf; sourceTree = "<group>"; };
@@ -785,7 +785,10 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "$(inherited)  ";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -868,7 +871,10 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = "$(inherited)  ";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",

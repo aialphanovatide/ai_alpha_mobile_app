@@ -1,171 +1,183 @@
 export const NOTIFICATIONS_MOCK = [
   {
     name: 'Bitcoin',
+    identifier: 'bitcoin_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/bitcoinLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/bitcoinLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/bitcoinDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/bitcoinDark.png"),
       },
     },
   },
   {
     name: 'Ethereum',
+    identifier: 'ethereum_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/ethereumLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/ethereumLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/ethereumDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/ethereumDark.png"),
       },
     },
   },
   {
     name: 'BaseBlock',
+    identifier: 'baseblock_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/baseblockLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/baseblockLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/baseblockDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/baseblockDark.png"),
       },
     },
   },
   {
     name: 'CoreChain',
+    identifier: 'corechain_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/corechainLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/corechainLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/corechainDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/corechainDark.png"),
       },
     },
   },
   {
     name: 'RootLink',
+    identifier: 'rootlink_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/rootlinkLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/rootlinkLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/rootlinkDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/rootlinkDark.png"),
       },
     },
   },
   {
     name: 'BoostLayer',
+    identifier: 'boostlayer_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/boostlayerLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/boostlayerLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/boostlayerDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/boostlayerDark.png"),
       },
     },
   },
   {
     name: 'CycleSwap',
+    identifier: 'cycleswap_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/cycleswapLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/cycleswapLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/cycleswapDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/cycleswapDark.png"),
       },
     },
   },
   {
     name: 'NexTrade',
+    identifier: 'nextrade_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/nextradeLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/nextradeLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/nextradeDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/nextradeDark.png"),
       },
     },
   },
   {
     name: 'DiverseFi',
+    identifier: 'diversefi_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/diversefiLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/diversefiLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/diversefiDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/diversefiDark.png"),
       },
     },
   },
   {
     name: 'TruthNodes',
+    identifier: 'truthnodes_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/truthnodesLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/truthnodesLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/truthnodesDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/truthnodesDark.png"),
       },
     },
   },
   {
     name: 'X Payments',
+    identifier: 'xpayments_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/xpaymentsLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/xpaymentsLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/xpaymentsDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/xpaymentsDark.png"),
       },
     },
   },
   {
     name: 'IntelliChain',
+    identifier: 'intellichain_4999_m1',
     iconImage: {
       light: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/intellichainLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/intellichainLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/intellichainDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/intellichainDark.png"),
       },
     },
   },
   {
     name: 'LSDs',
+    identifier: 'lsds_4999_m1',
     iconImage: {
       light: {
-        
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/lsdsLight.png"),
+        inactive: require("assets/images/account/notificationsLogos/lsdsLight.png"),
       },
       dark: {
-        active: require("assets/images/topMenu/Active/bitcoin.png"),
-        inactive: require("assets/images/topMenu/Active/bitcoin.png"),
+        active: require("assets/images/account/notificationsLogos/lsdsDark.png"),
+        inactive: require("assets/images/account/notificationsLogos/lsdsDark.png"),
       },
     },
   },

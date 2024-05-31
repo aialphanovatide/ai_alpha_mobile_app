@@ -13,8 +13,8 @@ const useHomeAnalysisStyles = () => {
       marginVertical: 8,
       color: theme.titleColor,
       fontSize: 21.3333,
-      fontFamily: theme.fontSemibold,
-
+      fontWeight: '600',
+      fontFamily: theme.fontMedium,
     },
     titleStyles: {
       maxWidth: '85%',

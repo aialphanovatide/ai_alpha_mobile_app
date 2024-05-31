@@ -45,7 +45,6 @@ const App = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [serverError, setServerError] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  //const {socket} = useContext(SocketContext);
   const [serverWentDown, setServerWentDown] = useState(0);
 
   /*
@@ -117,16 +116,6 @@ const App = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Funtion to subscribe a user to a Topic
-  //const subscribeTopic = async (topic : string) => {
-  //  messaging()
-  //    .subscribeToTopic(topic)
-  //    .then(() => console.log("Subscribed to topic:", topic))
-  //    .catch((e) => {
-  //      console.log(e);
-  //    });
-  //};
-  //subscribeTopic('all')
 
   useEffect(() => {
     const getUserNotificationsToken = async () => {
@@ -175,36 +164,7 @@ const App = () => {
     setBarScheme(theme);
   };
 
-  /*
-  const handleNotification = messageData => {
-    console.log('Sending notification...');
-    console.log('Received message:', messageData);
 
-    const data =
-      typeof messageData === 'string' ? JSON.parse(messageData) : messageData;
-    console.log('Data after JSON ->', data);
-    const {alert_name, message} = data;
-
-    let {last_price} = data;
-    last_price = last_price.replace(/\.$/, '');
-
-    console.log('Alert name:', alert_name);
-    console.log('Message:', message);
-    console.log('Price:', last_price);
-
-    PushNotificationIOS.addNotificationRequest({
-      id: '1',
-      title: 'AI Alpha',
-      body: `${alert_name} - ${message} - ${last_price}`,
-      userInfo: {}, // Optional additional data
-      fireDate: new Date().getTime() + 1000, // Schedules for immediate delivery
-    });
-
-    if (Platform.OS === 'android') {
-      Alert.alert(alert_name, `${message}\nPrice${last_price}`);
-    }
-  };
-*/
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();
     setIsConnected(state.isConnected);
@@ -221,7 +181,6 @@ const App = () => {
   };
 
   return (
-    <SocketProvider>
       <Auth0Provider
         domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
         clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
@@ -373,7 +332,6 @@ const App = () => {
           </UserProvider>
         </RevenueCatProvider>
       </Auth0Provider>
-    </SocketProvider>
   );
 };
 

@@ -25,10 +25,12 @@ const useTopStoriesStyles = () => {
       fontFamily: theme.fontSemibold,
       color: theme.titleColor,
       fontSize: 21.3333,
+      fontWeight: '600',
+      fontFamily: theme.fontMedium,
     },
     titleStyles: {
       maxWidth: '85%',
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
       color: theme.titleColor,
       marginBottom: 2,
       fontSize: theme.responsiveFontSize,
