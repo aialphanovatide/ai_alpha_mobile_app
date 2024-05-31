@@ -16,11 +16,31 @@ import AnalysisArticle from './Analysis/AnalysisArticle';
 import NarrativeTradingArticle from './HomeNarrativeTradings/NarrativeTradingArticle';
 import {useScreenOrientation} from '../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/native';
+import Search from '../Search/Search';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
 const SubMenuStack = createMaterialTopTabNavigator();
 const NewsStack = createNativeStackNavigator();
+const SearchStack = createNativeStackNavigator();
+
+const SearchScreen = () => {
+  return (
+    <SearchStack.Navigator
+      initialRouteName="SearchMain"
+      screenOptions={{
+        lazy: true,
+        swipeEnabled: false,
+        header: () => null,
+      }}>
+      <SearchStack.Screen
+        name={'SearchMain'}
+        component={Search}
+        initialParams={{searchText: ''}}
+      />
+    </SearchStack.Navigator>
+  );
+};
 
 const NewsScreen = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
@@ -214,6 +234,7 @@ const HomeStackScreen = () => {
         name="NarrativeTradingArticleScreen"
         component={NarrativeTradingArticle}
       />
+      <HomeStack.Screen name="SearchScreen" component={SearchScreen} />
     </HomeStack.Navigator>
   );
 };

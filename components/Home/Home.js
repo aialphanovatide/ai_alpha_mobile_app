@@ -53,7 +53,7 @@ const Home = () => {
           <Analysis handleAboutPress={handleAboutPress} />
           <NarrativeTradings handleAboutPress={handleAboutPress}/>
           <TopTenGainers handleAboutPress={handleAboutPress} />
-          <PriceAction handleAboutPress={handleAboutPress} />
+          {/* <PriceAction handleAboutPress={handleAboutPress} /> */}
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>

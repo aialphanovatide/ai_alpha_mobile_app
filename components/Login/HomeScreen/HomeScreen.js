@@ -6,7 +6,6 @@ import Home from '../../Home/Home';
 import Chatbot from '../../Chatbot/Chatbot';
 import Alerts from '../../Alerts/alerts';
 import {Image, View} from 'react-native';
-import styles from './HomeScreenStyles';
 import HomeStackScreen from '../../Home/HomeStack';
 import {AppThemeContext} from '../../../context/themeContext';
 import AnalysisScreen from '../../Analysis/AnalysisStack';
@@ -14,14 +13,15 @@ import AccountScreen from '../../Account/AccountStack';
 import {useNavigation} from '@react-navigation/core';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import {useUserId} from '../../../context/UserIdContext';
-import {RotateContext} from '../../../context/rotateContext';
-import SearchScreen from '../../Search/SearchStack';
-import {CommonActions} from '@react-navigation/native';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
+import AskAiScreen from '../../AskAi/AskAiStack';
+import LinearGradient from 'react-native-linear-gradient';
+import useNavbarStyles from './HomeScreenStyles';
 
 const Tab = createBottomTabNavigator();
 
 const MenuIcon = ({color, iconSource}) => {
+  const styles = useNavbarStyles();
   const {isLandscape, isHorizontal} = useScreenOrientation();
   return (
     <View
@@ -46,6 +46,7 @@ const HomeScreen = () => {
   const {userId} = useUserId();
   const {init} = useContext(RevenueCatContext);
   const {isLandscape, isHorizontal} = useScreenOrientation();
+  const styles = useNavbarStyles();
 
   useEffect(
     () =>
@@ -124,6 +125,40 @@ const HomeScreen = () => {
             },
           }}
         />
+        <Tab.Screen
+          name="AskAi"
+          component={AskAiScreen}
+          options={{
+            tabBarLabel: 'Ask AI',
+            tabBarIcon: ({focused}) => {
+              return (
+                <View
+                  style={[
+                    styles.buttonWrapper,
+                    focused ? styles.focusedButton : {},
+                  ]}>
+                  <LinearGradient
+                    useAngle={false}
+                    colors={['#F9B208', '#FC5404']}
+                    style={styles.askAiButton}>
+                    <Image
+                      style={styles.buttonImage}
+                      source={require('../../../assets/images/askAi/askai-icon.png')}
+                      resizeMode="contain"
+                    />
+                  </LinearGradient>
+                </View>
+              );
+            },
+          }}
+          listeners={{
+            focus: e => {
+              if (activeSubCoin && (!activeCoin || activeCoin === undefined)) {
+                updateActiveSubCoin(null);
+              }
+            },
+          }}
+        />
         {/*<Tab.Screen
           name="Chatbot"
           component={Chatbot}
@@ -184,27 +219,13 @@ const HomeScreen = () => {
             },
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Search"
           component={SearchScreen}
           listeners={{
             tabPress: e => {
               navigation.navigate('Search', {updatedSection: true});
             },
-            // navigation.dispatch(
-            //   CommonActions.reset({
-            //     index: 4,
-            //     routes: [
-            //       {name: 'Home'},
-            //       {
-            //         name: 'Alerts',
-            //       },
-            //       {name: 'Analysis'},
-            //       {name: 'Account'},
-            //       {name: 'Search'},
-            //     ],
-            //   }),
-            // ),
           }}
           options={{
             tabBarLabel: 'Search',
@@ -219,7 +240,7 @@ const HomeScreen = () => {
               />
             ),
           }}
-        />
+        /> */}
       </Tab.Navigator>
     </GestureHandlerRootView>
   );

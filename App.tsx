@@ -35,7 +35,6 @@ import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
-import firestore from '@react-native-firebase/firestore';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -73,7 +72,16 @@ const App = () => {
     socket.on('new_alert', messageData => {
       console.log('Received message:', messageData);
       console.log('SOCKET ID --->', socket.id);
-      handleNotification(messageData);
+      const data =
+        typeof messageData === 'string' ? JSON.parse(messageData) : messageData;
+      const {alert_name, message} = data;
+
+      let {last_price} = data;
+      last_price = last_price.replace(/\.$/, '');
+
+      if (Platform.OS === 'android') {
+        Alert.alert(alert_name, `${message}\nPrice: ${last_price}`);
+      }
     });
   }, []);
 

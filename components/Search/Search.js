@@ -224,7 +224,7 @@ const Search = ({route}) => {
       handleAnalysisSearch(analysisItems, 'c');
       handleNTSearch(narrativeTradingData, 'c');
     }
-  }, []);
+  }, [isFocused]);
 
   const handleTextChange = value => {
     setSearchText(value);
@@ -251,7 +251,6 @@ const Search = ({route}) => {
         }
       });
     });
-    // console.log('Found cryptos: ', found_cryptos);
     found_cryptos && found_cryptos !== undefined
       ? setCryptoSearchResult(found_cryptos)
       : setCryptoSearchResult([]);
@@ -352,7 +351,6 @@ const Search = ({route}) => {
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={styles.flex}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Search</Text>
         <View
           style={Platform.select({
             ios: styles.textInputContainerIOS,
@@ -379,7 +377,7 @@ const Search = ({route}) => {
             </Text>
             <View style={styles.horizontalLine} />
           </View>
-          <ScrollView style={styles.cryptoSearch} nestedScrollEnabled>
+          <ScrollView style={[styles.cryptoSearch, {marginTop: 0,}]} nestedScrollEnabled>
             {cryptoSearchResult &&
               cryptoSearchResult.length > 0 &&
               cryptoSearchResult.map((crypto, index) => (

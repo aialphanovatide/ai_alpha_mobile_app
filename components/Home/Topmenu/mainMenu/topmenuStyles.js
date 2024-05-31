@@ -9,7 +9,6 @@ const useTopMenuStyles = () => {
       flexDirection: 'row',
       minWidth: 60,
       paddingVertical: 10,
-      backgroundColor: theme.mainBackgroundColor,
     },
     loadingMessage: {
       flex: 1,
@@ -21,6 +20,9 @@ const useTopMenuStyles = () => {
       fontSize: theme.responsiveFontSize * 0.825,
       fontFamily: theme.fontMedium,
       textAlign: 'center',
+    },
+    topContentWrapper: {
+      width: '100%',
     },
   });
   return styles;

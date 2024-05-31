@@ -58,7 +58,6 @@ const TopTenGainers = ({handleAboutPress}) => {
   };
 
   useEffect(() => {
-    /*
     const fetchTopTenCoins = async () => {
       try {
         const data = await topTenGainersService.getTop10Coins();
@@ -71,9 +70,10 @@ const TopTenGainers = ({handleAboutPress}) => {
       }
     };
     fetchTopTenCoins();
-    */
+    /*
     setTopTenCoins(TOP_TEN_GAINERS_MOCK);
     setLoading(false);
+    */
   }, []);
   return (
     <View style={styles.topTenGainersContainer}>

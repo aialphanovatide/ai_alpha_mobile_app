@@ -91,6 +91,7 @@ export const lightThemeStyles = {
   inputColor: '#000000',
   topMenuActiveBg: '#F9F9F933',
   activeSRButtonColor: '#80290E',
+  askAiButtonColor: '#FFFFFF',
   boxesVerticalMargin: 8,
   titlesVerticalMargin: 24,
   font: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
@@ -183,6 +184,7 @@ export const darkThemeStyles = {
   loaderBgColor: '#424445',
   notificationsWSwitchColor: '#D9D9D9',
   lockIconColor: '#737373',
+  askAiButtonColor: '#0A0A0A',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {

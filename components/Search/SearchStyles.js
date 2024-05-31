@@ -35,6 +35,7 @@ const useSearchStyles = () => {
     textInputContainer: {
       flexDirection: 'row',
       position: 'relative',
+      height: 60,
     },
     textInputContainerIOS: {
       flexDirection: 'row',
