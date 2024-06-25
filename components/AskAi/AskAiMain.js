@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
+  Platform,
   SafeAreaView,
   ScrollView,
   Text,
@@ -13,6 +14,7 @@ import useAskAiStyles from './AskAiStyles';
 import FastImage from 'react-native-fast-image';
 import AskAiHistory from './AskAiHistory/AskAiHistory';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SkeletonLoader from '../Loader/SkeletonLoader';
 
 // Function to combine the multiple responses coming from the ASK AI Alpha endpoint, to handle them more easily in one object.
 const combineResponses = (response, searchedValue) => {
@@ -29,7 +31,7 @@ const combineResponses = (response, searchedValue) => {
     'ath_change_percentage',
     'percentage_circulating_supply',
     'fully_diluted_valuation',
-    'max_supply',
+    // 'max_supply',
     // 'circulating_supply',
   ];
   const KEY_DISPLAY_TITLES = [
@@ -63,11 +65,10 @@ const combineResponses = (response, searchedValue) => {
     },
     // {key: 'symbol', displayName: 'Symbol', valueType: 'symbol'},
     {key: 'market_cap_usd', displayName: 'Market Cap USD', valueType: 'price'},
-    {key: 'max_supply', displayName: 'Max Supply', valueType: 'price'},
+    // {key: 'max_supply', displayName: 'Max Supply', valueType: 'price'},
     {key: 'website', displayName: 'Website', valueType: ''},
     {key: 'whitepaper', displayName: 'Whitepaper', valueType: ''},
     {key: 'name', displayName: 'Token Name', valueType: ''},
-
   ];
   const combinedResult = {};
   let name = '';
@@ -205,7 +206,7 @@ const Input = ({textHandler, textValue}) => {
             styles.placeholderText,
             textValue !== '' ? {opacity: 0} : {},
           ]}>
-          e.g: SOIL
+          E.g: SOIL
         </Text>
       </View>
     </View>
@@ -350,6 +351,7 @@ const AskAiMain = () => {
 
   const handleActiveResultData = data => {
     setResultData(data);
+    setLoading(false);
   };
 
   // Function to clean the saved ASK AI section History data, removing all the items storaged on the user device's cache (Async Storage)
@@ -394,7 +396,6 @@ const AskAiMain = () => {
     setFilteredResults(filtered_items);
     return;
   };
-
   return (
     <LinearGradient
       useAngle={true}
@@ -402,7 +403,13 @@ const AskAiMain = () => {
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={styles.flex}>
       <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.searchContainer} nestedScrollEnabled>
+        <ScrollView
+          style={[
+            styles.searchContainer,
+            Platform.OS === 'ios' ? {paddingHorizontal: 12} : {},
+          ]}
+          nestedScrollEnabled
+          showsVerticalScrollIndicator={false}>
           <Text style={styles.title}>ASK AI Alpha</Text>
           <Input textHandler={handleTextChange} textValue={searchText} />
           <TouchableOpacity
@@ -416,8 +423,10 @@ const AskAiMain = () => {
             activeOption={activeOption}
             handleOptionChange={handleOptionChange}
           />
-          {activeOption.name === 'Results' ? (
-            <View style={styles.resultsContainer}>
+          {loading ? (
+            <SkeletonLoader type="askAi" quantity={8} />
+          ) : activeOption.name === 'Results' ? (
+            <View style={[styles.resultsContainer]}>
               <View style={styles.row}>
                 {!loading && resultData && resultData !== undefined ? (
                   <View style={styles.row}>

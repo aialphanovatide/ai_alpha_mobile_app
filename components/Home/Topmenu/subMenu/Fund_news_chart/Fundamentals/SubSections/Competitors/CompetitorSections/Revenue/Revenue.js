@@ -5,6 +5,7 @@ import {revenueImagesUrls} from './revenueImagesUrl';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import Loader from '../../../../../../../../../Loader/Loader';
 import {findCoinNameBySymbol} from '../../coinsNames';
+import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const GraphItem = ({value, scale, color, imageNumber, styles}) => {
   const imagePath = revenueImagesUrls[color][imageNumber - 1];
@@ -145,7 +146,7 @@ const Revenue = ({competitorsData, isSectionWithoutData}) => {
         : revenue_data.filter(item => {
             if (item.value !== 0) {
               item.color = tintColors[counter];
-              counter ++;
+              counter++;
               return true;
             } else {
               return false;
@@ -159,7 +160,7 @@ const Revenue = ({competitorsData, isSectionWithoutData}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type="selector" quantity={4} style={{width: '100%'}} />
       ) : cryptos?.length === 0 ||
         isSectionWithoutData(competitorsData, 'revenue', '-') ? (
         <NoContentMessage />

@@ -52,9 +52,7 @@ const Calendar = ({handleReturn}) => {
           <View style={styles.backbuttonContainer}>
             <BackButton handleReturn={handleReturn} />
           </View>
-          <View style={styles.titleContainer}>
             <Text style={styles.title}>Calendar</Text>
-          </View>
           <Text style={styles.sectionDescription}>
             Presents key cryptocurrency events, such as token launches, protocol
             updates and regulatory decisions, serving as an aid to anticipate
@@ -76,11 +74,6 @@ const Calendar = ({handleReturn}) => {
               handlePress={handleEconomicEventPress}
               selectedInterval={economicSelectedInterval}
             />
-            {/* <TVEconomicCalendar
-                selectedInterval={economicSelectedInterval}
-                width={300}
-                height={300}
-              /> */}
             <MacroEconomicCalendar
               selectedInterval={economicSelectedInterval}
             />

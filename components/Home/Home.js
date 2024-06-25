@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import {useScrollToTop} from '@react-navigation/native';
 import NarrativeTradings from './HomeNarrativeTradings/NarrativeTradings';
+import TopTenLosers from './Top10Losers/TopTenLosers';
 
 const Home = () => {
   const styles = useHomeStyles();
@@ -51,9 +52,9 @@ const Home = () => {
           <TickerTape />
           <TopStories handleAboutPress={handleAboutPress} />
           <Analysis handleAboutPress={handleAboutPress} />
-          <NarrativeTradings handleAboutPress={handleAboutPress}/>
+          <NarrativeTradings handleAboutPress={handleAboutPress} />
           <TopTenGainers handleAboutPress={handleAboutPress} />
-          {/* <PriceAction handleAboutPress={handleAboutPress} /> */}
+          <TopTenLosers handleAboutPress={handleAboutPress} />
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>

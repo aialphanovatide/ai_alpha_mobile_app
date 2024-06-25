@@ -9,6 +9,7 @@ import {
 import useChartStyles from './ChartStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../../../Loader/Loader';
+import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const CurrentMarketCap = ({competitorsData, coin}) => {
   const {theme} = useContext(AppThemeContext);
@@ -137,7 +138,7 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
   return (
     <View style={styles.chartContainer}>
       {loading || cryptos?.length === 0 ? (
-        <Loader />
+        <SkeletonLoader type='chart' />
       ) : (
         generateMarketCapChart(
           cryptos,

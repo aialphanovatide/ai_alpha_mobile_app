@@ -15,8 +15,8 @@ const useNewsStyles = () => {
       backgroundColor: theme.mainBackgroundColor,
     },
     title: {
-      marginVertical: 10,
-      marginHorizontal: 10,
+      marginVertical: 8,
+      marginHorizontal: 28,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
       fontFamily: theme.fontSemibold,

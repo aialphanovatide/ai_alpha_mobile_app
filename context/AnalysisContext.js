@@ -6,6 +6,7 @@ const AnalysisContext = createContext();
 
 const AnalysisContextProvider = ({children}) => {
   const {categories} = useContext(CategoriesContext);
+  const [loading, setLoading] = useState(true);
   const [analysisItems, setAnalysisItems] = useState([]);
 
   const findCoinByCategoriesAndBotId = (categories, coin_id) => {
@@ -77,6 +78,7 @@ const AnalysisContextProvider = ({children}) => {
 
   useEffect(() => {
     const getAnalysisData = async () => {
+      setLoading(true);
       try {
         const data = await getService(`/get_analysis`);
         if (data.success) {
@@ -102,6 +104,8 @@ const AnalysisContextProvider = ({children}) => {
         }
       } catch (error) {
         console.log('Error trying to get analysis data: ', error);
+      } finally {
+        setLoading(false);
       }
     };
     getAnalysisData();
@@ -121,7 +125,7 @@ const AnalysisContextProvider = ({children}) => {
   // };
 
   return (
-    <AnalysisContext.Provider value={{analysisItems}}>
+    <AnalysisContext.Provider value={{analysisItems, loading}}>
       {children}
     </AnalysisContext.Provider>
   );

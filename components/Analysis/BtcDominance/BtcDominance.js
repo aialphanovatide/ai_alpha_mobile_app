@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, ImageBackground, StyleSheet, Text} from 'react-native';
+import {View, ImageBackground, Text} from 'react-native';
 import {VictoryChart, VictoryAxis, VictoryCandlestick} from 'victory-native';
-import Loader from '../../Loader/Loader';
 import axios from 'axios';
 import BackButton from '../BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -9,6 +8,7 @@ import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts
 import useBtcDominanceStyles from './BtcDominanceStyles';
 import {AppThemeContext} from '../../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
+import SkeletonLoader from '../../Loader/SkeletonLoader';
 
 const BtcDominanceChart = ({candlesToShow = 30}) => {
   const [chartData, setChartData] = useState([]);
@@ -85,7 +85,11 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
             preference for BTC over other altcoins.
           </Text>
           <View style={styles.container}>
-            <Loader />
+            <SkeletonLoader type="timeframe" quantity={4} />
+            <SkeletonLoader
+              type="chart"
+              style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+            />
           </View>
         </SafeAreaView>
       </LinearGradient>

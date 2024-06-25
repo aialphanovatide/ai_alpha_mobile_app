@@ -6,7 +6,7 @@ import fearAndGreedService from '../../../services/FearAndGreedServices';
 import useFearAndGreedStyles from './FearAndGreedStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
-import Loader from '../../Loader/Loader';
+import SkeletonLoader from '../../Loader/SkeletonLoader';
 
 const ReferenceItem = ({item, styles}) => {
   return (
@@ -29,11 +29,6 @@ const References = ({references, activeReference}) => {
   const styles = useFearAndGreedStyles();
   return (
     <ScrollView style={styles.referencesContainer}>
-      {/* {activeReference ? (
-        <ReferenceItem item={activeReference} styles={styles} />
-      ) : (
-        <Text style={styles.descriptionText}>No active reference</Text>
-      )} */}
       {references.map((item, index) => (
         <ReferenceItem item={item} key={index} styles={styles} />
       ))}
@@ -119,7 +114,9 @@ const FearAndGreed = ({handleReturn}) => {
       style={{flex: 1}}>
       <ScrollView style={styles.scrollView}>
         <SafeAreaView style={styles.mainSection}>
-          <BackButton handleReturn={handleReturn} />
+          <View style={styles.backButtonWrapper}>
+            <BackButton handleReturn={handleReturn} />
+          </View>
           <Text style={styles.title}>Fear and Greed Index</Text>
           <Text style={styles.sectionDescription}>
             Indicates the current sentiment of the cryptocurrency market using
@@ -128,7 +125,7 @@ const FearAndGreed = ({handleReturn}) => {
             the market.
           </Text>
           {loading ? (
-            <Loader />
+            <SkeletonLoader type="speedometer" />
           ) : (
             <>
               <View style={styles.fearAndGreedWidgetContainer}>

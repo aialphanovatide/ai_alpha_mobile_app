@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, ImageBackground, Dimensions, Tex, Image} from 'react-native';
+import {View, ImageBackground, Dimensions, Image} from 'react-native';
 import {
   VictoryChart,
   VictoryAxis,
@@ -7,17 +7,15 @@ import {
   VictoryCandlestick,
   VictoryLabel,
   VictoryLine,
-  VictoryTooltip,
 } from 'victory-native';
-import Loader from '../../../../../Loader/Loader';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 import useChartsStyles from './ChartsStyles';
 import {getService} from '../../../../../../services/aiAlphaApi';
 import DataRenderer from './clickOnCandleDetails';
-import {type} from 'os';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/core';
+import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
 
 // Format any number, including 0.0000
 const formatNumber = num => {
@@ -27,7 +25,7 @@ const formatNumber = num => {
   const tier = Math.log10(absNum) / 3 || 0;
 
   // If the number is smaller than 1000, no need for abbreviation
-  if (tier === 0) return num ;
+  if (tier === 0) return num;
 
   if (num <= 0.01) return num.toExponential();
 
@@ -199,11 +197,7 @@ const Chart = ({
   const chartHeight = 340;
 
   if (loading) {
-    return (
-      <View style={styles.loaderContainer}>
-        <Loader />
-      </View>
-    );
+    return <SkeletonLoader type="chart" style={{height: 300}} />;
   }
 
   return (

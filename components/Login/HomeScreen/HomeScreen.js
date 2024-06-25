@@ -69,6 +69,7 @@ const HomeScreen = () => {
         initialRouteName={Home}
         backBehavior={isLandscape && isHorizontal ? 'none' : 'initialRoute'}
         screenOptions={{
+          unmountOnBlur: true,
           headerShown: false,
           tabBarStyle: {
             height: isLandscape && isHorizontal ? 0 : 70,
@@ -83,6 +84,7 @@ const HomeScreen = () => {
             fontSize: theme.responsiveFontSize * 0.8,
             fontFamily: theme.fontSemibold,
           },
+          tabBarHideOnKeyboard: true,
         }}>
         <Tab.Screen
           name="Home"

@@ -9,7 +9,7 @@ const useEthBtcStyles = () => {
       flex: 1,
       backgroundColor: 'transparent',
       width: theme.width,
-      paddingTop: 36
+      paddingTop: 36,
     },
     container: {
       width: '100%',
@@ -49,10 +49,9 @@ const useEthBtcStyles = () => {
     },
     timeframeContainer: {
       flex: 1,
-      width: '50%',
+      width: '100%',
       maxHeight: '5%',
-      marginHorizontal: 16,
-
+      paddingHorizontal: 12,
     },
     sectionDescription: {
       width: '90%',

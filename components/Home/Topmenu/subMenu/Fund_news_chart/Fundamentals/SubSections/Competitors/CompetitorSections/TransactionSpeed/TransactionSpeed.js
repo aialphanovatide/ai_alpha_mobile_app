@@ -7,6 +7,7 @@ import {AppThemeContext} from '../../../../../../../../../../context/themeContex
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
+import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const TransactionSpeed = ({competitorsData}) => {
   const {theme} = useContext(AppThemeContext);
@@ -104,7 +105,7 @@ const TransactionSpeed = ({competitorsData}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type="speedometer" style={{marginTop:64}}/>
       ) : cryptos?.length === 0 ? (
         <NoContentMessage />
       ) : (

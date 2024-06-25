@@ -6,7 +6,6 @@ const useMacroEconomicCalendarStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     cryptoCalendarTitle: {
-      paddingVertical: 2.5,
       paddingHorizontal: 15,
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize * 0.85,
@@ -31,7 +30,6 @@ const useMacroEconomicCalendarStyles = () => {
     eventsContainer: {
       flex: 1,
       width: '100%',
-      padding: 10,
     },
     calendarItem: {
       flex: 1,
@@ -113,7 +111,7 @@ const useMacroEconomicCalendarStyles = () => {
       minHeight: 70,
       width: '100%',
       flexDirection: 'row',
-      marginVertical: 10,
+      marginVertical: 8,
       marginHorizontal: 12,
       backgroundColor: theme.subMenuBgColor,
       borderRadius: 3,

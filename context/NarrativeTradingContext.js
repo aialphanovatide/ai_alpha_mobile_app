@@ -7,6 +7,7 @@ const NarrativeTradingContext = createContext();
 const NarrativeTradingContextProvider = ({children}) => {
   const {categories} = useContext(CategoriesContext);
   const [narrativeTradingData, setNarrativeTradingData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const findCoinByCategoriesAndBotId = (categories, coin_id) => {
     let found;
@@ -45,6 +46,7 @@ const NarrativeTradingContextProvider = ({children}) => {
 
   useEffect(() => {
     const getNarrativeTradings = async () => {
+      setLoading(true);
       try {
         const data = await getService(`/get_narrative_trading`);
         if (data.success) {
@@ -69,13 +71,15 @@ const NarrativeTradingContextProvider = ({children}) => {
         }
       } catch (error) {
         console.log('Error trying to get narrative tradings data: ', error);
+      } finally {
+        setLoading(false);
       }
     };
     getNarrativeTradings();
   }, [categories]);
 
   return (
-    <NarrativeTradingContext.Provider value={{narrativeTradingData}}>
+    <NarrativeTradingContext.Provider value={{narrativeTradingData, loading}}>
       {children}
     </NarrativeTradingContext.Provider>
   );

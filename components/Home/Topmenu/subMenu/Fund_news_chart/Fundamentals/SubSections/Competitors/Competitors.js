@@ -23,6 +23,7 @@ import useCompetitorsStyles from './CompetitorsStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
+import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
   const {theme} = useContext(AppThemeContext);
@@ -302,7 +303,7 @@ const Competitors = ({
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type="competitors" quantity={5} />
       ) : competitorsData.length === 0 ? (
         <NoContentMessage />
       ) : (

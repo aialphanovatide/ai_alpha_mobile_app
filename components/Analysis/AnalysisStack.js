@@ -2,7 +2,6 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Analysis from './Analysis';
 import Calendar from './Calendar/Calendar';
-import BitcoinFundingRates from './BTCFundingRates/BitcoinFundingRates';
 import EthBtcChart from './EthBtcChart/EthBtcChart';
 import ChartSection from './ChartSection/ChartSection';
 import FearAndGreed from './FearAndGreed/FearAndGreed';
@@ -10,6 +9,9 @@ import BtcDominanceChart from './BtcDominance/BtcDominance';
 import Total3Chart from './Total3Chart/Total3Chart';
 import History from './HistorySection/History';
 import NarrativeTrading from './NarrativeTrading/NarrativeTrading';
+import FundingRates from './FundingRates/FundingRates';
+import VixChart from './VixIndexChart/VixChart';
+import UsOilChart from './UsOilChart/UsOilChart';
 
 const AnalysisStack = createNativeStackNavigator();
 
@@ -25,10 +27,7 @@ const AnalysisScreen = () => {
         component={NarrativeTrading}
       />
       <AnalysisStack.Screen name="Calendar" component={Calendar} />
-      <AnalysisStack.Screen
-        name="BTCFundingRates"
-        component={BitcoinFundingRates}
-      />
+      <AnalysisStack.Screen name="FundingRates" component={FundingRates} />
       <AnalysisStack.Screen name="BTCDominance" component={BtcDominanceChart} />
       <AnalysisStack.Screen name="EthBtc" component={EthBtcChart} />
       <AnalysisStack.Screen name="Total3" component={Total3Chart} />
@@ -62,6 +61,17 @@ const AnalysisScreen = () => {
             'Provides the performance of the S&P 500 index, reflecting the health of the US stock market. It is an important analysis for understanding the correlation or divergence between the equity and cryptocurrency markets.',
         }}
       />
+      <AnalysisStack.Screen
+        name="USOIL"
+        component={UsOilChart}
+        initialParams={{
+          title: 'U.S. Oil Chart',
+          symbol: 'USO',
+          description:
+            'When the price of oil is higher, inflation is likely to be higher, which in turn means the US economy is likely to be weaker medium term and therefore crypto prices will come down.',
+        }}
+      />
+      <AnalysisStack.Screen name="VIX" component={VixChart} />
       <AnalysisStack.Screen name="FearAndGreed" component={FearAndGreed} />
     </AnalysisStack.Navigator>
   );

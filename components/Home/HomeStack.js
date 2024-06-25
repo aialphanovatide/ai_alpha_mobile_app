@@ -29,6 +29,8 @@ const SearchScreen = () => {
     <SearchStack.Navigator
       initialRouteName="SearchMain"
       screenOptions={{
+        animation: 'fade',
+        animationDuration: 200,
         lazy: true,
         swipeEnabled: false,
         header: () => null,
@@ -50,7 +52,7 @@ const NewsScreen = () => {
       initialRouteName="NewsMain"
       backBehavior={'none'}
       screenOptions={{
-        animation: 'none',
+        animation: 'fade',
         headerShown: false,
       }}>
       <NewsStack.Screen
@@ -145,7 +147,7 @@ const SubMenuScreen = () => {
       }
       initialRouteName="Charts"
       screenOptions={{
-        animation: 'none',
+        animation: 'fade',
         lazy: true,
         swipeEnabled: false,
         gestureEnabled: isLandscape && isHorizontal ? false : true,
@@ -188,7 +190,7 @@ const TopmenuScreen = () => {
     <TopmenuStack.Navigator
       initialRouteName={'SubMenuScreen'}
       screenOptions={{
-        animation: 'none',
+        animation: 'fade',
         gestureEnabled: isLandscape && isHorizontal ? false : true,
         header: () =>
           isLandscape && isHorizontal ? null : <SubMenu isAlertsMenu={false} />,
@@ -212,7 +214,8 @@ const HomeStackScreen = () => {
     <HomeStack.Navigator
       initialRouteName="InitialHome"
       screenOptions={{
-        animation: 'none',
+        animation: 'fade',
+        animationDuration: 250,
         header: () =>
           isLandscape && isHorizontal ? null : <TopMenu isAlertsMenu={false} />,
       }}>

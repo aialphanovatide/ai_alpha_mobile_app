@@ -24,6 +24,15 @@ const useTopMenuStyles = () => {
     topContentWrapper: {
       width: '100%',
     },
+    marginWrapper: {
+      width: '100%',
+      marginTop: 8,
+      marginBottom: 64,
+      alignItems: 'center',
+      alignSelf: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'transparent'
+    }
   });
   return styles;
 };

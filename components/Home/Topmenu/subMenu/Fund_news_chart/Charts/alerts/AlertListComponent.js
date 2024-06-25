@@ -3,6 +3,7 @@ import {View, Text, ScrollView} from 'react-native';
 import AlertDetails from './alertDetails';
 import {getService} from '../../../../../../../services/aiAlphaApi';
 import Loader from '../../../../../../Loader/Loader';
+import SkeletonLoader from '../../../../../../Loader/SkeletonLoader';
 
 const AlertListComponent = ({botName, timeframe, styles}) => {
   const [alerts, setAlerts] = useState([]);
@@ -44,7 +45,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
           setAlerts(filtered_alerts);
         }
       } catch (error) {
-        console.error('Error fetching alerts:', error.message);  
+        console.error('Error fetching alerts:', error.message);
       } finally {
         setIsLoading(false);
       }
@@ -60,7 +61,7 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
       style={styles.alertListContainer}>
       {isLoading ? (
         <View style={styles.loaderContainer}>
-          <Loader />
+          <SkeletonLoader type="alerts" quantity={3} />
         </View>
       ) : alerts.length === 0 ? (
         <Text style={styles.alertsTextMessage}>

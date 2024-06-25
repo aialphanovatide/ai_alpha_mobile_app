@@ -8,13 +8,12 @@ const useFundamentalsStyles = () => {
     container: {
       width: theme.width,
       paddingHorizontal: 10,
-      paddingTop: 30,
       marginBottom: 80,
     },
     title: {
-      marginVertical: theme.titlesVerticalMargin * 0.5,
+      marginTop: 48,
+      marginBottom: 16,
       marginHorizontal: 12,
-      marginTop: 0,
       fontFamily: theme.fontSemibold,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,

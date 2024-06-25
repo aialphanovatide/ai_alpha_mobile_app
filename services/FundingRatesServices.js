@@ -90,8 +90,8 @@ function filterByExchanges(data, exchanges) {
     .filter(Boolean);
 }
 
-async function getBtcFundingRates() {
-  const url = `https://api.coinalyze.net/v1/funding-rate?api_key=${COINALYZE_API_KEY}&symbols=BTCUSD_PERP.3,BTCUSD_PERP.A,BTCUSD.C,BTCUSD.B,BTCUSD.K,BTCUSD.6,BTC-USD.8,BTCUSDT.K,BTCUSDT.C`;
+async function getBtcFundingRates(coin) {
+  const url = `https://api.coinalyze.net/v1/funding-rate?api_key=${COINALYZE_API_KEY}&symbols=BTCUSD_PERP.3,BTCUSD_PERP.A,BTCUSD.6,BTC-USD.8,ETHUSD_PERP.3,ETHUSD_PERP.A,ETHUSD.6,ETH-USD.8,SOLUSD_PERP.3,SOLUSD_PERP.A,SOLUSD.6,SOL-USD.8`;
   const options = {
     method: 'GET',
     headers: {
@@ -107,7 +107,7 @@ async function getBtcFundingRates() {
     }
 
     const data = await response.json();
-    console.log(filterByExchanges(data, exchanges));
+    // console.log(filterByExchanges(data, exchanges));
     // const btcFundRate = data.data.find(obj => obj.symbol === 'BTC');
     return filterByExchanges(data, exchanges);
   } catch (error) {

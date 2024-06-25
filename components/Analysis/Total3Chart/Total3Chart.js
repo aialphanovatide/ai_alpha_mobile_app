@@ -8,6 +8,7 @@ import {AppThemeContext} from '../../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import {getService} from '../../../services/aiAlphaApi';
 import BackButton from '../BackButton/BackButton';
+import SkeletonLoader from '../../Loader/SkeletonLoader';
 
 const Total3Chart = ({candlesToShow = 30}) => {
   const styles = useTotal3Styles();
@@ -88,8 +89,11 @@ const Total3Chart = ({candlesToShow = 30}) => {
             health and trends of the altcoin market and is essential for
             diversified investment strategies.
           </Text>
-          <View style={styles.container}>
-            <Loader />
+          <View style={[styles.container, {paddingHorizontal: 10}]}>
+            <SkeletonLoader
+              type="chart"
+              style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+            />
           </View>
         </SafeAreaView>
       </LinearGradient>
@@ -120,7 +124,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
               style={styles.chartBackgroundImage}
               resizeMode="contain"
             />
-            <VictoryChart width={375} domainPadding={{x: 10, y: 10}}>
+            <VictoryChart width={380} domainPadding={{x: 10, y: 10}}>
               <VictoryAxis
                 style={{
                   axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
@@ -144,6 +148,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
                     fontSize: theme.responsiveFontSize * 0.55,
                     fill: theme.titleColor,
                     fontFamily: theme.font,
+                    overflow: 'visible',
                   },
                   grid: {stroke: theme.chartsGridColor},
                 }}

@@ -7,6 +7,7 @@ import {findCoinNameBySymbol} from '../../coinsNames';
 import {fundamentals_static_content} from '../../../../fundamentalsStaticData';
 import SupplyModal from '../../../SupplyModal/SupplyModal';
 import FastImage from 'react-native-fast-image';
+import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const CirculatingSupplyItem = ({
   item,
@@ -266,7 +267,7 @@ const CirculatingSupply = ({cryptos, tokenomicsData, competitorsData}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader quantity={4} />
       ) : cryptos?.length === 0 ? (
         <NoContentMessage />
       ) : (

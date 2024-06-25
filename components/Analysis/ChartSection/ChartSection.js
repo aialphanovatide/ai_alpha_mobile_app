@@ -20,6 +20,7 @@ import {
 import Loader from '../../Loader/Loader';
 import {getService} from '../../../services/aiAlphaApi';
 import ChartButtons from './ChartButtons';
+import SkeletonLoader from '../../Loader/SkeletonLoader';
 
 const initialSessionData = {
   security_token: null,
@@ -158,7 +159,10 @@ const ChartSection = ({route, navigation}) => {
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.sectionDescription}>{description}</Text>
           <View style={styles.container}>
-            <Loader />
+            <SkeletonLoader type="timeframe" quantity={4} />
+            <SkeletonLoader type="chart" 
+            style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+            />
           </View>
         </SafeAreaView>
       </LinearGradient>
@@ -200,7 +204,10 @@ const ChartSection = ({route, navigation}) => {
 
     try {
       setChartData([]);
-      await fetchCapitalComChartData(s);
+      await fetchCapitalComChartData(
+        sessionData.security_token,
+        sessionData.security_cst,
+      );
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -215,7 +222,9 @@ const ChartSection = ({route, navigation}) => {
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={{flex: 1}}>
       <SafeAreaView style={styles.mainSection}>
-        <BackButton />
+        <View style={styles.backButtonWrapper}>
+          <BackButton />
+        </View>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.sectionDescription}>{description}</Text>
         <View style={styles.timeframeContainer}>

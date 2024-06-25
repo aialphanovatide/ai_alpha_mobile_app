@@ -7,6 +7,7 @@ import menuData from '../../../Home/Topmenu/mainMenu/menuData';
 import calendarCryptos from './calendarCryptos';
 import useCryptoCalendarStyles from './CryptoCalendarStyles';
 import {CategoriesContext} from '../../../../context/categoriesContext';
+import SkeletonLoader from '../../../Loader/SkeletonLoader';
 
 const eventTags = [
   {
@@ -82,7 +83,9 @@ const CalendarItem = ({event, coin, styles}) => {
             <Text style={styles.itemInfo}>{event.date_start}</Text>
           </View>
         </View>
-        <Text style={styles.itemTitle}>{event.caption}</Text>
+        <Text numberOfLines={2} style={[styles.itemTitle, styles.caption]}>
+          {event.caption}
+        </Text>
       </View>
     </View>
   );
@@ -159,17 +162,25 @@ const CryptoCalendar = ({selectedInterval}) => {
 
   return (
     <View style={styles.contentCenter}>
-      {options.length === 0 || loading ? (
+      {options.length === 0 ? (
         <View style={styles.loaderContainer}>
-          <Loader />
+          <SkeletonLoader type="menu" quantity={8} />
         </View>
       ) : (
+        <CryptoFilter
+          options={options}
+          currentFilter={currentFilter && currentFilter}
+          handleOptionTouch={handleOptionTouch}
+        />
+      )}
+      {loading ? (
+        <SkeletonLoader
+          type="calendar"
+          quantity={4}
+          style={{alignSelf: 'center'}}
+        />
+      ) : (
         <View style={styles.container}>
-          <CryptoFilter
-            options={options}
-            currentFilter={currentFilter && currentFilter}
-            handleOptionTouch={handleOptionTouch}
-          />
           <ScrollView style={styles.eventsContainer}>
             {events.length === 0 ? (
               <View style={styles.messageContainer}>

@@ -5,6 +5,7 @@ import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import FastImage from 'react-native-fast-image';
+import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const TokenUtilityItem = ({styles, data}) => {
   return (
@@ -53,7 +54,7 @@ const TokenUtility = ({getSectionData, coin, handleSectionContent}) => {
       ? section.length >= 300
         ? {width: 148, height: 348}
         : {
-            width: 124,
+            width: 148,
             height: 236,
           }
       : {
@@ -108,7 +109,7 @@ const TokenUtility = ({getSectionData, coin, handleSectionContent}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type="bigItem" quantity={4} />
       ) : dataItems?.length === 0 ? (
         <NoContentMessage />
       ) : (

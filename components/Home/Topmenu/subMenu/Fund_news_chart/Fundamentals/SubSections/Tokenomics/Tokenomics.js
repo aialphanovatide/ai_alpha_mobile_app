@@ -7,6 +7,7 @@ import SupplyModal from '../SupplyModal/SupplyModal';
 import {fundamentals_static_content} from '../../fundamentalsStaticData';
 import {findCoinNameBySymbol} from '../Competitors/coinsNames';
 import FastImage from 'react-native-fast-image';
+import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const TokenItem = ({item, styles, handleSupplyDataPress, activeSupply}) => {
   const descriptionName =
@@ -235,7 +236,7 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader quantity={3} />
       ) : cryptos?.length === 0 ? (
         <NoContentMessage hasSectionName={false} />
       ) : (

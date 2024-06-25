@@ -1,20 +1,16 @@
 import {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useHomeAnalysisStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
-    margin: {
-      marginTop: 8,
-      marginBottom: 16,
-    },
     mainTitle: {
       marginVertical: 8,
       color: theme.titleColor,
-      fontSize: 21.3333,
+      fontSize: theme.titleFontSize,
       fontWeight: '600',
-      fontFamily: theme.fontMedium,
+      fontFamily: theme.fontSemibold,
     },
     titleStyles: {
       maxWidth: '85%',

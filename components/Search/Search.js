@@ -26,6 +26,7 @@ import AlertDetails from '../Alerts/AlertsDetails';
 import {getService} from '../../services/aiAlphaApi';
 import useAlertsStyles from '../Alerts/styles';
 import {NarrativeTradingContext} from '../../context/NarrativeTradingContext';
+import SkeletonLoader from '../Loader/SkeletonLoader';
 
 const SearchCryptoItem = ({
   crypto,
@@ -104,7 +105,7 @@ const SearchAnalysisItem = ({
   );
 };
 
-const SearchAlertSection = ({currentText}) => {
+const SearchAlertSection = ({currentText, loading}) => {
   const [foundAlerts, setFoundAlerts] = useState([]);
   const styles = useSearchStyles();
   const alertsStyles = useAlertsStyles();
@@ -140,7 +141,10 @@ const SearchAlertSection = ({currentText}) => {
 
   return (
     <View style={styles.cryptoSearch}>
-      {foundAlerts &&
+      {loading ? (
+        <SkeletonLoader type="alerts" quantity={4} />
+      ) : (
+        foundAlerts &&
         foundAlerts.length > 0 &&
         foundAlerts.map(alert => (
           <AlertDetails
@@ -151,7 +155,8 @@ const SearchAlertSection = ({currentText}) => {
             created_at={alert.created_at}
             styles={alertsStyles}
           />
-        ))}
+        ))
+      )}
     </View>
   );
 };
@@ -206,6 +211,7 @@ const Search = ({route}) => {
   const [ntSearchResult, setNtSearchResult] = useState([]);
   const {theme} = useContext(AppThemeContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
@@ -227,6 +233,7 @@ const Search = ({route}) => {
   }, [isFocused]);
 
   const handleTextChange = value => {
+    setLoading(true);
     setSearchText(value);
     handleCryptosSearch(categories, value);
     handleAnalysisSearch(analysisItems, value);
@@ -288,6 +295,7 @@ const Search = ({route}) => {
     found_narrative_tradings && found_narrative_tradings !== undefined
       ? setNtSearchResult(found_narrative_tradings)
       : setNtSearchResult([]);
+    setLoading(false);
   };
 
   const handleCryptoItemNavigation = (category, coin) => {
@@ -377,8 +385,13 @@ const Search = ({route}) => {
             </Text>
             <View style={styles.horizontalLine} />
           </View>
-          <ScrollView style={[styles.cryptoSearch, {marginTop: 0,}]} nestedScrollEnabled>
-            {cryptoSearchResult &&
+          <ScrollView
+            style={[styles.cryptoSearch, {marginTop: 0}]}
+            nestedScrollEnabled>
+            {loading ? (
+              <SkeletonLoader type="search" quantity={6} />
+            ) : (
+              cryptoSearchResult &&
               cryptoSearchResult.length > 0 &&
               cryptoSearchResult.map((crypto, index) => (
                 <SearchCryptoItem
@@ -390,7 +403,8 @@ const Search = ({route}) => {
                   isDarkMode={isDarkMode}
                   isLastItem={index === cryptoSearchResult.length - 1}
                 />
-              ))}
+              ))
+            )}
           </ScrollView>
           <View style={styles.titleContainer}>
             <Text
@@ -406,7 +420,10 @@ const Search = ({route}) => {
             <View style={styles.horizontalLine} />
           </View>
           <ScrollView style={styles.cryptoSearch} nestedScrollEnabled>
-            {analysisSearchResult &&
+            {loading ? (
+              <SkeletonLoader type="search" quantity={5} />
+            ) : (
+              analysisSearchResult &&
               analysisSearchResult.length > 0 &&
               analysisSearchResult.map((item, index) => (
                 <SearchAnalysisItem
@@ -416,7 +433,8 @@ const Search = ({route}) => {
                   isLastItem={index === analysisSearchResult.length - 1}
                   handleAnalysisNavigation={handleAnalysisNavigation}
                 />
-              ))}
+              ))
+            )}
           </ScrollView>
           <View style={styles.titleContainer}>
             <Text
@@ -432,7 +450,10 @@ const Search = ({route}) => {
             <View style={styles.horizontalLine} />
           </View>
           <View style={styles.cryptoSearch}>
-            {ntSearchResult &&
+            {loading ? (
+              <SkeletonLoader type="search" quantity={5} />
+            ) : (
+              ntSearchResult &&
               ntSearchResult.length > 0 &&
               ntSearchResult.map((item, index) => (
                 <SearchNTItem
@@ -444,7 +465,8 @@ const Search = ({route}) => {
                   }
                   isLastItem={index === ntSearchResult.length - 1}
                 />
-              ))}
+              ))
+            )}
           </View>
           <View style={styles.titleContainer}>
             <Text

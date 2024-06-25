@@ -6,6 +6,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import RenderHTML, {defaultSystemFonts} from 'react-native-render-html';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
+import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const ExternalLink = ({url, text}) => {
   const styles = useIntroductionStyles();
@@ -153,7 +154,7 @@ const Introduction = ({getSectionData, coin, handleSectionContent}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type='text' quantity={8} />
       ) : content === null ? (
         <NoContentMessage hasSectionName={false} />
       ) : (

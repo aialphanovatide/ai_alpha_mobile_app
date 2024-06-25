@@ -14,17 +14,16 @@ const useCryptoCalendarStyles = () => {
     container: {
       flex: 1,
       width: '100%',
-      paddingHorizontal: 10,
-      paddingVertical: 5,
     },
     loaderContainer: {
       flex: 1,
-      width: theme.width - 20,
+      width: '100%',
       minHeight: 160,
       alignItems: 'center',
       justifyContent: 'center',
     },
     contentCenter: {
+      padding: 10,
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -43,15 +42,13 @@ const useCryptoCalendarStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
     },
     itemIconContainer: {
-      width: 45,
-      height: 45,
       marginHorizontal: 8,
-    },
-    itemIconImage: {
-      width: '100%',
-      height: '100%',
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    itemIconImage: {
+      width: 45,
+      height: 45,
       marginVertical: 2,
       borderRadius: 22.5,
     },
@@ -67,21 +64,24 @@ const useCryptoCalendarStyles = () => {
       color: theme.secondaryTextColor,
       marginHorizontal: 2.5,
     },
+    caption: {
+      height: 64,
+      width: 250,
+    },
     topDataRow: {
       position: 'relative',
       paddingVertical: 5,
       marginVertical: 10,
-      marginHorizontal: 20,
+      marginHorizontal: 18,
       flexDirection: 'row',
     },
     date: {
       position: 'absolute',
-      right: '10%',
+      right: 12,
       flexDirection: 'row',
     },
     tags: {
       position: 'absolute',
-      left: 5,
       flexDirection: 'row',
     },
     timeIconContainer: {

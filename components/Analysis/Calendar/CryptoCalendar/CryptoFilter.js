@@ -32,7 +32,7 @@ const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
   );
 };
 
-const CryptoFilter = ({options, currentFilter, handleOptionTouch}) => {
+const CryptoFilter = ({options, currentFilter, handleOptionTouch, style = null}) => {
   const styles = useCryptoCalendarStyles();
 
   return (
@@ -41,7 +41,7 @@ const CryptoFilter = ({options, currentFilter, handleOptionTouch}) => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         bounces={false}
-        style={styles.flex}>
+        style={[styles.flex, style]}>
         {options.map(option => (
           <CryptoItem
             key={option.category}

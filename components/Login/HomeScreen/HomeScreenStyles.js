@@ -40,6 +40,7 @@ const useNavbarStyles = () => {
       height: 78,
       marginBottom: 38,
       borderRadius: 39,
+      backgroundColor: 'transparent',
       justifyContent: 'center',
     },
     focusedButton: {
