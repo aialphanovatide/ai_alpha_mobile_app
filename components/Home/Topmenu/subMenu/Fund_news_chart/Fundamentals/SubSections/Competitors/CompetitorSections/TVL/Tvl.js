@@ -10,6 +10,7 @@ import useChartStyles from '../CurrentMarketCap/ChartStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
+import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
   const {theme} = useContext(AppThemeContext);
@@ -83,7 +84,7 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
   return (
     <View style={styles.chartContainer}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type="chart" />
       ) : cryptos?.length === 0 ||
         isSectionWithoutData(competitorsData, 'tvl', '-') ? (
         <NoContentMessage />

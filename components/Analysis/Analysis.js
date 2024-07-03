@@ -63,11 +63,21 @@ const Analysis = () => {
       sectionName: 'Calendar',
       icon: require('../../assets/images/analysis/calendar.png'),
     },
+    // {
+    //   id: 'BTCFundingRates',
+    //   sectionName: 'BTC Funding Rates',
+    //   icon: require('../../assets/images/analysis/btcfr.png'),
+    // },
     {
-      id: 'BTCFundingRates',
-      sectionName: 'BTC Funding Rates',
+      id: 'FundingRates',
+      sectionName: 'Funding Rates',
       icon: require('../../assets/images/analysis/btcfr.png'),
     },
+    // {
+    //   id: 'SOLFundingRates',
+    //   sectionName: 'SOL Funding Rates',
+    //   icon: require('../../assets/images/analysis/btcfr.png'),
+    // },
     {
       id: 'BTCDominance',
       sectionName: 'BTC Dominance Chart',
@@ -97,6 +107,16 @@ const Analysis = () => {
       id: 'SP500',
       sectionName: 'S&P 500 Chart',
       icon: require('../../assets/images/analysis/sp500.png'),
+    },
+    {
+      id: 'USOIL',
+      sectionName: 'U.S. Oil Chart',
+      icon: require('../../assets/images/analysis/sp500.png'),
+    },
+    {
+      id: 'VIX',
+      sectionName: 'VIX Index Chart',
+      icon: require('../../assets/images/analysis/dxy.png'),
     },
     {
       id: 'FearAndGreed',

@@ -14,17 +14,14 @@ const useHistoryStyles = () => {
     },
     menusContainer: {
       paddingHorizontal: 14,
-      marginBottom: 12,
     },
     flex: {
       flex: 1,
     },
-    titleContainer: {
-      paddingHorizontal: 28,
-      marginTop: theme.titlesVerticalMargin,
-      marginVertical: theme.boxesVerticalMargin * 2,
-    },
     title: {
+      marginHorizontal: 28,
+      marginTop: theme.titlesVerticalMargin,
+      marginVertical: 16,
       color: theme.titleColor,
       fontSize: 25,
       fontFamily: theme.fontMedium,
@@ -35,9 +32,9 @@ const useHistoryStyles = () => {
     },
     buttonContainer: {
       flexDirection: 'row',
-      marginVertical: theme.boxesVerticalMargin,
+      marginVertical: 8,
       backgroundColor: theme.subMenuBgColor,
-      borderRadius: 2,
+      borderRadius: 3,
       alignSelf: 'center',
     },
     button: {
@@ -65,7 +62,6 @@ const useHistoryStyles = () => {
     },
     itemsContainer: {
       width: '100%',
-      marginVertical: theme.boxesVerticalMargin,
       paddingHorizontal: 14,
       backgroundColor: 'transparent',
     },
@@ -134,7 +130,6 @@ const useHistoryStyles = () => {
     rightArrowContainer: {
       width: 20,
       height: 20,
-      marginHorizontal: 8,
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
@@ -157,6 +152,7 @@ const useHistoryStyles = () => {
     sectionDescription: {
       width: '90%',
       marginHorizontal: 28,
+      marginBottom: 8,
       fontSize: 14,
       fontFamily: theme.font,
       color: theme.textColor,

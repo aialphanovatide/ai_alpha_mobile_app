@@ -251,9 +251,7 @@ const NarrativeTrading = () => {
           <View style={styles.backButtonWrapper}>
             <BackButton navigationHandler={handleNavigationToAnalysis} />
           </View>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Narrative Trading</Text>
-          </View>
+          <Text style={styles.title}>Narrative Trading</Text>
           <Text style={styles.sectionDescription}>
             Analyzing specific cryptocurrency sectors (e.g. RWA) and trends
             (SocialFi) in order to capitalise on their momentum.

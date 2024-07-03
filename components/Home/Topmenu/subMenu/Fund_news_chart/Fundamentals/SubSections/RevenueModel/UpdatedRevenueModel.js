@@ -3,6 +3,7 @@ import {Image, Text, View} from 'react-native';
 import useUpdatedRevenueModelStyles from './UpdatedRevenueModelStyles';
 import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
+import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const UpdatedRevenueModel = ({getSectionData, coin, handleSectionContent}) => {
   const styles = useUpdatedRevenueModelStyles();
@@ -78,7 +79,7 @@ const UpdatedRevenueModel = ({getSectionData, coin, handleSectionContent}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader quantity={1} style={{marginVertical: 4}} />
       ) : revenues?.length === 0 ? (
         <NoContentMessage />
       ) : (
@@ -93,7 +94,7 @@ const UpdatedRevenueModel = ({getSectionData, coin, handleSectionContent}) => {
                   style={[
                     styles.itemContainer,
                     index ===
-                    (revenues.filter(rev => rev.value !== null).length) - 1
+                    revenues.filter(rev => rev.value !== null).length - 1
                       ? {borderBottomWidth: 0}
                       : {},
                   ]}>

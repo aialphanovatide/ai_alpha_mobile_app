@@ -50,9 +50,13 @@ const Timeline = ({events, textPoints}) => {
       {events.map((event, index) => (
         <View key={index} style={styles.timelineEventContainer}>
           <Text
-            numberOfLines={2}
+            onPress={() => handleActiveHack(event)}
+            numberOfLines={event.date.trim().split(/\s+/).length === 1 ? 1 : 2}
             style={[
               styles.dateText,
+              event.date.trim().split(/\s+/).length === 1
+                ? {marginTop: 34,}
+                : {},
               activeEvent && event?.id === activeEvent.id && styles.activeDate,
             ]}>
             {formatDate(event.date)}

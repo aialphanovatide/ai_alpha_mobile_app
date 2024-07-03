@@ -36,6 +36,9 @@ const useFearAndGreedStyles = () => {
       fontFamily: theme.fontMedium,
       color: theme.titleColor,
     },
+    backButtonWrapper: {
+      marginHorizontal: 20,
+    },
     label: {
       textAlign: 'center',
       marginVertical: 2.5,
@@ -44,11 +47,13 @@ const useFearAndGreedStyles = () => {
       fontSize: theme.responsiveFontSize * 1.1,
     },
     title: {
+      marginHorizontal: 28,
       marginTop: theme.titlesVerticalMargin,
-      paddingHorizontal: 10,
+      marginVertical: theme.boxesVerticalMargin * 2,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
+      textAlign: 'left',
     },
     widget: {
       width: '100%',
@@ -57,11 +62,11 @@ const useFearAndGreedStyles = () => {
       transform: [{translateY: -35}],
     },
     sectionDescription: {
-      width: '100%',
-      marginVertical: theme.boxesVerticalMargin,
-      paddingHorizontal: 8,
-      fontSize: theme.responsiveFontSize * 0.8,
-      fontFamily: theme.fontMedium,
+      width: '90%',
+      marginHorizontal: 28,
+      marginBottom: 28,
+      fontSize: 14,
+      fontFamily: theme.font,
       color: theme.textColor,
       textAlign: 'left',
       lineHeight: 20,
@@ -85,7 +90,6 @@ const useFearAndGreedStyles = () => {
       width: '95%',
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 6,
-
     },
     referenceImage: {
       minHeight: 196,

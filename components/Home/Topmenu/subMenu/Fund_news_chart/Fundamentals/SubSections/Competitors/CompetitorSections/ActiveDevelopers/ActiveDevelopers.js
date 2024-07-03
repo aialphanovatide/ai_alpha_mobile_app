@@ -6,6 +6,7 @@ import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
 import FastImage from 'react-native-fast-image';
+import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const generateActiveDevs = (
   value,
@@ -153,7 +154,7 @@ const ActiveDevelopers = ({competitorsData, isSectionWithoutData}) => {
   return (
     <View>
       {loading ? (
-        <Loader />
+        <SkeletonLoader  quantity={4} style={{height: 120}} />
       ) : cryptos?.length === 0 ||
         isSectionWithoutData(competitorsData, 'active developers', '-') ? (
         <NoContentMessage />

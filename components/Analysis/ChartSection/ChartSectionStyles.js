@@ -18,6 +18,8 @@ const useChartSectionStyles = () => {
       backgroundColor: 'transparent',
       width: theme.width,
       paddingTop: 36,
+      padding: 10,
+
     },
     container: {
       width: '100%',
@@ -60,9 +62,9 @@ const useChartSectionStyles = () => {
     },
     timeframeContainer: {
       flex: 1,
-      width: '50%',
+      width: '100%',
       maxHeight: '5%',
-      marginHorizontal: 16,
+      padding: 10,
     },
     sectionDescription: {
       width: '90%',

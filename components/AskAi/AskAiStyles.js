@@ -32,7 +32,7 @@ const useAskAiStyles = () => {
       borderRadius: 3,
       fontFamily: theme.fontRegular,
       fontSize: theme.responsiveFontSize * 0.925,
-      color: theme.searchPlaceHolderColor,
+      color: theme.textColor,
     },
     inputWrapper: {
       flexDirection: 'row',
@@ -43,7 +43,7 @@ const useAskAiStyles = () => {
     placeholderText: {
       position: 'absolute',
       top: 18,
-      left: 12,
+      left: 24,
       color: theme.searchPlaceHolderColor,
       fontSize: 14,
       fontFamily: theme.font,
@@ -139,6 +139,7 @@ const useAskAiStyles = () => {
     },
     valueBoxContainer: {
       width: '100%',
+      marginBottom: 8,
       justifyContent: 'center',
       alignSelf: 'center',
     },
@@ -153,7 +154,7 @@ const useAskAiStyles = () => {
     content: {
       width: '100%',
       alignSelf: 'center',
-      padding: 12,
+      padding: 14,
       fontSize: 14,
       fontFamily: theme.font,
       color: theme.textColor,
@@ -192,6 +193,7 @@ const useAskAiStyles = () => {
     },
     cleanButton: {
       marginVertical: 8,
+      marginRight: 6,
       alignSelf: 'flex-end',
       textAlign: 'right',
       color: theme.secondaryTextColor,

@@ -5,6 +5,7 @@ import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
 import styles from '../../../../../../../../../Login/HomeScreen/HomeScreenStyles';
+import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const DailyActiveUsers = ({competitorsData, isSectionWithoutData}) => {
   const [cryptos, setCryptos] = useState([]);
@@ -82,7 +83,7 @@ const DailyActiveUsers = ({competitorsData, isSectionWithoutData}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader quantity={4} style={{height: 120}} />
       ) : cryptos?.length === 0 ||
         isSectionWithoutData(competitorsData, 'daily active users', '-') ? (
         <NoContentMessage />

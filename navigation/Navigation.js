@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginForm from '../components/Login/Screens/LoginForm/LoginForm';
@@ -8,13 +8,22 @@ import HomeScreen from '../components/Login/HomeScreen/HomeScreen';
 import PaywallScreen from '../src/screens/PaywallScreen';
 import DeleteAccountForm from '../components/Login/DeleteAccount/DeleteUserForm';
 import TermsAndConditions from '../components/Login/Screens/TermsAndConditions/TermsAndConditions';
+import {AppThemeContext} from '../context/themeContext';
+import {Platform} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
+  const {isDarkMode} = useContext(AppThemeContext);
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          statusBarStyle:
+            Platform.OS === 'ios' ? (isDarkMode ? 'dark' : 'light') : 'auto',
+          animation: 'fade',
+        }}>
         <Stack.Screen
           name="SignIn"
           component={LoginForm}

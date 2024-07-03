@@ -12,7 +12,7 @@ const useChartsStyles = () => {
     scroll: {
       width: theme.width,
       backgroundColor: 'transparent',
-      paddingHorizontal: 10,
+      paddingHorizontal: 12,
       paddingBottom: 10,
     },
     detailsContainer: {
@@ -23,27 +23,27 @@ const useChartsStyles = () => {
       width: '100%',
     },
     detailslabel: {
-      marginHorizontal: 10,
-      marginLeft: 28,
+      marginLeft: 22,
+      marginRight: 10,
       textTransform: 'uppercase',
-      fontSize: 25,
+      fontSize: theme.titleFontSize,
       color: theme.textColor,
       fontFamily: theme.fontSemibold,
     },
     lastPrice: {
       textTransform: 'uppercase',
-      fontSize: 25,
+      fontSize: theme.titleFontSize,
       marginLeft: 10,
       color: theme.textColor,
       fontFamily: theme.fontSemibold,
     },
     timeFrameContainer: {
       height: 28,
-      marginVertical: 5,
+      marginVertical: 8,
       flexDirection: 'row',
       backgroundColor: theme.subMenuBgColor,
       borderRadius: 2,
-      marginRight: 20,
+      // marginRight: 20,
     },
     timeFrameButton: {
       width: 36,
@@ -180,7 +180,7 @@ const useChartsStyles = () => {
       justifyContent: 'center',
     },
     alertMenuTitle: {
-      marginHorizontal: 26,
+      marginHorizontal: 22,
       fontSize: 16,
       color: theme.textColor,
       alignSelf: 'flex-start',
@@ -227,6 +227,7 @@ const useChartsStyles = () => {
       minHeight: 300,
     },
     alertsTextMessage: {
+      marginTop: 16,
       fontSize: theme.responsiveFontSize,
       fontFamily: theme.fontBoldItalic,
       color: theme.secondaryTextColor,

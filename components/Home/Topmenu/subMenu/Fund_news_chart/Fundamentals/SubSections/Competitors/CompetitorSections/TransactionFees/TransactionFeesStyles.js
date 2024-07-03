@@ -40,10 +40,9 @@ const useTransactionFeeStyles = () => {
     },
     overlay: {
       position: 'absolute',
-      top: 0,
       left: '2.45%',
       right: '2.45%',
-      bottom: '4.9%',
+      bottom: 0,
       height: '100%',
       opacity: 0.5,
     },

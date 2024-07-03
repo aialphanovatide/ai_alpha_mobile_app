@@ -14,17 +14,13 @@ const useNarrativeTradingStyles = () => {
     },
     menusContainer: {
       paddingHorizontal: 14,
-      marginBottom: 12,
     },
     flex: {
       flex: 1,
     },
-    titleContainer: {
-      paddingHorizontal: 28,
-      marginTop: theme.titlesVerticalMargin,
-      marginVertical: theme.boxesVerticalMargin * 2,
-    },
     title: {
+      marginHorizontal: 28,
+      marginVertical: 16,
       color: theme.titleColor,
       fontSize: 25,
       fontFamily: theme.fontMedium,
@@ -35,7 +31,7 @@ const useNarrativeTradingStyles = () => {
     },
     buttonContainer: {
       flexDirection: 'row',
-      marginVertical: theme.boxesVerticalMargin,
+      marginVertical: 8,
       backgroundColor: theme.subMenuBgColor,
       borderRadius: 2,
       alignSelf: 'center',
@@ -74,7 +70,7 @@ const useNarrativeTradingStyles = () => {
       flexDirection: 'row',
       alignSelf: 'flex-start',
       backgroundColor: theme.boxesBackgroundColor,
-      marginBottom: 12,
+      marginBottom: 8,
     },
     itemImage: {
       width: 50,
@@ -131,7 +127,6 @@ const useNarrativeTradingStyles = () => {
     rightArrowContainer: {
       width: 20,
       height: 20,
-      marginHorizontal: 8,
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
@@ -154,6 +149,7 @@ const useNarrativeTradingStyles = () => {
     sectionDescription: {
       width: '90%',
       marginHorizontal: 28,
+      marginBottom: 8,
       fontSize: 14,
       fontFamily: theme.font,
       color: theme.textColor,

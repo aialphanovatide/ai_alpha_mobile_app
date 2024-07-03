@@ -92,6 +92,7 @@ export const lightThemeStyles = {
   topMenuActiveBg: '#F9F9F933',
   activeSRButtonColor: '#80290E',
   askAiButtonColor: '#FFFFFF',
+  skeletonLoaderBg: '#FFFFFF',
   boxesVerticalMargin: 8,
   titlesVerticalMargin: 24,
   font: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
@@ -100,18 +101,18 @@ export const lightThemeStyles = {
   fontMedium: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
   fontSemibold: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
   fontBoldItalic: isAndroid
-    ? 'prompt_semibold_italic'
+  ? 'prompt_semibold_italic'
     : 'Prompt-SemiBold-Italic',
-  fontUnbounded: isAndroid ? 'unbounded_regular' : 'Unbounded-Regular',
+    fontUnbounded: isAndroid ? 'unbounded_regular' : 'Unbounded-Regular',
   fontUnboundedMedium: isAndroid ? 'unbounded_medium' : 'Unbounded-Medium',
   fontUnboundedLight: isAndroid ? 'unbounded_light' : 'Unbounded-Light',
   fontUnboundedExtraLight: isAndroid
-    ? 'unbounded_extra_light'
+  ? 'unbounded_extra_light'
     : 'Unbounded-Extra-Light',
-  fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
+    fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
   fontUnboundedExtraBold: isAndroid
-    ? 'unbounded_extra_bold'
-    : 'Unbounded-Extra-Bold',
+  ? 'unbounded_extra_bold'
+  : 'Unbounded-Extra-Bold',
   fontUnboundedSemibold: isAndroid
     ? 'unbounded_semibold'
     : 'Unbounded-SemiBold',
@@ -185,6 +186,7 @@ export const darkThemeStyles = {
   notificationsWSwitchColor: '#D9D9D9',
   lockIconColor: '#737373',
   askAiButtonColor: '#0A0A0A',
+  skeletonLoaderBg: '#151515',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {
@@ -222,10 +224,10 @@ export const darkThemeStyles = {
   fontUnboundedMedium: isAndroid ? 'unbounded_medium' : 'Unbounded-Medium',
   fontUnboundedLight: isAndroid ? 'unbounded_light' : 'Unbounded-Light',
   fontUnboundedExtraLight: isAndroid
-    ? 'unbounded_extra_light'
+  ? 'unbounded_extra_light'
     : 'Unbounded-Extra-Light',
-  fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
-  fontUnboundedExtraBold: isAndroid
+    fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
+    fontUnboundedExtraBold: isAndroid
     ? 'unbounded_extra_bold'
     : 'Unbounded-Extra-Bold',
   fontUnboundedSemibold: isAndroid

@@ -17,12 +17,9 @@ const useCalendarStyles = () => {
     backbuttonContainer: {
       marginHorizontal: 20,
     },
-    titleContainer: {
-      paddingHorizontal: 28,
-      marginTop: theme.titlesVerticalMargin,
-      marginVertical: theme.boxesVerticalMargin,
-    },
     title: {
+      marginHorizontal: 28,
+      marginVertical: 16,
       color: theme.titleColor,
       fontSize: 25,
       fontFamily: theme.fontMedium,
@@ -31,14 +28,12 @@ const useCalendarStyles = () => {
     calendarContent: {
       flex: 1,
       width: '100%',
-      marginVertical: theme.boxesVerticalMargin,
       alignItems: 'flex-start',
       borderRadius: 4,
     },
     subTitle: {
-      marginVertical: theme.titlesVerticalMargin,
-      marginBottom: theme.boxesVerticalMargin,
-      marginHorizontal: 30,
+      marginVertical: 16,
+      marginHorizontal: 28,
       color: theme.titleColor,
       fontSize: 16,
       fontFamily: theme.fontMedium,

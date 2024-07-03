@@ -19,12 +19,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import {CategoriesContext} from '../../context/categoriesContext';
 import {useScrollToTop} from '@react-navigation/native';
+import SkeletonLoader from '../Loader/SkeletonLoader';
 
 // Component that renders when there are no alerts on the server's response
 const NoAlertsView = ({styles}) => (
   <View style={styles.noAlertsContainer}>
     <Text style={styles.noAlerts}>
-    There are no Alerts yet. Stay tuned for important updates.
+      There are no Alerts yet. Stay tuned for important updates.
     </Text>
   </View>
 );
@@ -68,7 +69,7 @@ const Alerts = ({route, navigation}) => {
   const styles = useAlertsStyles();
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const {isDarkMode} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const {categories} = useContext(CategoriesContext);
   const ref = useRef(null);
 
@@ -214,7 +215,7 @@ const Alerts = ({route, navigation}) => {
           />
           {isLoading ? (
             // Display the loader if the data requests didn't finish
-            <Loader />
+            <SkeletonLoader quantity={5} type="alerts" />
           ) : subscribed || subscribedCategories.length > 0 ? (
             // If the user has at least one subscription, it will render alerts for all the coins from the categories that has subscribed
             <FlatList

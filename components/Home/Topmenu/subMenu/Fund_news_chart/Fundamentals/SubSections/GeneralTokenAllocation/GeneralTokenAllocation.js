@@ -5,6 +5,7 @@ import useGTAStyles from './GTAStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
+import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const GeneralTokenData = ({
   currentToken,
@@ -141,7 +142,7 @@ const GeneralTokenAllocation = ({
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type="circleChart" />
       ) : percentagesData?.length === 0 ? (
         <NoContentMessage />
       ) : (

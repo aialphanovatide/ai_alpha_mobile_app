@@ -5,12 +5,14 @@ const CategoriesContext = createContext();
 
 const CategoriesContextProvider = ({children}) => {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const data = await getService('/get_categories');
         setCategories(data.categories);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching categories:', error.message);
       }
@@ -34,7 +36,7 @@ const CategoriesContextProvider = ({children}) => {
   };
 
   return (
-    <CategoriesContext.Provider value={{categories, updateCategories}}>
+    <CategoriesContext.Provider value={{categories, updateCategories, loading}}>
       {children}
     </CategoriesContext.Provider>
   );

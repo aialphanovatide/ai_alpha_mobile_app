@@ -5,6 +5,7 @@ import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
 import FastImage from 'react-native-fast-image';
+import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const TokenItem = ({crypto, styles}) => {
   return (
@@ -89,7 +90,7 @@ const TypeOfToken = ({competitorsData}) => {
   return (
     <View style={{flex: 1, height: '100%'}}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader quantity={4} style={{height: 120}} />
       ) : mappedData?.length === 0 ? (
         <NoContentMessage />
       ) : (

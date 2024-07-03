@@ -235,9 +235,7 @@ const History = () => {
           <View style={styles.backButtonWrapper}>
             <BackButton />
           </View>
-          <View style={styles.titleContainer}>
             <Text style={styles.title}>History</Text>
-          </View>
           <Text style={styles.sectionDescription}>
             The history section consolidates all analysis conducted on a
             specific coin, allowing users to access today's and the week's

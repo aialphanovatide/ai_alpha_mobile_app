@@ -2,7 +2,7 @@ import {View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Timeline from './Timeline/Timeline';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
-import Loader from '../../../../../../../Loader/Loader';
+import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const Hacks = ({getSectionData, coin, handleSectionContent}) => {
   const [events, setEvents] = useState([]);
@@ -48,13 +48,13 @@ const Hacks = ({getSectionData, coin, handleSectionContent}) => {
       October: 10,
       November: 11,
       December: 12,
-      Early: 3, 
-      Mid: 6, 
-      Late: 12, 
+      Early: 3,
+      Mid: 6,
+      Late: 12,
     };
 
     const parseDate = dateStr => {
-      const parts = dateStr.split(/[\s-]+/); 
+      const parts = dateStr.split(/[\s-]+/);
       if (parts.length === 1) {
         // "Long-term" or any other word, goes to the end of the array
         return Infinity;
@@ -86,7 +86,7 @@ const Hacks = ({getSectionData, coin, handleSectionContent}) => {
   return (
     <View style={{flex: 1, minHeight: 500}}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type="timeline" quantity={4} />
       ) : events?.length === 0 ? (
         <NoContentMessage />
       ) : (

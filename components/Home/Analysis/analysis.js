@@ -8,14 +8,15 @@ import {useNavigation} from '@react-navigation/core';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
 import {AnalysisContext} from '../../../context/AnalysisContext';
+import SkeletonLoader from '../../Loader/SkeletonLoader';
 const Analysis = ({handleAboutPress}) => {
   const styles = useHomeAnalysisStyles();
-  const {analysisItems} = React.useContext(AnalysisContext);
+  const {analysisItems, loading} = React.useContext(AnalysisContext);
   const [analysisData, setAnalysisData] = React.useState([]);
   const [expanded, setExpanded] = React.useState(false);
   const navigation = useNavigation();
   const aboutIconStyles = {
-    top: 10,
+    top: 18,
   };
 
   React.useEffect(() => {
@@ -41,16 +42,15 @@ const Analysis = ({handleAboutPress}) => {
   };
 
   return (
-    <List.Section
-      title="Analysis"
-      titleStyle={styles.mainTitle}
-      style={styles.margin}>
+    <List.Section title="Analysis" titleStyle={styles.mainTitle}>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.analysis.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
-      {analysisData?.length === 0 ? (
+      {loading ? (
+        <SkeletonLoader />
+      ) : analysisData?.length === 0 ? (
         <Text style={styles.emptyMessage}>
           {home_static_data.analysis.noContentMessage}
         </Text>

@@ -1,8 +1,8 @@
 import {SafeAreaView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Timeline from '../Hacks/Timeline/Timeline';
-import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
+import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const Upgrades = ({getSectionData, coin, handleSectionContent}) => {
   const [events, setEvents] = useState([]);
@@ -31,7 +31,7 @@ const Upgrades = ({getSectionData, coin, handleSectionContent}) => {
               date: event.upgrade.date,
             };
           });
-          setEvents(mapped_events.sort((a,b) => compareDates(a.date, b.date)));
+          setEvents(mapped_events.sort((a, b) => compareDates(a.date, b.date)));
         }
       } catch (error) {
         console.error('Error trying to get upgrades data: ', error);
@@ -56,13 +56,13 @@ const Upgrades = ({getSectionData, coin, handleSectionContent}) => {
       October: 10,
       November: 11,
       December: 12,
-      Early: 3, 
-      Mid: 6, 
-      Late: 12, 
+      Early: 3,
+      Mid: 6,
+      Late: 12,
     };
 
     const parseDate = dateStr => {
-      const parts = dateStr.split(/[\s-]+/); 
+      const parts = dateStr.split(/[\s-]+/);
       if (parts.length === 1) {
         // "Long-term" or any other word, goes to the end of the array
         return Infinity;
@@ -94,7 +94,7 @@ const Upgrades = ({getSectionData, coin, handleSectionContent}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type="timeline" quantity={4} />
       ) : events?.length === 0 ? (
         <NoContentMessage />
       ) : (

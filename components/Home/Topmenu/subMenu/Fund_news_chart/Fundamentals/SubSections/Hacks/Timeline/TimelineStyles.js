@@ -18,12 +18,13 @@ const useTimelineStyles = () => {
       marginBottom: theme.boxesVerticalMargin,
     },
     timelineDot: {
-      width: 15,
-      height: 15,
+      width: 16,
+      height: 16,
       marginTop: '10%',
       marginLeft: '0.15%',
       borderRadius: 7.5,
       backgroundColor: theme.orange,
+      zIndex: 10,
     },
     timelineLine: {
       marginTop: '12%',
@@ -49,12 +50,10 @@ const useTimelineStyles = () => {
     dateText: {
       width: 40,
       marginTop: 24,
-      paddingHorizontal: 4,
       fontSize: theme.responsiveFontSize * 0.75,
       fontFamily: theme.fontSemibold,
       color: theme.fundamentalsMenuText,
       alignSelf: 'flex-start',
-      overflow: 'visible',
     },
     activeDate: {
       color: theme.orange,

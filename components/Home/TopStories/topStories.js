@@ -10,6 +10,7 @@ import {CategoriesContext} from '../../../context/categoriesContext';
 import Loader from '../../Loader/Loader';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
+import SkeletonLoader from '../../Loader/SkeletonLoader';
 
 const TopStories = ({handleAboutPress}) => {
   const styles = useTopStoriesStyles();
@@ -137,18 +138,16 @@ const TopStories = ({handleAboutPress}) => {
   }, []);
 
   return (
-    <List.Section
-      title="Top Stories"
-      titleStyle={styles.mainTitle}
-      style={styles.margin}>
+    <List.Section title="Top Stories" titleStyle={styles.mainTitle}>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.topStories.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
       {loading ? (
-        <Loader />
-      ) : stories.length === 0 ? (
+        <SkeletonLoader />
+      ) : 
+      stories.length === 0 ? (
         <Text style={styles.emptyMessage}>
           {home_static_data.topStories.noContentMessage}
         </Text>

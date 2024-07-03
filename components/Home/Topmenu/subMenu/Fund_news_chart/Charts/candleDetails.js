@@ -59,7 +59,9 @@ const CandlestickDetails = ({
                 : styles.priceDownColor
               : {},
           ]}>
-          ${lastPrice && !loading ? formatNumber(lastPrice) : ' ...'}
+          {`${selectedPairing.toUpperCase() === 'USDT' ? '$' : ''}${
+            lastPrice && !loading ? formatNumber(lastPrice) : ' ...'
+          }`}
         </Text>
         <AboutIcon
           description={home_static_data.charts.sectionDescription}

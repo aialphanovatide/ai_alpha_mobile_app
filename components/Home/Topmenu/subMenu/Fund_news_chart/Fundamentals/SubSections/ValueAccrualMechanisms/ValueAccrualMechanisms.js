@@ -5,6 +5,7 @@ import useVAMStyles from './VAMStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import FastImage from 'react-native-fast-image';
+import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const ContentItem = ({data, styles}) => {
 
@@ -61,7 +62,7 @@ const ValueAccrualMechanisms = ({
       ? section.length >= 300
         ? {width: 148, height: 348}
         : {
-            width: 124,
+            width: 148,
             height: 236,
           }
       : {
@@ -123,7 +124,7 @@ const ValueAccrualMechanisms = ({
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type="bigItem" quantity={4} />
       ) : dataItems?.length === 0 ? (
         <NoContentMessage />
       ) : (

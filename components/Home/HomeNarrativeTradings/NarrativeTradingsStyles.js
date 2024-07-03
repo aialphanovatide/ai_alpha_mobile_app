@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useHomeNarrativeTradingStyles = () => {
@@ -9,7 +9,7 @@ const useHomeNarrativeTradingStyles = () => {
       marginHorizontal: 16,
       marginVertical: 18,
       color: theme.titleColor,
-      fontSize: 21.3333,
+      fontSize: theme.titleFontSize,
       fontFamily: theme.fontSemibold,
     },
     titleStyles: {
@@ -64,9 +64,6 @@ const useHomeNarrativeTradingStyles = () => {
     container: {
       flex: 1,
       width: '100%',
-      marginTop: 8,
-      marginBottom: 16,
-      paddingVertical: 12,
       backgroundColor: theme.mainBackgroundColor,
     },
     article: {

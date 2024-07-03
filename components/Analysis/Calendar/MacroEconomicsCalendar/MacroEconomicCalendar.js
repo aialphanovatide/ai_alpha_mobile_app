@@ -7,6 +7,7 @@ import {
 } from './macroEconomicCalendarMock';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import calendarService from '../../../../services/CalendarService';
+import SkeletonLoader from '../../../Loader/SkeletonLoader';
 
 const CountryItem = ({option, activeOption, handleCountryTouch, styles}) => {
   return (
@@ -96,6 +97,7 @@ const CalendarItem = ({event, styles}) => {
 
 const MacroEconomicCalendar = ({selectedInterval}) => {
   const [originalEvents, setOriginalEvents] = useState(macroeconomic_events);
+  const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState(macroeconomic_events);
   const [countries, setCountries] = useState(countries_mock);
   const [selectedCountry, setSelectedCountry] = useState(countries_mock[0]);
@@ -174,6 +176,7 @@ const MacroEconomicCalendar = ({selectedInterval}) => {
   useEffect(() => {
     const day_interval = selectedInterval.textName === 'This week' ? 7 : 1;
     const fetchEvents = async () => {
+      setLoading(true);
       try {
         const data = await calendarService.getEconomicEvents(day_interval);
         if (data && data.length > 0) {
@@ -205,6 +208,8 @@ const MacroEconomicCalendar = ({selectedInterval}) => {
       } catch (error) {
         console.error('Error trying to get econoomic calendar data:', error);
         setEvents([]);
+      } finally {
+        setLoading(false);
       }
     };
     fetchEvents();
@@ -218,11 +223,11 @@ const MacroEconomicCalendar = ({selectedInterval}) => {
         handleCountryTouch={handleCountryTouch}
       />
       <ScrollView style={styles.eventsContainer}>
-        {events.length === 0 ? (
+        {loading ? (
+          <SkeletonLoader type="calendar" quantity={4} />
+        ) : events.length === 0 ? (
           <View style={styles.messageContainer}>
-            <Text style={styles.emptyEventsMessage}>
-              No events were found.
-            </Text>
+            <Text style={styles.emptyEventsMessage}>No events were found.</Text>
           </View>
         ) : (
           events.map((event, index) => (

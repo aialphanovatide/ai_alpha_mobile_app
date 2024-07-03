@@ -27,6 +27,7 @@ export const auth0DeleteAccount_Secret =
   'RT0GEngb2IhR03_AMoIjRPxAQamrTY02B4OG4RPuA8gYgguQ0ua83b509U3W-t68';
 export const revenueCat_secret = 'sk_OsSNuqHUzDktdaXynIozTeiMAVIMD';
 export const COINALYZE_API_KEY = 'da0213a7-235c-456e-8876-6c62ce1a6c54';
+export const TWELVEDATA_API_KEY = 'd640584a14094169bcb5388a4b424293';
 export const auth0ManagementAPI_Client = 'K7b9CODJzB8yAlxcFkbLJyRaukd4kmko';
 export const auth0ManagementAPI_Secret =
   'hpl8U6AmaZ-rJyE5mKdH6hLaIaDEVC_BxFD6ZwlPW0YhZSfeYxsRntyNxNssf9RM';

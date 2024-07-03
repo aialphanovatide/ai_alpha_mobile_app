@@ -16,21 +16,18 @@ const useChartSectionStyles = () => {
       flex: 1,
       backgroundColor: 'transparent',
       width: theme.width,
-      paddingTop: 36
+      paddingTop: 36,
     },
     container: {
       width: '100%',
       height: theme.height * 0.45,
       marginVertical: theme.boxesVerticalMargin,
-      justifyContent: 'center',
-      alignItems: 'top',
       borderRadius: 4,
     },
     chart: {
       width: '100%',
       height: '100%',
       paddingRight: 48,
-      justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
     },
@@ -47,8 +44,8 @@ const useChartSectionStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      top: 15,
-      left: '7.5%',
+      top: 40,
+      left: '10%',
       width: 60,
       height: 60,
       opacity: 0.8,
@@ -70,7 +67,7 @@ const useChartSectionStyles = () => {
     },
     backButtonWrapper: {
       marginHorizontal: 20,
-    }
+    },
   });
   return styles;
 };

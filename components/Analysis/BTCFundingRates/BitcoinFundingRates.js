@@ -87,9 +87,9 @@ const BitcoinFundingRates = ({handleReturn}) => {
           These are key indicators to understand the market outlook in terms of
           long or short positions.
         </Text>
-        <TouchableOpacity style={styles.readMoreButton}>
+        {/* <TouchableOpacity style={styles.readMoreButton}>
           <Text style={styles.readMoreText}>Read more</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {loading ? (
           <View style={styles.loaderWrapper}>
             <Loader />

@@ -9,10 +9,6 @@ const useTopStoriesStyles = () => {
       width: '100%',
       backgroundColor: 'transparent',
     },
-    margin: {
-      marginTop: 8,
-      marginBottom: 16,
-    },
     storyWrapper: {
       flex: 1,
       flexDirection: 'row',
@@ -24,9 +20,7 @@ const useTopStoriesStyles = () => {
     mainTitle: {
       fontFamily: theme.fontSemibold,
       color: theme.titleColor,
-      fontSize: 21.3333,
-      fontWeight: '600',
-      fontFamily: theme.fontMedium,
+      fontSize: theme.titleFontSize,
     },
     titleStyles: {
       maxWidth: '85%',

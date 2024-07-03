@@ -6,6 +6,7 @@ import {AppThemeContext} from '../../../../../../../../../../context/themeContex
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
+import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const SelectorItem = ({year, activeYear, handleYearChange, styles}) => {
   return (
@@ -30,15 +31,17 @@ const YearSelector = ({years, activeYear, handleYearChange, styles}) => {
   return (
     <View style={styles.yearSelectorContainer}>
       {years &&
-        years.map(year => (
-          <SelectorItem
-            year={year.year}
-            key={year.year}
-            activeYear={activeYear}
-            handleYearChange={handleYearChange}
-            styles={styles}
-          />
-        ))}
+        years.map(year => {
+          return (
+            <SelectorItem
+              year={year.year}
+              key={year.year}
+              activeYear={activeYear}
+              handleYearChange={handleYearChange}
+              styles={styles}
+            />
+          );
+        })}
     </View>
   );
 };
@@ -100,6 +103,7 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
 
   const [activeYear, setActiveYear] = useState(2022);
   const [activeCrypto, setActiveCrypto] = useState(null);
+  const [filteredYears, setFilteredYears] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentPercentage, setCurrentPercentage] = useState(null);
 
@@ -131,9 +135,12 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
         inflation_rate_data.push(mapped_crypto);
       }
     });
-    // console.log('Inflation rate data: ', inflation_rate_data);
     setCryptos(inflation_rate_data);
     setActiveCrypto(inflation_rate_data[0]);
+    const filteredYearsByCurrentData = years.filter(
+      year => !checkYearValues(year.year, inflation_rate_data),
+    );
+    setFilteredYears(filteredYearsByCurrentData);
     setLoading(false);
   }, [competitorsData]);
 
@@ -161,12 +168,6 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
       return 0;
     }
     const filtered_string = stringValue.replace(/\s/g, '').replace(/,/g, '');
-    // console.log(
-    //   'Filtered string: ',
-    //   Number(filtered_string),
-    //   ' string value: ',
-    //   stringValue,
-    // );
     return Number(filtered_string);
   };
 
@@ -216,20 +217,38 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
     }
   };
 
+  const checkYearValues = (year, cryptos) => {
+    let zerosCounter = 0;
+    cryptos?.forEach(crypto => {
+      crypto.inflationRate.forEach(yearValue => {
+        if (yearValue.year === year && yearValue.value === 0) {
+          zerosCounter++;
+        }
+      });
+    });
+    return cryptos.length === zerosCounter;
+  };
+
   return (
     <View style={styles.mainContainer}>
       {loading ? (
-        <Loader />
+        <SkeletonLoader
+          type="selector"
+          quantity={4}
+          style={{width: 30, marginTop: 80, borderRadius: 14}}
+        />
       ) : cryptos?.length === 0 ||
         isSectionWithoutData(competitorsData, 'inflation rate', '-') ? (
         <NoContentMessage />
       ) : (
         <>
           <YearSelector
-            years={years}
+            years={filteredYears}
             activeYear={activeYear}
             handleYearChange={handleYearChange}
             styles={styles}
+            checkYearValues={checkYearValues}
+            cryptos={cryptos}
           />
           <CryptosSelector
             cryptos={cryptos}

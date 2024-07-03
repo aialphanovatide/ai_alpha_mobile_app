@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import useDappsStyles from './DAppsStyles';
 import Loader from '../../../../../../../Loader/Loader';
 import FastImage from 'react-native-fast-image';
+import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const ProtocolItem = ({
   protocol,
@@ -176,7 +177,7 @@ const DApps = ({getSectionData, coin, handleSectionContent}) => {
   return (
     <View>
       {loading ? (
-        <Loader />
+        <SkeletonLoader quantity={6} type="dapps" />
       ) : (
         <>
           <View style={styles.mainImageContainer}>

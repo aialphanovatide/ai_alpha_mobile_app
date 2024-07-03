@@ -9,6 +9,7 @@ import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts
 import useEthBtcStyles from './EthBtcChartStyles';
 import {AppThemeContext} from '../../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
+import SkeletonLoader from '../../Loader/SkeletonLoader';
 
 // This component generates a chart with ETH/BTC pairing data coming from the binance API
 
@@ -71,8 +72,12 @@ const EthBtcChart = ({candlesToShow = 30}) => {
             Ethereum and its ecosystem projects are while also telling us how
             strong the entire altcoin market is too.
           </Text>
-          <View style={styles.container}>
-            <Loader />
+          <View style={[styles.container, {width: '95%', marginHorizontal: 10}]}>
+            <SkeletonLoader type="timeframe" quantity={4} />
+            <SkeletonLoader
+              type="chart"
+              style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+            />
           </View>
         </SafeAreaView>
       </LinearGradient>

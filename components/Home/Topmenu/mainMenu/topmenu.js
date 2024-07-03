@@ -8,13 +8,15 @@ import {CategoriesContext} from '../../../../context/categoriesContext';
 import {AppThemeContext} from '../../../../context/themeContext';
 import SearchBar from '../../SearchBar/SearchBar';
 import LinearGradient from 'react-native-linear-gradient';
+import JoinCommunityButton from '../../JoinCommunityButton/JoinCommunityButton';
+import SkeletonLoader from '../../../Loader/SkeletonLoader';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
   const styles = useTopMenuStyles();
   const {updateActiveCoin, updateActiveSubCoin, activeCoin} =
     useContext(TopMenuContext);
-  const {categories} = useContext(CategoriesContext);
+  const {categories, loading} = useContext(CategoriesContext);
   const navigation = useNavigation();
   const {isDarkMode} = useContext(AppThemeContext);
   const handleButtonPress = category => {
@@ -52,16 +54,25 @@ const TopMenu = ({isAlertsMenu}) => {
       angle={45}
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={styles.topContentWrapper}>
-      {isAlertsMenu || routeName.includes('TopMenu') ? (
-        <></>
-      ) : (
+      <View
+        style={[
+          styles.marginWrapper,
+          isAlertsMenu || routeName.includes('TopMenu')
+            ? {marginBottom: 0}
+            : {},
+        ]}>
         <SearchBar
           handleSearchSectionNavigation={handleSearchSectionNavigation}
         />
-      )}
+        {isAlertsMenu || routeName.includes('TopMenu') ? null : (
+          <JoinCommunityButton />
+        )}
+      </View>
       <View style={styles.container}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {categories ? (
+          {loading ? (
+            <SkeletonLoader type={'circle'} quantity={14} />
+          ) : categories ? (
             categories.map(category => (
               <MenuItem
                 key={category.category_id}

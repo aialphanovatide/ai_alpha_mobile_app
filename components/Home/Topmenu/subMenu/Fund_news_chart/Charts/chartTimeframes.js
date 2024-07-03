@@ -23,7 +23,7 @@ const TimeframeSelector = ({
   // calculate the proper width for each timeframe btn
 
   // Calculate proper width for the main container
-  const timeframe_width = (36 * timeframes.length) + 2; 
+  // const timeframe_width = (36 * timeframes.length) + 2;
   // const timeframeContainerWidth = () => {
   //   if (width > 500) {
   //     if (timeframe_width >= 99) {
@@ -48,7 +48,7 @@ const TimeframeSelector = ({
     <View
       style={[
         styles.timeFrameContainer,
-        {width: timeframe_width},
+        // {width: timeframe_width},
         additionalStyles,
       ]}>
       {timeframes.map(interval => (
@@ -58,6 +58,7 @@ const TimeframeSelector = ({
             selectedInterval === interval
               ? styles.timeFrameActiveButton
               : styles.timeFrameButton,
+            {width: `${100 / timeframes.length}%`},
           ]}
           onPress={() => changeInterval(interval)}>
           <Text

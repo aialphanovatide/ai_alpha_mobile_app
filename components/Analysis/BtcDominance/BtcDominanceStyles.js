@@ -21,7 +21,6 @@ const useBtcDominanceStyles = () => {
     },
     chart: {
       width: '100%',
-      height: '90%',
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
@@ -51,8 +50,8 @@ const useBtcDominanceStyles = () => {
     },
     timeframeContainer: {
       flex: 1,
-      width: '50%',
       maxHeight: '5%',
+      paddingHorizontal: 8,
       marginHorizontal: 16,
     },
     sectionDescription: {

@@ -9,6 +9,7 @@ import TOP_TEN_GAINERS_MOCK from './TopTenGainersMock.js';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
 import {home_static_data} from '../homeStaticData.js';
 import FastImage from 'react-native-fast-image';
+import SkeletonLoader from '../../Loader/SkeletonLoader.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
@@ -58,11 +59,12 @@ const TopTenGainers = ({handleAboutPress}) => {
   };
 
   useEffect(() => {
+    /*
     const fetchTopTenCoins = async () => {
       try {
         const data = await topTenGainersService.getTop10Coins();
-        setTopTenCoins(data);
-        // console.log('TopTenGainers data:', data);
+        setTopTenCoins(data.top10Gainers);
+        console.log('TopTenGainers data:', data);
       } catch (error) {
         console.error('Error fetching top 10 gainers:', error);
       } finally {
@@ -70,10 +72,9 @@ const TopTenGainers = ({handleAboutPress}) => {
       }
     };
     fetchTopTenCoins();
-    /*
+    */
     setTopTenCoins(TOP_TEN_GAINERS_MOCK);
     setLoading(false);
-    */
   }, []);
   return (
     <View style={styles.topTenGainersContainer}>
@@ -85,7 +86,11 @@ const TopTenGainers = ({handleAboutPress}) => {
         />
       </View>
       {loading ? (
-        <Loader />
+        <ScrollView>
+          <View style={styles.table} showsVerticalScrollIndicator={false}>
+              <SkeletonLoader quantity={10} />
+          </View>
+        </ScrollView>
       ) : (
         <ScrollView>
           <View style={styles.table} showsVerticalScrollIndicator={false}>

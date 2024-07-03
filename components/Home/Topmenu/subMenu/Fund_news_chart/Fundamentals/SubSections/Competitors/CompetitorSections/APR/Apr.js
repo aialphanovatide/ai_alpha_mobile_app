@@ -6,6 +6,7 @@ import {AppThemeContext} from '../../../../../../../../../../context/themeContex
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
+import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const Graph = ({value, itemIndex, styles, tintColors}) => {
   const chosenColor = tintColors[itemIndex > 3 ? itemIndex % 3 : itemIndex];
@@ -105,7 +106,7 @@ const Apr = ({competitorsData, isSectionWithoutData}) => {
   return (
     <View>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type={'selector'} quantity={4} />
       ) : cryptos?.length === 0 ||
         isSectionWithoutData(competitorsData, 'apr', '-') ? (
         <NoContentMessage />
