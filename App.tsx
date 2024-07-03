@@ -18,7 +18,7 @@ import Keys from 'react-native-keys';
 import {TopMenuContextProvider} from './context/topMenuContext';
 import {UserProvider} from './context/UserContext';
 import {UserIdProvider} from './context/UserIdContext';
-import {RawUserIdProvider} from './context/RawUserIdContext';
+import {RawUserIdProvider, useRawUserId} from './context/RawUserIdContext';
 import {CategoriesContextProvider} from './context/categoriesContext';
 import {AppThemeProvider} from './context/themeContext';
 import SplashScreen from 'react-native-splash-screen';
@@ -35,6 +35,9 @@ import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
+import { auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret } from './src/constants/index';
+import UserService from './services/UserService';
+
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -63,7 +66,7 @@ const App = () => {
       };
     }
   }, [socket]); // Re-run the effect if `socket` changes
-  */
+  
 
   useEffect(() => {
     console.log('NEw INITIALIZING SOCKET');
@@ -83,7 +86,9 @@ const App = () => {
       }
     });
   }, []);
+  */
 
+  
   useEffect(() => {
     if (Platform.OS === 'android') {
       SplashScreen.hide();

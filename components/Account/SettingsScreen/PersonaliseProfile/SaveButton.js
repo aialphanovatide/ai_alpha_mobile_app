@@ -1,21 +1,23 @@
 import React from 'react';
-import { View, Text, Pressable, Appearance } from 'react-native';
-
+import { View, Text, TouchableOpacity } from 'react-native';
 import useSaveButtonStyles from './SaveButtonStyles';
 
 const SaveButton = ({ onPress, text, type = 'PRIMARY', disabled }) => {
   const styles = useSaveButtonStyles();
-  let logo = null; // assuming logo setup or modification might occur here
+  let logo = null;
 
   return (
-    <Pressable
-      onPress={onPress}
+    <TouchableOpacity
+      onPress={() => {
+        console.log("SaveButton pressed"); // Debug log
+        onPress();
+      }}
       disabled={disabled}
-      style={({pressed}) => [
+      style={[
         styles.container,
         disabled && styles.disabled,
-        pressed && styles.pressed,
-      ]}>
+      ]}
+    >
       <View style={styles.buttonContent}>
         {logo}
         <Text style={[
@@ -25,7 +27,7 @@ const SaveButton = ({ onPress, text, type = 'PRIMARY', disabled }) => {
           {text}
         </Text>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

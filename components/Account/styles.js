@@ -89,12 +89,13 @@ const useAccountStyles = () => {
       alignItems: 'center',
     },
     alphaLogoContainer: {
-      width: 150,
-      height: 150,
+      width: 70,
+      height: 70,
       marginVertical: theme.boxesVerticalMargin,
       marginTop: theme.titlesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'center',
+      marginBottom: 20,
     },
     image: {
       flex: 1,
@@ -116,6 +117,15 @@ const useAccountStyles = () => {
       width: theme.width,
       height: theme.height,
     },
+    imageContainer: {
+      alignItems: 'center',
+  },
+  userImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 10,
+},
   });
   return styles;
 };

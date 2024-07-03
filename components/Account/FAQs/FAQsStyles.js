@@ -24,6 +24,9 @@ const useFAQsStyles = () => {
       borderRadius: 8,
       overflow: 'hidden',
     },
+    lastFAQContainer: {
+      marginBottom: 70, // margin only for the last element
+    },
     faqTouchable: {
       justifyContent: 'center',
       minHeight: 60,
@@ -59,11 +62,6 @@ const useFAQsStyles = () => {
       flex: 1,
       tintColor: theme.secondaryTextColor,
     },
-    optionsContainer: {
-      marginVertical: theme.boxesVerticalMargin,
-      width: theme.width,
-      padding: 10,
-    },
     container: {
       flex: 1,
       width: theme.width,
@@ -81,12 +79,12 @@ const useFAQsStyles = () => {
       paddingVertical: 24,
     },
     faqQuestionText: {
-        fontFamily: theme.fontMedium,
-        color: theme.titleColor,
+      fontFamily: theme.fontMedium,
+      color: theme.titleColor,
     },
     faqAnswerText: {
-        fontFamily: theme.font,
-        color: theme.titleColor,
+      fontFamily: theme.font,
+      color: theme.titleColor,
     },
   });
   return styles;

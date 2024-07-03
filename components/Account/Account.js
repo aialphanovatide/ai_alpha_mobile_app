@@ -69,6 +69,30 @@ const Account = ({route}) => {
   const {userInfo} = useContext(RevenueCatContext);
   const {isDarkMode} = useContext(AppThemeContext);
   const {rawUserId, setRawUserId} = useRawUserId();
+  const [userImage, setUserImage] = useState(null);
+  const [username, setUsername] = useState('');
+
+
+  useEffect(() => {
+    const loadStoredData = async () => {
+
+      const storedUserImage = await AsyncStorage.getItem('userImage');
+      console.log("Stored user image: ", storedUserImage);
+      const storedUsername = await AsyncStorage.getItem('username');
+      console.log("Stored username: ", storedUsername);
+
+      setUsername(storedUsername || '');
+
+      if (storedUserImage) {
+        setUserImage(storedUserImage);
+      } else {
+        await fetchUserImage();
+      }
+    };
+
+    loadStoredData();
+  }, []);
+
 
   console.log(userInfo);
   // Account menu!!
@@ -204,6 +228,26 @@ const Account = ({route}) => {
       console.error('Logout failed', e);
     }
   };
+
+  const fetchUserImage = async () => {
+    console.log('Fetching user image...');
+    const token = await getManagementApiToken();
+    const userFetch = await fetch(
+      `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const userData = await userFetch.json();
+    const userImageUrl = userData.picture;
+    setUserImage(userImageUrl);
+    await AsyncStorage.setItem('userImage', userImageUrl);
+  };
+
   // useEffect(() => {
   //   if (route.params?.userEmail) {
   //     setUserEmail(route.params.userEmail);
@@ -356,9 +400,15 @@ async function Buy_now() {
                 style={styles.image}
               />
             </View>
+            {userImage && (
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: userImage }} style={styles.userImage} />
+            </View>
+          )}
             <Text style={styles.username}>
-              {userEmail || 'Linked to Apple ID'}
+              {username ? `@${username}` : ''}
             </Text>
+
             <View style={styles.optionsContainer}>
               {options &&
                 options.map((option, index) => (

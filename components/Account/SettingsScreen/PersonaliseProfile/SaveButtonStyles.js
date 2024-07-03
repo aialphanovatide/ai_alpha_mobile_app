@@ -8,7 +8,8 @@ const useSaveButtonStyles = () => {
     container: {
       paddingVertical: 15,
       paddingHorizontal: 10,
-      marginVertical: 4,
+      marginTop: -40,
+      marginBottom: 4,
       borderRadius: 4,
       alignItems: 'center',
       backgroundColor: theme.orange, // assuming default state color

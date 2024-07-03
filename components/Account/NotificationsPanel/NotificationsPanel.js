@@ -113,10 +113,13 @@ const NotificationsPanel = ({ route, options = null }) => {
         }
 
         const expiredSubscriptions = Object.keys(subscriptions).filter(id => !productIdentifiers.includes(id));
+        console.log("* EXPIRED subscriptions:", expiredSubscriptions);
         for (const id of expiredSubscriptions) {
+          console.log("UNSUBSCRIBING from topic:", id);
           userSubscriptionsStatus[id] = false;
           await AsyncStorage.setItem(`@subscription_${id}`, 'null');
           newSubscriptions[id] = false;
+          handleToggleSubscription(id, false);
         }
 
         setUserSubscriptions(userSubscriptionsStatus);
