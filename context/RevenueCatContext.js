@@ -53,7 +53,7 @@ const RevenueCatProvider = ({children}) => {
 
   const init = async userId => {
     if (Platform.OS === 'ios') {
-      Purchases.configure({apiKey: REVENUECAT_IOS_API_KEY, appUserID: userId});
+      Purchases.configure({apiKey: REVENUECAT_IOS_API_KEY, appUserID: userId, usesStoreKit2IfAvailable: false});
     } else if (Platform.OS === 'android') {
       Purchases.configure({
         apiKey: REVENUECAT_ANDROID_API_KEY,

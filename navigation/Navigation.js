@@ -20,8 +20,8 @@ const Navigation = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          statusBarStyle:
-            Platform.OS === 'ios' ? (isDarkMode ? 'dark' : 'light') : 'auto',
+          /*statusBarStyle:
+            Platform.OS === 'ios' ? (isDarkMode ? 'light-content' : 'dark-content'):'auto',*/
           animation: 'fade',
         }}>
         <Stack.Screen

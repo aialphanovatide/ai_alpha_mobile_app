@@ -1,20 +1,30 @@
 import React, {useEffect, useRef} from 'react';
 import {Image, Modal, Text, TouchableOpacity, View} from 'react-native';
-import useFundamentalsStyles from './FundamentalsStyles';
+import useAboutModalDialogStyles from './AboutModalDialogStyles';
 import {Animated} from 'react-native';
 
 const AboutModal = ({onClose, visible, description}) => {
-  const styles = useFundamentalsStyles();
+  const styles = useAboutModalDialogStyles();
   const opacity = useRef(new Animated.Value(0)).current;
 
   const animatedOnClose = () => {
-    onClose();
+    Animated.timing(opacity, {
+      toValue: 0,
+      duration: 125,
+      useNativeDriver: true,
+    }).start(() => onClose()); // Corrected this line to call onClose correctly
   };
 
   useEffect(() => {
     if (visible) {
       Animated.timing(opacity, {
         toValue: 1,
+        duration: 125,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(opacity, {
+        toValue: 0,
         duration: 125,
         useNativeDriver: true,
       }).start();
@@ -27,17 +37,12 @@ const AboutModal = ({onClose, visible, description}) => {
       transparent
       visible={visible}
       presentationStyle="overFullScreen">
-      <Animated.View style={[styles.modalBackground, {opacity}]}>
-        <TouchableOpacity
-          style={[styles.flex, {opacity}]}
-          onPress={animatedOnClose}
-        />
-      </Animated.View>
       <View style={styles.modalContainer}>
+        <Animated.View style={[styles.modalBackground, {opacity}]}>
+          <TouchableOpacity style={styles.flex} onPress={animatedOnClose} />
+        </Animated.View>
         <View style={styles.modalContent}>
-          <TouchableOpacity
-            onPress={() => onClose()}
-            style={styles.closeButton}>
+          <TouchableOpacity onPress={animatedOnClose} style={styles.closeButton}>
             <Image
               source={require('../../../../../../assets/images/fundamentals/close-button.png')}
               style={styles.closeButtonImage}
@@ -46,9 +51,9 @@ const AboutModal = ({onClose, visible, description}) => {
           </TouchableOpacity>
           <Text style={styles.aboutTitle}>About</Text>
           <Text style={styles.modalDescription}>{description}</Text>
-          <TouchableOpacity>
+          {/*<TouchableOpacity>
             <Text style={styles.readMoreText}>Read more</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
         </View>
       </View>
     </Modal>
