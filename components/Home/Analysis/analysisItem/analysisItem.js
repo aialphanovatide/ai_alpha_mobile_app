@@ -25,6 +25,7 @@ const AnalysisItem = ({title, item, handleAnalysisNavigation}) => {
                 : item.coin_bot_name
             }.png`,
             priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
           }}
           style={styles.imageStyle}
           resizeMode="contain"

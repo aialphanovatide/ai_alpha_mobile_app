@@ -24,6 +24,8 @@ const AnalysisItem = ({id, sectionName, handleItemTouch, icon, styles}) => {
             style={styles.analysisIcon}
             source={icon}
             resizeMode={'contain'}
+            fadeDuration={0}
+            loadingIndicatorSource={require('../../assets/images/analysis/empty-icon.png')}
           />
         </View>
         <Text style={styles.itemText}>{sectionName}</Text>

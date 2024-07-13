@@ -148,6 +148,13 @@ const useNewsStyles = () => {
       width: '100%',
       flexDirection: 'row',
     },
+    zoomImageBackground: {
+      backgroundColor: 'transparent',
+      width: '100%',
+      height: '100%',
+      alignItems: 'center',
+      alignSelf: 'center',
+    },
   });
   return styles;
 };

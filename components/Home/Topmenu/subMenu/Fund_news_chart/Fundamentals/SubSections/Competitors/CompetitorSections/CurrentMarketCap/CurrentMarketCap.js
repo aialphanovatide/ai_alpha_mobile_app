@@ -8,7 +8,6 @@ import {
 } from 'victory-native';
 import useChartStyles from './ChartStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
-import Loader from '../../../../../../../../../Loader/Loader';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
 const CurrentMarketCap = ({competitorsData, coin}) => {
@@ -18,11 +17,13 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
   const [cryptos, setCryptos] = useState([]);
   const [maxMarketCap, setMaxMarketCap] = useState(0);
   const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
+  const [activeBar, setActiveBar] = useState(null);
 
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
       item =>
-        item.competitor.token === crypto && item.competitor.key.includes(key),
+        item.competitor.key.includes(key) &&
+        item.competitor.token.replace(/\s/g, '') === crypto.replace(/\s/g, ''),
     );
     return found && found !== undefined
       ? found.competitor.value !== '-'
@@ -39,6 +40,10 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
     const numericValue = parseFloat(numberWithoutSign);
     const valueInBillions = numericValue / 1e9;
     return [valueInBillions, numericValue];
+  };
+
+  const handleActiveBarChange = () => {
+    setActiveBar(!activeBar);
   };
 
   const generateMarketCapChart = (cryptos, tintColors, maxCapValue) => {
@@ -89,8 +94,26 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
             label: ` $${crypto.marketCap[1]} `,
             color: tintColors[index > 3 ? index % 3 : index],
           }))}
+          events={[
+            {
+              target: 'data',
+              eventHandlers: {
+                onPress: e => {
+                  console.log(
+                    e.currentTarget.viewConfig.NativeProps,
+                  );
+                  handleActiveBarChange(
+                    e.target['_internalFiberInstanceHandleDEV'].memoizedProps
+                      .fill,
+                  );
+                },
+              },
+            },
+          ]}
           labels={({datum}) => datum.label}
-          labelComponent={<VictoryTooltip renderInPortal={false} />}
+          labelComponent={
+            <VictoryTooltip renderInPortal={false} active={activeBar } />
+          }
         />
       </VictoryChart>
     );
@@ -104,18 +127,18 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
         mapped_competitors_data.find(
           mapped =>
             mapped.symbol ===
-            item.competitor.token.replace(' ', '').toUpperCase(),
+            item.competitor.token.replace(/\s/g, '').toUpperCase(),
         )
       ) {
         return;
       } else {
         const current = {
           id: item.competitor.id,
-          symbol: item.competitor.token.replace(' ', '').toUpperCase(),
+          symbol: item.competitor.token.replace(/\s/g, '').toUpperCase(),
           marketCap: parseNumberString(
             findKeyInCompetitorItem(
               competitorsData,
-              'current market cap',
+              'current market',
               item.competitor.token,
             ),
           ),
@@ -123,7 +146,6 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
         mapped_competitors_data.push(current);
       }
     });
-    // console.log('Mapped competitors: ', mapped_competitors_data);
     setCryptos(mapped_competitors_data);
     setLoading(false);
     let maxNumber = 0;
@@ -138,7 +160,7 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
   return (
     <View style={styles.chartContainer}>
       {loading || cryptos?.length === 0 ? (
-        <SkeletonLoader type='chart' />
+        <SkeletonLoader type="chart" />
       ) : (
         generateMarketCapChart(
           cryptos,

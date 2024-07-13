@@ -17,11 +17,14 @@ const useSettingsScreenStyles = () => {
       color: theme.textColor,
     },
     title: {
-      marginVertical: '5%',
-      marginLeft: '6%',
+      marginHorizontal: 26,
+      marginTop: 18,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
+    },
+    backButtonContainer: {
+      marginHorizontal: 20,
     },
     headline: {
       color: theme.titleColor,

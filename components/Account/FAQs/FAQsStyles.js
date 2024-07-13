@@ -9,12 +9,15 @@ const useFAQsStyles = () => {
       flex: 1,
       backgroundColor: 'transparent',
     },
+    backButtonContainer: {
+      marginHorizontal: 20,
+    },
     title: {
-      marginVertical: '5%',
-      marginLeft: '6%',
+      marginHorizontal: 26,
+      marginVertical: 18,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
     },
     faqContainer: {
       width: '95%',

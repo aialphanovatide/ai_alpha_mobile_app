@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useMemo} from 'react';
 import {View, ImageBackground, Dimensions, Image} from 'react-native';
 import {
   VictoryChart,
@@ -21,19 +21,25 @@ import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
 const formatNumber = num => {
   const absNum = Math.abs(num);
 
+  // Handle numbers lower than 1, rounding them to 4 terms.
+  if (absNum < 1) {
+    return num.toFixed(4);
+  }
+
   const abbrev = ['', 'k', 'm', 'b', 't'];
-  const tier = Math.log10(absNum) / 3 || 0;
+  const tier = Math.floor(Math.log10(absNum) / 3);
 
-  // If the number is smaller than 1000, no need for abbreviation
-  if (tier === 0) return num;
+  // If the number is too low, use exponential notation
+  if (absNum < 0.001) {
+    return num.toExponential();
+  }
 
-  if (num <= 0.01) return num.toExponential();
+  // Divide based on the tier
+  const divisor = Math.pow(1000, tier);
+  const formattedNum = (num / divisor).toFixed(2);
 
-  const divisor = Math.pow(1000, Math.round(tier));
-  const formattedNum = (num / divisor).toFixed(3);
-
-  // Concatenate the formatted number with the appropriate abbreviation
-  return formattedNum + abbrev[Math.round(tier)];
+  // Return the number with the correct abbreviation and handling the negative cases.
+  return (num < 0 ? '-' : '') + formattedNum + abbrev[tier];
 };
 
 // Format number in shorten way
@@ -78,6 +84,7 @@ const Chart = ({
   activeButtons,
   selectedInterval,
   coinBot,
+  selectedPairing,
 }) => {
   const styles = useChartsStyles();
   const {theme} = useContext(AppThemeContext);
@@ -104,7 +111,7 @@ const Chart = ({
   const getSupportAndResistanceData = async (coinBot, time_interval) => {
     try {
       const response = await getService(
-        `/api/coin-support-resistance?coin_name=${coinBot}&temporality=${time_interval.toLowerCase()}&pair=usdt`,
+        `/api/coin-support-resistance?coin_name=${coinBot}&temporality=${time_interval.toLowerCase()}&pair=${selectedPairing.toLowerCase()}`,
       );
 
       const supportValues = [];
@@ -146,30 +153,99 @@ const Chart = ({
     }
   }, [coinBot, selectedInterval]);
 
-  const domainY = () => {
-    if (
-      activeButtons.length === 0 ||
-      (activeButtons.length > 0 &&
-        (supportLevels.length === 0 || resistanceLevels.length === 0))
-    ) {
-      return chartData.slice(-candlesToShow).reduce(
-        (acc, dataPoint) => {
-          const {open, close, high, low} = dataPoint;
-          return [
-            Math.min(acc[0], open, close, high, low),
-            Math.max(acc[1], open, close, high, low),
-          ];
-        },
-        [Infinity, -Infinity],
-      );
-    } else {
-      const levels = [...supportLevels, ...resistanceLevels];
-      // Remove: atom usdt issue solver.
-      return coinBot.toLowerCase() === 'atom' && selectedInterval === '1W'
-        ? [1, Math.max(...levels)]
-        : [Math.min(...levels), Math.max(...levels)];
-    }
+  const filterExcessiveLevels = (levels, currentPrice, type) => {
+    return levels.filter(level => {
+      if (type === 'support' || type === 'resistance') {
+        return level <= currentPrice * 1.6 && level >= currentPrice * 0.4;
+      }
+      return false;
+    });
   };
+
+  const [zoomDomain, setZoomDomain] = useState({
+    x: [chartData[0]?.x, chartData[chartData.length - 1]?.x],
+  });
+
+  useEffect(() => {
+    setZoomDomain({
+      x: [
+        chartData[chartData.length - candlesToShow]?.x,
+        chartData[chartData.length - 1]?.x,
+      ],
+    });
+  }, [chartData, candlesToShow]);
+
+  const domainY = useMemo(() => {
+    const priceRange = chartData.slice(-candlesToShow).reduce(
+      (acc, dataPoint) => {
+        const {open, close, high, low} = dataPoint;
+        return [
+          Math.min(acc[0], open, close, high, low),
+          Math.max(acc[1], open, close, high, low),
+        ];
+      },
+      [Infinity, -Infinity],
+    );
+
+    let maxPrice = Math.max(priceRange[1], high);
+    let minPrice = Math.min(priceRange[0], low);
+
+    // Apply the function to filter the excessively high or low support and resistance levels
+    if (activeButtons.includes('Support')) {
+      const filteredSupport = filterExcessiveLevels(
+        supportLevels,
+        low,
+        'support',
+      );
+      if (filteredSupport.length > 0) {
+        minPrice = Math.min(minPrice, ...filteredSupport);
+      }
+    }
+
+    if (activeButtons.includes('Resistance')) {
+      const filteredResistance = filterExcessiveLevels(
+        resistanceLevels,
+        high,
+        'resistance',
+      );
+      if (filteredResistance.length > 0) {
+        maxPrice = Math.max(maxPrice, ...filteredResistance);
+      }
+    }
+
+    return [minPrice, maxPrice];
+  }, [
+    chartData,
+    candlesToShow,
+    supportLevels,
+    resistanceLevels,
+    activeButtons,
+  ]);
+
+  // const domainY = () => {
+  //   if (
+  //     activeButtons.length === 0 ||
+  //     (activeButtons.length > 0 &&
+  //       (supportLevels.length === 0 || resistanceLevels.length === 0))
+  //   ) {
+  //     return chartData.slice(-candlesToShow).reduce(
+  //       (acc, dataPoint) => {
+  //         const {open, close, high, low} = dataPoint;
+  //         return [
+  //           Math.min(acc[0], open, close, high, low),
+  //           Math.max(acc[1], open, close, high, low),
+  //         ];
+  //       },
+  //       [Infinity, -Infinity],
+  //     );
+  //   } else {
+  //     const levels = [...supportLevels, ...resistanceLevels];
+  //     // Remove: atom usdt issue solver.
+  //     return coinBot.toLowerCase() === 'atom' && selectedInterval === '1W'
+  //       ? [1, Math.max(...levels)]
+  //       : [Math.min(...levels), Math.max(...levels)];
+  //   }
+  // };
 
   const domainX = [
     chartData[chartData.length - candlesToShow]?.x,
@@ -213,8 +289,13 @@ const Chart = ({
         <VictoryChart
           style={styles.chartMainContainer}
           width={chartWidth}
-          containerComponent={<VictoryZoomContainer />}
-          domain={{x: domainX, y: domainY()}}
+          containerComponent={
+            <VictoryZoomContainer
+            // zoomDomain={zoomDomain}
+            // onZoomDomainChange={domain => setZoomDomain(domain)}
+            />
+          }
+          domain={{x: zoomDomain.x, y: domainY}}
           events={[
             {
               target: 'parent',
@@ -226,7 +307,7 @@ const Chart = ({
               },
             },
           ]}
-          padding={{top: 20, bottom: 60, left: 20, right: 65}}
+          padding={{top: 20, bottom: 60, left: 20, right: 70}}
           domainPadding={{
             x: 1,
             y:
@@ -236,44 +317,9 @@ const Chart = ({
           }}
           scale={{x: 'time', y: 'log'}}
           height={chartHeight}>
-          {/* HORIZONTAL LINE */}
-          {selectedCandle && (
-            <VictoryLine
-              data={[
-                {x: domainX[0], y: calculateCandleMiddle(selectedCandle)},
-                {x: domainX[1], y: calculateCandleMiddle(selectedCandle)},
-              ]}
-              style={{
-                data: {stroke: 'red', strokeWidth: 1, strokeDasharray: [4, 4]},
-              }}
-            />
-          )}
-
-          <DataRenderer
-            domainX={domainX}
-            yPoint={selectedCandle && calculateCandleMiddle(selectedCandle)}
-            domainY={domainY}
-            chartWidth={chartWidth}
-            screenWidth={width}
-            chartHeight={chartHeight}
-            data={selectedCandle && selectedCandle}
-          />
-
-          {/* VERTICAL LINE */}
-          {selectedCandle && (
-            <VictoryLine
-              data={[
-                {x: new Date(selectedCandle.x), y: high},
-                {x: new Date(selectedCandle.x), y: low},
-              ]}
-              style={{
-                data: {stroke: 'red', strokeWidth: 1, strokeDasharray: [4, 4]},
-              }}
-            />
-          )}
-
           {/* X AXIS */}
           <VictoryAxis
+            fixLabelOverlap
             style={{
               axis: {stroke: theme.chartsAxisColor},
               tickLabels: {
@@ -309,8 +355,49 @@ const Chart = ({
             }}
             tickCount={selectedInterval === '1W' ? 7 : 5}
             tickFormat={t => formatNumber(t)}
-            orientation="right"
+            orientation={'right'}
           />
+          {/* HORIZONTAL LINE */}
+          {selectedCandle && (
+            <VictoryLine
+              data={[
+                {
+                  x: zoomDomain.x[0],
+                  y: (selectedCandle.open + selectedCandle.close) / 2,
+                },
+                {
+                  x: zoomDomain.x[1],
+                  y: (selectedCandle.open + selectedCandle.close) / 2,
+                },
+              ]}
+              style={{
+                data: {stroke: 'red', strokeWidth: 1, strokeDasharray: [4, 4]},
+              }}
+            />
+          )}
+
+          <DataRenderer
+            domainX={zoomDomain.x}
+            yPoint={selectedCandle && calculateCandleMiddle(selectedCandle)}
+            domainY={domainY}
+            chartWidth={chartWidth}
+            screenWidth={width}
+            chartHeight={chartHeight}
+            data={selectedCandle && selectedCandle}
+          />
+
+          {/* VERTICAL LINE */}
+          {selectedCandle && (
+            <VictoryLine
+              data={[
+                {x: new Date(selectedCandle.x), y: high},
+                {x: new Date(selectedCandle.x), y: low},
+              ]}
+              style={{
+                data: {stroke: 'red', strokeWidth: 1, strokeDasharray: [4, 4]},
+              }}
+            />
+          )}
 
           {/* DISPLAY DATA COMPONENT */}
           <VictoryCandlestick

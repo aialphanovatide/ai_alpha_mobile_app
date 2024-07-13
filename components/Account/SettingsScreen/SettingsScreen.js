@@ -182,15 +182,11 @@ const SettingsScreen = ({route}) => {
 
       console.log(
         'url: ',
-        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(
-          rawUserId,
-        )}`,
+        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
       );
 
       const userFetch = await fetch(
-        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(
-          rawUserId,
-        )}`,
+        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
         {
           method: 'GET',
           headers: {
@@ -205,9 +201,7 @@ const SettingsScreen = ({route}) => {
       console.log('User Data!!:', userData);
 
       const response = await fetch(
-        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(
-          rawUserId,
-        )}`,
+        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
         {
           method: 'DELETE',
           headers: {
@@ -254,7 +248,10 @@ const SettingsScreen = ({route}) => {
         if (rawUserId && rawUserId.startsWith('auth0|')) {
           isUsernamePasswordAuthenticationUser = true;
         }
-        console.log("isUsernamePasswordAuthenticationUser ->", isUsernamePasswordAuthenticationUser);
+        console.log(
+          'isUsernamePasswordAuthenticationUser ->',
+          isUsernamePasswordAuthenticationUser,
+        );
 
         if (isUsernamePasswordAuthenticationUser) {
           console.log('Entered true line of auth type!');
@@ -321,7 +318,7 @@ const SettingsScreen = ({route}) => {
         }
       } catch (error) {
         // Case for Apple users that don't provide an email
-        console.log("Entered error catch");
+        console.log('Entered error catch');
       }
     } catch (error) {
       // Handle errors from the outer try block
@@ -336,11 +333,10 @@ const SettingsScreen = ({route}) => {
       'Restore Purchases',
       'Warning: This must only be activated when your previous account is lost, as all subscriptions will be removed from the previous account.',
       [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Restore', onPress: restorePurchases },
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Restore', onPress: restorePurchases},
       ],
     );
-    ;
   };
 
   // Switch case for 'options' array
@@ -369,7 +365,9 @@ const SettingsScreen = ({route}) => {
   return (
     <SafeAreaView style={styles.backgroundColor}>
       <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
-        <BackButton />
+        <View style={styles.backButtonContainer}>
+          <BackButton />
+        </View>
         <Text style={styles.title}>Settings</Text>
         <View style={styles.container}>
           <View style={styles.optionsContainer}>

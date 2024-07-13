@@ -1,7 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {ImageBackground, SafeAreaView, Text, View} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import BackButton from '../BackButton/BackButton';
-import AdvancedTvChart from '../Charts/AdvancedTvChart';
 import useChartSectionStyles from './ChartSectionStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
@@ -17,10 +24,10 @@ import {
   VictoryLabel,
   VictoryLine,
 } from 'victory-native';
-import Loader from '../../Loader/Loader';
 import {getService} from '../../../services/aiAlphaApi';
 import ChartButtons from './ChartButtons';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
+import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 
 const initialSessionData = {
   security_token: null,
@@ -31,7 +38,7 @@ const ChartSection = ({route, navigation}) => {
   const {title, symbol, description} = route.params;
   const styles = useChartSectionStyles();
   const {isDarkMode, theme} = useContext(AppThemeContext);
-  const [selectedInterval, setSelectedInterval] = useState('1h');
+  const [selectedInterval, setSelectedInterval] = useState('1D');
   const [sessionData, setSessionData] = useState(initialSessionData);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,6 +46,8 @@ const ChartSection = ({route, navigation}) => {
   const [activeButtons, setActiveButtons] = useState([]);
   const [supportLevels, setSupportLevels] = useState([]);
   const [resistanceLevels, setResistanceLevels] = useState([]);
+  const {isLandscape, isHorizontal, handleScreenOrientationChange} =
+    useScreenOrientation();
 
   // Format number in shorten way
   function formatLabelNumber(number, decimalPlaces = 2) {
@@ -132,7 +141,7 @@ const ChartSection = ({route, navigation}) => {
   // This chart was configured to update every 30s since the source is an external API which has limitation parameters in terms of requests per minute.
 
   useEffect(() => {
-    const intervalId = setInterval(() => loadChartsData(), 15000);
+    const intervalId = setInterval(() => loadChartsData(), 8000);
     return () => clearInterval(intervalId);
   }, [symbol, selectedInterval]);
 
@@ -152,18 +161,25 @@ const ChartSection = ({route, navigation}) => {
         angle={45}
         colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
         style={{flex: 1}}>
-        <SafeAreaView style={styles.background}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton />
-          </View>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.sectionDescription}>{description}</Text>
-          <View style={styles.container}>
-            <SkeletonLoader type="timeframe" quantity={4} />
-            <SkeletonLoader type="chart" 
-            style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
-            />
-          </View>
+        <SafeAreaView
+          style={[
+            styles.background,
+            isLandscape && isHorizontal && {width: '100%'},
+          ]}>
+          <ScrollView style={{flex: 1}}>
+            <View style={styles.backButtonWrapper}>
+              <BackButton />
+            </View>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.sectionDescription}>{description}</Text>
+            <View style={styles.container}>
+              <SkeletonLoader type="timeframe" quantity={4} />
+              <SkeletonLoader
+                type="chart"
+                style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+              />
+            </View>
+          </ScrollView>
         </SafeAreaView>
       </LinearGradient>
     );
@@ -215,167 +231,231 @@ const ChartSection = ({route, navigation}) => {
     }
   };
 
+  // Function to handle the X button interaction on the horizontal chart
+
+  const handleBackInteraction = () => {
+    if (isLandscape || isHorizontal) {
+      handleScreenOrientationChange('PORTRAIT');
+      navigation.canGoBack(false);
+    }
+  };
+
   return (
     <LinearGradient
       useAngle={true}
       angle={45}
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={{flex: 1}}>
-      <SafeAreaView style={styles.mainSection}>
-        <View style={styles.backButtonWrapper}>
-          <BackButton />
-        </View>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.sectionDescription}>{description}</Text>
-        <View style={styles.timeframeContainer}>
-          <TimeframeSelector
-            selectedInterval={selectedInterval}
-            changeInterval={changeInterval}
-            hasHourlyTimes={true}
-          />
-          {(selectedInterval.toUpperCase() === '1W' ||
-            selectedInterval.toUpperCase() === '1D') && (
-            <ChartButtons
-              activeButtons={activeButtons}
-              setActiveButtons={setActiveButtons}
+      <SafeAreaView
+        style={[
+          styles.mainSection,
+          isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
+        ]}>
+        <ScrollView
+          style={[
+            {flex: 1, paddingTop: 36},
+            isLandscape && isHorizontal && {paddingTop: 36},
+          ]}
+          showsVerticalScrollIndicator={false}
+          bounces={false}>
+          <View style={styles.backButtonWrapper}>
+            <BackButton />
+          </View>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.sectionDescription}>{description}</Text>
+          <View style={styles.timeframeContainer}>
+            <TimeframeSelector
+              selectedInterval={selectedInterval}
+              changeInterval={changeInterval}
+              hasHourlyTimes={true}
             />
-          )}
-        </View>
-        <View style={styles.container}>
-          <View style={styles.chart}>
-            <ImageBackground
-              source={require('../../../assets/images/chart_alpha_logo.png')}
-              style={styles.chartBackgroundImage}
-              resizeMode="contain"
-            />
-            <VictoryChart
-              width={375}
-              domain={{x: domainX, y: domainY()}}
-              padding={{top: 10, bottom: 40, left: 20, right: 70}}
-              domainPadding={{x: 5, y: 3}}
-              scale={{x: 'time', y: 'linear'}}
-              height={300}>
-              <VictoryAxis
-                style={{
-                  axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
-                  tickLabels: {
-                    fontSize: theme.responsiveFontSize * 0.7,
-                    fill: theme.titleColor,
-                    fontFamily: theme.font,
-                  },
-                  grid: {stroke: theme.chartsGridColor},
-                }}
-                tickCount={selectedInterval.toUpperCase() === '1W' ? 3 : 6}
+            {(selectedInterval.toUpperCase() === '1W' ||
+              selectedInterval.toUpperCase() === '1D') && (
+              <ChartButtons
+                activeButtons={activeButtons}
+                setActiveButtons={setActiveButtons}
               />
-              <VictoryAxis
-                dependentAxis
-                style={{
-                  axis: {stroke: theme.chartsAxisColor},
-                  tickLabels: {
-                    fontSize: theme.responsiveFontSize * 0.725,
-                    fill: theme.titleColor,
-                    fontFamily: theme.font,
-                  },
-                  grid: {stroke: theme.chartsGridColor},
-                }}
-                orientation="right"
-                tickCount={8}
-                tickFormat={t => `$${t}`}
+            )}
+          </View>
+          <View style={styles.container}>
+            <View style={styles.chart}>
+              <ImageBackground
+                source={require('../../../assets/images/chart_alpha_logo.png')}
+                style={styles.chartBackgroundImage}
+                resizeMode="contain"
               />
+              <VictoryChart
+                width={isLandscape && isHorizontal ? 700 : 375}
+                domain={{x: domainX, y: domainY()}}
+                padding={{top: 10, bottom: 40, left: 20, right: 70}}
+                domainPadding={{x: 5, y: 3}}
+                scale={{x: 'time', y: 'linear'}}
+                height={300}>
+                <VictoryAxis
+                  fixLabelOverlap
+                  style={{
+                    axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
+                    tickLabels: {
+                      fontSize: theme.responsiveFontSize * 0.7,
+                      fill: theme.titleColor,
+                      fontFamily: theme.font,
+                    },
+                    grid: {stroke: theme.chartsGridColor},
+                  }}
+                  tickCount={selectedInterval.toUpperCase() === '1W' ? 3 : 6}
+                  tickFormat={t => {
+                    const year = t.getFullYear();
+                    const month = (t.getMonth() + 1)
+                      .toString()
+                      .padStart(2, '0');
+                    const day = t.getDate().toString().padStart(2, '0');
+                    const hour = t.getHours().toString().padStart(2, '0');
+                    const minute = t.getMinutes().toString().padStart(2, '0');
+                    return `${year}-${day}-${month}`;
+                  }}
+                />
+                <VictoryAxis
+                  dependentAxis
+                  style={{
+                    axis: {stroke: theme.chartsAxisColor},
+                    tickLabels: {
+                      fontSize: theme.responsiveFontSize * 0.725,
+                      fill: theme.titleColor,
+                      fontFamily: theme.font,
+                    },
+                    grid: {stroke: theme.chartsGridColor},
+                  }}
+                  orientation="right"
+                  tickCount={8}
+                  tickFormat={t => `$${t}`}
+                />
 
-              <VictoryCandlestick
-                data={chartData}
-                candleRatio={0.6}
-                candleColors={{positive: '#09C283', negative: '#E93334'}}
-                style={{
-                  data: {
-                    strokeWidth: 0.75,
-                    stroke: datum =>
-                      datum.close < datum.open ? '#09C283' : '#E93334',
-                  },
-                }}
-              />
-              {/* RESISTANCE LEVELS */}
-              {resistanceLevels &&
-                activeButtons.includes('Resistance') &&
-                resistanceLevels?.map((level, index) => (
-                  <VictoryLine
-                    data={[
-                      {x: domainX[0], y: level},
-                      {x: domainX[1], y: level},
-                    ]}
-                    key={`resistance-${index}`}
-                    // styles for the line itself
-                    style={{data: {stroke: '#F012A1', strokeWidth: 2}}}
-                    labels={() => [`$${formatLabelNumber(level)} `]}
-                    labelComponent={
-                      <VictoryLabel
-                        dy={5}
-                        dx={10}
-                        textAnchor="start"
-                        inline={true}
-                        style={{
-                          fill: '#fff',
-                          fontSize: 11,
-                          fontFamily: theme.fontMedium,
-                        }}
-                        backgroundPadding={[
-                          {top: -1, bottom: 6, left: 2.3, right: 0},
-                        ]}
-                        backgroundStyle={[
-                          {
-                            fill: '#F012A1',
-                            opacity: 0.8,
-                          },
-                        ]}
-                      />
-                    }
-                  />
-                ))}
-
-              {/* SUPPORT LEVELS */}
-              {supportLevels &&
-                activeButtons.includes('Support') &&
-                supportLevels?.map((level, index) => (
-                  <VictoryLine
-                    data={[
-                      {x: domainX[0], y: level},
-                      {x: domainX[1], y: level},
-                    ]}
-                    key={`support-${index}`}
-                    style={{
-                      data: {stroke: '#C539B4', strokeWidth: 2},
-                    }}
-                    labels={() => [`$${formatLabelNumber(level)} `]}
-                    labelComponent={
-                      <VictoryLabel
-                        dy={5}
-                        dx={10}
-                        textAnchor="start"
-                        inline={true}
-                        backgroundPadding={[
-                          {top: -1, bottom: 6, left: 2.3, right: 0},
-                        ]}
-                        style={[
-                          {
-                            fill: '#F7F7F7',
+                <VictoryCandlestick
+                  data={chartData}
+                  candleRatio={0.6}
+                  candleColors={{positive: '#09C283', negative: '#E93334'}}
+                  style={{
+                    data: {
+                      strokeWidth: 0.75,
+                      stroke: datum =>
+                        datum.close < datum.open ? '#09C283' : '#E93334',
+                    },
+                  }}
+                />
+                {/* RESISTANCE LEVELS */}
+                {resistanceLevels &&
+                  activeButtons.includes('Resistance') &&
+                  resistanceLevels?.map((level, index) => (
+                    <VictoryLine
+                      data={[
+                        {x: domainX[0], y: level},
+                        {x: domainX[1], y: level},
+                      ]}
+                      key={`resistance-${index}`}
+                      // styles for the line itself
+                      style={{data: {stroke: '#F012A1', strokeWidth: 2}}}
+                      labels={() => [`$${formatLabelNumber(level)} `]}
+                      labelComponent={
+                        <VictoryLabel
+                          dy={5}
+                          dx={10}
+                          textAnchor="start"
+                          inline={true}
+                          style={{
+                            fill: '#fff',
                             fontSize: 11,
                             fontFamily: theme.fontMedium,
-                          },
-                        ]}
-                        backgroundStyle={[
-                          {
-                            fill: '#C539B4',
-                            opacity: 0.8,
-                          },
-                        ]}
-                      />
+                          }}
+                          backgroundPadding={[
+                            {top: -1, bottom: 6, left: 2.3, right: 0},
+                          ]}
+                          backgroundStyle={[
+                            {
+                              fill: '#F012A1',
+                              opacity: 0.8,
+                            },
+                          ]}
+                        />
+                      }
+                    />
+                  ))}
+
+                {/* SUPPORT LEVELS */}
+                {supportLevels &&
+                  activeButtons.includes('Support') &&
+                  supportLevels?.map((level, index) => (
+                    <VictoryLine
+                      data={[
+                        {x: domainX[0], y: level},
+                        {x: domainX[1], y: level},
+                      ]}
+                      key={`support-${index}`}
+                      style={{
+                        data: {stroke: '#C539B4', strokeWidth: 2},
+                      }}
+                      labels={() => [`$${formatLabelNumber(level)} `]}
+                      labelComponent={
+                        <VictoryLabel
+                          dy={5}
+                          dx={10}
+                          textAnchor="start"
+                          inline={true}
+                          backgroundPadding={[
+                            {top: -1, bottom: 6, left: 2.3, right: 0},
+                          ]}
+                          style={[
+                            {
+                              fill: '#F7F7F7',
+                              fontSize: 11,
+                              fontFamily: theme.fontMedium,
+                            },
+                          ]}
+                          backgroundStyle={[
+                            {
+                              fill: '#C539B4',
+                              opacity: 0.8,
+                            },
+                          ]}
+                        />
+                      }
+                    />
+                  ))}
+              </VictoryChart>
+            </View>
+            <TouchableOpacity
+              onPress={
+                isLandscape
+                  ? () => {
+                      handleBackInteraction();
                     }
-                  />
-                ))}
-            </VictoryChart>
+                  : () => {
+                      navigation.canGoBack(false);
+                      handleScreenOrientationChange('LANDSCAPE');
+                    }
+              }>
+              <Image
+                style={styles.chartsHorizontalButton}
+                resizeMode="contain"
+                source={
+                  isLandscape && isHorizontal
+                    ? require('../../../assets/images/home/charts/deactivate-horizontal.png')
+                    : require('../../../assets/images/home/charts/activate-horizontal.png')
+                }
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleBackInteraction()}>
+              <Image
+                style={
+                  isLandscape && isHorizontal
+                    ? styles.chartBackButton
+                    : {display: 'none'}
+                }
+                resizeMode="contain"
+                source={require('../../../assets/images/home/charts/back.png')}
+              />
+            </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </LinearGradient>
   );

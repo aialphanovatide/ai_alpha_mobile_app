@@ -138,6 +138,7 @@ const HomeScreen = () => {
                   style={[
                     styles.buttonWrapper,
                     focused ? styles.focusedButton : {},
+                    isLandscape && isHorizontal && {display: 'none'},
                   ]}>
                   <LinearGradient
                     useAngle={false}

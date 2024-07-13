@@ -91,7 +91,9 @@ const LegalAndInformation = ({route}) => {
       style={{flex: 1}}>
       <SafeAreaView style={styles.backgroundColor}>
         <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
-          <BackButton />
+          <View style={styles.backButtonContainer}>
+            <BackButton />
+          </View>
           <Text style={styles.title}>Legal and Information</Text>
           <View style={styles.container}>
             <View style={styles.optionsContainer}>

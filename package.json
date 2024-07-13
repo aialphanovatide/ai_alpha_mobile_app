@@ -49,6 +49,7 @@
     "react-native-dotenv": "^3.4.9",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.14.0",
+    "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-keys": "^0.7.10",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-orientation-locker": "^1.6.0",

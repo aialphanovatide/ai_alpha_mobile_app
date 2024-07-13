@@ -14,7 +14,7 @@ const SearchBar = ({handleSearchSectionNavigation}) => {
   );
 
   return (
-    <View
+    <TouchableOpacity
       style={[
         styles.searchBar,
         Platform.select({
@@ -26,7 +26,8 @@ const SearchBar = ({handleSearchSectionNavigation}) => {
           : {
               height: 40,
             },
-      ]}>
+      ]}
+      onPress={() => handleSearchSectionNavigation()}>
       <Image
         source={require('../../../assets/images/home/search_icon.png')}
         style={[styles.magnifierIcon, styles.magnifierTintColor]}
@@ -37,18 +38,14 @@ const SearchBar = ({handleSearchSectionNavigation}) => {
         <></>
       ) : (
         <View style={styles.inactiveSearchBar}>
-          <TouchableOpacity
-            style={styles.transparentOverlay}
-            onPress={() => handleSearchSectionNavigation()}
-          />
           <Image
             style={styles.aiAlphaTextImage}
             source={require('../../../assets/images/topMenu/ai_alpha_search_text.png')}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         </View>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

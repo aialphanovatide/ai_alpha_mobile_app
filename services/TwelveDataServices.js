@@ -1,7 +1,7 @@
 const {TWELVEDATA_API_KEY} = require('../src/constants');
 
-async function getVixIndexData() {
-  const url = `https://api.twelvedata.com/time_series?symbol=VIX&interval=1day&apikey=${TWELVEDATA_API_KEY}&outputsize=40`;
+async function getVixIndexData(interval = '1day') {
+  const url = `https://api.twelvedata.com/time_series?symbol=VIX&interval=${interval}&apikey=${TWELVEDATA_API_KEY}&outputsize=40`;
 
   try {
     const response = await fetch(url);

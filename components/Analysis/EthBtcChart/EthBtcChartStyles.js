@@ -66,6 +66,22 @@ const useEthBtcStyles = () => {
     backButtonWrapper: {
       marginHorizontal: 20,
     },
+    chartsHorizontalButton: {
+      width: 20,
+      height: 20,
+      position: 'absolute',
+      bottom: 60,
+      left: 25,
+      tintColor: theme.textColor,
+    },
+    chartBackButton: {
+      width: 35,
+      height: 35,
+      position: 'absolute',
+      bottom: 280,
+      right: 30,
+      tintColor: theme.textColor,
+    },
   });
   return styles;
 };

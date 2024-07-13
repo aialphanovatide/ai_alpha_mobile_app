@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-native';
-import { useContext } from 'react';
-import { AppThemeContext } from '../../../context/themeContext';
+import {StyleSheet} from 'react-native';
+import {useContext} from 'react';
+import {AppThemeContext} from '../../../context/themeContext';
 
 const useNotificationsStyles = () => {
-  const { theme, isDarkMode } = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
 
   return StyleSheet.create({
     container: {
@@ -16,12 +16,15 @@ const useNotificationsStyles = () => {
       alignContent: 'center',
       fontFamily: theme.fontSemibold,
     },
+    backButtonContainer: {
+      marginHorizontal: 10,
+    },
     title: {
-      marginVertical: theme.titlesVerticalMargin,
-      marginHorizontal: 25,
-      fontSize: theme.titleFontSize * 1.1,
+      marginTop: theme.titlesVerticalMargin,
+      marginHorizontal: 16,
+      fontSize: 25,
       color: theme.titleColor,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
     subtitle: {
       marginVertical: 4,
@@ -70,14 +73,17 @@ const useNotificationsStyles = () => {
       alignItems: 'center',
       borderRadius: 10,
       marginLeft: 20,
-      backgroundColor: isDarkMode ? 'transparent' : theme.notificationsSwitchColor,
+      backgroundColor: isDarkMode
+        ? 'transparent'
+        : theme.notificationsSwitchColor,
     },
     allNotificationsSwitchContainer: {
       width: 45,
       height: 30,
       borderRadius: 10,
-      marginLeft: -71,
-      backgroundColor: isDarkMode ? 'transparent' : theme.notificationsSwitchColor,
+      backgroundColor: isDarkMode
+        ? 'transparent'
+        : theme.notificationsSwitchColor,
     },
     horizontalLine: {
       width: '80%',
@@ -87,7 +93,7 @@ const useNotificationsStyles = () => {
       marginRight: 15,
     },
     switch: {
-      transform: [{ scaleX: 0.85 }, { scaleY: 0.85 }],
+      transform: [{scaleX: 0.85}, {scaleY: 0.85}],
     },
     allNotificationsItem: {
       width: '95%',

@@ -48,6 +48,15 @@ const CandlestickChart = ({route}) => {
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
 
+  // This useEffect handles the content regulation with the subscriptions from the user
+  useEffect(() => {
+    const hasCoinSubscription = findCategoryInIdentifiers(
+      activeCoin.category_name,
+      userInfo.entitlements,
+    );
+    setSubscribed(hasCoinSubscription);
+  }, [activeCoin, userInfo]);
+
   useEffect(() => {
     navigation.addListener('beforeRemove', e => {
       if (isLandscape || isHorizontal) {
@@ -134,15 +143,6 @@ const CandlestickChart = ({route}) => {
     return () => clearInterval(intervalId);
   }, [interval, coinBot, selectedInterval, selectedPairing]);
 
-  // This useEffect handles the content regulation with the subscriptions from the user
-  useEffect(() => {
-    const hasCoinSubscription = findCategoryInIdentifiers(
-      activeCoin.category_name,
-      userInfo.entitlements,
-    );
-    setSubscribed(hasCoinSubscription);
-  }, [activeCoin, userInfo]);
-
   // Function to handle the time interval changes, executing again the data fetching
 
   const changeInterval = async newInterval => {
@@ -219,6 +219,7 @@ const CandlestickChart = ({route}) => {
             loading={loading}
             activeButtons={activeButtons}
             coinBot={coinBot}
+            selectedPairing={selectedPairing}
           />
         </View>
 

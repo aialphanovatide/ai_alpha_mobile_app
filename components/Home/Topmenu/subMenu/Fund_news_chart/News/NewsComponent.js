@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {getService} from '../../../../../../services/aiAlphaApi';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
 import Loader from '../../../../../Loader/Loader';
@@ -24,7 +23,7 @@ const NewsComponent = ({route}) => {
   const [news, setNews] = useState([]);
   const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
   const [botname, setBotname] = useState(
-    route.params ? route.params.botname : activeSubCoin.bot_name,
+    route.params ? route.params.botname : activeSubCoin,
   );
   const options = ['Today', 'This Week'];
   const [activeFilter, setActiveFilter] = useState(options[0]);
@@ -86,15 +85,19 @@ const NewsComponent = ({route}) => {
     const fetchNews = async () => {
       try {
         const newsLimit =
-          activeFilter && activeFilter === 'Last Month'
-            ? 30
-            : activeFilter === 'This Week'
-            ? 20
-            : 10;
+          activeFilter && activeFilter === 'This Week' ? 20 : 10;
         const endpoint = activeFilter
-          ? `/api/get/news?coin=${botname}&time_range=${activeFilter.toLowerCase()}&limit=${newsLimit}`
-          : `/api/get/news?coin=${botname}&limit=${newsLimit}`;
-        const response = await getService(endpoint);
+          ? `bot_name=${botname}&time_range=${activeFilter.toLowerCase()}&limit=${newsLimit}`
+          : `bot_name=${botname}&limit=${newsLimit}`;
+        const response = await fetch(
+          `https://newsbotv2.ngrok.io/get_articles?${endpoint}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
         if (
           response.length === 0 ||
           (response.message &&
@@ -103,7 +106,8 @@ const NewsComponent = ({route}) => {
         ) {
           setNews([]);
         } else {
-          const articles = response.articles;
+          const data = await response.json();
+          const articles = data.data;
           setNews(articles);
         }
       } catch (error) {
@@ -163,7 +167,7 @@ const NewsComponent = ({route}) => {
               </Text>
             </View>
           }
-          keyExtractor={item => item.article_id}
+          keyExtractor={item => item.id}
           renderItem={({item}) => (
             <NewsItem item={item} onPress={onPress} filterText={filterText} />
           )}

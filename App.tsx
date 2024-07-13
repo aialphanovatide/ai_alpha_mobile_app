@@ -35,6 +35,7 @@ import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -65,24 +66,83 @@ const App = () => {
   }, [socket]); // Re-run the effect if `socket` changes
   */
 
-  useEffect(() => {
-    console.log('NEw INITIALIZING SOCKET');
-    const socket = io('https://aialpha.ngrok.io/');
-    socket.on('new_alert', messageData => {
-      console.log('Received message:', messageData);
-      console.log('SOCKET ID --->', socket.id);
-      const data =
-        typeof messageData === 'string' ? JSON.parse(messageData) : messageData;
-      const {alert_name, message} = data;
-
-      let {last_price} = data;
-      last_price = last_price.replace(/\.$/, '');
-
-      if (Platform.OS === 'android') {
-        Alert.alert(alert_name, `${message}\nPrice: ${last_price}`);
+  const saveNotification = async alertData => {
+    const extractCryptoName = symbol => {
+      const suffix = 'USDT';
+      const index = symbol.indexOf(suffix);
+      if (index !== -1) {
+        console.log(
+          'Found the coin name',
+          symbol.substring(0, index).toLowerCase(),
+        );
+        return symbol.substring(0, index).toLowerCase();
       }
-    });
-  }, []);
+      return symbol;
+    };
+
+    try {
+      const storedNotifications = await AsyncStorage.getItem('notifications');
+      const currentNotifications = storedNotifications
+        ? JSON.parse(storedNotifications)
+        : [];
+
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, '0');
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const year = today.getFullYear();
+      const notificationDate = `${day}/${month}/${year}`;
+
+      const notificationCoin = extractCryptoName(alertData.title);
+      const notificationType = alertData.title.toLowerCase().includes('alert')
+        ? 'alerts'
+        : 'analysis';
+
+      const newNotification = {
+        title: alertData.title,
+        description: alertData.body,
+        coin: notificationCoin,
+        date: notificationDate,
+        category: null,
+        type: notificationType,
+      };
+      const combinedNotifications = [
+        ...currentNotifications,
+        newNotification,
+      ].filter(
+        (item, index, self) =>
+          index ===
+          self.findIndex(t => t.title === item.title && t.date === item.date),
+      );
+
+      console.log('Saving notification: ', newNotification);
+      await AsyncStorage.setItem(
+        'notifications',
+        JSON.stringify(combinedNotifications),
+      );
+    } catch (error) {
+      console.error('Error saving notifications:', error);
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log('NEw INITIALIZING SOCKET');
+  //   const socket = io('https://aialpha.ngrok.io/');
+  //   socket.on('new_alert', messageData => {
+  //     console.log('Received message:', messageData);
+  //     console.log('SOCKET ID --->', socket.id);
+  //     const data =
+  //       typeof messageData === 'string' ? JSON.parse(messageData) : messageData;
+  //     const {alert_name, message} = data;
+
+  //     let {last_price} = data;
+  //     last_price = last_price.replace(/\.$/, '');
+
+  //     if (Platform.OS === 'android') {
+  //       Alert.alert(alert_name, `${message}\nPrice: ${last_price}`);
+  //     }
+  //     saveNotification(data);
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -116,19 +176,26 @@ const App = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-
   useEffect(() => {
     const getUserNotificationsToken = async () => {
       await messaging().registerDeviceForRemoteMessages();
       const token = await messaging().getToken();
-      console.log('User token: ', token);
+      console.log('User firebase token: ', token);
     };
     const pushNotificationsSubscriber = messaging().onMessage(
       async remoteMessage => {
         Alert.alert(
           `${remoteMessage.notification?.title}`,
           `${remoteMessage.notification?.body}`,
-          [{text: 'Got it!', onPress: () => null, style: 'destructive'}],
+          [
+            {
+              text: 'Got it!',
+              onPress: () => {
+                saveNotification(remoteMessage.notification);
+              },
+              style: 'destructive',
+            },
+          ],
         );
       },
     );
@@ -164,7 +231,6 @@ const App = () => {
     setBarScheme(theme);
   };
 
-
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();
     setIsConnected(state.isConnected);
@@ -181,157 +247,153 @@ const App = () => {
   };
 
   return (
-      <Auth0Provider
-        domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
-        clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
-        <RevenueCatProvider>
-          <UserProvider>
-            <UserIdProvider>
-              <RawUserIdProvider>
-                <AppThemeProvider>
-                  <SafeAreaView
-                    style={[
-                      styles.container,
-                      {
-                        backgroundColor:
-                          colorScheme === 'dark' ? '#0b0b0a' : '#fbfbfa',
-                      },
-                    ]}>
-                    <StatusBar
-                      barStyle={
-                        colorScheme === 'dark'
-                          ? 'light-content'
-                          : 'dark-content'
-                      }
-                    />
-                    <SingletonHooksContainer />
-                    <CategoriesContextProvider>
-                      <TopMenuContextProvider>
-                        <NarrativeTradingContextProvider>
-                          <AnalysisContextProvider>
-                            <AboutModalProvider>
-                              <Navigation />
-                              {/* <View >
+    <Auth0Provider
+      domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
+      clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
+      <RevenueCatProvider>
+        <UserProvider>
+          <UserIdProvider>
+            <RawUserIdProvider>
+              <AppThemeProvider>
+                <SafeAreaView
+                  style={[
+                    styles.container,
+                    {
+                      backgroundColor:
+                        colorScheme === 'dark' ? '#0b0b0a' : '#fbfbfa',
+                    },
+                  ]}>
+                  <StatusBar
+                    barStyle={
+                      colorScheme === 'dark' ? 'light-content' : 'dark-content'
+                    }
+                  />
+                  <SingletonHooksContainer />
+                  <CategoriesContextProvider>
+                    <TopMenuContextProvider>
+                      <NarrativeTradingContextProvider>
+                        <AnalysisContextProvider>
+                          <AboutModalProvider>
+                            <Navigation />
+                            {/* <View >
                         <Button title="Trigger Notification" onPress={handleNotification} />
                       </View>
                       */}
-                              <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={modalVisible}
-                                onRequestClose={() => {
-                                  setModalVisible(false);
-                                }}>
-                                <View style={styles.centeredView}>
-                                  <View
-                                    style={[
-                                      styles.orangeBox,
-                                      {
-                                        backgroundColor:
-                                          colorScheme === 'dark'
-                                            ? '#451205'
-                                            : '#FFF7EC',
-                                      },
-                                    ]}>
-                                    <View style={styles.row}>
-                                      <Image
-                                        source={require('./assets/images/login/nointernet.png')}
-                                        style={styles.imageStyle1}
-                                      />
-                                      <Text
-                                        style={[
-                                          styles.labelText1,
-                                          {
-                                            color:
-                                              colorScheme === 'dark'
-                                                ? '#FF8D34'
-                                                : '#FF6C0D',
-                                          },
-                                        ]}>
-                                        It seems that you are offline.
-                                      </Text>
-                                    </View>
-                                    <View style={styles.row}>
-                                      <Image
-                                        source={require('./assets/images/login/reloadsymbol.png')}
-                                        style={styles.imageStyle2}
-                                      />
-                                      <TouchableOpacity
-                                        onPress={
-                                          checkConnectivityAndCloseModal
-                                        }>
-                                        <Text style={styles.labelText2}>
-                                          Reload
-                                        </Text>
-                                      </TouchableOpacity>
-                                    </View>
-                                  </View>
-                                </View>
-                              </Modal>
-                              <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={serverError}
-                                onRequestClose={() => {
-                                  setServerError(false);
-                                }}>
-                                <View style={styles.centeredView}>
-                                  <View
-                                    style={[
-                                      styles.orangeBox,
-                                      {
-                                        backgroundColor:
-                                          colorScheme === 'dark'
-                                            ? '#451205'
-                                            : '#FFF7EC',
-                                      },
-                                    ]}>
-                                    <View style={styles.row}>
-                                      <Image
-                                        source={require('./assets/images/login/serverdown.png')}
-                                        style={styles.imageStyle3}
-                                      />
-                                      <Text
-                                        style={[
-                                          styles.labelText1,
-                                          {
-                                            color:
-                                              colorScheme === 'dark'
-                                                ? '#FF8D34'
-                                                : '#FF6C0D',
-                                          },
-                                        ]}>
-                                        Seems like the server is down
-                                      </Text>
-                                    </View>
+                            <Modal
+                              animationType="slide"
+                              transparent={true}
+                              visible={modalVisible}
+                              onRequestClose={() => {
+                                setModalVisible(false);
+                              }}>
+                              <View style={styles.centeredView}>
+                                <View
+                                  style={[
+                                    styles.orangeBox,
+                                    {
+                                      backgroundColor:
+                                        colorScheme === 'dark'
+                                          ? '#451205'
+                                          : '#FFF7EC',
+                                    },
+                                  ]}>
+                                  <View style={styles.row}>
+                                    <Image
+                                      source={require('./assets/images/login/nointernet.png')}
+                                      style={styles.imageStyle1}
+                                    />
                                     <Text
                                       style={[
-                                        styles.labelText3,
+                                        styles.labelText1,
                                         {
                                           color:
                                             colorScheme === 'dark'
-                                              ? '#FF6C0D'
-                                              : '#A02E0C',
+                                              ? '#FF8D34'
+                                              : '#FF6C0D',
                                         },
                                       ]}>
-                                      Please wait a few minutes while our
-                                      technicians work to solve this problem
+                                      It seems that you are offline.
                                     </Text>
                                   </View>
+                                  <View style={styles.row}>
+                                    <Image
+                                      source={require('./assets/images/login/reloadsymbol.png')}
+                                      style={styles.imageStyle2}
+                                    />
+                                    <TouchableOpacity
+                                      onPress={checkConnectivityAndCloseModal}>
+                                      <Text style={styles.labelText2}>
+                                        Reload
+                                      </Text>
+                                    </TouchableOpacity>
+                                  </View>
                                 </View>
-                              </Modal>
-                            </AboutModalProvider>
-                          </AnalysisContextProvider>
-                        </NarrativeTradingContextProvider>
-                      </TopMenuContextProvider>
-                    </CategoriesContextProvider>
-                  </SafeAreaView>
-                </AppThemeProvider>
-              </RawUserIdProvider>
-            </UserIdProvider>
-          </UserProvider>
-        </RevenueCatProvider>
-      </Auth0Provider>
+                              </View>
+                            </Modal>
+                            <Modal
+                              animationType="slide"
+                              transparent={true}
+                              visible={serverError}
+                              onRequestClose={() => {
+                                setServerError(false);
+                              }}>
+                              <View style={styles.centeredView}>
+                                <View
+                                  style={[
+                                    styles.orangeBox,
+                                    {
+                                      backgroundColor:
+                                        colorScheme === 'dark'
+                                          ? '#451205'
+                                          : '#FFF7EC',
+                                    },
+                                  ]}>
+                                  <View style={styles.row}>
+                                    <Image
+                                      source={require('./assets/images/login/serverdown.png')}
+                                      style={styles.imageStyle3}
+                                    />
+                                    <Text
+                                      style={[
+                                        styles.labelText1,
+                                        {
+                                          color:
+                                            colorScheme === 'dark'
+                                              ? '#FF8D34'
+                                              : '#FF6C0D',
+                                        },
+                                      ]}>
+                                      Seems like the server is down
+                                    </Text>
+                                  </View>
+                                  <Text
+                                    style={[
+                                      styles.labelText3,
+                                      {
+                                        color:
+                                          colorScheme === 'dark'
+                                            ? '#FF6C0D'
+                                            : '#A02E0C',
+                                      },
+                                    ]}>
+                                    Please wait a few minutes while our
+                                    technicians work to solve this problem
+                                  </Text>
+                                </View>
+                              </View>
+                            </Modal>
+                          </AboutModalProvider>
+                        </AnalysisContextProvider>
+                      </NarrativeTradingContextProvider>
+                    </TopMenuContextProvider>
+                  </CategoriesContextProvider>
+                </SafeAreaView>
+              </AppThemeProvider>
+            </RawUserIdProvider>
+          </UserIdProvider>
+        </UserProvider>
+      </RevenueCatProvider>
+    </Auth0Provider>
   );
 };
 

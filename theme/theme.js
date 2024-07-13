@@ -93,6 +93,7 @@ export const lightThemeStyles = {
   activeSRButtonColor: '#80290E',
   askAiButtonColor: '#FFFFFF',
   skeletonLoaderBg: '#FFFFFF',
+  horizontalLineColor: '#D4D4D4',
   boxesVerticalMargin: 8,
   titlesVerticalMargin: 24,
   font: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
@@ -187,6 +188,7 @@ export const darkThemeStyles = {
   lockIconColor: '#737373',
   askAiButtonColor: '#0A0A0A',
   skeletonLoaderBg: '#151515',
+  horizontalLineColor: '#474747',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {

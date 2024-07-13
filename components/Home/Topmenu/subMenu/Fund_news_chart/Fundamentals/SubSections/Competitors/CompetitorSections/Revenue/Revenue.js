@@ -72,7 +72,7 @@ const Revenue = ({competitorsData, isSectionWithoutData}) => {
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
       item =>
-        item.competitor.token === crypto && item.competitor.key.includes(key),
+        item.competitor.token.replace(/\s/g, '') === crypto.replace(/\s/g, '') && item.competitor.key.includes(key),
     );
     return found && found !== undefined
       ? found.competitor.value !== '-'

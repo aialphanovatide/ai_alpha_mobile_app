@@ -14,9 +14,10 @@ const useHomeNarrativeTradingStyles = () => {
     },
     titleStyles: {
       maxWidth: '65%',
+      marginLeft: 2,
       color: theme.titleColor,
       fontSize: theme.responsiveFontSize,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
     imageStyle: {
       width: 50,
@@ -29,7 +30,7 @@ const useHomeNarrativeTradingStyles = () => {
       flexDirection: 'row',
       width: '100%',
       paddingVertical: 14,
-      paddingLeft: 8,
+      paddingLeft: 14,
       backgroundColor: theme.boxesBackgroundColor,
       alignItems: 'center',
       borderBottomColor: theme.boxesBorderColor,
@@ -154,6 +155,13 @@ const useHomeNarrativeTradingStyles = () => {
       height: 350,
       alignSelf: 'center',
       overflow: 'hidden',
+    },
+    zoomImageBackground: {
+      backgroundColor: 'transparent',
+      width: '100%',
+      height: '100%',
+      alignItems: 'center',
+      alignSelf: 'center',
     },
   });
   return styles;
