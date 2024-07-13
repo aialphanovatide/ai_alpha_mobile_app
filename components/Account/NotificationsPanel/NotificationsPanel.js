@@ -126,6 +126,7 @@ const NotificationsPanel = ({route, options = null}) => {
 
   useEffect(() => {
     const updateUserSubscriptions = async () => {
+
       try {
         console.log('userInfo:', userInfo);
         console.log('Packages:', packages);
@@ -143,6 +144,8 @@ const NotificationsPanel = ({route, options = null}) => {
           item => item.product.identifier,
         );
         console.log('Purchased product identifiers:', productIdentifiers);
+
+        const userSubscriptionsStatus = {...userSubscriptions};
 
         console.log('* Purchased product identifiers:', productIdentifiers);
 

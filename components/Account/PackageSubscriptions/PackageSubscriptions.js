@@ -49,7 +49,7 @@ const PackageSubscriptions = () => {
   const navigation = useNavigation();
   const {isDarkMode} = useContext(AppThemeContext);
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
-  console.log('Packages:', packages);
+  //console.log('Packages:', packages);
 
   const getIdentifierByKeyword = (keyword) => {
     const foundPackage = packages.find(pkg => pkg.product.title.includes(keyword));
