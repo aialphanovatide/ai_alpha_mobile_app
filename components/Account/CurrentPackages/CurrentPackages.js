@@ -198,7 +198,7 @@ const CurrentPackages = () => {
         <View style={styles.alignStart}>
           <BackButton navigationHandler={navigateBack} />
         </View>
-        <Text style={styles.mainTitle}>Current Packages</Text>
+        <Text style={styles.mainTitle}>My Packages</Text>
         {purchasedPackages.length > 0 ? (
           <ScrollView style={styles.packagesContainer}>
             {purchasedPackages.map((item, index) => (

@@ -63,6 +63,7 @@ const NotificationsPanel = ({ route, options = null }) => {
   const { packages, userInfo } = useContext(RevenueCatContext);
   const [subscriptions, setSubscriptions] = useState({});
   const [userSubscriptions, setUserSubscriptions] = useState({});
+  const [hasFoundersSubscription, setHasFoundersSubscription] = useState(false);
 
   useEffect(() => {
     const loadSubscriptionStates = async () => {
@@ -85,45 +86,51 @@ const NotificationsPanel = ({ route, options = null }) => {
   useEffect(() => {
     const updateUserSubscriptions = async () => {
       try {
+        console.log("userInfo:", userInfo);
+        console.log("Packages:", packages);
+        
+        // Verify the structure of packages array
+        if (packages && Array.isArray(packages)) {
+          packages.forEach(pkg => {
+            console.log("Package:", pkg);
+          });
+        } else {
+          console.log("Packages array is not valid");
+        }
+
         const purchasedPackages = packages.filter(item =>
-          userInfo?.entitlements.includes(item.product.identifier)
+          userInfo?.entitlements.includes(item.product.identifier) || 
+          (userInfo?.entitlements.includes('rc_promo_Founders_14999_m1_yearly') && item.product.identifier === 'founders_14999_m1')
         );
         const productIdentifiers = purchasedPackages.map(item => item.product.identifier);
-        const userSubscriptionsStatus = { ...userSubscriptions };
+        console.log("Purchased product identifiers:", productIdentifiers);
 
-        console.log("* Purchased product identifiers:", productIdentifiers);
+        const userSubscriptionsStatus = { ...userSubscriptions };
 
         const newSubscriptions = { ...subscriptions };
 
         for (const id of productIdentifiers) {
           const storedStatus = await AsyncStorage.getItem(`@subscription_${id}`);
-          console.log("storedStatus->", storedStatus, "for->", `@subscription_${id}`);
-          console.log("storedStatus type->", typeof storedStatus, "for->", `@subscription_${id}`)
-          if (storedStatus == 'null') {
-            console.log("Entered null validator");
+          if (storedStatus === null) {
             await AsyncStorage.setItem(`@subscription_${id}`, 'true');
             newSubscriptions[id] = true;
-            console.log("Subscribing to new topic:", id);
             await messaging().subscribeToTopic(id);
           } else {
             newSubscriptions[id] = storedStatus === 'true';
           }
-
           userSubscriptionsStatus[id] = true;
         }
 
         const expiredSubscriptions = Object.keys(subscriptions).filter(id => !productIdentifiers.includes(id));
-        console.log("* EXPIRED subscriptions:", expiredSubscriptions);
         for (const id of expiredSubscriptions) {
-          console.log("UNSUBSCRIBING from topic:", id);
           userSubscriptionsStatus[id] = false;
           await AsyncStorage.setItem(`@subscription_${id}`, 'null');
           newSubscriptions[id] = false;
-          handleToggleSubscription(id, false);
         }
 
         setUserSubscriptions(userSubscriptionsStatus);
         setSubscriptions(newSubscriptions);
+        setHasFoundersSubscription(userInfo?.entitlements.includes('rc_promo_Founders_14999_m1_yearly'));
         console.log("* Updated user subscriptions:", userSubscriptionsStatus);
         console.log("* Current subscriptions state:", newSubscriptions);
       } catch (error) {
@@ -175,6 +182,7 @@ const NotificationsPanel = ({ route, options = null }) => {
         }
       }
       setSubscriptions(newSubscriptions);
+
       console.log("* New subscriptions state after toggling all:", newSubscriptions);
     } catch (error) {
       console.error('Failed to toggle all subscriptions:', error);
@@ -200,7 +208,7 @@ const NotificationsPanel = ({ route, options = null }) => {
                 thumbColor={'#F6F7FB'}
                 value={Object.values(subscriptions).some(Boolean)}
                 onValueChange={handleToggleAllNotifications}
-                disabled={Object.values(userSubscriptions).every(val => !val)}
+                disabled={!hasFoundersSubscription && Object.values(userSubscriptions).every(val => !val)}
               />
             </View>
           </View>
@@ -216,7 +224,7 @@ const NotificationsPanel = ({ route, options = null }) => {
                 isDarkMode={isDarkMode}
                 hasImage={true}
                 onToggle={() => handleToggleSubscription(item.identifier)}
-                hasSubscription={!!userSubscriptions[item.identifier]}
+                hasSubscription={hasFoundersSubscription || !!userSubscriptions[item.identifier]}
               />
               <View style={styles.horizontalLine} />
             </React.Fragment>

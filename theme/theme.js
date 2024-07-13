@@ -117,6 +117,7 @@ export const lightThemeStyles = {
     ? 'unbounded_semibold'
     : 'Unbounded-SemiBold',
   fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
+  backgroundSubscriptionsModal: '#FAFAFA',
 };
 
 export const darkThemeStyles = {
@@ -234,4 +235,5 @@ export const darkThemeStyles = {
     ? 'unbounded_semibold'
     : 'Unbounded-SemiBold',
   fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
+  backgroundSubscriptionsModal: '#404040',
 };

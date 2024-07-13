@@ -1,14 +1,20 @@
-import {StyleSheet} from 'react-native';
-import {AppThemeContext} from '../../../context/themeContext';
-import {useContext} from 'react';
+import { StyleSheet } from 'react-native';
+import { useContext } from 'react';
+import { AppThemeContext } from '../../../context/themeContext';
 
 const usePackageSubscriptionStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const { theme } = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     backgroundContainer: {
       backgroundColor: theme.mainBackgroundColor,
     },
     container: {
+      flex: 1,
+    },
+    scrollViewContent: {
+      paddingBottom: 160, // Add some bottom padding to avoid content being hidden behind the fixed footer
+    },
+    innerContainer: {
       flex: 1,
       width: theme.width,
       padding: 10,
@@ -19,255 +25,282 @@ const usePackageSubscriptionStyles = () => {
     flex: {
       flex: 1,
     },
-    logoContainer: {
-      width: 150,
-      height: 150,
-      marginVertical: theme.boxesVerticalMargin,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    logo: {
-      flex: 1,
-    },
     mainTitle: {
-      marginHorizontal: 16,
+      marginTop: 11,
+      marginBottom: 5,
+      marginLeft: 15,
       marginVertical: theme.titlesVerticalMargin,
       color: theme.titleColor,
       fontSize: theme.titleFontSize * 1.25,
       fontFamily: theme.fontSemibold,
       textAlign: 'center',
-      alignSelf: 'flex-start',
+      alignSelf: 'left',
     },
     description: {
       marginVertical: theme.boxesVerticalMargin,
       marginTop: 4,
       marginHorizontal: 16,
     },
-    text: {
-      color: theme.subscriptions.title,
-      fontSize: theme.responsiveFontSize * 0.91,
-      fontFamily: theme.fontUnboundedMedium,
-      textAlign: 'center',
-      marginBottom: 10,
-      lineHeight: 22,
-    },
-    bigText: {
-      color: '#FF9521',
-      fontSize: theme.responsiveFontSize * 1.5,
-      fontFamily: theme.fontUnbounded,
-      textAlign: 'center',
-      marginBottom: 20,
-      lineHeight: 32,
-    },
-    bold: {
-      fontFamily: theme.fontBold,
-    },
-    orange: {
-      color: theme.orange,
-      marginLeft: 2,
-    },
     secondaryText: {
+      color: theme.textColor,
+      fontSize: theme.responsiveFontSize * 0.85,
+      fontFamily: theme.font,
+      lineHeight: 22,
+      textAlign: 'left',
+      marginRight: 10,
+    },
+    preTertiaryText:{
       color: theme.subscriptions.secondaryText,
       fontSize: theme.responsiveFontSize * 0.75,
       fontFamily: theme.font,
       lineHeight: 22,
+      textAlign: 'left',
+      marginRight: 10,
+    },
+    tertiaryText: {
+      color: theme.subscriptions.secondaryText,
+      fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.font,
+      lineHeight: 15,
       textAlign: 'center',
-    },
-    reference: {
-      top: 30,
-      fontFamily: theme.fontItalic,
-      fontSize: theme.responsiveFontSize * 0.7,
-    },
-    foundersReference: {
-      color: theme.activeYellow,
+      marginRight: 10,
+      marginTop: 1,
     },
     textRow: {
       textAlign: 'center',
+      flexDirection: 'row', // Arrange icon and text in a row
+      alignItems: 'center', // Vertically center the items
+      marginBottom: 5,
+      marginRight: 10,
+    },
+    textCenteredRow: {
+      textAlign: 'center',
+      marginBottom: 5,
     },
     textRowContainer: {
       marginBottom: 15,
     },
-    foundersText: {
-      color: theme.subscriptions.foundersText,
-    },
-    purchaseButton: {
-      width: '35%',
-      marginTop: theme.boxesVerticalMargin * 2.5,
-      padding: 4,
-      paddingVertical: 12,
-      borderRadius: 3,
-      overflow: 'hidden',
-      backgroundColor: theme.subscriptions.purchaseButtonBgColor,
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
-    },
-    purchaseButtonText: {
-      color: theme.subscriptions.purchaseButtonText,
-      fontSize: theme.titleFontSize * 0.8,
-      fontFamily: theme.fontMedium,
-      textAlign: 'center',
-    },
-    itemContainer: {
-      flex: 1,
-      marginVertical: 4,
-      padding: 10,
-      backgroundColor: theme.subscriptions.boxesBgColor,
-    },
-    selectedItem: {
-      borderWidth: 2,
-      borderColor: theme.activeOrange,
-    },
-    foundersItem: {
-      backgroundColor: theme.activeOrange,
-    },
-    selectedFounders: {
-      borderWidth: 2,
-      borderColor: theme.activeYellow,
-    },
-    row: {
-      flexDirection: 'row',
-      marginBottom: theme.boxesVerticalMargin * 0.5,
-    },
-    left: {
-      position: 'absolute',
-      top: 0,
-      left: 50,
-    },
-    right: {
-      position: 'absolute',
-      top: 0,
-      right: 4,
-    },
-    title: {
-      margin: 8,
-      color: theme.subscriptions.text,
-      fontSize: theme.titleFontSize * 0.8,
-      fontFamily: theme.fontSemibold,
-    },
-    itemDescriptionContainer: {
-      paddingTop: 8,
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-    },
-    itemDescription: {
-      marginHorizontal: 8,
-      marginTop: 4,
-      color: theme.subscriptions.text,
-      fontFamily: theme.fontMedium,
-      fontSize: theme.responsiveFontSize * 0.75,
-      textAlign: 'left',
-      lineHeight: 22,
-    },
     packagesContainer: {
-      flex: 1,
-      width: theme.width,
+      width: '100%',
       marginVertical: theme.boxesVerticalMargin,
       padding: 10,
     },
-    hidden: {
-      display: 'none',
+    itemContainer: {
+      flex: 1,
+      flexDirection: 'column', // Change to column
+      alignItems: 'flex-start', // Align items to the start
+      padding: 10,
+      backgroundColor: theme.backgroundSubscriptionsModal,
+      marginVertical: 5,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: 'transparent',
     },
-    seeMoreButton: {
-      width: 50,
-      height: 25,
-      alignSelf: 'center',
+    selectedItem: {
+      borderColor: theme.activeOrange,
+    },
+    itemRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+    },
+    circleContainer: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: theme.activeOrange,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'transparent',
+      marginRight: 8,
+    },
+    subCircleContainer: {
+      width: 24,
+      height: 24,
+      borderRadius: 9,
+      borderWidth: 0,
+      borderColor: theme.activeOrange,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'transparent',
+      marginRight: 8,
+    },
+    tickImage: {
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
+    },
+    subTickImage: {
+      width: '80%',
+      height: '80%',
+      position: 'absolute',
+    },
+    itemIcon: {
+      width: 27,
+      height: 22,
+      marginRight: 10,
+      marginLeft: 5,
+      justifyContent: 'center',
+      alignItems: 'center',
+      overflow: 'hidden',
+    },
+    title: {
+      color: theme.subscriptions.text,
+      fontSize: theme.titleFontSize * 0.91,
+      fontFamily: theme.fontSemibold,
+      flex: 1,
+    },
+    priceContainer: {
+      alignItems: 'flex-end',
+    },
+    priceText: {
+      color: theme.subscriptions.text,
+      fontSize: theme.responsiveFontSize * 1.1,
+      fontFamily: theme.fontBold,
+    },
+    perMonthText: {
+      color: theme.subscriptions.secondaryText,
+      fontSize: theme.responsiveFontSize * 0.8,
+      fontFamily: theme.font,
+      textAlign: 'right',
+    },
+    linearGradient: {
+      width: '100%',
+      height: 50,
+      borderRadius: 3,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginVertical: 10,
+    },
+    purchaseButton: {
+      width: '100%',
+      paddingVertical: 12,
       justifyContent: 'center',
       alignItems: 'center',
     },
-    seeMoreIcon: {
-      flex: 1,
-      tintColor: theme.subscriptions.seeMoreColor,
+    purchaseButtonText: {
+      color: '#FFFFFF',
+      fontSize: theme.titleFontSize * 0.9,
+      fontFamily: theme.fontSemibold,
     },
     alignStart: {
       alignSelf: 'flex-start',
       marginVertical: theme.boxesVerticalMargin,
     },
-    itemIcon: {
-      width: 40,
-      height: 40,
-      marginHorizontal: 8,
-      justifyContent: 'center',
-      borderRadius: 20,
-      alignItems: 'center',
-      overflow: 'hidden',
-      backgroundColor: theme.subscriptions.iconsBgColor,
+    smallTickIcon: {
+      width: 11,
+      height: 11,
+      marginRight: 8,
     },
-    image: {
+    fixedFooter: {
+      position: 'absolute',
+      bottom: 0,
+      width: '100%',
+      backgroundColor: theme.mainBackgroundColor,
+      padding: 10,
+      alignItems: 'center',
+    },
+    footerTextContainer: {
+      alignItems: 'center',
+      marginTop: -5,
+      marginBottom: 30,
+    },
+    subOptionsContainer: {
+      marginTop: 10,
+      marginLeft: 0,
+      flexDirection: 'column', // Ensure sub options are stacked vertically
+      alignItems: 'flex-start', // Align sub options to the start
+    },
+    subOption: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 5,
+    },
+    subOptionText: {
+      color: theme.subscriptions.text,
+      fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.font,
+      marginLeft: 9,
+    },
+    subOptionShowMore: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 5,
+
+    },
+    subOptionTextShowMore: {
+      color: theme.activeOrange,
+      fontSize: theme.responsiveFontSize * 0.75,
+      fontFamily: theme.font,
+      paddingLeft: 41,
+      textDecorationLine: 'underline',
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+      width: '95%',
+      backgroundColor: theme.backgroundSubscriptionsModal,
+      padding: 20,
+      borderRadius: 10,
+      marginTop: -20,
+    },
+    modalOption: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 7,
+      marginLeft: 15,
+    },
+    doneButton: {
+      marginTop: 20,
+      alignItems: 'center',
+    },
+    doneButtonText: {
+      color: theme.activeOrange,
+      fontSize: theme.responsiveFontSize * 0.97,
+      fontFamily: theme.fontLight,
+      textDecorationLine: 'underline',
+    },
+    modalTitle: {
+      color: theme.subscriptions.text,
+      fontSize: theme.titleFontSize * 0.8,
+      fontFamily: theme.font,
       flex: 1,
     },
-    foundersIcon: {
-      width: 30,
-      height: 30,
-    },
-    activePurchaseButton: {
-      backgroundColor: theme.orange,
-    },
-    activePurchaseButtonText: {
-      color: '#FFFFFF',
-      fontFamily: theme.fontMedium,
-      fontSize: theme.titleFontSize * 0.85,
-    },
-    button: {
-      width: '35%',
-      marginTop: theme.boxesVerticalMargin * 2.5,
-      padding: 4,
-      paddingVertical: 12,
-      borderRadius: 3,
-      overflow: 'hidden',
+    subModalCircleContainer: {
+      width: 18,
+      height: 18,
+      borderRadius: 11,
+      borderWidth: 1,
+      borderColor: theme.activeOrange,
       justifyContent: 'center',
       alignItems: 'center',
-      alignSelf: 'center',
+      backgroundColor: 'transparent',
+      marginRight: 8,
     },
-    buttonText: {
-      fontSize: theme.titleFontSize * 0.8,
-      fontFamily: theme.fontMedium,
-      textAlign: 'center',
+    tickModalImage: {
+      width: '113%',
+      height: '113%',
+      position: 'absolute',
     },
-    subscriptionImage: {
-      width:390,
-      height:270,
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
-    },
-    textFounders: {
-      color: theme.subscriptions.title,
-      fontSize: theme.responsiveFontSize * 0.91,
-      fontFamily: theme.fontUnboundedMedium,
-      textAlign: 'center',
-      marginBottom: 10,
-      lineHeight: 22,
-      fontWeight: 'bold',
-    },
-    bigTextFounders: {
-      color: '#FF9521',
-      fontSize: theme.responsiveFontSize * 1.3,
-      fontFamily: theme.fontUnbounded,
-      textAlign: 'center',
-      marginBottom: 20,
-      lineHeight: 32,
-    },
-    secondaryTextFounders: {
-      color: theme.subscriptions.secondaryText,
-      fontSize: theme.responsiveFontSize * 0.95,
-      fontFamily: theme.font,
-      lineHeight: 22,
-      textAlign: 'center',
-    },
-    foundersContainer: {
-      backgroundColor: theme.mainBackgroundColor,
-    },
-    subCoin: {
-      marginRight: 5,
-      width: 20,
-      height: 20,
-  },
-  subCoinContainer: {
+    itemModalRow: {
       flexDirection: 'row',
-      marginTop: 32,
-      marginLeft: 5,
       alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      marginBottom: 10,
+      paddingTop: 20,
+    },
+    modalByCategoryTitle: {
+      color: theme.subscriptions.text,
+      fontSize: theme.titleFontSize * 0.92,
+      fontFamily: theme.fontSemibold,
+      flex: 1,
     },
   });
   return styles;

@@ -169,6 +169,8 @@ const App = () => {
     setBarScheme(theme);
   };
 
+  
+
 
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();

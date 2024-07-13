@@ -139,7 +139,7 @@ const RevenueCatProvider = ({children}) => {
   const getUserSubscriptionData = async () => {
     try {
       const customerInfo = await Purchases.getCustomerInfo();
-      //console.log('\nCustomer info:', customerInfo);
+      console.log('\nCustomer info:', customerInfo);
       updateCustomerInformation(customerInfo);
     } catch (error) {
       console.log('Error purchasing package:', error);
@@ -158,7 +158,7 @@ const RevenueCatProvider = ({children}) => {
   const loadOfferings = async () => {
     try {
       const offerings = await Purchases.getOfferings();
-      //console.log('Offerings: ', offerings);
+      console.log('Offerings: ', offerings);
       const all_packages = [];
 
       for (const key in offerings.all) {
