@@ -1,17 +1,30 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, View, Text, Image, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {
+  ScrollView,
+  View,
+  Text,
+  Image,
+  SafeAreaView,
+  TouchableOpacity,
+  Alert,
+  Platform,
+} from 'react-native';
 import CustomInput from '../../../Login/CustomInput/CustomInput';
 import SaveButton from './SaveButton';
 import BackButton from '../../../Analysis/BackButton/BackButton';
 import usePersonaliseProfileStyles from './PersonaliseProfileStyles';
-import { useRawUserId } from '../../../../context/RawUserIdContext';
+import {useRawUserId} from '../../../../context/RawUserIdContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret } from '../../../../src/constants';
+import {
+  auth0Domain,
+  auth0ManagementAPI_Client,
+  auth0ManagementAPI_Secret,
+} from '../../../../src/constants';
 import GreenTick from '../../../../assets/images/greenTick.png';
-import { useNavigation } from '@react-navigation/core';
+import {useNavigation} from '@react-navigation/core';
 import auth0 from '../../../Login/auth0';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { AppThemeContext } from '../../../../context/themeContext';
+import {AppThemeContext} from '../../../../context/themeContext';
 
 const PersonaliseProfile = () => {
   const styles = usePersonaliseProfileStyles();
@@ -24,11 +37,11 @@ const PersonaliseProfile = () => {
   const [error, setError] = useState('');
   const [saveDisabled, setSaveDisabled] = useState(true);
   const [resetPasswordSuccesful, setResetPasswordSuccessful] = useState(false);
-  const { rawUserId } = useRawUserId();
+  const {rawUserId} = useRawUserId();
   const navigation = useNavigation();
   const [userEmail, setUserEmail] = useState();
   const [birthDateString, setBirthDateString] = useState('');
-  const { theme } = useContext(AppThemeContext);
+  const {theme} = useContext(AppThemeContext);
 
   useEffect(() => {
     const loadStoredData = async () => {
@@ -69,34 +82,31 @@ const PersonaliseProfile = () => {
         storedBirthDate,
         fullName,
         username,
-        birthDate: birthDate.toISOString()
+        birthDate: birthDate.toISOString(),
       });
-      console.log('stored name:', storedFullName)
-      console.log('stored username:', storedUsername)
-      console.log('full name:', fullName)
-      console.log('username:', username)
+      console.log('stored name:', storedFullName);
+      console.log('stored username:', storedUsername);
+      console.log('full name:', fullName);
+      console.log('username:', username);
 
-      if (fullName === '' || username === '') {} else {
-        if (
-          storedFullName === fullName &&
-          storedUsername === username
-        ) {
-          console.log('Data has not changed.')
+      if (fullName === '' || username === '') {
+      } else {
+        if (storedFullName === fullName && storedUsername === username) {
+          console.log('Data has not changed.');
           setSaveDisabled(true);
           setIsEditing(false);
         } else {
-          console.log('Data has changed.')
+          console.log('Data has changed.');
           setSaveDisabled(false);
           setIsEditing(true);
         }
       }
-
     };
 
     isDataUnchanged();
   }, [fullName, username, birthDate]);
 
-  const formatDate = (date) => {
+  const formatDate = date => {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
@@ -113,7 +123,7 @@ const PersonaliseProfile = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     const userData = await userFetch.json();
     const userImageUrl = userData.picture;
@@ -129,50 +139,57 @@ const PersonaliseProfile = () => {
       birthdate: newBirthDate,
     };
 
-    const response = await fetch(`https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+    const response = await fetch(
+      `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({user_metadata: userMetadata}),
       },
-      body: JSON.stringify({ user_metadata: userMetadata })
-    });
+    );
 
     if (response.ok) {
       const data = await response.json();
       console.log('User updated:', data);
     } else {
-      console.error('Failed to update user:', response.status, response.statusText);
+      console.error(
+        'Failed to update user:',
+        response.status,
+        response.statusText,
+      );
     }
   };
 
   const [forceRender, setForceRender] = useState(false);
 
   const toggleEditSave = async () => {
-    console.log("toggleEditSave called"); // Debug log
-    console.log("isEditing ->", isEditing); // Debug log
-  
+    console.log('toggleEditSave called'); // Debug log
+    console.log('isEditing ->', isEditing); // Debug log
+
     if (isEditing) {
       if (!fullName.trim() || !username.trim()) {
         setError('Full name and username cannot be empty.');
         return;
       }
-      console.log("entered toggleEditSave")
-  
+      console.log('entered toggleEditSave');
+
       setError('');
       const newFullName = fullName;
       const newUsername = username;
       const newBirthDate = birthDate.toISOString();
-  
+
       try {
         await AsyncStorage.setItem('fullName', newFullName);
         await AsyncStorage.setItem('username', newUsername);
         await AsyncStorage.setItem('birthDate', newBirthDate);
-  
-        console.log("AsyncStorage updated with new values"); // Debug log
-  
+
+        console.log('AsyncStorage updated with new values'); // Debug log
+
         await updateUserMetadata(newFullName, newUsername, newBirthDate);
-  
+
         console.log('User metadata updated successfully.');
         setIsEditing(false);
         setSaveDisabled(true); // Disable the save button after saving
@@ -186,13 +203,11 @@ const PersonaliseProfile = () => {
       setForceRender(prev => !prev); // Force re-render
     }
   };
-  
-  
 
   const getManagementApiToken = async () => {
     const response = await fetch(`https://${auth0Domain}/oauth/token`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         client_id: auth0ManagementAPI_Client,
         client_secret: auth0ManagementAPI_Secret,
@@ -209,14 +224,14 @@ const PersonaliseProfile = () => {
       'Reset Password',
       'Are you sure you want to receive a password reset email? This may take a couple minutes to be sent',
       [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Send Email', onPress: onForgotPasswordPressed },
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Send Email', onPress: onForgotPasswordPressed},
       ],
     );
   };
 
   const onForgotPasswordPressed = async () => {
-    console.log("rawUserId ->", rawUserId);
+    console.log('rawUserId ->', rawUserId);
     const token = await getManagementApiToken();
     const userFetch = await fetch(
       `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
@@ -226,16 +241,16 @@ const PersonaliseProfile = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
 
     if (userFetch.ok) {
       const userData = await userFetch.json();
-      console.log("User data ->", userData);
+      console.log('User data ->', userData);
       const extractedEmail = userData.email;
       setUserEmail(extractedEmail); // Update state for other potential uses not immediately following this update
 
-      console.log("Email to use for reset ->", extractedEmail);
+      console.log('Email to use for reset ->', extractedEmail);
       try {
         await auth0.auth.resetPassword({
           email: extractedEmail,
@@ -248,8 +263,7 @@ const PersonaliseProfile = () => {
           navigation.navigate('SettingsScreen');
         }, 2000);
 
-        console.log("after all")
-
+        console.log('after all');
       } catch (error) {
         console.error('Failed to send reset password email:', error);
       }
@@ -287,7 +301,7 @@ const PersonaliseProfile = () => {
         <View style={styles.root}>
           {userImage && (
             <View style={styles.imageContainer}>
-              <Image source={{ uri: userImage }} style={styles.userImage} />
+              <Image source={{uri: userImage}} style={styles.userImage} />
             </View>
           )}
           <View style={styles.inputContainer}>
@@ -312,16 +326,23 @@ const PersonaliseProfile = () => {
               <Text style={styles.optionalLabel}>(optional)</Text>
             </View>
             <View style={styles.dateContainer}>
-              <DateTimePicker
-                value={birthDate}
-                mode="date"
-                display="default"
-                onChange={onDateChange}
-                style={{borderColor: theme.orange, borderWidth: 1, borderRadius: 5, width: '28%', }}
-
-              />
+              {Platform.OS === 'ios' ? (
+                <DateTimePicker
+                  value={birthDate}
+                  mode="date"
+                  display="default"
+                  onChange={onDateChange}
+                  style={{
+                    borderColor: theme.orange,
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    width: '28%',
+                  }}
+                />
+              ) : (
+                <></>
+              )}
             </View>
-
           </View>
           <View style={styles.resetPasswordContainer}>
             <TouchableOpacity onPress={resetPasswordButton}>
@@ -331,7 +352,7 @@ const PersonaliseProfile = () => {
 
           <SaveButton
             onPress={toggleEditSave}
-            text={"Save"}
+            text={'Save'}
             disabled={saveDisabled}
           />
         </View>
