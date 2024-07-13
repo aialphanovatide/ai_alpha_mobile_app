@@ -132,8 +132,6 @@ const NotificationsPanel = ({route, options = null}) => {
 
         const userSubscriptionsStatus = { ...userSubscriptions };
 
-        const userSubscriptionsStatus = {...userSubscriptions};
-
         console.log('* Purchased product identifiers:', productIdentifiers);
 
         const newSubscriptions = {...subscriptions};

@@ -117,15 +117,16 @@ const usePackageSubscriptionStyles = () => {
       marginRight: 8,
     },
     subCircleContainer: {
-      width: 24,
-      height: 24,
-      borderRadius: 9,
-      borderWidth: 0,
+      width: 18,
+      height: 18,
+      borderRadius: 11,
+      borderWidth: 1,
       borderColor: theme.activeOrange,
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'transparent',
       marginRight: 8,
+      marginLeft: 3,
     },
     tickImage: {
       width: '100%',
@@ -133,8 +134,8 @@ const usePackageSubscriptionStyles = () => {
       position: 'absolute',
     },
     subTickImage: {
-      width: '80%',
-      height: '80%',
+      width: '110%',
+      height: '110%',
       position: 'absolute',
     },
     itemIcon: {
@@ -234,7 +235,7 @@ const usePackageSubscriptionStyles = () => {
       color: theme.activeOrange,
       fontSize: theme.responsiveFontSize * 0.75,
       fontFamily: theme.font,
-      paddingLeft: 41,
+      paddingLeft: 37,
       textDecorationLine: 'underline',
     },
     modalContainer: {
