@@ -4,7 +4,7 @@ import {lightThemeStyles, darkThemeStyles} from '../theme/theme.js';
 const AppThemeContext = createContext();
 
 const AppThemeProvider = ({children}) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const theme = isDarkMode ? darkThemeStyles : lightThemeStyles;
 
   const toggleDarkMode = () => {

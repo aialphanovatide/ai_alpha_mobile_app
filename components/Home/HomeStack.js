@@ -10,13 +10,14 @@ import NewsComponent from './Topmenu/subMenu/Fund_news_chart/News/NewsComponent.
 import {TopMenuContext} from '../../context/topMenuContext';
 import NewsArticle from './Topmenu/subMenu/Fund_news_chart/News/NewsArticle';
 import {AppThemeContext} from '../../context/themeContext';
-import {Animated, TouchableOpacity, View} from 'react-native';
+import {Animated, Platform, TouchableOpacity, View} from 'react-native';
 import useHomeStyles from './HomeStyles';
 import AnalysisArticle from './Analysis/AnalysisArticle';
 import NarrativeTradingArticle from './HomeNarrativeTradings/NarrativeTradingArticle';
 import {useScreenOrientation} from '../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/native';
 import Search from '../Search/Search';
+import HomeNotifications from './HomeNotifications/HomeNotifications';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -52,15 +53,25 @@ const NewsScreen = () => {
       initialRouteName="NewsMain"
       backBehavior={'none'}
       screenOptions={{
-        animation: 'fade',
         headerShown: false,
       }}>
       <NewsStack.Screen
         name="NewsMain"
         component={NewsComponent}
         initialParams={{botname: activeSubCoin}}
+        options={{
+          animation: 'fade',
+        }}
       />
-      <NewsStack.Screen name="NewsArticle" component={NewsArticle} />
+      <NewsStack.Screen
+        name="NewsArticle"
+        component={NewsArticle}
+        options={{
+          animation: Platform.OS === 'ios' ? 'fade' : 'slide_from_right',
+          gestureEnabled: 'true',
+          gestureDirection: 'horizontal',
+        }}
+      />
     </NewsStack.Navigator>
   );
 };
@@ -147,7 +158,6 @@ const SubMenuScreen = () => {
       }
       initialRouteName="Charts"
       screenOptions={{
-        animation: 'fade',
         lazy: true,
         swipeEnabled: false,
         gestureEnabled: isLandscape && isHorizontal ? false : true,
@@ -161,6 +171,9 @@ const SubMenuScreen = () => {
         initialParams={{
           activeCoin: activeSubCoin,
         }}
+        options={{
+          animation: 'fade',
+        }}
       />
       <SubMenuStack.Screen
         name="Charts"
@@ -169,6 +182,9 @@ const SubMenuScreen = () => {
           interval: '1d',
           symbol: `${activeSubCoin}USDT`,
           coinBot: activeSubCoin,
+        }}
+        options={{
+          animation: 'fade',
         }}
       />
       <SubMenuStack.Screen name="News" component={NewsScreen} />
@@ -214,7 +230,6 @@ const HomeStackScreen = () => {
     <HomeStack.Navigator
       initialRouteName="InitialHome"
       screenOptions={{
-        animation: 'fade',
         animationDuration: 250,
         header: () =>
           isLandscape && isHorizontal ? null : <TopMenu isAlertsMenu={false} />,
@@ -227,17 +242,53 @@ const HomeStackScreen = () => {
             updateActiveCoin({});
           },
         }}
+        options={{
+          animation: Platform.OS === 'ios' ? 'fade' : 'slide_from_left',
+        }}
       />
-      <HomeStack.Screen name="TopMenuScreen" component={TopmenuScreen} />
+      <HomeStack.Screen
+        name="TopMenuScreen"
+        component={TopmenuScreen}
+        options={{
+          animation: 'fade',
+        }}
+      />
       <HomeStack.Screen
         name="AnalysisArticleScreen"
         component={AnalysisArticle}
+        options={{
+          animationTypeForReplace: 'push',
+          animation: Platform.OS === 'ios' ? 'fade' : 'slide_from_right',
+          animationDuration: 250,
+          gestureEnabled: 'true',
+          gestureDirection: 'horizontal',
+        }}
       />
       <HomeStack.Screen
         name="NarrativeTradingArticleScreen"
         component={NarrativeTradingArticle}
+        options={{
+          animationTypeForReplace: 'push',
+          animation: Platform.OS === 'ios' ? 'fade' : 'slide_from_right',
+          animationDuration: 250,
+          gestureEnabled: 'true',
+          gestureDirection: 'horizontal',
+        }}
       />
-      <HomeStack.Screen name="SearchScreen" component={SearchScreen} />
+      <HomeStack.Screen
+        name="SearchScreen"
+        component={SearchScreen}
+        options={{
+          animation: 'fade',
+        }}
+      />
+      <HomeStack.Screen
+        name="HomeNotificationsScreen"
+        component={HomeNotifications}
+        options={{
+          animation: 'fade',
+        }}
+      />
     </HomeStack.Navigator>
   );
 };

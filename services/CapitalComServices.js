@@ -22,13 +22,8 @@ async function postCCSession() {
       `https://api-capital.backend-capital.com/api/v1/session`,
       options,
     );
-    console.log(response.text());
-    // if (response.status !== 200) {
-    //   throw new Error(response.statusText);
-    // } else {
     const security_token = response.headers.get('X-SECURITY-TOKEN');
     const security_cst = response.headers.get('CST');
-    console.log(security_token, security_cst);
     return {
       security_token,
       security_cst,
@@ -65,7 +60,6 @@ async function getCapitalComPrices(
     );
 
     const data = await response.json();
-    // console.log(`${symbol} price data: `, data);
     return data;
   } catch (error) {
     console.error('Error:', error.message);

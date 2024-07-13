@@ -1,11 +1,60 @@
-import React, {useContext} from 'react';
-import {Platform, ScrollView, Text, View} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {
+  Modal,
+  Platform,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import BackButton from '../../Analysis/BackButton/BackButton';
-import RenderHTML, {defaultSystemFonts} from 'react-native-render-html';
+import RenderHTML, {
+  defaultSystemFonts,
+  useInternalRenderer,
+} from 'react-native-render-html';
 import {AppThemeContext} from '../../../context/themeContext';
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/core';
 import useHomeNarrativeTradingStyles from './NarrativeTradingsStyles';
+import ImageViewer from 'react-native-image-zoom-viewer';
+
+const CustomImageRenderer = props => {
+  const {Renderer, rendererProps} = useInternalRenderer('img', props);
+  const styles = useHomeNarrativeTradingStyles();
+  const {theme} = useContext(AppThemeContext);
+  const [isImageZoomVisible, setImageZoomVisible] = useState(false);
+  const uri = rendererProps.source.uri;
+  const thumbnailSource = {
+    ...rendererProps.source,
+    uri: uri,
+  };
+
+  const handleBackButtonImageClose = () => {
+    setImageZoomVisible(false);
+  };
+
+  const images = [{url: thumbnailSource.uri, width: 700, height: 400}];
+  return (
+    <View style={{alignItems: 'center'}}>
+      <Renderer {...rendererProps} onPress={() => setImageZoomVisible(true)} />
+      <Modal
+        visible={isImageZoomVisible}
+        transparent={true}
+        style={styles.zoomImageBackground}
+        onRequestClose={() => handleBackButtonImageClose()}>
+        <ImageViewer
+          imageUrls={images}
+          enableSwipeDown={true}
+          enableImageZoom={true}
+          onSwipeDown={() => setImageZoomVisible(false)}
+          index={0}
+          renderIndicator={() => null}
+          backgroundColor={'rgba(0,0,0,0.45)'}
+        />
+      </Modal>
+    </View>
+  );
+};
 
 const NarrativeTradingArticle = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -19,6 +68,8 @@ const NarrativeTradingArticle = ({route}) => {
     isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
   ];
   const navigation = useNavigation();
+  console.log(navigation.getState());
+  const [isImageZoomVisible, setImageZoomVisible] = useState(false);
 
   const simplifyDateTime = dateTimeString => {
     const dateTime = new Date(dateTimeString);
@@ -69,10 +120,22 @@ const NarrativeTradingArticle = ({route}) => {
 
   const handleBackNavigation = () => {
     navigation.goBack();
-    navigation.navigate('Analysis', {
-      screen: 'NarrativeTrading',
-      params: {},
-    });
+    if (
+      navigation
+        .getState()
+        .routes.find(historyRoute => historyRoute.name === 'InitialHome')
+    ) {
+      navigation.navigate('InitialHome');
+    } else {
+      navigation.navigate('Home', {
+        screen: 'InitialHome',
+        params: {},
+      });
+      navigation.navigate('Analysis', {
+        screen: 'NarrativeTrading',
+        params: {},
+      });
+    }
   };
 
   const html_styles = {
@@ -117,28 +180,57 @@ const NarrativeTradingArticle = ({route}) => {
     },
   };
 
+  const imageUri = `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`;
+
   const html_source = {
     html: findHtmlContent(item_content),
   };
 
+  const images = [{url: imageUri, width: theme.width, height: 400}];
+
+  const handleBackButtonImageClose = () => {
+    setImageZoomVisible(false);
+  };
+
+  const renderers = {
+    img: CustomImageRenderer,
+  };
+
   return (
     <ScrollView style={styles.container}>
+      <Modal
+        visible={isImageZoomVisible}
+        transparent={true}
+        style={styles.zoomImageBackground}
+        onRequestClose={() => handleBackButtonImageClose()}>
+        <ImageViewer
+          imageUrls={images}
+          enableSwipeDown={true}
+          enableImageZoom={true}
+          onSwipeDown={() => setImageZoomVisible(false)}
+          index={0}
+          renderIndicator={() => null}
+          backgroundColor={'rgba(0,0,0,0.45)'}
+        />
+      </Modal>
       <View style={styles.backButtonWrapper}>
         <BackButton
           navigationHandler={isNavigateFromHome ? null : handleBackNavigation}
         />
       </View>
       <View style={styles.article}>
-        <FastImage
-          style={styles.articleFullImage}
-          resizeMode={'contain'}
-          source={{
-            uri: `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
-            priority: FastImage.priority.normal,
-          }}
-          defaultSource={require('../../../assets/images/home/default_news.png')}
-          fallback={true}
-        />
+        <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
+          <FastImage
+            style={styles.articleFullImage}
+            resizeMode={'contain'}
+            source={{
+              uri: `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
+              priority: FastImage.priority.normal,
+            }}
+            defaultSource={require('../../../assets/images/home/default_news.png')}
+            fallback={true}
+          />
+        </TouchableWithoutFeedback>
         <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>
         <RenderHTML
           source={html_source}
@@ -146,6 +238,7 @@ const NarrativeTradingArticle = ({route}) => {
           systemFonts={systemFonts}
           tagsStyles={html_styles}
           classesStyles={classes_styles}
+          renderers={renderers}
         />
       </View>
     </ScrollView>

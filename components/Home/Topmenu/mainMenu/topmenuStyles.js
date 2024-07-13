@@ -27,7 +27,6 @@ const useTopMenuStyles = () => {
     marginWrapper: {
       width: '100%',
       marginTop: 8,
-      marginBottom: 64,
       alignItems: 'center',
       alignSelf: 'center',
       justifyContent: 'center',

@@ -1,5 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {ImageBackground, SafeAreaView, Text, View} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import BackButton from '../BackButton/BackButton';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
@@ -11,6 +19,7 @@ import {
 import {VictoryAxis, VictoryCandlestick, VictoryChart} from 'victory-native';
 import useChartSectionStyles from '../ChartSection/ChartSectionStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
+import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 
 const initialSessionData = {
   security_token: null,
@@ -25,6 +34,8 @@ const UsOilChart = ({route, navigation}) => {
   const [sessionData, setSessionData] = useState(initialSessionData);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {isLandscape, isHorizontal, handleScreenOrientationChange} =
+    useScreenOrientation();
 
   // Function to fetch the data from Capital Com API, this requires a previous authentication with a security token an code, which are provided by a POST request to the Capital Com's auth API. This limites the number of updates to this chart, and that's the reason of the increasing of the update time in the setInterval effect.
 
@@ -78,10 +89,19 @@ const UsOilChart = ({route, navigation}) => {
     }
   }
 
-  // This chart was configured to update every 15s since the source is an external API which has limitation parameters in terms of requests per minute. The useEffect from below is executing these updates, loading the auth session tokens and after that making the request of the data itself.
+  // Function to handle the X button interaction on the horizontal chart
+
+  const handleBackInteraction = () => {
+    if (isLandscape || isHorizontal) {
+      handleScreenOrientationChange('PORTRAIT');
+      navigation.canGoBack(false);
+    }
+  };
+
+  // This chart was configured to update every 8s since the source is an external API which has limitation parameters in terms of requests per minute. The useEffect from below is executing these updates, loading the auth session tokens and after that making the request of the data itself.
 
   useEffect(() => {
-    const intervalId = setInterval(() => loadChartsData(), 15000);
+    const intervalId = setInterval(() => loadChartsData(), 8000);
     return () => clearInterval(intervalId);
   }, [symbol, selectedInterval]);
 
@@ -96,19 +116,25 @@ const UsOilChart = ({route, navigation}) => {
         angle={45}
         colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
         style={{flex: 1}}>
-        <SafeAreaView style={styles.background}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton />
-          </View>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.sectionDescription}>{description}</Text>
-          <View style={styles.container}>
-            <SkeletonLoader type="timeframe" quantity={4} />
-            <SkeletonLoader
-              type="chart"
-              style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
-            />
-          </View>
+        <SafeAreaView
+          style={[
+            styles.background,
+            isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
+          ]}>
+          <ScrollView style={{flex: 1}}>
+            <View style={styles.backButtonWrapper}>
+              <BackButton />
+            </View>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.sectionDescription}>{description}</Text>
+            <View style={styles.container}>
+              <SkeletonLoader type="timeframe" quantity={4} />
+              <SkeletonLoader
+                type="chart"
+                style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+              />
+            </View>
+          </ScrollView>
         </SafeAreaView>
       </LinearGradient>
     );
@@ -151,76 +177,125 @@ const UsOilChart = ({route, navigation}) => {
       angle={45}
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={{flex: 1}}>
-      <SafeAreaView style={styles.mainSection}>
-        <View style={styles.backButtonWrapper}>
-          <BackButton />
-        </View>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.sectionDescription}>{description}</Text>
-        <View style={styles.timeframeContainer}>
-          <TimeframeSelector
-            selectedInterval={selectedInterval}
-            changeInterval={changeInterval}
-            hasHourlyTimes={true}
-          />
-        </View>
-        <View style={styles.container}>
-          <View style={styles.chart}>
-            <ImageBackground
-              source={require('../../../assets/images/chart_alpha_logo.png')}
-              style={styles.chartBackgroundImage}
-              resizeMode="contain"
-            />
-            <VictoryChart
-              width={375}
-              domain={{x: domainX, y: domainY()}}
-              padding={{top: 10, bottom: 40, left: 20, right: 70}}
-              domainPadding={{x: 5, y: 3}}
-              scale={{x: 'time', y: 'linear'}}
-              height={300}>
-              <VictoryAxis
-                style={{
-                  axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
-                  tickLabels: {
-                    fontSize: theme.responsiveFontSize * 0.65,
-                    fill: theme.titleColor,
-                    fontFamily: theme.font,
-                  },
-                  grid: {stroke: theme.chartsGridColor},
-                }}
-                tickCount={selectedInterval.toUpperCase() === '1W' ? 3 : 6}
-              />
-              <VictoryAxis
-                dependentAxis
-                style={{
-                  axis: {stroke: theme.chartsAxisColor},
-                  tickLabels: {
-                    fontSize: theme.responsiveFontSize * 0.725,
-                    fill: theme.titleColor,
-                    fontFamily: theme.font,
-                  },
-                  grid: {stroke: theme.chartsGridColor},
-                }}
-                orientation="right"
-                tickCount={8}
-                tickFormat={t => `$${t}`}
-              />
-
-              <VictoryCandlestick
-                data={chartData}
-                candleRatio={0.6}
-                candleColors={{positive: '#09C283', negative: '#E93334'}}
-                style={{
-                  data: {
-                    strokeWidth: 0.75,
-                    stroke: datum =>
-                      datum.close < datum.open ? '#09C283' : '#E93334',
-                  },
-                }}
-              />
-            </VictoryChart>
+      <SafeAreaView
+        style={[
+          styles.mainSection,
+          isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
+        ]}>
+        <ScrollView style={{flex: 1}}>
+          <View style={styles.backButtonWrapper}>
+            <BackButton />
           </View>
-        </View>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.sectionDescription}>{description}</Text>
+          <View style={styles.timeframeContainer}>
+            <TimeframeSelector
+              selectedInterval={selectedInterval}
+              changeInterval={changeInterval}
+              hasHourlyTimes={true}
+            />
+          </View>
+          <View style={styles.container}>
+            <View style={styles.chart}>
+              <ImageBackground
+                source={require('../../../assets/images/chart_alpha_logo.png')}
+                style={styles.chartBackgroundImage}
+                resizeMode="contain"
+              />
+              <VictoryChart
+                width={isLandscape && isHorizontal ? 700 : 375}
+                domain={{x: domainX, y: domainY()}}
+                padding={{top: 10, bottom: 40, left: 20, right: 70}}
+                domainPadding={{x: 5, y: 3}}
+                scale={{x: 'time', y: 'linear'}}
+                height={300}>
+                <VictoryAxis
+                  fixLabelOverlap
+                  style={{
+                    axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
+                    tickLabels: {
+                      fontSize: theme.responsiveFontSize * 0.65,
+                      fill: theme.titleColor,
+                      fontFamily: theme.font,
+                    },
+                    grid: {stroke: theme.chartsGridColor},
+                  }}
+                  tickCount={selectedInterval.toUpperCase() === '1W' ? 3 : 6}
+                  tickFormat={t => {
+                    const year = t.getFullYear();
+                    const month = (t.getMonth() + 1)
+                      .toString()
+                      .padStart(2, '0');
+                    const day = t.getDate().toString().padStart(2, '0');
+                    const hour = t.getHours().toString().padStart(2, '0');
+                    const minute = t.getMinutes().toString().padStart(2, '0');
+                    return `${year}-${day}-${month}`;
+                  }}
+                />
+                <VictoryAxis
+                  dependentAxis
+                  style={{
+                    axis: {stroke: theme.chartsAxisColor},
+                    tickLabels: {
+                      fontSize: theme.responsiveFontSize * 0.725,
+                      fill: theme.titleColor,
+                      fontFamily: theme.font,
+                    },
+                    grid: {stroke: theme.chartsGridColor},
+                  }}
+                  orientation="right"
+                  tickCount={8}
+                  tickFormat={t => `$${t}`}
+                />
+
+                <VictoryCandlestick
+                  data={chartData}
+                  candleRatio={0.6}
+                  candleColors={{positive: '#09C283', negative: '#E93334'}}
+                  style={{
+                    data: {
+                      strokeWidth: 0.75,
+                      stroke: datum =>
+                        datum.close < datum.open ? '#09C283' : '#E93334',
+                    },
+                  }}
+                />
+              </VictoryChart>
+            </View>
+            <TouchableOpacity
+              onPress={
+                isLandscape
+                  ? () => {
+                      handleBackInteraction();
+                    }
+                  : () => {
+                      navigation.canGoBack(false);
+                      handleScreenOrientationChange('LANDSCAPE');
+                    }
+              }>
+              <Image
+                style={[styles.chartsHorizontalButton, {bottom: 80}]}
+                resizeMode="contain"
+                source={
+                  isLandscape && isHorizontal
+                    ? require('../../../assets/images/home/charts/deactivate-horizontal.png')
+                    : require('../../../assets/images/home/charts/activate-horizontal.png')
+                }
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleBackInteraction()}>
+              <Image
+                style={
+                  isLandscape && isHorizontal
+                    ? styles.chartBackButton
+                    : {display: 'none'}
+                }
+                resizeMode="contain"
+                source={require('../../../assets/images/home/charts/back.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </LinearGradient>
   );

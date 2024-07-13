@@ -126,6 +126,38 @@ const useAccountStyles = () => {
     borderRadius: 50,
     marginBottom: 10,
 },
+    socialMediaContainer: {
+      width: '100%',
+      marginVertical: 22,
+      padding: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderTopColor: theme.horizontalLineColor,
+      borderBottomColor: theme.horizontalLineColor,
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+    },
+    buttonsContainer: {
+      flexDirection: 'row',
+      width: '100%',
+      marginVertical: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    socialMediaButton: {
+      marginHorizontal: 15,
+    },
+    socialLogo: {
+      height: 32,
+      width: 40,
+      alignSelf: 'center',
+    },
+    socialMediaTitle: {
+      color: theme.textColor,
+      fontSize: 16,
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
+    },
   });
   return styles;
 };

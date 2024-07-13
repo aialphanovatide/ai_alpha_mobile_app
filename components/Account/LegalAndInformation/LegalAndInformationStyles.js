@@ -7,14 +7,18 @@ const useLegalStyles = () => {
   const styles = StyleSheet.create({
     backgroundColor: {
       flex: 1,
+      width: '100%',
       backgroundColor: 'transparent',
     },
+    backButtonContainer: {
+      marginHorizontal: 20,
+    },
     title: {
-      marginVertical: '5%',
-      marginLeft: '6%',
+      marginHorizontal: 26,
+      marginTop: 18,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
     },
     rightArrowContainer: {
       position: 'absolute',

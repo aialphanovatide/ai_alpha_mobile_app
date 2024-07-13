@@ -8,8 +8,8 @@ import {CategoriesContext} from '../../../../context/categoriesContext';
 import {AppThemeContext} from '../../../../context/themeContext';
 import SearchBar from '../../SearchBar/SearchBar';
 import LinearGradient from 'react-native-linear-gradient';
-import JoinCommunityButton from '../../JoinCommunityButton/JoinCommunityButton';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
+import NotificationsButton from '../../HomeNotifications/NotificationsButton';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
@@ -44,7 +44,11 @@ const TopMenu = ({isAlertsMenu}) => {
     });
   };
 
-  if (routeName.includes('Search')) {
+  const handleNotificationsNavigation = () => {
+    navigation.navigate('HomeNotificationsScreen');
+  };
+
+  if (routeName.includes('Search') || routeName.includes('HomeNotifications')) {
     return null;
   }
 
@@ -54,22 +58,19 @@ const TopMenu = ({isAlertsMenu}) => {
       angle={45}
       colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
       style={styles.topContentWrapper}>
-      <View
-        style={[
-          styles.marginWrapper,
-          isAlertsMenu || routeName.includes('TopMenu')
-            ? {marginBottom: 0}
-            : {},
-        ]}>
+      <View style={[styles.marginWrapper]}>
         <SearchBar
           handleSearchSectionNavigation={handleSearchSectionNavigation}
         />
-        {isAlertsMenu || routeName.includes('TopMenu') ? null : (
-          <JoinCommunityButton />
-        )}
+        <NotificationsButton
+          handleButtonPress={handleNotificationsNavigation}
+        />
       </View>
       <View style={styles.container}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          bounces={false}>
           {loading ? (
             <SkeletonLoader type={'circle'} quantity={14} />
           ) : categories ? (

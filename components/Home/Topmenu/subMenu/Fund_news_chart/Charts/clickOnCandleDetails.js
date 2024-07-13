@@ -30,12 +30,12 @@ function formatLabelNumber(number, decimalPlaces=2) {
 
 const DataRenderer = ({ data, domainX, domainY, yPoint, chartWidth, chartHeight, screenWidth }) => {
 
-  const yDomain = domainY()
-  const maxTop = yDomain[1]
-  const minTop = yDomain[0]
+  const yDomain = domainY;
+  const maxTop = yDomain[1];
+  const minTop = yDomain[0];
 
-  const minLeft = domainX[0]
-  const maxLeft = domainX[1]
+  const minLeft = domainX[0];
+  const maxLeft = domainX[1];
 
   const isCandleClosestToMinDate = (data, domainX) => {
     if (data && data.x){

@@ -1,13 +1,45 @@
-import {Image, ScrollView, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import {
+  ScrollView,
+  Text,
+  View,
+  Modal,
+  TouchableWithoutFeedback,
+  Animated,
+  Easing,
+} from 'react-native';
 import BackButton from '../../../../../Analysis/BackButton/BackButton';
 import useNewsStyles from './NewsStyles';
 import FastImage from 'react-native-fast-image';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import {AppThemeContext} from '../../../../../../context/themeContext';
+
+const {Value, timing} = Animated;
 
 const NewsArticle = ({route, navigation}) => {
   const styles = useNewsStyles();
   const item = route.params.item;
   const isStory = route.params.isStory;
+  const storyImages = isStory ? item.images : [];
+  const {theme} = useContext(AppThemeContext);
+  const [isImageZoomVisible, setImageZoomVisible] = useState(false);
+
+  // Animation for the whole article component's first rendering, swiping from the right side of the screen
+
+  const translateX = new Value(300);
+
+  useEffect(() => {
+    const animation = timing(translateX, {
+      toValue: 0,
+      duration: 500,
+      easing: Easing.inOut(Easing.ease),
+      useNativeDriver: true,
+    });
+
+    animation.start();
+  }, []);
+
+
   const handleReturn = () => {
     navigation.goBack();
   };
@@ -29,8 +61,6 @@ const NewsArticle = ({route, navigation}) => {
       (hours !== '00' || minutes !== '00' ? ` ${hours}:${minutes}` : '')
     );
   };
-
-  // Function to extract the title from the summaries, that detects the first sentences within "", using regular expressions, and returns it. It only returns the first because it can happen that is inside the summary text another sentences within "".
 
   const filterArticleTitle = summary => {
     const match = summary.match(/"([^"]+)"/);
@@ -55,7 +85,6 @@ const NewsArticle = ({route, navigation}) => {
     }
   };
 
-  // Function to filter the summary or texts of the article, removing the words that are put by the prompt generated, and aren't necessary in the summary or the title.
   const filterText = summary => {
     const keywords_to_remove = [
       'Headline:',
@@ -86,32 +115,57 @@ const NewsArticle = ({route, navigation}) => {
 
     return filteredText;
   };
+  const storyFilteredContent = isStory
+    ? filterArticleTitle(item.summary)
+    : null;
+  const imageUri = isStory
+    ? `data:image/jpg;base64,${storyImages[0].image}`
+    : `https://appnewsposters.s3.us-east-2.amazonaws.com/${item.image}`;
 
-  const {title, content} = filterArticleTitle(item.summary);
+  const images = [{url: imageUri, width: theme.width, height: 400}];
 
-  const item_id = isStory ? item.top_story_id : item.article_id;
+  const handleBackButtonImageClose = () => {
+    setImageZoomVisible(false);
+  };
 
   return (
     <ScrollView style={[styles.container, styles.backgroundColor]}>
+      <Modal
+        visible={isImageZoomVisible}
+        transparent={true}
+        style={styles.zoomImageBackground}
+        onRequestClose={() => handleBackButtonImageClose()}>
+        <ImageViewer
+          imageUrls={images}
+          enableSwipeDown={true}
+          enableImageZoom={true}
+          onSwipeDown={() => setImageZoomVisible(false)}
+          index={0}
+          renderIndicator={() => null}
+          backgroundColor={'rgba(0,0,0,0.45)'}
+        />
+      </Modal>
       <View style={styles.marginVertical}>
         <BackButton handleReturn={handleReturn} />
       </View>
       <View style={styles.article}>
-        <FastImage
-          style={styles.articleImage}
-          resizeMode={'contain'}
-          source={{
-            uri: `https://apparticleimages.s3.us-east-2.amazonaws.com/${item_id}.jpg`,
-            priority: FastImage.priority.normal,
-          }}
-          fallback={true}
-        />
-        <Text style={styles.articleTitle}>
-          {filterText(isStory ? title : item.title)}
-        </Text>
+        <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
+          <FastImage
+            style={styles.articleImage}
+            resizeMode={'contain'}
+            source={{
+              uri: isStory
+                ? `data:image/png;base64,${storyImages[0].image}`
+                : imageUri,
+              priority: FastImage.priority.normal,
+            }}
+            fallback={true}
+          />
+        </TouchableWithoutFeedback>
+        <Text style={styles.articleTitle}>{isStory ? storyFilteredContent.title : item.title}</Text>
         <Text style={styles.articleDate}>{formatDate(item.date)}</Text>
         <Text style={styles.articleSummary}>
-          {isStory ? filterText(content) : filterText(item.summary)}
+          {isStory ? storyFilteredContent.content : item.content}
         </Text>
       </View>
     </ScrollView>

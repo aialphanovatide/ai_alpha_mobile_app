@@ -12,6 +12,7 @@ const MenuItem = ({
   const styles = useMenuItemStyles();
   return (
     <TouchableOpacity
+      activeOpacity={1}
       style={styles.buttonContainer}
       onPress={() => onPress(category)}>
       <View style={[styles.button]}>
@@ -25,6 +26,7 @@ const MenuItem = ({
             width: 60,
             height: 60,
             priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.web
           }}
           resizeMode="contain"
           style={styles.imageIcon}

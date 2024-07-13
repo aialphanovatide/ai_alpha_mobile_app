@@ -12,7 +12,7 @@ import {
 import Purchases from 'react-native-purchases';
 import {useNavigation} from '@react-navigation/core';
 import {useUser} from '../../context/UserContext';
-import { useRawUserId } from '../../context/RawUserIdContext';
+import {useRawUserId} from '../../context/RawUserIdContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAccountStyles from './styles';
 import ThemeButton from '../ThemeButton/ThemeButton';
@@ -23,6 +23,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import useWebSocket from 'react-native-use-websocket';
 import RNRestart from 'react-native-restart';
+import SocialMedia from './SocialMediaButtons/SocialMedia';
 
 const AccountItem = ({
   styles,
@@ -134,7 +135,6 @@ const Account = ({route}) => {
       component: null,
     },
   ];
-  
 
   const handleItemTouch = option => {
     switch (option.name) {
@@ -194,21 +194,17 @@ const Account = ({route}) => {
     });
   };
 
-  const logoutWarning = async () =>{
-    Alert.alert(
-      'Log Out',
-      'Are you sure you want to log out?',
-      [
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'Log Out', onPress: handleLogout},
-      ],
-    );
+  const logoutWarning = async () => {
+    Alert.alert('Log Out', 'Are you sure you want to log out?', [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Log Out', onPress: handleLogout},
+    ]);
   };
 
   const handleLogout = async () => {
     try {
-      console.log("Logging out...");
-      console.log("Removing login data...");
+      console.log('Logging out...');
+      console.log('Removing login data...');
       await AsyncStorage.removeItem('accessToken');
       await AsyncStorage.removeItem('refreshToken');
       await AsyncStorage.removeItem('userEmail');
@@ -218,12 +214,12 @@ const Account = ({route}) => {
       await AsyncStorage.removeItem('fullName');
       await AsyncStorage.removeItem('username');
       await AsyncStorage.removeItem('birthDate');
-      console.log("Successfully removed login data...");
+      console.log('Successfully removed login data...');
       resetLoginForm();
-      console.log("After loginForm reset");
+      console.log('After loginForm reset');
       navigation.navigate('SignIn', {resetForm: true});
       RNRestart.restart();
-      console.log("After logout navigation");
+      console.log('After logout navigation');
     } catch (e) {
       console.error('Logout failed', e);
     }
@@ -411,15 +407,20 @@ async function Buy_now() {
 
             <View style={styles.optionsContainer}>
               {options &&
-                options.map((option, index) => (
-                  <AccountItem
-                    key={index}
-                    option={option}
-                    styles={styles}
-                    handleItemTouch={handleItemTouch}
-                    itemComponent={option.component && option.component}
-                  />
-                ))}
+                options.map((option, index) => {
+                  const isLastItem = index === options.length - 1;
+                  return (
+                    <React.Fragment key={index}>
+                      {isLastItem && <SocialMedia />}
+                      <AccountItem
+                        option={option}
+                        styles={styles}
+                        handleItemTouch={handleItemTouch}
+                        itemComponent={option.component && option.component}
+                      />
+                    </React.Fragment>
+                  );
+                })}
             </View>
           </View>
         </ScrollView>

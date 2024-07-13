@@ -56,9 +56,9 @@ const useSearchBarStyles = () => {
       tintColor: theme.textColor,
     },
     aiAlphaTextImage: {
-      width: 100,
-      height: 14,
-      marginTop: 24,
+      width: 124,
+      height: 36,
+      marginTop: 42,
       alignSelf: 'center',
     },
     transparentOverlay: {
@@ -69,6 +69,8 @@ const useSearchBarStyles = () => {
     inactiveSearchBar: {
       flex: 1,
       justifyContent: 'center',
+      alignSelf: 'center',
+      alignItems: 'center',
     },
   });
   return styles;

@@ -8,18 +8,14 @@ const useChartSectionStyles = () => {
     mainSection: {
       flex: 1,
       width: theme.width,
-      height: theme.height,
       backgroundColor: 'transparent',
-      padding: 10,
-      paddingTop: 36,
+      paddingHorizontal: 10,
     },
     background: {
       flex: 1,
       backgroundColor: 'transparent',
       width: theme.width,
-      paddingTop: 36,
-      padding: 10,
-
+      paddingHorizontal: 10,
     },
     container: {
       width: '100%',
@@ -48,6 +44,7 @@ const useChartSectionStyles = () => {
     },
     backButtonWrapper: {
       marginHorizontal: 20,
+      marginTop: 36
     },
     chartBackgroundImage: {
       justifyContent: 'center',
@@ -55,16 +52,15 @@ const useChartSectionStyles = () => {
       position: 'absolute',
       top: 15,
       left: '7.5%',
-      width: 60,
-      height: 60,
+      width: 52,
+      height: 44,
       opacity: 0.8,
       zIndex: -2,
     },
     timeframeContainer: {
       flex: 1,
       width: '100%',
-      maxHeight: '5%',
-      padding: 10,
+      padding: 4,
     },
     sectionDescription: {
       width: '90%',
@@ -102,8 +98,21 @@ const useChartSectionStyles = () => {
       color: '#fff',
       fontFamily: theme.fontMedium,
     },
-    backButtonWrapper: {
-      marginHorizontal: 20,
+    chartsHorizontalButton: {
+      width: 20,
+      height: 20,
+      position: 'absolute',
+      bottom: 60,
+      left: 25,
+      tintColor: theme.textColor,
+    },
+    chartBackButton: {
+      width: 35,
+      height: 35,
+      position: 'absolute',
+      bottom: 280,
+      right: 30,
+      tintColor: theme.textColor,
     },
   });
   return styles;

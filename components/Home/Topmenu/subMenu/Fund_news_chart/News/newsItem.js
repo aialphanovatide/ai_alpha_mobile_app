@@ -38,10 +38,11 @@ const NewsItem = ({item, onPress, filterText}) => {
       </View>
       <FastImage
         source={{
-          uri: item.article_id
-            ? `https://apparticleimages.s3.us-east-2.amazonaws.com/${item.article_id}.jpg`
+          uri: item.id
+            ? `https://apparticleimages.s3.us-east-2.amazonaws.com/${item.id}.jpg`
             : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
           priority: FastImage.priority.normal,
+          cache: FastImage.cacheControl.cacheOnly,
         }}
         style={styles.image}
         resizeMode={'contain'}
