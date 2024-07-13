@@ -8,7 +8,7 @@ import { API_KEY } from '../../constants';
 
 const LoginForm = ({ onLogin }) => {
   const [newUserId, setNewUserId] = useState('');
-  Purchases.configure({apiKey: API_KEY});
+  Purchases.configure({apiKey: API_KEY, usesStoreKit2IfAvailable: false});
 
   console.warn(
     "Public-facing usernames aren't optimal for user ID's - you should use something non-guessable, like a non-public database ID. For more information, visit https://docs.revenuecat.com/docs/user-ids.",

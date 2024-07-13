@@ -125,11 +125,31 @@ const usePersonaliseProfileStyles = () => {
       flex: 1,
       backgroundColor: theme.mainBackgroundColor,
     },
+    resetPasswordContainer: {
+      alignSelf: 'left',
+      marginTop: 20,
+    },
     sendMailButton: {
       color: '#FF6C0D',
       fontSize: theme.responsiveFontSize * 0.85,
       textDecorationLine: 'underline',
       marginBottom: 80,
+    },
+    dateContainer:{
+      alignItems: 'left',
+      backgroundColor: 'transparent',
+      borderRadius: 5,
+    },
+    dateButton: {
+      borderColor: '#ccc',
+      borderWidth: 1,
+      borderRadius: 5,
+      padding: 10,
+      justifyContent: 'center',
+    },
+    input: {
+      fontSize: 16,
+      color: '#000',
     },
   });
   return styles;

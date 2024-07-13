@@ -174,11 +174,14 @@ const NotificationsPanel = ({route, options = null}) => {
           id => !productIdentifiers.includes(id),
         );
         for (const id of expiredSubscriptions) {
+          console.log("UNSUBSCRIBING from topic:", id);
           userSubscriptionsStatus[id] = false;
           await AsyncStorage.setItem(`@subscription_${id}`, 'null');
           await AsyncStorage.setItem(`@subscription_analysis_${id}`, 'null');
           newSubscriptions[id] = false;
           newAnalysisNotifications[id] = false;
+          handleToggleSubscription(id, false);
+          handleToggleAnalysisNotifications(id, false);
         }
 
         setAnalysisNotifications(newAnalysisNotifications);

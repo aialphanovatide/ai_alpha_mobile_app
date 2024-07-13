@@ -83,7 +83,6 @@ const FAQs = () => {
         'You can find educational content on our social media platforms that will guide you through the different sections of AI Alpha. We provide information and tips to help you make the most of the application.',
     },
   ];
-
   return (
     <LinearGradient
       useAngle={true}
@@ -100,7 +99,10 @@ const FAQs = () => {
             <TouchableOpacity
               key={index}
               onPress={() => toggleFAQ(index)}
-              style={styles.faqContainer}>
+              style={[
+                styles.faqContainer,
+                index === faqs.length - 1 && styles.lastFAQContainer
+              ]}>
               <View style={styles.faqTouchable}>
                 <View style={styles.faqQuestionRow}>
                   <Text style={styles.faqQuestionText}>{faq.question}</Text>

@@ -49,7 +49,7 @@ const SubscriptionItem = ({
     Intellichain: ['ocean', 'fet', 'rndr'],
   };
   const coinNames = coinNamesMap[formatCoinTitles(item.title)] || [];
-  console.log("coin names! -> ", coinNames);
+  //console.log("coin names! -> ", coinNames);
   const [expanded, setExpanded] = useState(false);
 
   const handleExpand = value => {
@@ -188,27 +188,32 @@ const PackageSubscriptions = () => {
   const [missingMessageActive, setMissingMessageActive] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  console.log('Packages: ', packages);
+  //console.log('Packages: ', packages);
 
   const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
     subscription.toLowerCase().includes('founders'),
   );
 
   const handlePurchase = async pack => {
+    console.log("PACK: ", pack);
     setLoading(true);
     if (pack === null) {
       setMissingMessageActive(true);
       setLoading(false);
+      console.log("returning null package")
       return;
     }
     try {
       await purchasePackage(pack);
       setMissingMessageActive(false);
+      console.log("awaited package")
     } catch (error) {
+      console.log("Catched error")
       setMissingMessageActive(true);
     } finally {
       setActiveItem(null);
       setLoading(false);
+      console.log("finally package")
     }
   };
 
