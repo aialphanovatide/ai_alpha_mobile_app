@@ -14,6 +14,22 @@ import {AppThemeContext} from '../../../context/themeContext';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import messaging from '@react-native-firebase/messaging';
 
+const founders_static_identifiers = [
+  'baseblock_4999_m1',
+  'bitcoin_4999_m1',
+  'boostlayer_4999_m1',
+  'corechain_4999_m1',
+  'cycleswap_4999_m1',
+  'diversefi_4999_m1',
+  'ethereum_4999_m1',
+  'intellichain_4999_m1',
+  'lsds_4999_m1',
+  'nextrade_4999_m1',
+  'rootlink_4999_m1',
+  'truthnodes_4999_m1',
+  'xpayments_4999_m1',
+];
+
 const NotificationItem = ({
   item,
   styles,
@@ -111,26 +127,22 @@ const NotificationsPanel = ({route, options = null}) => {
   useEffect(() => {
     const updateUserSubscriptions = async () => {
       try {
-        console.log("userInfo:", userInfo);
-        console.log("Packages:", packages);
-        
-        // Verify the structure of packages array
-        if (packages && Array.isArray(packages)) {
-          packages.forEach(pkg => {
-            console.log("Package:", pkg);
-          });
-        } else {
-          console.log("Packages array is not valid");
-        }
+        console.log('userInfo:', userInfo);
+        console.log('Packages:', packages);
+
+        const hasFounders =
+          userInfo?.entitlements.find(subscription =>
+            subscription.toLowerCase().includes('founders'),
+          ) !== undefined;
 
         const purchasedPackages = packages.filter(item =>
-          userInfo?.entitlements.includes(item.product.identifier) || 
-          (userInfo?.entitlements.includes('rc_promo_Founders_14999_m1_yearly') && item.product.identifier === 'founders_14999_m1')
+          userInfo?.entitlements.includes(item.product.identifier),
         );
-        const productIdentifiers = purchasedPackages.map(item => item.product.identifier);
-        console.log("Purchased product identifiers:", productIdentifiers);
 
-        const userSubscriptionsStatus = { ...userSubscriptions };
+        const productIdentifiers = purchasedPackages.map(
+          item => item.product.identifier,
+        );
+        console.log('Purchased product identifiers:', productIdentifiers);
 
         const userSubscriptionsStatus = {...userSubscriptions};
 
@@ -139,49 +151,114 @@ const NotificationsPanel = ({route, options = null}) => {
         const newSubscriptions = {...subscriptions};
         const newAnalysisNotifications = {...analysisNotifications};
 
-        for (const id of productIdentifiers) {
-          const storedStatus = await AsyncStorage.getItem(
-            `@subscription_${id}`,
-          );
-          const analysisStoredStatus = await AsyncStorage.getItem(
-            `@subscription_analysis_${id}`,
-          );
-          console.log(
-            'storedStatus->',
-            storedStatus,
-            'for->',
-            `@subscription_${id}`,
-          );
-          console.log(
-            'storedStatus type->',
-            typeof storedStatus,
-            'for->',
-            `@subscription_${id}`,
-          );
+        if (hasFounders) {
+          for (const id of founders_static_identifiers) {
+            const storedStatus = await AsyncStorage.getItem(
+              `@subscription_${id}`,
+            );
+            const analysisStoredStatus = await AsyncStorage.getItem(
+              `@subscription_analysis_${id}`,
+            );
+            console.log(
+              '[FOUNDERS] storedStatus->',
+              storedStatus,
+              'for->',
+              `@subscription_${id}`,
+            );
+            console.log(
+              '[FOUNDERS] storedStatus type->',
+              typeof storedStatus,
+              'for->',
+              `@subscription_${id}`,
+            );
 
-          // Conditional to activate a new suscription for the alerts notifications
+            // Conditional to activate a new suscription for the alerts notifications
 
-          if (storedStatus === 'null') {
-            console.log('Entered null validator');
-            await AsyncStorage.setItem(`@subscription_${id}`, 'true');
-            newSubscriptions[id] = true;
-            console.log('Subscribing to new topic:', id);
-            await messaging().subscribeToTopic(id);
-          } else {
-            newSubscriptions[id] = storedStatus === 'true';
+            if (storedStatus === 'null') {
+              console.log(
+                '[FOUNDERS] Activating the alerts notifications for the first time',
+              );
+              await AsyncStorage.setItem(`@subscription_${id}`, 'true');
+              newSubscriptions[id] = true;
+              console.log('Subscribing to new topic:', id);
+              await messaging().subscribeToTopic(id);
+            } else {
+              newSubscriptions[id] = storedStatus === 'true';
+            }
+
+            // Conditional to activate a new suscription for the analysis notifications
+
+            if (analysisStoredStatus === 'null') {
+              console.log(
+                '[FOUNDERS] Activating the analysis notifications for the first time',
+              );
+              await AsyncStorage.setItem(
+                `@subscription_analysis_${id}`,
+                'true',
+              );
+              newAnalysisNotifications[id] = true;
+              console.log('Subscribing to new analysis topic:', id);
+              await messaging().subscribeToTopic(`${id}_analysis`);
+            } else {
+              newAnalysisNotifications[id] = analysisStoredStatus === 'true';
+            }
+
+            userSubscriptionsStatus[id] = true;
           }
+        } else {
+          for (const id of productIdentifiers) {
+            const storedStatus = await AsyncStorage.getItem(
+              `@subscription_${id}`,
+            );
+            const analysisStoredStatus = await AsyncStorage.getItem(
+              `@subscription_analysis_${id}`,
+            );
+            console.log(
+              'storedStatus->',
+              storedStatus,
+              'for->',
+              `@subscription_${id}`,
+            );
+            console.log(
+              'storedStatus type->',
+              typeof storedStatus,
+              'for->',
+              `@subscription_${id}`,
+            );
 
-          // Conditional to activate a new suscription for the analysis notifications
+            // Conditional to activate a new suscription for the alerts notifications
 
-          if (analysisStoredStatus === 'null') {
-            await AsyncStorage.setItem(`@subscription_analysis_${id}`, 'true');
-            newAnalysisNotifications[id] = true;
-            await messaging().subscribeToTopic(`${id}_analysis`);
-          } else {
-            newAnalysisNotifications[id] = storedStatus === 'true';
+            if (storedStatus === 'null') {
+              console.log(
+                'Activating the alerts notifications for the first time',
+              );
+              await AsyncStorage.setItem(`@subscription_${id}`, 'true');
+              newSubscriptions[id] = true;
+              console.log('Subscribing to new topic:', id);
+              await messaging().subscribeToTopic(id);
+            } else {
+              newSubscriptions[id] = storedStatus === 'true';
+            }
+
+            // Conditional to activate a new suscription for the analysis notifications
+
+            if (analysisStoredStatus === 'null') {
+              console.log(
+                'Activating the analysis notifications for the first time',
+              );
+              await AsyncStorage.setItem(
+                `@subscription_analysis_${id}`,
+                'true',
+              );
+              newAnalysisNotifications[id] = true;
+              console.log('Subscribing to new analysis topic:', id);
+              await messaging().subscribeToTopic(`${id}_analysis`);
+            } else {
+              newAnalysisNotifications[id] = analysisStoredStatus === 'true';
+            }
+
+            userSubscriptionsStatus[id] = true;
           }
-
-          userSubscriptionsStatus[id] = true;
         }
 
         const expiredSubscriptions = Object.keys(subscriptions).filter(
@@ -193,16 +270,24 @@ const NotificationsPanel = ({route, options = null}) => {
           await AsyncStorage.setItem(`@subscription_analysis_${id}`, 'null');
           newSubscriptions[id] = false;
           newAnalysisNotifications[id] = false;
-          handleToggleSubscription(id, false);
-          handleToggleAnalysisNotifications(id, false);
+          // handleToggleSubscription(id, false);
+          // handleToggleAnalysisNotifications(id, false);
         }
 
         setAnalysisNotifications(newAnalysisNotifications);
         setUserSubscriptions(userSubscriptionsStatus);
         setSubscriptions(newSubscriptions);
-        setHasFoundersSubscription(userInfo?.entitlements.includes('rc_promo_Founders_14999_m1_yearly'));
-        console.log("* Updated user subscriptions:", userSubscriptionsStatus);
-        console.log("* Current subscriptions state:", newSubscriptions);
+        setHasFoundersSubscription(
+          userInfo?.entitlements.find(subscription =>
+            subscription.includes('Founders'),
+          ) !== undefined,
+        );
+        console.log('* Updated user subscriptions:', userSubscriptionsStatus);
+        console.log('* Current alerts notifications state:', newSubscriptions);
+        console.log(
+          '* Current analysis notifications state:',
+          newAnalysisNotifications,
+        );
       } catch (error) {
         console.error('Failed to update user subscriptions:', error);
       }
@@ -210,13 +295,6 @@ const NotificationsPanel = ({route, options = null}) => {
 
     updateUserSubscriptions();
   }, [packages, userInfo]);
-
-  useEffect(() => {
-    const hasFoundersPackage =
-      userInfo?.entitlements.find(item => item.includes('Founders')) !==
-      undefined;
-    console.log(hasFoundersPackage);
-  }, [userInfo]);
 
   // Handler function to toggle the state of the alerts notifications, switching the stored state to true or false, and subscribing or unsubscribing the user from the alerts topic.
 
@@ -294,8 +372,10 @@ const NotificationsPanel = ({route, options = null}) => {
     try {
       const isSubscribed = analysisNotifications[topic];
       if (isSubscribed && !initial) {
+        console.log('* Unsubscribing from:', `${topic}_analysis`);
         await messaging().unsubscribeFromTopic(`${topic}_analysis`);
       } else {
+        console.log('* Subscribing to:', `${topic}_analysis`);
         await messaging().subscribeToTopic(`${topic}_analysis`);
       }
       const newAnalysisNotifications = {
@@ -372,9 +452,12 @@ const NotificationsPanel = ({route, options = null}) => {
                 trackColor={{true: '#52DD8D', false: '#D9D9D9'}}
                 ios_backgroundColor={theme.notificationsSwitchColor}
                 thumbColor={'#F6F7FB'}
-                value={Object.values(subscriptions).some(Boolean)}
+                value={Object.values(analysisNotifications).some(Boolean)}
                 onValueChange={handleToggleAllAnalysisNotifications}
-                disabled={Object.values(userSubscriptions).every(val => !val)}
+                disabled={
+                  !hasFoundersSubscription ||
+                  Object.values(userSubscriptions).every(val => !val)
+                }
               />
             </View>
             <View style={[styles.allNotificationsSwitchContainer]}>
@@ -386,7 +469,10 @@ const NotificationsPanel = ({route, options = null}) => {
                 thumbColor={'#F6F7FB'}
                 value={Object.values(subscriptions).some(Boolean)}
                 onValueChange={handleToggleAllNotifications}
-                disabled={!hasFoundersSubscription && Object.values(userSubscriptions).every(val => !val)}
+                disabled={
+                  !hasFoundersSubscription ||
+                  Object.values(userSubscriptions).every(val => !val)
+                }
               />
             </View>
           </View>
@@ -406,7 +492,13 @@ const NotificationsPanel = ({route, options = null}) => {
                 isDarkMode={isDarkMode}
                 hasImage={true}
                 onToggle={() => handleToggleSubscription(item.identifier)}
-                hasSubscription={hasFoundersSubscription || !!userSubscriptions[item.identifier]}
+                onAnalysisToggle={() =>
+                  handleToggleAnalysisNotifications(item.identifier)
+                }
+                hasSubscription={
+                  hasFoundersSubscription ||
+                  !!userSubscriptions[item.identifier]
+                }
               />
               <View style={styles.horizontalLine} />
             </React.Fragment>

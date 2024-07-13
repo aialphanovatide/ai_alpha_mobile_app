@@ -96,9 +96,7 @@ const App = () => {
       const notificationDate = `${day}/${month}/${year}`;
 
       const notificationCoin = extractCryptoName(alertData.title);
-      const notificationType = alertData.title.toLowerCase().includes('alert')
-        ? 'alerts'
-        : 'analysis';
+      const notificationType = alertData.type;
 
       const newNotification = {
         title: alertData.title,
