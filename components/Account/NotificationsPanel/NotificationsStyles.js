@@ -28,7 +28,9 @@ const useNotificationsStyles = () => {
     },
     subtitle: {
       marginVertical: 4,
+      marginBottom: -5,
       marginHorizontal: 37,
+      marginLeft: 23,
       fontSize: theme.responsiveFontSize,
       color: theme.titleColor,
       lineHeight: 22,
@@ -79,8 +81,9 @@ const useNotificationsStyles = () => {
     },
     allNotificationsSwitchContainer: {
       width: 45,
-      height: 30,
+      height: 40,
       borderRadius: 10,
+      paddingTop: 7,
       backgroundColor: isDarkMode
         ? 'transparent'
         : theme.notificationsSwitchColor,
@@ -99,6 +102,7 @@ const useNotificationsStyles = () => {
       width: '95%',
       marginVertical: 8,
       padding: 8,
+      paddingVertical: 15,
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 2,
       alignSelf: 'center',

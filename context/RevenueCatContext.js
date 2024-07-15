@@ -181,7 +181,7 @@ const RevenueCatProvider = ({children}) => {
 
   const purchasePackage = async pack => {
     try {
-      console.log(pack);
+      console.log("Pack being purchased",pack);
       const {customerInfo, productIdentifier} = await Purchases.purchasePackage(
         pack,
       );

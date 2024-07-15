@@ -436,12 +436,12 @@ const NotificationsPanel = ({route, options = null}) => {
       <Text style={styles.title}>Notifications</Text>
       <ScrollView style={styles.mainContainer}>
         <View style={styles.row}>
-          <Text style={[styles.subtitle, {marginRight: 0}]}>Analysis</Text>
+          <Text style={[styles.subtitle, {marginRight: 0}]}>News</Text>
           <Text style={styles.subtitle}>Alerts</Text>
         </View>
         <View style={styles.allNotificationsItem}>
           <Text style={styles.allNotificationsItemName}>All Notifications</Text>
-          <View style={[styles.rightContent, {right: 26}]}>
+          <View style={[styles.rightContent, {right: 30}]}>
             <View
               style={[
                 styles.allNotificationsSwitchContainer,

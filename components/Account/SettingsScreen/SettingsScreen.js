@@ -80,7 +80,7 @@ const SettingsScreen = ({route}) => {
       component: <ThemeButton />,
     },
     {
-      name: 'Current Packages',
+      name: 'My Packages',
       logo: require('../../../assets/images/account/currentpackages.png'),
       screenName: null,
       component: null,
@@ -351,7 +351,7 @@ const SettingsScreen = ({route}) => {
       case 'Restore Purchases':
         handleRestorePurchase();
         break;
-      case 'Current Packages':
+      case 'My Packages':
         navigation.navigate('CurrentPackages');
         break;
       case 'Personalise Profile':
