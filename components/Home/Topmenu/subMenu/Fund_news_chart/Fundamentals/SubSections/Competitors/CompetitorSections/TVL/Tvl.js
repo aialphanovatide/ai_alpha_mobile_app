@@ -8,7 +8,6 @@ import {
 } from 'victory-native';
 import useChartStyles from '../CurrentMarketCap/ChartStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
-import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
@@ -18,6 +17,8 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
   const [cryptos, setCryptos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [maxTvlValue, setMaxTvlValue] = useState(0);
+  const [activeBarIndex, setActiveBarIndex] = useState(null);
+  const [activeBarLabel, setActiveBarLabel] = useState(null);
 
   const parseNumberString = numberString => {
     const numberWithoutSign = numberString.replace(/\s|,/g, '');
@@ -39,6 +40,18 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
         ? found.competitor.value
         : ''
       : null;
+  };
+
+  // Function to handle the pressing of a competitors' bar included in the generated chart shown in this section, this set the index and the value of the bar to be shown in the box over the clicked bar.
+
+  const handleBarPress = (index, label) => {
+    if (index === activeBarIndex) {
+      setActiveBarIndex(null);
+      setActiveBarLabel(null);
+    } else {
+      setActiveBarIndex(index);
+      setActiveBarLabel(label);
+    }
   };
 
   useEffect(() => {
@@ -141,8 +154,38 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
                 label: ` $${crypto.tvl[1]}b `,
                 color: tintColors[index > 3 ? index % 3 : index],
               }))}
-              labels={({datum}) => datum.label}
-              labelComponent={<VictoryTooltip renderInPortal={false} />}
+              events={[
+                {
+                  target: 'data',
+                  eventHandlers: {
+                    onPress: (e, props) => {
+                      handleBarPress(props.index, props.datum.label);
+                    },
+                  },
+                },
+              ]}
+              labels={({index}) =>
+                index === activeBarIndex ? activeBarLabel : ''
+              }
+              labelComponent={
+                <VictoryTooltip
+                  index={activeBarIndex}
+                  renderInPortal={false}
+                  active={
+                    activeBarIndex !== null
+                      ? ({index}) => index === activeBarIndex
+                      : false
+                  }
+                  style={[
+                    styles.barLabel,
+                    {
+                      opacity: activeBarLabel ? 1 : 0,
+                      zIndex: activeBarLabel && -1000,
+                    },
+                  ]}
+                  pointerLength={activeBarIndex === null ? 0 : 10}
+                />
+              }
             />
           </VictoryChart>
         </>

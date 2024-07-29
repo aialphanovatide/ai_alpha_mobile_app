@@ -10,7 +10,7 @@ const TimeframeSelector = ({
   additionalStyles = null,
 }) => {
   const timeframes = hasHourlyTimes
-    ? ['1h', '4h', '1D', '1W']
+    ? ['1h', '4h', '1d', '1w']
     : selectedPairing.toLowerCase() === 'btc'
     ? ['1W']
     : ['1D', '1W'];

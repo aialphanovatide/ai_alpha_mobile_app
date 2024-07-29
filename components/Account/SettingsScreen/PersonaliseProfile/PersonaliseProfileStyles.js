@@ -37,7 +37,8 @@ const usePersonaliseProfileStyles = () => {
       color: theme.textColor,
       textAlign: 'left',
       marginLeft: 0,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
+      fontSize: 16,
     },
     loginContainer: {
       flexDirection: 'row',
@@ -93,23 +94,23 @@ const usePersonaliseProfileStyles = () => {
       fontSize: 12,
     },
     imageContainer: {
-        alignItems: 'center',
+      alignItems: 'center',
     },
     userImage: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+      width: 100,
+      height: 100,
+      borderRadius: 50,
     },
-    infoTitle:{
-        color: theme.textColor,
-        textAlign: 'left',
-        marginLeft: 0,
-        fontSize: 17,
-        fontFamily: theme.fontSemibold,
+    infoTitle: {
+      color: theme.textColor,
+      textAlign: 'left',
+      marginLeft: 0,
+      fontSize: 17,
+      fontFamily: theme.fontSemibold,
     },
-    infoText:{
-        fontSize:16,
-        marginBottom:10,
+    infoText: {
+      fontSize: 16,
+      marginBottom: 10,
     },
     optionalLabel: {
       color: 'grey',
@@ -126,16 +127,18 @@ const usePersonaliseProfileStyles = () => {
       backgroundColor: theme.mainBackgroundColor,
     },
     resetPasswordContainer: {
-      alignSelf: 'left',
-      marginTop: 20,
+      alignSelf: 'flex-start',
+      marginTop: 16,
     },
     sendMailButton: {
       color: '#FF6C0D',
-      fontSize: theme.responsiveFontSize * 0.85,
+      fontSize: 14,
+      fontFamily: theme.font,
       textDecorationLine: 'underline',
       marginBottom: 80,
+      alignSelf: 'flex-start',
     },
-    dateContainer:{
+    dateContainer: {
       alignItems: 'left',
       backgroundColor: 'transparent',
       borderRadius: 5,
@@ -150,6 +153,19 @@ const usePersonaliseProfileStyles = () => {
     input: {
       fontSize: 16,
       color: '#000',
+    },
+    dateInput: {
+      fontSize: 14,
+      fontFamily: theme.font,
+      color: theme.inputColor,
+    },
+    androidDateContainer: {
+      width: '100%',
+      paddingHorizontal: 12,
+      marginTop: 5,
+      marginBottom: 15,
+      borderRadius: 5,
+      backgroundColor: theme.loginInputBgColor,
     },
   });
   return styles;

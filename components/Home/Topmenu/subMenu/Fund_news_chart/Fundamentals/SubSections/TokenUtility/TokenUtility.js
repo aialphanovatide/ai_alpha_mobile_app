@@ -32,11 +32,16 @@ const TokenUtilityItem = ({styles, data}) => {
   );
 };
 
-const TokenUtility = ({getSectionData, coin, handleSectionContent}) => {
+const TokenUtility = ({
+  getSectionData,
+  coin,
+  handleSectionContent,
+  loading,
+  globalData,
+}) => {
   const styles = useTokenUtilityStyles();
   const {isDarkMode} = useContext(AppThemeContext);
   const [dataItems, setDataItems] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const getItemImageUri = (coin, section, description, isDarkMode) => {
     const formatted_title = section
@@ -64,18 +69,45 @@ const TokenUtility = ({getSectionData, coin, handleSectionContent}) => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    setDataItems([]);
+    // setLoading(true);
+    // setDataItems([]);
 
-    const fetchTokenUtilities = async coin => {
-      try {
-        const response = await getSectionData(
-          `/api/get_tokenomics?coin_name=${coin}`,
-        );
-        if (response.status !== 200) {
-          setDataItems([]);
-        } else {
-          const parsed_data = response.message.token_utility.map(item => {
+    // const fetchTokenUtilities = async coin => {
+    //   try {
+    //     const response = await getSectionData(
+    //       `/api/get_tokenomics?coin_name=${coin}`,
+    //     );
+    //     if (response.status !== 200) {
+    //       setDataItems([]);
+    //     } else {
+    //       const parsed_data = response.message.token_utility.map(item => {
+    //         return {
+    //           id: item.token_utilities.id,
+    //           title: item.token_utilities.token_application,
+    //           text: item.token_utilities.description,
+    //           image: getItemImageUri(
+    //             coin,
+    //             item.token_utilities.token_application.replace(/'/g, ''),
+    //             item.token_utilities.description,
+    //             isDarkMode,
+    //           ),
+    //           imageSize: calculateImageSize(item.token_utilities.description),
+    //         };
+    //       });
+    //       setDataItems(parsed_data);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error trying to get Token Utilities data: ', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    const fetchTokenUtilities = coin => {
+      if (!globalData || globalData.tokenomics.status !== 200) {
+        setDataItems([]);
+      } else {
+        const parsed_data = globalData.tokenomics.message.token_utility.map(
+          item => {
             return {
               id: item.token_utilities.id,
               title: item.token_utilities.token_application,
@@ -88,17 +120,13 @@ const TokenUtility = ({getSectionData, coin, handleSectionContent}) => {
               ),
               imageSize: calculateImageSize(item.token_utilities.description),
             };
-          });
-          setDataItems(parsed_data);
-        }
-      } catch (error) {
-        console.error('Error trying to get Token Utilities data: ', error);
-      } finally {
-        setLoading(false);
+          },
+        );
+        setDataItems(parsed_data);
       }
     };
     fetchTokenUtilities(coin);
-  }, [coin, isDarkMode]);
+  }, [globalData, coin, isDarkMode]);
 
   useEffect(() => {
     if (!loading && dataItems?.length === 0) {

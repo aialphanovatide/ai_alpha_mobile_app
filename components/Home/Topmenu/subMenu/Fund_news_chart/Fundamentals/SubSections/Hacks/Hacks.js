@@ -4,35 +4,51 @@ import Timeline from './Timeline/Timeline';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
-const Hacks = ({getSectionData, coin, handleSectionContent}) => {
+const Hacks = ({
+  getSectionData,
+  coin,
+  handleSectionContent,
+  globalData,
+  loading,
+}) => {
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    setLoading(true);
-    setEvents([]);
+    // setLoading(true);
+    // setEvents([]);
 
-    const fetchHacksData = async () => {
-      try {
-        const response = await getSectionData(
-          `/api/hacks?coin_bot_name=${coin}`,
+    // const fetchHacksData = async () => {
+    //   try {
+    //     const response = await getSectionData(
+    //       `/api/hacks?coin_bot_name=${coin}`,
+    //     );
+
+    //     if (response.status !== 200) {
+    //       setEvents([]);
+    //     } else {
+    //       const ordered_events = response.message.sort((a, b) =>
+    //         compareDates(a.date, b.date),
+    //       );
+    //       setEvents(ordered_events);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error trying to get hacks data: ', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    const fetchHacksData = () => {
+      if (!globalData || globalData.hacks.status !== 200) {
+        setEvents([]);
+      } else {
+        const ordered_events = globalData.hacks.message.sort((a, b) =>
+          compareDates(a.date, b.date),
         );
-
-        if (response.status !== 200) {
-          setEvents([]);
-        } else {
-          const ordered_events = response.message.sort((a, b) =>
-            compareDates(a.date, b.date),
-          );
-          setEvents(ordered_events);
-        }
-      } catch (error) {
-        console.error('Error trying to get hacks data: ', error);
-      } finally {
-        setLoading(false);
+        setEvents(ordered_events);
       }
     };
     fetchHacksData();
-  }, [coin]);
+  }, [globalData, coin]);
 
   const compareDates = (dateA, dateB) => {
     const monthOrder = {

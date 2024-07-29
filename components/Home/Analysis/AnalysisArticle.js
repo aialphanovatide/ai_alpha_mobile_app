@@ -1,5 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {
+  Image,
   Modal,
   Platform,
   ScrollView,
@@ -183,7 +184,7 @@ const AnalysisArticle = ({route}) => {
       fontSize: theme.responsiveFontSize * 1.25,
       marginVertical: 4,
       color: theme.titleColor,
-      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+      fontFamily: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
     },
     'ql-size-small': {
       fontSize: theme.responsiveFontSize * 0.65,
@@ -240,10 +241,7 @@ const AnalysisArticle = ({route}) => {
         />
       </View>
       <View
-        style={[
-          styles.article,
-          !userInfo.subscribed ? {height: 1250} : {},
-        ]}>
+        style={[styles.article, !userInfo.subscribed ? {height: 1250} : {}]}>
         <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
           <FastImage
             style={styles.articleImage}
@@ -255,6 +253,15 @@ const AnalysisArticle = ({route}) => {
             fallback={true}
           />
         </TouchableWithoutFeedback>
+        {!isImageZoomVisible && (
+          <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
+            <Image
+              source={require('../../../assets/images/analysis/magnifier.png')}
+              resizeMode="contain"
+              style={styles.zoomIndicator}
+            />
+          </TouchableWithoutFeedback>
+        )}
         <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>
         <RenderHTML
           source={html_source}

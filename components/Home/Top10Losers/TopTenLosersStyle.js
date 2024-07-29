@@ -8,7 +8,7 @@ const useTopTenLosersStyles = () => {
   const styles = StyleSheet.create({
     topTenGainersContainer: {
       height: 400,
-      width: '100%',
+      width: theme.width,
       marginBottom: 24,
       borderRadius: 4,
     },
@@ -16,7 +16,7 @@ const useTopTenLosersStyles = () => {
       marginVertical: 16,
       paddingHorizontal: 16,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
+      fontSize: 16,
       fontFamily: theme.fontSemibold,
     },
     table: {

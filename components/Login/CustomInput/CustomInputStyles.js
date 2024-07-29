@@ -16,7 +16,7 @@ const useCustomInputStyles = () => {
       borderColor: theme.textColor,
       backgroundColor: theme.loginInputBgColor,
     },
-    input: {
+    dateInput: {
       fontSize: theme.responsiveFontSize,
       fontFamily: theme.fontMedium,
       color: theme.inputColor,

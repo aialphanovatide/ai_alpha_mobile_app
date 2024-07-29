@@ -113,7 +113,7 @@ const AlertDetails = ({
           {message}
         </Text>
         <View style={[styles.dateRow, styles.alertsDateContainer]}>
-          <View style={styles.row}>
+          <View style={styles.flexRow}>
             <Image
               source={require('../../../../../../../assets/images/analysis/calendar-time.png')}
               resizeMode="contain"
@@ -121,7 +121,7 @@ const AlertDetails = ({
             />
             <Text style={styles.alertsSecondaryData}>{hour}</Text>
           </View>
-          <View style={styles.row}>
+          <View style={styles.flexRow}>
             <Image
               source={require('../../../../../../../assets/images/analysis/calendar.png')}
               resizeMode="contain"

@@ -140,13 +140,13 @@ const useCryptoCalendarStyles = () => {
       backgroundColor: theme.activeWhite,
     },
     activeCryptoName: {
-      color: theme.secondaryTextColor,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
+      color: theme.subMenuTextColor,
     },
     cryptoName: {
-      fontSize: theme.responsiveFontSize * 0.6,
-      color: theme.subMenuTextColor,
-      fontFamily: theme.fontMedium,
+      fontSize: theme.responsiveFontSize * 0.65,
+      color: theme.secondaryTextColor,
+      fontFamily: theme.font,
       textAlign: 'center',
     },
     messageContainer: {

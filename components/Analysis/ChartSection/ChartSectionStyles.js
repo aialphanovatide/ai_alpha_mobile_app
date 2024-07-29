@@ -28,7 +28,6 @@ const useChartSectionStyles = () => {
     chart: {
       width: '100%',
       height: '100%',
-      margin: '0%',
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
@@ -44,7 +43,7 @@ const useChartSectionStyles = () => {
     },
     backButtonWrapper: {
       marginHorizontal: 20,
-      marginTop: 36
+      marginTop: 36,
     },
     chartBackgroundImage: {
       justifyContent: 'center',
@@ -112,6 +111,14 @@ const useChartSectionStyles = () => {
       position: 'absolute',
       bottom: 280,
       right: 30,
+      tintColor: theme.textColor,
+    },
+    chartsZoomIndicator: {
+      width: 28,
+      height: 28,
+      position: 'absolute',
+      bottom: 70,
+      right: 80,
       tintColor: theme.textColor,
     },
   });

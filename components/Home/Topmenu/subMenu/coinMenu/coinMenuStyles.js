@@ -10,7 +10,8 @@ const useCoinMenuStyles = () => {
       borderRadius: 20,
       width: '96%',
       backgroundColor: theme.mainBackgroundColor,
-      marginBottom: 12,
+      marginVertical: 12,
+      overflow: 'visible',
     },
     subMenu: {
       flexDirection: 'row',
@@ -18,6 +19,7 @@ const useCoinMenuStyles = () => {
       padding: 5,
       borderRadius: 30,
       backgroundColor: theme.fundamentalsCompetitorsItemBg,
+      overflow: 'visible',
     },
     subMenuButton: {
       width: '30%',
@@ -62,6 +64,16 @@ const useCoinMenuStyles = () => {
       color: theme.whiteTextColor,
       fontFamily: theme.fontSemibold,
     },
+    activeCoinIndicator: {
+      position: 'absolute',
+      top: -15,
+      right: 20,
+      width: 25,
+      height: 12,
+      alignSelf: 'center',
+      tintColor: theme.fundamentalsCompetitorsItemBg,
+      zIndex: 1000
+    }
   });
   return styles;
 };

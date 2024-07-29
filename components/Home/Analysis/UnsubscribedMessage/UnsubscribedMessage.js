@@ -1,4 +1,4 @@
-import {Text, TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import React, {useContext} from 'react';
 import useHomeAnalysisStyles from '../analysisStyles';
 import LinearGradient from 'react-native-linear-gradient';
@@ -7,7 +7,6 @@ import {AppThemeContext} from '../../../../context/themeContext';
 const UnsubscribedMessage = ({isSubscribed, handleSubscriptionNavigation}) => {
   const styles = useHomeAnalysisStyles();
   const {isDarkMode} = useContext(AppThemeContext);
-  console.log(isSubscribed);
   if (isSubscribed) return null;
 
   return (

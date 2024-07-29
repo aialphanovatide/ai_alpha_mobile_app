@@ -1,7 +1,6 @@
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useTokenomicsStyles from './TokenomicsStyles';
-import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SupplyModal from '../SupplyModal/SupplyModal';
 import {fundamentals_static_content} from '../../fundamentalsStaticData';
@@ -151,10 +150,9 @@ const HorizontalProgressBar = ({maxValue, value, styles, activeSupply}) => {
   );
 };
 
-const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
+const Tokenomics = ({getSectionData, coin, handleSectionContent, globalData, loading}) => {
   const styles = useTokenomicsStyles();
   const [cryptos, setCryptos] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [supplyDataVisible, setSupplyDataVisible] = useState(false);
   const [supplyData, setSupplyData] = useState({title: '', description: ''});
   const [activeSupply, setActiveSupply] = useState(true);
@@ -178,18 +176,57 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    setCryptos([]);
-    const fetchTokenomicsData = async () => {
-      try {
-        const response = await getSectionData(
-          `/api/get_tokenomics?coin_name=${coin}`,
-        );
+    // setLoading(true);
+    // setCryptos([]);
+    // const fetchTokenomicsData = async () => {
+    //   try {
+    //     const response = await getSectionData(
+    //       `/api/get_tokenomics?coin_name=${coin}`,
+    //     );
 
-        if (response.status !== 200) {
+    //     if (response.status !== 200) {
+    //       setCryptos([]);
+    //     } else {
+    //       const parsed_cryptos = response.message.tokenomics_data.map(
+    //         crypto => {
+    //           return {
+    //             name: findCoinNameBySymbol(
+    //               crypto.tokenomics.token.replace(' ', '').toUpperCase(),
+    //             ),
+    //             symbol: crypto.tokenomics.token.replace(' ', '').toUpperCase(),
+    //             circulatingSupply: Number(
+    //               crypto.tokenomics.circulating_supply.replace(/,/g, ''),
+    //             ),
+    //             totalSupply:
+    //               crypto.tokenomics.total_supply.replace(' ', '') === '∞'
+    //                 ? Infinity
+    //                 : parseNumberFromString(crypto.tokenomics.total_supply),
+    //             maxSupply:
+    //               crypto.tokenomics.max_supply.replace(' ', '') === '∞'
+    //                 ? Infinity
+    //                 : parseNumberFromString(crypto.tokenomics.max_supply),
+    //             inflationary:
+    //               crypto.tokenomics.supply_model === 'Inflationary'
+    //                 ? true
+    //                 : crypto.tokenomics.supply_model === 'Deflationary'
+    //                 ? false
+    //                 : null,
+    //           };
+    //         },
+    //       );
+    //       setCryptos(parsed_cryptos);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error trying to get tokenomics data: ', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    const fetchTokenomicsData =  () => {
+        if (!globalData || globalData.tokenomics.status !== 200) {
           setCryptos([]);
         } else {
-          const parsed_cryptos = response.message.tokenomics_data.map(
+          const parsed_cryptos = globalData.tokenomics.message.tokenomics_data.map(
             crypto => {
               return {
                 name: findCoinNameBySymbol(
@@ -218,14 +255,9 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent}) => {
           );
           setCryptos(parsed_cryptos);
         }
-      } catch (error) {
-        console.error('Error trying to get tokenomics data: ', error);
-      } finally {
-        setLoading(false);
-      }
     };
     fetchTokenomicsData();
-  }, [coin]);
+  }, [globalData, coin]);
 
   useEffect(() => {
     if (!loading && cryptos?.length === 0) {

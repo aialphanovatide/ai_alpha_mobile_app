@@ -18,6 +18,7 @@ import {useScreenOrientation} from '../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/native';
 import Search from '../Search/Search';
 import HomeNotifications from './HomeNotifications/HomeNotifications';
+import ChartsSection from './Topmenu/subMenu/Fund_news_chart/Charts/NewCharts/ChartsSection';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -67,8 +68,8 @@ const NewsScreen = () => {
         name="NewsArticle"
         component={NewsArticle}
         options={{
-          animation: Platform.OS === 'ios' ? 'fade' : 'slide_from_right',
-          gestureEnabled: 'true',
+          animation: 'slide_from_right',
+          gestureEnabled: true,
           gestureDirection: 'horizontal',
         }}
       />
@@ -179,7 +180,7 @@ const SubMenuScreen = () => {
         name="Charts"
         component={CandlestickChart}
         initialParams={{
-          interval: '1d',
+          interval: '1w',
           symbol: `${activeSubCoin}USDT`,
           coinBot: activeSubCoin,
         }}
@@ -243,7 +244,7 @@ const HomeStackScreen = () => {
           },
         }}
         options={{
-          animation: Platform.OS === 'ios' ? 'fade' : 'slide_from_left',
+          animation: 'slide_from_left',
         }}
       />
       <HomeStack.Screen
@@ -257,8 +258,7 @@ const HomeStackScreen = () => {
         name="AnalysisArticleScreen"
         component={AnalysisArticle}
         options={{
-          animationTypeForReplace: 'push',
-          animation: Platform.OS === 'ios' ? 'fade' : 'slide_from_right',
+          animation: 'slide_from_right',
           animationDuration: 250,
           gestureEnabled: 'true',
           gestureDirection: 'horizontal',
@@ -268,8 +268,7 @@ const HomeStackScreen = () => {
         name="NarrativeTradingArticleScreen"
         component={NarrativeTradingArticle}
         options={{
-          animationTypeForReplace: 'push',
-          animation: Platform.OS === 'ios' ? 'fade' : 'slide_from_right',
+          animation: 'slide_from_right',
           animationDuration: 250,
           gestureEnabled: 'true',
           gestureDirection: 'horizontal',

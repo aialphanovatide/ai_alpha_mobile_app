@@ -47,7 +47,7 @@ const CandlestickDetails = ({
       <View style={styles.flexRow}>
         <Text style={styles.detailslabel}>
           {
-            `${coin.toUpperCase()}/${selectedPairing.toUpperCase()}` /* {formatCoin(coin, pairings[0])} */
+            `${coin.toUpperCase()}/${selectedPairing.toUpperCase()}` 
           }
         </Text>
         <Text
@@ -72,6 +72,7 @@ const CandlestickDetails = ({
         {pairings.map((pairing, index) => (
           <TouchableOpacity
             key={index}
+            disabled={loading}
             style={[
               styles.pairingButton,
               {width: `${100 / pairings.length}%`},

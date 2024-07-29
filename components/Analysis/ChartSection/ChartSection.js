@@ -23,6 +23,7 @@ import {
   VictoryChart,
   VictoryLabel,
   VictoryLine,
+  VictoryZoomContainer,
 } from 'victory-native';
 import {getService} from '../../../services/aiAlphaApi';
 import ChartButtons from './ChartButtons';
@@ -290,7 +291,11 @@ const ChartSection = ({route, navigation}) => {
                 padding={{top: 10, bottom: 40, left: 20, right: 70}}
                 domainPadding={{x: 5, y: 3}}
                 scale={{x: 'time', y: 'linear'}}
-                height={300}>
+                height={300}
+                containerComponent={
+                  <VictoryZoomContainer />
+                }
+                >
                 <VictoryAxis
                   fixLabelOverlap
                   style={{
@@ -454,6 +459,11 @@ const ChartSection = ({route, navigation}) => {
                 source={require('../../../assets/images/home/charts/back.png')}
               />
             </TouchableOpacity>
+            <Image
+              style={styles.chartsZoomIndicator}
+              resizeMode="contain"
+              source={require('../../../assets/images/home/charts/zoom-expand.png')}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

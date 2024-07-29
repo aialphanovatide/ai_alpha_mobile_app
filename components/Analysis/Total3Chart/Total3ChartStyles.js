@@ -84,6 +84,14 @@ const useChartSectionStyles = () => {
       right: 30,
       tintColor: theme.textColor,
     },
+    chartsZoomIndicator: {
+      width: 28,
+      height: 28,
+      position: 'absolute',
+      bottom: 70,
+      right: 80,
+      tintColor: theme.textColor,
+    },
   });
   return styles;
 };

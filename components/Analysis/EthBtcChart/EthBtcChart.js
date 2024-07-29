@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {VictoryChart, VictoryAxis, VictoryCandlestick} from 'victory-native';
+import {VictoryChart, VictoryAxis, VictoryCandlestick, VictoryZoomContainer} from 'victory-native';
 import Loader from '../../Loader/Loader';
 import axios from 'axios';
 import BackButton from '../BackButton/BackButton';
@@ -172,9 +172,13 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                 padding={{top: 10, bottom: 40, left: 20, right: 70}}
                 domainPadding={{x: 2.5, y: 3}}
                 scale={{x: 'time', y: 'linear'}}
-                height={300}>
+                height={300}
+                containerComponent={
+                  <VictoryZoomContainer />
+                }
+                >
                 <VictoryAxis
-                fixLabelOverlap
+                  fixLabelOverlap
                   style={{
                     axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
                     tickLabels: {
@@ -258,6 +262,11 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                 source={require('../../../assets/images/home/charts/back.png')}
               />
             </TouchableOpacity>
+            <Image
+              style={styles.chartsZoomIndicator}
+              resizeMode="contain"
+              source={require('../../../assets/images/home/charts/zoom-expand.png')}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

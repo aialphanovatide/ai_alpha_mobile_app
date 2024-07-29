@@ -60,22 +60,25 @@ const useChartsStyles = () => {
       borderWidth: 3,
       borderRadius: 4,
     },
+    activeTimeFrame: {
+      backgroundColor: theme.activeWhite,
+      borderColor: theme.subMenuBgColor,
+      borderWidth: 3,
+    },
     timeFrameButtonText: {
       color: theme.subMenuTextColor,
       textTransform: 'uppercase',
       fontSize: 12,
-      fontFamily: theme.fontRegular,
+      fontFamily: theme.font,
     },
-    timeFrameActiveButtonText: {
-      color: theme.subMenuTextColor,
-      textTransform: 'uppercase',
+    activeText: {
       fontFamily: theme.fontMedium,
-      fontSize: 12,
     },
     rsButtonContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       alignItems: 'flex-start',
+      alignSelf: 'flex-start',
     },
     rsButton: {
       paddingHorizontal: 4,
@@ -164,6 +167,14 @@ const useChartsStyles = () => {
       position: 'absolute',
       bottom: 50,
       left: 25,
+      tintColor: theme.textColor,
+    },
+    chartsZoomIndicator: {
+      width: 28,
+      height: 28,
+      position: 'absolute',
+      bottom: 50,
+      right: 70,
       tintColor: theme.textColor,
     },
     chartBackButton: {

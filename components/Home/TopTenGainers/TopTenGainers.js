@@ -1,15 +1,16 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Platform, View, Text, Image} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenGainersStyles from './TopTenGainersStyle.js';
 import topTenGainersService from '../../../services/TopTenGainersService.js';
-import Loader from '../../Loader/Loader.js';
 import TOP_TEN_GAINERS_MOCK from './TopTenGainersMock.js';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
 import {home_static_data} from '../homeStaticData.js';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
+import {getService} from '../../../services/aiAlphaApi.js';
+import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
@@ -52,13 +53,14 @@ const Item = ({position, coin}) => {
 const TopTenGainers = ({handleAboutPress}) => {
   const styles = useTopTenGainersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {topTenMoversData, loading} = useContext(Top10MoversContext);
 
   const additionalAboutStyles = {
     marginRight: Platform.OS === 'android' ? 20 : 0,
   };
 
   useEffect(() => {
+    setTopTenCoins(topTenMoversData);
     /*
     const fetchTopTenCoins = async () => {
       try {
@@ -71,11 +73,41 @@ const TopTenGainers = ({handleAboutPress}) => {
         setLoading(false);
       }
     };
-    fetchTopTenCoins();
-    */
     setTopTenCoins(TOP_TEN_GAINERS_MOCK);
     setLoading(false);
-  }, []);
+    */
+    // const fetchTopTenCoinsFromServer = async () => {
+    //   try {
+    //     const response = await getService(
+    //       `api/top-movers?vs_currency=usd&order=price_change_desc&precision=2`,
+    //     );
+    //     // setTopTenCoins(data.top10Gainers);
+    //     const top10CoinsInfo = [];
+    //     for (let i = 0; i < response.data.top_10_gainers.length; i++) {
+    //       const coin = response.data.top_10_gainers[i];
+    //       const coinInfo = {
+    //         name: coin.name,
+    //         symbol: coin.symbol,
+    //         image: coin.image,
+    //         currentPrice: coin.current_price,
+    //         priceChange24H: coin.price_change_percentage_24h
+    //           ? coin.price_change_percentage_24h
+    //           : 0.0,
+    //       };
+    //       top10CoinsInfo.push(coinInfo);
+    //     }
+    //     setTopTenCoins(top10CoinsInfo);
+    //     console.log('TopTenGainers data:', top10CoinsInfo);
+    //   } catch (error) {
+    //     console.error('Error fetching top 10 gainers:', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    // fetchTopTenCoinsFromServer();
+    // setTopTenCoins(TOP_TEN_GAINERS_MOCK);
+    // setLoading(false);
+  }, [topTenMoversData]);
   return (
     <View style={styles.topTenGainersContainer}>
       <View style={styles.titleRow}>
@@ -85,10 +117,10 @@ const TopTenGainers = ({handleAboutPress}) => {
           description={home_static_data.topTenGainers.sectionDescription}
         />
       </View>
-      {loading ? (
+      {loading || topTenCoins.length === 0 ? (
         <ScrollView>
           <View style={styles.table} showsVerticalScrollIndicator={false}>
-              <SkeletonLoader quantity={10} />
+            <SkeletonLoader quantity={10} />
           </View>
         </ScrollView>
       ) : (

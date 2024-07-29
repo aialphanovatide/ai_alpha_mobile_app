@@ -3,19 +3,20 @@ import React, {useContext, useEffect, useState} from 'react';
 import CryptosSelector from '../../CryptoSelector/CryptosSelector';
 import useTransactionFeeStyles from './TransactionFeesStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
-import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
-const DollarGraphs = ({value, itemIndex, styles}) => {
+const DollarGraphs = ({value, itemIndex, styles, maxFee}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
   const chosenColor = tintColors[itemIndex > 3 ? itemIndex % 3 : itemIndex];
+  const scaleValue = (value, max) => (value / max) * 3;
   const images = [];
   if (value !== 0) {
-    const intValue = Math.floor(value);
-    const decimalValue = value - intValue;
+    const scaledValue = scaleValue(value, maxFee);
+    const intValue = Math.floor(scaledValue);
+    const decimalValue = scaledValue - intValue;
     for (let i = 0; i < intValue; i++) {
       images.push(
         <View key={`image_${i}`} style={styles.imageContainer}>
@@ -28,7 +29,7 @@ const DollarGraphs = ({value, itemIndex, styles}) => {
             }
             resizeMode="contain"
           />
-          <View style={[styles.overlay, {backgroundColor: chosenColor}]}></View>
+          <View style={[styles.overlay, {backgroundColor: chosenColor}]} />
         </View>,
       );
     }
@@ -48,7 +49,7 @@ const DollarGraphs = ({value, itemIndex, styles}) => {
             style={[
               styles.overlay,
               {
-                height: 100 * decimalValue,
+                height: 140 * decimalValue,
                 backgroundColor: chosenColor,
               },
             ]}></View>
@@ -101,7 +102,8 @@ const TransactionFees = ({competitorsData, isSectionWithoutData}) => {
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
       item =>
-        item.competitor.token === crypto && item.competitor.key.includes(key),
+        item.competitor.key.includes(key) &&
+        item.competitor.token.replace(/\s/g, '') === crypto.replace(/\s/g, ''),
     );
     return found && found !== undefined
       ? found.competitor.value !== '-'
@@ -156,10 +158,13 @@ const TransactionFees = ({competitorsData, isSectionWithoutData}) => {
     setLoading(false);
   }, [competitorsData]);
 
+  const maxFee =
+    cryptos?.length > 0 ? Math.max(...cryptos.map(crypto => crypto.fee)) : 0;
+
   return (
     <View>
       {loading ? (
-        <SkeletonLoader type='selector' quantity={4} />
+        <SkeletonLoader type="selector" quantity={4} />
       ) : cryptos?.length === 0 ||
         isSectionWithoutData(competitorsData, 'transaction fees', '-') ? (
         <NoContentMessage />
@@ -184,6 +189,7 @@ const TransactionFees = ({competitorsData, isSectionWithoutData}) => {
               value={activeOption ? activeOption.fee : 0}
               itemIndex={findActiveOptionIndex(cryptos, activeOption)}
               styles={styles}
+              maxFee={maxFee}
             />
           </View>
         </>

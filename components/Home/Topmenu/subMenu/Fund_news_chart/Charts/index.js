@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
-import {ScrollView, View, Dimensions} from 'react-native';
+import {
+  ScrollView,
+  View,
+  Dimensions,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import moment from 'moment';
 import TimeframeSelector from './chartTimeframes';
 import CandlestickDetails from './candleDetails';
@@ -19,14 +25,45 @@ import {useScrollToTop} from '@react-navigation/native';
 import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/core';
 import useChartsSource from '../../../../../../hooks/useChartsSource';
+import {getService} from '../../../../../../services/aiAlphaApi';
+import {io} from 'socket.io-client';
+import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
+
+const IntervalSelector = ({selectedInterval, changeInterval, disabled}) => {
+  const styles = useChartsStyles();
+  const timeframes = ['1d', '1w'];
+  return (
+    <View style={styles.timeFrameContainer}>
+      {timeframes.map(interval => (
+        <TouchableOpacity
+          disabled={disabled}
+          key={interval}
+          style={[
+            styles.timeFrameButton,
+            selectedInterval === interval ? styles.activeTimeFrame : {},
+            {width: `${100 / timeframes.length}%`},
+          ]}
+          onPress={() => changeInterval(interval)}>
+          <Text
+            style={[
+              styles.timeFrameButtonText,
+              selectedInterval === interval ? styles.activeText : {},
+            ]}>
+            {interval}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+};
 
 const CandlestickChart = ({route}) => {
   const styles = useChartsStyles();
-  const timeframeOptions = ['1h', '4h', '1d', '1w'];
+  const timeframeOptions = ['1H', '4H', '1D', '1W'];
   const {interval, symbol, coinBot} =
     route.params.screen === 'Charts' ? route.params.params : route.params;
   const [isPriceUp, setIsPriceUp] = useState(null);
-  const [selectedInterval, setSelectedInterval] = useState(interval);
+  const [selectedInterval, setSelectedInterval] = useState('1w');
   const [lastPrice, setLastPrice] = useState(undefined);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +71,7 @@ const CandlestickChart = ({route}) => {
   const [subscribed, setSubscribed] = useState(false);
   const {activeCoin} = useContext(TopMenuContext);
   const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
-  const [activeAlertOption, setActiveAlertOption] = useState('1w');
+  const [activeAlertOption, setActiveAlertOption] = useState('1W');
   const {aboutDescription, aboutVisible, handleAboutPress} =
     useContext(AboutModalContext);
   const {isDarkMode} = useContext(AppThemeContext);
@@ -77,33 +114,9 @@ const CandlestickChart = ({route}) => {
     setLoading(true);
     setLastPrice(undefined);
     setSelectedPairing(pairings[0]);
-    setSelectedInterval('1W');
+    setSelectedInterval('1w');
   }, [activeCoin, coinBot]);
 
-  // Old ways to get the source and URL configuration for every coin [REPLACED]
-
-  // const url_days =
-  //   selectedInterval === '1W'
-  //     ? 180
-  //     : selectedInterval === '1D'
-  //     ? 30
-  //     : selectedInterval === '4H'
-  //     ? 7
-  //     : 1;
-  // const fetch_url =
-  //   coinBot.toLowerCase() !== 'kas' && coinBot.toLowerCase() !== 'velo'
-  //     ? `https://api3.binance.com/api/v3/klines?symbol=${
-  //         coinBot === 'polygon' ? 'MATIC' : coinBot.toUpperCase()
-  //       }${selectedPairing}&limit=50&interval=${selectedInterval.toLowerCase()}`
-  //     : `https://pro-api.coingecko.com/api/v3/coins/${
-  //         coinBot.toLowerCase() === 'kas' ? 'kaspa' : 'velo'
-  //       }/ohlc?vs_currency=${
-  //         selectedPairing === 'USDT' ? 'usd' : selectedPairing.toLowerCase()
-  //       }&days=${url_days}&precision=${selectedPairing === 'BTC' ? 14 : 4}`;
-  // const options = {
-  //   method: 'GET',
-  //   headers: {'x-cg-pro-api-key': COINGECKO_PRO_KEY},
-  // };
   const {url, options} = useChartsSource(
     coinBot,
     selectedPairing,
@@ -112,6 +125,7 @@ const CandlestickChart = ({route}) => {
 
   // Function to fetch the data from Binance and from Coingecko for KAS and VELO, since that coins doesn't have data on the first one, and map it for using it with VictoryChart's components
 
+  // [OLD FUNCTION]
   async function fetchChartData() {
     try {
       const response = await fetch(url, options);
@@ -136,12 +150,41 @@ const CandlestickChart = ({route}) => {
     }
   }
 
+  async function fetchChartDataFromServer() {
+    try {
+      const data = await getService(
+        `api/chart/ohlc?coin=${coinBot.toLowerCase()}&vs_currency=${
+          selectedPairing === 'USDT' ? 'usd' : selectedPairing.toLowerCase()
+        }&interval=${selectedInterval.toLowerCase()}&precision=8`,
+      );
+      const currentPrice = parseFloat(data[data.length - 1][4]);
+      data[data.length - 1][4] >= data[data.length - 2][4]
+        ? setIsPriceUp(true)
+        : setIsPriceUp(false);
+      setLastPrice(currentPrice);
+      const formattedChartData = data.map(item => ({
+        x: moment(item[0]),
+        open: parseFloat(item[1]),
+        close: parseFloat(item[4]),
+        high: parseFloat(item[2]),
+        low: parseFloat(item[3]),
+      }));
+      setChartData(formattedChartData);
+    } catch (error) {
+      console.error(`Failed to fetch data: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   // UseEffects that updates the charts data every 3.5s, before it was every 1s but for performance reasons it was increased
 
   useEffect(() => {
-    const intervalId = setInterval(() => fetchChartData(), 3500);
+    const intervalId = setInterval(() => {
+      fetchChartDataFromServer();
+    }, 3500);
     return () => clearInterval(intervalId);
-  }, [interval, coinBot, selectedInterval, selectedPairing]);
+  }, [coinBot, selectedInterval, selectedPairing]);
 
   // Function to handle the time interval changes, executing again the data fetching
 
@@ -156,10 +199,48 @@ const CandlestickChart = ({route}) => {
   };
 
   // Function to handle the currency-pair for the coins that haves USDT and BTC pairings
-  const handlePairingChange = pairing => {
+  const handlePairingChange = async pairing => {
     setLoading(true);
-    setSelectedPairing(pairing);
+    try {
+      setSelectedPairing(pairing);
+      if (pairing.toLowerCase() === 'btc') {
+        setSelectedInterval('1w');
+      }
+      setChartData([]);
+      fetchChartDataFromServer();
+    } catch (error) {
+      console.error(`Failed to change pairing: ${error}`);
+    }
   };
+
+  // Socket to detect coin price updates
+
+  // useEffect(() => {
+  //   const socket = io('https://aialpha.ngrok.io/');
+
+  //   socket.emit('subscribe_to_ohlc_data', {
+  //     coin: coinBot.toLowerCase(),
+  //     vs_currency:
+  //       selectedPairing === undefined || selectedPairing === null
+  //         ? 'usd'
+  //         : selectedPairing === 'USDT'
+  //         ? 'usd'
+  //         : selectedPairing.toLowerCase(),
+  //     interval: selectedInterval,
+  //     precision: 8,
+  //   });
+
+  //   socket.on('subscribe_to_ohlc_data', messageData => {
+  //     console.log('Received charts socket data:', messageData);
+  //     const data =
+  //       typeof messageData === 'string' ? JSON.parse(messageData) : messageData;
+  //     console.log('Parsed charts socket data: ', data);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, [coinBot, selectedInterval, selectedPairing]);
 
   // Show the height and width of the phone
   const {height, width} = Dimensions.get('window');
@@ -198,14 +279,10 @@ const CandlestickChart = ({route}) => {
               styles.chartsRow,
               {flexDirection: width > 500 ? 'row' : 'column'},
             ]}>
-            <TimeframeSelector
-              selectedPairing={selectedPairing}
+            <IntervalSelector
               selectedInterval={selectedInterval}
               changeInterval={changeInterval}
-              hasHourlyTimes={coinBot.toLowerCase() === 'btc'}
-              additionalStyles={{
-                marginLeft: 0,
-              }}
+              disabled={loading}
             />
             <RsButton
               activeButtons={activeButtons}

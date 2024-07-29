@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {
   Image,
   ImageBackground,
@@ -11,15 +11,21 @@ import {
 import BackButton from '../BackButton/BackButton';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
-import {VictoryAxis, VictoryCandlestick, VictoryChart} from 'victory-native';
+import {
+  VictoryAxis,
+  VictoryCandlestick,
+  VictoryChart,
+  VictoryZoomContainer,
+} from 'victory-native';
 import TwelveDataService from '../../../services/TwelveDataServices';
 import useChartSectionStyles from '../ChartSection/ChartSectionStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/core';
 import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes';
+import moment from 'moment';
 
-const VixChart = ({route}) => {
+const VixChart = ({route, candlesToShow = 30}) => {
   const styles = useChartSectionStyles();
   const {isDarkMode, theme} = useContext(AppThemeContext);
   const [chartData, setChartData] = useState([]);
@@ -42,11 +48,11 @@ const VixChart = ({route}) => {
       const response = await TwelveDataService.getVixIndexData(
         adapted_interval,
       );
-      const mapped_prices = response?.map(price => {
+      const mapped_prices = response?.reverse().map(price => {
         const mapped_hour = new Date(price?.datetime);
         const hour_to_seconds = mapped_hour.getTime();
         return {
-          x: hour_to_seconds,
+          x: moment(hour_to_seconds),
           open: parseFloat(price.open),
           high: parseFloat(price.high),
           low: parseFloat(price.low),
@@ -84,6 +90,67 @@ const VixChart = ({route}) => {
     }
   };
 
+  // X-Axis domain for the chart
+  // const [zoomDomain, setZoomDomain] = useState({
+  //   x: [
+  //     chartData[chartData?.length - candlesToShow]?.x,
+  //     chartData[chartData.length - 1]?.x,
+  //   ],
+  // });
+
+  // useEffect(() => {
+  //   setZoomDomain({
+  //     x: [
+  //       chartData[chartData?.length - candlesToShow]?.x,
+  //       chartData[chartData?.length - 1]?.x,
+  //     ],
+  //   });
+  // }, [chartData, candlesToShow, selectedInterval]);
+
+  // // Y-Axis domain for the chart
+
+  // const lows = chartData?.map(d => d.low);
+  // const highs = chartData?.map(d => d.high);
+  // const low = Math.min(...lows);
+  // const high = Math.max(...highs);
+
+  // const domainY = useMemo(() => {
+  //   if (chartData && chartData?.length > 0) {
+  //     const priceRange = chartData?.slice(-candlesToShow).reduce(
+  //       (acc, dataPoint) => {
+  //         const {open, close, high, low} = dataPoint;
+  //         return [
+  //           Math.min(acc[0], open, close, high, low),
+  //           Math.max(acc[1], open, close, high, low),
+  //         ];
+  //       },
+  //       [Infinity, -Infinity],
+  //     );
+
+  //     let maxPrice = Math.max(priceRange[1], high);
+  //     let minPrice = Math.min(priceRange[0], low);
+
+  //     return [minPrice, maxPrice];
+  //   }
+  // }, [selectedInterval, chartData]);
+
+  const domainY = () => {
+    return chartData?.reduce(
+      (acc, dataPoint) => {
+        return [
+          Math.min(acc[0], dataPoint.low),
+          Math.max(acc[1], dataPoint.high),
+        ];
+      },
+      [Infinity, -Infinity],
+    );
+  };
+
+  const domainX = [
+    chartData[chartData?.length - candlesToShow]?.x,
+    chartData[chartData.length - 1]?.x,
+  ];
+
   if (loading || chartData?.length === 0) {
     return (
       <LinearGradient
@@ -119,20 +186,6 @@ const VixChart = ({route}) => {
     );
   }
 
-  const domainY = () => {
-    return chartData?.reduce(
-      (acc, dataPoint) => {
-        return [
-          Math.min(acc[0], dataPoint.low),
-          Math.max(acc[1], dataPoint.high),
-        ];
-      },
-      [Infinity, -Infinity],
-    );
-  };
-
-  const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
-
   return (
     <LinearGradient
       useAngle={true}
@@ -154,27 +207,28 @@ const VixChart = ({route}) => {
             when sudden shocks happen and stays low when things are much calmer.
           </Text>
           <View style={styles.container}>
-            <View style={styles.timeframeContainer}>
+            <View style={[styles.timeframeContainer, {marginVertical: 8}]}>
               <TimeframeSelector
                 selectedInterval={selectedInterval}
                 changeInterval={changeInterval}
                 hasHourlyTimes={true}
               />
             </View>
-            <View style={styles.chart}>
+            <View style={[styles.chart, {marginVertical: 8}]}>
               <ImageBackground
                 source={require('../../../assets/images/chart_alpha_logo.png')}
-                style={styles.chartBackgroundImage}
+                style={[styles.chartBackgroundImage, {top: 45}]}
                 resizeMode="contain"
               />
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
                 domain={{x: domainX, y: domainY()}}
                 padding={{top: 10, bottom: 40, left: 20, right: 70}}
-                domainPadding={{x: 5, y: 3}}
                 scale={{x: 'time', y: 'linear'}}
-                height={300}>
+                height={300}
+                containerComponent={<VictoryZoomContainer />}>
                 <VictoryAxis
+                  fixLabelOverlap
                   style={{
                     axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
                     tickLabels: {
@@ -184,10 +238,11 @@ const VixChart = ({route}) => {
                     },
                     grid: {stroke: theme.chartsGridColor},
                   }}
-                  tickCount={4}
+                  tickCount={8}
                 />
                 <VictoryAxis
                   dependentAxis
+                  fixLabelOverlap
                   style={{
                     axis: {stroke: theme.chartsAxisColor},
                     tickLabels: {
@@ -204,7 +259,7 @@ const VixChart = ({route}) => {
 
                 <VictoryCandlestick
                   data={chartData}
-                  candleRatio={0.6}
+                  candleRatio={0.8}
                   candleColors={{positive: '#09C283', negative: '#E93334'}}
                   style={{
                     data: {
@@ -228,7 +283,7 @@ const VixChart = ({route}) => {
                     }
               }>
               <Image
-                style={styles.chartsHorizontalButton}
+                style={[styles.chartsHorizontalButton, {bottom: 90}]}
                 resizeMode="contain"
                 source={
                   isLandscape && isHorizontal
@@ -248,6 +303,11 @@ const VixChart = ({route}) => {
                 source={require('../../../assets/images/home/charts/back.png')}
               />
             </TouchableOpacity>
+            <Image
+              style={styles.chartsZoomIndicator}
+              resizeMode="contain"
+              source={require('../../../assets/images/home/charts/zoom-expand.png')}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

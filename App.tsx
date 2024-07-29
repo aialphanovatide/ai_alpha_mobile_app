@@ -35,10 +35,8 @@ import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
-import { auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret } from './src/constants/index';
-import UserService from './services/UserService';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Top10MoversContextProvider} from './context/TopTenMoversContext';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -96,11 +94,19 @@ const App = () => {
       const notificationDate = `${day}/${month}/${year}`;
 
       const notificationCoin = extractCryptoName(alertData.title);
-      const notificationType = alertData.type;
+      const notificationType =
+        alertData.type !== undefined
+          ? alertData.type
+          : alertData.title.toLowerCase().includes('chart')
+          ? 'alerts'
+          : 'analysis';
 
       const newNotification = {
         title: alertData.title,
-        description: alertData.body,
+        description:
+          alertData.body.length > 50
+            ? alertData.body.slice(0, 45)
+            : alertData.body,
         coin: notificationCoin,
         date: notificationDate,
         category: null,
@@ -145,7 +151,6 @@ const App = () => {
   //   });
   // }, []);
 
-  
   useEffect(() => {
     if (Platform.OS === 'android') {
       SplashScreen.hide();
@@ -186,6 +191,7 @@ const App = () => {
     };
     const pushNotificationsSubscriber = messaging().onMessage(
       async remoteMessage => {
+        console.log(remoteMessage);
         Alert.alert(
           `${remoteMessage.notification?.title}`,
           `${remoteMessage.notification?.body}`,
@@ -233,9 +239,6 @@ const App = () => {
     setBarScheme(theme);
   };
 
-  
-
-
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();
     setIsConnected(state.isConnected);
@@ -276,120 +279,120 @@ const App = () => {
                   <SingletonHooksContainer />
                   <CategoriesContextProvider>
                     <TopMenuContextProvider>
-                      <NarrativeTradingContextProvider>
-                        <AnalysisContextProvider>
-                          <AboutModalProvider>
-                            <Navigation />
-                            {/* <View >
-                        <Button title="Trigger Notification" onPress={handleNotification} />
-                      </View>
-                      */}
-                            <Modal
-                              animationType="slide"
-                              transparent={true}
-                              visible={modalVisible}
-                              onRequestClose={() => {
-                                setModalVisible(false);
-                              }}>
-                              <View style={styles.centeredView}>
-                                <View
-                                  style={[
-                                    styles.orangeBox,
-                                    {
-                                      backgroundColor:
-                                        colorScheme === 'dark'
-                                          ? '#451205'
-                                          : '#FFF7EC',
-                                    },
-                                  ]}>
-                                  <View style={styles.row}>
-                                    <Image
-                                      source={require('./assets/images/login/nointernet.png')}
-                                      style={styles.imageStyle1}
-                                    />
-                                    <Text
-                                      style={[
-                                        styles.labelText1,
-                                        {
-                                          color:
-                                            colorScheme === 'dark'
-                                              ? '#FF8D34'
-                                              : '#FF6C0D',
-                                        },
-                                      ]}>
-                                      It seems that you are offline.
-                                    </Text>
-                                  </View>
-                                  <View style={styles.row}>
-                                    <Image
-                                      source={require('./assets/images/login/reloadsymbol.png')}
-                                      style={styles.imageStyle2}
-                                    />
-                                    <TouchableOpacity
-                                      onPress={checkConnectivityAndCloseModal}>
-                                      <Text style={styles.labelText2}>
-                                        Reload
-                                      </Text>
-                                    </TouchableOpacity>
-                                  </View>
-                                </View>
-                              </View>
-                            </Modal>
-                            <Modal
-                              animationType="slide"
-                              transparent={true}
-                              visible={serverError}
-                              onRequestClose={() => {
-                                setServerError(false);
-                              }}>
-                              <View style={styles.centeredView}>
-                                <View
-                                  style={[
-                                    styles.orangeBox,
-                                    {
-                                      backgroundColor:
-                                        colorScheme === 'dark'
-                                          ? '#451205'
-                                          : '#FFF7EC',
-                                    },
-                                  ]}>
-                                  <View style={styles.row}>
-                                    <Image
-                                      source={require('./assets/images/login/serverdown.png')}
-                                      style={styles.imageStyle3}
-                                    />
-                                    <Text
-                                      style={[
-                                        styles.labelText1,
-                                        {
-                                          color:
-                                            colorScheme === 'dark'
-                                              ? '#FF8D34'
-                                              : '#FF6C0D',
-                                        },
-                                      ]}>
-                                      Seems like the server is down
-                                    </Text>
-                                  </View>
-                                  <Text
+                      <Top10MoversContextProvider>
+                        <NarrativeTradingContextProvider>
+                          <AnalysisContextProvider>
+                            <AboutModalProvider>
+                              <Navigation />
+                              <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={() => {
+                                  setModalVisible(false);
+                                }}>
+                                <View style={styles.centeredView}>
+                                  <View
                                     style={[
-                                      styles.labelText3,
+                                      styles.orangeBox,
                                       {
-                                        color:
+                                        backgroundColor:
                                           colorScheme === 'dark'
-                                            ? '#FF6C0D'
-                                            : '#A02E0C',
+                                            ? '#451205'
+                                            : '#FFF7EC',
                                       },
                                     ]}>
-                                    Please wait a few minutes while our
-                                    technicians work to solve this problem
-                                  </Text>
+                                    <View style={styles.row}>
+                                      <Image
+                                        source={require('./assets/images/login/nointernet.png')}
+                                        style={styles.imageStyle1}
+                                      />
+                                      <Text
+                                        style={[
+                                          styles.labelText1,
+                                          {
+                                            color:
+                                              colorScheme === 'dark'
+                                                ? '#FF8D34'
+                                                : '#FF6C0D',
+                                          },
+                                        ]}>
+                                        It seems that you are offline.
+                                      </Text>
+                                    </View>
+                                    <View style={styles.row}>
+                                      <Image
+                                        source={require('./assets/images/login/reloadsymbol.png')}
+                                        style={styles.imageStyle2}
+                                      />
+                                      <TouchableOpacity
+                                        onPress={
+                                          checkConnectivityAndCloseModal
+                                        }>
+                                        <Text style={styles.labelText2}>
+                                          Reload
+                                        </Text>
+                                      </TouchableOpacity>
+                                    </View>
+                                  </View>
                                 </View>
-                              </View>
-                            </Modal>
-                          </AboutModalProvider>
-                        </AnalysisContextProvider>
-                      </NarrativeTradingContextProvider>
+                              </Modal>
+                              <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={serverError}
+                                onRequestClose={() => {
+                                  setServerError(false);
+                                }}>
+                                <View style={styles.centeredView}>
+                                  <View
+                                    style={[
+                                      styles.orangeBox,
+                                      {
+                                        backgroundColor:
+                                          colorScheme === 'dark'
+                                            ? '#451205'
+                                            : '#FFF7EC',
+                                      },
+                                    ]}>
+                                    <View style={styles.row}>
+                                      <Image
+                                        source={require('./assets/images/login/serverdown.png')}
+                                        style={styles.imageStyle3}
+                                      />
+                                      <Text
+                                        style={[
+                                          styles.labelText1,
+                                          {
+                                            color:
+                                              colorScheme === 'dark'
+                                                ? '#FF8D34'
+                                                : '#FF6C0D',
+                                          },
+                                        ]}>
+                                        Seems like the server is down
+                                      </Text>
+                                    </View>
+                                    <Text
+                                      style={[
+                                        styles.labelText3,
+                                        {
+                                          color:
+                                            colorScheme === 'dark'
+                                              ? '#FF6C0D'
+                                              : '#A02E0C',
+                                        },
+                                      ]}>
+                                      Please wait a few minutes while our
+                                      technicians work to solve this problem
+                                    </Text>
+                                  </View>
+                                </View>
+                              </Modal>
+                            </AboutModalProvider>
+                          </AnalysisContextProvider>
+                        </NarrativeTradingContextProvider>
+                      </Top10MoversContextProvider>
                     </TopMenuContextProvider>
                   </CategoriesContextProvider>
                 </SafeAreaView>

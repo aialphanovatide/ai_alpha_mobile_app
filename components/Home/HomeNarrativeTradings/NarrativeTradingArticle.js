@@ -1,5 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {
+  Image,
   Modal,
   Platform,
   ScrollView,
@@ -68,7 +69,6 @@ const NarrativeTradingArticle = ({route}) => {
     isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
   ];
   const navigation = useNavigation();
-  console.log(navigation.getState());
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
 
   const simplifyDateTime = dateTimeString => {
@@ -231,6 +231,15 @@ const NarrativeTradingArticle = ({route}) => {
             fallback={true}
           />
         </TouchableWithoutFeedback>
+        {!isImageZoomVisible && (
+          <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
+            <Image
+              source={require('../../../assets/images/analysis/magnifier.png')}
+              resizeMode="contain"
+              style={styles.zoomIndicator}
+            />
+          </TouchableWithoutFeedback>
+        )}
         <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>
         <RenderHTML
           source={html_source}

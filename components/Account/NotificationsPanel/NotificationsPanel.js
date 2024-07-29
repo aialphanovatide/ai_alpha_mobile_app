@@ -270,8 +270,8 @@ const NotificationsPanel = ({route, options = null}) => {
           await AsyncStorage.setItem(`@subscription_analysis_${id}`, 'null');
           newSubscriptions[id] = false;
           newAnalysisNotifications[id] = false;
-          // handleToggleSubscription(id, false);
-          // handleToggleAnalysisNotifications(id, false);
+          handleToggleSubscription(id, false);
+          handleToggleAnalysisNotifications(id, false);
         }
 
         setAnalysisNotifications(newAnalysisNotifications);
@@ -301,6 +301,13 @@ const NotificationsPanel = ({route, options = null}) => {
   const handleToggleSubscription = async (topic, initial = false) => {
     try {
       const isSubscribed = subscriptions[topic];
+
+      const newSubscriptions = {
+        ...subscriptions,
+        [topic]: initial ? true : !isSubscribed,
+      };
+      setSubscriptions(newSubscriptions);
+
       if (isSubscribed && !initial) {
         console.log('* Unsubscribing from:', topic);
         await messaging().unsubscribeFromTopic(topic);
@@ -308,11 +315,7 @@ const NotificationsPanel = ({route, options = null}) => {
         console.log('* Subscribing to:', topic);
         await messaging().subscribeToTopic(topic);
       }
-      const newSubscriptions = {
-        ...subscriptions,
-        [topic]: initial ? true : !isSubscribed,
-      };
-      setSubscriptions(newSubscriptions);
+
       await AsyncStorage.setItem(
         `@subscription_${topic}`,
         (initial ? true : !isSubscribed).toString(),
@@ -326,6 +329,11 @@ const NotificationsPanel = ({route, options = null}) => {
       console.log('* New subscriptions state:', newSubscriptions);
     } catch (error) {
       console.error('Failed to toggle subscription:', error);
+      const revertedSubscriptions = {
+        ...subscriptions,
+        [topic]: !subscriptions[topic],
+      };
+      setSubscriptions(revertedSubscriptions);
     }
   };
 
@@ -335,13 +343,22 @@ const NotificationsPanel = ({route, options = null}) => {
     try {
       const anyActive = Object.values(subscriptions).some(value => value);
       const newStatus = !anyActive; // If any switch is active, we turn everything off, otherwise turn everything on
+
+      const updatedSubscriptions = {...subscriptions};
+      Object.keys(userSubscriptions).forEach(topic => {
+        if (userSubscriptions[topic]) {
+          updatedSubscriptions[topic] = newStatus;
+        }
+      });
+      setSubscriptions(updatedSubscriptions);
+
       console.log('* Toggling all notifications to:', newStatus);
       const newSubscriptions = {...subscriptions};
       for (const [topic, hasSubscription] of Object.entries(
         userSubscriptions,
       )) {
         if (hasSubscription) {
-          console.log(`* Toggling ${topic} to ${newStatus}`);
+          // console.log(`* Toggling ${topic} to ${newStatus}`);
           if (newStatus) {
             console.log(`* Subscribing to ${topic}`);
             await messaging().subscribeToTopic(topic);
@@ -356,7 +373,6 @@ const NotificationsPanel = ({route, options = null}) => {
           );
         }
       }
-      setSubscriptions(newSubscriptions);
       console.log(
         '* New subscriptions state after toggling all:',
         newSubscriptions,
@@ -387,6 +403,10 @@ const NotificationsPanel = ({route, options = null}) => {
         `@subscription_analysis_${topic}`,
         (initial ? true : !isSubscribed).toString(),
       );
+      console.log(
+        '* New analysis subscriptions state:',
+        newAnalysisNotifications,
+      );
     } catch (error) {
       console.error('Failed to toggle analysis notifications:', error);
     }
@@ -400,14 +420,25 @@ const NotificationsPanel = ({route, options = null}) => {
         value => value,
       );
       const newStatus = !anyActive; // If any switch is active, we turn everything off, otherwise turn everything on
+
+      const updatedAnalysisNotifications = {...analysisNotifications};
+      Object.keys(userSubscriptions).forEach(topic => {
+        if (userSubscriptions[topic]) {
+          updatedAnalysisNotifications[topic] = newStatus;
+        }
+      });
+      setAnalysisNotifications(updatedAnalysisNotifications);
+
       const newAnalysisNotifications = {...analysisNotifications};
       for (const [topic, hasSubscription] of Object.entries(
         userSubscriptions,
       )) {
         if (hasSubscription) {
           if (newStatus) {
+            console.log('* Subscribing to:', `${topic}_analysis`);
             await messaging().subscribeToTopic(topic);
           } else {
+            console.log('* Unsubscribing to:', `${topic}_analysis`);
             await messaging().unsubscribeFromTopic(topic);
           }
           newAnalysisNotifications[topic] = newStatus;
@@ -417,7 +448,6 @@ const NotificationsPanel = ({route, options = null}) => {
           );
         }
       }
-      setAnalysisNotifications(newAnalysisNotifications);
       console.log(
         '* New analysis notifications state after toggling all:',
         newAnalysisNotifications,
@@ -496,8 +526,7 @@ const NotificationsPanel = ({route, options = null}) => {
                   handleToggleAnalysisNotifications(item.identifier)
                 }
                 hasSubscription={
-                  hasFoundersSubscription ||
-                  !!userSubscriptions[item.identifier]
+                  hasFoundersSubscription || userSubscriptions[item.identifier]
                 }
               />
               <View style={styles.horizontalLine} />

@@ -6,8 +6,10 @@ const useTimelineStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     timelineContainer: {
+      flex: 1,
       margin: '2.5%',
       height: '100%',
+      minHeight: 350,
       position: 'relative',
       paddingVertical: '5%',
     },
@@ -36,6 +38,7 @@ const useTimelineStyles = () => {
       borderStyle: 'dashed',
     },
     timelineContentContainer: {
+      flex: 1,
       position: 'absolute',
       top: 8,
       right: 8,

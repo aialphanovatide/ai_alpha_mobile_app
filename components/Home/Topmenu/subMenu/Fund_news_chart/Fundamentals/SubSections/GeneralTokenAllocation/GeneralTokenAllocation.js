@@ -59,6 +59,8 @@ const GeneralTokenAllocation = ({
   getSectionData,
   coin,
   handleSectionContent,
+  globalData,
+  loading,
 }) => {
   const {isDarkMode, theme} = useContext(AppThemeContext);
   const colors = isDarkMode
@@ -84,50 +86,70 @@ const GeneralTokenAllocation = ({
       ];
   const styles = useGTAStyles();
   const [percentagesData, setPercentagesData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [currentToken, setCurrentToken] = useState(null);
   const handleTokenChange = token => {
     setCurrentToken(token);
   };
 
   useEffect(() => {
-    setLoading(true);
-    setPercentagesData([]);
-    const fetchTokenDistributionData = async () => {
-      try {
-        const response = await getSectionData(
-          `/api/get_tokenomics?coin_name=${coin}`,
-        );
+    // setLoading(true);
+    // setPercentagesData([]);
+    // const fetchTokenDistributionData = async () => {
+    //   try {
+    //     const response = await getSectionData(
+    //       `/api/get_tokenomics?coin_name=${coin}`,
+    //     );
 
-        if (response.status !== 200) {
-          setPercentagesData([]);
-        } else {
-          // console.log(response.message.token_distribution);
-          const parsed_data = response.message.token_distribution.map(
-            distribution => {
-              return {
-                title: distribution.token_distributions.holder_category,
-                percentage: parseFloat(
-                  distribution.token_distributions.percentage_held.replace(
-                    '%',
-                    '',
-                  ),
+    //     if (response.status !== 200) {
+    //       setPercentagesData([]);
+    //     } else {
+    //       // console.log(response.message.token_distribution);
+    //       const parsed_data = response.message.token_distribution.map(
+    //         distribution => {
+    //           return {
+    //             title: distribution.token_distributions.holder_category,
+    //             percentage: parseFloat(
+    //               distribution.token_distributions.percentage_held.replace(
+    //                 '%',
+    //                 '',
+    //               ),
+    //             ),
+    //           };
+    //         },
+    //       );
+    //       // console.log('Parsed data:', parsed_data);
+    //       setPercentagesData(parsed_data.slice(0, 8));
+    //       setCurrentToken(parsed_data[0]);
+    //     }
+    //   } catch (error) {
+    //     console.log('Error trying to get token distribution data: ', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    const fetchTokenDistributionData = () => {
+      if (!globalData || globalData.tokenomics.status !== 200) {
+        setPercentagesData([]);
+      } else {
+        const parsed_data =
+          globalData.tokenomics.message.token_distribution.map(distribution => {
+            return {
+              title: distribution.token_distributions.holder_category,
+              percentage: parseFloat(
+                distribution.token_distributions.percentage_held.replace(
+                  '%',
+                  '',
                 ),
-              };
-            },
-          );
-          // console.log('Parsed data:', parsed_data);
-          setPercentagesData(parsed_data.slice(0, 8));
-          setCurrentToken(parsed_data[0]);
-        }
-      } catch (error) {
-        console.log('Error trying to get token distribution data: ', error);
-      } finally {
-        setLoading(false);
+              ),
+            };
+          });
+        // console.log('Parsed data:', parsed_data);
+        setPercentagesData(parsed_data.slice(0, 8));
+        setCurrentToken(parsed_data[0]);
       }
     };
     fetchTokenDistributionData();
-  }, [coin]);
+  }, [globalData, coin]);
 
   const currentTokenIndex = percentagesData.findIndex(
     values => values.title === currentToken?.title,

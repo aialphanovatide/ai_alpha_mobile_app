@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, ImageBackground, Text} from 'react-native';
-import {VictoryChart, VictoryAxis, VictoryCandlestick} from 'victory-native';
+import {View, ImageBackground, Text, Image} from 'react-native';
+import {VictoryChart, VictoryAxis, VictoryCandlestick, VictoryZoomContainer} from 'victory-native';
 import axios from 'axios';
 import BackButton from '../BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -150,6 +150,9 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
               padding={{top: 10, bottom: 40, left: 20, right: 70}}
               domainPadding={{x: 5, y: 3}}
               scale={{x: 'time', y: 'linear'}}
+              containerComponent={
+                <VictoryZoomContainer />
+              }
               height={300}>
               <VictoryAxis
                 style={{
@@ -197,6 +200,11 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
                 resizeMode="contain"
               />
             </VictoryChart>
+            <Image
+              style={styles.chartsZoomIndicator}
+              resizeMode="contain"
+              source={require('../../../assets/images/home/charts/zoom-expand.png')}
+            />
           </View>
         </View>
       </SafeAreaView>

@@ -50,7 +50,7 @@ const NarrativeTradingContextProvider = ({children}) => {
       try {
         const data = await getService(`/get_narrative_trading`);
         if (data.success) {
-          const parsed_data = data.message.map(item => {
+          const parsed_data = data.data.map(item => {
             return {
               content: item.narrative_trading,
               id: item.narrative_trading_id,

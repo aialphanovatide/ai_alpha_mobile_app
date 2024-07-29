@@ -85,7 +85,7 @@ const useNewsStyles = () => {
       textAlign: 'left',
       fontSize: theme.responsiveFontSize * 0.825,
       color: theme.secondaryTextColor,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
       lineHeight: 22,
     },
     articleSummary: {
@@ -93,7 +93,7 @@ const useNewsStyles = () => {
       marginHorizontal: 20,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.85,
-      fontFamily: theme.fontMedium,
+      fontFamily: theme.font,
       textAlign: 'left',
       lineHeight: 22,
     },
@@ -154,6 +154,15 @@ const useNewsStyles = () => {
       height: '100%',
       alignItems: 'center',
       alignSelf: 'center',
+    },
+    zoomIndicator: {
+      position: 'absolute',
+      top: 305,
+      right: 30,
+      width: 40,
+      height: 40,
+      tintColor: theme.textColor,
+      zIndex: 1000,
     },
   });
   return styles;

@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Easing,
+  Image,
 } from 'react-native';
 import BackButton from '../../../../../Analysis/BackButton/BackButton';
 import useNewsStyles from './NewsStyles';
@@ -38,7 +39,6 @@ const NewsArticle = ({route, navigation}) => {
 
     animation.start();
   }, []);
-
 
   const handleReturn = () => {
     navigation.goBack();
@@ -162,7 +162,18 @@ const NewsArticle = ({route, navigation}) => {
             fallback={true}
           />
         </TouchableWithoutFeedback>
-        <Text style={styles.articleTitle}>{isStory ? storyFilteredContent.title : item.title}</Text>
+        {!isImageZoomVisible && (
+          <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
+            <Image
+              source={require('../../../../../../assets/images/analysis/magnifier.png')}
+              resizeMode="contain"
+              style={styles.zoomIndicator}
+            />
+          </TouchableWithoutFeedback>
+        )}
+        <Text style={styles.articleTitle}>
+          {isStory ? storyFilteredContent.title : item.title}
+        </Text>
         <Text style={styles.articleDate}>{formatDate(item.date)}</Text>
         <Text style={styles.articleSummary}>
           {isStory ? storyFilteredContent.content : item.content}

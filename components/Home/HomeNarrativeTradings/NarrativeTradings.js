@@ -80,7 +80,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
         description={home_static_data.narrativeTradings.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
-      {loading ? (
+      {loading || narrativeTradingItems?.length === 0 ? (
         <SkeletonLoader />
       ) : narrativeTradingItems?.length === 0 ? (
         <Text style={styles.emptyMessage}>

@@ -28,7 +28,7 @@ const groupAndSortByDate = items => {
   });
   const groupedArray = Object.keys(groupedByDate).map(date => ({
     date,
-    items: groupedByDate[date],
+    items: groupedByDate[date].reverse(),
   }));
 
   return groupedArray.sort((a, b) => {
@@ -195,6 +195,7 @@ const HomeNotifications = ({route, navigation}) => {
   const loadNotifications = async () => {
     try {
       const storedNotifications = await AsyncStorage.getItem('notifications');
+      console.log(storedNotifications);
       const currentNotifications = storedNotifications
         ? JSON.parse(storedNotifications)
         : [];

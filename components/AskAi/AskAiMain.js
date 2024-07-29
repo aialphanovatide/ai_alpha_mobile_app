@@ -260,7 +260,7 @@ const AskAiMain = () => {
         const loadedData = await AsyncStorage.getItem('askAiData');
         if (loadedData) {
           const parsedData = JSON.parse(loadedData);
-          setSavedResults(parsedData);
+          setSavedResults(parsedData.reverse());
           if (filteredResults.length === 0) {
             setFilteredResults(parsedData);
           }
@@ -317,20 +317,35 @@ const AskAiMain = () => {
     setLoading(true);
     const fetchAskAiData = async searchValue => {
       try {
-        const response = await fetch(
-          `https://fsxbdb84-5000.uks1.devtunnels.ms/ask/ai?token_name=${searchValue.replace(
-            /\s/g,
-            '-',
-          )}`,
-          {method: 'POST'},
+        const loadedData = await AsyncStorage.getItem('askAiData');
+        let parsedData = [];
+        if (loadedData) {
+          parsedData = JSON.parse(loadedData);
+        }
+
+        const existingResult = parsedData.find(
+          item => item.name.toLowerCase() === searchValue.toLowerCase(),
         );
-        const data = await response.json();
-        const formattedData = combineResponses(
-          data.response.response,
-          searchValue,
-        );
-        setResultData(formattedData);
-        saveAskAiData(formattedData, savedResults);
+
+        if (existingResult) {
+          setResultData(existingResult);
+          return;
+        } else {
+          const response = await fetch(
+            `https://fsxbdb84-5000.uks1.devtunnels.ms/ask/ai?token_name=${searchValue.replace(
+              /\s/g,
+              '-',
+            )}`,
+            {method: 'POST'},
+          );
+          const data = await response.json();
+          const formattedData = combineResponses(
+            data.response.response,
+            searchValue,
+          );
+          setResultData(formattedData);
+          saveAskAiData(formattedData, savedResults);
+        }
       } catch (error) {
         console.error('Error trying to get ASK AI Alpha data: ', error);
       } finally {

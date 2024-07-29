@@ -1,7 +1,6 @@
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useDappsStyles from './DAppsStyles';
-import Loader from '../../../../../../../Loader/Loader';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
@@ -116,11 +115,16 @@ const ProtocolItem = ({
   );
 };
 
-const DApps = ({getSectionData, coin, handleSectionContent}) => {
+const DApps = ({
+  getSectionData,
+  coin,
+  handleSectionContent,
+  globalData,
+  loading,
+}) => {
   const styles = useDappsStyles();
   const [activeProtocol, setActiveProtocol] = useState(null);
   const [mappedData, setMappedData] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const generateImageUri = protocol => {
     const formatted_protocol = protocol.toLowerCase().replace(/\s/g, '');
@@ -128,37 +132,55 @@ const DApps = ({getSectionData, coin, handleSectionContent}) => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    setMappedData([]);
+    // setLoading(true);
+    // setMappedData([]);
 
-    const fetchDAppsData = async coin => {
-      try {
-        const response = await getSectionData(
-          `/api/dapps?coin_bot_name=${coin}`,
-        );
-        if (response.status !== 200) {
-          setMappedData([]);
-        } else {
-          // console.log('Dapps: ', response.message);
-          const dapps_response = response.message.map(protocol => {
-            return {
-              id: protocol.id,
-              name: protocol.dapps,
-              description: protocol.description,
-              tvl: protocol.tvl,
-              image: generateImageUri(protocol.dapps),
-            };
-          });
-          setMappedData(dapps_response);
-        }
-      } catch (error) {
-        console.log('Error trying to get dApps data: ', error);
-      } finally {
-        setLoading(false);
+    // const fetchDAppsData = async coin => {
+    //   try {
+    //     const response = await getSectionData(
+    //       `/api/dapps?coin_bot_name=${coin}`,
+    //     );
+    //     if (response.status !== 200) {
+    //       setMappedData([]);
+    //     } else {
+    //       // console.log('Dapps: ', response.message);
+    //       const dapps_response = response.message.map(protocol => {
+    //         return {
+    //           id: protocol.id,
+    //           name: protocol.dapps,
+    //           description: protocol.description,
+    //           tvl: protocol.tvl,
+    //           image: generateImageUri(protocol.dapps),
+    //         };
+    //       });
+    //       setMappedData(dapps_response);
+    //     }
+    //   } catch (error) {
+    //     console.log('Error trying to get dApps data: ', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    const fetchDAppsData = coin => {
+      if (!globalData || globalData.dapps.status !== 200) {
+        setMappedData([]);
+      } else {
+        const dapps_response = globalData.dapps.message.map(protocol => {
+          return {
+            id: protocol.id,
+            name: protocol.dapps,
+            description: protocol.description,
+            tvl: protocol.tvl,
+            image: generateImageUri(protocol.dapps),
+          };
+        });
+        setMappedData(dapps_response);
       }
     };
+
     fetchDAppsData(coin);
-  }, [coin]);
+  }, [globalData, coin]);
 
   const handleActiveProtocol = protocol => {
     if (activeProtocol && protocol.name === activeProtocol.name) {

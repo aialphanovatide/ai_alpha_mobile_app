@@ -3,7 +3,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import CryptosSelector from '../../CryptoSelector/CryptosSelector';
 import useInflationRateStyles from './InflationRateStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
-import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
@@ -141,6 +140,7 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
       year => !checkYearValues(year.year, inflation_rate_data),
     );
     setFilteredYears(filteredYearsByCurrentData);
+    setActiveYear(filteredYearsByCurrentData[0].year);
     setLoading(false);
   }, [competitorsData]);
 
@@ -192,8 +192,9 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
   const findKeyInCompetitorItem = (data, key, year, crypto) => {
     const found = data.find(
       item =>
-        item.competitor.token === crypto &&
         item.competitor.key.includes(key) &&
+        item.competitor.token.replace(/\s/g, '') ===
+          crypto.replace(/\s/g, '') &&
         item.competitor.key.includes(year),
     );
     return found && found !== undefined

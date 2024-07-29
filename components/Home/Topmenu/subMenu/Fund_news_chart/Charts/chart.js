@@ -93,6 +93,8 @@ const Chart = ({
   const [selectedCandle, setSelectedCandle] = useState(null);
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
+  const [supportResistanceLoading, setSupportResistanceLoading] =
+    useState(false);
   const navigation = useNavigation();
 
   // Function to handle the X button interaction on the horizontal chart
@@ -117,9 +119,9 @@ const Chart = ({
       const supportValues = [];
       const resistanceValues = [];
 
-      if (response.success) {
+      if (response.status === 200) {
         // Extract support and resistance values from the response
-        const values = response.chart_values;
+        const values = response.message;
         for (const key in values) {
           if (key.includes('support')) {
             supportValues.push(values[key]);
@@ -127,7 +129,6 @@ const Chart = ({
             resistanceValues.push(values[key]);
           }
         }
-
         setSupportLevels(supportValues);
         setResistanceLevels(resistanceValues);
       } else {
@@ -135,6 +136,8 @@ const Chart = ({
       }
     } catch (error) {
       console.error('Error fetching support and resistance data: ', error);
+    } finally {
+      setSupportResistanceLoading(false);
     }
   };
 
@@ -148,10 +151,15 @@ const Chart = ({
   const retracementLevels = fibonacciRetracement(low, high);
 
   useEffect(() => {
-    if (coinBot && selectedInterval) {
+    if (
+      coinBot &&
+      activeButtons.length > 0 &&
+      (supportLevels.length === 0 || resistanceLevels.length === 0)
+    ) {
+      setSupportResistanceLoading(true);
       getSupportAndResistanceData(coinBot, selectedInterval);
     }
-  }, [coinBot, selectedInterval]);
+  }, [coinBot, selectedInterval, activeButtons]);
 
   const filterExcessiveLevels = (levels, currentPrice, type) => {
     return levels.filter(level => {
@@ -256,7 +264,8 @@ const Chart = ({
 
   // Function to handle candle click events
   const handleCandleClick = (event, data) => {
-    setSelectedCandle(data);
+    const linesColor = data.close > data.open ? '#09C283' : '#E93334';
+    setSelectedCandle({...data, linesColor});
   };
 
   const handleCandlePressOut = () => {
@@ -272,7 +281,7 @@ const Chart = ({
   const chartWidth = width > 500 ? 860 : 400;
   const chartHeight = 340;
 
-  if (loading) {
+  if (loading || chartData.length === 0) {
     return <SkeletonLoader type="chart" style={{height: 300}} />;
   }
 
@@ -323,14 +332,14 @@ const Chart = ({
             style={{
               axis: {stroke: theme.chartsAxisColor},
               tickLabels: {
-                fontSize: theme.responsiveFontSize * 0.725,
+                fontSize: theme.responsiveFontSize * 0.625,
                 fill: theme.titleColor,
                 fontFamily: theme.font,
                 maxWidth: 10,
               },
               grid: {stroke: theme.chartsGridColor},
             }}
-            tickCount={3}
+            tickCount={4}
             tickFormat={t => {
               const year = t.getFullYear();
               const month = (t.getMonth() + 1).toString().padStart(2, '0');
@@ -371,7 +380,13 @@ const Chart = ({
                 },
               ]}
               style={{
-                data: {stroke: 'red', strokeWidth: 1, strokeDasharray: [4, 4]},
+                data: {
+                  stroke: selectedCandle
+                    ? selectedCandle.linesColor
+                    : '#E93334',
+                  strokeWidth: 1,
+                  strokeDasharray: [4, 4],
+                },
               }}
             />
           )}
@@ -394,7 +409,13 @@ const Chart = ({
                 {x: new Date(selectedCandle.x), y: low},
               ]}
               style={{
-                data: {stroke: 'red', strokeWidth: 1, strokeDasharray: [4, 4]},
+                data: {
+                  stroke: selectedCandle
+                    ? selectedCandle.linesColor
+                    : '#E93334',
+                  strokeWidth: 1,
+                  strokeDasharray: [4, 4],
+                },
               }}
             />
           )}
@@ -437,7 +458,7 @@ const Chart = ({
                 ]}
                 key={`resistance-${index}`}
                 // styles for the line itself
-                style={{data: {stroke: '#F012A1', strokeWidth: 2}}}
+                style={{data: {stroke: '#FF3BC3', strokeWidth: 2}}}
                 labels={() => [`$${formatLabelNumber(level)} `]}
                 labelComponent={
                   <VictoryLabel
@@ -455,7 +476,7 @@ const Chart = ({
                     ]}
                     backgroundStyle={[
                       {
-                        fill: '#F012A1',
+                        fill: '#FF3BC3',
                         opacity: 0.8,
                       },
                     ]}
@@ -475,7 +496,7 @@ const Chart = ({
                 ]}
                 key={`support-${index}`}
                 style={{
-                  data: {stroke: '#FC5404', strokeWidth: 2},
+                  data: {stroke: '#C539B4', strokeWidth: 2},
                 }}
                 labels={() => [`$${formatLabelNumber(level)} `]}
                 labelComponent={
@@ -489,14 +510,14 @@ const Chart = ({
                     ]}
                     style={[
                       {
-                        fill: '#F7F7F7',
+                        fill: '#FFFFFF',
                         fontSize: 11,
                         fontFamily: theme.fontMedium,
                       },
                     ]}
                     backgroundStyle={[
                       {
-                        fill: '#FC5404',
+                        fill: '#C539B4',
                         opacity: 0.8,
                       },
                     ]}
@@ -538,6 +559,11 @@ const Chart = ({
           source={require('../../../../../../assets/images/home/charts/back.png')}
         />
       </TouchableOpacity>
+      <Image
+        style={styles.chartsZoomIndicator}
+        resizeMode="contain"
+        source={require('../../../../../../assets/images/home/charts/zoom-expand.png')}
+      />
     </View>
   );
 };

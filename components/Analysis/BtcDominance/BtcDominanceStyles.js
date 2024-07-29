@@ -64,6 +64,14 @@ const useBtcDominanceStyles = () => {
       textAlign: 'left',
       lineHeight: 20,
     },
+    chartsZoomIndicator: {
+      width: 28,
+      height: 28,
+      position: 'absolute',
+      bottom: 60,
+      right: 80,
+      tintColor: theme.textColor,
+    },
   });
   return styles;
 };

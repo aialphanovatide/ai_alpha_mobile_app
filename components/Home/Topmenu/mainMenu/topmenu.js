@@ -39,9 +39,19 @@ const TopMenu = ({isAlertsMenu}) => {
   };
 
   const handleSearchSectionNavigation = () => {
-    navigation.navigate('SearchScreen', {
-      screen: 'SearchMain',
-    });
+    if (routeName.includes('Home')) {
+      navigation.navigate('SearchScreen', {
+        screen: 'SearchMain',
+      });
+    } else {
+      navigation.navigate('Home', {
+        screen: 'SearchScreen',
+        params: {
+          screen: 'SearchMain',
+          params: {},
+        },
+      });
+    }
   };
 
   const handleNotificationsNavigation = () => {
@@ -62,9 +72,11 @@ const TopMenu = ({isAlertsMenu}) => {
         <SearchBar
           handleSearchSectionNavigation={handleSearchSectionNavigation}
         />
-        <NotificationsButton
-          handleButtonPress={handleNotificationsNavigation}
-        />
+        {routeName.includes('Home') && (
+          <NotificationsButton
+            handleButtonPress={handleNotificationsNavigation}
+          />
+        )}
       </View>
       <View style={styles.container}>
         <ScrollView

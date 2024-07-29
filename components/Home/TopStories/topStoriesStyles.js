@@ -20,14 +20,14 @@ const useTopStoriesStyles = () => {
     mainTitle: {
       fontFamily: theme.fontSemibold,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
+      fontSize: 16,
     },
     titleStyles: {
       maxWidth: '85%',
       fontFamily: theme.fontMedium,
       color: theme.titleColor,
       marginBottom: 2,
-      fontSize: theme.responsiveFontSize,
+      fontSize: 14,
     },
     imageStyle: {
       width: 50,

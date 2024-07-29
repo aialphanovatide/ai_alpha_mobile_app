@@ -57,7 +57,7 @@ const SocialMedia = () => {
         light: require('../../../assets/images/account/socialMedia/tiktok.png'),
         dark: require('../../../assets/images/account/socialMedia/tiktok.png'),
       },
-      url: 'https://novatidelabs-company.monday.com/boards/1396257853/pulses/1554603375',
+      url: 'https://www.tiktok.com/@aialphaai',
       customSize: null,
     },
   ];

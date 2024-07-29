@@ -10,7 +10,7 @@ const useTransactionSpeedStyles = () => {
       alignItems: 'center',
     },
     activeCryptoValue: {
-      marginVertical: 15,
+      marginVertical: 24,
       paddingVertical: 5,
       paddingHorizontal: 10,
       color: theme.textColor,

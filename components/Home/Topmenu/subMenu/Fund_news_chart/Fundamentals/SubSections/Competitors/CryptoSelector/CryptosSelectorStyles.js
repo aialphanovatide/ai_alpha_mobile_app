@@ -23,12 +23,12 @@ const useCryptoSelectorStyles = () => {
     itemText: {
       color: theme.cryptoSelectorText,
       fontSize: theme.responsiveFontSize * 0.75,
-      fontFamily: theme.fontMedium,
+      fontFamily: theme.font,
       textAlign: 'center',
     },
     activeText: {
       color: theme.activeCryptoSelector,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
   });
   return styles;

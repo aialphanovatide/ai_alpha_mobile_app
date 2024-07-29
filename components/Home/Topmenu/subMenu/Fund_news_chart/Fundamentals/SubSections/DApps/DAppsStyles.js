@@ -58,8 +58,8 @@ const useDappsStyles = () => {
     protocolItemContainer: {
       position: 'relative',
       width: '100%',
-      minHeight: 40,
-      marginVertical: theme.boxesVerticalMargin * 1.2,
+      height: 45,
+      marginVertical: 16,
       flexDirection: 'row',
     },
     row: {
@@ -72,6 +72,7 @@ const useDappsStyles = () => {
     protocolImage: {
       width: 40,
       height: 40,
+      marginTop: 16,
       alignSelf: 'center',
       zIndex: 20,
     },
@@ -80,6 +81,7 @@ const useDappsStyles = () => {
     },
     line: {
       position: 'absolute',
+      top: '60%',
       left: '10%',
       width: '10%',
       borderTopWidth: 6,

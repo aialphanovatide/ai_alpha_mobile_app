@@ -16,7 +16,7 @@ import {
   getCapitalComPrices,
   postCCSession,
 } from '../../../services/CapitalComServices';
-import {VictoryAxis, VictoryCandlestick, VictoryChart} from 'victory-native';
+import {VictoryAxis, VictoryCandlestick, VictoryChart, VictoryZoomContainer} from 'victory-native';
 import useChartSectionStyles from '../ChartSection/ChartSectionStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
@@ -208,7 +208,11 @@ const UsOilChart = ({route, navigation}) => {
                 padding={{top: 10, bottom: 40, left: 20, right: 70}}
                 domainPadding={{x: 5, y: 3}}
                 scale={{x: 'time', y: 'linear'}}
-                height={300}>
+                height={300}
+                containerComponent={
+                  <VictoryZoomContainer />
+                }
+                >
                 <VictoryAxis
                   fixLabelOverlap
                   style={{
@@ -294,6 +298,11 @@ const UsOilChart = ({route, navigation}) => {
                 source={require('../../../assets/images/home/charts/back.png')}
               />
             </TouchableOpacity>
+            <Image
+              style={styles.chartsZoomIndicator}
+              resizeMode="contain"
+              source={require('../../../assets/images/home/charts/zoom-expand.png')}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

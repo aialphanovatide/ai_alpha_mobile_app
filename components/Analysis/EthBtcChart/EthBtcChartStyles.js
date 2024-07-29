@@ -82,6 +82,14 @@ const useEthBtcStyles = () => {
       right: 30,
       tintColor: theme.textColor,
     },
+    chartsZoomIndicator: {
+      width: 28,
+      height: 28,
+      position: 'absolute',
+      bottom: 75,
+      right: 85,
+      tintColor: theme.textColor,
+    },
   });
   return styles;
 };

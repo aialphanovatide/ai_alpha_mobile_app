@@ -3,7 +3,6 @@ import {List} from 'react-native-paper';
 import AnalysisItem from './analysisItem/analysisItem';
 import useHomeAnalysisStyles from './analysisStyles';
 import {Image, View, Text, TouchableOpacity} from 'react-native';
-import {getService} from '../../../services/aiAlphaApi';
 import {useNavigation} from '@react-navigation/core';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
@@ -48,7 +47,7 @@ const Analysis = ({handleAboutPress}) => {
         description={home_static_data.analysis.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
-      {loading ? (
+      {loading || analysisData?.length === 0 ? (
         <SkeletonLoader />
       ) : analysisData?.length === 0 ? (
         <Text style={styles.emptyMessage}>

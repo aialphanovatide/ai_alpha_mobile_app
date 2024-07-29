@@ -38,6 +38,7 @@ const useCompetitorsStyles = () => {
     },
     menuItemName: {
       minHeight: 25,
+      marginTop: 4,
       padding: 5,
       color: theme.fundamentalsMenuText,
       textAlign: 'center',
@@ -54,7 +55,7 @@ const useCompetitorsStyles = () => {
     },
     selectedOptionContent: {
       flex: 1,
-      height: 600,
+      height: 700,
     },
     title: {
       marginBottom: theme.titlesVerticalMargin * 0.5,

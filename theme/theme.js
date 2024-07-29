@@ -83,6 +83,7 @@ export const lightThemeStyles = {
     iconsBgColor: '#FBFBFB',
     secondaryText: '#A3A3A3',
   },
+  inactiveButtonText: '#C93A05',
   loginBgColor: '#E7EAF1',
   loginTitlesColor: '#B8BBBD',
   signUpTitlesColor: '#FFFFFF',
@@ -103,42 +104,42 @@ export const lightThemeStyles = {
   fontSemibold: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
   fontBoldItalic: isAndroid
   ? 'prompt_semibold_italic'
-    : 'Prompt-SemiBold-Italic',
-    fontUnbounded: isAndroid ? 'unbounded_regular' : 'Unbounded-Regular',
+  : 'Prompt-SemiBold-Italic',
+  fontUnbounded: isAndroid ? 'unbounded_regular' : 'Unbounded-Regular',
   fontUnboundedMedium: isAndroid ? 'unbounded_medium' : 'Unbounded-Medium',
   fontUnboundedLight: isAndroid ? 'unbounded_light' : 'Unbounded-Light',
   fontUnboundedExtraLight: isAndroid
   ? 'unbounded_extra_light'
-    : 'Unbounded-Extra-Light',
-    fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
+  : 'Unbounded-Extra-Light',
+  fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
   fontUnboundedExtraBold: isAndroid
   ? 'unbounded_extra_bold'
   : 'Unbounded-Extra-Bold',
   fontUnboundedSemibold: isAndroid
     ? 'unbounded_semibold'
     : 'Unbounded-SemiBold',
-  fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
-  backgroundSubscriptionsModal: '#FAFAFA',
-};
-
-export const darkThemeStyles = {
-  width: width,
-  height: height,
-  mainBackgroundColor: '#0A0A0A',
-  secondaryBgColor: '#171717',
-  boxesBackgroundColor: '#262626',
-  secondaryBoxesBgColor: '#A3A3A3',
-  thirdBoxesBgColor: '#737373',
-  activeOrange: '#FC5404',
-  orange: '#FF6C0D',
-  activeYellow: '#F9B208',
-  inactiveColor: '#525252',
-  activeWhite: '#737373',
-  inactiveGray: '#C4CADA',
-  subMenuBgColor: '#525252',
-  titleColor: '#FFFFFF',
-  textColor: '#FAFAFA',
-  searchPlaceHolderColor: '#FAFAFA',
+    fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
+    backgroundSubscriptionsModal: '#FAFAFA',
+  };
+  
+  export const darkThemeStyles = {
+    width: width,
+    height: height,
+    mainBackgroundColor: '#0A0A0A',
+    secondaryBgColor: '#171717',
+    boxesBackgroundColor: '#262626',
+    secondaryBoxesBgColor: '#A3A3A3',
+    thirdBoxesBgColor: '#737373',
+    activeOrange: '#FC5404',
+    orange: '#FF6C0D',
+    activeYellow: '#F9B208',
+    inactiveColor: '#525252',
+    activeWhite: '#737373',
+    inactiveGray: '#C4CADA',
+    subMenuBgColor: '#525252',
+    titleColor: '#FFFFFF',
+    textColor: '#FAFAFA',
+  searchPlaceHolderColor: '#A3A3A3',
   supportAndResistanceText: '#FAFAFA',
   subMenuTextColor: '#FFFFFF',
   filterTextColor: '#A3A3A3',
@@ -205,6 +206,7 @@ export const darkThemeStyles = {
     iconsBgColor: '#2D2D3D',
     secondaryText: '#A3A3A3',
   },
+  inactiveButtonText: '#FFECD3',
   loginBgColor: '#242427',
   loginTitlesColor: '#B8BBBD',
   signUpTitlesColor: '#FFFFFF',

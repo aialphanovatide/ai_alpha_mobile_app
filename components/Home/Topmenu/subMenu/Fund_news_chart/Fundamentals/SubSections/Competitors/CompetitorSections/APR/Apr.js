@@ -3,7 +3,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import CryptosSelector from '../../CryptoSelector/CryptosSelector';
 import useAprStyles from './AprStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
-import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
@@ -54,7 +53,8 @@ const Apr = ({competitorsData, isSectionWithoutData}) => {
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
       item =>
-        item.competitor.token === crypto && item.competitor.key.includes(key),
+        item.competitor.key.includes(key) &&
+        item.competitor.token.replace(/\s/g, '') === crypto.replace(/\s/g, ''),
     );
     return found && found !== undefined
       ? found.competitor.value !== '-'
