@@ -49,14 +49,16 @@ const PackageSubscriptions = () => {
   const navigation = useNavigation();
   const {isDarkMode} = useContext(AppThemeContext);
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
+  //console.log('Packages:', packages);
 
-  const getPackByTitle = (title) => {
-    return packages.find(pkg => pkg.product.title.includes(title));
+  const getIdentifierByKeyword = (keyword) => {
+    const foundPackage = packages.find(pkg => pkg.product.title.includes(keyword));
+    return foundPackage ? foundPackage.product.identifier : null;
   };
 
   const subscriptionOptions = [
     {
-      title: 'Founders',
+      title: 'Founder',
       price: '$149',
       icon: require('../../../assets/images/account/founder.png'),
     },
@@ -100,7 +102,7 @@ const PackageSubscriptions = () => {
   const handlePurchase = async pack => {
     console.log('Pack->', pack);
     setLoading(true);
-    if (!pack) {
+    if (pack === null) {
       setMissingMessageActive(true);
       setLoading(false);
       return;
@@ -111,7 +113,6 @@ const PackageSubscriptions = () => {
     } catch (error) {
       setMissingMessageActive(true);
     } finally {
-      setActiveItem(null);
       setLoading(false);
     }
   };
@@ -119,10 +120,10 @@ const PackageSubscriptions = () => {
   const handleActiveItem = item => {
     console.log('Item selected:', item.title);
     setActiveItem(item);
-    if (item.title !== 'By Category') {
-      setActiveSubOption(null);
+    if (item.title === 'By Category') {
+      setActiveSubOption('Ethereum'); // Reset to "Ethereum" when "By Category" is selected
     } else {
-      setActiveSubOption('Ethereum'); // Set "Ethereum" as default sub-option
+      setActiveSubOption(null);
     }
     console.log('Active item set to:', item);
   };
@@ -172,7 +173,7 @@ const PackageSubscriptions = () => {
 
   const getDescription = () => {
     switch (activeItem?.title) {
-      case 'Founders':
+      case 'Founder':
         return (
           <>
             <TextWithIcon text="Join our exclusive group of pioneers and get full access to AI ALPHA's current and future products." />
@@ -203,6 +204,17 @@ const PackageSubscriptions = () => {
           </>
         );
     }
+  };
+
+  const getPackageToPurchase = () => {
+    if (activeItem.title === 'By Category') {
+      return packages.find(
+        pkg => pkg.product.title.toLowerCase().includes(activeSubOption.toLowerCase())
+      );
+    }
+    return packages.find(
+      pkg => pkg.product.title.toLowerCase().includes(activeItem.title.toLowerCase())
+    );
   };
 
   return (
@@ -336,7 +348,7 @@ const PackageSubscriptions = () => {
           end={{x: 1, y: 0.5}}>
           <TouchableOpacity
             style={styles.purchaseButton}
-            onPress={() => handlePurchase(getPackByTitle(activeSubOption))}>
+            onPress={() => handlePurchase(getPackageToPurchase())}>
             <Text style={styles.purchaseButtonText}>
               Start 7 Day Free Trial
             </Text>
@@ -391,8 +403,3 @@ const PackageSubscriptions = () => {
 };
 
 export default PackageSubscriptions;
-
-
-
-
-
