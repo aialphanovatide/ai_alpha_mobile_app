@@ -16,6 +16,7 @@ import {AnalysisContext} from '../../../context/AnalysisContext';
 import {useNavigation} from '@react-navigation/core';
 import historyFilterData from './HistoryFilterData';
 import FastImage from 'react-native-fast-image';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -37,7 +38,9 @@ const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
   const {date, hour} = formatItemDate(item.created_at);
 
   return (
-    <TouchableOpacity onPress={() => handleHistoryNavigation(item)} style={styles.historyItemContainer}>
+    <TouchableOpacity
+      onPress={() => handleHistoryNavigation(item)}
+      style={styles.historyItemContainer}>
       <FastImage
         source={{
           uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
@@ -127,21 +130,36 @@ const History = () => {
   const [cryptoOptions, setCryptoOptions] = useState([]);
   const [activeOption, setActiveOption] = useState(null);
   const [activeCryptoOption, setActiveCryptoOption] = useState(null);
-  const {analysisItems} = useContext(AnalysisContext);
   const [historyItems, setHistoryItems] = useState([]);
+  const [loadedHistoryItems, setLoadedHistoryItems] = useState([]);
   const styles = useHistoryStyles();
   const navigation = useNavigation();
 
+  // Hook to load the data from the previous analysis that the user has seen
   useEffect(() => {
-    setHistoryItems(analysisItems);
-  }, [analysisItems]);
+    const fetchData = async () => {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        const analysisKeys = keys.filter(key => key.startsWith('analysis_'));
+        const analysisItems = await AsyncStorage.multiGet(analysisKeys);
+
+        const parsedItems = analysisItems.map(item => JSON.parse(item[1]));
+        setLoadedHistoryItems(parsedItems);
+      } catch (e) {
+        console.error('Failed to load the data from storage', e);
+      }
+    };
+    if (loadedHistoryItems.length === 0) {
+      fetchData();
+    }
+  }, []);
 
   useEffect(() => {
     setCryptoOptions(historyFilterData);
+    setActiveOption(options[0]);
     setActiveCryptoOption(historyFilterData[0]);
     handleCryptoTouch(historyFilterData[0]);
-    handleTimeIntervalChange(options[0], analysisItems);
-  }, [analysisItems]);
+  }, [loadedHistoryItems]);
 
   const filterItemsByCategory = (category, items) => {
     const filtered_items = [];
@@ -192,12 +210,15 @@ const History = () => {
 
   const handleCryptoTouch = option => {
     setActiveCryptoOption(option);
-    const filtered_by_time = filterItemsByTime(activeOption, analysisItems);
+    const filtered_by_time = filterItemsByTime(
+      activeOption,
+      loadedHistoryItems,
+    );
     const filtered_history_items = filterItemsByCategory(
       option,
       filtered_by_time,
     );
-    setHistoryItems(filtered_history_items);
+    setHistoryItems(filtered_history_items.reverse());
   };
 
   const handleHistoryNavigation = analysis => {
@@ -218,10 +239,10 @@ const History = () => {
     setActiveCryptoOption(historyFilterData[0]);
     const filtered_by_crypto = filterItemsByCategory(
       historyFilterData[0],
-      analysisItems,
+      loadedHistoryItems,
     );
     const filtered_items = filterItemsByTime(interval, filtered_by_crypto);
-    setHistoryItems(filtered_items);
+    setHistoryItems(filtered_items.reverse());
   };
 
   return (
@@ -229,13 +250,14 @@ const History = () => {
       <LinearGradient
         useAngle={true}
         angle={45}
-        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
         style={{flex: 1}}>
         <View style={styles.container}>
           <View style={styles.backButtonWrapper}>
             <BackButton />
           </View>
-            <Text style={styles.title}>History</Text>
+          <Text style={styles.title}>History</Text>
           <Text style={styles.sectionDescription}>
             The history section consolidates all analysis conducted on a
             specific coin, allowing users to access today's and the week's

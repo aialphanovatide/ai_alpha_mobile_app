@@ -30,7 +30,7 @@ const useTopTenLosersStyles = () => {
       marginVertical: 2.5,
       display: 'flex',
       flexDirection: 'row',
-      borderBottomWidth: 1,
+      borderBottomWidth: 0.5,
       borderBottomColor: theme.secondaryGrayColor,
       paddingHorizontal: 20,
       paddingVertical: 10,

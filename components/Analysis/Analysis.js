@@ -65,21 +65,11 @@ const Analysis = () => {
       sectionName: 'Calendar',
       icon: require('../../assets/images/analysis/calendar.png'),
     },
-    // {
-    //   id: 'BTCFundingRates',
-    //   sectionName: 'BTC Funding Rates',
-    //   icon: require('../../assets/images/analysis/btcfr.png'),
-    // },
     {
       id: 'FundingRates',
       sectionName: 'Funding Rates',
       icon: require('../../assets/images/analysis/btcfr.png'),
     },
-    // {
-    //   id: 'SOLFundingRates',
-    //   sectionName: 'SOL Funding Rates',
-    //   icon: require('../../assets/images/analysis/btcfr.png'),
-    // },
     {
       id: 'BTCDominance',
       sectionName: 'BTC Dominance Chart',
@@ -134,11 +124,12 @@ const Analysis = () => {
     <LinearGradient
       useAngle={true}
       angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
       style={{flex: 1, justifyContent: 'center'}}>
       <SafeAreaView style={styles.background}>
         <ScrollView style={[styles.background, {padding: 10,}]} nestedScrollEnabled={true}>
-          <Text style={styles.analysisTitle}>Analysis</Text>
+          <Text style={styles.analysisTitle}>Dashboard</Text>
           <View style={[styles.analyisisContainer, styles.paddingBottom]}>
             {sections.map(section => (
               <AnalysisItem

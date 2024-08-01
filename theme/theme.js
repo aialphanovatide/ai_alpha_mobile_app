@@ -125,7 +125,7 @@ export const lightThemeStyles = {
   export const darkThemeStyles = {
     width: width,
     height: height,
-    mainBackgroundColor: '#0A0A0A',
+    mainBackgroundColor: '#0F0F0F',
     secondaryBgColor: '#171717',
     boxesBackgroundColor: '#262626',
     secondaryBoxesBgColor: '#A3A3A3',

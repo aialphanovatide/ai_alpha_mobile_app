@@ -285,7 +285,8 @@ const HomeStackScreen = () => {
         name="HomeNotificationsScreen"
         component={HomeNotifications}
         options={{
-          animation: 'fade',
+          animation: 'slide_from_right',
+          animationDuration: 200,
         }}
       />
     </HomeStack.Navigator>

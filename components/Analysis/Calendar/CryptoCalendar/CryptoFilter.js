@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Image, Text, View, TouchableOpacity, ScrollView} from 'react-native';
+import {Image, Text, View, TouchableOpacity, ScrollView, TouchableWithoutFeedback} from 'react-native';
 import useCryptoCalendarStyles from './CryptoCalendarStyles';
 import {AppThemeContext} from '../../../../context/themeContext';
 import FastImage from 'react-native-fast-image';
@@ -7,7 +7,7 @@ import FastImage from 'react-native-fast-image';
 const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   return (
-    <TouchableOpacity onPress={() => handleOptionTouch(option)}>
+    <TouchableWithoutFeedback onPress={() => handleOptionTouch(option)}>
       <View style={[styles.cryptoItem, active && styles.activeCryptoItem]}>
         <View style={styles.cryptoIconContainer}>
           <FastImage
@@ -18,7 +18,7 @@ const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
               }/${active ? 'Active' : 'Inactive'}/${option.category_name
                 .toLowerCase()
                 .replace(/\s/g, '')}.png`,
-              priority: FastImage.priority.high,
+              cache: FastImage.cacheControl.immutable,
             }}
             resizeMode={'contain'}
             fallback={true}
@@ -28,11 +28,16 @@ const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
           {option.category_name}
         </Text>
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 };
 
-const CryptoFilter = ({options, currentFilter, handleOptionTouch, style = null}) => {
+const CryptoFilter = ({
+  options,
+  currentFilter,
+  handleOptionTouch,
+  style = null,
+}) => {
   const styles = useCryptoCalendarStyles();
 
   return (

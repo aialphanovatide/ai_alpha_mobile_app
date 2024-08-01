@@ -37,6 +37,8 @@ import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Top10MoversContextProvider} from './context/TopTenMoversContext';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -268,7 +270,7 @@ const App = () => {
                     styles.container,
                     {
                       backgroundColor:
-                        colorScheme === 'dark' ? '#0b0b0a' : '#fbfbfa',
+                        colorScheme === 'dark' ? '#0F0F0F' : '#fbfbfa',
                     },
                   ]}>
                   <StatusBar
@@ -282,114 +284,31 @@ const App = () => {
                       <Top10MoversContextProvider>
                         <NarrativeTradingContextProvider>
                           <AnalysisContextProvider>
-                            <AboutModalProvider>
-                              <Navigation />
-                              <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={modalVisible}
-                                onRequestClose={() => {
-                                  setModalVisible(false);
-                                }}>
-                                <View style={styles.centeredView}>
-                                  <View
-                                    style={[
-                                      styles.orangeBox,
-                                      {
-                                        backgroundColor:
-                                          colorScheme === 'dark'
-                                            ? '#451205'
-                                            : '#FFF7EC',
-                                      },
-                                    ]}>
-                                    <View style={styles.row}>
-                                      <Image
-                                        source={require('./assets/images/login/nointernet.png')}
-                                        style={styles.imageStyle1}
-                                      />
-                                      <Text
-                                        style={[
-                                          styles.labelText1,
-                                          {
-                                            color:
-                                              colorScheme === 'dark'
-                                                ? '#FF8D34'
-                                                : '#FF6C0D',
-                                          },
-                                        ]}>
-                                        It seems that you are offline.
-                                      </Text>
-                                    </View>
-                                    <View style={styles.row}>
-                                      <Image
-                                        source={require('./assets/images/login/reloadsymbol.png')}
-                                        style={styles.imageStyle2}
-                                      />
-                                      <TouchableOpacity
-                                        onPress={
-                                          checkConnectivityAndCloseModal
-                                        }>
-                                        <Text style={styles.labelText2}>
-                                          Reload
-                                        </Text>
-                                      </TouchableOpacity>
-                                    </View>
-                                  </View>
-                                </View>
-                              </Modal>
-                              <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={serverError}
-                                onRequestClose={() => {
-                                  setServerError(false);
-                                }}>
-                                <View style={styles.centeredView}>
-                                  <View
-                                    style={[
-                                      styles.orangeBox,
-                                      {
-                                        backgroundColor:
-                                          colorScheme === 'dark'
-                                            ? '#451205'
-                                            : '#FFF7EC',
-                                      },
-                                    ]}>
-                                    <View style={styles.row}>
-                                      <Image
-                                        source={require('./assets/images/login/serverdown.png')}
-                                        style={styles.imageStyle3}
-                                      />
-                                      <Text
-                                        style={[
-                                          styles.labelText1,
-                                          {
-                                            color:
-                                              colorScheme === 'dark'
-                                                ? '#FF8D34'
-                                                : '#FF6C0D',
-                                          },
-                                        ]}>
-                                        Seems like the server is down
-                                      </Text>
-                                    </View>
-                                    <Text
-                                      style={[
-                                        styles.labelText3,
-                                        {
-                                          color:
-                                            colorScheme === 'dark'
-                                              ? '#FF6C0D'
-                                              : '#A02E0C',
-                                        },
-                                      ]}>
-                                      Please wait a few minutes while our
-                                      technicians work to solve this problem
-                                    </Text>
-                                  </View>
-                                </View>
-                              </Modal>
-                            </AboutModalProvider>
+                            <GestureHandlerRootView style={{flex: 1}}>
+                              <AboutModalProvider>
+                                <Navigation />
+                                <ConnectivityModal
+                                  serverError={serverError}
+                                  setModalVisible={setModalVisible}
+                                  modalVisible={modalVisible}
+                                  setServerError={setServerError}
+                                  checkConnectivityAndCloseModal={
+                                    checkConnectivityAndCloseModal
+                                  }
+                                  type="connection"
+                                />
+                                <ConnectivityModal
+                                  serverError={serverError}
+                                  setModalVisible={setModalVisible}
+                                  modalVisible={modalVisible}
+                                  setServerError={setServerError}
+                                  checkConnectivityAndCloseModal={
+                                    checkConnectivityAndCloseModal
+                                  }
+                                  type="serverDown"
+                                />
+                              </AboutModalProvider>
+                            </GestureHandlerRootView>
                           </AnalysisContextProvider>
                         </NarrativeTradingContextProvider>
                       </Top10MoversContextProvider>
@@ -416,6 +335,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   orangeBox: {
     top: '30%',

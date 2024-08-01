@@ -8,6 +8,7 @@ import FastImage from 'react-native-fast-image';
 import {NarrativeTradingContext} from '../../../context/NarrativeTradingContext';
 import useHomeNarrativeTradingStyles from './NarrativeTradingsStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NarrativeTradingItem = ({title, image, item, handleNavigation}) => {
   const styles = useHomeNarrativeTradingStyles();
@@ -56,13 +57,22 @@ const NarrativeTradings = ({handleAboutPress}) => {
 
   const handlePress = () => setExpanded(!expanded);
 
-  const handleNavigation = item => {
+  const handleNavigation = async item => {
     navigation.navigate('NarrativeTradingArticleScreen', {
       item_content: item.content,
       id: item.id,
+      category: item.category,
       date: item.created_at,
       isNavigateFromHome: true,
     });
+    try {
+      await AsyncStorage.setItem(
+        `narrative_trading_${item.id}`,
+        JSON.stringify(item),
+      );
+    } catch (error) {
+      console.error(`Failed to save the data of narrative trading ${item.id}`);
+    }
   };
 
   const handleSeeAllNavigation = () => {
@@ -72,6 +82,10 @@ const NarrativeTradings = ({handleAboutPress}) => {
     });
   };
 
+  if (!loading && narrativeTradingItems?.length === 0) {
+    return <></>;
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.mainTitle}>Narrative Trading</Text>
@@ -80,12 +94,8 @@ const NarrativeTradings = ({handleAboutPress}) => {
         description={home_static_data.narrativeTradings.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
-      {loading || narrativeTradingItems?.length === 0 ? (
+      {loading ? (
         <SkeletonLoader />
-      ) : narrativeTradingItems?.length === 0 ? (
-        <Text style={styles.emptyMessage}>
-          {home_static_data.narrativeTradings.noContentMessage}
-        </Text>
       ) : (
         <View style={styles.itemsContainer}>
           {narrativeTradingItems?.slice(0, 5).map((item, index) => (

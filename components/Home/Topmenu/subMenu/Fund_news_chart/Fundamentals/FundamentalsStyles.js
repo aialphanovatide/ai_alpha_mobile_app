@@ -11,7 +11,7 @@ const useFundamentalsStyles = () => {
       marginBottom: 80,
     },
     title: {
-      marginTop: 48,
+      marginTop: 24,
       marginBottom: 16,
       marginHorizontal: 12,
       fontFamily: theme.fontSemibold,

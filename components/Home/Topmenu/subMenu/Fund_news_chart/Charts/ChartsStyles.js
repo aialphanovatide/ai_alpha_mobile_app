@@ -17,7 +17,7 @@ const useChartsStyles = () => {
     },
     detailsContainer: {
       flex: 1,
-      marginVertical: theme.titlesVerticalMargin,
+      marginTop: 24,
       marginBottom: 0,
       flexDirection: 'row',
       width: '100%',
@@ -238,10 +238,12 @@ const useChartsStyles = () => {
       minHeight: 300,
     },
     alertsTextMessage: {
-      marginTop: 16,
-      fontSize: theme.responsiveFontSize,
-      fontFamily: theme.fontBoldItalic,
+      margin: theme.boxesVerticalMargin,
+      fontSize: 14,
       color: theme.secondaryTextColor,
+      alignSelf: 'flex-start',
+      fontFamily: theme.fontBoldItalic,
+      textAlign: 'left',
     },
     alertDetailsContainer: {
       position: 'relative',
@@ -383,6 +385,15 @@ const useChartsStyles = () => {
     },
     flexRow: {
       flexDirection: 'row',
+    },
+    refreshButton: {
+      position: 'absolute',
+      top: -150,
+      left: '70%',
+      width: 18,
+      height: 18,
+      tintColor: theme.titleColor,
+      alignSelf: 'center',
     },
   });
   return styles;

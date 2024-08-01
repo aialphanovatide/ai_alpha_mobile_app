@@ -6,14 +6,14 @@ const useSaveButtonStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     container: {
-      paddingVertical: 15,
+      width: '100%',
+      paddingVertical: 10,
       paddingHorizontal: 10,
       marginTop: -40,
       marginBottom: 4,
       borderRadius: 4,
       alignItems: 'center',
       backgroundColor: theme.orange, // assuming default state color
-      width: 150,
     },
     pressed: {
       opacity: 0.75,

@@ -9,7 +9,6 @@ const useHomeAnalysisStyles = () => {
       marginVertical: 8,
       color: theme.titleColor,
       fontSize: 16,
-      fontWeight: '600',
       fontFamily: theme.fontSemibold,
     },
     titleStyles: {
@@ -33,7 +32,7 @@ const useHomeAnalysisStyles = () => {
       alignSelf: 'center',
       alignItems: 'center',
       borderBottomColor: theme.boxesBorderColor,
-      borderBottomWidth: 1,
+      borderBottomWidth: 0.5,
       borderRadius: 2,
     },
     itemPreview: {
@@ -53,10 +52,11 @@ const useHomeAnalysisStyles = () => {
     },
     emptyMessage: {
       margin: theme.boxesVerticalMargin,
-      fontSize: theme.responsiveFontSize,
+      fontSize: 14,
       color: theme.secondaryTextColor,
-      alignSelf: 'center',
+      alignSelf: 'flex-start',
       fontFamily: theme.fontBoldItalic,
+      textAlign: 'left',
     },
     background: {
       flex: 1,
@@ -70,18 +70,21 @@ const useHomeAnalysisStyles = () => {
     article: {
       flex: 1,
       width: '100%',
-      paddingVertical: 4,
-      paddingHorizontal: 16,
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
-    analysisArticleImage: {
-      width: 'auto',
-      height: 'auto',
-      minHeight: 100,
-      maxHeight: 250,
-      margin: 8,
-      marginVertical: theme.boxesVerticalMargin,
+    articleImageContainer: {
+      position: 'relative',
+      width: 360,
+      height: 225,
+      margin: 4,
+      marginBottom: 0,
+      alignSelf: 'center',
+      overflow: 'hidden',
+    },
+    contentContainer: {
+      width: '100%',
+      padding: 14,
     },
     analysisArticleText: {
       fontSize: theme.responsiveFontSize * 0.825,
@@ -151,10 +154,7 @@ const useHomeAnalysisStyles = () => {
       fontFamily: theme.fontMedium,
     },
     articleImage: {
-      width: theme.width,
-      height: 350,
-      alignSelf: 'center',
-      overflow: 'hidden',
+      flex: 1,
     },
     overlayContainer: {
       position: 'absolute',
@@ -226,12 +226,23 @@ const useHomeAnalysisStyles = () => {
     },
     zoomIndicator: {
       position: 'absolute',
-      top: 305,
-      right: 30,
-      width: 40,
-      height: 40,
+      bottom: 10,
+      right: 20,
+      width: 30,
+      height: 30,
       tintColor: theme.textColor,
       zIndex: 1000,
+    },
+    zoomedImage: {
+      width: 380,
+      height: 380,
+      alignSelf: 'center',
+    },
+    zoomImageDismissOverlay: {
+      width: '100%',
+      height: '25%',
+      backgroundColor: '#00000050',
+      opacity: 0.8,
     },
   });
   return styles;

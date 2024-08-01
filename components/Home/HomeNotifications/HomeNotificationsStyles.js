@@ -68,7 +68,7 @@ const useHomeNotificationsStyles = () => {
       zIndex: 2000,
     },
     timeFrameContainer: {
-      height: 28,
+      height: 32,
       marginVertical: 8,
       flexDirection: 'row',
       backgroundColor: theme.subMenuBgColor,
@@ -76,12 +76,14 @@ const useHomeNotificationsStyles = () => {
     },
     timeFrameButton: {
       width: 36,
+      padding: 4,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 4,
     },
     timeFrameActiveButton: {
       width: 36,
+      padding: 4,
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: theme.activeWhite,

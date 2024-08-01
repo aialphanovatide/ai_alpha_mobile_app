@@ -144,10 +144,11 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
         low: parseFloat(item[3]),
       }));
       setChartData(formattedChartData);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     } catch (error) {
       console.error(`Failed to fetch data: ${error}`);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -171,22 +172,8 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
             resistanceValues.push(values[key]);
           }
         }
-        // Check if the values are the same as the current ones
-        // const areSupportValuesEqual =
-        //   JSON.stringify(supportValues) === JSON.stringify(supportLevels);
-        // const areResistanceValuesEqual =
-        //   JSON.stringify(resistanceValues) === JSON.stringify(resistanceLevels);
-
-        // if (
-        //   coin === coinBot &&
-        //   areSupportValuesEqual &&
-        //   areResistanceValuesEqual
-        // ) {
-        //   setShouldFetchSR(false);
-        // } else {
         setSupportLevels(supportValues);
         setResistanceLevels(resistanceValues);
-        // }
       } else {
         console.info('---response S&R----', response.message);
       }
@@ -373,6 +360,13 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
     }
   };
 
+  // Function to handle the data refresh when pressing the update button
+
+  const handleRefresh = () => {
+    setLoading(true);
+    fetchChartDataFromServer(selectedInterval, selectedPairing);
+  };
+
   return (
     <View style={styles.chartContainer}>
       <IntervalSelector
@@ -390,8 +384,17 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
       <RsButton
         activeButtons={activeButtons}
         setActiveButtons={setActiveButtons}
-        disabled={supportResistanceLoading}
+        disabled={loading || supportResistanceLoading}
       />
+      {!loading && (
+        <TouchableOpacity onPress={() => handleRefresh()} disabled={loading}>
+          <Image
+            source={require('../../../../../../../assets/images/home/charts/chart-refresh.png')}
+            style={styles.refreshButton}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      )}
       {loading || chartData.length === 0 ? (
         <View style={styles.chart}>
           <SkeletonLoader

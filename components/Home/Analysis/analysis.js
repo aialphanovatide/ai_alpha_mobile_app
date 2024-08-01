@@ -8,6 +8,7 @@ import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIc
 import {home_static_data} from '../homeStaticData';
 import {AnalysisContext} from '../../../context/AnalysisContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Analysis = ({handleAboutPress}) => {
   const styles = useHomeAnalysisStyles();
   const {analysisItems, loading} = React.useContext(AnalysisContext);
@@ -22,15 +23,28 @@ const Analysis = ({handleAboutPress}) => {
     setAnalysisData(analysisItems);
   }, [analysisItems]);
 
+  //  Function to expand and close the Home Analysis component
+
   const handlePress = () => setExpanded(!expanded);
 
-  const handleAnalysisNavigation = analysis => {
+  // Function to handle the navigation to the full Analysis article when pressing it
+
+  const handleAnalysisNavigation = async analysis => {
     navigation.navigate('AnalysisArticleScreen', {
       analysis_content: analysis.raw_analysis,
       analysis_id: analysis.id,
+      category: analysis.category,
       date: analysis.created_at,
       isHistoryArticle: false,
     });
+    try {
+      await AsyncStorage.setItem(
+        `analysis_${analysis.id}`,
+        JSON.stringify(analysis),
+      );
+    } catch (error) {
+      console.error(`Failed to save the data of analysis ${analysis.id}`);
+    }
   };
 
   const handleSeeAllNavigation = () => {
@@ -47,7 +61,7 @@ const Analysis = ({handleAboutPress}) => {
         description={home_static_data.analysis.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
-      {loading || analysisData?.length === 0 ? (
+      {loading ? (
         <SkeletonLoader />
       ) : analysisData?.length === 0 ? (
         <Text style={styles.emptyMessage}>

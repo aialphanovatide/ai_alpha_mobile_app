@@ -5,9 +5,9 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
+  Image,
 } from 'react-native';
 import moment from 'moment';
-import TimeframeSelector from './chartTimeframes';
 import CandlestickDetails from './candleDetails';
 import Chart from './chart';
 import RsButton from './S&RButtons';
@@ -28,6 +28,7 @@ import useChartsSource from '../../../../../../hooks/useChartsSource';
 import {getService} from '../../../../../../services/aiAlphaApi';
 import {io} from 'socket.io-client';
 import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
+import CWChart from './NewCharts/CWChart';
 
 const IntervalSelector = ({selectedInterval, changeInterval, disabled}) => {
   const styles = useChartsStyles();
@@ -84,6 +85,8 @@ const CandlestickChart = ({route}) => {
   const navigation = useNavigation();
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
+  const [supportResistanceLoading, setSupportResistanceLoading] =
+    useState(false);
 
   // This useEffect handles the content regulation with the subscriptions from the user
   useEffect(() => {
@@ -115,6 +118,7 @@ const CandlestickChart = ({route}) => {
     setLastPrice(undefined);
     setSelectedPairing(pairings[0]);
     setSelectedInterval('1w');
+    fetchChartDataFromServer(pairings[0], '1w');
   }, [activeCoin, coinBot]);
 
   const {url, options} = useChartsSource(
@@ -150,12 +154,13 @@ const CandlestickChart = ({route}) => {
     }
   }
 
-  async function fetchChartDataFromServer() {
+  async function fetchChartDataFromServer(pairing, interval) {
+    setChartData([]);
     try {
       const data = await getService(
         `api/chart/ohlc?coin=${coinBot.toLowerCase()}&vs_currency=${
-          selectedPairing === 'USDT' ? 'usd' : selectedPairing.toLowerCase()
-        }&interval=${selectedInterval.toLowerCase()}&precision=8`,
+          pairing === 'USDT' ? 'usd' : pairing.toLowerCase()
+        }&interval=${interval.toLowerCase()}&precision=8`,
       );
       const currentPrice = parseFloat(data[data.length - 1][4]);
       data[data.length - 1][4] >= data[data.length - 2][4]
@@ -179,12 +184,20 @@ const CandlestickChart = ({route}) => {
 
   // UseEffects that updates the charts data every 3.5s, before it was every 1s but for performance reasons it was increased
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      fetchChartDataFromServer();
-    }, 3500);
-    return () => clearInterval(intervalId);
-  }, [coinBot, selectedInterval, selectedPairing]);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     fetchChartDataFromServer();
+  //   }, 3500);
+  //   return () => clearInterval(intervalId);
+  // }, [coinBot, selectedInterval, selectedPairing]);
+
+  // [TEMPORARY] Function to manually update the data of the chart
+
+  const handleDataUpdate = (pairing, currentInterval) => {
+    setLoading(true);
+    setChartData([]);
+    fetchChartDataFromServer(pairing, currentInterval);
+  };
 
   // Function to handle the time interval changes, executing again the data fetching
 
@@ -193,21 +206,25 @@ const CandlestickChart = ({route}) => {
     try {
       setSelectedInterval(newInterval);
       setChartData([]);
+      fetchChartDataFromServer(selectedPairing, newInterval);
     } catch (error) {
       console.error(`Failed to change interval: ${error}`);
     }
   };
 
   // Function to handle the currency-pair for the coins that haves USDT and BTC pairings
-  const handlePairingChange = async pairing => {
+  const handlePairingChange = async (pairing, currentInterval) => {
     setLoading(true);
     try {
       setSelectedPairing(pairing);
       if (pairing.toLowerCase() === 'btc') {
         setSelectedInterval('1w');
+        setChartData([]);
+        fetchChartDataFromServer(pairing, '1w');
+      } else {
+        setChartData([]);
+        fetchChartDataFromServer(pairing, currentInterval);
       }
-      setChartData([]);
-      fetchChartDataFromServer();
     } catch (error) {
       console.error(`Failed to change pairing: ${error}`);
     }
@@ -249,7 +266,8 @@ const CandlestickChart = ({route}) => {
     <LinearGradient
       useAngle={true}
       angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+      locations={[0.22, 0.97]}
       style={[styles.flex]}>
       <ScrollView
         style={[styles.scroll, {width: '100%'}]}
@@ -287,7 +305,19 @@ const CandlestickChart = ({route}) => {
             <RsButton
               activeButtons={activeButtons}
               setActiveButtons={setActiveButtons}
+              disabled={loading || supportResistanceLoading}
             />
+            <TouchableOpacity
+              onPress={() =>
+                handleDataUpdate(selectedPairing, selectedInterval)
+              }
+              disabled={loading}>
+              <Image
+                source={require('../../../../../../assets/images/home/charts/chart-refresh.png')}
+                style={styles.refreshButton}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
           </View>
           <Chart
             symbol={symbol}
@@ -297,6 +327,7 @@ const CandlestickChart = ({route}) => {
             activeButtons={activeButtons}
             coinBot={coinBot}
             selectedPairing={selectedPairing}
+            setSupportResistanceLoading={setSupportResistanceLoading}
           />
         </View>
 
@@ -316,7 +347,8 @@ const CandlestickChart = ({route}) => {
     <LinearGradient
       useAngle={true}
       angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+      locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <UpgradeOverlay isBlockingByCoin={true} screen={'Charts'} />
     </LinearGradient>

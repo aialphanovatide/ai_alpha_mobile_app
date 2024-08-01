@@ -26,8 +26,8 @@ const useAnalysisStyles = () => {
       borderRadius: 2,
     },
     analysisIconContainer: {
-      width: 30,
-      height: 30,
+      width: 28,
+      height: 25,
       marginHorizontal: 5,
       alignItems: 'center',
       justifyContent: 'center',

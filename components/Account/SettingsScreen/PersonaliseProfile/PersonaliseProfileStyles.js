@@ -8,7 +8,7 @@ const usePersonaliseProfileStyles = () => {
     root: {
       alignItems: 'center',
       backgroundColor: theme.mainBackgroundColor,
-      padding: 20,
+      padding: 10,
     },
     scrollview: {
       backgroundColor: theme.mainBackgroundColor,
@@ -24,19 +24,20 @@ const usePersonaliseProfileStyles = () => {
       marginBottom: 20,
     },
     mainTitle: {
-      marginVertical: '5%',
-      marginLeft: '6%',
+      marginVertical: 24,
+      marginBottom: 12,
+      marginHorizontal: 22,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
     },
     inputContainer: {
-      alignSelf: 'stretch',
+      width: '100%',
     },
     title: {
       color: theme.textColor,
       textAlign: 'left',
-      marginLeft: 0,
+      marginLeft: 15,
       fontFamily: theme.fontMedium,
       fontSize: 16,
     },
@@ -95,11 +96,12 @@ const usePersonaliseProfileStyles = () => {
     },
     imageContainer: {
       alignItems: 'center',
+      marginBottom: 16,
     },
     userImage: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
+      width: 92,
+      height: 92,
+      borderRadius: 46,
     },
     infoTitle: {
       color: theme.textColor,
@@ -127,7 +129,7 @@ const usePersonaliseProfileStyles = () => {
       backgroundColor: theme.mainBackgroundColor,
     },
     resetPasswordContainer: {
-      alignSelf: 'flex-start',
+      alignSelf: 'center',
       marginTop: 16,
     },
     sendMailButton: {
@@ -167,6 +169,9 @@ const usePersonaliseProfileStyles = () => {
       borderRadius: 5,
       backgroundColor: theme.loginInputBgColor,
     },
+    backbuttonContainer: {
+      marginHorizontal: 12,
+    }
   });
   return styles;
 };

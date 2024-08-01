@@ -3,13 +3,10 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Platform, View, Text, Image} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenGainersStyles from './TopTenGainersStyle.js';
-import topTenGainersService from '../../../services/TopTenGainersService.js';
-import TOP_TEN_GAINERS_MOCK from './TopTenGainersMock.js';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
 import {home_static_data} from '../homeStaticData.js';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
-import {getService} from '../../../services/aiAlphaApi.js';
 import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.

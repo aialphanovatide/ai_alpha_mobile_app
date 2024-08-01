@@ -120,7 +120,18 @@ const useNewChartsStyles = () => {
       borderColor: theme.subMenuBgColor,
       borderWidth: 3,
     },
+    refreshButton: {
+      position: 'absolute',
+      top: -160,
+      left: 75,
+      width: 18,
+      height: 18,
+      tintColor: theme.titleColor,
+      alignSelf: 'center',
+      zIndex: 10
+    },
   });
+
   return styles;
 };
 

@@ -9,7 +9,6 @@ import {
   Alert,
   Platform,
   TextInput,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import CustomInput from '../../../Login/CustomInput/CustomInput';
 import SaveButton from './SaveButton';
@@ -312,7 +311,9 @@ const PersonaliseProfile = () => {
   return (
     <SafeAreaView style={styles.backgroundColor}>
       <ScrollView style={styles.scrollview}>
-        <BackButton />
+        <View style={styles.backbuttonContainer}>
+          <BackButton />
+        </View>
         <Text style={styles.mainTitle}>Personalise Profile</Text>
         <View style={styles.root}>
           {userImage && (
@@ -400,7 +401,6 @@ const PersonaliseProfile = () => {
               Edit Password
             </Text>
           </View>
-
           <SaveButton
             onPress={toggleEditSave}
             text={'Save'}

@@ -8,12 +8,14 @@ import {
   Animated,
   Easing,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import BackButton from '../../../../../Analysis/BackButton/BackButton';
 import useNewsStyles from './NewsStyles';
 import FastImage from 'react-native-fast-image';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {AppThemeContext} from '../../../../../../context/themeContext';
+import {ResumableZoom, SnapbackZoom} from 'react-native-zoom-toolkit';
 
 const {Value, timing} = Animated;
 
@@ -120,7 +122,7 @@ const NewsArticle = ({route, navigation}) => {
     : null;
   const imageUri = isStory
     ? `data:image/jpg;base64,${storyImages[0].image}`
-    : `https://appnewsposters.s3.us-east-2.amazonaws.com/${item.image}`;
+    : `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`;
 
   const images = [{url: imageUri, width: theme.width, height: 400}];
 
@@ -132,26 +134,17 @@ const NewsArticle = ({route, navigation}) => {
     <ScrollView style={[styles.container, styles.backgroundColor]}>
       <Modal
         visible={isImageZoomVisible}
+        animationType="fade"
         transparent={true}
         style={styles.zoomImageBackground}
         onRequestClose={() => handleBackButtonImageClose()}>
-        <ImageViewer
-          imageUrls={images}
-          enableSwipeDown={true}
-          enableImageZoom={true}
-          onSwipeDown={() => setImageZoomVisible(false)}
-          index={0}
-          renderIndicator={() => null}
-          backgroundColor={'rgba(0,0,0,0.45)'}
+        <TouchableOpacity
+          onPress={() => handleBackButtonImageClose()}
+          style={styles.zoomImageDismissOverlay}
         />
-      </Modal>
-      <View style={styles.marginVertical}>
-        <BackButton handleReturn={handleReturn} />
-      </View>
-      <View style={styles.article}>
-        <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
+        <ResumableZoom maxScale={2} minScale={1}>
           <FastImage
-            style={styles.articleImage}
+            style={styles.zoomedImage}
             resizeMode={'contain'}
             source={{
               uri: isStory
@@ -161,23 +154,49 @@ const NewsArticle = ({route, navigation}) => {
             }}
             fallback={true}
           />
-        </TouchableWithoutFeedback>
-        {!isImageZoomVisible && (
+        </ResumableZoom>
+        <TouchableOpacity
+          onPress={() => handleBackButtonImageClose()}
+          style={styles.zoomImageDismissOverlay}
+        />
+      </Modal>
+      <View style={styles.marginVertical}>
+        <BackButton handleReturn={handleReturn} />
+      </View>
+      <View style={styles.article}>
+        <View style={styles.articleImageContainer}>
           <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
-            <Image
-              source={require('../../../../../../assets/images/analysis/magnifier.png')}
-              resizeMode="contain"
-              style={styles.zoomIndicator}
+            <FastImage
+              style={styles.articleImage}
+              resizeMode={'cover'}
+              source={{
+                uri: isStory
+                  ? `data:image/png;base64,${storyImages[0].image}`
+                  : imageUri,
+                priority: FastImage.priority.normal,
+              }}
+              fallback={true}
             />
           </TouchableWithoutFeedback>
-        )}
-        <Text style={styles.articleTitle}>
-          {isStory ? storyFilteredContent.title : item.title}
-        </Text>
-        <Text style={styles.articleDate}>{formatDate(item.date)}</Text>
-        <Text style={styles.articleSummary}>
-          {isStory ? storyFilteredContent.content : item.content}
-        </Text>
+          {!isImageZoomVisible && (
+            <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
+              <Image
+                source={require('../../../../../../assets/images/analysis/magnifier.png')}
+                resizeMode="contain"
+                style={styles.zoomIndicator}
+              />
+            </TouchableWithoutFeedback>
+          )}
+        </View>
+        <View style={styles.contentContainer}>
+          <Text style={styles.articleTitle}>
+            {isStory ? storyFilteredContent.title : item.title}
+          </Text>
+          <Text style={styles.articleDate}>{formatDate(item.date)}</Text>
+          <Text style={styles.articleSummary}>
+            {isStory ? storyFilteredContent.content : item.content}
+          </Text>
+        </View>
       </View>
     </ScrollView>
   );

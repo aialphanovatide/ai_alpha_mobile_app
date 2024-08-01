@@ -19,17 +19,15 @@ const useTopTenGainersStyles = () => {
       fontFamily: theme.fontSemibold,
     },
     table: {
-      paddingTop: 10,
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
     row: {
-      flex: 1,
       width: '100%',
       marginVertical: 2.5,
       display: 'flex',
       flexDirection: 'row',
-      borderBottomWidth: 1,
+      borderBottomWidth: 0.5,
       borderBottomColor: theme.secondaryGrayColor,
       paddingHorizontal: 20,
       paddingVertical: 10,

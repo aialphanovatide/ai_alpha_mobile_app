@@ -85,6 +85,7 @@ const Chart = ({
   selectedInterval,
   coinBot,
   selectedPairing,
+  setSupportResistanceLoading,
 }) => {
   const styles = useChartsStyles();
   const {theme} = useContext(AppThemeContext);
@@ -93,8 +94,6 @@ const Chart = ({
   const [selectedCandle, setSelectedCandle] = useState(null);
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
-  const [supportResistanceLoading, setSupportResistanceLoading] =
-    useState(false);
   const navigation = useNavigation();
 
   // Function to handle the X button interaction on the horizontal chart

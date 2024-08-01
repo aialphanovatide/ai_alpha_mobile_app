@@ -111,19 +111,6 @@ const AnalysisContextProvider = ({children}) => {
     getAnalysisData();
   }, [categories]);
 
-  // const updateAnalysisItems = newItem => {
-  //   const foundIndex = analysisItems.findIndex(item => item.id === newItem.id);
-
-  //   if (foundIndex !== -1) {
-  //     const newItems = [...analysisItems];
-  //     const repeatedItem = newItems.splice(foundIndex, 1)[0];
-  //     newItems.unshift(repeatedItem);
-  //     setAnalysisItems(newItems);
-  //   } else {
-  //     setAnalysisItems([newItem, ...analysisItems]);
-  //   }
-  // };
-
   return (
     <AnalysisContext.Provider value={{analysisItems, loading}}>
       {children}

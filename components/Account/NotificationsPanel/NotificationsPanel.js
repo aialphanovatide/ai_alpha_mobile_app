@@ -126,7 +126,6 @@ const NotificationsPanel = ({route, options = null}) => {
 
   useEffect(() => {
     const updateUserSubscriptions = async () => {
-
       try {
         console.log('userInfo:', userInfo);
         console.log('Packages:', packages);
@@ -460,9 +459,7 @@ const NotificationsPanel = ({route, options = null}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.backButtonContainer}>
-        <BackButton />
-      </View>
+      <BackButton />
       <Text style={styles.title}>Notifications</Text>
       <ScrollView style={styles.mainContainer}>
         <View style={styles.row}>

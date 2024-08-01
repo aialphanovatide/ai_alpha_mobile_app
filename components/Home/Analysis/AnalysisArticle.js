@@ -5,6 +5,7 @@ import {
   Platform,
   ScrollView,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -20,6 +21,7 @@ import {useNavigation} from '@react-navigation/core';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UnsubscribedMessage from './UnsubscribedMessage/UnsubscribedMessage';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import {ResumableZoom} from 'react-native-zoom-toolkit';
 
 const CustomImageRenderer = props => {
   const {Renderer, rendererProps} = useInternalRenderer('img', props);
@@ -218,17 +220,28 @@ const AnalysisArticle = ({route}) => {
     <ScrollView style={styles.container}>
       <Modal
         visible={isImageZoomVisible}
+        animationType="fade"
         transparent={true}
         style={styles.zoomImageBackground}
         onRequestClose={() => handleBackButtonImageClose()}>
-        <ImageViewer
-          imageUrls={images}
-          enableSwipeDown={true}
-          enableImageZoom={true}
-          onSwipeDown={() => setImageZoomVisible(false)}
-          index={0}
-          renderIndicator={() => null}
-          backgroundColor={'rgba(0,0,0,0.45)'}
+        <TouchableOpacity
+          onPress={() => handleBackButtonImageClose()}
+          style={styles.zoomImageDismissOverlay}
+        />
+        <ResumableZoom maxScale={2} minScale={1}>
+          <FastImage
+            style={styles.zoomedImage}
+            resizeMode={'contain'}
+            source={{
+              uri: `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
+              priority: FastImage.priority.normal,
+            }}
+            fallback={true}
+          />
+        </ResumableZoom>
+        <TouchableOpacity
+          onPress={() => handleBackButtonImageClose()}
+          style={styles.zoomImageDismissOverlay}
         />
       </Modal>
       <UnsubscribedMessage
@@ -242,35 +255,39 @@ const AnalysisArticle = ({route}) => {
       </View>
       <View
         style={[styles.article, !userInfo.subscribed ? {height: 1250} : {}]}>
-        <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
-          <FastImage
-            style={styles.articleImage}
-            resizeMode={'contain'}
-            source={{
-              uri: `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
-              priority: FastImage.priority.normal,
-            }}
-            fallback={true}
-          />
-        </TouchableWithoutFeedback>
-        {!isImageZoomVisible && (
+        <View style={styles.articleImageContainer}>
           <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
-            <Image
-              source={require('../../../assets/images/analysis/magnifier.png')}
-              resizeMode="contain"
-              style={styles.zoomIndicator}
+            <FastImage
+              style={styles.articleImage}
+              resizeMode={'cover'}
+              source={{
+                uri: `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
+                priority: FastImage.priority.normal,
+              }}
+              fallback={true}
             />
           </TouchableWithoutFeedback>
-        )}
-        <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>
-        <RenderHTML
-          source={html_source}
-          contentWidth={theme.width - 50}
-          systemFonts={systemFonts}
-          tagsStyles={html_styles}
-          classesStyles={classes_styles}
-          renderers={renderers}
-        />
+          {!isImageZoomVisible && (
+            <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
+              <Image
+                source={require('../../../assets/images/analysis/magnifier.png')}
+                resizeMode="contain"
+                style={styles.zoomIndicator}
+              />
+            </TouchableWithoutFeedback>
+          )}
+        </View>
+        <View style={styles.contentContainer}>
+          <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>
+          <RenderHTML
+            source={html_source}
+            contentWidth={theme.width - 50}
+            systemFonts={systemFonts}
+            tagsStyles={html_styles}
+            classesStyles={classes_styles}
+            renderers={renderers}
+          />
+        </View>
       </View>
     </ScrollView>
   );
