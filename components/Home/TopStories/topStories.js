@@ -138,7 +138,8 @@ const TopStories = ({handleAboutPress}) => {
   }, []);
 
   return (
-    <List.Section title="Top Stories" styl={styles.mainTitle}>
+    <View style={styles.StoriesItemsContainer}>
+      <Text style={styles.mainTitle}>Top Stories</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.topStories.sectionDescription}
@@ -192,7 +193,7 @@ const TopStories = ({handleAboutPress}) => {
           ))}
         </View>
       )}
-    </List.Section>
+    </View>
   );
 };
 

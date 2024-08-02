@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {List} from 'react-native-paper';
 import AnalysisItem from './analysisItem/analysisItem';
 import useHomeAnalysisStyles from './analysisStyles';
 import {Image, View, Text, TouchableOpacity} from 'react-native';
@@ -55,10 +54,11 @@ const Analysis = ({handleAboutPress}) => {
   };
 
   return (
-    <List.Section title="Analysis" titleStyle={styles.mainTitle}>
+    <View style={styles.analysisItemsContainer}>
+      <Text style={styles.mainTitle}>Analysis</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
-        description={home_static_data.analysis.sectionDescription}
+        description={home_static_data.narrativeTradings.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
       {loading ? (
@@ -111,7 +111,7 @@ const Analysis = ({handleAboutPress}) => {
           )}
         </View>
       )}
-    </List.Section>
+    </View>
   );
 };
 

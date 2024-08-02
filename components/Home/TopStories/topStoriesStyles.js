@@ -9,6 +9,11 @@ const useTopStoriesStyles = () => {
       width: '100%',
       backgroundColor: 'transparent',
     },
+    storiesItemsContainer: {
+      flex: 1,
+      width: '100%',
+      backgroundColor: theme.mainBackgroundColor,
+    },
     storyWrapper: {
       flex: 1,
       flexDirection: 'row',
@@ -18,9 +23,11 @@ const useTopStoriesStyles = () => {
       display: 'none',
     },
     mainTitle: {
-      fontFamily: theme.fontSemibold,
+      marginHorizontal: 16,
+      marginVertical: 18,
       color: theme.titleColor,
       fontSize: 16,
+      fontFamily: theme.fontSemibold,
     },
     titleStyles: {
       maxWidth: '85%',
