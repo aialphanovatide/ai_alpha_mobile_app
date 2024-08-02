@@ -49,11 +49,11 @@ const useChartSectionStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      top: 15,
+      top: 50,
       left: '7.5%',
       width: 52,
       height: 44,
-      opacity: 0.8,
+      opacity: 0.7,
       zIndex: -2,
     },
     timeframeContainer: {
@@ -101,7 +101,7 @@ const useChartSectionStyles = () => {
       width: 20,
       height: 20,
       position: 'absolute',
-      bottom: 60,
+      bottom: 80,
       left: 25,
       tintColor: theme.textColor,
     },
@@ -117,9 +117,19 @@ const useChartSectionStyles = () => {
       width: 28,
       height: 28,
       position: 'absolute',
-      bottom: 70,
+      bottom: 80,
       right: 80,
       tintColor: theme.textColor,
+    },
+    refreshButton: {
+      position: 'absolute',
+      top: -35,
+      left: 200,
+      width: 18,
+      height: 18,
+      tintColor: theme.titleColor,
+      alignSelf: 'center',
+      zIndex: 10
     },
   });
   return styles;

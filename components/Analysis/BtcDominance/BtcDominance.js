@@ -1,6 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, ImageBackground, Text, Image} from 'react-native';
-import {VictoryChart, VictoryAxis, VictoryCandlestick, VictoryZoomContainer} from 'victory-native';
+import {View, ImageBackground, Text, Image, Dimensions} from 'react-native';
+import {
+  VictoryChart,
+  VictoryAxis,
+  VictoryCandlestick,
+  VictoryZoomContainer,
+  VictoryLine,
+} from 'victory-native';
 import axios from 'axios';
 import BackButton from '../BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -9,6 +15,7 @@ import useBtcDominanceStyles from './BtcDominanceStyles';
 import {AppThemeContext} from '../../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
+import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
 
 const BtcDominanceChart = ({candlesToShow = 30}) => {
   const [chartData, setChartData] = useState([]);
@@ -16,6 +23,7 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
   const [loading, setLoading] = useState(true);
   const styles = useBtcDominanceStyles();
   const {isDarkMode, theme} = useContext(AppThemeContext);
+  const [selectedCandle, setSelectedCandle] = useState(null);
 
   async function fetchChartData(interval = selectedInterval) {
     try {
@@ -38,9 +46,9 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
         close: parseFloat(entry[4]),
       }));
       setChartData(ohlcData);
-      setLoading(false);
     } catch (error) {
       console.error('Failed to fetch data:', error);
+    } finally {
       setLoading(false);
     }
   }
@@ -48,21 +56,17 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
   useEffect(() => {
     const intervalId = setInterval(
       () => fetchChartData(selectedInterval),
-      3500,
+      2000,
     );
     return () => clearInterval(intervalId);
   }, [selectedInterval]);
 
   const changeInterval = async newInterval => {
-    setSelectedInterval(newInterval);
     setLoading(true);
-
     try {
+      setSelectedInterval(newInterval);
       setChartData([]);
-      await fetchChartData(newInterval);
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
       console.error('Failed to change interval: ${error}');
     }
   };
@@ -86,7 +90,7 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
             preference for BTC over other altcoins.
           </Text>
           <View style={styles.container}>
-            <SkeletonLoader type="timeframe" quantity={4} />
+            <SkeletonLoader type="timeframe" quantity={2} />
             <SkeletonLoader
               type="chart"
               style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
@@ -96,6 +100,32 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
       </LinearGradient>
     );
   }
+
+  // Function to handle candle click events
+  const handleCandleClick = (event, data) => {
+    const linesColor = data.close > data.open ? '#09C283' : '#E93334';
+    setSelectedCandle({...data, linesColor});
+  };
+
+  const handleCandlePressOut = () => {
+    setSelectedCandle(null); // Clear the selected candle state
+  };
+
+  const calculateCandleMiddle = candle => {
+    return (candle.open + candle.close) / 2;
+  };
+
+  // Extracting low and high values from candlestick data
+  const lows = chartData.map(d => d.low);
+  const highs = chartData.map(d => d.high);
+
+  // Calculate Fibonacci retracement levels
+  const low = Math.min(...lows);
+  const high = Math.max(...highs);
+
+  const {height, width} = Dimensions.get('window');
+  const chartWidth = width > 500 ? 860 : 400;
+  const chartHeight = 300;
 
   const domainY = chartData.reduce(
     (acc, dataPoint) => [
@@ -124,7 +154,7 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
       useAngle={true}
       angle={45}
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
+      locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <SafeAreaView style={styles.background}>
         <View style={styles.backButtonWrapper}>
@@ -138,9 +168,9 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
         </Text>
         <View style={styles.timeframeContainer}>
           <TimeframeSelector
+            selectedPairing={'null'}
             selectedInterval={selectedInterval}
             changeInterval={changeInterval}
-            hasHourlyTimes={true}
             additionalStyles={{marginVertical: 0}}
           />
         </View>
@@ -149,24 +179,42 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
             <VictoryChart
               width={375}
               domain={{x: domainX, y: domainY}}
+              events={[
+                {
+                  target: 'parent',
+                  eventHandlers: {
+                    onPressOut: () => {
+                      handleCandlePressOut();
+                      return [];
+                    },
+                  },
+                },
+              ]}
               padding={{top: 10, bottom: 40, left: 20, right: 70}}
               domainPadding={{x: 5, y: 3}}
               scale={{x: 'time', y: 'linear'}}
-              containerComponent={
-                <VictoryZoomContainer />
-              }
+              containerComponent={<VictoryZoomContainer />}
               height={300}>
               <VictoryAxis
+                fixLabelOverlap
                 style={{
                   axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
                   tickLabels: {
-                    fontSize: theme.responsiveFontSize * 0.7,
+                    fontSize: 9.25,
                     fill: theme.titleColor,
                     fontFamily: theme.font,
                   },
                   grid: {stroke: theme.chartsGridColor},
                 }}
                 tickCount={6}
+                tickFormat={t => {
+                  const year = t.getFullYear();
+                  const month = (t.getMonth() + 1).toString().padStart(2, '0');
+                  const day = t.getDate().toString().padStart(2, '0');
+                  const hour = t.getHours().toString().padStart(2, '0');
+                  const minute = t.getMinutes().toString().padStart(2, '0');
+                  return `${year}-${day}-${month}`;
+                }}
               />
               <VictoryAxis
                 dependentAxis
@@ -184,8 +232,73 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
                 orientation="right"
               />
 
+              <DataRenderer
+                domainX={domainX}
+                yPoint={selectedCandle && calculateCandleMiddle(selectedCandle)}
+                domainY={domainY}
+                chartWidth={chartWidth}
+                screenWidth={width}
+                chartHeight={chartHeight}
+                data={selectedCandle && selectedCandle}
+              />
+
+              {/* HORIZONTAL LINE */}
+              {selectedCandle && (
+                <VictoryLine
+                  data={[
+                    {
+                      x: domainX[0],
+                      y: (selectedCandle.open + selectedCandle.close) / 2,
+                    },
+                    {
+                      x: domainX[1],
+                      y: (selectedCandle.open + selectedCandle.close) / 2,
+                    },
+                  ]}
+                  style={{
+                    data: {
+                      stroke: selectedCandle
+                        ? selectedCandle.linesColor
+                        : '#E93334',
+                      strokeWidth: 1,
+                      strokeDasharray: [4, 4],
+                    },
+                  }}
+                />
+              )}
+
+              {/* VERTICAL LINE */}
+              {selectedCandle && (
+                <VictoryLine
+                  data={[
+                    {x: new Date(selectedCandle.x), y: high},
+                    {x: new Date(selectedCandle.x), y: low},
+                  ]}
+                  style={{
+                    data: {
+                      stroke: selectedCandle
+                        ? selectedCandle.linesColor
+                        : '#E93334',
+                      strokeWidth: 1,
+                      strokeDasharray: [4, 4],
+                    },
+                  }}
+                />
+              )}
+
               <VictoryCandlestick
                 data={chartData}
+                events={[
+                  {
+                    target: 'data',
+                    eventHandlers: {
+                      onPressIn: (event, props) => {
+                        handleCandleClick(event, props.datum);
+                        return []; // Return an empty array to avoid any state mutation on the chart itself
+                      },
+                    },
+                  },
+                ]}
                 candleRatio={0.5}
                 candleColors={{positive: '#09C283', negative: '#E93334'}}
                 style={{

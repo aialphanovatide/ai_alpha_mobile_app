@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
+  Dimensions,
   Image,
   ImageBackground,
   SafeAreaView,
@@ -16,10 +17,17 @@ import {
   getCapitalComPrices,
   postCCSession,
 } from '../../../services/CapitalComServices';
-import {VictoryAxis, VictoryCandlestick, VictoryChart, VictoryZoomContainer} from 'victory-native';
+import {
+  VictoryAxis,
+  VictoryCandlestick,
+  VictoryChart,
+  VictoryLine,
+  VictoryZoomContainer,
+} from 'victory-native';
 import useChartSectionStyles from '../ChartSection/ChartSectionStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
+import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
 
 const initialSessionData = {
   security_token: null,
@@ -30,24 +38,32 @@ const UsOilChart = ({route, navigation}) => {
   const {title, symbol, description} = route.params;
   const styles = useChartSectionStyles();
   const {isDarkMode, theme} = useContext(AppThemeContext);
-  const [selectedInterval, setSelectedInterval] = useState('1h');
+  const [selectedInterval, setSelectedInterval] = useState('1D');
   const [sessionData, setSessionData] = useState(initialSessionData);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
+  const [selectedCandle, setSelectedCandle] = useState(null);
+
+  // Hook to request again the data to CapitalCom when changing the time interval or the coin (changing to other chart)
+  useEffect(() => {
+    setLoading(true);
+    if (!sessionData.security_cst && !sessionData.security_token) {
+      loadChartsData();
+    } else {
+      fetchCapitalComChartData(
+        sessionData.security_token,
+        sessionData.security_cst,
+      );
+    }
+  }, [symbol, selectedInterval]);
 
   // Function to fetch the data from Capital Com API, this requires a previous authentication with a security token an code, which are provided by a POST request to the Capital Com's auth API. This limites the number of updates to this chart, and that's the reason of the increasing of the update time in the setInterval effect.
 
   async function fetchCapitalComChartData(security_token, security_cst) {
     const adapted_interval =
-      selectedInterval.toUpperCase() === '1H'
-        ? 'HOUR'
-        : selectedInterval.toUpperCase() === '4H'
-        ? 'HOUR_4'
-        : selectedInterval.toUpperCase() === '1D'
-        ? 'DAY'
-        : 'WEEK';
+      selectedInterval.toUpperCase() === '1D' ? 'DAY' : 'WEEK';
     try {
       const response = await getCapitalComPrices(
         symbol,
@@ -100,10 +116,10 @@ const UsOilChart = ({route, navigation}) => {
 
   // This chart was configured to update every 8s since the source is an external API which has limitation parameters in terms of requests per minute. The useEffect from below is executing these updates, loading the auth session tokens and after that making the request of the data itself.
 
-  useEffect(() => {
-    const intervalId = setInterval(() => loadChartsData(), 8000);
-    return () => clearInterval(intervalId);
-  }, [symbol, selectedInterval]);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => loadChartsData(), 2000);
+  //   return () => clearInterval(intervalId);
+  // }, [symbol, selectedInterval]);
 
   useEffect(() => {
     setLoading(true);
@@ -129,7 +145,7 @@ const UsOilChart = ({route, navigation}) => {
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.sectionDescription}>{description}</Text>
             <View style={styles.container}>
-              <SkeletonLoader type="timeframe" quantity={4} />
+              <SkeletonLoader type="timeframe" quantity={2} />
               <SkeletonLoader
                 type="chart"
                 style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
@@ -140,6 +156,17 @@ const UsOilChart = ({route, navigation}) => {
       </LinearGradient>
     );
   }
+
+  // [TEMPORARY] Function to manually update the data of the chart
+
+  const handleDataUpdate = async currentInterval => {
+    setLoading(true);
+    setChartData([]);
+    await fetchCapitalComChartData(
+      sessionData.security_token,
+      sessionData.security_cst,
+    );
+  };
 
   const domainY = () => {
     return chartData?.reduce(
@@ -156,28 +183,49 @@ const UsOilChart = ({route, navigation}) => {
   const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
 
   const changeInterval = async newInterval => {
-    setSelectedInterval(newInterval);
     setLoading(true);
 
     try {
+      setSelectedInterval(newInterval);
       setChartData([]);
-      await fetchCapitalComChartData(
-        sessionData.security_token,
-        sessionData.security_cst,
-      );
-      setLoading(false);
     } catch (error) {
       setLoading(false);
       console.error('Failed to change interval: ${error}');
     }
   };
 
+  // Function to handle candle click events
+  const handleCandleClick = (event, data) => {
+    const linesColor = data.close > data.open ? '#09C283' : '#E93334';
+    setSelectedCandle({...data, linesColor});
+  };
+
+  const handleCandlePressOut = () => {
+    setSelectedCandle(null); // Clear the selected candle state
+  };
+
+  const calculateCandleMiddle = candle => {
+    return (candle.open + candle.close) / 2;
+  };
+
+  // Extracting low and high values from candlestick data
+  const lows = chartData.map(d => d.low);
+  const highs = chartData.map(d => d.high);
+
+  const low = Math.min(...lows);
+  const high = Math.max(...highs);
+
+  // Gets the dimensation of the phone
+  const {height, width} = Dimensions.get('window');
+  const chartWidth = width > 500 ? 860 : 400;
+  const chartHeight = 340;
+
   return (
     <LinearGradient
       useAngle={true}
       angle={45}
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
+      locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <SafeAreaView
         style={[
@@ -192,10 +240,20 @@ const UsOilChart = ({route, navigation}) => {
           <Text style={styles.sectionDescription}>{description}</Text>
           <View style={styles.timeframeContainer}>
             <TimeframeSelector
+              selectedPairing={'null'}
               selectedInterval={selectedInterval}
               changeInterval={changeInterval}
-              hasHourlyTimes={true}
+              disabled={loading}
             />
+            <TouchableOpacity
+              onPress={() => handleDataUpdate(selectedInterval)}
+              disabled={loading}>
+              <Image
+                source={require('../../../assets/images/home/charts/chart-refresh.png')}
+                style={[styles.refreshButton, {top: 20, left: 20}]}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.container}>
             <View style={styles.chart}>
@@ -207,14 +265,22 @@ const UsOilChart = ({route, navigation}) => {
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
                 domain={{x: domainX, y: domainY()}}
+                events={[
+                  {
+                    target: 'parent',
+                    eventHandlers: {
+                      onPressOut: () => {
+                        handleCandlePressOut();
+                        return [];
+                      },
+                    },
+                  },
+                ]}
                 padding={{top: 10, bottom: 40, left: 20, right: 70}}
                 domainPadding={{x: 5, y: 3}}
                 scale={{x: 'time', y: 'linear'}}
                 height={300}
-                containerComponent={
-                  <VictoryZoomContainer />
-                }
-                >
+                containerComponent={<VictoryZoomContainer />}>
                 <VictoryAxis
                   fixLabelOverlap
                   style={{
@@ -254,8 +320,75 @@ const UsOilChart = ({route, navigation}) => {
                   tickFormat={t => `$${t}`}
                 />
 
+                {/* HORIZONTAL LINE */}
+                {selectedCandle && (
+                  <VictoryLine
+                    data={[
+                      {
+                        x: domainX[0],
+                        y: (selectedCandle.open + selectedCandle.close) / 2,
+                      },
+                      {
+                        x: domainX[1],
+                        y: (selectedCandle.open + selectedCandle.close) / 2,
+                      },
+                    ]}
+                    style={{
+                      data: {
+                        stroke: selectedCandle
+                          ? selectedCandle.linesColor
+                          : '#E93334',
+                        strokeWidth: 1,
+                        strokeDasharray: [4, 4],
+                      },
+                    }}
+                  />
+                )}
+
+                <DataRenderer
+                  domainX={domainX}
+                  yPoint={
+                    selectedCandle && calculateCandleMiddle(selectedCandle)
+                  }
+                  domainY={domainY}
+                  chartWidth={chartWidth}
+                  screenWidth={width}
+                  chartHeight={chartHeight}
+                  data={selectedCandle && selectedCandle}
+                />
+
+                {/* VERTICAL LINE */}
+                {selectedCandle && (
+                  <VictoryLine
+                    data={[
+                      {x: new Date(selectedCandle.x), y: high},
+                      {x: new Date(selectedCandle.x), y: low},
+                    ]}
+                    style={{
+                      data: {
+                        stroke: selectedCandle
+                          ? selectedCandle.linesColor
+                          : '#E93334',
+                        strokeWidth: 1,
+                        strokeDasharray: [4, 4],
+                      },
+                    }}
+                  />
+                )}
+
                 <VictoryCandlestick
                   data={chartData}
+                  events={[
+                    {
+                      target: 'data',
+                      eventHandlers: {
+                        onPressIn: (event, props) => {
+                          handleCandleClick(event, props.datum);
+                          return []; // Return an empty array to avoid any state mutation on the chart itself
+                        },
+                      },
+                    },
+                  ]}
                   candleRatio={0.6}
                   candleColors={{positive: '#09C283', negative: '#E93334'}}
                   style={{

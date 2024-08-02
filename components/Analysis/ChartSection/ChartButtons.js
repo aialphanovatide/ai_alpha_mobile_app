@@ -2,7 +2,7 @@ import React from 'react';
 import {View, TouchableOpacity, Text} from 'react-native';
 import useChartSectionStyles from './ChartSectionStyles';
 
-const ChartButtons = ({activeButtons, setActiveButtons}) => {
+const ChartButtons = ({activeButtons, setActiveButtons, disabled}) => {
   const styles = useChartSectionStyles();
   const buttons = [
     {label: 'Support', color: '#C539B4'},
@@ -22,11 +22,11 @@ const ChartButtons = ({activeButtons, setActiveButtons}) => {
     }
   };
 
-
   return (
     <View style={styles.rsButtonContainer}>
       {buttons.map((button, index) => (
         <TouchableOpacity
+          disabled={disabled}
           key={index}
           style={[
             styles.rsButton,
@@ -39,14 +39,13 @@ const ChartButtons = ({activeButtons, setActiveButtons}) => {
                 : button.color,
             },
           ]}
-          onPress={() => handlePress(button.label)}
-          >
+          onPress={() => handlePress(button.label)}>
           <Text
-             style={[
+            style={[
               styles.rsButtonText,
               activeButtons.includes(button.label)
                 ? styles.activeRsButtonText
-                : { color: button.color },
+                : {color: button.color},
             ]}>
             {button.label}
           </Text>

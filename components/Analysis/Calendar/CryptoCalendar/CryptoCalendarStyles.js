@@ -156,10 +156,12 @@ const useCryptoCalendarStyles = () => {
       alignSelf: 'center',
     },
     emptyEventsMessage: {
-      textAlign: 'center',
+      margin: theme.boxesVerticalMargin,
+      fontSize: 14,
       color: theme.secondaryTextColor,
-      fontSize: theme.responsiveFontSize * 0.9,
+      alignSelf: 'flex-start',
       fontFamily: theme.fontBoldItalic,
+      textAlign: 'left',
     },
     flex: {
       flex: 1,

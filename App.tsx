@@ -105,10 +105,9 @@ const App = () => {
 
       const newNotification = {
         title: alertData.title,
-        description:
-          alertData.body.length > 50
-            ? alertData.body.slice(0, 45)
-            : alertData.body,
+        description: alertData.title.toLowerCase().includes('chart')
+          ? alertData.body
+          : 'New analysis posted!',
         coin: notificationCoin,
         date: notificationDate,
         category: null,
