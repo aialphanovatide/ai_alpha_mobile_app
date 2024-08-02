@@ -10,6 +10,9 @@ const useCurrentPackagesStyles = () => {
       flex: 1,
       backgroundColor: theme.mainBackgroundColor,
     },
+    flex: {
+      flex: 1,
+    },
     backgroundContainer: {
       flex: 1,
     },
