@@ -48,6 +48,9 @@ const HomeScreen = () => {
   const {isLandscape, isHorizontal} = useScreenOrientation();
   const styles = useNavbarStyles();
 
+  console.log("isLandscape -> ", isLandscape);
+  console.log("isHorizontal -> ", isHorizontal);
+  
   useEffect(
     () =>
       navigation.addListener('beforeRemove', e => {

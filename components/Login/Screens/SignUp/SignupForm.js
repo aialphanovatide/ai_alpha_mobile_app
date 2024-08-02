@@ -15,6 +15,7 @@ import GreenTick from '../../../../assets/images/greenTick.png';
 import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
 import useSignUpStyles from './SignUpStyles';
+import { useRawUserId } from '../../../../context/RawUserIdContext';
 import { useUser } from '../../../../context/UserContext';
 import { useUserId } from '../../../../context/UserIdContext';
 import { auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret } from '../../../../src/constants';
@@ -24,6 +25,7 @@ import BackButton from '../../../Analysis/BackButton/BackButton';
 const SignupForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const {rawUserId, setRawUserId} = useRawUserId();
   const [passwordRepeat, setPasswordRepeat] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const [signupSuccessful, setSignupSuccessful] = useState(false);
@@ -184,6 +186,39 @@ const SignupForm = () => {
           navigation.navigate('SignIn');
         }, 2000);
       }
+
+      const secondEmailCheckResponse = await axios.get(
+        `https://${auth0Domain}/api/v2/users-by-email`,
+        {
+          params: {
+            email: email,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("secondEmailCheckResponse: ", secondEmailCheckResponse);
+      console.log("User ID: ", secondEmailCheckResponse.data[0].user_id);
+      console.log("nickname: ", secondEmailCheckResponse.data[0].nickname);
+      console.log("picture: ", secondEmailCheckResponse.data[0].picture);
+      console.log("provider: ", secondEmailCheckResponse.data[0].identities[0].provider);
+      const response = await fetch(`https://aialpha.ngrok.io/register`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            auth0id: secondEmailCheckResponse.data[0].user_id,
+            email: email,
+            email_verified: false,
+            nickname: secondEmailCheckResponse.data[0].nickname,
+            picture: secondEmailCheckResponse.data[0].picture,
+            provider: "Username-Password-Authentication",
+          }),
+        });
+        const data = await response.json();
+
+        console.log("DATA SENT TO BACKEND",data);
+
     } catch (error) {
       console.log('Signup error: ', error);
     }

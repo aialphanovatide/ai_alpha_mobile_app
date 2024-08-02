@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState, useMemo} from 'react';
-import {View, ImageBackground, Dimensions, Image} from 'react-native';
+import {View, ImageBackground, Dimensions, Image, TouchableOpacity} from 'react-native';
 import {
   VictoryChart,
   VictoryAxis,
@@ -12,7 +12,6 @@ import {AppThemeContext} from '../../../../../../context/themeContext';
 import useChartsStyles from './ChartsStyles';
 import {getService} from '../../../../../../services/aiAlphaApi';
 import DataRenderer from './clickOnCandleDetails';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/core';
 import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
@@ -507,26 +506,27 @@ const Chart = ({
         </VictoryChart>
       </View>
       <TouchableOpacity
-        onPress={
-          isLandscape
-            ? () => {
-                handleBackInteraction();
-              }
-            : () => {
-                navigation.canGoBack(false);
-                handleScreenOrientationChange('LANDSCAPE');
-              }
-        }>
-        <Image
-          style={styles.chartsHorizontalButton}
-          resizeMode="contain"
-          source={
-            isLandscape && isHorizontal
-              ? require('../../../../../../assets/images/home/charts/deactivate-horizontal.png')
-              : require('../../../../../../assets/images/home/charts/activate-horizontal.png')
-          }
-        />
-      </TouchableOpacity>
+              onPress={
+                isLandscape
+                  ? () => {
+                      console.log("LANDSCAPE FUNCTION CALLED");
+                      handleBackInteraction();
+                    }
+                  : () => {
+                      console.log("PORTRAIT FUNCTION CALLED");
+                      navigation.canGoBack(false);
+                      handleScreenOrientationChange('LANDSCAPE');
+                    }
+              }>
+              <Image
+                style={styles.chartsHorizontalButton}
+                source={
+                  isLandscape && isHorizontal
+                    ? require('../../../../../../assets/images/home/charts/deactivate-horizontal.png')
+                    : require('../../../../../../assets/images/home/charts/activate-horizontal.png')
+                }
+              />
+            </TouchableOpacity>
       <TouchableOpacity onPress={() => handleBackInteraction()}>
         <Image
           style={

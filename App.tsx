@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import Navigation from './navigation/Navigation';
 import {
   View,
@@ -20,7 +20,7 @@ import {UserProvider} from './context/UserContext';
 import {UserIdProvider} from './context/UserIdContext';
 import {RawUserIdProvider, useRawUserId} from './context/RawUserIdContext';
 import {CategoriesContextProvider} from './context/categoriesContext';
-import {AppThemeProvider} from './context/themeContext';
+import {AppThemeProvider, AppThemeContext} from './context/themeContext';
 import SplashScreen from 'react-native-splash-screen';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 import {AboutModalProvider} from './context/AboutModalContext';
@@ -35,14 +35,22 @@ import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
-import { auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret } from './src/constants/index';
+import {
+  auth0Client,
+  auth0Domain,
+  auth0ManagementAPI_Client,
+  auth0ManagementAPI_Secret,
+} from './src/constants/index';
 import UserService from './services/UserService';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import eventEmitter from './eventEmitter';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
 const App = () => {
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const colorScheme = Appearance.getColorScheme();
   const [barScheme, setBarScheme] = useState('default');
   const [isConnected, setIsConnected] = useState(true);
@@ -51,6 +59,17 @@ const App = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [serverWentDown, setServerWentDown] = useState(0);
 
+  useEffect(() => {
+    console.log('HERE 1111111111');
+    const subscription = eventEmitter.addListener('darkModeChanged', isDark => {
+      console.log('HERE 22222222');
+      setIsDarkMode(isDark);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
   /*
   useEffect(() => {
     console.log("socket->", socket);
@@ -145,7 +164,6 @@ const App = () => {
   //   });
   // }, []);
 
-  
   useEffect(() => {
     if (Platform.OS === 'android') {
       SplashScreen.hide();
@@ -172,7 +190,7 @@ const App = () => {
         setServerError(true);
       }
     };
-
+    console.log('Fetching categories');
     fetchCategories();
     const intervalId = setInterval(fetchCategories, 120000); // 120000 milliseconds = 2 minutes
     return () => clearInterval(intervalId);
@@ -233,9 +251,6 @@ const App = () => {
     setBarScheme(theme);
   };
 
-  
-
-
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();
     setIsConnected(state.isConnected);
@@ -252,153 +267,159 @@ const App = () => {
   };
 
   return (
-    <Auth0Provider
-      domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
-      clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
-      <RevenueCatProvider>
-        <UserProvider>
-          <UserIdProvider>
-            <RawUserIdProvider>
-              <AppThemeProvider>
-                <SafeAreaView
-                  style={[
-                    styles.container,
-                    {
-                      backgroundColor:
-                        colorScheme === 'dark' ? '#0b0b0a' : '#fbfbfa',
-                    },
-                  ]}>
-                  <StatusBar
-                    barStyle={
-                      colorScheme === 'dark' ? 'light-content' : 'dark-content'
-                    }
-                  />
-                  <SingletonHooksContainer />
-                  <CategoriesContextProvider>
-                    <TopMenuContextProvider>
-                      <NarrativeTradingContextProvider>
-                        <AnalysisContextProvider>
-                          <AboutModalProvider>
-                            <Navigation />
-                            {/* <View >
+    <AppThemeProvider>
+      <Auth0Provider domain={auth0Domain} clientId={auth0Client}>
+        <RevenueCatProvider>
+          <UserProvider>
+            <UserIdProvider>
+              <RawUserIdProvider>
+                <AppThemeProvider>
+                <SafeAreaView style={{ flex:0, backgroundColor: isDarkMode ? '#0F0F0F' : '#EDEDED'}}>
+                </SafeAreaView>
+                  <SafeAreaView
+                    style={[
+                      styles.container,
+                      {
+                        flex: 1,
+                        backgroundColor: isDarkMode ? '#0b0b0a' : '#fbfbfa',
+                      },
+                    ]}>
+                    <StatusBar
+                      barStyle={
+                        isDarkMode
+                          ? 'light-content'
+                          : 'dark-content' /*This changes the font color for SafeAreaView*/
+                      }
+                    />
+                    <SingletonHooksContainer />
+                    <CategoriesContextProvider>
+                      <TopMenuContextProvider>
+                        <NarrativeTradingContextProvider>
+                          <AnalysisContextProvider>
+                            <AboutModalProvider>
+                              <Navigation />
+                              {/* <View >
                         <Button title="Trigger Notification" onPress={handleNotification} />
                       </View>
                       */}
-                            <Modal
-                              animationType="slide"
-                              transparent={true}
-                              visible={modalVisible}
-                              onRequestClose={() => {
-                                setModalVisible(false);
-                              }}>
-                              <View style={styles.centeredView}>
-                                <View
-                                  style={[
-                                    styles.orangeBox,
-                                    {
-                                      backgroundColor:
-                                        colorScheme === 'dark'
-                                          ? '#451205'
-                                          : '#FFF7EC',
-                                    },
-                                  ]}>
-                                  <View style={styles.row}>
-                                    <Image
-                                      source={require('./assets/images/login/nointernet.png')}
-                                      style={styles.imageStyle1}
-                                    />
-                                    <Text
-                                      style={[
-                                        styles.labelText1,
-                                        {
-                                          color:
-                                            colorScheme === 'dark'
-                                              ? '#FF8D34'
-                                              : '#FF6C0D',
-                                        },
-                                      ]}>
-                                      It seems that you are offline.
-                                    </Text>
-                                  </View>
-                                  <View style={styles.row}>
-                                    <Image
-                                      source={require('./assets/images/login/reloadsymbol.png')}
-                                      style={styles.imageStyle2}
-                                    />
-                                    <TouchableOpacity
-                                      onPress={checkConnectivityAndCloseModal}>
-                                      <Text style={styles.labelText2}>
-                                        Reload
-                                      </Text>
-                                    </TouchableOpacity>
-                                  </View>
-                                </View>
-                              </View>
-                            </Modal>
-                            <Modal
-                              animationType="slide"
-                              transparent={true}
-                              visible={serverError}
-                              onRequestClose={() => {
-                                setServerError(false);
-                              }}>
-                              <View style={styles.centeredView}>
-                                <View
-                                  style={[
-                                    styles.orangeBox,
-                                    {
-                                      backgroundColor:
-                                        colorScheme === 'dark'
-                                          ? '#451205'
-                                          : '#FFF7EC',
-                                    },
-                                  ]}>
-                                  <View style={styles.row}>
-                                    <Image
-                                      source={require('./assets/images/login/serverdown.png')}
-                                      style={styles.imageStyle3}
-                                    />
-                                    <Text
-                                      style={[
-                                        styles.labelText1,
-                                        {
-                                          color:
-                                            colorScheme === 'dark'
-                                              ? '#FF8D34'
-                                              : '#FF6C0D',
-                                        },
-                                      ]}>
-                                      Seems like the server is down
-                                    </Text>
-                                  </View>
-                                  <Text
+                              <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={() => {
+                                  setModalVisible(false);
+                                }}>
+                                <View style={styles.centeredView}>
+                                  <View
                                     style={[
-                                      styles.labelText3,
+                                      styles.orangeBox,
                                       {
-                                        color:
+                                        backgroundColor:
                                           colorScheme === 'dark'
-                                            ? '#FF6C0D'
-                                            : '#A02E0C',
+                                            ? '#451205'
+                                            : '#FFF7EC',
                                       },
                                     ]}>
-                                    Please wait a few minutes while our
-                                    technicians work to solve this problem
-                                  </Text>
+                                    <View style={styles.row}>
+                                      <Image
+                                        source={require('./assets/images/login/nointernet.png')}
+                                        style={styles.imageStyle1}
+                                      />
+                                      <Text
+                                        style={[
+                                          styles.labelText1,
+                                          {
+                                            color:
+                                              colorScheme === 'dark'
+                                                ? '#FF8D34'
+                                                : '#FF6C0D',
+                                          },
+                                        ]}>
+                                        It seems that you are offline.
+                                      </Text>
+                                    </View>
+                                    <View style={styles.row}>
+                                      <Image
+                                        source={require('./assets/images/login/reloadsymbol.png')}
+                                        style={styles.imageStyle2}
+                                      />
+                                      <TouchableOpacity
+                                        onPress={
+                                          checkConnectivityAndCloseModal
+                                        }>
+                                        <Text style={styles.labelText2}>
+                                          Reload
+                                        </Text>
+                                      </TouchableOpacity>
+                                    </View>
+                                  </View>
                                 </View>
-                              </View>
-                            </Modal>
-                          </AboutModalProvider>
-                        </AnalysisContextProvider>
-                      </NarrativeTradingContextProvider>
-                    </TopMenuContextProvider>
-                  </CategoriesContextProvider>
-                </SafeAreaView>
-              </AppThemeProvider>
-            </RawUserIdProvider>
-          </UserIdProvider>
-        </UserProvider>
-      </RevenueCatProvider>
-    </Auth0Provider>
+                              </Modal>
+                              <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={serverError}
+                                onRequestClose={() => {
+                                  setServerError(false);
+                                }}>
+                                <View style={styles.centeredView}>
+                                  <View
+                                    style={[
+                                      styles.orangeBox,
+                                      {
+                                        backgroundColor:
+                                          colorScheme === 'dark'
+                                            ? '#451205'
+                                            : '#FFF7EC',
+                                      },
+                                    ]}>
+                                    <View style={styles.row}>
+                                      <Image
+                                        source={require('./assets/images/login/serverdown.png')}
+                                        style={styles.imageStyle3}
+                                      />
+                                      <Text
+                                        style={[
+                                          styles.labelText1,
+                                          {
+                                            color:
+                                              colorScheme === 'dark'
+                                                ? '#FF8D34'
+                                                : '#FF6C0D',
+                                          },
+                                        ]}>
+                                        Seems like the server is down
+                                      </Text>
+                                    </View>
+                                    <Text
+                                      style={[
+                                        styles.labelText3,
+                                        {
+                                          color:
+                                            colorScheme === 'dark'
+                                              ? '#FF6C0D'
+                                              : '#A02E0C',
+                                        },
+                                      ]}>
+                                      Please wait a few minutes while our
+                                      technicians work to solve this problem
+                                    </Text>
+                                  </View>
+                                </View>
+                              </Modal>
+                            </AboutModalProvider>
+                          </AnalysisContextProvider>
+                        </NarrativeTradingContextProvider>
+                      </TopMenuContextProvider>
+                    </CategoriesContextProvider>
+                  </SafeAreaView>
+                </AppThemeProvider>
+              </RawUserIdProvider>
+            </UserIdProvider>
+          </UserProvider>
+        </RevenueCatProvider>
+      </Auth0Provider>
+    </AppThemeProvider>
   );
 };
 

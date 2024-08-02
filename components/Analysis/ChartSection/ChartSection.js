@@ -46,8 +46,7 @@ const ChartSection = ({route, navigation}) => {
   const [activeButtons, setActiveButtons] = useState([]);
   const [supportLevels, setSupportLevels] = useState([]);
   const [resistanceLevels, setResistanceLevels] = useState([]);
-  const {isLandscape, isHorizontal, handleScreenOrientationChange} =
-    useScreenOrientation();
+  const {isLandscape, isHorizontal, handleScreenOrientationChange} = useScreenOrientation();
 
   // Format number in shorten way
   function formatLabelNumber(number, decimalPlaces = 2) {
@@ -234,6 +233,7 @@ const ChartSection = ({route, navigation}) => {
   // Function to handle the X button interaction on the horizontal chart
 
   const handleBackInteraction = () => {
+    console.log("FUNCTION CALLED");
     if (isLandscape || isHorizontal) {
       handleScreenOrientationChange('PORTRAIT');
       navigation.canGoBack(false);
@@ -426,16 +426,17 @@ const ChartSection = ({route, navigation}) => {
               onPress={
                 isLandscape
                   ? () => {
+                      console.log("LANDSCAPE FUNCTION CALLED");
                       handleBackInteraction();
                     }
                   : () => {
+                      console.log("PORTRAIT FUNCTION CALLED");
                       navigation.canGoBack(false);
                       handleScreenOrientationChange('LANDSCAPE');
                     }
               }>
               <Image
                 style={styles.chartsHorizontalButton}
-                resizeMode="contain"
                 source={
                   isLandscape && isHorizontal
                     ? require('../../../assets/images/home/charts/deactivate-horizontal.png')

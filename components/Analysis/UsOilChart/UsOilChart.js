@@ -34,9 +34,9 @@ const UsOilChart = ({route, navigation}) => {
   const [sessionData, setSessionData] = useState(initialSessionData);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {isLandscape, isHorizontal, handleScreenOrientationChange} =
-    useScreenOrientation();
-
+  const {isLandscape, isHorizontal, handleScreenOrientationChange} = useScreenOrientation();
+  console.log("isLandscape in USChart -> ", isLandscape);
+  console.log("isHorizontal in USChart -> ", isHorizontal);
   // Function to fetch the data from Capital Com API, this requires a previous authentication with a security token an code, which are provided by a POST request to the Capital Com's auth API. This limites the number of updates to this chart, and that's the reason of the increasing of the update time in the setInterval effect.
 
   async function fetchCapitalComChartData(security_token, security_cst) {

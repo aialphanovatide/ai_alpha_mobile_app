@@ -13,7 +13,7 @@ const useSaveButtonStyles = () => {
       borderRadius: 4,
       alignItems: 'center',
       backgroundColor: theme.orange, // assuming default state color
-      width: 150,
+      width: '100%',
     },
     pressed: {
       opacity: 0.75,
@@ -28,13 +28,13 @@ const useSaveButtonStyles = () => {
       fontSize: 15,
     },
     textEnabled: {
-      color: 'white', // color when the button is clickable
+      color: 'white',
     },
     textDisabled: {
-      color: '#C93A05', // color when the button is disabled
+      color: theme.personalizeProfileSaveButtonText,
     },
     disabled: {
-      backgroundColor: '#FFD5A7', // style for the disabled container
+      backgroundColor: theme.personalizeProfileSaveButtonBackground,
     },
   });
   return styles;

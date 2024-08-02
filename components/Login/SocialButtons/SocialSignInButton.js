@@ -126,7 +126,25 @@ const SocialSignInButton = () => {
       updateUserEmail(userProfile.email);
       
 
+
       navigation.navigate('HomeScreen');
+
+      const response = await fetch(`https://aialpha.ngrok.io/register`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          auth0id: userId,
+          email: userProfile.email,
+          email_verified: userProfile.email.verified,
+          nickname: userProfile.nickname,
+          picture: userProfile.picture,
+          provider: "google-oauth2",
+        }),
+      });
+      const data = await response.json();
+
+      console.log("DATA SENT TO BACKEND",data);
+      
     } catch (error) {
       console.error('Error during Google sign-in with Auth0:', error);
     }
@@ -197,6 +215,29 @@ const signInWithApple = async () => {
       console.log("auth0Response.data._id", auth0Response.data._id);
       console.log("email!: ", email);
       console.log('After navigation');
+
+
+
+
+      const response = await fetch(`https://aialpha.ngrok.io/register`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          auth0id: newUser,
+          email: "Not specified",
+          email_verified: "false",
+          nickname: "Not specified",
+          picture: "Not specified",
+          provider: "apple",
+        }),
+      });
+      const data = await response.json();
+
+      console.log("DATA SENT TO BACKEND",data);
+      
+
+
+
       return {
         message: 'success',
         ...auth0Response.data,

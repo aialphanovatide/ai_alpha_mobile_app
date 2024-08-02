@@ -55,7 +55,7 @@ const useChartSectionStyles = () => {
       width: 52,
       height: 44,
       opacity: 0.8,
-      zIndex: -2,
+      //zIndex: -2,
     },
     timeframeContainer: {
       flex: 1,
@@ -102,9 +102,10 @@ const useChartSectionStyles = () => {
       width: 20,
       height: 20,
       position: 'absolute',
-      bottom: 60,
-      left: 25,
-      tintColor: theme.textColor,
+      tintColor: 'red',
+      zIndex: 5,
+      bottom: Platform.OS === 'android' ? 120 : 110,
+      left: Platform.OS === 'android' ? 25 : 15,
     },
     chartBackButton: {
       width: 35,

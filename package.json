@@ -33,6 +33,7 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "base-64": "^1.0.0",
     "color": "^4.2.3",
+    "fbemitter": "^3.0.0",
     "i": "^0.3.7",
     "jwt-decode": "^4.0.0",
     "moment": "^2.29.4",

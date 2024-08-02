@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -8,224 +8,201 @@ import {
   View,
 } from 'react-native';
 import useCurrentPackagesStyles from './CurrentPackagesStyles';
-import Loader from '../../Loader/Loader';
-import { RevenueCatContext } from '../../../context/RevenueCatContext';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import {AppThemeContext} from '../../../context/themeContext';
 import BackButton from '../../Analysis/BackButton/BackButton';
-import { useNavigation } from '@react-navigation/core';
-import SubscriptionsLoader from '../../Loader/SubscriptionsLoader';
+import {useNavigation} from '@react-navigation/core';
 import LinearGradient from 'react-native-linear-gradient';
-import { AppThemeContext } from '../../../context/themeContext';
-
-const NoPackagesView = ({ styles }) => (
-  <View style={styles.noPackagesContainer}>
-    <Text style={styles.noPackages}>
-      No purchased packages yet.
-    </Text>
-  </View>
-);
-
-const SubscriptionItem = ({
-  styles,
-  item,
-  offering,
-  description,
-  icon,
-  onItemPress,
-  activeItem,
-  isFoundersPackage,
-  packageDisplayName,
-}) => {
-  const formatCoinTitles = title => {
-    let first_space = title.indexOf(' ');
-    let package_display_name = title.slice(0, first_space);
-    console.log("Word formatting -> ", package_display_name)
-    if (package_display_name == 'Founder'){
-      package_display_name = 'AI Alpha Founders';
-    }
-    return package_display_name;
-  };
-  const coinNamesMap = {
-    BaseBlock: ['ada', 'sol', 'avax'],
-    CoreChain: ['near', 'ftm', 'kas'],
-    RootLink: ['atom', 'dot', 'qnt'],
-    XPayments: ['xlm', 'algo', 'xrp'],
-    LSDs: ['ldo', 'rpl', 'fxs'],
-    BoostLayer: ['matic', 'arb', 'op'],
-    Truthnodes: ['link', 'api3', 'band'],
-    CycleSwap: ['dydx', 'velo', 'gmx'],
-    Nextrade: ['uni', 'sushi', 'cake'],
-    Diversefi: ['aave', 'pendle', '1inch'],
-    Intellichain: ['ocean', 'fet', 'rndr'],
-  };
-  const coinNames = coinNamesMap[formatCoinTitles(item.title)] || [];
-  console.log("coin names! -> ", coinNames);
-  return (
-      <View
-        style={[
-          styles.itemContainer,
-          isFoundersPackage && styles.foundersItem,
-          isFoundersPackage && activeItem && styles.selectedFounders,
-        ]}>
-        <View style={styles.row}>
-          {icon !== null && icon !== undefined && (
-            <View style={styles.itemIcon}>
-              <Image
-                source={
-                  isFoundersPackage
-                    ? require('../../../assets/images/account/founders-icon.png')
-                    : {
-                        uri: icon,
-                        width: 40,
-                        height: 40,
-                      }
-                }
-                resizeMode="contain"
-                style={styles.image}
-              />
-            </View>
-          )}
-          <Text
-            style={[
-              styles.left,
-              styles.title,
-              isFoundersPackage && styles.foundersText,
-            ]}>
-            {formatCoinTitles(item.title)}
-          </Text>
-          <Text
-            style={[
-              styles.right,
-              styles.title,
-              isFoundersPackage && styles.foundersText,
-            ]}>
-            {item.priceString}
-          </Text>
-          <Text
-            style={[
-              styles.right,
-              styles.secondaryText,
-              styles.reference,
-              isFoundersPackage && styles.foundersReference,
-            ]}>
-            Monthly Subscription *
-          </Text>
-        <View style={styles.subCoinContainer}>
-        <Image
-          source={{
-            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coinNames[0]}.png`,
-            width: 20,
-            height: 20,
-          }}
-          style={styles.subCoin}
-          />
-        <Image
-          source={{
-            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coinNames[1]}.png`,
-            width: 20,
-            height: 20,
-          }}
-          style={styles.subCoin}
-          />
-        <Image
-          source={{
-            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coinNames[2]}.png`,
-            width: 20,
-            height: 20,
-          }}
-          style={styles.subCoin}
-          />
-        </View>
-        </View>
-        {isFoundersPackage && (
-        <View style={styles.foundersLabelContainer}>
-          <Text style={styles.foundersLabel}>
-          Congratulations! You are part of the exclusive group of AI Alpha Founders
-          </Text>
-        </View>
-      )}
-
-      </View>
-  );
-};
 
 const CurrentPackages = () => {
   const styles = useCurrentPackagesStyles();
+  const {userInfo} = useContext(RevenueCatContext);
+  const {isDarkMode} = useContext(AppThemeContext);
   const navigation = useNavigation();
-  const { isDarkMode } = useContext(AppThemeContext);
-  const { packages, purchasePackage, findProductIdInIdentifiers, userInfo } =
-    useContext(RevenueCatContext);
-  const [activeItem, setActiveItem] = useState(null);
-  const [missingMessageActive, setMissingMessageActive] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  // Define the package options as in the Subscription Options screen
+  const subscriptionOptions = {
+    founder: {
+      title: 'Founder',
+      price: '$149',
+      icon: require('../../../assets/images/account/founder.png'),
+    },
+    fullAccess: {
+      title: 'Full Access',
+      price: '$59',
+      icon: require('../../../assets/images/account/full-access.png'),
+    },
+    byCategory: {
+      title: 'By Category',
+      price: '$29',
+      icon: require('../../../assets/images/account/by-category.png'),
+    },
+  };
+
+  // Known category names for display
+  const categoryNames = [
+    'Ethereum',
+    'Bitcoin',
+    'RootLink',
+    'BaseBlock',
+    'CoreChain',
+    'XPayments',
+    'LSDs',
+    'BoostLayer',
+    'Truthnodes',
+    'CycleSwap',
+    'Nextrade',
+    'Diversefi',
+    'Intellichain',
+  ];
+
+  // Extract purchased packages from user's entitlements
+  const purchasedPackages = userInfo?.entitlements || [];
+
+  // Create a map for user purchased packages
+  const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
+    const lowerCaseEntitlement = entitlement.toLowerCase();
+
+    // Check for founders entitlement
+    if (lowerCaseEntitlement.includes('founders')) {
+      if (!acc.some(item => item.title === 'Founder')) {
+        acc.push(subscriptionOptions.founder);
+      }
+    }
+    // Check for full access entitlement
+    else if (lowerCaseEntitlement.includes('full access')) {
+      if (!acc.some(item => item.title === 'Full Access')) {
+        acc.push(subscriptionOptions.fullAccess);
+      }
+    }
+    // Handle by category entitlement
+    else {
+      const categoryName = categoryNames.find(name =>
+        lowerCaseEntitlement.includes(name.toLowerCase()),
+      );
+      if (categoryName) {
+        const categoryPackage = acc.find(item => item.title === 'By Category');
+        if (categoryPackage) {
+          if (!categoryPackage.subOptions.includes(categoryName)) {
+            categoryPackage.subOptions.push(categoryName);
+          }
+        } else {
+          acc.push({
+            ...subscriptionOptions.byCategory,
+            subOptions: [categoryName],
+          });
+        }
+      }
+    }
+    return acc;
+  }, []);
 
   const navigateBack = () => {
     navigation.navigate('AccountMain');
   };
 
-  const handlePurchase = async pack => {
-    setLoading(true);
-    if (pack === null) {
-      setMissingMessageActive(true);
-      setLoading(false);
-      return;
-    }
-    try {
-      await purchasePackage(pack);
-      setMissingMessageActive(false);
-    } catch (error) {
-      setMissingMessageActive(true);
-    } finally {
-      setActiveItem(null);
-      setLoading(false);
-    }
+  const navigateToSubscriptionOptions = () => {
+    navigation.navigate('Subscriptions');
   };
-
-  const handleActiveItem = item => {
-    setActiveItem(item);
-  };
-
-  const purchasedPackages = packages.filter(item => userInfo?.entitlements.includes(item.product.identifier));
-
-  console.log("Purchased Packages:", purchasedPackages);
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
-      style={styles.flex}>
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        style={styles.backgroundContainer}
+        contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.alignStart}>
           <BackButton navigationHandler={navigateBack} />
         </View>
-        <Text style={styles.mainTitle}>My Packages</Text>
-        {purchasedPackages.length > 0 ? (
-          <ScrollView style={styles.packagesContainer}>
-            {purchasedPackages.map((item, index) => (
-              <SubscriptionItem
-                key={index}
-                item={item.product}
-                styles={styles}
-                offering={item}
-                icon={item.subscriptionIcon}
-                description={item.subscriptionDescription}
-                onItemPress={handleActiveItem}
-                activeItem={
-                  activeItem && activeItem.product.title === item.product.title
+        <View style={styles.innerContainer}>
+          <Text style={styles.mainTitle}>My Packages</Text>
+          {userPurchasedOptions.length > 0 ? (
+            <View style={styles.packagesContainer}>
+              {userPurchasedOptions.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.itemContainer}
+                  onPress={() => console.log('Package:', item.title)}>
+                  <View style={styles.itemRow}>
+                    <View style={styles.circleContainer}>
+                      <Image
+                        source={require('../../../assets/images/account/whitetickV2.png')}
+                        style={styles.tickImage}
+                      />
+                    </View>
+                    <Image source={item.icon} style={styles.itemIcon} />
+                    <Text style={styles.title}>{item.title}</Text>
+                    <View style={styles.priceContainer}>
+                      <Text style={styles.priceText}>{item.price}</Text>
+                      <Text style={styles.perMonthText}>Per month</Text>
+                    </View>
+                  </View>
+                  {item.title === 'By Category' && item.subOptions && (
+                    <View style={styles.subOptionsContainer}>
+                      {item.subOptions.map((subOption, subIndex) => (
+                        <TouchableOpacity
+                          key={subIndex}
+                          style={styles.subOption}
+                          onPress={() => console.log('Sub-option:', subOption)}>
+                          <View style={styles.subCircleContainer}>
+                            <Image
+                              source={require('../../../assets/images/account/subTickV2.png')}
+                              style={styles.subTickImage}
+                            />
+                          </View>
+                          <Text style={styles.subOptionText}>{subOption}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : (
+            <View style={styles.foundersContainer}>
+              <Image
+                source={
+                  isDarkMode
+                    ? require('../../../assets/images/account/subscriptionicondark-removebg.png')
+                    : require('../../../assets/images/account/subscriptioniconlight-removebg.png')
                 }
-                isFoundersPackage={item.product.identifier.includes('founders')}
-                packageDisplayName={item.title}
+                resizeMode="contain"
+                style={styles.subscriptionImage}
               />
-            ))}
-          </ScrollView>
-        ) : (
-          <View style={styles.flex}>
-            <NoPackagesView styles={styles} />
-          </View>
-        )}
-        <SubscriptionsLoader isLoading={loading} />
-      </SafeAreaView>
-    </LinearGradient>
+              <View style={styles.textFoundersRow}>
+                <Text style={styles.preSecondaryTextFounders}>
+                  You haven't purchased any packages yet.
+                </Text>
+              </View>
+              <View style={styles.textFoundersRow}>
+                <Text style={styles.textFounders}>
+                  Unlock premium features now with a
+                </Text>
+              </View>
+              <View>
+                <Text style={styles.bigTextFounders}>7 DAY FREE TRIAL</Text>
+                <TouchableOpacity
+                  style={styles.purchaseButton}
+                  onPress={() => navigateToSubscriptionOptions()}>
+                  <Text style={styles.purchaseButtonText}>
+                    Go to Subscription Options
+                  </Text>
+                </TouchableOpacity>
+                <View style={styles.textFoundersRow}>
+                  <Text style={styles.secondaryTextFounders}>
+                    Monthly subscription activates post-trial
+                  </Text>
+                </View>
+                <View style={styles.textFoundersRow}>
+                  <Text style={styles.secondaryTextFounders}>
+                    Cancel anytime hussle-free
+                  </Text>
+                </View>
+              </View>
+            </View>
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

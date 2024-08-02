@@ -93,9 +93,10 @@
     // You can handle notification settings here if needed.
 }
 
-//(UIInterfaceOrientationMask);UIApplication:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-//  return [Orientation getOrientation];
-//}
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    return [Orientation getOrientation];
+}
+
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
     NSLog(@"Firebase registration token: %@", fcmToken);
     // Optionally, you can send the token to your application server.

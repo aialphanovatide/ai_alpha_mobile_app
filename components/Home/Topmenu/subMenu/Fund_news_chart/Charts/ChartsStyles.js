@@ -113,12 +113,12 @@ const useChartsStyles = () => {
       justifyContent: 'center',
     },
     chartContainer: {
-      justifyContent: 'top',
-      alignItems: 'top',
       width: '100%',
-      height: 300,
-      position: 'relative',
-      elevation: 10,
+      height: theme.height * 0.45,
+      marginVertical: theme.boxesVerticalMargin,
+      justifyContent: 'center',
+      alignItems: 'top',
+      borderRadius: 4,
     },
     loaderContainer: {
       flex: 1,
@@ -158,13 +158,21 @@ const useChartsStyles = () => {
       justifyContent: 'center',
       borderRadius: 2,
     },
-    chartsHorizontalButton: {
-      width: 20,
-      height: 20,
+    chartsHorizontalButtonContainer: {
       position: 'absolute',
       bottom: 50,
       left: 25,
+      width: 90,
+      height: 90,
+    },
+    chartsHorizontalButton: {
+      width: 20,
+      height: 20,
+      position: 'relative',
+      bottom: Platform.OS === 'android' ? 120 : 110,
+      left: Platform.OS === 'android' ? 25 : 15,
       tintColor: theme.textColor,
+      zIndex: 1,
     },
     chartBackButton: {
       width: 35,

@@ -43,11 +43,11 @@ const usePackageSubscriptionStyles = () => {
     },
     secondaryText: {
       color: theme.textColor,
-      fontSize: theme.responsiveFontSize * 0.85,
+      fontSize: theme.responsiveFontSize * 0.82,
       fontFamily: theme.font,
       lineHeight: 22,
       textAlign: 'left',
-      marginRight: 10,
+      marginRight: 29,
     },
     preTertiaryText:{
       color: theme.subscriptions.secondaryText,
@@ -129,8 +129,8 @@ const usePackageSubscriptionStyles = () => {
       marginLeft: 3,
     },
     tickImage: {
-      width: '100%',
-      height: '100%',
+      width: '110%',
+      height: '110%',
       position: 'absolute',
     },
     subTickImage: {
@@ -302,6 +302,44 @@ const usePackageSubscriptionStyles = () => {
       fontSize: theme.titleFontSize * 0.92,
       fontFamily: theme.fontSemibold,
       flex: 1,
+    },
+    textFounders: {
+      color: theme.subscriptions.title,
+      fontSize: theme.responsiveFontSize * 0.91,
+      fontFamily: theme.fontUnboundedMedium,
+      textAlign: 'center',
+      lineHeight: 22,
+      marginTop: 10,
+    },
+    bigTextFounders: {
+      color: '#FF6C0D',
+      fontSize: theme.responsiveFontSize * 1.3,
+      fontFamily: theme.fontUnboundedMedium,
+      textAlign: 'center',
+      lineHeight: 32,
+    },
+    secondaryTextFounders: {
+      color: theme.subscriptions.secondaryText,
+      fontSize: theme.responsiveFontSize * 0.80,
+      fontFamily: theme.font,
+      lineHeight: 22,
+      textAlign: 'center',
+      margin: 25,
+    },
+    subscriptionImage: {
+      width:390,
+      height:270,
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+    },
+    textFoundersRow: {
+      textAlign: 'center',
+      alignSelf: 'center',
+      flexDirection: 'row', // Arrange icon and text in a row
+      alignItems: 'center', // Vertically center the items
+      marginBottom: 5,
+      marginRight: 10,
     },
   });
   return styles;

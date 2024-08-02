@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -10,28 +10,29 @@ import {
 } from 'react-native';
 import usePackageSubscriptionStyles from './PackageSubscriptionStyles';
 import Loader from '../../Loader/Loader';
-import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import { RevenueCatContext } from '../../../context/RevenueCatContext';
 import BackButton from '../../Analysis/BackButton/BackButton';
-import {useNavigation} from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/core';
 import SubscriptionsLoader from '../../Loader/SubscriptionsLoader';
 import LinearGradient from 'react-native-linear-gradient';
-import {AppThemeContext} from '../../../context/themeContext';
+import { AppThemeContext } from '../../../context/themeContext';
 
-const TextWithIcon = ({text}) => {
+const TextWithIcon = ({ text }) => {
   const styles = usePackageSubscriptionStyles();
   const { theme } = useContext(AppThemeContext);
 
   const iconStyle =
     text === 'Simple but powerful.'
-      ? [styles.smallTickIcon, {marginTop: 0}]
-      : [styles.smallTickIcon, {marginTop: -18}];
-    
-      const descriptionText =
-      text === "Join our exclusive group of pioneers and get full access to AI ALPHA's current and future products." ||
+      ? [styles.smallTickIcon, { marginTop: 0 }]
+      : text === 'Ideal for a comprehensive market view and convenient if you want to track more than one package.'
+        ? [styles.smallTickIcon, { marginTop: -45 }]
+        : [styles.smallTickIcon, { marginTop: -21 }];
+
+  const descriptionText =
+    text === "Join our exclusive group of pioneers and get full access to AI ALPHA's current and future products." ||
       text === "Get full access to each and every AI Alpha package - both current and future."
-        ? [styles.secondaryText, { fontFamily: theme.fontBold }]
-        : [styles.secondaryText, { fontFamily: theme.font }];
-    
+      ? [styles.secondaryText, { fontFamily: theme.fontSemibold, marginRight: 20 }]
+      : [styles.secondaryText, { fontFamily: theme.font }];
 
   return (
     <View style={styles.textRow}>
@@ -47,14 +48,17 @@ const TextWithIcon = ({text}) => {
 const PackageSubscriptions = () => {
   const styles = usePackageSubscriptionStyles();
   const navigation = useNavigation();
-  const {isDarkMode} = useContext(AppThemeContext);
-  const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
-  //console.log('Packages:', packages);
+  const { isDarkMode } = useContext(AppThemeContext);
+  const { packages, purchasePackage, userInfo } = useContext(RevenueCatContext);
 
   const getIdentifierByKeyword = (keyword) => {
     const foundPackage = packages.find(pkg => pkg.product.title.includes(keyword));
     return foundPackage ? foundPackage.product.identifier : null;
   };
+
+  const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
+    subscription.toLowerCase().includes('founders'),
+  );
 
   const subscriptionOptions = [
     {
@@ -92,9 +96,7 @@ const PackageSubscriptions = () => {
 
   const [activeItem, setActiveItem] = useState(subscriptionOptions[0]); // Set "Founder" as default
   const [activeSubOption, setActiveSubOption] = useState('Ethereum'); // Default sub-option to 'Ethereum'
-  const [selectedAdditionalOptions, setSelectedAdditionalOptions] = useState(
-    [],
-  );
+  const [selectedAdditionalOptions, setSelectedAdditionalOptions] = useState([]);
   const [showMoreVisible, setShowMoreVisible] = useState(false);
   const [missingMessageActive, setMissingMessageActive] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -110,6 +112,7 @@ const PackageSubscriptions = () => {
     try {
       await purchasePackage(pack);
       setMissingMessageActive(false);
+      navigation.navigate('CurrentPackages');
     } catch (error) {
       setMissingMessageActive(true);
     } finally {
@@ -119,9 +122,13 @@ const PackageSubscriptions = () => {
 
   const handleActiveItem = item => {
     console.log('Item selected:', item.title);
+    // Check if the currently active item is "By Category" and the new item is also "By Category"
+    if (activeItem.title === 'By Category' && item.title === 'By Category') {
+      return; // Do nothing to keep the current active sub-option
+    }
     setActiveItem(item);
     if (item.title === 'By Category') {
-      setActiveSubOption('Ethereum'); // Reset to "Ethereum" when "By Category" is selected
+      setActiveSubOption(activeSubOption || 'Ethereum'); // Keep the current active sub-option or reset to "Ethereum"
     } else {
       setActiveSubOption(null);
     }
@@ -231,136 +238,169 @@ const PackageSubscriptions = () => {
             <View style={styles.alignStart}>
               <BackButton navigationHandler={navigateBack} />
             </View>
-            <Text style={styles.mainTitle}>Subscription Options</Text>
-            <View style={styles.packagesContainer}>
-              {subscriptionOptions.map((item, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.itemContainer,
-                    activeItem?.title === item.title && styles.selectedItem,
-                  ]}
-                  onPress={() => {
-                    console.log('Pressed item:', item.title);
-                    handleActiveItem(item);
-                  }}>
-                  <View style={styles.itemRow}>
-                    <View style={styles.circleContainer}>
-                      {activeItem?.title === item.title && (
-                        <Image
-                          source={require('../../../assets/images/account/whitetickV2.png')}
-                          style={styles.tickImage}
-                        />
-                      )}
-                    </View>
-                    <Image source={item.icon} style={styles.itemIcon} />
-                    <Text style={styles.title}>{item.title}</Text>
-                    <View style={styles.priceContainer}>
-                      <Text style={styles.priceText}>{item.price}</Text>
-                      <Text style={styles.perMonthText}>Per month</Text>
-                    </View>
+            {hasFoundersPackage ? (
+              <View style={styles.foundersContainer}>
+                <Text style={styles.mainTitle}>Subscriptions Options</Text>
+                <Image
+                  source={isDarkMode ? require('../../../assets/images/account/subscriptionicondark-removebg.png') : require('../../../assets/images/account/subscriptioniconlight-removebg.png')}
+                  resizeMode="contain"
+                  style={styles.subscriptionImage}
+                />
+                <View style={styles.textFoundersRow}>
+                  <Text style={styles.textFounders}>
+                    Exclusive new content
+                  </Text>
+                </View>
+                <View>
+                  <Text style={styles.bigTextFounders}>
+                    ONLY FOR OUR FOUNDERS
+                  </Text>
+                  <View style={styles.textFoundersRow}>
+                    <Text style={styles.secondaryTextFounders}>
+                      As an OG AI Alpha Founder watch this space for access to exclusive new content and packages
+                    </Text>
                   </View>
-                  {item.title === 'By Category' &&
-                    activeItem?.title === 'By Category' && (
-                      <View style={styles.subOptionsContainer}>
-                        {['Ethereum', 'Bitcoin'].includes(activeSubOption) && (
-                          <>
+                </View>
+              </View>
+            ) : (
+              <>
+                <Text style={styles.mainTitle}>Subscription Options</Text>
+                <View style={styles.packagesContainer}>
+                  {subscriptionOptions.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[
+                        styles.itemContainer,
+                        activeItem?.title === item.title && styles.selectedItem,
+                      ]}
+                      onPress={() => {
+                        console.log('Pressed item:', item.title);
+                        handleActiveItem(item);
+                      }}>
+                      <View style={styles.itemRow}>
+                        <View style={styles.circleContainer}>
+                          {activeItem?.title === item.title && (
+                            <Image
+                              source={require('../../../assets/images/account/whitetickV2.png')}
+                              style={styles.tickImage}
+                            />
+                          )}
+                        </View>
+                        <Image source={item.icon} style={styles.itemIcon} />
+                        <Text style={styles.title}>{item.title}</Text>
+                        <View style={styles.priceContainer}>
+                          <Text style={styles.priceText}>{item.price}</Text>
+                          <Text style={styles.perMonthText}>Per month</Text>
+                        </View>
+                      </View>
+                      {item.title === 'By Category' &&
+                        activeItem?.title === 'By Category' && (
+                          <View style={styles.subOptionsContainer}>
+                            {['Ethereum', 'Bitcoin'].includes(activeSubOption) && (
+                              <>
+                                <TouchableOpacity
+                                  style={[
+                                    styles.subOption,
+                                    activeSubOption === 'Ethereum' &&
+                                    styles.selectedSubOption,
+                                  ]}
+                                  onPress={() => handleActiveSubOption('Ethereum')}>
+                                  <View style={styles.subCircleContainer}>
+                                    {activeSubOption === 'Ethereum' && (
+                                      <Image
+                                        source={require('../../../assets/images/account/subTickV2.png')}
+                                        style={styles.subTickImage}
+                                      />
+                                    )}
+                                  </View>
+                                  <Text style={styles.subOptionText}>Ethereum</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                  style={[
+                                    styles.subOption,
+                                    activeSubOption === 'Bitcoin' &&
+                                    styles.selectedSubOption,
+                                  ]}
+                                  onPress={() => handleActiveSubOption('Bitcoin')}>
+                                  <View style={styles.subCircleContainer}>
+                                    {activeSubOption === 'Bitcoin' && (
+                                      <Image
+                                        source={require('../../../assets/images/account/subTickV2.png')}
+                                        style={styles.subTickImage}
+                                      />
+                                    )}
+                                  </View>
+                                  <Text style={styles.subOptionText}>Bitcoin</Text>
+                                </TouchableOpacity>
+                              </>
+                            )}
+                            {!['Ethereum', 'Bitcoin'].includes(activeSubOption) &&
+                              activeSubOption && (
+                                <TouchableOpacity
+                                  style={[
+                                    styles.subOption,
+                                    styles.selectedSubOption,
+                                  ]}
+                                  onPress={() =>
+                                    handleActiveSubOption(activeSubOption)
+                                  }>
+                                  <View style={styles.subCircleContainer}>
+                                    <Image
+                                      source={require('../../../assets/images/account/subTickV2.png')}
+                                      style={styles.subTickImage}
+                                    />
+                                  </View>
+                                  <Text style={styles.subOptionText}>
+                                    {activeSubOption}
+                                  </Text>
+                                </TouchableOpacity>
+                              )}
                             <TouchableOpacity
-                              style={[
-                                styles.subOption,
-                                activeSubOption === 'Ethereum' &&
-                                  styles.selectedSubOption,
-                              ]}
-                              onPress={() => handleActiveSubOption('Ethereum')}>
-                              <View style={styles.subCircleContainer}>
-                                {activeSubOption === 'Ethereum' && (
-                                  <Image
-                                    source={require('../../../assets/images/account/subTickV2.png')}
-                                    style={styles.subTickImage}
-                                  />
-                                )}
-                              </View>
-                              <Text style={styles.subOptionText}>Ethereum</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              style={[
-                                styles.subOption,
-                                activeSubOption === 'Bitcoin' &&
-                                  styles.selectedSubOption,
-                              ]}
-                              onPress={() => handleActiveSubOption('Bitcoin')}>
-                              <View style={styles.subCircleContainer}>
-                                {activeSubOption === 'Bitcoin' && (
-                                  <Image
-                                    source={require('../../../assets/images/account/subTickV2.png')}
-                                    style={styles.subTickImage}
-                                  />
-                                )}
-                              </View>
-                              <Text style={styles.subOptionText}>Bitcoin</Text>
-                            </TouchableOpacity>
-                          </>
-                        )}
-                        {!['Ethereum', 'Bitcoin'].includes(activeSubOption) &&
-                          activeSubOption && (
-                            <TouchableOpacity
-                              style={[
-                                styles.subOption,
-                                styles.selectedSubOption,
-                              ]}
-                              onPress={() =>
-                                handleActiveSubOption(activeSubOption)
-                              }>
-                              <View style={styles.subCircleContainer}>
-                                <Image
-                                  source={require('../../../assets/images/account/subTickV2.png')}
-                                  style={styles.subTickImage}
-                                />
-                              </View>
-                              <Text style={styles.subOptionText}>
-                                {activeSubOption}
+                              style={styles.subOptionShowMore}
+                              onPress={handleShowMore}>
+                              <Text style={styles.subOptionTextShowMore}>
+                                Show more
                               </Text>
                             </TouchableOpacity>
-                          )}
-                        <TouchableOpacity
-                          style={styles.subOptionShowMore}
-                          onPress={handleShowMore}>
-                          <Text style={styles.subOptionTextShowMore}>
-                            Show more
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    )}
-                </TouchableOpacity>
-              ))}
-            </View>
+                          </View>
+                        )}
+                    </TouchableOpacity>
+                  ))}
+                </View>
 
-            <View style={styles.description}>{getDescription()}</View>
-            <SubscriptionsLoader isLoading={loading} />
+                <View style={styles.description}>{getDescription()}</View>
+                <SubscriptionsLoader isLoading={loading} />
+              </>
+            )}
           </SafeAreaView>
         </LinearGradient>
       </ScrollView>
-      <View style={styles.fixedFooter}>
-        <LinearGradient
-          colors={['#F9AF08', '#FC5B04', '#FC5B04']}
-          style={styles.linearGradient}
-          start={{x: 0, y: 0.5}}
-          end={{x: 1, y: 0.5}}>
-          <TouchableOpacity
-            style={styles.purchaseButton}
-            onPress={() => handlePurchase(getPackageToPurchase())}>
-            <Text style={styles.purchaseButtonText}>
-              Start 7 Day Free Trial
+
+      {/* Conditionally render the fixed footer if the user does not have the Founders Package */}
+      {!hasFoundersPackage && (
+        <View style={styles.fixedFooter}>
+          <LinearGradient
+            colors={['#F9AF08', '#FC5B04', '#FC5B04']}
+            style={styles.linearGradient}
+            start={{ x: 0, y: 0.5 }}
+            end={{ x: 1, y: 0.5 }}>
+            <TouchableOpacity
+              style={styles.purchaseButton}
+              onPress={() => handlePurchase(getPackageToPurchase())}>
+              <Text style={styles.purchaseButtonText}>
+                Start 7 Day Free Trial
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
+          <View style={styles.footerTextContainer}>
+            <Text style={styles.preTertiaryText}>
+              Subscription activates post-trial.
             </Text>
-          </TouchableOpacity>
-        </LinearGradient>
-        <View style={styles.footerTextContainer}>
-          <Text style={styles.preTertiaryText}>
-            Subscription activates post-trial.
-          </Text>
-          <Text style={styles.tertiaryText}>Cancel anytime hustle-free</Text>
+            <Text style={styles.tertiaryText}>Cancel anytime hustle-free</Text>
+          </View>
         </View>
-      </View>
+      )}
+
       <Modal visible={showMoreVisible} transparent={true} animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>

@@ -126,7 +126,7 @@ const usePersonaliseProfileStyles = () => {
       backgroundColor: theme.mainBackgroundColor,
     },
     resetPasswordContainer: {
-      alignSelf: 'left',
+      alignSelf: 'center',
       marginTop: 20,
     },
     sendMailButton: {
