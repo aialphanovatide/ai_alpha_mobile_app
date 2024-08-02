@@ -41,12 +41,9 @@ import {
   auth0ManagementAPI_Client,
   auth0ManagementAPI_Secret,
 } from './src/constants/index';
-import UserService from './services/UserService';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import eventEmitter from './eventEmitter';
 import LinearGradient from 'react-native-linear-gradient';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Top10MoversContextProvider} from './context/TopTenMoversContext';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';

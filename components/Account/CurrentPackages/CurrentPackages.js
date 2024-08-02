@@ -204,8 +204,8 @@ const CurrentPackages = () => {
             </View>
           )}
         </View>
-      </ScrollView>
     </SafeAreaView>
+    </LinearGradient>
   );
 };
 
