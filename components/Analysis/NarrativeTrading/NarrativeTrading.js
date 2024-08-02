@@ -15,7 +15,6 @@ import {useNavigation} from '@react-navigation/core';
 import FastImage from 'react-native-fast-image';
 import useNarrativeTradingStyles from './NarrativeTradingStyles';
 import filterData from './FilterData';
-import {NarrativeTradingContext} from '../../../context/NarrativeTradingContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
@@ -128,7 +127,7 @@ const NarrativeTrading = () => {
   const {isDarkMode} = useContext(AppThemeContext);
   const options = ['today', 'this week'];
   const [cryptoOptions, setCryptoOptions] = useState([]);
-  const [activeOption, setActiveOption] = useState(null);
+  const [activeOption, setActiveOption] = useState('today');
   const [activeCryptoOption, setActiveCryptoOption] = useState(null);
   const [narrativeTradingItems, setNarrativeTradingItems] = useState([]);
   const [loadedNarrativeTradingItems, setLoadedNarrativeTradingItems] =
@@ -147,7 +146,6 @@ const NarrativeTrading = () => {
         const narrativeItems = await AsyncStorage.multiGet(
           narrativeTradingKeys,
         );
-
         const parsedItems = narrativeItems.map(item => JSON.parse(item[1]));
         setLoadedNarrativeTradingItems(parsedItems);
       } catch (e) {
@@ -162,8 +160,10 @@ const NarrativeTrading = () => {
   useEffect(() => {
     setCryptoOptions(filterData);
     setActiveCryptoOption(filterData[0]);
-    handleCryptoTouch(filterData[0]);
-    handleTimeIntervalChange(options[0]);
+    if (loadedNarrativeTradingItems.length > 0) {
+      handleCryptoTouch(filterData[0]);
+      handleTimeIntervalChange(options[0]);
+    }
   }, [loadedNarrativeTradingItems]);
 
   const filterItemsByCategory = (category, items) => {
@@ -181,8 +181,8 @@ const NarrativeTrading = () => {
     }
 
     category.coin_bots.forEach(coin => {
+      // console.log(items);
       items.forEach(item => {
-        // console.log('Coin bot: ', coin.bot_name, ' Item: ', item.coin_bot_name);
         if (
           item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===
           coin.bot_name.toLowerCase().replace(/\s/g, '')

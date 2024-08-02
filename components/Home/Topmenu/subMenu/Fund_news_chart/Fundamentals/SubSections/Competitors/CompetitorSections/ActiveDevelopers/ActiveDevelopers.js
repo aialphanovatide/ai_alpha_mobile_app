@@ -94,9 +94,9 @@ const ActiveDevelopers = ({competitorsData, isSectionWithoutData}) => {
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
       item =>
-        item.competitor.token === crypto && item.competitor.key.includes(key),
+        item.competitor.key.includes(key) &&
+        item.competitor.token.replace(/\s/g, '') === crypto.replace(/\s/g, ''),
     );
-    // console.log('Key received: ', key, 'Apr value found: ', found);
     return found && found !== undefined
       ? found.competitor.value !== '-'
         ? found.competitor.value
