@@ -82,7 +82,7 @@ const AnalysisContextProvider = ({children}) => {
       try {
         const data = await getService(`/get_analysis`);
         if (data.success) {
-          const parsed_data = data.message.map(item => {
+          const parsed_data = data.data.map(item => {
             return {
               analysis: parseAnalysisContent(item.analysis)[0],
               raw_analysis: item.analysis,
@@ -110,19 +110,6 @@ const AnalysisContextProvider = ({children}) => {
     };
     getAnalysisData();
   }, [categories]);
-
-  // const updateAnalysisItems = newItem => {
-  //   const foundIndex = analysisItems.findIndex(item => item.id === newItem.id);
-
-  //   if (foundIndex !== -1) {
-  //     const newItems = [...analysisItems];
-  //     const repeatedItem = newItems.splice(foundIndex, 1)[0];
-  //     newItems.unshift(repeatedItem);
-  //     setAnalysisItems(newItems);
-  //   } else {
-  //     setAnalysisItems([newItem, ...analysisItems]);
-  //   }
-  // };
 
   return (
     <AnalysisContext.Provider value={{analysisItems, loading}}>

@@ -8,7 +8,6 @@ import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
 const ContentItem = ({data, styles}) => {
-
   return (
     <View style={styles.dataContainer}>
       <Text style={styles.dataTitle}>{data.title}</Text>
@@ -41,11 +40,12 @@ const ValueAccrualMechanisms = ({
   getSectionData,
   coin,
   handleSectionContent,
+  loading,
+  globalData,
 }) => {
   const styles = useVAMStyles();
   const {isDarkMode} = useContext(AppThemeContext);
   const [dataItems, setDataItems] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const getItemImageUri = (coin, section, description, isDarkMode) => {
     const formatted_title = section
@@ -72,48 +72,73 @@ const ValueAccrualMechanisms = ({
   };
 
   useEffect(() => {
-    setLoading(true);
-    setDataItems([]);
+    // setLoading(true);
+    // setDataItems([]);
 
-    const fetchValueAccrualMechanisms = async coin => {
-      try {
-        const response = await getSectionData(
-          `/api/get_tokenomics?coin_name=${coin}`,
-        );
-        if (response.status !== 200) {
-          setDataItems([]);
-        } else {
-          const parsed_data = response.message.value_accrual_mechanisms.map(
-            item => {
-              return {
-                id: item.value_accrual_mechanisms.id,
-                title: item.value_accrual_mechanisms.mechanism,
-                text: item.value_accrual_mechanisms.description,
-                image: getItemImageUri(
-                  coin,
-                  item.value_accrual_mechanisms.mechanism.replace(/'/g, ''),
-                  item.value_accrual_mechanisms.description,
-                  isDarkMode,
-                ),
-                imageSize: calculateImageSize(
-                  item.value_accrual_mechanisms.description,
-                ),
-              };
-            },
-          );
-          setDataItems(parsed_data);
-        }
-      } catch (error) {
-        console.error(
-          'Error trying to get Value Accrual Mechanisms data: ',
-          error,
-        );
-      } finally {
-        setLoading(false);
+    // const fetchValueAccrualMechanisms = async coin => {
+    //   try {
+    //     const response = await getSectionData(
+    //       `/api/get_tokenomics?coin_name=${coin}`,
+    //     );
+    //     if (response.status !== 200) {
+    //       setDataItems([]);
+    //     } else {
+    //       const parsed_data = response.message.value_accrual_mechanisms.map(
+    //         item => {
+    //           return {
+    //             id: item.value_accrual_mechanisms.id,
+    //             title: item.value_accrual_mechanisms.mechanism,
+    //             text: item.value_accrual_mechanisms.description,
+    //             image: getItemImageUri(
+    //               coin,
+    //               item.value_accrual_mechanisms.mechanism.replace(/'/g, ''),
+    //               item.value_accrual_mechanisms.description,
+    //               isDarkMode,
+    //             ),
+    //             imageSize: calculateImageSize(
+    //               item.value_accrual_mechanisms.description,
+    //             ),
+    //           };
+    //         },
+    //       );
+    //       setDataItems(parsed_data);
+    //     }
+    //   } catch (error) {
+    //     console.error(
+    //       'Error trying to get Value Accrual Mechanisms data: ',
+    //       error,
+    //     );
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    const fetchValueAccrualMechanisms = coin => {
+      if (!globalData || globalData.tokenomics.status !== 200) {
+        setDataItems([]);
+      } else {
+        const parsed_data =
+          globalData.tokenomics.message.value_accrual_mechanisms.map(item => {
+            return {
+              id: item.value_accrual_mechanisms.id,
+              title: item.value_accrual_mechanisms.mechanism,
+              text: item.value_accrual_mechanisms.description,
+              image: getItemImageUri(
+                coin,
+                item.value_accrual_mechanisms.mechanism.replace(/'/g, ''),
+                item.value_accrual_mechanisms.description,
+                isDarkMode,
+              ),
+              imageSize: calculateImageSize(
+                item.value_accrual_mechanisms.description,
+              ),
+            };
+          });
+        setDataItems(parsed_data);
       }
     };
     fetchValueAccrualMechanisms(coin);
-  }, [coin, isDarkMode]);
+  }, [globalData, coin, isDarkMode]);
 
   useEffect(() => {
     if (!loading && dataItems?.length === 0) {

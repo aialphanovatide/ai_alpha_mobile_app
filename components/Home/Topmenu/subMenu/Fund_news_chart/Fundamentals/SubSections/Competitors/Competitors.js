@@ -21,7 +21,6 @@ import ActiveDevelopers from './CompetitorSections/ActiveDevelopers/ActiveDevelo
 import InflationRate from './CompetitorSections/InflationRate/InflationRate';
 import useCompetitorsStyles from './CompetitorsStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
-import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
@@ -101,10 +100,11 @@ const Competitors = ({
   subsectionsData,
   handleAboutPress,
   handleSectionContent,
+  globalData,
+  loading,
 }) => {
   const styles = useCompetitorsStyles();
   const [competitorsData, setCompetitorsData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [activeOption, setActiveOption] = useState(null);
 
   const isSectionWithoutData = (data, key, nullSymbol) => {
@@ -131,6 +131,7 @@ const Competitors = ({
           cryptos={cryptosData}
           competitorsData={competitorsData}
           isSectionWithoutData={isSectionWithoutData}
+          loading={loading}
         />
       ),
       icon: require('../../../../../../../../assets/images/fundamentals/competitors/cmc.png'),
@@ -268,27 +269,16 @@ const Competitors = ({
   ];
 
   useEffect(() => {
-    setLoading(true);
-    setCompetitorsData([]);
-    const fetchCompetitorsData = async coin => {
-      try {
-        const response = await getSectionData(
-          `/api/get_competitors_by_coin_name?coin_name=${coin}`,
-        );
-        if (response.status !== 200) {
-          setCompetitorsData([]);
-        } else {
-          setCompetitorsData(response.competitors);
-        }
-      } catch (error) {
-        console.error('Error trying to get competitors data: ', error);
-      } finally {
-        setActiveOption(content[0]);
-        setLoading(false);
+    const fetchCompetitorsData = coin => {
+      if (!globalData || globalData.competitors.status !== 200) {
+        setCompetitorsData([]);
+      } else {
+        setCompetitorsData(globalData.competitors.competitors);
       }
+      setActiveOption(content[0]);
     };
     fetchCompetitorsData(coin);
-  }, [coin, getSectionData]);
+  }, [globalData, coin, getSectionData]);
 
   const handleOptionChange = option => {
     setActiveOption(option);
@@ -303,7 +293,10 @@ const Competitors = ({
   return (
     <View style={styles.container}>
       {loading ? (
-        <SkeletonLoader type="competitors" quantity={5} />
+        <>
+          <SkeletonLoader type="competitors" quantity={5} />
+          <SkeletonLoader type="chart" />
+        </>
       ) : competitorsData.length === 0 ? (
         <NoContentMessage />
       ) : (

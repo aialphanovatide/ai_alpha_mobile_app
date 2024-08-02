@@ -28,7 +28,7 @@ const groupAndSortByDate = items => {
   });
   const groupedArray = Object.keys(groupedByDate).map(date => ({
     date,
-    items: groupedByDate[date],
+    items: groupedByDate[date].reverse(),
   }));
 
   return groupedArray.sort((a, b) => {
@@ -195,6 +195,7 @@ const HomeNotifications = ({route, navigation}) => {
   const loadNotifications = async () => {
     try {
       const storedNotifications = await AsyncStorage.getItem('notifications');
+      console.log(storedNotifications);
       const currentNotifications = storedNotifications
         ? JSON.parse(storedNotifications)
         : [];
@@ -248,7 +249,8 @@ const HomeNotifications = ({route, navigation}) => {
       <LinearGradient
         useAngle={true}
         angle={45}
-        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
         style={{flex: 1}}>
         <SafeAreaView style={styles.background}>
           <ScrollView style={{flex: 1}}>
@@ -285,7 +287,8 @@ const HomeNotifications = ({route, navigation}) => {
     <LinearGradient
       useAngle={true}
       angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <SafeAreaView style={styles.mainSection}>
         <View

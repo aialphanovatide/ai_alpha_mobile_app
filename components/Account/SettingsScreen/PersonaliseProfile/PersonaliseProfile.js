@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
+  TextInput,
 } from 'react-native';
 import CustomInput from '../../../Login/CustomInput/CustomInput';
 import SaveButton from './SaveButton';
@@ -284,6 +285,20 @@ const PersonaliseProfile = () => {
     }
   };
 
+  const onAndroidDateChange = (event, selectedDate) => {
+    if (selectedDate) {
+      setBirthDate(selectedDate);
+      const formattedDate = formatDate(selectedDate);
+      setBirthDateString(formattedDate);
+      AsyncStorage.setItem('birthDate', selectedDate.toISOString());
+    }
+    setShowDatePicker(false);
+  };
+
+  const handleAndroidDateChange = () => {
+    setShowDatePicker(true);
+  };
+
   if (resetPasswordSuccesful) {
     return (
       <View style={styles.successContainer}>
@@ -296,7 +311,9 @@ const PersonaliseProfile = () => {
   return (
     <SafeAreaView style={styles.backgroundColor}>
       <ScrollView style={styles.scrollview}>
-        <BackButton />
+        <View style={styles.backbuttonContainer}>
+          <BackButton />
+        </View>
         <Text style={styles.mainTitle}>Personalise Profile</Text>
         <View style={styles.root}>
           {userImage && (
@@ -310,6 +327,7 @@ const PersonaliseProfile = () => {
               placeholder="Enter your full name"
               value={fullName}
               setValue={setFullName}
+              containerStyles={{paddingVertical: 0, borderWidth: 0}}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -318,6 +336,7 @@ const PersonaliseProfile = () => {
               placeholder="Choose a username"
               value={username}
               setValue={setUsername}
+              containerStyles={{paddingVertical: 0, borderWidth: 0}}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -325,6 +344,24 @@ const PersonaliseProfile = () => {
               <Text style={styles.title}>Birth Date</Text>
               <Text style={styles.optionalLabel}>(optional)</Text>
             </View>
+
+            {Platform.OS === 'ios' ? (
+              <></>
+            ) : (
+              <TouchableOpacity
+                style={styles.androidDateContainer}
+                onPress={() => handleAndroidDateChange()}
+                showsVerticalScrollIndicator={false}>
+                <TextInput
+                  value={birthDateString}
+                  placeholder={'DD/MM/YY'}
+                  placeholderTextColor={theme.secondaryTextColor}
+                  style={styles.dateInput}
+                  autoCapitalize="none"
+                  editable={false}
+                />
+              </TouchableOpacity>
+            )}
             <View style={styles.dateContainer}>
               {Platform.OS === 'ios' ? (
                 <DateTimePicker
@@ -339,17 +376,31 @@ const PersonaliseProfile = () => {
                     width: '28%',
                   }}
                 />
+              ) : showDatePicker ? (
+                <DateTimePicker
+                  value={birthDate}
+                  mode="date"
+                  display="default"
+                  onChange={onAndroidDateChange}
+                  style={{
+                    borderColor: theme.orange,
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    width: '28%',
+                  }}
+                />
               ) : (
                 <></>
               )}
             </View>
           </View>
           <View style={styles.resetPasswordContainer}>
-            <TouchableOpacity onPress={resetPasswordButton}>
-              <Text style={styles.sendMailButton}>Edit Password</Text>
-            </TouchableOpacity>
+            <Text
+              style={styles.sendMailButton}
+              onPress={() => resetPasswordButton()}>
+              Edit Password
+            </Text>
           </View>
-
           <SaveButton
             onPress={toggleEditSave}
             text={'Save'}

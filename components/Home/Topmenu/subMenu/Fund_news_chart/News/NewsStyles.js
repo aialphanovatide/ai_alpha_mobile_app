@@ -15,7 +15,6 @@ const useNewsStyles = () => {
       backgroundColor: theme.mainBackgroundColor,
     },
     title: {
-      marginVertical: 8,
       marginHorizontal: 28,
       color: theme.titleColor,
       fontSize: theme.titleFontSize,
@@ -60,16 +59,25 @@ const useNewsStyles = () => {
       width: theme.width,
       marginTop: 2.5,
       marginBottom: 10,
-      padding: 10,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       borderRadius: 2,
     },
     articleImage: {
-      width: theme.width,
-      height: 350,
+      flex: 1,
+    },
+    articleImageContainer: {
+      position: 'relative',
+      width: 360,
+      height: 225,
+      margin: 4,
+      marginBottom: 0,
       alignSelf: 'center',
       overflow: 'hidden',
+    },
+    contentContainer: {
+      width: '100%',
+      padding: 10,
     },
     articleTitle: {
       marginVertical: theme.titlesVerticalMargin,
@@ -85,7 +93,7 @@ const useNewsStyles = () => {
       textAlign: 'left',
       fontSize: theme.responsiveFontSize * 0.825,
       color: theme.secondaryTextColor,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
       lineHeight: 22,
     },
     articleSummary: {
@@ -93,7 +101,7 @@ const useNewsStyles = () => {
       marginHorizontal: 20,
       color: theme.textColor,
       fontSize: theme.responsiveFontSize * 0.85,
-      fontFamily: theme.fontMedium,
+      fontFamily: theme.font,
       textAlign: 'left',
       lineHeight: 22,
     },
@@ -146,6 +154,7 @@ const useNewsStyles = () => {
     },
     titleRow: {
       width: '100%',
+      marginTop: 12,
       flexDirection: 'row',
     },
     zoomImageBackground: {
@@ -153,7 +162,28 @@ const useNewsStyles = () => {
       width: '100%',
       height: '100%',
       alignItems: 'center',
+      justifyContent: 'center',
       alignSelf: 'center',
+    },
+    zoomIndicator: {
+      position: 'absolute',
+      bottom: 10,
+      right: 20,
+      width: 30,
+      height: 30,
+      tintColor: theme.textColor,
+      zIndex: 1000,
+    },
+    zoomedImage: {
+      width: 380,
+      height: 380,
+      alignSelf: 'center',
+    },
+    zoomImageDismissOverlay: {
+      width: '100%',
+      height: '25%',
+      backgroundColor: '#00000050',
+      opacity: 0.8,
     },
   });
   return styles;

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Platform, View, Text} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenLosersStyles from './TopTenLosersStyle.js';
@@ -10,6 +10,7 @@ import {home_static_data} from '../homeStaticData.js';
 import FastImage from 'react-native-fast-image';
 import {TOP_TEN_LOSERS_MOCK} from './TopTenLosersMock.js';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
+import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
@@ -52,7 +53,8 @@ const Item = ({position, coin}) => {
 const TopTenLosers = ({handleAboutPress}) => {
   const styles = useTopTenLosersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
+  const {topTenLosersData, loading} = useContext(Top10MoversContext);
 
   const additionalAboutStyles = {
     marginRight: Platform.OS === 'android' ? 20 : 0,
@@ -72,10 +74,11 @@ const TopTenLosers = ({handleAboutPress}) => {
       }
     };
     fetchTopTenLosers();
-    */
     setTopTenCoins(TOP_TEN_LOSERS_MOCK);
     setLoading(false);
-  }, []);
+    */
+    setTopTenCoins(topTenLosersData);
+  }, [topTenLosersData]);
   return (
     <View style={styles.topTenGainersContainer}>
       <View style={styles.titleRow}>
@@ -85,7 +88,7 @@ const TopTenLosers = ({handleAboutPress}) => {
           description={home_static_data.topTenGainers.sectionDescription}
         />
       </View>
-      {loading ? (
+      {loading || topTenCoins.length === 0 ? (
         <ScrollView>
           <View style={styles.table} showsVerticalScrollIndicator={false}>
             <SkeletonLoader quantity={10} />

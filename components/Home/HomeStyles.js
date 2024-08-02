@@ -13,7 +13,7 @@ const useHomeStyles = () => {
     marginWrapper: {
       flex: 1,
       marginVertical: theme.boxesMarginVertical,
-      backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: 'transparent',
     },
     menuContainer: {
       alignSelf: 'center',

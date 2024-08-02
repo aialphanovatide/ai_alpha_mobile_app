@@ -8,13 +8,13 @@ import {
 } from 'react-native';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
-import Loader from '../../../../../Loader/Loader';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
 import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 import {AboutIcon} from '../Fundamentals/AboutIcon';
 import {home_static_data} from '../../../../homeStaticData';
 import AboutModal from '../Fundamentals/AboutModal';
+import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
 
 const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
@@ -56,6 +56,30 @@ const NewsComponent = ({route}) => {
     return filteredText;
   };
 
+  // Function to filter the news depending on the selected time filter
+
+  const filterNewsByDate = (news, filter) => {
+    const now = new Date();
+
+    return news.filter(article => {
+      const articleDate = new Date(article.date);
+
+      if (filter === 'Today') {
+        return (
+          articleDate.getDate() === now.getDate() &&
+          articleDate.getMonth() === now.getMonth() &&
+          articleDate.getFullYear() === now.getFullYear()
+        );
+      } else if (filter === 'This Week') {
+        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
+        startOfWeek.setHours(0, 0, 0, 0);
+        return articleDate >= startOfWeek;
+      }
+
+      return false;
+    });
+  };
+
   const onPress = item => {
     navigation.navigate('NewsArticle', {
       item: item,
@@ -79,16 +103,12 @@ const NewsComponent = ({route}) => {
   }, [activeCoin, activeSubCoin]);
 
   useEffect(() => {
-    // setNews([]);
-    // setLoading(false);
     setLoading(true);
     const fetchNews = async () => {
       try {
         const newsLimit =
           activeFilter && activeFilter === 'This Week' ? 20 : 10;
-        const endpoint = activeFilter
-          ? `bot_name=${botname}&time_range=${activeFilter.toLowerCase()}&limit=${newsLimit}`
-          : `bot_name=${botname}&limit=${newsLimit}`;
+        const endpoint = `bot_name=${botname}&limit=${newsLimit}`;
         const response = await fetch(
           `https://newsbotv2.ngrok.io/get_articles?${endpoint}`,
           {
@@ -107,7 +127,7 @@ const NewsComponent = ({route}) => {
           setNews([]);
         } else {
           const data = await response.json();
-          const articles = data.data;
+          const articles = filterNewsByDate(data.data, activeFilter);
           setNews(articles);
         }
       } catch (error) {
@@ -156,7 +176,7 @@ const NewsComponent = ({route}) => {
         ))}
       </View>
       {loading ? (
-        <Loader />
+        <SkeletonLoader type="news" quantity={3} />
       ) : (
         <FlatList
           data={news}

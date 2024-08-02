@@ -16,6 +16,7 @@ import FastImage from 'react-native-fast-image';
 import useNarrativeTradingStyles from './NarrativeTradingStyles';
 import filterData from './FilterData';
 import {NarrativeTradingContext} from '../../../context/NarrativeTradingContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -124,31 +125,48 @@ const TimeMenu = ({
 };
 
 const NarrativeTrading = () => {
-  const {narrativeTradingData} = useContext(NarrativeTradingContext);
   const {isDarkMode} = useContext(AppThemeContext);
   const options = ['today', 'this week'];
   const [cryptoOptions, setCryptoOptions] = useState([]);
   const [activeOption, setActiveOption] = useState(null);
   const [activeCryptoOption, setActiveCryptoOption] = useState(null);
   const [narrativeTradingItems, setNarrativeTradingItems] = useState([]);
+  const [loadedNarrativeTradingItems, setLoadedNarrativeTradingItems] =
+    useState([]);
   const styles = useNarrativeTradingStyles();
   const navigation = useNavigation();
 
+  // Hook to load the data from the previous narrative tradings that the user has seen
   useEffect(() => {
-    setNarrativeTradingItems(narrativeTradingData);
-    // console.log(narrativeTradingItems);
-  }, [narrativeTradingData]);
+    const fetchData = async () => {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        const narrativeTradingKeys = keys.filter(key =>
+          key.startsWith('narrative_trading_'),
+        );
+        const narrativeItems = await AsyncStorage.multiGet(
+          narrativeTradingKeys,
+        );
+
+        const parsedItems = narrativeItems.map(item => JSON.parse(item[1]));
+        setLoadedNarrativeTradingItems(parsedItems);
+      } catch (e) {
+        console.error('Failed to load the data from storage', e);
+      }
+    };
+    if (loadedNarrativeTradingItems.length === 0) {
+      fetchData();
+    }
+  }, []);
 
   useEffect(() => {
     setCryptoOptions(filterData);
     setActiveCryptoOption(filterData[0]);
     handleCryptoTouch(filterData[0]);
     handleTimeIntervalChange(options[0]);
-  }, [narrativeTradingData]);
+  }, [loadedNarrativeTradingItems]);
 
   const filterItemsByCategory = (category, items) => {
-    // console.log('Category: ', category);
-    // console.log(items);
     const filtered_items = [];
     if (category.category_name.toLowerCase().replace(/\s/g, '') === 'total3') {
       items.forEach(item => {
@@ -201,13 +219,13 @@ const NarrativeTrading = () => {
     setActiveCryptoOption(option);
     const filtered_by_time = filterItemsByTime(
       activeOption,
-      narrativeTradingData,
+      loadedNarrativeTradingItems,
     );
     const filtered_narrative_tradings = filterItemsByCategory(
       option,
       filtered_by_time,
     );
-    setNarrativeTradingItems(filtered_narrative_tradings);
+    setNarrativeTradingItems(filtered_narrative_tradings.reverse());
   };
 
   const handleNarrativeTradingNavigation = item => {
@@ -227,10 +245,10 @@ const NarrativeTrading = () => {
     setActiveCryptoOption(filterData[0]);
     const filtered_by_crypto = filterItemsByCategory(
       filterData[0],
-      narrativeTradingData,
+      loadedNarrativeTradingItems,
     );
     const filtered_items = filterItemsByTime(interval, filtered_by_crypto);
-    setNarrativeTradingItems(filtered_items);
+    setNarrativeTradingItems(filtered_items.reverse());
   };
 
   const handleNavigationToAnalysis = () => {
@@ -245,7 +263,8 @@ const NarrativeTrading = () => {
       <LinearGradient
         useAngle={true}
         angle={45}
-        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
         style={{flex: 1}}>
         <View style={styles.container}>
           <View style={styles.backButtonWrapper}>

@@ -141,10 +141,11 @@ const useHistoryStyles = () => {
     },
     emptyMessage: {
       margin: theme.boxesVerticalMargin,
-      fontSize: theme.responsiveFontSize,
+      fontSize: 14,
       color: theme.secondaryTextColor,
-      alignSelf: 'center',
+      alignSelf: 'flex-start',
       fontFamily: theme.fontBoldItalic,
+      textAlign: 'left',
     },
     backButtonWrapper: {
       marginHorizontal: 20,

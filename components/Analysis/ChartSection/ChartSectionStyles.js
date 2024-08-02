@@ -28,7 +28,6 @@ const useChartSectionStyles = () => {
     chart: {
       width: '100%',
       height: '100%',
-      margin: '0%',
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
@@ -44,18 +43,18 @@ const useChartSectionStyles = () => {
     },
     backButtonWrapper: {
       marginHorizontal: 20,
-      marginTop: 36
+      marginTop: 36,
     },
     chartBackgroundImage: {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      top: 15,
+      top: 50,
       left: '7.5%',
       width: 52,
       height: 44,
-      opacity: 0.8,
-      //zIndex: -2,
+      opacity: 0.7,
+      zIndex: -2,
     },
     timeframeContainer: {
       flex: 1,
@@ -102,10 +101,9 @@ const useChartSectionStyles = () => {
       width: 20,
       height: 20,
       position: 'absolute',
-      tintColor: 'red',
-      zIndex: 5,
-      bottom: Platform.OS === 'android' ? 120 : 110,
-      left: Platform.OS === 'android' ? 25 : 15,
+      bottom: 80,
+      left: 25,
+      tintColor: theme.textColor,
     },
     chartBackButton: {
       width: 35,
@@ -114,6 +112,24 @@ const useChartSectionStyles = () => {
       bottom: 280,
       right: 30,
       tintColor: theme.textColor,
+    },
+    chartsZoomIndicator: {
+      width: 28,
+      height: 28,
+      position: 'absolute',
+      bottom: 80,
+      right: 80,
+      tintColor: theme.textColor,
+    },
+    refreshButton: {
+      position: 'absolute',
+      top: -35,
+      left: 200,
+      width: 18,
+      height: 18,
+      tintColor: theme.titleColor,
+      alignSelf: 'center',
+      zIndex: 10
     },
   });
   return styles;

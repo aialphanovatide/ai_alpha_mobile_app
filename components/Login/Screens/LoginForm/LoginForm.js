@@ -24,7 +24,7 @@ import auth0 from '../../auth0';
 import Purchases from 'react-native-purchases';
 import {useUser} from '../../../../context/UserContext';
 import {useUserId} from '../../../../context/UserIdContext';
-import { useRawUserId } from '../../../../context/RawUserIdContext';
+import {useRawUserId} from '../../../../context/RawUserIdContext';
 import jwtDecode from 'jwt-decode';
 import {decode as base64decode} from 'base-64';
 import {AppThemeContext} from '../../../../context/themeContext';
@@ -51,12 +51,6 @@ const LoginForm = ({route}) => {
     return formatted_id;
   };
 
-  useEffect(() => {
-    if (colorScheme === 'dark') {
-      toggleDarkMode();
-    }
-  }, []);
-
   useFocusEffect(
     React.useCallback(() => {
       setUsername('');
@@ -67,41 +61,58 @@ const LoginForm = ({route}) => {
 
   useEffect(() => {
     const checkToken = async () => {
+      if (colorScheme === 'dark') {
+        toggleDarkMode();
+      }
+
+      const shouldGoToIntroduction = await AsyncStorage.getItem(
+        'hasIntroduced',
+      );
       const accessToken = await AsyncStorage.getItem('accessToken');
       const refreshToken = await AsyncStorage.getItem('refreshToken');
+      const userId = await AsyncStorage.getItem('userId');
       const userEmail = await AsyncStorage.getItem('userEmail');
       const rawUserId = await AsyncStorage.getItem('rawUserId');
-      const userId = await AsyncStorage.getItem('userId');
 
-      const loginMethod = await AsyncStorage.getItem('loginMethod');
-      if (loginMethod !== 'username-password') {
-        // User didn't log in using username-password last time
-        return;
-      }
-
-      if (userEmail) {
-        updateUserEmail(userEmail);
-      }
-/*
-      console.log("LoginForm Checking persistence...");
-      console.log("LoginForm accestoken ->", accessToken);
-      console.log("LoginForm refreshtoken ->", refreshToken);
-      console.log("LoginForm userEmail ->", userEmail);
-      console.log("LoginForm userID ->", userId);
-*/
-
-      if (accessToken && refreshToken) {
-        //console.log("LoginForm Entered accesToken");
-        const user_id = formatUserId(userId);
-        //console.log("LoginForm NEWuserEmail ->", userEmail);
-        //console.log("LoginForm NEWuserID ->", user_id);
-        setUserEmail(userEmail);
-        setUserId(user_id);
-        setRawUserId(rawUserId);
-        navigation.navigate('HomeScreen');
+      if (shouldGoToIntroduction === null) {
+        await AsyncStorage.setItem('hasIntroduced', 'false');
+        navigation.navigate('IntroductoryScreen');
       } else {
-        //console.log("LoginForm Entered else");
-        navigation.navigate('SignIn');
+        if (accessToken && refreshToken) {
+          navigation.navigate(
+            'HomeScreen',
+            route.params && route.params !== undefined
+              ? route.params.shouldShowPopUps
+              : null,
+          );
+          //console.log("LoginForm Entered accesToken");
+          const user_id = formatUserId(userId);
+          //console.log("LoginForm NEWuserEmail ->", userEmail);
+          //console.log("LoginForm NEWuserID ->", user_id);
+          setUserEmail(userEmail);
+          setUserId(user_id);
+          setRawUserId(rawUserId);
+        } else {
+          //console.log("LoginForm Entered else");
+          navigation.navigate('SignIn');
+        }
+
+        const loginMethod = await AsyncStorage.getItem('loginMethod');
+        if (loginMethod !== 'username-password') {
+          // User didn't log in using username-password last time
+          return;
+        }
+
+        if (userEmail) {
+          updateUserEmail(userEmail);
+        }
+        /*
+        console.log("LoginForm Checking persistence...");
+        console.log("LoginForm accestoken ->", accessToken);
+        console.log("LoginForm refreshtoken ->", refreshToken);
+        console.log("LoginForm userEmail ->", userEmail);
+        console.log("LoginForm userID ->", userId);
+  */
       }
     };
 
@@ -148,7 +159,6 @@ const LoginForm = ({route}) => {
           await AsyncStorage.setItem('rawUserId', userId);
           await AsyncStorage.setItem('loginMethod', 'username-password');
 
-
           setUserEmail(username);
           setUserId(formatted_id);
           setRawUserId(userId);
@@ -186,7 +196,8 @@ const LoginForm = ({route}) => {
       <LinearGradient
         useAngle={true}
         angle={45}
-        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
         style={styles.flex}>
         <ScrollView
           style={styles.scrollview}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import useAskAiStyles from '../AskAiStyles';
 import {Text, View} from 'react-native';
 import {Image, TouchableOpacity} from 'react-native';
@@ -14,6 +14,7 @@ const AskAiHistory = ({
 }) => {
   const styles = useAskAiStyles();
   const menuButtonWidth = 100 / options.length;
+
   return (
     <View style={styles.historySection}>
       <Text style={styles.cleanButton} onPress={() => handleHistoryClean()}>

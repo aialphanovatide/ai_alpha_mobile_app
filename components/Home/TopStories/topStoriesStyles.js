@@ -20,14 +20,14 @@ const useTopStoriesStyles = () => {
     mainTitle: {
       fontFamily: theme.fontSemibold,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
+      fontSize: 16,
     },
     titleStyles: {
       maxWidth: '85%',
       fontFamily: theme.fontMedium,
       color: theme.titleColor,
       marginBottom: 2,
-      fontSize: theme.responsiveFontSize,
+      fontSize: 14,
     },
     imageStyle: {
       width: 50,
@@ -42,7 +42,7 @@ const useTopStoriesStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       borderBottomColor: theme.boxesBorderColor,
-      borderBottomWidth: 1,
+      borderBottomWidth: 0.5,
       borderRadius: 3,
     },
     description: {
@@ -68,10 +68,11 @@ const useTopStoriesStyles = () => {
     },
     emptyMessage: {
       margin: theme.boxesVerticalMargin,
-      fontSize: theme.responsiveFontSize,
+      fontSize: 14,
       color: theme.secondaryTextColor,
-      alignSelf: 'center',
+      alignSelf: 'flex-start',
       fontFamily: theme.fontBoldItalic,
+      textAlign: 'left',
     },
   });
   return styles;

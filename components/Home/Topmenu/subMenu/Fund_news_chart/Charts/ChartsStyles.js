@@ -17,7 +17,7 @@ const useChartsStyles = () => {
     },
     detailsContainer: {
       flex: 1,
-      marginVertical: theme.titlesVerticalMargin,
+      marginTop: 24,
       marginBottom: 0,
       flexDirection: 'row',
       width: '100%',
@@ -60,22 +60,25 @@ const useChartsStyles = () => {
       borderWidth: 3,
       borderRadius: 4,
     },
+    activeTimeFrame: {
+      backgroundColor: theme.activeWhite,
+      borderColor: theme.subMenuBgColor,
+      borderWidth: 3,
+    },
     timeFrameButtonText: {
       color: theme.subMenuTextColor,
       textTransform: 'uppercase',
       fontSize: 12,
-      fontFamily: theme.fontRegular,
+      fontFamily: theme.font,
     },
-    timeFrameActiveButtonText: {
-      color: theme.subMenuTextColor,
-      textTransform: 'uppercase',
+    activeText: {
       fontFamily: theme.fontMedium,
-      fontSize: 12,
     },
     rsButtonContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       alignItems: 'flex-start',
+      alignSelf: 'flex-start',
     },
     rsButton: {
       paddingHorizontal: 4,
@@ -174,6 +177,14 @@ const useChartsStyles = () => {
       tintColor: theme.textColor,
       zIndex: 1,
     },
+    chartsZoomIndicator: {
+      width: 28,
+      height: 28,
+      position: 'absolute',
+      bottom: 50,
+      right: 70,
+      tintColor: theme.textColor,
+    },
     chartBackButton: {
       width: 35,
       height: 35,
@@ -235,10 +246,12 @@ const useChartsStyles = () => {
       minHeight: 300,
     },
     alertsTextMessage: {
-      marginTop: 16,
-      fontSize: theme.responsiveFontSize,
-      fontFamily: theme.fontBoldItalic,
+      margin: theme.boxesVerticalMargin,
+      fontSize: 14,
       color: theme.secondaryTextColor,
+      alignSelf: 'flex-start',
+      fontFamily: theme.fontBoldItalic,
+      textAlign: 'left',
     },
     alertDetailsContainer: {
       position: 'relative',
@@ -380,6 +393,15 @@ const useChartsStyles = () => {
     },
     flexRow: {
       flexDirection: 'row',
+    },
+    refreshButton: {
+      position: 'absolute',
+      top: -150,
+      left: '70%',
+      width: 18,
+      height: 18,
+      tintColor: theme.titleColor,
+      alignSelf: 'center',
     },
   });
   return styles;

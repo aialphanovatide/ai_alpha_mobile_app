@@ -40,6 +40,7 @@ const useFundingRatesStyles = () => {
     exchangeHeader: {
       width: 100,
       height: 100,
+      marginLeft: 0 ,
       alignItems: 'center',
       backgroundColor: theme.tableHeaderColor,
     },

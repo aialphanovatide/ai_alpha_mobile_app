@@ -6,9 +6,15 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from 'react-native';
-import {VictoryChart, VictoryAxis, VictoryCandlestick} from 'victory-native';
-import Loader from '../../Loader/Loader';
+import {
+  VictoryChart,
+  VictoryAxis,
+  VictoryCandlestick,
+  VictoryZoomContainer,
+  VictoryLine,
+} from 'victory-native';
 import axios from 'axios';
 import BackButton from '../BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -19,6 +25,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useNavigation} from '@react-navigation/core';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
+import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
 
 // This component generates a chart with ETH/BTC pairing data coming from the binance API
 
@@ -31,6 +38,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
   const navigation = useNavigation();
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
+  const [selectedCandle, setSelectedCandle] = useState(null);
 
   // Use Effect that gets the chart data from the Binance API, mapping it to the Victory Chart necessary format
   async function fetchChartData() {
@@ -62,9 +70,23 @@ const EthBtcChart = ({candlesToShow = 30}) => {
   }
 
   useEffect(() => {
-    const intervalId = setInterval(() => fetchChartData(), 3500);
+    const intervalId = setInterval(() => fetchChartData(), 2000);
     return () => clearInterval(intervalId);
   }, [selectedInterval]);
+
+  // Function to handle candle click events
+  const handleCandleClick = (event, data) => {
+    const linesColor = data.close > data.open ? '#09C283' : '#E93334';
+    setSelectedCandle({...data, linesColor});
+  };
+
+  const handleCandlePressOut = () => {
+    setSelectedCandle(null); // Clear the selected candle state
+  };
+
+  const calculateCandleMiddle = candle => {
+    return (candle.open + candle.close) / 2;
+  };
 
   // If the chart data is loading, then display a loader
   if (loading || chartData.length === 0) {
@@ -72,7 +94,8 @@ const EthBtcChart = ({candlesToShow = 30}) => {
       <LinearGradient
         useAngle={true}
         angle={45}
-        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
         style={{flex: 1}}>
         <SafeAreaView style={styles.background}>
           <View style={styles.backButtonWrapper}>
@@ -86,7 +109,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
           </Text>
           <View
             style={[styles.container, {width: '95%', marginHorizontal: 10}]}>
-            <SkeletonLoader type="timeframe" quantity={4} />
+            <SkeletonLoader type="timeframe" quantity={2} />
             <SkeletonLoader
               type="chart"
               style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
@@ -128,11 +151,24 @@ const EthBtcChart = ({candlesToShow = 30}) => {
     }
   };
 
+  // Extracting low and high values from candlestick data
+  const lows = chartData.map(d => d.low);
+  const highs = chartData.map(d => d.high);
+
+  // Calculate Fibonacci retracement levels
+  const low = Math.min(...lows);
+  const high = Math.max(...highs);
+
+  const {height, width} = Dimensions.get('window');
+  const chartWidth = width > 500 ? 860 : 400;
+  const chartHeight = 300;
+
   return (
     <LinearGradient
       useAngle={true}
       angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+      locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <SafeAreaView
         style={[
@@ -154,9 +190,10 @@ const EthBtcChart = ({candlesToShow = 30}) => {
           </Text>
           <View style={styles.timeframeContainer}>
             <TimeframeSelector
+              selectedPairing={'null'}
               selectedInterval={selectedInterval}
               changeInterval={changeInterval}
-              hasHourlyTimes={true}
+              disabled={loading}
             />
           </View>
           <View style={styles.container}>
@@ -167,14 +204,26 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                 resizeMode="contain"
               />
               <VictoryChart
-                width={isLandscape && isHorizontal ? 700 : 375}
+                width={isLandscape && isHorizontal ? 700 : chartWidth}
                 domain={{x: domainX, y: domainY}}
+                events={[
+                  {
+                    target: 'parent',
+                    eventHandlers: {
+                      onPressOut: () => {
+                        handleCandlePressOut();
+                        return [];
+                      },
+                    },
+                  },
+                ]}
                 padding={{top: 10, bottom: 40, left: 20, right: 70}}
                 domainPadding={{x: 2.5, y: 3}}
                 scale={{x: 'time', y: 'linear'}}
-                height={300}>
+                height={chartHeight}
+                containerComponent={<VictoryZoomContainer />}>
                 <VictoryAxis
-                fixLabelOverlap
+                  fixLabelOverlap
                   style={{
                     axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
                     tickLabels: {
@@ -212,8 +261,75 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                   tickFormat={t => `$${t}`}
                 />
 
+                <DataRenderer
+                  domainX={domainX}
+                  yPoint={
+                    selectedCandle && calculateCandleMiddle(selectedCandle)
+                  }
+                  domainY={domainY}
+                  chartWidth={chartWidth}
+                  screenWidth={width}
+                  chartHeight={chartHeight}
+                  data={selectedCandle && selectedCandle}
+                />
+
+                {/* HORIZONTAL LINE */}
+                {selectedCandle && (
+                  <VictoryLine
+                    data={[
+                      {
+                        x: domainX[0],
+                        y: (selectedCandle.open + selectedCandle.close) / 2,
+                      },
+                      {
+                        x: domainX[1],
+                        y: (selectedCandle.open + selectedCandle.close) / 2,
+                      },
+                    ]}
+                    style={{
+                      data: {
+                        stroke: selectedCandle
+                          ? selectedCandle.linesColor
+                          : '#E93334',
+                        strokeWidth: 1,
+                        strokeDasharray: [4, 4],
+                      },
+                    }}
+                  />
+                )}
+
+                {/* VERTICAL LINE */}
+                {selectedCandle && (
+                  <VictoryLine
+                    data={[
+                      {x: new Date(selectedCandle.x), y: high},
+                      {x: new Date(selectedCandle.x), y: low},
+                    ]}
+                    style={{
+                      data: {
+                        stroke: selectedCandle
+                          ? selectedCandle.linesColor
+                          : '#E93334',
+                        strokeWidth: 1,
+                        strokeDasharray: [4, 4],
+                      },
+                    }}
+                  />
+                )}
+
                 <VictoryCandlestick
                   data={chartData}
+                  events={[
+                    {
+                      target: 'data',
+                      eventHandlers: {
+                        onPressIn: (event, props) => {
+                          handleCandleClick(event, props.datum);
+                          return []; // Return an empty array to avoid any state mutation on the chart itself
+                        },
+                      },
+                    },
+                  ]}
                   candleRatio={0.6}
                   candleColors={{positive: '#09C283', negative: '#E93334'}}
                   style={{
@@ -258,6 +374,11 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                 source={require('../../../assets/images/home/charts/back.png')}
               />
             </TouchableOpacity>
+            <Image
+              style={styles.chartsZoomIndicator}
+              resizeMode="contain"
+              source={require('../../../assets/images/home/charts/zoom-expand.png')}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

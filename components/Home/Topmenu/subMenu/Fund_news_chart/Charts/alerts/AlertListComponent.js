@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import AlertDetails from './alertDetails';
 import {getService} from '../../../../../../../services/aiAlphaApi';
-import Loader from '../../../../../../Loader/Loader';
 import SkeletonLoader from '../../../../../../Loader/SkeletonLoader';
 
 const AlertListComponent = ({botName, timeframe, styles}) => {

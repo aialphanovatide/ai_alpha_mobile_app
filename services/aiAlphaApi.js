@@ -19,18 +19,22 @@ export const getService = async endpoint => {
       },
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
     if (response.status === 204) {
       return [];
+    }
+
+    if (response.status === 404) {
+      return [];
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error(`Error in GET request: ${error.message}`);
+    console.error(`Error in GET request: ${error.message} for ${endpoint}`);
     throw error;
   }
 };

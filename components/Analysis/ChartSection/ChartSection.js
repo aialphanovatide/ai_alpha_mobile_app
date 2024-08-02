@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
+  Dimensions,
   Image,
   ImageBackground,
   SafeAreaView,
@@ -23,11 +24,13 @@ import {
   VictoryChart,
   VictoryLabel,
   VictoryLine,
+  VictoryZoomContainer,
 } from 'victory-native';
 import {getService} from '../../../services/aiAlphaApi';
 import ChartButtons from './ChartButtons';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
+import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
 
 const initialSessionData = {
   security_token: null,
@@ -46,7 +49,37 @@ const ChartSection = ({route, navigation}) => {
   const [activeButtons, setActiveButtons] = useState([]);
   const [supportLevels, setSupportLevels] = useState([]);
   const [resistanceLevels, setResistanceLevels] = useState([]);
-  const {isLandscape, isHorizontal, handleScreenOrientationChange} = useScreenOrientation();
+  const {isLandscape, isHorizontal, handleScreenOrientationChange} =
+    useScreenOrientation();
+  const [supportResistanceLoading, setSupportResistanceLoading] =
+    useState(false);
+  const [selectedCandle, setSelectedCandle] = useState(null);
+
+  // Hook to request again the data to CapitalCom when changing the time interval or the coin (changing to other chart)
+  useEffect(() => {
+    setLoading(true);
+    if (!sessionData.security_cst && !sessionData.security_token) {
+      loadChartsData();
+    } else {
+      fetchCapitalComChartData(
+        sessionData.security_token,
+        sessionData.security_cst,
+      );
+    }
+  }, [symbol, selectedInterval]);
+
+  // Hook to fetch the support and resistance data, only when one of the buttons is active
+
+  useEffect(() => {
+    const coinBot = symbol === 'US500' ? 'sp500' : 'DXY';
+    if (
+      activeButtons.length > 0 &&
+      (resistanceLevels.length === 0 || supportLevels.length === 0)
+    ) {
+      setSupportResistanceLoading(true);
+      getSupportAndResistanceData(coinBot, selectedInterval);
+    }
+  }, [symbol, selectedInterval, activeButtons]);
 
   // Format number in shorten way
   function formatLabelNumber(number, decimalPlaces = 2) {
@@ -58,6 +91,8 @@ const ChartSection = ({route, navigation}) => {
       return number;
     }
   }
+
+  // Function to fetch the support and resistance data for the chart's currency
 
   const getSupportAndResistanceData = async (coinBot, time_interval) => {
     try {
@@ -83,8 +118,12 @@ const ChartSection = ({route, navigation}) => {
       }
     } catch (error) {
       console.error('Error fetching support and resistance data: ', error);
+    } finally {
+      setSupportResistanceLoading(false);
     }
   };
+
+  // Function to fetch the chart data from the CapitalCom API, passing the previously requested session data
 
   async function fetchCapitalComChartData(security_token, security_cst) {
     const adapted_interval =
@@ -103,7 +142,6 @@ const ChartSection = ({route, navigation}) => {
         security_token,
         security_cst,
       );
-      // console.log('Prices response: ', response?.prices);
       const mapped_prices = response?.prices?.map(price => {
         const mapped_hour = new Date(price?.snapshotTime);
         const hour_to_seconds = mapped_hour.getTime();
@@ -120,9 +158,10 @@ const ChartSection = ({route, navigation}) => {
     } catch (error) {
       console.error('Error getting the prices data: ', error);
       setSessionData({security_token: null, security_cst: null});
-      setChartData([]);
     }
   }
+
+  // Function to obtain both session and charts data from CapitalCom
 
   async function loadChartsData() {
     try {
@@ -139,26 +178,18 @@ const ChartSection = ({route, navigation}) => {
 
   // This chart was configured to update every 30s since the source is an external API which has limitation parameters in terms of requests per minute.
 
-  useEffect(() => {
-    const intervalId = setInterval(() => loadChartsData(), 8000);
-    return () => clearInterval(intervalId);
-  }, [symbol, selectedInterval]);
-
-  useEffect(() => {
-    setLoading(true);
-  }, [symbol, selectedInterval]);
-
-  useEffect(() => {
-    const coinBot = symbol === 'US500' ? 'sp500' : 'DXY';
-    getSupportAndResistanceData(coinBot, selectedInterval);
-  }, [symbol, selectedInterval]);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => loadChartsData(), 8000);
+  //   return () => clearInterval(intervalId);
+  // }, [symbol, selectedInterval]);
 
   if (loading || chartData?.length === 0) {
     return (
       <LinearGradient
         useAngle={true}
         angle={45}
-        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
         style={{flex: 1}}>
         <SafeAreaView
           style={[
@@ -183,6 +214,8 @@ const ChartSection = ({route, navigation}) => {
       </LinearGradient>
     );
   }
+
+  // Function to generate the Y-Domain for the charts
 
   const domainY = () => {
     if (
@@ -213,19 +246,25 @@ const ChartSection = ({route, navigation}) => {
 
   const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
 
-  const changeInterval = async newInterval => {
-    setSelectedInterval(newInterval);
-    setLoading(true);
+  // [TEMPORARY] Function to manually update the data of the chart
 
+  const handleDataUpdate = async currentInterval => {
+    setLoading(true);
+    setChartData([]);
+    await fetchCapitalComChartData(
+      sessionData.security_token,
+      sessionData.security_cst,
+    );
+  };
+
+  // Function to trigger the time interval change of the charts, requesting again the data
+
+  const changeInterval = async newInterval => {
+    setLoading(true);
     try {
+      setSelectedInterval(newInterval);
       setChartData([]);
-      await fetchCapitalComChartData(
-        sessionData.security_token,
-        sessionData.security_cst,
-      );
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
       console.error('Failed to change interval: ${error}');
     }
   };
@@ -240,11 +279,39 @@ const ChartSection = ({route, navigation}) => {
     }
   };
 
+  // Function to handle candle click events
+  const handleCandleClick = (event, data) => {
+    const linesColor = data.close > data.open ? '#09C283' : '#E93334';
+    setSelectedCandle({...data, linesColor});
+  };
+
+  const handleCandlePressOut = () => {
+    setSelectedCandle(null); // Clear the selected candle state
+  };
+
+  const calculateCandleMiddle = candle => {
+    return (candle.open + candle.close) / 2;
+  };
+
+  // Extracting low and high values from candlestick data
+  const lows = chartData.map(d => d.low);
+  const highs = chartData.map(d => d.high);
+
+  // Calculate Fibonacci retracement levels
+  const low = Math.min(...lows);
+  const high = Math.max(...highs);
+
+  // Gets the dimensation of the phone
+  const {height, width} = Dimensions.get('window');
+  const chartWidth = width > 500 ? 860 : 400;
+  const chartHeight = 340;
+
   return (
     <LinearGradient
       useAngle={true}
       angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+      locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <SafeAreaView
         style={[
@@ -267,15 +334,26 @@ const ChartSection = ({route, navigation}) => {
             <TimeframeSelector
               selectedInterval={selectedInterval}
               changeInterval={changeInterval}
-              hasHourlyTimes={true}
+              selectedPairing={'usdt'}
+              disabled={loading}
             />
             {(selectedInterval.toUpperCase() === '1W' ||
               selectedInterval.toUpperCase() === '1D') && (
               <ChartButtons
                 activeButtons={activeButtons}
                 setActiveButtons={setActiveButtons}
+                disabled={loading || supportResistanceLoading}
               />
             )}
+            <TouchableOpacity
+              onPress={() => handleDataUpdate(selectedInterval)}
+              disabled={loading}>
+              <Image
+                source={require('../../../assets/images/home/charts/chart-refresh.png')}
+                style={styles.refreshButton}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.container}>
             <View style={styles.chart}>
@@ -287,16 +365,28 @@ const ChartSection = ({route, navigation}) => {
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
                 domain={{x: domainX, y: domainY()}}
+                events={[
+                  {
+                    target: 'parent',
+                    eventHandlers: {
+                      onPressOut: () => {
+                        handleCandlePressOut();
+                        return [];
+                      },
+                    },
+                  },
+                ]}
                 padding={{top: 10, bottom: 40, left: 20, right: 70}}
                 domainPadding={{x: 5, y: 3}}
                 scale={{x: 'time', y: 'linear'}}
-                height={300}>
+                height={300}
+                containerComponent={<VictoryZoomContainer />}>
                 <VictoryAxis
                   fixLabelOverlap
                   style={{
                     axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
                     tickLabels: {
-                      fontSize: theme.responsiveFontSize * 0.7,
+                      fontSize: 9.25,
                       fill: theme.titleColor,
                       fontFamily: theme.font,
                     },
@@ -330,8 +420,75 @@ const ChartSection = ({route, navigation}) => {
                   tickFormat={t => `$${t}`}
                 />
 
+                {/* HORIZONTAL LINE */}
+                {selectedCandle && (
+                  <VictoryLine
+                    data={[
+                      {
+                        x: domainX[0],
+                        y: (selectedCandle.open + selectedCandle.close) / 2,
+                      },
+                      {
+                        x: domainX[1],
+                        y: (selectedCandle.open + selectedCandle.close) / 2,
+                      },
+                    ]}
+                    style={{
+                      data: {
+                        stroke: selectedCandle
+                          ? selectedCandle.linesColor
+                          : '#E93334',
+                        strokeWidth: 1,
+                        strokeDasharray: [4, 4],
+                      },
+                    }}
+                  />
+                )}
+
+                <DataRenderer
+                  domainX={domainX}
+                  yPoint={
+                    selectedCandle && calculateCandleMiddle(selectedCandle)
+                  }
+                  domainY={domainY}
+                  chartWidth={chartWidth}
+                  screenWidth={width}
+                  chartHeight={chartHeight}
+                  data={selectedCandle && selectedCandle}
+                />
+
+                {/* VERTICAL LINE */}
+                {selectedCandle && (
+                  <VictoryLine
+                    data={[
+                      {x: new Date(selectedCandle.x), y: high},
+                      {x: new Date(selectedCandle.x), y: low},
+                    ]}
+                    style={{
+                      data: {
+                        stroke: selectedCandle
+                          ? selectedCandle.linesColor
+                          : '#E93334',
+                        strokeWidth: 1,
+                        strokeDasharray: [4, 4],
+                      },
+                    }}
+                  />
+                )}
+
                 <VictoryCandlestick
                   data={chartData}
+                  events={[
+                    {
+                      target: 'data',
+                      eventHandlers: {
+                        onPressIn: (event, props) => {
+                          handleCandleClick(event, props.datum);
+                          return []; // Return an empty array to avoid any state mutation on the chart itself
+                        },
+                      },
+                    },
+                  ]}
                   candleRatio={0.6}
                   candleColors={{positive: '#09C283', negative: '#E93334'}}
                   style={{
@@ -455,6 +612,11 @@ const ChartSection = ({route, navigation}) => {
                 source={require('../../../assets/images/home/charts/back.png')}
               />
             </TouchableOpacity>
+            <Image
+              style={styles.chartsZoomIndicator}
+              resizeMode="contain"
+              source={require('../../../assets/images/home/charts/zoom-expand.png')}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

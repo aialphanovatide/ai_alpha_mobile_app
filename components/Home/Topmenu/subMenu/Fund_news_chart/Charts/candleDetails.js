@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {AboutIcon} from '../Fundamentals/AboutIcon';
 import {home_static_data} from '../../../../homeStaticData';
 import {AboutModalContext} from '../../../../../../context/AboutModalContext';
@@ -7,6 +7,7 @@ import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 const CandlestickDetails = ({
   coin,
   lastPrice,
+  interval,
   styles,
   isPriceUp,
   loading,
@@ -46,9 +47,7 @@ const CandlestickDetails = ({
     <View style={[styles.detailsContainer, styles.column]}>
       <View style={styles.flexRow}>
         <Text style={styles.detailslabel}>
-          {
-            `${coin.toUpperCase()}/${selectedPairing.toUpperCase()}` /* {formatCoin(coin, pairings[0])} */
-          }
+          {`${coin.toUpperCase()}/${selectedPairing.toUpperCase()}`}
         </Text>
         <Text
           style={[
@@ -72,12 +71,13 @@ const CandlestickDetails = ({
         {pairings.map((pairing, index) => (
           <TouchableOpacity
             key={index}
+            disabled={loading}
             style={[
               styles.pairingButton,
               {width: `${100 / pairings.length}%`},
               selectedPairing === pairing && styles.pairingActiveButton,
             ]}
-            onPress={() => handlePairingChange(pairing)}>
+            onPress={() => handlePairingChange(pairing, interval)}>
             <Text
               style={[
                 styles.pairingButtonText,

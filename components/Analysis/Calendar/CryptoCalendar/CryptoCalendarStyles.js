@@ -140,13 +140,13 @@ const useCryptoCalendarStyles = () => {
       backgroundColor: theme.activeWhite,
     },
     activeCryptoName: {
-      color: theme.secondaryTextColor,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
+      color: theme.subMenuTextColor,
     },
     cryptoName: {
-      fontSize: theme.responsiveFontSize * 0.6,
-      color: theme.subMenuTextColor,
-      fontFamily: theme.fontMedium,
+      fontSize: theme.responsiveFontSize * 0.65,
+      color: theme.secondaryTextColor,
+      fontFamily: theme.font,
       textAlign: 'center',
     },
     messageContainer: {
@@ -156,10 +156,12 @@ const useCryptoCalendarStyles = () => {
       alignSelf: 'center',
     },
     emptyEventsMessage: {
-      textAlign: 'center',
+      margin: theme.boxesVerticalMargin,
+      fontSize: 14,
       color: theme.secondaryTextColor,
-      fontSize: theme.responsiveFontSize * 0.9,
+      alignSelf: 'flex-start',
       fontFamily: theme.fontBoldItalic,
+      textAlign: 'left',
     },
     flex: {
       flex: 1,

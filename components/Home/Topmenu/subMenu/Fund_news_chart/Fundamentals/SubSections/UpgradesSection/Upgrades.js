@@ -4,25 +4,52 @@ import Timeline from '../Hacks/Timeline/Timeline';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
-const Upgrades = ({getSectionData, coin, handleSectionContent}) => {
+const Upgrades = ({
+  getSectionData,
+  coin,
+  handleSectionContent,
+  globalData,
+  loading,
+}) => {
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    setEvents([]);
+    // setLoading(true);
+    // setEvents([]);
 
-    const fetchUpgradesData = async () => {
-      try {
-        const response = await getSectionData(
-          `/api/get_upgrades?coin_name=${coin}`,
-        );
+    // const fetchUpgradesData = async () => {
+    //   try {
+    //     const response = await getSectionData(
+    //       `/api/get_upgrades?coin_name=${coin}`,
+    //     );
 
-        if (response.status !== 200) {
+    //     if (response.status !== 200) {
+    //       setEvents([]);
+    //     } else {
+    //       // console.log('Upgrade response: ', response.message);
+    //       const mapped_events = response.message.map(event => {
+    //         return {
+    //           id: event.upgrade.id,
+    //           upgrade_name: event.upgrade.event,
+    //           upgrade_overview: event.upgrade.event_overview,
+    //           upgrade_impact: event.upgrade.impact,
+    //           date: event.upgrade.date,
+    //         };
+    //       });
+    //       setEvents(mapped_events.sort((a, b) => compareDates(a.date, b.date)));
+    //     }
+    //   } catch (error) {
+    //     console.error('Error trying to get upgrades data: ', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    const fetchUpgradesData = () => {
+        if (!globalData || globalData.upgrades.status !== 200) {
           setEvents([]);
         } else {
-          // console.log('Upgrade response: ', response.message);
-          const mapped_events = response.message.map(event => {
+          const mapped_events = globalData.upgrades.message.map(event => {
             return {
               id: event.upgrade.id,
               upgrade_name: event.upgrade.event,
@@ -33,14 +60,10 @@ const Upgrades = ({getSectionData, coin, handleSectionContent}) => {
           });
           setEvents(mapped_events.sort((a, b) => compareDates(a.date, b.date)));
         }
-      } catch (error) {
-        console.error('Error trying to get upgrades data: ', error);
-      } finally {
-        setLoading(false);
-      }
     };
+
     fetchUpgradesData();
-  }, [coin]);
+  }, [globalData, coin]);
 
   const compareDates = (dateA, dateB) => {
     const monthOrder = {
@@ -92,7 +115,7 @@ const Upgrades = ({getSectionData, coin, handleSectionContent}) => {
   }, [events, loading, handleSectionContent]);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1,}}>
       {loading ? (
         <SkeletonLoader type="timeline" quantity={4} />
       ) : events?.length === 0 ? (

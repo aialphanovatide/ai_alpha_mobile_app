@@ -8,7 +8,7 @@ const usePersonaliseProfileStyles = () => {
     root: {
       alignItems: 'center',
       backgroundColor: theme.mainBackgroundColor,
-      padding: 20,
+      padding: 10,
     },
     scrollview: {
       backgroundColor: theme.mainBackgroundColor,
@@ -24,20 +24,22 @@ const usePersonaliseProfileStyles = () => {
       marginBottom: 20,
     },
     mainTitle: {
-      marginVertical: '5%',
-      marginLeft: '6%',
+      marginVertical: 24,
+      marginBottom: 12,
+      marginHorizontal: 22,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
     },
     inputContainer: {
-      alignSelf: 'stretch',
+      width: '100%',
     },
     title: {
       color: theme.textColor,
       textAlign: 'left',
-      marginLeft: 0,
-      fontFamily: theme.fontSemibold,
+      marginLeft: 15,
+      fontFamily: theme.fontMedium,
+      fontSize: 16,
     },
     loginContainer: {
       flexDirection: 'row',
@@ -93,23 +95,24 @@ const usePersonaliseProfileStyles = () => {
       fontSize: 12,
     },
     imageContainer: {
-        alignItems: 'center',
+      alignItems: 'center',
+      marginBottom: 16,
     },
     userImage: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+      width: 92,
+      height: 92,
+      borderRadius: 46,
     },
-    infoTitle:{
-        color: theme.textColor,
-        textAlign: 'left',
-        marginLeft: 0,
-        fontSize: 17,
-        fontFamily: theme.fontSemibold,
+    infoTitle: {
+      color: theme.textColor,
+      textAlign: 'left',
+      marginLeft: 0,
+      fontSize: 17,
+      fontFamily: theme.fontSemibold,
     },
-    infoText:{
-        fontSize:16,
-        marginBottom:10,
+    infoText: {
+      fontSize: 16,
+      marginBottom: 10,
     },
     optionalLabel: {
       color: 'grey',
@@ -127,15 +130,17 @@ const usePersonaliseProfileStyles = () => {
     },
     resetPasswordContainer: {
       alignSelf: 'center',
-      marginTop: 20,
+      marginTop: 16,
     },
     sendMailButton: {
       color: '#FF6C0D',
-      fontSize: theme.responsiveFontSize * 0.85,
+      fontSize: 14,
+      fontFamily: theme.font,
       textDecorationLine: 'underline',
       marginBottom: 80,
+      alignSelf: 'flex-start',
     },
-    dateContainer:{
+    dateContainer: {
       alignItems: 'left',
       backgroundColor: 'transparent',
       borderRadius: 5,
@@ -151,6 +156,22 @@ const usePersonaliseProfileStyles = () => {
       fontSize: 16,
       color: '#000',
     },
+    dateInput: {
+      fontSize: 14,
+      fontFamily: theme.font,
+      color: theme.inputColor,
+    },
+    androidDateContainer: {
+      width: '100%',
+      paddingHorizontal: 12,
+      marginTop: 5,
+      marginBottom: 15,
+      borderRadius: 5,
+      backgroundColor: theme.loginInputBgColor,
+    },
+    backbuttonContainer: {
+      marginHorizontal: 12,
+    }
   });
   return styles;
 };

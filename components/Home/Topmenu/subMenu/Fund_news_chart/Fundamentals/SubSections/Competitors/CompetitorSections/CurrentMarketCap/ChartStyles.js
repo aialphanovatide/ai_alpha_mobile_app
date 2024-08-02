@@ -12,6 +12,12 @@ const useChartStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
+    barLabel: {
+      fontSize: 14,
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
+      borderRadius: 4,
+    },
   });
   return styles;
 };

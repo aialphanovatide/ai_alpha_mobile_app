@@ -22,10 +22,15 @@ const ExternalLink = ({url, text}) => {
   );
 };
 
-const Introduction = ({getSectionData, coin, handleSectionContent}) => {
+const Introduction = ({
+  getSectionData,
+  coin,
+  handleSectionContent,
+  loading,
+  globalData,
+}) => {
   const styles = useIntroductionStyles();
   const [content, setContent] = useState(null);
-  const [loading, setLoading] = useState(true);
   const {theme, isDarkMode} = useContext(AppThemeContext);
   const isAndroid = Platform.OS === 'android' ? true : false;
   const systemFonts = [
@@ -120,32 +125,44 @@ const Introduction = ({getSectionData, coin, handleSectionContent}) => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    setContent(null);
-    const fetchIntroductionContent = async () => {
-      try {
-        const response = await getSectionData(
-          `/api/get_introduction?coin_name=${coin}`,
-        );
+    // setLoading(true);
+    // setContent(null);
+    // const fetchIntroductionContent = async () => {
+    //   try {
+    //     const response = await getSectionData(
+    //       `/api/get_introduction?coin_name=${coin}`,
+    //     );
 
-        if (response.status !== 200) {
-          setContent([]);
-        } else {
-          const parsedContent = {
-            description: response.message.content,
-            website: response.message.website,
-            whitepaper: response.message.whitepaper,
-          };
-          setContent(parsedContent);
-        }
-      } catch (error) {
-        console.log('Error trying to get introduction data: ', error);
-      } finally {
-        setLoading(false);
+    //     if (response.status !== 200) {
+    //       setContent([]);
+    //     } else {
+    //       const parsedContent = {
+    //         description: response.message.content,
+    //         website: response.message.website,
+    //         whitepaper: response.message.whitepaper,
+    //       };
+    //       setContent(parsedContent);
+    //     }
+    //   } catch (error) {
+    //     console.log('Error trying to get introduction data: ', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    const fetchIntroductionContent = () => {
+      if (!globalData || globalData.introduction.status !== 200) {
+        setContent([]);
+      } else {
+        const parsedContent = {
+          description: globalData.introduction.message.content,
+          website: globalData.introduction.message.website,
+          whitepaper: globalData.introduction.message.whitepaper,
+        };
+        setContent(parsedContent);
       }
     };
     fetchIntroductionContent();
-  }, [coin]);
+  }, [coin, globalData]);
 
   if (!loading && (content === null || content.length === 0)) {
     handleSectionContent('introduction', true);
@@ -154,7 +171,7 @@ const Introduction = ({getSectionData, coin, handleSectionContent}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <SkeletonLoader type='text' quantity={8} />
+        <SkeletonLoader type="text" quantity={8} />
       ) : content === null ? (
         <NoContentMessage hasSectionName={false} />
       ) : (

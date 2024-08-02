@@ -57,7 +57,7 @@ const SocialMedia = () => {
         light: require('../../../assets/images/account/socialMedia/tiktok.png'),
         dark: require('../../../assets/images/account/socialMedia/tiktok.png'),
       },
-      url: 'https://www.tiktok.com/',
+      url: 'https://www.tiktok.com/@aialphaai',
       customSize: null,
     },
   ];

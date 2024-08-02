@@ -8,7 +8,6 @@ import {
   ScrollView,
 } from 'react-native';
 import {VictoryChart, VictoryAxis, VictoryLine} from 'victory-native';
-import Loader from '../../Loader/Loader';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import useTotal3Styles from './Total3ChartStyles';
 import {AppThemeContext} from '../../../context/themeContext';
@@ -66,8 +65,10 @@ const Total3Chart = ({candlesToShow = 30}) => {
     try {
       const response = await getService('api/total_3_data');
       if (response.data) {
+        console.log(response.data)
         const ohlcData = response.data;
         setChartData(ohlcData);
+        setLoading(false);
       } else {
         setChartData([]);
       }
@@ -97,7 +98,8 @@ const Total3Chart = ({candlesToShow = 30}) => {
       <LinearGradient
         useAngle={true}
         angle={45}
-        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
         style={{flex: 1}}>
         <SafeAreaView style={styles.background}>
           <View style={styles.backButtonWrapper}>
@@ -125,7 +127,8 @@ const Total3Chart = ({candlesToShow = 30}) => {
     <LinearGradient
       useAngle={true}
       angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <SafeAreaView
         style={[
@@ -227,6 +230,11 @@ const Total3Chart = ({candlesToShow = 30}) => {
                 source={require('../../../assets/images/home/charts/back.png')}
               />
             </TouchableOpacity>
+            <Image
+              style={styles.chartsZoomIndicator}
+              resizeMode="contain"
+              source={require('../../../assets/images/home/charts/zoom-expand.png')}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {Text, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {
   VictoryChart,
@@ -10,14 +10,14 @@ import useChartStyles from './ChartStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 
-const CurrentMarketCap = ({competitorsData, coin}) => {
+const CurrentMarketCap = ({competitorsData, coin, loading}) => {
   const {theme} = useContext(AppThemeContext);
   const styles = useChartStyles();
-  const [loading, setLoading] = useState(true);
   const [cryptos, setCryptos] = useState([]);
   const [maxMarketCap, setMaxMarketCap] = useState(0);
   const tintColors = ['#399AEA', '#20CBDD', '#895EF6', '#EB3ED6'];
-  const [activeBar, setActiveBar] = useState(null);
+  const [activeBarIndex, setActiveBarIndex] = useState(null);
+  const [activeBarLabel, setActiveBarLabel] = useState(null);
 
   const findKeyInCompetitorItem = (data, key, crypto) => {
     const found = data.find(
@@ -42,8 +42,14 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
     return [valueInBillions, numericValue];
   };
 
-  const handleActiveBarChange = () => {
-    setActiveBar(!activeBar);
+  const handleBarPress = (index, label) => {
+    if (index === activeBarIndex) {
+      setActiveBarIndex(null);
+      setActiveBarLabel(null);
+    } else {
+      setActiveBarIndex(index);
+      setActiveBarLabel(label);
+    }
   };
 
   const generateMarketCapChart = (cryptos, tintColors, maxCapValue) => {
@@ -91,28 +97,38 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
           data={cryptos.map((crypto, index) => ({
             x: crypto.symbol,
             y: crypto.marketCap[0],
-            label: ` $${crypto.marketCap[1]} `,
+            label: `$${crypto.marketCap[1]}`,
             color: tintColors[index > 3 ? index % 3 : index],
           }))}
           events={[
             {
               target: 'data',
               eventHandlers: {
-                onPress: e => {
-                  console.log(
-                    e.currentTarget.viewConfig.NativeProps,
-                  );
-                  handleActiveBarChange(
-                    e.target['_internalFiberInstanceHandleDEV'].memoizedProps
-                      .fill,
-                  );
+                onPress: (e, props) => {
+                  handleBarPress(props.index, props.datum.label);
                 },
               },
             },
           ]}
-          labels={({datum}) => datum.label}
+          labels={({index}) => (index === activeBarIndex ? activeBarLabel : '')}
           labelComponent={
-            <VictoryTooltip renderInPortal={false} active={activeBar } />
+            <VictoryTooltip
+              index={activeBarIndex}
+              renderInPortal={false}
+              active={
+                activeBarIndex !== null
+                  ? ({index}) => index === activeBarIndex
+                  : false
+              }
+              style={[
+                styles.barLabel,
+                {
+                  opacity: activeBarLabel ? 1 : 0,
+                  zIndex: activeBarLabel && -1000,
+                },
+              ]}
+              pointerLength={activeBarIndex === null ? 0 : 10}
+            />
           }
         />
       </VictoryChart>
@@ -120,7 +136,6 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
   };
 
   useEffect(() => {
-    setLoading(true);
     const mapped_competitors_data = [];
     competitorsData.forEach(item => {
       if (
@@ -147,7 +162,6 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
       }
     });
     setCryptos(mapped_competitors_data);
-    setLoading(false);
     let maxNumber = 0;
     mapped_competitors_data.forEach(marketCap => {
       if (marketCap.marketCap[0] > maxNumber) {
@@ -155,7 +169,7 @@ const CurrentMarketCap = ({competitorsData, coin}) => {
       }
       setMaxMarketCap(maxNumber);
     });
-  }, [coin]);
+  }, [competitorsData, loading, coin]);
 
   return (
     <View style={styles.chartContainer}>

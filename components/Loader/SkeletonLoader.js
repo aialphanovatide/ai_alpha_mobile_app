@@ -40,7 +40,6 @@ const SkeletonItem = ({style}) => {
   );
 };
 
-// SkeletonLoader: Componente principal que envuelve varios SkeletonItem
 const SkeletonLoader = ({style, type = 'item', quantity = 1}) => {
   const styles = useLoaderStyles();
 
@@ -76,6 +75,33 @@ const SkeletonLoader = ({style, type = 'item', quantity = 1}) => {
           <SkeletonItem style={styles.textLine} />
           <SkeletonItem style={[styles.textLine, {width: '60%'}]} />
         </View>
+      </View>
+    ))
+  ) : type === 'news' ? (
+    Array.from({length: quantity}).map((_, index) => (
+      <View
+        key={index}
+        style={[
+          styles.container,
+          style,
+          {width: 360, justifyContent: 'center', marginVertical: 8},
+        ]}>
+        <View style={styles.textContainer}>
+          <SkeletonItem style={[styles.textLine, {width: '75%'}]} />
+          <SkeletonItem style={[styles.textLine, {width: '75%'}]} />
+        </View>
+        <SkeletonItem
+          style={[
+            styles.square,
+            {
+              width: 60,
+              height: 60,
+              borderRadius: 3,
+              paddingLeft: 0,
+              marginRight: 24,
+            },
+          ]}
+        />
       </View>
     ))
   ) : type === 'circle' ? (
@@ -417,7 +443,10 @@ const SkeletonLoader = ({style, type = 'item', quantity = 1}) => {
               ]}
             />
             <SkeletonItem
-              style={[styles.textLine, {width: '100%', height: 40, marginHorizontal: 4}]}
+              style={[
+                styles.textLine,
+                {width: '100%', height: 40, marginHorizontal: 4},
+              ]}
             />
           </View>
         </View>

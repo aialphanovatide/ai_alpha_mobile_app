@@ -75,7 +75,8 @@ const HomeScreen = () => {
           unmountOnBlur: true,
           headerShown: false,
           tabBarStyle: {
-            height: isLandscape && isHorizontal ? 0 : 70,
+            height: isLandscape && isHorizontal ? 0 : 90,
+            paddingTop: 8,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: theme.navbarBgColor,
@@ -134,7 +135,7 @@ const HomeScreen = () => {
           name="AskAi"
           component={AskAiScreen}
           options={{
-            tabBarLabel: 'Ask AI',
+            tabBarLabel: 'ASK AI',
             tabBarIcon: ({focused}) => {
               return (
                 <View
@@ -187,7 +188,7 @@ const HomeScreen = () => {
           name="Analysis"
           component={AnalysisScreen}
           options={{
-            tabBarLabel: 'Analysis',
+            tabBarLabel: 'Dashboard',
             tabBarIcon: ({focused, color, size}) => (
               <MenuIcon
                 color={color}
@@ -198,6 +199,11 @@ const HomeScreen = () => {
                 }
               />
             ),
+          }}
+          listeners={{
+            tabPress: e => {
+              navigation.navigate('Analysis', {screen: 'AnalysisMain'});
+            },
           }}
         />
         <Tab.Screen

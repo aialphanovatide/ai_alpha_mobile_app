@@ -41,7 +41,7 @@ const useBtcDominanceStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      top: 15,
+      top: 35,
       left: '7.5%',
       width: 60,
       height: 60,
@@ -63,6 +63,14 @@ const useBtcDominanceStyles = () => {
       color: theme.textColor,
       textAlign: 'left',
       lineHeight: 20,
+    },
+    chartsZoomIndicator: {
+      width: 28,
+      height: 28,
+      position: 'absolute',
+      bottom: 55,
+      right: 80,
+      tintColor: theme.textColor,
     },
   });
   return styles;

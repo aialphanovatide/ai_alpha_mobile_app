@@ -6,14 +6,14 @@ const useBackButtonStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     backButton: {
-      fontFamily: theme.fontSemibold,
-      fontSize: theme.responsiveFontSize,
+      fontFamily: theme.fontMedium,
+      fontSize: 14,
       color: theme.backbuttonColor,
       textDecorationColor: theme.backbuttonColor,
     },
     arrowContainer: {
-      width: 12,
-      height: 12,
+      width: 10,
+      height: 10,
       margin: 6,
       justifyContent: 'center',
       alignItems: 'center',

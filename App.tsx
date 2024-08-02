@@ -46,6 +46,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import eventEmitter from './eventEmitter';
 import LinearGradient from 'react-native-linear-gradient';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Top10MoversContextProvider} from './context/TopTenMoversContext';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -115,11 +119,18 @@ const App = () => {
       const notificationDate = `${day}/${month}/${year}`;
 
       const notificationCoin = extractCryptoName(alertData.title);
-      const notificationType = alertData.type;
+      const notificationType =
+        alertData.type !== undefined
+          ? alertData.type
+          : alertData.title.toLowerCase().includes('chart')
+          ? 'alerts'
+          : 'analysis';
 
       const newNotification = {
         title: alertData.title,
-        description: alertData.body,
+        description: alertData.title.toLowerCase().includes('chart')
+          ? alertData.body
+          : 'New analysis posted!',
         coin: notificationCoin,
         date: notificationDate,
         category: null,
@@ -204,6 +215,7 @@ const App = () => {
     };
     const pushNotificationsSubscriber = messaging().onMessage(
       async remoteMessage => {
+        console.log(remoteMessage);
         Alert.alert(
           `${remoteMessage.notification?.title}`,
           `${remoteMessage.notification?.body}`,
@@ -267,159 +279,75 @@ const App = () => {
   };
 
   return (
-    <AppThemeProvider>
-      <Auth0Provider domain={auth0Domain} clientId={auth0Client}>
-        <RevenueCatProvider>
-          <UserProvider>
-            <UserIdProvider>
-              <RawUserIdProvider>
-                <AppThemeProvider>
-                <SafeAreaView style={{ flex:0, backgroundColor: isDarkMode ? '#0F0F0F' : '#EDEDED'}}>
-                </SafeAreaView>
-                  <SafeAreaView
-                    style={[
-                      styles.container,
-                      {
-                        flex: 1,
-                        backgroundColor: isDarkMode ? '#0b0b0a' : '#fbfbfa',
-                      },
-                    ]}>
-                    <StatusBar
-                      barStyle={
-                        isDarkMode
-                          ? 'light-content'
-                          : 'dark-content' /*This changes the font color for SafeAreaView*/
-                      }
-                    />
-                    <SingletonHooksContainer />
-                    <CategoriesContextProvider>
-                      <TopMenuContextProvider>
+    <Auth0Provider domain={auth0Domain} clientId={auth0Client}>
+      <RevenueCatProvider>
+        <UserProvider>
+          <UserIdProvider>
+            <RawUserIdProvider>
+              <AppThemeProvider>
+                <SafeAreaView
+                  style={{
+                    flex: 0,
+                    backgroundColor: isDarkMode ? '#0F0F0F' : '#EDEDED',
+                  }}></SafeAreaView>
+                <SafeAreaView
+                  style={[
+                    styles.container,
+                    {
+                      flex: 1,
+                      backgroundColor: isDarkMode ? '#0b0b0a' : '#fbfbfa',
+                    },
+                  ]}>
+                  <StatusBar
+                    barStyle={
+                      isDarkMode
+                        ? 'light-content'
+                        : 'dark-content' /*This changes the font color for SafeAreaView*/
+                    }
+                  />
+                  <SingletonHooksContainer />
+                  <CategoriesContextProvider>
+                    <TopMenuContextProvider>
+                      <Top10MoversContextProvider>
                         <NarrativeTradingContextProvider>
                           <AnalysisContextProvider>
-                            <AboutModalProvider>
-                              <Navigation />
-                              {/* <View >
-                        <Button title="Trigger Notification" onPress={handleNotification} />
-                      </View>
-                      */}
-                              <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={modalVisible}
-                                onRequestClose={() => {
-                                  setModalVisible(false);
-                                }}>
-                                <View style={styles.centeredView}>
-                                  <View
-                                    style={[
-                                      styles.orangeBox,
-                                      {
-                                        backgroundColor:
-                                          colorScheme === 'dark'
-                                            ? '#451205'
-                                            : '#FFF7EC',
-                                      },
-                                    ]}>
-                                    <View style={styles.row}>
-                                      <Image
-                                        source={require('./assets/images/login/nointernet.png')}
-                                        style={styles.imageStyle1}
-                                      />
-                                      <Text
-                                        style={[
-                                          styles.labelText1,
-                                          {
-                                            color:
-                                              colorScheme === 'dark'
-                                                ? '#FF8D34'
-                                                : '#FF6C0D',
-                                          },
-                                        ]}>
-                                        It seems that you are offline.
-                                      </Text>
-                                    </View>
-                                    <View style={styles.row}>
-                                      <Image
-                                        source={require('./assets/images/login/reloadsymbol.png')}
-                                        style={styles.imageStyle2}
-                                      />
-                                      <TouchableOpacity
-                                        onPress={
-                                          checkConnectivityAndCloseModal
-                                        }>
-                                        <Text style={styles.labelText2}>
-                                          Reload
-                                        </Text>
-                                      </TouchableOpacity>
-                                    </View>
-                                  </View>
-                                </View>
-                              </Modal>
-                              <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={serverError}
-                                onRequestClose={() => {
-                                  setServerError(false);
-                                }}>
-                                <View style={styles.centeredView}>
-                                  <View
-                                    style={[
-                                      styles.orangeBox,
-                                      {
-                                        backgroundColor:
-                                          colorScheme === 'dark'
-                                            ? '#451205'
-                                            : '#FFF7EC',
-                                      },
-                                    ]}>
-                                    <View style={styles.row}>
-                                      <Image
-                                        source={require('./assets/images/login/serverdown.png')}
-                                        style={styles.imageStyle3}
-                                      />
-                                      <Text
-                                        style={[
-                                          styles.labelText1,
-                                          {
-                                            color:
-                                              colorScheme === 'dark'
-                                                ? '#FF8D34'
-                                                : '#FF6C0D',
-                                          },
-                                        ]}>
-                                        Seems like the server is down
-                                      </Text>
-                                    </View>
-                                    <Text
-                                      style={[
-                                        styles.labelText3,
-                                        {
-                                          color:
-                                            colorScheme === 'dark'
-                                              ? '#FF6C0D'
-                                              : '#A02E0C',
-                                        },
-                                      ]}>
-                                      Please wait a few minutes while our
-                                      technicians work to solve this problem
-                                    </Text>
-                                  </View>
-                                </View>
-                              </Modal>
-                            </AboutModalProvider>
+                            <GestureHandlerRootView style={{flex: 1}}>
+                              <AboutModalProvider>
+                                <Navigation />
+                                <ConnectivityModal
+                                  serverError={serverError}
+                                  setModalVisible={setModalVisible}
+                                  modalVisible={modalVisible}
+                                  setServerError={setServerError}
+                                  checkConnectivityAndCloseModal={
+                                    checkConnectivityAndCloseModal
+                                  }
+                                  type="connection"
+                                />
+                                <ConnectivityModal
+                                  serverError={serverError}
+                                  setModalVisible={setModalVisible}
+                                  modalVisible={modalVisible}
+                                  setServerError={setServerError}
+                                  checkConnectivityAndCloseModal={
+                                    checkConnectivityAndCloseModal
+                                  }
+                                  type="serverDown"
+                                />
+                              </AboutModalProvider>
+                            </GestureHandlerRootView>
                           </AnalysisContextProvider>
                         </NarrativeTradingContextProvider>
-                      </TopMenuContextProvider>
-                    </CategoriesContextProvider>
-                  </SafeAreaView>
-                </AppThemeProvider>
-              </RawUserIdProvider>
-            </UserIdProvider>
-          </UserProvider>
-        </RevenueCatProvider>
-      </Auth0Provider>
-    </AppThemeProvider>
+                      </Top10MoversContextProvider>
+                    </TopMenuContextProvider>
+                  </CategoriesContextProvider>
+                </SafeAreaView>
+              </AppThemeProvider>
+            </RawUserIdProvider>
+          </UserIdProvider>
+        </UserProvider>
+      </RevenueCatProvider>
+    </Auth0Provider>
   );
 };
 
@@ -434,6 +362,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   orangeBox: {
     top: '30%',

@@ -13,7 +13,7 @@ import useFundamentalsStyles from './FundamentalsStyles';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 import UpdatedRevenueModel from './SubSections/RevenueModel/UpdatedRevenueModel';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
-import { getService} from '../../../../../../services/aiAlphaApi';
+import {getService} from '../../../../../../services/aiAlphaApi';
 import {fundamentalsMock} from './fundamentalsMock';
 import TokenUtility from './SubSections/TokenUtility/TokenUtility';
 import AboutModal from './AboutModal';
@@ -37,14 +37,15 @@ const initialContentState = {
 
 const Fundamentals = ({route}) => {
   const {activeSubCoin} = useContext(TopMenuContext);
-  const initial_coin = activeSubCoin;
-  const [coin, setCoin] = useState(initial_coin);
+  const [coin, setCoin] = useState(activeSubCoin);
   const {isDarkMode} = useContext(AppThemeContext);
   const styles = useFundamentalsStyles();
   const [aboutVisible, setAboutVisible] = useState(false);
   const [aboutDescription, setAboutDescription] = useState('');
   const [currentContent, setCurrentContent] = useState(fundamentalsMock[coin]);
   const [sharedData, setSharedData] = useState([]);
+  const [fundamentalsData, setFundamentalsData] = useState(null);
+  const [globalLoading, setGlobalLoading] = useState(true);
   const [hasContent, setHasContent] = useState(initialContentState);
   const ref = useRef(null);
 
@@ -64,7 +65,45 @@ const Fundamentals = ({route}) => {
     setAboutVisible(!aboutVisible);
   };
 
+  // Function to handle the requests to all the endpoints related to the coin
 
+  const getAllFundamentalsData = async () => {
+    setGlobalLoading(true);
+    const endpoints = [
+      `/api/get_competitors_by_coin_name?coin_name=${coin}`,
+      `/api/get_tokenomics?coin_name=${coin}`,
+      `/api/get_introduction?coin_name=${coin}`,
+      `/api/get_revenue_models?coin_name=${coin}`,
+      `/api/hacks?coin_bot_name=${coin}`,
+      `/api/get_upgrades?coin_name=${coin}`,
+      `/api/dapps?coin_bot_name=${coin}`,
+    ];
+
+    try {
+      const results = await Promise.all(
+        endpoints.map(endpoint => getService(endpoint)),
+      );
+
+      const data = {
+        competitors: results[0],
+        tokenomics: results[1],
+        introduction: results[2],
+        revenueModels: results[3],
+        hacks: results[4],
+        upgrades: results[5],
+        dapps: results[6],
+      };
+
+      console.log('Fundamentals all data: ', data);
+      setFundamentalsData(data);
+    } catch (error) {
+      console.error(`Error fetching crypto data: ${error.message}`);
+      setFundamentalsData(null);
+      throw error;
+    } finally {
+      setGlobalLoading(false);
+    }
+  };
 
   const getSectionData = async endpoint => {
     const data = await getService(endpoint);
@@ -72,6 +111,8 @@ const Fundamentals = ({route}) => {
   };
 
   useEffect(() => {
+    setGlobalLoading(true);
+    getAllFundamentalsData(coin && coin !== undefined ? coin : activeSubCoin);
     const handleCoinUpdate = newCoin => {
       setCurrentContent(fundamentalsMock[newCoin]);
       setCoin(newCoin);
@@ -106,7 +147,8 @@ const Fundamentals = ({route}) => {
     <LinearGradient
       useAngle={true}
       angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
       style={styles.linearGradient}>
       <ScrollView
         nestedScrollEnabled={true}
@@ -128,6 +170,8 @@ const Fundamentals = ({route}) => {
                 coin={coin}
                 getSectionData={getSectionData}
                 handleSectionContent={handleSectionContent}
+                loading={globalLoading}
+                globalData={fundamentalsData}
               />
             }
             handleAboutPress={handleAboutPress}
@@ -141,6 +185,8 @@ const Fundamentals = ({route}) => {
                 getSectionData={getSectionData}
                 coin={coin}
                 handleSectionContent={handleSectionContent}
+                globalData={fundamentalsData}
+                loading={globalLoading}
               />
             }
             hasAbout={true}
@@ -156,6 +202,8 @@ const Fundamentals = ({route}) => {
                 getSectionData={getSectionData}
                 coin={coin}
                 handleSectionContent={handleSectionContent}
+                loading={globalLoading}
+                globalData={fundamentalsData}
               />
             }
             hasEmptyContent={hasContent.generalTokenAllocation}
@@ -187,6 +235,8 @@ const Fundamentals = ({route}) => {
                 getSectionData={getSectionData}
                 coin={coin}
                 handleSectionContent={handleSectionContent}
+                loading={globalLoading}
+                globalData={fundamentalsData}
               />
             }
             hasAbout
@@ -203,6 +253,8 @@ const Fundamentals = ({route}) => {
                 handleSectionContent={handleSectionContent}
                 getSectionData={getSectionData}
                 coin={coin}
+                loading={globalLoading}
+                globalData={fundamentalsData}
               />
             }
             hasAbout
@@ -220,11 +272,19 @@ const Fundamentals = ({route}) => {
                 coin={coin}
                 getSectionData={getSectionData}
                 handleSectionContent={handleSectionContent}
-                tokenomicsData={sharedData}
+                tokenomicsData={
+                  fundamentalsData
+                    ? fundamentalsData.tokenomics.status !== 200
+                      ? []
+                      : fundamentalsData.tokenomics.message.tokenomics_data
+                    : []
+                }
                 subsectionsData={
                   fundamentals_static_content.competitors.subsections
                 }
                 handleAboutPress={handleAboutPress}
+                loading={globalLoading}
+                globalData={fundamentalsData}
               />
             }
             hasAbout
@@ -243,6 +303,8 @@ const Fundamentals = ({route}) => {
                 handleSectionContent={handleSectionContent}
                 getSectionData={getSectionData}
                 coin={coin}
+                globalData={fundamentalsData}
+                loading={globalLoading}
               />
             }
             description={
@@ -259,6 +321,8 @@ const Fundamentals = ({route}) => {
                 getSectionData={getSectionData}
                 coin={coin}
                 handleSectionContent={handleSectionContent}
+                globalData={fundamentalsData}
+                loading={globalLoading}
               />
             }
             description={fundamentalsMock.eth.hacks.sectionDescription}
@@ -276,6 +340,8 @@ const Fundamentals = ({route}) => {
                 getSectionData={getSectionData}
                 coin={coin}
                 handleSectionContent={handleSectionContent}
+                globalData={fundamentalsData}
+                loading={globalLoading}
               />
             }
           />
@@ -289,6 +355,8 @@ const Fundamentals = ({route}) => {
                 getSectionData={getSectionData}
                 coin={coin}
                 handleSectionContent={handleSectionContent}
+                globalData={fundamentalsData}
+                loading={globalLoading}
               />
             }
             description={fundamentals_static_content.dApps.sectionDescription}

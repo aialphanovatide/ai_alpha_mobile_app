@@ -10,7 +10,6 @@ import useAlertsStyles from './styles';
 import {TopMenuContext} from '../../context/topMenuContext';
 import {getService, postService} from '../../services/aiAlphaApi';
 import AlertDetails from './AlertsDetails';
-import Loader from '../Loader/Loader';
 import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
 import SubMenu from '../Home/Topmenu/subMenu/SubMenu';
 import UpgradeOverlay from '../UpgradeOverlay/UpgradeOverlay';
@@ -201,7 +200,8 @@ const Alerts = ({route, navigation}) => {
       <LinearGradient
         useAngle={true}
         angle={45}
-        colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
         style={{flex: 1}}>
         <TopMenu isAlertsMenu={true} />
         <SubMenu isAlertsMenu={true} />

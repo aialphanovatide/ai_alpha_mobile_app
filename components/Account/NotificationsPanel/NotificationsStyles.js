@@ -17,7 +17,6 @@ const useNotificationsStyles = () => {
       fontFamily: theme.fontSemibold,
     },
     backButtonContainer: {
-      marginHorizontal: 10,
     },
     title: {
       marginTop: theme.titlesVerticalMargin,
@@ -39,15 +38,15 @@ const useNotificationsStyles = () => {
     itemContainer: {
       position: 'relative',
       width: '90%',
+      padding: 1,
       flexDirection: 'row',
-      padding: 4,
       alignSelf: 'center',
       fontFamily: theme.fontSemibold,
     },
     itemName: {
       marginRight: 20,
       marginLeft: 20,
-      fontSize: theme.responsiveFontSize,
+      fontSize: 16,
       color: theme.textColor,
       lineHeight: 22,
       alignSelf: 'center',
@@ -55,7 +54,7 @@ const useNotificationsStyles = () => {
     },
     allNotificationsItemName: {
       marginLeft: 5,
-      fontSize: theme.responsiveFontSize,
+      fontSize: 16,
       color: theme.textColor,
       lineHeight: 22,
       alignSelf: 'flex-start',
@@ -99,7 +98,7 @@ const useNotificationsStyles = () => {
       transform: [{scaleX: 0.85}, {scaleY: 0.85}],
     },
     allNotificationsItem: {
-      width: '95%',
+      width: '100%',
       marginVertical: 8,
       padding: 8,
       paddingVertical: 15,
@@ -108,7 +107,7 @@ const useNotificationsStyles = () => {
       alignSelf: 'center',
     },
     itemsContainer: {
-      width: '95%',
+      width: '100%',
       paddingVertical: 8,
       paddingHorizontal: 4,
       backgroundColor: theme.boxesBackgroundColor,

@@ -106,10 +106,13 @@ const CurrentPackages = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        style={styles.backgroundContainer}
-        contentContainerStyle={styles.scrollViewContent}>
+    <LinearGradient
+      useAngle={true}
+      angle={45}
+      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
+      style={styles.flex}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.alignStart}>
           <BackButton navigationHandler={navigateBack} />
         </View>

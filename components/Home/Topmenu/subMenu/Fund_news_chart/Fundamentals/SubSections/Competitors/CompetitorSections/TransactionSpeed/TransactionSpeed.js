@@ -105,7 +105,7 @@ const TransactionSpeed = ({competitorsData}) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <SkeletonLoader type="speedometer" style={{marginTop:64}}/>
+        <SkeletonLoader type="speedometer" style={{marginTop: 64}} />
       ) : cryptos?.length === 0 ? (
         <NoContentMessage />
       ) : (
@@ -118,6 +118,7 @@ const TransactionSpeed = ({competitorsData}) => {
           <Text
             style={styles.activeCryptoValue}>{`${activeCrypto.tps} TPS`}</Text>
           <Speedometer
+            size={280}
             outerColor={theme.graphSecondaryColor}
             internalColor={chosenColor}
             innerColor={theme.boxesBackgroundColor}

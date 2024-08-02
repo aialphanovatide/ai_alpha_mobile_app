@@ -1,9 +1,11 @@
 import React, {useContext, useState} from 'react';
 import {
+  Image,
   Modal,
   Platform,
   ScrollView,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -17,6 +19,7 @@ import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/core';
 import useHomeNarrativeTradingStyles from './NarrativeTradingsStyles';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import {ResumableZoom} from 'react-native-zoom-toolkit';
 
 const CustomImageRenderer = props => {
   const {Renderer, rendererProps} = useInternalRenderer('img', props);
@@ -68,7 +71,6 @@ const NarrativeTradingArticle = ({route}) => {
     isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
   ];
   const navigation = useNavigation();
-  console.log(navigation.getState());
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
 
   const simplifyDateTime = dateTimeString => {
@@ -200,17 +202,28 @@ const NarrativeTradingArticle = ({route}) => {
     <ScrollView style={styles.container}>
       <Modal
         visible={isImageZoomVisible}
+        animationType="fade"
         transparent={true}
         style={styles.zoomImageBackground}
         onRequestClose={() => handleBackButtonImageClose()}>
-        <ImageViewer
-          imageUrls={images}
-          enableSwipeDown={true}
-          enableImageZoom={true}
-          onSwipeDown={() => setImageZoomVisible(false)}
-          index={0}
-          renderIndicator={() => null}
-          backgroundColor={'rgba(0,0,0,0.45)'}
+        <TouchableOpacity
+          onPress={() => handleBackButtonImageClose()}
+          style={styles.zoomImageDismissOverlay}
+        />
+        <ResumableZoom maxScale={2} minScale={1}>
+          <FastImage
+            style={styles.zoomedImage}
+            resizeMode={'contain'}
+            source={{
+              uri: `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
+              priority: FastImage.priority.normal,
+            }}
+            fallback={true}
+          />
+        </ResumableZoom>
+        <TouchableOpacity
+          onPress={() => handleBackButtonImageClose()}
+          style={styles.zoomImageDismissOverlay}
         />
       </Modal>
       <View style={styles.backButtonWrapper}>
@@ -219,27 +232,40 @@ const NarrativeTradingArticle = ({route}) => {
         />
       </View>
       <View style={styles.article}>
-        <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
-          <FastImage
-            style={styles.articleFullImage}
-            resizeMode={'contain'}
-            source={{
-              uri: `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
-              priority: FastImage.priority.normal,
-            }}
-            defaultSource={require('../../../assets/images/home/default_news.png')}
-            fallback={true}
+        <View style={styles.articleImageContainer}>
+          <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
+            <FastImage
+              style={styles.articleImage}
+              resizeMode={'cover'}
+              source={{
+                uri: `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
+                priority: FastImage.priority.normal,
+              }}
+              defaultSource={require('../../../assets/images/home/default_news.png')}
+              fallback={true}
+            />
+          </TouchableWithoutFeedback>
+          {!isImageZoomVisible && (
+            <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
+              <Image
+                source={require('../../../assets/images/analysis/magnifier.png')}
+                resizeMode="contain"
+                style={styles.zoomIndicator}
+              />
+            </TouchableWithoutFeedback>
+          )}
+        </View>
+        <View style={styles.contentContainer}>
+          <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>
+          <RenderHTML
+            source={html_source}
+            contentWidth={theme.width - 50}
+            systemFonts={systemFonts}
+            tagsStyles={html_styles}
+            classesStyles={classes_styles}
+            renderers={renderers}
           />
-        </TouchableWithoutFeedback>
-        <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>
-        <RenderHTML
-          source={html_source}
-          contentWidth={theme.width - 50}
-          systemFonts={systemFonts}
-          tagsStyles={html_styles}
-          classesStyles={classes_styles}
-          renderers={renderers}
-        />
+        </View>
       </View>
     </ScrollView>
   );

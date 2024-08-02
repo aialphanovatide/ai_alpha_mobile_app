@@ -8,9 +8,10 @@ const TimeframeSelector = ({
   changeInterval,
   hasHourlyTimes,
   additionalStyles = null,
+  disabled = null,
 }) => {
   const timeframes = hasHourlyTimes
-    ? ['1h', '4h', '1D', '1W']
+    ? ['1h', '4h', '1d', '1w']
     : selectedPairing.toLowerCase() === 'btc'
     ? ['1W']
     : ['1D', '1W'];
@@ -54,19 +55,18 @@ const TimeframeSelector = ({
       {timeframes.map(interval => (
         <TouchableOpacity
           key={interval}
+          disabled={disabled !== null ? disabled : false}
           style={[
-            selectedInterval === interval
-              ? styles.timeFrameActiveButton
-              : styles.timeFrameButton,
+            styles.timeFrameButton,
+            selectedInterval === interval ? styles.activeTimeFrame : {},
             {width: `${100 / timeframes.length}%`},
           ]}
           onPress={() => changeInterval(interval)}>
           <Text
-            style={
-              selectedInterval === interval
-                ? styles.timeFrameActiveButtonText
-                : styles.timeFrameButtonText
-            }>
+            style={[
+              styles.timeFrameButtonText,
+              selectedInterval === interval ? styles.activeText : {},
+            ]}>
             {interval}
           </Text>
         </TouchableOpacity>

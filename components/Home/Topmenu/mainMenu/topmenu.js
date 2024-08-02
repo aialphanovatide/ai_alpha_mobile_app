@@ -20,28 +20,42 @@ const TopMenu = ({isAlertsMenu}) => {
   const navigation = useNavigation();
   const {isDarkMode} = useContext(AppThemeContext);
   const handleButtonPress = category => {
-    updateActiveCoin(category);
-    updateActiveSubCoin(category.coin_bots[0].bot_name);
-    if (!isAlertsMenu) {
-      navigation.pop(1);
-      navigation.navigate('TopMenuScreen', {
-        screen: 'SubMenuScreen',
-        params: {
-          screen: 'Charts',
+    if (activeCoin.category_name === category.category_name) {
+      navigation.navigate('Home', {screen: 'InitialHome'});
+    } else {
+      updateActiveCoin(category);
+      updateActiveSubCoin(category.coin_bots[0].bot_name);
+      if (!isAlertsMenu) {
+        navigation.pop(1);
+        navigation.navigate('TopMenuScreen', {
+          screen: 'SubMenuScreen',
           params: {
-            interval: '1h',
-            symbol: `${category.coin_bots[0].bot_name}USDT`,
-            coinBot: category.coin_bots[0].bot_name,
+            screen: 'Charts',
+            params: {
+              interval: '1h',
+              symbol: `${category.coin_bots[0].bot_name}USDT`,
+              coinBot: category.coin_bots[0].bot_name,
+            },
           },
-        },
-      });
+        });
+      }
     }
   };
 
   const handleSearchSectionNavigation = () => {
-    navigation.navigate('SearchScreen', {
-      screen: 'SearchMain',
-    });
+    if (routeName.includes('Home')) {
+      navigation.navigate('SearchScreen', {
+        screen: 'SearchMain',
+      });
+    } else {
+      navigation.navigate('Home', {
+        screen: 'SearchScreen',
+        params: {
+          screen: 'SearchMain',
+          params: {},
+        },
+      });
+    }
   };
 
   const handleNotificationsNavigation = () => {
@@ -56,15 +70,18 @@ const TopMenu = ({isAlertsMenu}) => {
     <LinearGradient
       useAngle={true}
       angle={45}
-      colors={isDarkMode ? ['#0A0A0A', '#0A0A0A'] : ['#F5F5F5', '#E5E5E5']}
+      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+      locations={[0.22, 0.97]}
       style={styles.topContentWrapper}>
       <View style={[styles.marginWrapper]}>
         <SearchBar
           handleSearchSectionNavigation={handleSearchSectionNavigation}
         />
-        <NotificationsButton
-          handleButtonPress={handleNotificationsNavigation}
-        />
+        {routeName.includes('Home') && (
+          <NotificationsButton
+            handleButtonPress={handleNotificationsNavigation}
+          />
+        )}
       </View>
       <View style={styles.container}>
         <ScrollView

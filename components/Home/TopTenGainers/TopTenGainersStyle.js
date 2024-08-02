@@ -8,28 +8,26 @@ const useTopTenGainersStyles = () => {
   const styles = StyleSheet.create({
     topTenGainersContainer: {
       height: 400,
-      width: '100%',
+      width: theme.width,
       borderRadius: 4,
     },
     topTenGainersTitle: {
       marginVertical: 16,
       paddingHorizontal: 16,
       color: theme.titleColor,
-      fontSize: theme.titleFontSize,
+      fontSize: 16,
       fontFamily: theme.fontSemibold,
     },
     table: {
-      paddingTop: 10,
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
     row: {
-      flex: 1,
       width: '100%',
       marginVertical: 2.5,
       display: 'flex',
       flexDirection: 'row',
-      borderBottomWidth: 1,
+      borderBottomWidth: 0.5,
       borderBottomColor: theme.secondaryGrayColor,
       paddingHorizontal: 20,
       paddingVertical: 10,
