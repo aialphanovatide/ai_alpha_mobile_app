@@ -428,7 +428,8 @@ const VixChart = ({route, candlesToShow = 30}) => {
                     }
               }>
               <Image
-                style={[styles.chartsHorizontalButton, {bottom: 90}]}
+                style={[styles.chartsHorizontalButton, {bottom: Platform.OS === 'android' ? 90 : 100,
+                }]}
                 resizeMode="contain"
                 source={
                   isLandscape && isHorizontal
@@ -449,7 +450,8 @@ const VixChart = ({route, candlesToShow = 30}) => {
               />
             </TouchableOpacity>
             <Image
-              style={[styles.chartsZoomIndicator, {bottom: 60}]}
+              style={[styles.chartsZoomIndicator, {bottom: Platform.OS === 'android' ? 60 : 70,
+              }]}
               resizeMode="contain"
               source={require('../../../assets/images/home/charts/zoom-expand.png')}
             />

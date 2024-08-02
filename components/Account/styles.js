@@ -51,8 +51,8 @@ const useAccountStyles = () => {
     },
     optionsContainer: {
       marginVertical: theme.boxesVerticalMargin,
-      width: theme.width,
-      padding: 10,
+      width: '100%',
+      padding: 20,
     },
     itemContainer: {
       position: 'relative',
@@ -85,7 +85,7 @@ const useAccountStyles = () => {
     },
     container: {
       flex: 1,
-      width: theme.width,
+      width: '100%',
       alignItems: 'center',
     },
     alphaLogoContainer: {
@@ -114,7 +114,7 @@ const useAccountStyles = () => {
     },
     gradient: {
       flex: 1,
-      width: theme.width,
+      width: '100%',
       height: theme.height,
     },
     imageContainer: {

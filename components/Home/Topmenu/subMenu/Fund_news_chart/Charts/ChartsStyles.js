@@ -181,7 +181,7 @@ const useChartsStyles = () => {
       width: 28,
       height: 28,
       position: 'absolute',
-      bottom: 50,
+      bottom: Platform.OS === 'android' ? 50 : 95,
       right: 70,
       tintColor: theme.textColor,
     },

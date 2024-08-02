@@ -98,7 +98,7 @@ const useNotificationsStyles = () => {
       transform: [{scaleX: 0.85}, {scaleY: 0.85}],
     },
     allNotificationsItem: {
-      width: '100%',
+      width: '95%',
       marginVertical: 8,
       padding: 8,
       paddingVertical: 15,
@@ -107,7 +107,7 @@ const useNotificationsStyles = () => {
       alignSelf: 'center',
     },
     itemsContainer: {
-      width: '100%',
+      width: '95%',
       paddingVertical: 8,
       paddingHorizontal: 4,
       backgroundColor: theme.boxesBackgroundColor,

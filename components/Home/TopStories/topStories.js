@@ -21,7 +21,7 @@ const TopStories = ({handleAboutPress}) => {
   const {categories} = useContext(CategoriesContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const aboutIconStyles = {
-    top: 10,
+    top: 20,
   };
   const handlePress = () => {
     setExpanded(!expanded);
