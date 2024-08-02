@@ -413,7 +413,8 @@ const UsOilChart = ({route, navigation}) => {
                     }
               }>
               <Image
-                style={[styles.chartsHorizontalButton, {bottom: 80}]}
+                style={[styles.chartsHorizontalButton, {bottom: Platform.OS === 'android' ? 80 : 90,
+                }]}
                 resizeMode="contain"
                 source={
                   isLandscape && isHorizontal

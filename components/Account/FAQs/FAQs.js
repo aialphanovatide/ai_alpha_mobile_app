@@ -40,23 +40,25 @@ const FAQs = () => {
     {
       question: 'How do I reset my password?',
       answer:
-        "You can reset your password by accessing 'Personalise Profile' within Settings, under the Customer section. Once there, by clicking on the 'Edit Password' option, you will be sent a link to your email to choose a new password.",
+        "You can reset your password by accessing 'Personalise Profile' within Settings, under the Account section. Once there, by clicking on the 'Edit Password' option, you will be sent a link to your email to choose a new password.",
     },
     {
       question: 'How can I update my profile information?',
       answer:
-        'You can update your name, username, email, password, and date of birth by accessing “Personalise Profile” within Settings, under the Customer section.',
+        'You can update your name, username, email, password, and date of birth by accessing “Personalise Profile” within Settings, under the Account section.',
     },
     {
       question: 'How do I ensure my app is up-to-date?',
       answer:
         "If there is a newer version available than the one you have downloaded, you can view it by heading to your app store. Next to the name of AI Alpha, you'll see the 'Update' option. If you don't see this option, it means your app is up to date.",
     },
+    /*
     {
       question: 'How do I report a problem or bug?',
       answer:
         "If you've experienced a problem or bug while using AI Alpha, you can reach out to our team of specialists in the Contact section within your Account. We'll be happy to receive your feedback.",
     },
+    */
     {
       question: 'How does the free trial period work?',
       answer:
@@ -76,11 +78,6 @@ const FAQs = () => {
       question: 'Why are my notifications not working?',
       answer:
         "It's possible that your desired notification settings are disabled. You can re-enable them by navigating to the Notifications section within your Account and activating those you wish to receive.",
-    },
-    {
-      question: 'Where can I access tutorials for using the app?',
-      answer:
-        'You can find educational content on our social media platforms that will guide you through the different sections of AI Alpha. We provide information and tips to help you make the most of the application.',
     },
   ];
   return (

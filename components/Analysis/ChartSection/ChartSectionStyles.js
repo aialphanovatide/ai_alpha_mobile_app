@@ -117,7 +117,7 @@ const useChartSectionStyles = () => {
       width: 28,
       height: 28,
       position: 'absolute',
-      bottom: 80,
+      bottom: Platform.OS === 'android' ? 80 : 90,
       right: 80,
       tintColor: theme.textColor,
     },

@@ -84,6 +84,7 @@ const useFAQsStyles = () => {
     faqQuestionText: {
       fontFamily: theme.fontMedium,
       color: theme.titleColor,
+      fontSize: 13.5,
     },
     faqAnswerText: {
       fontFamily: theme.font,
