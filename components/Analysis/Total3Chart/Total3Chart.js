@@ -64,11 +64,9 @@ const Total3Chart = ({candlesToShow = 30}) => {
   async function fetchChartData() {
     try {
       const response = await getService('api/total_3_data');
-      if (response.data) {
-        console.log(response.data)
-        const ohlcData = response.data;
+      if (response.message) {
+        const ohlcData = response.message;
         setChartData(ohlcData);
-        setLoading(false);
       } else {
         setChartData([]);
       }
@@ -80,7 +78,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
   }
 
   useEffect(() => {
-    const intervalId = setInterval(() => fetchChartData(), 3500);
+    const intervalId = setInterval(() => fetchChartData(), 2000);
     return () => clearInterval(intervalId);
   }, []);
 
@@ -93,7 +91,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
     }
   };
 
-  if (loading || chartData?.length === 0) {
+  if (loading) {
     return (
       <LinearGradient
         useAngle={true}
@@ -128,7 +126,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
       useAngle={true}
       angle={45}
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
+      locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <SafeAreaView
         style={[

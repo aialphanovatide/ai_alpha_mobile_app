@@ -40,50 +40,6 @@ const groupAndSortByDate = items => {
   });
 };
 
-const homeNotificationsMock = [
-  {
-    title: 'Bitcoin alert',
-    type: 'alerts',
-    description: 'Alerts brief description',
-    date: '9/07/2024',
-    coin: 'btc',
-    category: 'bitcoin',
-  },
-  {
-    title: 'Subscribe now and access a 7 days free trial',
-    type: 'app',
-    description: "Don't miss the chance to try all the app's features.",
-    date: '9/07/2024',
-    coin: null,
-    category: null,
-  },
-  {
-    title: 'Enjoy a 50% discount for the first 3 months!',
-    type: 'app',
-    description:
-      'Subscribe now to the Founders package and automatically enjoy three months at 50% off.',
-    date: '10/07/2024',
-    coin: null,
-    category: null,
-  },
-  {
-    title: 'Dot alert',
-    type: 'alerts',
-    description: 'Alerts brief description',
-    date: '7/07/2024',
-    coin: 'dot',
-    category: 'rootlink',
-  },
-  {
-    title: 'Analysis title',
-    type: 'analysis',
-    description: 'Analysis brief description',
-    date: '7/07/2024',
-    coin: 'ada',
-    category: 'baseblock',
-  },
-];
-
 const NotificationItem = ({imageSource, item, isNew}) => {
   const styles = useHomeNotificationsStyles();
   return (

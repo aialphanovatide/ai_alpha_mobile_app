@@ -73,7 +73,7 @@ const useChartSectionStyles = () => {
       height: 20,
       position: 'absolute',
       bottom: 120,
-      left: 25,
+      left: 35,
       tintColor: theme.textColor,
     },
     chartBackButton: {
@@ -88,8 +88,8 @@ const useChartSectionStyles = () => {
       width: 28,
       height: 28,
       position: 'absolute',
-      bottom: 70,
-      right: 80,
+      bottom: 115,
+      right: 90,
       tintColor: theme.textColor,
     },
   });

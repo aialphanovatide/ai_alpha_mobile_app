@@ -6,7 +6,8 @@ const useHomeAnalysisStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     mainTitle: {
-      marginVertical: 8,
+      marginHorizontal: 16,
+      marginVertical: 18,
       color: theme.titleColor,
       fontSize: 16,
       fontFamily: theme.fontSemibold,
@@ -60,6 +61,11 @@ const useHomeAnalysisStyles = () => {
     },
     background: {
       flex: 1,
+    },
+    analysisItemsContainer: {
+      flex: 1,
+      width: '100%',
+      backgroundColor: theme.mainBackgroundColor,
     },
     container: {
       flex: 1,
