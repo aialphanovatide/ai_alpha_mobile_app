@@ -138,7 +138,7 @@ const TopStories = ({handleAboutPress}) => {
   }, []);
 
   return (
-    <List.Section title="Top Stories" titleStyle={styles.mainTitle}>
+    <List.Section title="Top Stories" styl={styles.mainTitle}>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.topStories.sectionDescription}
