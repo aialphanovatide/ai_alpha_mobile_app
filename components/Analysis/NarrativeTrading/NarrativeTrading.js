@@ -15,12 +15,9 @@ import {useNavigation} from '@react-navigation/core';
 import FastImage from 'react-native-fast-image';
 import useNarrativeTradingStyles from './NarrativeTradingStyles';
 import filterData from './FilterData';
-import {NarrativeTradingContext} from '../../../context/NarrativeTradingContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
-
   const formatItemDate = dateTimeString => {
     const dateTime = new Date(dateTimeString);
     const year = dateTime.getFullYear();
@@ -28,15 +25,12 @@ const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
     const day = String(dateTime.getDate()).padStart(2, '0');
     const hours = String(dateTime.getHours()).padStart(2, '0');
     const minutes = String(dateTime.getMinutes()).padStart(2, '0');
-
     return {
       date: `${year}-${month}-${day}`,
       hour: `${hours}:${minutes}`,
     };
   };
-
   const {date, hour} = formatItemDate(item.created_at);
-
   return (
     <TouchableOpacity
       style={styles.narrativeItemContainer}
@@ -93,7 +87,6 @@ const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
     </TouchableOpacity>
   );
 };
-
 const TimeMenu = ({
   options,
   activeOption,
@@ -123,19 +116,17 @@ const TimeMenu = ({
     </View>
   );
 };
-
 const NarrativeTrading = () => {
   const {isDarkMode} = useContext(AppThemeContext);
   const options = ['today', 'this week'];
   const [cryptoOptions, setCryptoOptions] = useState([]);
-  const [activeOption, setActiveOption] = useState(null);
+  const [activeOption, setActiveOption] = useState('today');
   const [activeCryptoOption, setActiveCryptoOption] = useState(null);
   const [narrativeTradingItems, setNarrativeTradingItems] = useState([]);
   const [loadedNarrativeTradingItems, setLoadedNarrativeTradingItems] =
     useState([]);
   const styles = useNarrativeTradingStyles();
   const navigation = useNavigation();
-
   // Hook to load the data from the previous narrative tradings that the user has seen
   useEffect(() => {
     const fetchData = async () => {
@@ -147,7 +138,6 @@ const NarrativeTrading = () => {
         const narrativeItems = await AsyncStorage.multiGet(
           narrativeTradingKeys,
         );
-
         const parsedItems = narrativeItems.map(item => JSON.parse(item[1]));
         setLoadedNarrativeTradingItems(parsedItems);
       } catch (e) {
@@ -158,14 +148,14 @@ const NarrativeTrading = () => {
       fetchData();
     }
   }, []);
-
   useEffect(() => {
     setCryptoOptions(filterData);
     setActiveCryptoOption(filterData[0]);
-    handleCryptoTouch(filterData[0]);
-    handleTimeIntervalChange(options[0]);
+    if (loadedNarrativeTradingItems.length > 0) {
+      handleCryptoTouch(filterData[0]);
+      handleTimeIntervalChange(options[0]);
+    }
   }, [loadedNarrativeTradingItems]);
-
   const filterItemsByCategory = (category, items) => {
     const filtered_items = [];
     if (category.category_name.toLowerCase().replace(/\s/g, '') === 'total3') {
@@ -179,10 +169,9 @@ const NarrativeTrading = () => {
       });
       return filtered_items;
     }
-
     category.coin_bots.forEach(coin => {
+      console.log("ITEMS", items);
       items.forEach(item => {
-        // console.log('Coin bot: ', coin.bot_name, ' Item: ', item.coin_bot_name);
         if (
           item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===
           coin.bot_name.toLowerCase().replace(/\s/g, '')
@@ -193,11 +182,9 @@ const NarrativeTrading = () => {
     });
     return filtered_items;
   };
-
   const filterItemsByTime = (interval, items) => {
     const currentDate = new Date();
     // console.log(items);
-
     const filteredArray = items.filter(item => {
       const createdAtDate = new Date(item.created_at);
       if (interval === 'today') {
@@ -207,14 +194,12 @@ const NarrativeTrading = () => {
         const lastWeekDate = new Date(
           currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
         );
-
         return createdAtDate >= lastWeekDate && createdAtDate <= currentDate;
       }
       return true;
     });
     return filteredArray;
   };
-
   const handleCryptoTouch = option => {
     setActiveCryptoOption(option);
     const filtered_by_time = filterItemsByTime(
@@ -227,7 +212,6 @@ const NarrativeTrading = () => {
     );
     setNarrativeTradingItems(filtered_narrative_tradings.reverse());
   };
-
   const handleNarrativeTradingNavigation = item => {
     navigation.navigate('Home', {
       screen: 'NarrativeTradingArticleScreen',
@@ -239,7 +223,6 @@ const NarrativeTrading = () => {
       },
     });
   };
-
   const handleTimeIntervalChange = interval => {
     setActiveOption(interval);
     setActiveCryptoOption(filterData[0]);
@@ -250,14 +233,12 @@ const NarrativeTrading = () => {
     const filtered_items = filterItemsByTime(interval, filtered_by_crypto);
     setNarrativeTradingItems(filtered_items.reverse());
   };
-
   const handleNavigationToAnalysis = () => {
     navigation.navigate('Analysis', {
       screen: 'AnalysisMain',
       params: {},
     });
   };
-
   return (
     <SafeAreaView style={styles.flex}>
       <LinearGradient
@@ -310,5 +291,4 @@ const NarrativeTrading = () => {
     </SafeAreaView>
   );
 };
-
 export default NarrativeTrading;

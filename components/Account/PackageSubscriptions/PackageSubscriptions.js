@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/core';
 import SubscriptionsLoader from '../../Loader/SubscriptionsLoader';
 import LinearGradient from 'react-native-linear-gradient';
 import { AppThemeContext } from '../../../context/themeContext';
+import { useRawUserId } from '../../../context/RawUserIdContext';
 
 const TextWithIcon = ({ text }) => {
   const styles = usePackageSubscriptionStyles();
@@ -50,6 +51,8 @@ const PackageSubscriptions = () => {
   const navigation = useNavigation();
   const { isDarkMode } = useContext(AppThemeContext);
   const { packages, purchasePackage, userInfo } = useContext(RevenueCatContext);
+  const {rawUserId, setRawUserId} = useRawUserId();
+
 
   const getIdentifierByKeyword = (keyword) => {
     const foundPackage = packages.find(pkg => pkg.product.title.includes(keyword));
@@ -101,19 +104,26 @@ const PackageSubscriptions = () => {
   const [missingMessageActive, setMissingMessageActive] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handlePurchase = async pack => {
+  const handlePurchase = async (pack) => {
     console.log('Pack->', pack);
     setLoading(true);
+  
     if (pack === null) {
       setMissingMessageActive(true);
       setLoading(false);
       return;
     }
+  
     try {
-      await purchasePackage(pack);
+      const packageIdentifier = pack.product.identifier;
+      const packagePrice = activeItem.price.replace('$', '');
+
+      await purchasePackage(pack, packageIdentifier, packagePrice, rawUserId);
       setMissingMessageActive(false);
       navigation.navigate('CurrentPackages');
+
     } catch (error) {
+      console.error("Error during purchase:", error);
       setMissingMessageActive(true);
     } finally {
       setLoading(false);
@@ -395,9 +405,10 @@ const PackageSubscriptions = () => {
           </LinearGradient>
           <View style={styles.footerTextContainer}>
             <Text style={styles.preTertiaryText}>
-              Subscription activates post-trial.
+              Valid for first purchase only
             </Text>
-            <Text style={styles.tertiaryText}>Cancel anytime hustle-free</Text>
+            <Text style={styles.tertiaryText}>Pay after the trial period</Text>
+            <Text style={styles.tertiaryText}>Cancel at anytime</Text>
           </View>
         </View>
       )}

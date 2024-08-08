@@ -61,15 +61,17 @@ const useCurrentPackagesStyles = () => {
       height: 20,
     },
     itemIcon: {
-      width: 35,
+      width: 30,
       height: 25,
       marginRight: 16,
+      marginLeft: 8,
     },
     title: {
       flex: 1,
       fontSize: 18,
       fontWeight: '600',
       fontFamily: theme.fontSemibold,
+      color: theme.titleColor,
     },
     priceContainer: {
       alignItems: 'flex-end',
@@ -77,6 +79,7 @@ const useCurrentPackagesStyles = () => {
     priceText: {
       fontSize: 16,
       fontWeight: 'bold',
+      color: theme.titleColor,
     },
     perMonthText: {
       fontSize: 12,

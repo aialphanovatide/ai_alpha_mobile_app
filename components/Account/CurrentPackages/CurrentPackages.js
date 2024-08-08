@@ -70,7 +70,7 @@ const CurrentPackages = () => {
       }
     }
     // Check for full access entitlement
-    else if (lowerCaseEntitlement.includes('full access')) {
+    else if (lowerCaseEntitlement.includes('fullaccess')) {
       if (!acc.some(item => item.title === 'Full Access')) {
         acc.push(subscriptionOptions.fullAccess);
       }

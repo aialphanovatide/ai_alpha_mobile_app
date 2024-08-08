@@ -13,6 +13,10 @@ import NarrativeTradings from './HomeNarrativeTradings/NarrativeTradings';
 import TopTenLosers from './Top10Losers/TopTenLosers';
 import IntroductoryPopUpsOverlay from '../IntroductorySlides/IntroductoryPopUps/IntroductoryPopUpsOverlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRawUserId } from '../../context/RawUserIdContext';
+import { RevenueCatContext } from '../../context/RevenueCatContext';
+import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
+
 
 const Home = ({route}) => {
   const styles = useHomeStyles();
@@ -20,7 +24,51 @@ const Home = ({route}) => {
   const [aboutDescription, setAboutDescription] = useState('');
   const [activePopUps, setActivePopUps] = useState(false);
   const {isDarkMode} = useContext(AppThemeContext);
+  const { rawUserId } = useRawUserId();
+  const { packages, purchasePackage, userInfo } = useContext(RevenueCatContext);
+
+
   const ref = useRef(null);
+
+
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const url = `https://aialpha.ngrok.io/user?auth0id=${rawUserId}`;
+      try {
+        const userFetch = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const userData = await userFetch.json();
+        console.log("USER DATA IN HOME", userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    const fetchCustomerInfo = async () => {
+      try {
+        const customerInfo = await Purchases.getCustomerInfo();
+        console.log("Customer info IN HOME:", customerInfo);
+      } catch (error) {
+        console.error("Error fetching customer info:", error);
+      }
+    };
+    fetchUserData();
+    fetchCustomerInfo();
+  }, []);
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     const checkShowIntroductoryPopUp = async () => {

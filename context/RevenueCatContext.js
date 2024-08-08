@@ -139,7 +139,7 @@ const RevenueCatProvider = ({children}) => {
   const getUserSubscriptionData = async () => {
     try {
       const customerInfo = await Purchases.getCustomerInfo();
-      // console.log('\nCustomer info:', customerInfo);
+      console.log('\nCustomer info:', customerInfo);
       updateCustomerInformation(customerInfo);
     } catch (error) {
       console.log('Error purchasing package:', error);
@@ -179,7 +179,7 @@ const RevenueCatProvider = ({children}) => {
     }
   };
 
-  const purchasePackage = async pack => {
+  const purchasePackage = async (pack, packageIdentifier, packagePrice, rawUserId) => {
     try {
       console.log("Pack being purchased",pack);
       const {customerInfo, productIdentifier} = await Purchases.purchasePackage(
@@ -189,6 +189,24 @@ const RevenueCatProvider = ({children}) => {
       console.log(
         `Purchased: ${productIdentifier}\n New customer data: ${customerInfo.entitlements} `,
       );
+
+      console.log(`User Auth0 ID: ${rawUserId}`);
+      console.log(`Package Identifier: ${packageIdentifier}`);
+      console.log(`Package Price: ${packagePrice}`);
+
+      const postResponse = await fetch(`https://aialpha.ngrok.io/purchase_plan`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          auth0id: rawUserId,
+          price: packagePrice,
+          reference_name: packageIdentifier,
+        }),
+      });
+
+      const data = await postResponse.json();
+      console.log("DATA SENT TO BACKEND", data);
+
     } catch (error) {
       console.log(
         `[Error trying to purchase the package]\n - Error code: ${error.code}\n - Error message: ${error.message} \n - Error description: ${error.underlyingErrorMessage} `,
@@ -233,9 +251,9 @@ const RevenueCatProvider = ({children}) => {
 
     return identifiers.some(identifier => {
       const lowercaseIdentifier = identifier.toLowerCase();
-      if (lowercaseIdentifier.includes('founders')) {
+      if (lowercaseIdentifier.includes('founders') || lowercaseIdentifier.includes('fullaccess')) {
         return true;
-      }
+      }      
       return lowercaseIdentifier.includes(categoryKeyword);
     });
   };

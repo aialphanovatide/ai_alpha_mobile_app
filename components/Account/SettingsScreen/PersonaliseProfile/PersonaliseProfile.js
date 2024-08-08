@@ -43,6 +43,8 @@ const PersonaliseProfile = () => {
   const [userEmail, setUserEmail] = useState();
   const [birthDateString, setBirthDateString] = useState('');
   const {theme} = useContext(AppThemeContext);
+  const [connectionType, setConnectionType] = useState('');
+
 
   useEffect(() => {
     const loadStoredData = async () => {
@@ -249,7 +251,7 @@ const PersonaliseProfile = () => {
       const userData = await userFetch.json();
       console.log('User data ->', userData);
       const extractedEmail = userData.email;
-      setUserEmail(extractedEmail); // Update state for other potential uses not immediately following this update
+      setUserEmail(extractedEmail);
 
       console.log('Email to use for reset ->', extractedEmail);
       try {
@@ -274,6 +276,42 @@ const PersonaliseProfile = () => {
       console.error('Error details:', errorResponse);
     }
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = await getManagementApiToken();
+        const userFetch = await fetch(
+          `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        const userData = await userFetch.json();
+        console.log('User data IN PERSONALISE PROFILE->', userData);
+
+        // Extracting connection type and email
+        const identities = userData.identities || [];
+        const usernamePasswordIdentity = identities.find(
+          (identity) => identity.connection === 'Username-Password-Authentication'
+        );
+
+        if (usernamePasswordIdentity) {
+          setUserEmail(userData.email);
+          setConnectionType(usernamePasswordIdentity.connection);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const onDateChange = (event, selectedDate) => {
     setShowDatePicker(true);
@@ -321,13 +359,19 @@ const PersonaliseProfile = () => {
               <Image source={{uri: userImage}} style={styles.userImage} />
             </View>
           )}
+      {connectionType === 'Username-Password-Authentication' && (
+        <View style={styles.inputContainer}>
+          <Text style={styles.title}>Email</Text>
+          <Text style={styles.emailTitle}>{userEmail}</Text>
+        </View>
+      )}
           <View style={styles.inputContainer}>
             <Text style={styles.title}>Full Name</Text>
             <CustomInput
               placeholder="Enter your full name"
               value={fullName}
               setValue={setFullName}
-              containerStyles={{paddingVertical: 0, borderWidth: 0}}
+              containerStyles={{paddingVertical: 5, borderWidth: 0}}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -336,7 +380,7 @@ const PersonaliseProfile = () => {
               placeholder="Choose a username"
               value={username}
               setValue={setUsername}
-              containerStyles={{paddingVertical: 0, borderWidth: 0}}
+              containerStyles={{paddingVertical: 5, borderWidth: 0}}
             />
           </View>
           <View style={styles.inputContainer}>

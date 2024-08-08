@@ -55,7 +55,7 @@ const Analysis = ({handleAboutPress}) => {
 
   return (
     <View style={styles.analysisItemsContainer}>
-      <Text style={styles.mainTitle}>Analysis</Text>
+      <Text style={styles.mainTitle}>Daily Deep Dives</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.narrativeTradings.sectionDescription}

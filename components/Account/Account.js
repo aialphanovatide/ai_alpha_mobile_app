@@ -214,6 +214,7 @@ const Account = ({route}) => {
       await AsyncStorage.removeItem('fullName');
       await AsyncStorage.removeItem('username');
       await AsyncStorage.removeItem('birthDate');
+      await AsyncStorage.removeItem('userImage');
       console.log('Successfully removed login data...');
       resetLoginForm();
       console.log('After loginForm reset');
