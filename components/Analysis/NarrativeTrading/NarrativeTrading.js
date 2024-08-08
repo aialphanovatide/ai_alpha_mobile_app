@@ -170,7 +170,7 @@ const NarrativeTrading = () => {
       return filtered_items;
     }
     category.coin_bots.forEach(coin => {
-      console.log("ITEMS", items);
+      // console.log(items);
       items.forEach(item => {
         if (
           item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===

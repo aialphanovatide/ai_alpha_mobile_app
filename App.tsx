@@ -61,9 +61,7 @@ const App = () => {
   const [serverWentDown, setServerWentDown] = useState(0);
 
   useEffect(() => {
-    console.log('HERE 1111111111');
     const subscription = eventEmitter.addListener('darkModeChanged', isDark => {
-      console.log('HERE 22222222');
       setIsDarkMode(isDark);
     });
 
@@ -198,7 +196,6 @@ const App = () => {
         setServerError(true);
       }
     };
-    console.log('Fetching categories');
     fetchCategories();
     const intervalId = setInterval(fetchCategories, 120000); // 120000 milliseconds = 2 minutes
     return () => clearInterval(intervalId);
