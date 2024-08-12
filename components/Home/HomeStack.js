@@ -15,7 +15,7 @@ import useHomeStyles from './HomeStyles';
 import AnalysisArticle from './Analysis/AnalysisArticle';
 import NarrativeTradingArticle from './HomeNarrativeTradings/NarrativeTradingArticle';
 import {useScreenOrientation} from '../../hooks/useScreenOrientation';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, Sta} from '@react-navigation/native';
 import Search from '../Search/Search';
 import HomeNotifications from './HomeNotifications/HomeNotifications';
 import ChartsSection from './Topmenu/subMenu/Fund_news_chart/Charts/NewCharts/ChartsSection';
@@ -230,6 +230,7 @@ const HomeStackScreen = () => {
   return (
     <HomeStack.Navigator
       initialRouteName="InitialHome"
+      gestureEnabled="false"
       screenOptions={{
         animationDuration: 250,
         header: () =>
@@ -238,6 +239,7 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="InitialHome"
         component={Home}
+        gestureEnabled="false"
         listeners={{
           focus: e => {
             updateActiveCoin({});
@@ -292,5 +294,4 @@ const HomeStackScreen = () => {
     </HomeStack.Navigator>
   );
 };
-
 export default HomeStackScreen;

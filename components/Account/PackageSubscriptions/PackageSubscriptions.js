@@ -17,6 +17,7 @@ import SubscriptionsLoader from '../../Loader/SubscriptionsLoader';
 import LinearGradient from 'react-native-linear-gradient';
 import { AppThemeContext } from '../../../context/themeContext';
 import { useRawUserId } from '../../../context/RawUserIdContext';
+import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 
 const TextWithIcon = ({ text }) => {
   const styles = usePackageSubscriptionStyles();
@@ -52,6 +53,13 @@ const PackageSubscriptions = () => {
   const { isDarkMode } = useContext(AppThemeContext);
   const { packages, purchasePackage, userInfo } = useContext(RevenueCatContext);
   const {rawUserId, setRawUserId} = useRawUserId();
+
+  //console.log("REVENUE CAT PACKAGES", packages);
+  
+  // ITERATING THROUGH PACKAGES TO FIND THE PRODUCT IDENTIFIER
+  for (let i = 0; i < packages.length; i++) {
+    console.log("PACKAGE IDENTIFIER", packages[i].product.identifier);
+  }
 
 
   const getIdentifierByKeyword = (keyword) => {
@@ -104,8 +112,9 @@ const PackageSubscriptions = () => {
   const [missingMessageActive, setMissingMessageActive] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handlePurchase = async (pack) => {
-    console.log('Pack->', pack);
+  const handlePurchase = async () => {
+    const pack = await getPackageToPurchase();
+    console.log('Pack in handlePurchase->', pack);
     setLoading(true);
   
     if (pack === null) {
@@ -117,18 +126,19 @@ const PackageSubscriptions = () => {
     try {
       const packageIdentifier = pack.product.identifier;
       const packagePrice = activeItem.price.replace('$', '');
-
-      await purchasePackage(pack, packageIdentifier, packagePrice, rawUserId);
+      const userNewestID = rawUserId;
+  
+      await purchasePackage(pack, packageIdentifier, packagePrice, userNewestID);
       setMissingMessageActive(false);
       navigation.navigate('CurrentPackages');
-
     } catch (error) {
-      console.error("Error during purchase:", error);
+      console.error('Error during purchase:', error);
       setMissingMessageActive(true);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleActiveItem = item => {
     console.log('Item selected:', item.title);
@@ -223,16 +233,71 @@ const PackageSubscriptions = () => {
     }
   };
 
-  const getPackageToPurchase = () => {
+  const getPackageToPurchase = async () => {
+    const customerInfo = await Purchases.getCustomerInfo();
+    console.log('Customer info IN PACKAGESUBCRIPTIONS:', customerInfo);
+    console.log('Expired subscriptions array:', customerInfo.allExpirationDates);
+    //console.log('Length of expired subscriptions array:', Object.keys(customerInfo.allExpirationDates).length);
+    const hasPreviousSubscription = Object.keys(customerInfo.allExpirationDates).length > 0;
+
     if (activeItem.title === 'By Category') {
-      return packages.find(
-        pkg => pkg.product.title.toLowerCase().includes(activeSubOption.toLowerCase())
-      );
+      let subOptionName = activeSubOption.toLowerCase() + '_4999_m1';
+      console.log('SUB OPTION NAME', subOptionName);
+  
+      if (hasPreviousSubscription) {
+        console.log('PREVIOUSLY PURCHASED');
+        subOptionName = `${subOptionName}_nofreetrial`;
+      } else {
+        console.log('NEVER PURCHASED BEFORE');
+      }
+      console.log('SUB OPTION NAME AFTER', subOptionName);
+  
+      return packages.find(pkg => {
+        const identifier = pkg.product.identifier.toLowerCase();
+        console.log('IDENTIFIER', identifier);
+        if (identifier === subOptionName) {
+          console.log('Found matching package:', identifier);
+          return true;
+        }
+        return false;
+      });
+    } else {
+
+      let subOptionNamePremium = activeItem.title.toLowerCase().replace(/\s+/g, '');
+
+      if (subOptionNamePremium === 'founder' && !hasPreviousSubscription) {
+        console.log('NEVER PURCHASED BEFORE');
+        subOptionNamePremium = subOptionNamePremium + 's_14999_m1';
+      } else if (subOptionNamePremium === 'founder' && hasPreviousSubscription) {
+        console.log('PREVIOUSLY PURCHASED');
+        subOptionNamePremium = subOptionNamePremium + 's_14999_m1_nofreetrial';
+      } else if (subOptionNamePremium === 'fullaccess' && !hasPreviousSubscription) {
+        console.log('NEVER PURCHASED BEFORE');
+        subOptionNamePremium = subOptionNamePremium + '_5999_m1';
+      } else if (subOptionNamePremium === 'fullaccess' && hasPreviousSubscription) {
+        console.log('PREVIOUSLY PURCHASED');
+        subOptionNamePremium = subOptionNamePremium + '_5999_m1_nofreetrial';
+      }
+
+      console.log("ACTIVENAME.TITLE->", subOptionNamePremium);
+
+      return packages.find(pkg => {
+        const identifier = pkg.product.identifier.toLowerCase();
+        console.log('IDENTIFIER', identifier);
+        if (identifier === subOptionNamePremium) {
+          console.log('Found matching package:', identifier);
+          return true;
+        }
+        return false;
+      });
+
     }
-    return packages.find(
-      pkg => pkg.product.title.toLowerCase().includes(activeItem.title.toLowerCase())
-    );
+  
+
   };
+  
+  
+  
 
   return (
     <View style={styles.container}>
@@ -397,7 +462,7 @@ const PackageSubscriptions = () => {
             end={{ x: 1, y: 0.5 }}>
             <TouchableOpacity
               style={styles.purchaseButton}
-              onPress={() => handlePurchase(getPackageToPurchase())}>
+              onPress={handlePurchase}>
               <Text style={styles.purchaseButtonText}>
                 Start 7 Day Free Trial
               </Text>

@@ -63,7 +63,25 @@ const Navigation = () => {
         />
         <Stack.Screen name="SignUp" component={SignupForm} />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordForm} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{
+            gestureEnabled: false,
+            headerShown: false,
+            animation: 'fade',
+          }}
+          listeners={({ navigation }) => ({
+            focus: () => {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'HomeScreen' }],
+              });
+            },
+          })}
+        />
+
         <Stack.Screen name="PaywallScreen" component={PaywallScreen} />
         <Stack.Screen
           name="DeleteAccountScreen"
