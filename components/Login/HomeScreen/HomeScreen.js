@@ -5,7 +5,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
 import Chatbot from '../../Chatbot/Chatbot';
 import Alerts from '../../Alerts/alerts';
-import {Image, View} from 'react-native';
+import {Image, View, Text} from 'react-native';
 import HomeStackScreen from '../../Home/HomeStack';
 import {AppThemeContext} from '../../../context/themeContext';
 import AnalysisScreen from '../../Analysis/AnalysisStack';
@@ -65,6 +65,8 @@ const HomeScreen = () => {
 
   return (
     <GestureHandlerRootView style={[{flex: 1}]}>
+      <Text >This is my 'Founders' Identifier:</Text>
+      <Text selectable>{userId}</Text>
       <Tab.Navigator
         initialRouteName={Home}
         backBehavior={isLandscape && isHorizontal ? 'none' : 'initialRoute'}
