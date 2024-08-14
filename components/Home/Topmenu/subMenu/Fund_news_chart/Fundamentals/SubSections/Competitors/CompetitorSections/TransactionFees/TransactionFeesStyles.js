@@ -8,6 +8,7 @@ const useTransactionFeeStyles = () => {
     imageContainer: {
       position: 'relative',
       height: 105,
+      width: 240,
       margin: theme.boxesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'center',

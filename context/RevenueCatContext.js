@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   REVENUECAT_IOS_API_KEY,
   REVENUECAT_ANDROID_API_KEY,
@@ -6,13 +6,14 @@ import {
 import {createContext, useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
-import {CustomerInfo} from 'react-native-purchases';
-import {useUserId} from './UserIdContext';
 import messaging from '@react-native-firebase/messaging';
+import { TopMenuContext } from './topMenuContext';
 
 const RevenueCatContext = createContext();
 
 const RevenueCatProvider = ({children}) => {
+  const {activeCoin} = useContext(TopMenuContext);
+  const [subscribed, setSubscribed] = useState(false);
   const [packages, setPackages] = useState([]);
   const [userInfo, setUserInfo] = useState({
     id: '',
@@ -20,6 +21,16 @@ const RevenueCatProvider = ({children}) => {
     entitlements: [],
     subscribed: false,
   });
+
+  // Effect hook to detect if the user is subscribed at a least one package, changing the state variable that is shared through the context
+
+  useEffect(() => {
+    const hasCoinSubscription = findCategoryInIdentifiers(
+      activeCoin.category_name,
+      userInfo.entitlements,
+    );
+    setSubscribed(hasCoinSubscription);
+  }, [activeCoin, userInfo]);
 
   // This function order the packages in the Figma defined order.
 
@@ -53,7 +64,11 @@ const RevenueCatProvider = ({children}) => {
 
   const init = async userId => {
     if (Platform.OS === 'ios') {
-      Purchases.configure({apiKey: REVENUECAT_IOS_API_KEY, appUserID: userId, usesStoreKit2IfAvailable: false});
+      Purchases.configure({
+        apiKey: REVENUECAT_IOS_API_KEY,
+        appUserID: userId,
+        usesStoreKit2IfAvailable: false,
+      });
     } else if (Platform.OS === 'android') {
       Purchases.configure({
         apiKey: REVENUECAT_ANDROID_API_KEY,
@@ -94,7 +109,6 @@ const RevenueCatProvider = ({children}) => {
         updatedUser.entitlements.push(
           customerInfo?.entitlements.active[key].productIdentifier,
         );
-
       }
     }
     console.log(
@@ -181,7 +195,7 @@ const RevenueCatProvider = ({children}) => {
 
   const purchasePackage = async pack => {
     try {
-      console.log("Pack being purchased",pack);
+      console.log('Pack being purchased', pack);
       const {customerInfo, productIdentifier} = await Purchases.purchasePackage(
         pack,
       );
@@ -251,6 +265,7 @@ const RevenueCatProvider = ({children}) => {
         findCategoryInIdentifiers,
         findProductIdInIdentifiers,
         restorePurchases,
+        subscribed
       }}>
       {children}
     </RevenueCatContext.Provider>

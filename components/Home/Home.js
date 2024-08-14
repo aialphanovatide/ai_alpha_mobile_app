@@ -11,26 +11,13 @@ import {AppThemeContext} from '../../context/themeContext';
 import {useScrollToTop} from '@react-navigation/native';
 import NarrativeTradings from './HomeNarrativeTradings/NarrativeTradings';
 import TopTenLosers from './Top10Losers/TopTenLosers';
-import IntroductoryPopUpsOverlay from '../IntroductorySlides/IntroductoryPopUps/IntroductoryPopUpsOverlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({route}) => {
   const styles = useHomeStyles();
   const [aboutVisible, setAboutVisible] = useState(false);
   const [aboutDescription, setAboutDescription] = useState('');
-  const [activePopUps, setActivePopUps] = useState(false);
   const {isDarkMode} = useContext(AppThemeContext);
   const ref = useRef(null);
-
-  useEffect(() => {
-    const checkShowIntroductoryPopUp = async () => {
-      const popUpsData = await AsyncStorage.getItem('hasIntroduced');
-      let shouldShowPopUp = popUpsData === 'false' ? true : false;
-      setActivePopUps(shouldShowPopUp);
-      await AsyncStorage.setItem('hasIntroduced', 'true');
-    };
-    checkShowIntroductoryPopUp();
-  }, []);
 
   useScrollToTop(ref);
 
@@ -39,10 +26,6 @@ const Home = ({route}) => {
       setAboutDescription(description);
     }
     setAboutVisible(!aboutVisible);
-  };
-
-  const handleActivePopUps = () => {
-    setActivePopUps(false);
   };
 
   return (
@@ -60,14 +43,14 @@ const Home = ({route}) => {
             visible={aboutVisible}
           />
         )}
-        {activePopUps && activePopUps !== undefined ? (
+        {/* {activePopUps && activePopUps !== undefined ? (
           <IntroductoryPopUpsOverlay
             handleActivePopUps={handleActivePopUps}
             visible={activePopUps}
           />
         ) : (
           <></>
-        )}
+        )} */}
         <ScrollView
           bounces={false}
           alwaysBounceVertical={false}

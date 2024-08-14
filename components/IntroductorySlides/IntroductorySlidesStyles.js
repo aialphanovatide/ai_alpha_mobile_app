@@ -229,6 +229,27 @@ const useIntroductorySlidesStyles = () => {
       width: 6,
       height: 10,
       tintColor: '#FF6C0D',
+    },
+    popUpPressableOverlay: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+    },
+    invisiblePressable: {
+      width: '100%',
+      height: 170,
+      backgroundColor: 'transparent',
+      alignSelf: 'flex-start',
+      justifyContent: 'flex-start',
+    },
+    bottomTransparentButton: {
+      position: 'absolute',
+      bottom: 0,
+      width: '20%',
+      height: 100,
+      zIndex: 30
     }
   });
   return styles;

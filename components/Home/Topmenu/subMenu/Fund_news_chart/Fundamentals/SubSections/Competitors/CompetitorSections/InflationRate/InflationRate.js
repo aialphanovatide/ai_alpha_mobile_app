@@ -100,7 +100,13 @@ const InflationRate = ({competitorsData, isSectionWithoutData}) => {
     },
   ];
 
-  const [activeYear, setActiveYear] = useState(2022);
+  // Function to get the current year in a numeric format, to set it as default in the year menu of this component
+  const getCurrentYear = () => {
+    const currentDate = new Date();
+    return currentDate.getFullYear();
+  }
+
+  const [activeYear, setActiveYear] = useState(getCurrentYear());
   const [activeCrypto, setActiveCrypto] = useState(null);
   const [filteredYears, setFilteredYears] = useState(null);
   const [loading, setLoading] = useState(true);

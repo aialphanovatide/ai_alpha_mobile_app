@@ -216,8 +216,7 @@ const Alerts = ({route, navigation}) => {
           {isLoading ? (
             // Display the loader if the data requests didn't finish
             <SkeletonLoader quantity={5} type="alerts" />
-          ) : subscribed || subscribedCategories.length > 0 ? (
-            // If the user has at least one subscription, it will render alerts for all the coins from the categories that has subscribed
+          ) : (
             <FlatList
               ref={ref}
               data={alerts}
@@ -234,11 +233,9 @@ const Alerts = ({route, navigation}) => {
               keyExtractor={item => item.alert_id.toString()}
               ListEmptyComponent={<NoAlertsView styles={styles} />}
             />
-          ) : (
-            // If the user isn't subscribed to any package, it will display the overlay
-            <UpgradeOverlay isBlockingByCoin={true} screen={'Alerts'} />
           )}
         </View>
+        <UpgradeOverlay isBlockingByCoin={true} screen={'Alerts'} />
       </LinearGradient>
     </SafeAreaView>
   );

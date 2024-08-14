@@ -26,6 +26,8 @@ import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useNavigation} from '@react-navigation/core';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 // This component generates a chart with ETH/BTC pairing data coming from the binance API
 
@@ -39,6 +41,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const [selectedCandle, setSelectedCandle] = useState(null);
+  const {subscribed} = useContext(RevenueCatContext);
 
   // Use Effect that gets the chart data from the Binance API, mapping it to the Victory Chart necessary format
   async function fetchChartData() {
@@ -115,6 +118,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
               style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
             />
           </View>
+          {subscribed ? <></> : <UpgradeOverlay />}
         </SafeAreaView>
       </LinearGradient>
     );
@@ -381,6 +385,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
             />
           </View>
         </ScrollView>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </SafeAreaView>
     </LinearGradient>
   );

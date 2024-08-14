@@ -155,6 +155,12 @@ const useChartsSource = (coin, pairing, interval) => {
       pairings: ['USDT', 'ETH'],
     },
     {
+      name: 'pol',
+      baseUrl: {USDT: 'binance', ETH: 'binance'},
+      urlName: {USDT: 'matic', ETH: 'matic'},
+      pairings: ['USDT', 'ETH'],
+    },
+    {
       name: 'arb',
       baseUrl: {USDT: 'binance', ETH: 'binance'},
       urlName: {USDT: 'arb', ETH: 'arb'},

@@ -41,26 +41,6 @@ const TopStories = ({handleAboutPress}) => {
     }
   };
 
-  // Function to extract the title from the summaries, that detects the first sentences within "", using regular expressions, and returns it. It only returns the first because it can happen that is inside the summary text another sentences within "".
-
-  const filterArticleTitle = summary => {
-    const match = summary.match(/"([^"]+)"/);
-    if (match && match[1]) {
-      const title = match[1];
-      const content = summary.replace(`"${title}"`, '').trim();
-
-      return {
-        title,
-        content,
-      };
-    } else {
-      return {
-        title: filterText(summary.slice(0, 120)),
-        content: summary,
-      };
-    }
-  };
-
   // This function handles the story redirect when clicking over one, first, finds the category/coin and the subCoin coin bot that belongs to it, after that, updates the active coin and subcoin with its values and after that navigates to the new section. If any param is needed, just include it in the second params object below, which are the params passed to the news screen. This handler is passed to every story item, and it is called on the onPress event.
   const handleStoryRedirect = (story, coinBotId) => {
     let {category, coinBot} = findCoinById(categories, coinBotId);
@@ -74,11 +54,11 @@ const TopStories = ({handleAboutPress}) => {
           screen: 'NewsArticle',
           params: {
             item: {
-              title: story.summary,
-              summary: story.summary,
-              images: story.images,
-              date: story.story_date,
-              top_story_id: story.top_story_id,
+              title: story.title,
+              content: story.content,
+              image: story.image,
+              date: story.date,
+              top_story_id: story.id,
             },
             isStory: true,
           },
@@ -87,45 +67,21 @@ const TopStories = ({handleAboutPress}) => {
     });
   };
 
-  // Function to filter the summary or texts of the article, removing the words that are put by the prompt generated, and aren't necessary in the summary or the title.
-  const filterText = summary => {
-    const keywords_to_remove = [
-      'Headline:',
-      'Summary:',
-      'Step One:',
-      'Step Two:',
-      'Step Three:',
-      'Secondary Summary:',
-      'Secondary ',
-      'Secondary Points:',
-    ];
-
-    const filteredText = summary
-      .split('\n')
-      .map(line => {
-        for (const keyword of keywords_to_remove) {
-          if (line.includes(keyword)) {
-            line = line.replace(keyword, '');
-          }
-        }
-        return line.trim();
-      })
-      .join('\n');
-
-    return filteredText;
-  };
-
   useEffect(() => {
-    // setStories([]);
     setLoading(true);
     const fetchTopStories = async () => {
       try {
-        const data = await getService(`/api/get/allTopStories`);
-        if (!data || data.top_stories === undefined) {
+        const response = await fetch('https://newsbotv2.ngrok.io/top-stories', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const topStoriesData = await response.json();
+        if (!topStoriesData.success || !topStoriesData.data) {
           setStories([]);
         } else {
-          // console.log(data.top_stories);
-          setStories(data.top_stories);
+          setStories(topStoriesData.data);
         }
       } catch (error) {
         console.error('Error fetching top stories:', error.message);
@@ -147,8 +103,7 @@ const TopStories = ({handleAboutPress}) => {
       />
       {loading ? (
         <SkeletonLoader />
-      ) : 
-      stories.length === 0 ? (
+      ) : stories.length === 0 ? (
         <Text style={styles.emptyMessage}>
           {home_static_data.topStories.noContentMessage}
         </Text>
@@ -164,17 +119,11 @@ const TopStories = ({handleAboutPress}) => {
               <StoryItem
                 item={story}
                 key={i}
-                title={filterArticleTitle(story.summary).title}
-                description={
-                  filterArticleTitle(filterText(story.summary)).content
-                }
-                image={
-                  story.images.length > 0
-                    ? story.images[0].image
-                    : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
-                }
+                title={story.title}
+                description={story.content}
+                image={story.image}
                 handleStoryRedirect={handleStoryRedirect}
-                coinBotId={story.coin_bot_id}
+                coinBotId={story.bot_id}
               />
               <TouchableOpacity
                 style={[styles.arrowContainer, i > 0 ? styles.hidden : {}]}

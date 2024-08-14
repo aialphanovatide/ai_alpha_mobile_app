@@ -35,39 +35,42 @@ const Top10MoversContextProvider = ({children}) => {
           `api/top-movers?vs_currency=usd&order=price_change_desc&precision=2`,
         );
         const top10CoinsInfo = [];
-        for (let i = 0; i < response.data.top_10_gainers.length; i++) {
-          const coin = response.data.top_10_gainers[i];
-          const coinInfo = {
-            name:
-              coin.name.length > 15
-                ? coin.name.trim().split(/\s+/g)[0]
-                : coin.name,
-            symbol: coin.symbol,
-            image: coin.image,
-            currentPrice: coin.current_price,
-            priceChange24H: coin.price_change_percentage_24h
-              ? coin.price_change_percentage_24h
-              : 0.0,
-          };
-          top10CoinsInfo.push(coinInfo);
-        }
-
         const top10LosersInfo = [];
-        for (let i = 0; i < response.data.top_10_losers.length; i++) {
-          const coin = response.data.top_10_losers[i];
-          const coinInfo = {
-            name:
-              coin.name.length > 15
-                ? coin.name.trim().split(/\s+/)[0]
-                : coin.name,
-            symbol: coin.symbol,
-            image: coin.image,
-            currentPrice: coin.current_price,
-            priceChange24H: coin.price_change_percentage_24h
-              ? coin.price_change_percentage_24h
-              : 0.0,
-          };
-          top10LosersInfo.push(coinInfo);
+
+        if (response.success) {
+          for (let i = 0; i < response.data.top_10_gainers.length; i++) {
+            const coin = response.data.top_10_gainers[i];
+            const coinInfo = {
+              name:
+                coin.name.length > 15
+                  ? coin.name.trim().split(/\s+/g)[0]
+                  : coin.name,
+              symbol: coin.symbol,
+              image: coin.image,
+              currentPrice: coin.current_price,
+              priceChange24H: coin.price_change_percentage_24h
+                ? coin.price_change_percentage_24h
+                : 0.0,
+            };
+            top10CoinsInfo.push(coinInfo);
+          }
+
+          for (let i = 0; i < response.data.top_10_losers.length; i++) {
+            const coin = response.data.top_10_losers[i];
+            const coinInfo = {
+              name:
+                coin.name.length > 15
+                  ? coin.name.trim().split(/\s+/)[0]
+                  : coin.name,
+              symbol: coin.symbol,
+              image: coin.image,
+              currentPrice: coin.current_price,
+              priceChange24H: coin.price_change_percentage_24h
+                ? coin.price_change_percentage_24h
+                : 0.0,
+            };
+            top10LosersInfo.push(coinInfo);
+          }
         }
 
         setTopTenMoversData(top10CoinsInfo);

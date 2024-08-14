@@ -28,6 +28,8 @@ import useChartSectionStyles from '../ChartSection/ChartSectionStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 const initialSessionData = {
   security_token: null,
@@ -45,6 +47,7 @@ const UsOilChart = ({route, navigation}) => {
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const [selectedCandle, setSelectedCandle] = useState(null);
+  const {subscribed} = useContext(RevenueCatContext);
 
   // Hook to request again the data to CapitalCom when changing the time interval or the coin (changing to other chart)
   useEffect(() => {
@@ -152,6 +155,7 @@ const UsOilChart = ({route, navigation}) => {
               />
             </View>
           </ScrollView>
+          {subscribed ? <></> : <UpgradeOverlay />}
         </SafeAreaView>
       </LinearGradient>
     );
@@ -413,8 +417,10 @@ const UsOilChart = ({route, navigation}) => {
                     }
               }>
               <Image
-                style={[styles.chartsHorizontalButton, {bottom: Platform.OS === 'android' ? 80 : 90,
-                }]}
+                style={[
+                  styles.chartsHorizontalButton,
+                  {bottom: Platform.OS === 'android' ? 80 : 90},
+                ]}
                 resizeMode="contain"
                 source={
                   isLandscape && isHorizontal
@@ -441,6 +447,7 @@ const UsOilChart = ({route, navigation}) => {
             />
           </View>
         </ScrollView>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </SafeAreaView>
     </LinearGradient>
   );

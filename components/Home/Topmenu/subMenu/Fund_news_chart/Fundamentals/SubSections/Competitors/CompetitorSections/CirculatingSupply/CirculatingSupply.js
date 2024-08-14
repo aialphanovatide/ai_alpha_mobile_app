@@ -1,5 +1,5 @@
 import {Image, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import useCirculatingSupplyStyles from './CirculatingSupplyStyles';
 import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
@@ -8,6 +8,7 @@ import {fundamentals_static_content} from '../../../../fundamentalsStaticData';
 import SupplyModal from '../../../SupplyModal/SupplyModal';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
+import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
 
 const CirculatingSupplyItem = ({
   item,
@@ -20,7 +21,7 @@ const CirculatingSupplyItem = ({
       .supplyDescriptions[item.crypto.toLowerCase()] ||
     fundamentals_static_content.competitors.subsections.supplyModel
       .supplyDescriptions.default;
-
+  const {isDarkMode} = useContext(AppThemeContext);
   function formatNumber(value) {
     const suffixes = ['', 'thousand', 'million', 'billion', 'trillion'];
     const formatRecursive = (num, suffixIndex) => {
@@ -46,29 +47,29 @@ const CirculatingSupplyItem = ({
           }}
           resizeMode={'contain'}
         />
-        <View style={styles.column}>
-          <Text style={styles.tokenName}>{item.name}</Text>
-          <View style={styles.inflationaryRow}>
-            <Image
-              style={styles.inflationaryArrow}
-              resizeMode="contain"
-              source={
-                item.inflationary === null
-                  ? require('../../../../../../../../../../assets/images/fundamentals/tokenomics/hybrid.png')
-                  : item.inflationary
-                  ? require('../../../../../../../../../../assets/images/fundamentals/tokenomics/inflationary.png')
-                  : require('../../../../../../../../../../assets/images/fundamentals/tokenomics/deflationary.png')
-              }
-            />
-            <Text style={[styles.text, styles.marginLeft]}>
-              {item.inflationary === null
-                ? 'Hybrid'
-                : item.inflationary === true
-                ? 'Inflationary'
-                : 'Deflationary'}
-            </Text>
-          </View>
-        </View>
+        <Text style={styles.tokenName}>{item.name}</Text>
+        <Image
+          style={styles.inflationaryArrow}
+          resizeMode="contain"
+          source={
+            item.inflationary === null
+              ? require('../../../../../../../../../../assets/images/fundamentals/tokenomics/hybrid.png')
+              : item.inflationary === true
+              ? isDarkMode
+                ? require('../../../../../../../../../../assets/images/fundamentals/tokenomics/inflationary-dark.png')
+                : require('../../../../../../../../../../assets/images/fundamentals/tokenomics/inflationary-light.png')
+              : isDarkMode
+              ? require('../../../../../../../../../../assets/images/fundamentals/tokenomics/deflationary-dark.png')
+              : require('../../../../../../../../../../assets/images/fundamentals/tokenomics/deflationary-light.png')
+          }
+        />
+        <Text style={[styles.text, styles.marginLeft]}>
+          {item.inflationary === null
+            ? 'Hybrid'
+            : item.inflationary === true
+            ? 'Inflationary'
+            : 'Deflationary'}
+        </Text>
         {item.maxValue === Infinity ? (
           <TouchableOpacity
             onPress={() =>
@@ -114,7 +115,6 @@ const ProgressBar = ({maxValue, percentageValue, styles, activeSupply}) => {
 
     return formatRecursive(value, 0);
   }
-
   return (
     <View style={styles.progressBarContainer}>
       <View
@@ -130,20 +130,19 @@ const ProgressBar = ({maxValue, percentageValue, styles, activeSupply}) => {
           ]}
         />
       </View>
-      <View style={[styles.row, styles.noVerticalMargin]}>
-        <Text
-          style={[
-            styles.labelBottom,
-            {
-              marginLeft: `${
-                percentageValue < 25
-                  ? percentageValue + 10
-                  : percentageValue - 15
-              }%`,
-            },
-            activeSupply ? {} : styles.transparent,
-          ]}>{`${percentageValue}%`}</Text>
-      </View>
+      <Text
+        style={[
+          styles.labelBottom,
+          {
+            left: `${
+               15 + (percentageValue > 85
+                ? percentageValue - 25
+                : percentageValue < 20
+                ? percentageValue
+                : percentageValue - 15)
+            }%`,
+          },
+        ]}>{`${percentageValue}%`}</Text>
     </View>
   );
 };
@@ -288,15 +287,11 @@ const CirculatingSupply = ({cryptos, tokenomicsData, competitorsData}) => {
                 styles.alignLeft,
                 activeSupply && styles.activeOrangeButton,
               ]}
-              onPress={() => handleSupplyButton()}>
-              <Text
-                style={[styles.supplyText, activeSupply && styles.activeText]}>
-                Circulating supply
-              </Text>
-            </TouchableOpacity>
-            <View style={[styles.button, styles.alignRight]}>
-              <Text style={styles.totalText}>Total Tokens in Supply</Text>
-            </View>
+              onPress={() => handleSupplyButton()}
+            />
+            <Text style={styles.supplyText}>Circulating Supply</Text>
+            <View style={[styles.button, styles.alignRight]} />
+            <Text style={styles.totalText}>Total Tokens in Supply</Text>
           </View>
           <View style={styles.itemsContainer}>
             {mappedData.map((item, index) => (

@@ -8,6 +8,7 @@ import {home_static_data} from '../homeStaticData.js';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
 import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
+import {AppThemeContext} from '../../../context/themeContext.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
@@ -51,6 +52,7 @@ const TopTenGainers = ({handleAboutPress}) => {
   const styles = useTopTenGainersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
   const {topTenMoversData, loading} = useContext(Top10MoversContext);
+  const {isDarkMode} = useContext(AppThemeContext);
 
   const additionalAboutStyles = {
     marginRight: Platform.OS === 'android' ? 20 : 0,
@@ -115,14 +117,22 @@ const TopTenGainers = ({handleAboutPress}) => {
         />
       </View>
       {loading || topTenCoins.length === 0 ? (
-        <ScrollView>
-          <View style={styles.table} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          persistentScrollbar={true}
+          indicatorStyle={isDarkMode ? 'white' : 'dark'}
+          // contentContainerStyle={{paddingRight: 14}}
+        >
+          <View style={styles.table}>
             <SkeletonLoader quantity={10} />
           </View>
         </ScrollView>
       ) : (
-        <ScrollView>
-          <View style={styles.table} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          persistentScrollbar={true}
+          indicatorStyle={isDarkMode ? 'white' : 'dark'}
+          // contentContainerStyle={{paddingRight: 14}}
+        >
+          <View style={styles.table}>
             {topTenCoins.length > 0 &&
               topTenCoins.map((coin, index) => (
                 <Item key={index} coin={coin} position={index + 1} />

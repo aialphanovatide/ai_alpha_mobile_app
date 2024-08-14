@@ -1,5 +1,5 @@
 import {TopMenuContext} from '../../../context/topMenuContext';
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
@@ -17,6 +17,8 @@ import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import AskAiScreen from '../../AskAi/AskAiStack';
 import LinearGradient from 'react-native-linear-gradient';
 import useNavbarStyles from './HomeScreenStyles';
+import IntroductoryPopUpsOverlay from '../../IntroductorySlides/IntroductoryPopUps/IntroductoryPopUpsOverlay';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,6 +49,19 @@ const HomeScreen = () => {
   const {init} = useContext(RevenueCatContext);
   const {isLandscape, isHorizontal} = useScreenOrientation();
   const styles = useNavbarStyles();
+  const [activePopUps, setActivePopUps] = useState(false);
+
+  // Hook to load the variable to know if it is the first time that the user opens the app, or not, to show the introductory pop-ups at the Home section
+
+  useEffect(() => {
+    const checkShowIntroductoryPopUp = async () => {
+      const popUpsData = await AsyncStorage.getItem('hasIntroduced');
+      let shouldShowPopUp = popUpsData === 'false' ? true : false;
+      setActivePopUps(shouldShowPopUp);
+      await AsyncStorage.setItem('hasIntroduced', 'true');
+    };
+    checkShowIntroductoryPopUp();
+  }, []);
 
   useEffect(
     () =>
@@ -63,8 +78,20 @@ const HomeScreen = () => {
     };
   }, []);
 
+  const handleActivePopUps = () => {
+    setActivePopUps(false);
+  };
+
   return (
     <GestureHandlerRootView style={[{flex: 1}]}>
+      {activePopUps && activePopUps !== undefined ? (
+        <IntroductoryPopUpsOverlay
+          handleActivePopUps={handleActivePopUps}
+          visible={activePopUps}
+        />
+      ) : (
+        <></>
+      )}
       <Tab.Navigator
         initialRouteName={Home}
         backBehavior={isLandscape && isHorizontal ? 'none' : 'initialRoute'}

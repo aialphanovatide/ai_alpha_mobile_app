@@ -16,6 +16,8 @@ import {AppThemeContext} from '../../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 const BtcDominanceChart = ({candlesToShow = 30}) => {
   const [chartData, setChartData] = useState([]);
@@ -24,6 +26,7 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
   const styles = useBtcDominanceStyles();
   const {isDarkMode, theme} = useContext(AppThemeContext);
   const [selectedCandle, setSelectedCandle] = useState(null);
+  const {subscribed} = useContext(RevenueCatContext);
 
   async function fetchChartData(interval = selectedInterval) {
     try {
@@ -96,6 +99,7 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
               style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
             />
           </View>
+          {subscribed ? <></> : <UpgradeOverlay />}
         </SafeAreaView>
       </LinearGradient>
     );
@@ -322,6 +326,7 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
             />
           </View>
         </View>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </SafeAreaView>
     </LinearGradient>
   );

@@ -274,34 +274,34 @@ const App = () => {
 
   return (
     <Auth0Provider domain={auth0Domain} clientId={auth0Client}>
-      <RevenueCatProvider>
-        <UserProvider>
-          <UserIdProvider>
-            <RawUserIdProvider>
-              <AppThemeProvider>
-                <SafeAreaView
-                  style={{
-                    flex: 0,
-                    backgroundColor: isDarkMode ? '#0F0F0F' : '#EDEDED',
-                  }}></SafeAreaView>
-                <SafeAreaView
-                  style={[
-                    styles.container,
-                    {
-                      flex: 1,
-                      backgroundColor: isDarkMode ? '#0b0b0a' : '#fbfbfa',
-                    },
-                  ]}>
-                  <StatusBar
-                    barStyle={
-                      isDarkMode
-                        ? 'light-content'
-                        : 'dark-content' /*This changes the font color for SafeAreaView*/
-                    }
-                  />
-                  <SingletonHooksContainer />
-                  <CategoriesContextProvider>
-                    <TopMenuContextProvider>
+      <CategoriesContextProvider>
+        <TopMenuContextProvider>
+          <RevenueCatProvider>
+            <UserProvider>
+              <UserIdProvider>
+                <RawUserIdProvider>
+                  <AppThemeProvider>
+                    <SafeAreaView
+                      style={{
+                        flex: 0,
+                        backgroundColor: isDarkMode ? '#0F0F0F' : '#EDEDED',
+                      }}></SafeAreaView>
+                    <SafeAreaView
+                      style={[
+                        styles.container,
+                        {
+                          flex: 1,
+                          backgroundColor: isDarkMode ? '#0b0b0a' : '#fbfbfa',
+                        },
+                      ]}>
+                      <StatusBar
+                        barStyle={
+                          isDarkMode
+                            ? 'light-content'
+                            : 'dark-content' /*This changes the font color for SafeAreaView*/
+                        }
+                      />
+                      <SingletonHooksContainer />
                       <Top10MoversContextProvider>
                         <NarrativeTradingContextProvider>
                           <AnalysisContextProvider>
@@ -333,14 +333,14 @@ const App = () => {
                           </AnalysisContextProvider>
                         </NarrativeTradingContextProvider>
                       </Top10MoversContextProvider>
-                    </TopMenuContextProvider>
-                  </CategoriesContextProvider>
-                </SafeAreaView>
-              </AppThemeProvider>
-            </RawUserIdProvider>
-          </UserIdProvider>
-        </UserProvider>
-      </RevenueCatProvider>
+                    </SafeAreaView>
+                  </AppThemeProvider>
+                </RawUserIdProvider>
+              </UserIdProvider>
+            </UserProvider>
+          </RevenueCatProvider>
+        </TopMenuContextProvider>
+      </CategoriesContextProvider>
     </Auth0Provider>
   );
 };

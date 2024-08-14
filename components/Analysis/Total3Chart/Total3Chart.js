@@ -17,6 +17,7 @@ import BackButton from '../BackButton/BackButton';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/core';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 const Total3Chart = ({candlesToShow = 30}) => {
   const styles = useTotal3Styles();
@@ -26,6 +27,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const navigation = useNavigation();
+  const {subscribed} = useContext(AppThemeContext);
 
   function formatDateArray(days, arrayLength) {
     // Get current date
@@ -116,6 +118,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
               style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
             />
           </View>
+          {subscribed ? <></> : <UpgradeOverlay />}
         </SafeAreaView>
       </LinearGradient>
     );
@@ -235,6 +238,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
             />
           </View>
         </ScrollView>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </SafeAreaView>
     </LinearGradient>
   );

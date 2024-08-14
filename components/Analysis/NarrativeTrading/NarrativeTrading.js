@@ -16,6 +16,8 @@ import FastImage from 'react-native-fast-image';
 import useNarrativeTradingStyles from './NarrativeTradingStyles';
 import filterData from './FilterData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -134,6 +136,7 @@ const NarrativeTrading = () => {
     useState([]);
   const styles = useNarrativeTradingStyles();
   const navigation = useNavigation();
+  const {subscribed} = useContext(RevenueCatContext);
 
   // Hook to load the data from the previous narrative tradings that the user has seen
   useEffect(() => {
@@ -306,6 +309,7 @@ const NarrativeTrading = () => {
             <View style={styles.spacing} />
           </ScrollView>
         </View>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </LinearGradient>
     </SafeAreaView>
   );

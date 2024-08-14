@@ -143,7 +143,6 @@ const Analysis = () => {
             ))}
           </View>
         </ScrollView>
-        <UpgradeOverlay isBlockingByCoin={false} />
       </SafeAreaView>
     </LinearGradient>
   );

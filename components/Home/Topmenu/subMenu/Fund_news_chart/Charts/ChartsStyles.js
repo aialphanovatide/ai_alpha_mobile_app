@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 
 const useChartsStyles = () => {
@@ -181,7 +181,7 @@ const useChartsStyles = () => {
       width: 28,
       height: 28,
       position: 'absolute',
-      bottom: Platform.OS === 'android' ? 50 : 95,
+      bottom: 95,
       right: 70,
       tintColor: theme.textColor,
     },

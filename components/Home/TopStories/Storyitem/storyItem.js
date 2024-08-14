@@ -11,7 +11,9 @@ const StoryItem = ({item, title, image, handleStoryRedirect, coinBotId}) => {
       left={() => (
         <FastImage
           source={{
-            uri: `data:image/png;base64,${image}`,
+            uri: image
+              ? `https://appnewsposters.s3.us-east-2.amazonaws.com/${image}`
+              : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
             priority: FastImage.priority.high,
           }}
           style={styles.imageStyle}

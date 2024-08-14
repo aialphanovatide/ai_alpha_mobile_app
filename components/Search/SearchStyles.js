@@ -9,9 +9,12 @@ const useSearchStyles = () => {
       flex: 1,
     },
     container: {
-      flex: 1,
-      width: theme.width,
-      padding: 10,
+      width: '95%',
+      marginHorizontal: 10,
+      height: theme.height,
+      paddingHorizontal: 10,
+      borderRadius: 2,
+      backgroundColor: theme.boxesBackgroundColor,
     },
     title: {
       marginTop: 36,
@@ -60,7 +63,6 @@ const useSearchStyles = () => {
       position: 'relative',
       width: '100%',
       flexDirection: 'row',
-      marginVertical: 4,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       borderRadius: 2,
@@ -88,7 +90,7 @@ const useSearchStyles = () => {
     },
     inactiveSubtitle: {
       color: theme.secondaryGrayColor,
-      textDecorationLine: 'none'
+      textDecorationLine: 'none',
     },
     row: {
       flexDirection: 'row',
@@ -106,7 +108,6 @@ const useSearchStyles = () => {
     cryptoItem: {
       width: '100%',
       flexDirection: 'row',
-      marginVertical: 4,
       paddingVertical: 6,
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
@@ -147,8 +148,7 @@ const useSearchStyles = () => {
       alignSelf: 'center',
     },
     cryptoSearch: {
-      flex: 1,
-      height: 'auto',
+      width: '100%',
       padding: 4,
       marginTop: theme.boxesVerticalMargin,
     },

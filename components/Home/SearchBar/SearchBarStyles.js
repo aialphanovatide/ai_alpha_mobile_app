@@ -20,24 +20,27 @@ const useSearchBarStyles = () => {
     },
     searchInput: {
       width: '100%',
-      height: 40,
+      marginVertical: 8,
+      paddingHorizontal: 12,
       paddingLeft: 48,
-      alignSelf: 'center',
+      backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 3,
       fontFamily: theme.font,
-      fontSize: 14,
-      color: theme.searchPlaceHolderColor,
-      backgroundColor: theme.secondaryBoxesBgColor,
+      fontSize: theme.responsiveFontSize * 0.925,
+      color: theme.textColor,
     },
     textInputContainer: {
       flexDirection: 'row',
       position: 'relative',
       height: 60,
+      zIndex: 2001,
     },
     textInputContainerIOS: {
       flexDirection: 'row',
       position: 'relative',
       marginHorizontal: 14,
       height: 60,
+      zIndex: 2001,
     },
     none: {
       display: 'none',
@@ -72,6 +75,14 @@ const useSearchBarStyles = () => {
       alignSelf: 'center',
       alignItems: 'center',
     },
+    closeButton: {
+      position: 'absolute',
+      top: 24,
+      right: 6,
+      width: 17,
+      height: 17,
+      tintColor: theme.grayButtonColor,
+    }
   });
   return styles;
 };

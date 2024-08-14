@@ -17,6 +17,8 @@ import {useNavigation} from '@react-navigation/core';
 import historyFilterData from './HistoryFilterData';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -134,6 +136,7 @@ const History = () => {
   const [loadedHistoryItems, setLoadedHistoryItems] = useState([]);
   const styles = useHistoryStyles();
   const navigation = useNavigation();
+  const {subscribed} = useContext(RevenueCatContext);
 
   // Hook to load the data from the previous analysis that the user has seen
   useEffect(() => {
@@ -293,6 +296,7 @@ const History = () => {
             )}
           </ScrollView>
         </View>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </LinearGradient>
     </SafeAreaView>
   );
