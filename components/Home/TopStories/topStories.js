@@ -95,7 +95,7 @@ const TopStories = ({handleAboutPress}) => {
 
   return (
     <View style={styles.StoriesItemsContainer}>
-      <Text style={styles.mainTitle}>Top Stories</Text>
+      <Text style={styles.mainTitle}>What's Happening Today?</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.topStories.sectionDescription}

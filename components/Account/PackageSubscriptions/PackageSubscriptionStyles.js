@@ -34,7 +34,8 @@ const usePackageSubscriptionStyles = () => {
       fontSize: theme.titleFontSize * 1.25,
       fontFamily: theme.fontSemibold,
       textAlign: 'center',
-      alignSelf: 'left',
+      flexDirection: 'row',
+      alignSelf: 'flex-start',
     },
     description: {
       marginVertical: theme.boxesVerticalMargin,

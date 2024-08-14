@@ -24,6 +24,7 @@ import {AppThemeContext} from '../../context/themeContext';
 import useWebSocket from 'react-native-use-websocket';
 import RNRestart from 'react-native-restart';
 import SocialMedia from './SocialMediaButtons/SocialMedia';
+import {auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret} from '../../src/constants';
 
 const AccountItem = ({
   styles,
@@ -214,6 +215,7 @@ const Account = ({route}) => {
       await AsyncStorage.removeItem('fullName');
       await AsyncStorage.removeItem('username');
       await AsyncStorage.removeItem('birthDate');
+      await AsyncStorage.removeItem('userImage');
       console.log('Successfully removed login data...');
       resetLoginForm();
       console.log('After loginForm reset');
@@ -223,6 +225,21 @@ const Account = ({route}) => {
     } catch (e) {
       console.error('Logout failed', e);
     }
+  };
+
+  const getManagementApiToken = async () => {
+    const response = await fetch(`https://${auth0Domain}/oauth/token`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        client_id: auth0ManagementAPI_Client,
+        client_secret: auth0ManagementAPI_Secret,
+        audience: `https://${auth0Domain}/api/v2/`,
+        grant_type: 'client_credentials',
+      }),
+    });
+    const data = await response.json();
+    return data.access_token;
   };
 
   const fetchUserImage = async () => {

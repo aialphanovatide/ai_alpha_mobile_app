@@ -88,7 +88,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.mainTitle}>Narrative Trading</Text>
+      <Text style={styles.mainTitle}>Market Narratives</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
         description={home_static_data.narrativeTradings.sectionDescription}
