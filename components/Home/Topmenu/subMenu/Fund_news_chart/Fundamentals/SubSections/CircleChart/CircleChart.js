@@ -16,7 +16,7 @@ const CircleChart = ({
   return (
     <View style={styles.circleChartContainer}>
       <VictoryPie
-        width={240}
+        width={235}
         radius={105}
         innerRadius={90}
         data={data.map((sector, index) => {

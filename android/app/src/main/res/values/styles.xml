@@ -7,4 +7,8 @@
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
     </style>
 
+    <style name="AppTheme.NoSplash" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

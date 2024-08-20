@@ -257,7 +257,7 @@ const signInWithApple = async () => {
     <Auth0Provider
       domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
       clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
-      <View>
+      <View style={{marginTop: 36}}>
         <CustomButton
           text="Continue with Apple"
           onPress={() => signInWithApple()}

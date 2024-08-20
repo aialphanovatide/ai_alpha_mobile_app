@@ -1,4 +1,4 @@
-import React, {useContext, useState, useRef} from 'react';
+import React, {useContext, useState, useRef, useEffect} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -6,13 +6,15 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import useIntroductorySlidesStyles from './IntroductorySlidesStyles';
 import {useNavigation} from '@react-navigation/core';
+import FastImage from 'react-native-fast-image';
 
-const IntroductoryCarousel = ({children}) => {
+const IntroductoryCarousel = ({children, toggleActiveSlide}) => {
   const {theme} = useContext(AppThemeContext);
   const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(0);
@@ -21,6 +23,7 @@ const IntroductoryCarousel = ({children}) => {
   const handleScroll = event => {
     const offsetX = event.nativeEvent.contentOffset.x;
     const newPage = Math.round(offsetX / theme.width);
+    toggleActiveSlide(newPage + 1);
     setCurrentPage(newPage);
   };
 
@@ -71,20 +74,41 @@ const Slide = ({
   content,
   hasButton,
   handleSkip,
+  activeSlide,
 }) => {
   const styles = useIntroductorySlidesStyles();
+  const buttonOpacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (activeSlide === 3) {
+      setTimeout(() => {
+        Animated.timing(buttonOpacity, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }).start();
+      }, 2000);
+    }
+  }, [activeSlide]);
+
   return (
     <View style={styles.slide}>
-      <Image
-        source={mainImageSource.source}
+      <FastImage
         style={[
           styles.mainImage,
           {width: mainImageSource.width, height: mainImageSource.height},
         ]}
-        resizeMode="contain"
+        source={mainImageSource.source}
+        resizeMode={FastImage.resizeMode.contain}
+        loop={true}
       />
       <View style={styles.contentContainer}>
-        <Text style={[styles.title, id === 1 ? {marginTop: 62} : {}]}>
+        <Text
+          style={[
+            styles.title,
+            id === 1 ? {marginTop: 62} : {},
+            id === 3 ? {marginTop: 12} : {},
+          ]}>
           {title}
         </Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
@@ -103,7 +127,10 @@ const Slide = ({
             <></>
           )}
         </View>
-        {hasButton ? (
+      </View>
+
+      {hasButton ? (
+        <Animated.View style={[styles.skipContainer, {opacity: buttonOpacity}]}>
           <TouchableOpacity
             style={{width: '100%'}}
             onPress={() => handleSkip()}>
@@ -116,21 +143,21 @@ const Slide = ({
               <Text style={styles.buttonText}>Explore the app</Text>
             </LinearGradient>
           </TouchableOpacity>
-        ) : (
-          <>
-            <Text
-              style={[
-                styles.boldInformativeText,
-                id === 1 ? {marginTop: 94} : {},
-              ]}>
-              Swipe to get started!
-            </Text>
-            <Text style={styles.skipButton} onPress={() => handleSkip()}>
-              Skip
-            </Text>
-          </>
-        )}
-      </View>
+        </Animated.View>
+      ) : (
+        <View style={styles.skipContainer}>
+          <Text
+            style={[
+              styles.boldInformativeText,
+              id === 1 ? {marginTop: 94} : {},
+            ]}>
+            Swipe to get started!
+          </Text>
+          <Text style={styles.skipButton} onPress={() => handleSkip()}>
+            Skip
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -144,7 +171,7 @@ const IntroductorySlides = ({route}) => {
       title: 'Welcome to AI Alpha',
       subtitle: 'Welcome!',
       mainImageSource: {
-        source: require('../../assets/images/introductorySection/aialpha-introductory.png'),
+        source: require('../../assets/images/introductorySection/layers.gif'),
         width: 350,
         height: 300,
       },
@@ -164,10 +191,10 @@ const IntroductorySlides = ({route}) => {
     },
     {
       id: 2,
-      title: 'Categories & Fundamental Section',
+      title: 'Categories & \nFundamental Section',
       subtitle: 'We cover all layers.',
       mainImageSource: {
-        source: require('../../assets/images/introductorySection/introductory-topmenu.png'),
+        source: require('../../assets/images/introductorySection/topmenu_tape.gif'),
         width: 350,
         height: 330,
       },
@@ -194,23 +221,17 @@ const IntroductorySlides = ({route}) => {
         width: 350,
         height: 320,
       },
-      content: [
-        {
-          information:
-            "Beyond the primary layers, we've grouped crypto projects into specific categories, similar to stock market sectors. ",
-          image: require('../../assets/images/introductorySection/categorieslogo.png'),
-        },
-        {
-          information:
-            'Each category contains three assets, making comparing projects within each group easy. This logic helps you identify the strongest performers and make informed decisions. ',
-          image: require('../../assets/images/introductorySection/layers.png'),
-        },
-      ],
+      content: [],
       hasButton: true,
     },
   ];
   const {theme} = useContext(AppThemeContext);
   const navigation = useNavigation();
+  const [activeSlide, setActiveSlide] = useState(1);
+
+  const toggleActiveSlide = value => {
+    setActiveSlide(value);
+  };
 
   const handleSkip = () => {
     navigation.navigate(chosenScreen, {shouldShowPopUps: true});
@@ -220,7 +241,7 @@ const IntroductorySlides = ({route}) => {
     <SafeAreaView
       style={{flex: 1, width: theme.width, backgroundColor: '#171717'}}>
       <View style={styles.sectionContainer}>
-        <IntroductoryCarousel>
+        <IntroductoryCarousel toggleActiveSlide={toggleActiveSlide}>
           {SLIDES_DATA.map(item => (
             <Slide
               key={item.id}
@@ -231,6 +252,7 @@ const IntroductorySlides = ({route}) => {
               content={item.content}
               hasButton={item.hasButton}
               handleSkip={handleSkip}
+              activeSlide={activeSlide}
             />
           ))}
         </IntroductoryCarousel>

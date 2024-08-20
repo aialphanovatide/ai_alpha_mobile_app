@@ -10,14 +10,24 @@ import useHomeNarrativeTradingStyles from './NarrativeTradingsStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const NarrativeTradingItem = ({title, image, item, handleNavigation}) => {
+const NarrativeTradingItem = ({
+  title,
+  image,
+  item,
+  handleNavigation,
+  index,
+  expanded,
+}) => {
   const styles = useHomeNarrativeTradingStyles();
   const {isDarkMode} = useContext(AppThemeContext);
 
   return (
     <TouchableOpacity
       onPress={() => handleNavigation(item)}
-      style={styles.item}>
+      style={[
+        styles.item,
+        index === 0 && !expanded ? {borderBottomWidth: 0} : {},
+      ]}>
       <FastImage
         source={{
           uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
@@ -48,7 +58,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
   const [expanded, setExpanded] = useState(false);
   const navigation = useNavigation();
   const aboutIconStyles = {
-    top: 22,
+    top: 24,
   };
 
   useEffect(() => {
@@ -91,6 +101,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
       <Text style={styles.mainTitle}>Market Narratives</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
+        title={home_static_data.narrativeTradings.sectionTitle}
         description={home_static_data.narrativeTradings.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
@@ -107,10 +118,12 @@ const NarrativeTradings = ({handleAboutPress}) => {
               key={index}>
               <NarrativeTradingItem
                 key={item.id}
+                index={index}
                 title={item.title}
                 image={item.image}
                 item={item}
                 handleNavigation={handleNavigation}
+                expanded={expanded}
               />
               <TouchableOpacity
                 style={[styles.arrowContainer, index > 0 ? styles.hidden : {}]}

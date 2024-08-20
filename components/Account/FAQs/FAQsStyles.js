@@ -24,7 +24,7 @@ const useFAQsStyles = () => {
       alignSelf: 'center',
       backgroundColor: theme.loginInputBgColor,
       marginBottom: 16,
-      borderRadius: 8,
+      borderRadius: 2,
       overflow: 'hidden',
     },
     lastFAQContainer: {

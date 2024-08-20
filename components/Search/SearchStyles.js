@@ -66,8 +66,6 @@ const useSearchStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       borderRadius: 2,
-      borderBottomColor: theme.secondaryItemColor,
-      borderBottomWidth: 1,
     },
     analysisTitle: {
       maxWidth: '85%',
@@ -112,8 +110,6 @@ const useSearchStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
       alignSelf: 'center',
       borderRadius: 2,
-      borderBottomColor: theme.secondaryItemColor,
-      borderBottomWidth: 1,
     },
     cryptoItemImage: {
       width: 40,

@@ -235,7 +235,7 @@ const Alerts = ({route, navigation}) => {
             />
           )}
         </View>
-        <UpgradeOverlay isBlockingByCoin={true} screen={'Alerts'} />
+        {subscribed ? <></> : <UpgradeOverlay />}
       </LinearGradient>
     </SafeAreaView>
   );

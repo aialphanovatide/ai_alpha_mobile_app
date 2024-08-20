@@ -19,6 +19,7 @@ import {useNavigation, Sta} from '@react-navigation/native';
 import Search from '../Search/Search';
 import HomeNotifications from './HomeNotifications/HomeNotifications';
 import ChartsSection from './Topmenu/subMenu/Fund_news_chart/Charts/NewCharts/ChartsSection';
+import StoryArticle from './TopStories/StoryArticle';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -69,6 +70,7 @@ const NewsScreen = () => {
         component={NewsArticle}
         options={{
           animation: 'slide_from_right',
+          animationDuration: 150,
           gestureEnabled: true,
           gestureDirection: 'horizontal',
         }}
@@ -259,6 +261,16 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="AnalysisArticleScreen"
         component={AnalysisArticle}
+        options={{
+          animation: 'slide_from_right',
+          animationDuration: 250,
+          gestureEnabled: 'true',
+          gestureDirection: 'horizontal',
+        }}
+      />
+      <HomeStack.Screen
+        name="TopStoriesArticle"
+        component={StoryArticle}
         options={{
           animation: 'slide_from_right',
           animationDuration: 250,

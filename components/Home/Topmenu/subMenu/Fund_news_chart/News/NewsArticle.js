@@ -181,7 +181,7 @@ const NewsArticle = ({route, navigation}) => {
         <View style={styles.contentContainer}>
           <Text style={styles.articleTitle}>{item.title}</Text>
           <Text style={styles.articleDate}>
-            {isStory ? item.date : formatDate(item.date)}
+            {item.date}
           </Text>
           <Text style={styles.articleSummary}>{item.content}</Text>
         </View>

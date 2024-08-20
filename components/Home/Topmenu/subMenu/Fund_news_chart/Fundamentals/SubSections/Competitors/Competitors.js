@@ -5,6 +5,9 @@ import {
   ScrollView,
   Image,
   ImageBackground,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import TypeOfToken from './CompetitorSections/TypeOfToken/TypeOfToken';
@@ -23,6 +26,13 @@ import useCompetitorsStyles from './CompetitorsStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
   const {theme} = useContext(AppThemeContext);
@@ -289,15 +299,18 @@ const Competitors = ({
     fetchCompetitorsData(coin);
   }, [globalData, coin, getSectionData]);
 
-  const handleOptionChange = option => {
-    setActiveOption(option);
-  };
-
   useEffect(() => {
     if (!loading && competitorsData?.length === 0) {
       handleSectionContent('competitors', true);
     }
   }, [competitorsData, loading, handleSectionContent]);
+
+  // Function to handle the active competitors section, changing the active one, by default, it is set to the Current Market Cap section.
+
+  const handleOptionChange = option => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setActiveOption(option);
+  };
 
   return (
     <View style={styles.container}>

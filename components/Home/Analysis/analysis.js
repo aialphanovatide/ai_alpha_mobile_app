@@ -15,7 +15,7 @@ const Analysis = ({handleAboutPress}) => {
   const [expanded, setExpanded] = React.useState(false);
   const navigation = useNavigation();
   const aboutIconStyles = {
-    top: 18,
+    top: 24,
   };
 
   React.useEffect(() => {
@@ -58,7 +58,8 @@ const Analysis = ({handleAboutPress}) => {
       <Text style={styles.mainTitle}>Daily Deep Dives</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
-        description={home_static_data.narrativeTradings.sectionDescription}
+        title={home_static_data.analysis.sectionTitle}
+        description={home_static_data.analysis.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
       {loading ? (
@@ -82,6 +83,8 @@ const Analysis = ({handleAboutPress}) => {
                 image={story.image}
                 item={story}
                 handleAnalysisNavigation={handleAnalysisNavigation}
+                index={index}
+                expanded={expanded}
               />
               <TouchableOpacity
                 style={[styles.arrowContainer, index > 0 ? styles.hidden : {}]}

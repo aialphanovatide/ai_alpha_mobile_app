@@ -8,17 +8,15 @@ const useCustomInputStyles = () => {
     container: {
       width: '100%',
       paddingHorizontal: 12,
-      paddingVertical: 10,
+      paddingVertical: 2,
       marginTop: 5,
       marginBottom: 15,
-      borderRadius: 5,
-      borderWidth: 0.3,
-      borderColor: theme.textColor,
+      borderRadius: 3,
       backgroundColor: theme.loginInputBgColor,
     },
     dateInput: {
-      fontSize: theme.responsiveFontSize,
-      fontFamily: theme.fontMedium,
+      fontSize: 14,
+      fontFamily: theme.font,
       color: theme.inputColor,
     },
   });

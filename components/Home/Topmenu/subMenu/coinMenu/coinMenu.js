@@ -11,6 +11,11 @@ const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
   const styles = useCoinMenuStyles();
   return subCoins?.length > 1 ? (
     <View style={styles.menu}>
+      <Image
+        source={require('../../../../../assets/images/topMenu/submenu_triangle.png')}
+        style={styles.activeCoinIndicator}
+        resizeMode="contain"
+      />
       <View style={styles.subMenu}>
         {subCoins.map((coin, index) => (
           <TouchableOpacity
@@ -23,13 +28,6 @@ const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
             onPress={() => {
               handleCoinPress(coin.bot_name);
             }}>
-            {activeSubCoin === coin.bot_name && (
-              <Image
-                source={require('../../../../../assets/images/topMenu/submenu_triangle.png')}
-                style={styles.activeCoinIndicator}
-                resizeMode="contain"
-              />
-            )}
             <View style={styles.buttonContainer}>
               <Image
                 source={{

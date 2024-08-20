@@ -5,7 +5,6 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Button,
   Alert,
   SafeAreaView,
 } from 'react-native';
@@ -15,16 +14,18 @@ import {useUser} from '../../context/UserContext';
 import {useRawUserId} from '../../context/RawUserIdContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAccountStyles from './styles';
-import ThemeButton from '../ThemeButton/ThemeButton';
 import {API_KEY} from '../../src/constants';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
 import {NOTIFICATIONS_MOCK} from './NotificationsPanel/notificationsMock';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
-import useWebSocket from 'react-native-use-websocket';
 import RNRestart from 'react-native-restart';
 import SocialMedia from './SocialMediaButtons/SocialMedia';
-import {auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret} from '../../src/constants';
+import {
+  auth0Domain,
+  auth0ManagementAPI_Client,
+  auth0ManagementAPI_Secret,
+} from '../../src/constants';
 
 const AccountItem = ({
   styles,
@@ -37,9 +38,12 @@ const AccountItem = ({
       <View style={styles.itemContainer}>
         <View style={styles.itemLogoContainer}>
           <Image
-            source={option.logo}
+            source={option.logo.source}
             resizeMode="contain"
-            style={styles.itemLogo}
+            style={[
+              styles.itemLogo,
+              {width: option.logo.width, height: option.logo.height},
+            ]}
           />
         </View>
         <Text style={styles.itemName}>{option.name}</Text>
@@ -74,14 +78,12 @@ const Account = ({route}) => {
   const [userImage, setUserImage] = useState(null);
   const [username, setUsername] = useState('');
 
-
   useEffect(() => {
     const loadStoredData = async () => {
-
       const storedUserImage = await AsyncStorage.getItem('userImage');
-      console.log("Stored user image: ", storedUserImage);
+      console.log('Stored user image: ', storedUserImage);
       const storedUsername = await AsyncStorage.getItem('username');
-      console.log("Stored username: ", storedUsername);
+      console.log('Stored username: ', storedUsername);
 
       setUsername(storedUsername || '');
 
@@ -95,43 +97,66 @@ const Account = ({route}) => {
     loadStoredData();
   }, []);
 
-
   console.log(userInfo);
   // Account menu!!
   const options = [
     {
       name: 'Subscriptions Options',
-      logo: require('../../assets/images/account/subscription.png'),
+      logo: {
+        width: 28,
+        height: 20,
+        source: require('../../assets/images/account/subscription.png'),
+      },
       screenName: 'Subscriptions',
       component: null,
     },
     {
       name: 'Legal and Information',
-      logo: require('../../assets/images/account/informationicon.png'),
+      logo: {
+        width: 26,
+        height: 30,
+        source: require('../../assets/images/account/informationicon.png'),
+      },
       screenName: null,
       component: null,
     },
     {
       name: 'Notifications',
-      logo: require('../../assets/images/account/notifications.png'),
+      logo: {
+        width: 26,
+        height: 30,
+        source: require('../../assets/images/account/notifications.png'),
+      },
       screenName: 'Notifications',
       component: null,
     },
     {
       name: 'Settings',
-      logo: require('../../assets/images/account/settingsscreenicon.png'),
+      logo: {
+        width: 30,
+        height: 30,
+        source: require('../../assets/images/account/settingsscreenicon.png'),
+      },
       screenName: null,
       component: null,
     },
     {
       name: 'FAQs',
-      logo: require('../../assets/images/account/faqslogo.png'),
+      logo: {
+        width: 31,
+        height: 30,
+        source: require('../../assets/images/account/faqslogo.png'),
+      },
       screenName: null,
       component: null,
     },
     {
       name: 'Log Out',
-      logo: require('../../assets/images/account/logout.png'),
+      logo: {
+        width: 28,
+        height: 30,
+        source: require('../../assets/images/account/logout.png'),
+      },
       screenName: null,
       component: null,
     },
@@ -253,7 +278,7 @@ const Account = ({route}) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     const userData = await userFetch.json();
     const userImageUrl = userData.picture;
@@ -385,18 +410,6 @@ async function Buy_now() {
 }
 */
 
-  const formatUserEntitlements = entitlements => {
-    let formattedString = '';
-
-    userInfo.entitlements.forEach(entitlement => {
-      let first_separator = entitlement.indexOf('_');
-      let coin_name = entitlement.slice(0, first_separator);
-      formattedString += coin_name;
-      formattedString += '\n';
-    });
-    return formattedString;
-  };
-
   return (
     <SafeAreaView style={styles.backgroundColor}>
       <LinearGradient
@@ -415,10 +428,10 @@ async function Buy_now() {
               />
             </View>
             {userImage && (
-            <View style={styles.imageContainer}>
-              <Image source={{ uri: userImage }} style={styles.userImage} />
-            </View>
-          )}
+              <View style={styles.imageContainer}>
+                <Image source={{uri: userImage}} style={styles.userImage} />
+              </View>
+            )}
             <Text style={styles.username}>
               {username ? `@${username}` : ''}
             </Text>

@@ -18,7 +18,6 @@ const useMenuItemStyles = () => {
       justifyContent: 'center',
       margin: 10,
       overflow: 'hidden',
-      backgroundColor: theme.topMenuActiveBg,
     },
     buttonText: {
       maxWidth: '100%',

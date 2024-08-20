@@ -1,13 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {List} from 'react-native-paper';
 import StoryItem from './Storyitem/storyItem';
 import useTopStoriesStyles from './topStoriesStyles';
 import {Image, Text, View, TouchableOpacity} from 'react-native';
-import {getService} from '../../../services/aiAlphaApi';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext';
 import {CategoriesContext} from '../../../context/categoriesContext';
-import Loader from '../../Loader/Loader';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
@@ -21,7 +18,7 @@ const TopStories = ({handleAboutPress}) => {
   const {categories} = useContext(CategoriesContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const aboutIconStyles = {
-    top: 20,
+    top: 24,
   };
   const handlePress = () => {
     setExpanded(!expanded);
@@ -46,24 +43,15 @@ const TopStories = ({handleAboutPress}) => {
     let {category, coinBot} = findCoinById(categories, coinBotId);
     updateActiveCoin(category);
     updateActiveSubCoin(coinBot.bot_name);
-    navigation.navigate('TopMenuScreen', {
-      screen: 'SubMenuScreen',
-      params: {
-        screen: 'News',
-        params: {
-          screen: 'NewsArticle',
-          params: {
-            item: {
-              title: story.title,
-              content: story.content,
-              image: story.image,
-              date: story.date,
-              top_story_id: story.id,
-            },
-            isStory: true,
-          },
-        },
+    navigation.navigate('TopStoriesArticle', {
+      item: {
+        title: story.title,
+        content: story.content,
+        image: story.image,
+        date: story.date,
+        top_story_id: story.id,
       },
+      isStory: true,
     });
   };
 
@@ -98,6 +86,7 @@ const TopStories = ({handleAboutPress}) => {
       <Text style={styles.mainTitle}>What's Happening Today?</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
+        title={home_static_data.topStories.sectionTitle}
         description={home_static_data.topStories.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
@@ -124,6 +113,8 @@ const TopStories = ({handleAboutPress}) => {
                 image={story.image}
                 handleStoryRedirect={handleStoryRedirect}
                 coinBotId={story.bot_id}
+                index={i}
+                expanded
               />
               <TouchableOpacity
                 style={[styles.arrowContainer, i > 0 ? styles.hidden : {}]}

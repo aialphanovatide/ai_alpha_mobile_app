@@ -4,13 +4,13 @@ import {useContext} from 'react';
 import {AppThemeContext} from '../../../../context/themeContext';
 import FastImage from 'react-native-fast-image';
 
-const AnalysisItem = ({title, item, handleAnalysisNavigation}) => {
+const AnalysisItem = ({title, item, handleAnalysisNavigation, index, expanded}) => {
   const styles = useHomeAnalysisStyles();
   const {isDarkMode} = useContext(AppThemeContext);
 
   return (
     <List.Item
-      style={styles.item}
+      style={[styles.item, index === 0 && !expanded ? {borderBottomWidth: 0} : {}]}
       title={title}
       titleNumberOfLines={2}
       left={() => (

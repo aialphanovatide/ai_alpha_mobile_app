@@ -17,12 +17,10 @@ const useLoginFormStyles = () => {
       backgroundColor: theme.mainBackgroundColor,
     },
     logo: {
-      width: '50%',
-      height: theme.height * 0.3,
-      marginTop: 10,
-      marginBottom: 10,
-      maxHeight: 120,
-      maxWidth: 220,
+      width: 200,
+      height: 165,
+      marginTop: 84,
+      marginBottom: 12,
     },
     labelContainer: {
       flexDirection: 'row',
@@ -54,7 +52,7 @@ const useLoginFormStyles = () => {
       fontFamily: theme.font,
     },
     signUpButton: {
-      color: theme.activeOrange,
+      color: theme.orange,
       fontFamily: theme.fontMedium,
     },
     termsContainer: {

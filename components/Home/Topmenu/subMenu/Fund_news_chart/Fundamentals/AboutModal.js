@@ -3,7 +3,7 @@ import {Image, Modal, Text, TouchableOpacity, View} from 'react-native';
 import useAboutModalDialogStyles from './AboutModalDialogStyles';
 import {Animated} from 'react-native';
 
-const AboutModal = ({onClose, visible, description}) => {
+const AboutModal = ({onClose, visible, description, title}) => {
   const styles = useAboutModalDialogStyles();
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -49,7 +49,7 @@ const AboutModal = ({onClose, visible, description}) => {
               resizeMode="contain"
             />
           </TouchableOpacity>
-          <Text style={styles.aboutTitle}>About</Text>
+          <Text style={styles.aboutTitle}>{title}</Text>
           <Text style={styles.modalDescription}>{description}</Text>
           {/*<TouchableOpacity>
             <Text style={styles.readMoreText}>Read more</Text>

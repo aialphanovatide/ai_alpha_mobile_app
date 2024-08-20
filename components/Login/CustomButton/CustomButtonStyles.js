@@ -6,10 +6,9 @@ const useCustomButtonStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     container: {
-      paddingVertical: 15,
-      paddingHorizontal: 10,
+      padding: 10,
       marginVertical: 4,
-      borderRadius: 4,
+      borderRadius: 3,
       alignItems: 'center',
     },
     pressed: {
@@ -30,7 +29,7 @@ const useCustomButtonStyles = () => {
     },
     container_PRIMARY: {
       backgroundColor: theme.orange,
-      width: 150,
+      width: '100%',
       marginBottom: 0,
     },
     container_SECONDARY: {
@@ -53,8 +52,8 @@ const useCustomButtonStyles = () => {
       borderColor: theme.orange,
     },
     text: {
-      fontFamily: theme.fontSemibold,
-      fontSize: 15,
+      fontFamily: theme.fontMedium,
+      fontSize: 14,
       color: theme.signUpButtonText,
     },
     text_PRIMARY: {

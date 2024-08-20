@@ -6,8 +6,9 @@ const useHomeNarrativeTradingStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     mainTitle: {
+      marginTop: 24,
+      marginBottom: 8,
       marginHorizontal: 16,
-      marginVertical: 18,
       color: theme.titleColor,
       fontSize: 16,
       fontFamily: theme.fontMedium,
@@ -115,7 +116,6 @@ const useHomeNarrativeTradingStyles = () => {
     },
     itemsContainer: {
       width: '100%',
-      paddingVertical: 4,
       backgroundColor: 'transparent',
     },
     hidden: {

@@ -42,11 +42,11 @@ import {
   auth0ManagementAPI_Secret,
 } from './src/constants/index';
 import eventEmitter from './eventEmitter';
-import LinearGradient from 'react-native-linear-gradient';
-
 import {Top10MoversContextProvider} from './context/TopTenMoversContext';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomSplashScreen from './components/SplashScreen/SplashScreen';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -59,6 +59,14 @@ const App = () => {
   const [serverError, setServerError] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [serverWentDown, setServerWentDown] = useState(0);
+  const [initialAnimationFinished, setInitialAnimationFinished] =
+    useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setInitialAnimationFinished(true);
+    }, 3500);
+  }, []);
 
   useEffect(() => {
     const subscription = eventEmitter.addListener('darkModeChanged', isDark => {
@@ -69,23 +77,6 @@ const App = () => {
       subscription.remove();
     };
   }, []);
-  /*
-  useEffect(() => {
-    console.log("socket->", socket);
-    //socket.emit('message', 'Hello server!');
-    if (socket) { // Only proceed if `socket` is not null
-      console.log('Entered not null socket flow')
-      socket.on('new_alert', (data) => {
-        console.log(`Received message: ${data}`);
-      });
-  
-      // Clean up the event listener when the component unmounts or the socket changes
-      return () => {
-        socket.off('new_alert');
-      };
-    }
-  }, [socket]); // Re-run the effect if `socket` changes
-  */
 
   const saveNotification = async alertData => {
     const extractCryptoName = symbol => {
@@ -171,9 +162,6 @@ const App = () => {
   // }, []);
 
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      SplashScreen.hide();
-    }
     const bar_theme = colorScheme === 'dark' ? 'light-content' : 'dark-content';
     setBarScheme(bar_theme);
   }, [colorScheme]);
@@ -236,9 +224,8 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsConnected(state.isConnected);
-      setModalVisible(!state.isConnected); // Show modal when not connected
+      setModalVisible(!state.isConnected);
       if (state.isConnected) {
-        //console.log("Connected to Internet");
         setRefreshTrigger(prev => prev + 1);
       }
     });
@@ -249,7 +236,6 @@ const App = () => {
 
   useEffect(() => {
     if (refreshTrigger > 0) {
-      //console.log('Internet is back, refreshing content...');
     }
   }, [refreshTrigger]);
 
@@ -307,7 +293,11 @@ const App = () => {
                           <AnalysisContextProvider>
                             <GestureHandlerRootView style={{flex: 1}}>
                               <AboutModalProvider>
-                                <Navigation />
+                                {!initialAnimationFinished ? (
+                                  <CustomSplashScreen />
+                                ) : (
+                                  <Navigation />
+                                )}
                                 <ConnectivityModal
                                   serverError={serverError}
                                   setModalVisible={setModalVisible}

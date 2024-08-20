@@ -92,8 +92,8 @@ const HomeScreen = () => {
       ) : (
         <></>
       )}
-      <Text >This is my 'Founders' Identifier:</Text>
-      <Text selectable>{userId}</Text>
+      {/* <Text >This is my 'Founders' Identifier:</Text>
+      <Text selectable>{userId}</Text> */}
       <Tab.Navigator
         initialRouteName={Home}
         backBehavior={isLandscape && isHorizontal ? 'none' : 'initialRoute'}

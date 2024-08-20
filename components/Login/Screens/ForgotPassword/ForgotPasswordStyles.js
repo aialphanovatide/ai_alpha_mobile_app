@@ -39,7 +39,7 @@ const useForgotPasswordStyles = () => {
       fontFamily: theme.font,
     },
     loginButton: {
-      color: theme.activeOrange,
+      color: theme.orange,
       fontFamily: theme.fontMedium,
     },
     successContainer: {

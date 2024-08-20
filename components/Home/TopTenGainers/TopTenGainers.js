@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React, {useContext, useEffect, useState} from 'react';
-import {Platform, View, Text, Image} from 'react-native';
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {Platform, View, Text, Image, Animated} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenGainersStyles from './TopTenGainersStyle.js';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
@@ -12,39 +12,46 @@ import {AppThemeContext} from '../../../context/themeContext.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
-const Item = ({position, coin}) => {
+const Item = ({position, coin, index}) => {
   const styles = useTopTenGainersStyles();
   return (
-    <View key={position} style={styles.row}>
-      <View style={styles.positionContainer}>
-        <Text style={styles.coinPosition}>{position}</Text>
+    <>
+      <View style={styles.row}>
+        <View style={styles.positionContainer}>
+          <Text style={styles.coinPosition}>{position}</Text>
+        </View>
+        <View style={styles.logoContainer}>
+          <FastImage
+            style={styles.coinLogo}
+            source={{
+              uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coin.symbol.toLowerCase()}.png`,
+              // coin.image,
+              priority: FastImage.priority.high,
+            }}
+            resizeMode="contain"
+            fallback={true}
+          />
+        </View>
+        <View styles={styles.coinDataContainer}>
+          <Text style={[styles.coinName]}>{coin.name}</Text>
+          <Text style={styles.coinData}>{coin.symbol.toUpperCase()}</Text>
+        </View>
+        <View style={styles.coinNumbersContainer}>
+          <Text style={styles.coinNumber}>${coin.currentPrice}</Text>
+          <Text
+            style={[
+              styles.coinNumber,
+              coin.priceChange24H &&
+                (coin.priceChange24H >= 0
+                  ? styles.greenNumber
+                  : styles.redNumber),
+            ]}>
+            {coin.priceChange24H && coin.priceChange24H.toFixed(2)}%
+          </Text>
+        </View>
       </View>
-      <View style={styles.logoContainer}>
-        <FastImage
-          style={styles.coinLogo}
-          source={{uri: coin.image, priority: FastImage.priority.high}}
-          resizeMode="contain"
-          fallback={true}
-        />
-      </View>
-      <View styles={styles.coinDataContainer}>
-        <Text style={[styles.coinName, styles.coinData]}>{coin.name}</Text>
-        <Text style={styles.coinData}>{coin.symbol.toUpperCase()}</Text>
-      </View>
-      <View style={styles.coinNumbersContainer}>
-        <Text style={styles.coinNumber}>${coin.currentPrice}</Text>
-        <Text
-          style={[
-            styles.coinNumber,
-            coin.priceChange24H &&
-              (coin.priceChange24H >= 0
-                ? styles.greenNumber
-                : styles.redNumber),
-          ]}>
-          {coin.priceChange24H && coin.priceChange24H.toFixed(2)}%
-        </Text>
-      </View>
-    </View>
+      {position !== 10 && <View style={[styles.horizontalLine]} />}
+    </>
   );
 };
 
@@ -56,7 +63,32 @@ const TopTenGainers = ({handleAboutPress}) => {
 
   const additionalAboutStyles = {
     marginRight: Platform.OS === 'android' ? 20 : 0,
+    top: 24,
   };
+
+  const scrollIndicator = useRef(new Animated.Value(0)).current;
+  const [completeScrollBarHeight, setCompleteScrollBarHeight] = useState(1);
+  const [visibleScrollBarHeight, setVisibleScrollBarHeight] = useState(0);
+
+  const scrollIndicatorSize =
+    completeScrollBarHeight > visibleScrollBarHeight
+      ? (visibleScrollBarHeight * 100) /
+        completeScrollBarHeight
+      : visibleScrollBarHeight;
+
+  const difference =
+    visibleScrollBarHeight > scrollIndicatorSize
+      ? visibleScrollBarHeight - scrollIndicatorSize
+      : 1;
+
+  const scrollIndicatorPosition = Animated.multiply(
+    scrollIndicator,
+    (visibleScrollBarHeight / completeScrollBarHeight) - 0.2,
+  ).interpolate({
+    inputRange: [0, difference],
+    outputRange: [0, difference],
+    extrapolate: 'clamp',
+  });
 
   useEffect(() => {
     setTopTenCoins(topTenMoversData);
@@ -113,7 +145,9 @@ const TopTenGainers = ({handleAboutPress}) => {
         <Text style={styles.topTenGainersTitle}>Top 10 Gainers</Text>
         <AboutIcon
           handleAboutPress={handleAboutPress}
+          title={home_static_data.topTenGainers.sectionTitle}
           description={home_static_data.topTenGainers.sectionDescription}
+          additionalStyles={additionalAboutStyles}
         />
       </View>
       {loading || topTenCoins.length === 0 ? (
@@ -127,18 +161,42 @@ const TopTenGainers = ({handleAboutPress}) => {
           </View>
         </ScrollView>
       ) : (
-        <ScrollView
-          persistentScrollbar={true}
-          indicatorStyle={isDarkMode ? 'white' : 'dark'}
-          // contentContainerStyle={{paddingRight: 14}}
-        >
-          <View style={styles.table}>
+        <View style={styles.itemsContainer}>
+          <ScrollView
+            style={styles.table}
+            showsVerticalScrollIndicator={false}
+            onContentSizeChange={height => {
+              setCompleteScrollBarHeight(height);
+            }}
+            onLayout={({
+              nativeEvent: {
+                layout: {height},
+              },
+            }) => {
+              setVisibleScrollBarHeight(height);
+            }}
+            onScroll={Animated.event(
+              [{nativeEvent: {contentOffset: {y: scrollIndicator}}}],
+              {useNativeDriver: false},
+            )}
+            scrollEventThrottle={16}>
             {topTenCoins.length > 0 &&
               topTenCoins.map((coin, index) => (
                 <Item key={index} coin={coin} position={index + 1} />
               ))}
+          </ScrollView>
+          <View style={styles.scrollBarContainer}>
+            <Animated.View
+              style={[
+                styles.scrollBar,
+                {
+                  height: scrollIndicatorSize,
+                  transform: [{translateY: scrollIndicatorPosition}],
+                },
+              ]}
+            />
           </View>
-        </ScrollView>
+        </View>
       )}
     </View>
   );

@@ -2,7 +2,15 @@ import {List} from 'react-native-paper';
 import useTopStoriesStyles from '../topStoriesStyles';
 import FastImage from 'react-native-fast-image';
 
-const StoryItem = ({item, title, image, handleStoryRedirect, coinBotId}) => {
+const StoryItem = ({
+  item,
+  title,
+  image,
+  handleStoryRedirect,
+  coinBotId,
+  index,
+  expanded,
+}) => {
   const styles = useTopStoriesStyles();
   return (
     <List.Item
@@ -23,7 +31,7 @@ const StoryItem = ({item, title, image, handleStoryRedirect, coinBotId}) => {
       )}
       titleStyle={styles.titleStyles}
       onPress={() => handleStoryRedirect(item, coinBotId)}
-      style={styles.storyItem}
+      style={[styles.storyItem, index === 0 && !expanded? {borderBottomWidth: 0} : {}]}
     />
   );
 };
