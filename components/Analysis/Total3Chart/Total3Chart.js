@@ -17,6 +17,8 @@ import BackButton from '../BackButton/BackButton';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/core';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
+import { RevenueCatContext } from '../../../context/RevenueCatContext';
 
 const Total3Chart = ({candlesToShow = 30}) => {
   const styles = useTotal3Styles();
@@ -26,6 +28,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const navigation = useNavigation();
+  const {subscribed} = useContext(RevenueCatContext);
 
   function formatDateArray(days, arrayLength) {
     // Get current date
@@ -116,6 +119,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
               style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
             />
           </View>
+          {subscribed ? <></> : <UpgradeOverlay />}
         </SafeAreaView>
       </LinearGradient>
     );
@@ -153,6 +157,19 @@ const Total3Chart = ({candlesToShow = 30}) => {
                 source={require('../../../assets/images/chart_alpha_logo.png')}
                 style={styles.chartBackgroundImage}
                 resizeMode="contain"
+              />
+              <LinearGradient
+                useAngle
+                angle={90}
+                colors={['rgba(22, 22, 22, 1)', 'transparent']}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 70,
+                  zIndex: 15,
+                }}
               />
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
@@ -235,6 +252,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
             />
           </View>
         </ScrollView>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </SafeAreaView>
     </LinearGradient>
   );

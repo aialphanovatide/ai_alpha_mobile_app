@@ -13,9 +13,8 @@ import {
 import BackButton from '../../../../../Analysis/BackButton/BackButton';
 import useNewsStyles from './NewsStyles';
 import FastImage from 'react-native-fast-image';
-import ImageViewer from 'react-native-image-zoom-viewer';
 import {AppThemeContext} from '../../../../../../context/themeContext';
-import {ResumableZoom, SnapbackZoom} from 'react-native-zoom-toolkit';
+import {ResumableZoom} from 'react-native-zoom-toolkit';
 
 const {Value, timing} = Animated;
 
@@ -23,7 +22,6 @@ const NewsArticle = ({route, navigation}) => {
   const styles = useNewsStyles();
   const item = route.params.item;
   const isStory = route.params.isStory;
-  const storyImages = isStory ? item.images : [];
   const {theme} = useContext(AppThemeContext);
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
 
@@ -117,12 +115,8 @@ const NewsArticle = ({route, navigation}) => {
 
     return filteredText;
   };
-  const storyFilteredContent = isStory
-    ? filterArticleTitle(item.summary)
-    : null;
-  const imageUri = isStory
-    ? `data:image/jpg;base64,${storyImages[0].image}`
-    : `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`;
+
+  const imageUri = `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`;
 
   const images = [{url: imageUri, width: theme.width, height: 400}];
 
@@ -147,9 +141,7 @@ const NewsArticle = ({route, navigation}) => {
             style={styles.zoomedImage}
             resizeMode={'contain'}
             source={{
-              uri: isStory
-                ? `data:image/png;base64,${storyImages[0].image}`
-                : imageUri,
+              uri: imageUri,
               priority: FastImage.priority.normal,
             }}
             fallback={true}
@@ -170,9 +162,7 @@ const NewsArticle = ({route, navigation}) => {
               style={styles.articleImage}
               resizeMode={'cover'}
               source={{
-                uri: isStory
-                  ? `data:image/png;base64,${storyImages[0].image}`
-                  : imageUri,
+                uri: imageUri,
                 priority: FastImage.priority.normal,
               }}
               fallback={true}
@@ -189,13 +179,11 @@ const NewsArticle = ({route, navigation}) => {
           )}
         </View>
         <View style={styles.contentContainer}>
-          <Text style={styles.articleTitle}>
-            {isStory ? storyFilteredContent.title : item.title}
+          <Text style={styles.articleTitle}>{item.title}</Text>
+          <Text style={styles.articleDate}>
+            {item.date}
           </Text>
-          <Text style={styles.articleDate}>{formatDate(item.date)}</Text>
-          <Text style={styles.articleSummary}>
-            {isStory ? storyFilteredContent.content : item.content}
-          </Text>
+          <Text style={styles.articleSummary}>{item.content}</Text>
         </View>
       </View>
     </ScrollView>

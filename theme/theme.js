@@ -39,6 +39,7 @@ export const lightThemeStyles = {
   orangeButton: '#FFF7EC',
   grayButtonColor: '#D4D4D4',
   upgradeOverlayBgColor: '#A3A3A370',
+  upgradeOverlayTitleColor: '#FF6C0D',
   activePink: '#E6007A',
   activePurple: '#49346B',
   activeBlack: '#151515',
@@ -47,7 +48,7 @@ export const lightThemeStyles = {
   speedometerIndicator: '#404040',
   backbuttonColor: '#A3A3A3',
   chartsColor: '#D4D4D4',
-  chartsAxisColor: '#D4D4D4',
+  chartsAxisColor: '#565656',
   chartsGridColor: '#D4D4D4',
   chartsBgColor: '#FEFDFD',
   cryptoSelectorText: '#A3A3A3',
@@ -103,42 +104,42 @@ export const lightThemeStyles = {
   fontMedium: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
   fontSemibold: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
   fontBoldItalic: isAndroid
-  ? 'prompt_semibold_italic'
-  : 'Prompt-SemiBold-Italic',
+    ? 'prompt_semibold_italic'
+    : 'Prompt-SemiBold-Italic',
   fontUnbounded: isAndroid ? 'unbounded_regular' : 'Unbounded-Regular',
   fontUnboundedMedium: isAndroid ? 'unbounded_medium' : 'Unbounded-Medium',
   fontUnboundedLight: isAndroid ? 'unbounded_light' : 'Unbounded-Light',
   fontUnboundedExtraLight: isAndroid
-  ? 'unbounded_extra_light'
-  : 'Unbounded-Extra-Light',
+    ? 'unbounded_extra_light'
+    : 'Unbounded-Extra-Light',
   fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
   fontUnboundedExtraBold: isAndroid
-  ? 'unbounded_extra_bold'
-  : 'Unbounded-Extra-Bold',
+    ? 'unbounded_extra_bold'
+    : 'Unbounded-Extra-Bold',
   fontUnboundedSemibold: isAndroid
     ? 'unbounded_semibold'
     : 'Unbounded-SemiBold',
-    fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
-    backgroundSubscriptionsModal: '#FAFAFA',
-  };
-  
-  export const darkThemeStyles = {
-    width: width,
-    height: height,
-    mainBackgroundColor: '#0F0F0F',
-    secondaryBgColor: '#171717',
-    boxesBackgroundColor: '#262626',
-    secondaryBoxesBgColor: '#A3A3A3',
-    thirdBoxesBgColor: '#737373',
-    activeOrange: '#FC5404',
-    orange: '#FF6C0D',
-    activeYellow: '#F9B208',
-    inactiveColor: '#525252',
-    activeWhite: '#737373',
-    inactiveGray: '#C4CADA',
-    subMenuBgColor: '#525252',
-    titleColor: '#FFFFFF',
-    textColor: '#FAFAFA',
+  fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
+  backgroundSubscriptionsModal: '#FAFAFA',
+};
+
+export const darkThemeStyles = {
+  width: width,
+  height: height,
+  mainBackgroundColor: '#0F0F0F',
+  secondaryBgColor: '#171717',
+  boxesBackgroundColor: '#262626',
+  secondaryBoxesBgColor: '#A3A3A3',
+  thirdBoxesBgColor: '#737373',
+  activeOrange: '#FC5404',
+  orange: '#FF6C0D',
+  activeYellow: '#F9B208',
+  inactiveColor: '#525252',
+  activeWhite: '#737373',
+  inactiveGray: '#C4CADA',
+  subMenuBgColor: '#525252',
+  titleColor: '#FFFFFF',
+  textColor: '#FAFAFA',
   searchPlaceHolderColor: '#A3A3A3',
   supportAndResistanceText: '#FAFAFA',
   subMenuTextColor: '#FFFFFF',
@@ -158,6 +159,7 @@ export const lightThemeStyles = {
   orangeButton: '#451205',
   grayButtonColor: '#A3A3A3',
   upgradeOverlayBgColor: '#0A0A0A70',
+  upgradeOverlayTitleColor: '#FAFAFA',
   activePink: '#E6007A',
   activePurple: '#49346B',
   activeBlack: '#151515',
@@ -229,10 +231,10 @@ export const lightThemeStyles = {
   fontUnboundedMedium: isAndroid ? 'unbounded_medium' : 'Unbounded-Medium',
   fontUnboundedLight: isAndroid ? 'unbounded_light' : 'Unbounded-Light',
   fontUnboundedExtraLight: isAndroid
-  ? 'unbounded_extra_light'
+    ? 'unbounded_extra_light'
     : 'Unbounded-Extra-Light',
-    fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
-    fontUnboundedExtraBold: isAndroid
+  fontUnboundedBold: isAndroid ? 'unbounded_bold' : 'Unbounded-Bold',
+  fontUnboundedExtraBold: isAndroid
     ? 'unbounded_extra_bold'
     : 'Unbounded-Extra-Bold',
   fontUnboundedSemibold: isAndroid

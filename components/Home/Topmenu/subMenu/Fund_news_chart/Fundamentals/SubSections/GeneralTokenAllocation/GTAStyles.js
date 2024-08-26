@@ -17,9 +17,12 @@ const useGTAStyles = () => {
       alignItems: 'center',
     },
     row: {
-      maxWidth: '80%',
-      marginVertical: 3,
-      flexDirection: 'row',
+      marginVertical: 5,
+      paddingVertical: 4,
+      paddingHorizontal: 6,
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderRadius: 2,
     },
     tokenSelector: {
       width: 20,
@@ -30,14 +33,17 @@ const useGTAStyles = () => {
       overflow: 'hidden',
     },
     strong: {
-      marginTop: 10,
       alignSelf: 'center',
+      color: '#A3A3A3',
+      fontFamily: theme.font,
+      fontSize: 12,
+    },
+    activeText: {
+      color: '#FFFFFF',
       fontFamily: theme.fontMedium,
-      fontSize: theme.responsiveFontSize * 0.8,
-      lineHeight: 16,
     },
     circleDataContainer: {
-      maxWidth: '30%',
+      maxWidth: '35%',
       marginVertical: 24,
       marginHorizontal: 24,
       justifyContent: 'center',
@@ -47,7 +53,7 @@ const useGTAStyles = () => {
       top: 175,
       left: 95,
       textAlign: 'center',
-      fontSize: theme.titleFontSize * 1.50,
+      fontSize: theme.titleFontSize * 1.5,
       fontFamily: theme.fontMedium,
     },
     displayNone: {
@@ -61,7 +67,7 @@ const useGTAStyles = () => {
     },
     chart: {
       marginLeft: 12,
-    }
+    },
   });
   return styles;
 };

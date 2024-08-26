@@ -204,7 +204,7 @@ const AnalysisArticle = ({route}) => {
     html: findHtmlContent(analysis_content),
   };
 
-  const imageUri = `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`;
+  const imageUri = `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`;
 
   const images = [{url: imageUri, width: 500, height: 400}];
 

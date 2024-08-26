@@ -28,6 +28,17 @@
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data
+            android:scheme="com.ai-alpha-mobile-app.auth0"
+            android:host="dev-zoejuo0jssw5jiid.us.auth0.com"
+            android:pathPrefix="/android/com.ai-alpha-mobile-app/callback" />
+    </intent-filter>
     </activity>
     <activity android:name="com.auth0.android.provider.RedirectActivity"> ... <intent-filter>
         <action android:name="android.intent.action.VIEW" />

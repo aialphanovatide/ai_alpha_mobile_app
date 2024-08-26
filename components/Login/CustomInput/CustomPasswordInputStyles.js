@@ -9,7 +9,7 @@ const CustomPasswordInputStyles = () => {
     container: {
       width: '100%',
       paddingHorizontal: 12,
-      paddingVertical: 10,
+      paddingVertical: 2,
       marginTop: 5,
       marginBottom: 1,
       borderRadius: 5,
@@ -21,8 +21,8 @@ const CustomPasswordInputStyles = () => {
     },
     input: {
       flex: 1,
-      fontSize: theme.responsiveFontSize,
-      fontFamily: theme.fontMedium,
+      fontSize: 14,
+      fontFamily: theme.font,
       color: theme.inputColor,
       borderColor: 'transparent',
     },

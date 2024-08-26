@@ -3,7 +3,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import CircleChart from '../CircleChart/CircleChart';
 import useGTAStyles from './GTAStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
-import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
@@ -20,32 +19,23 @@ const GeneralTokenData = ({
       {data.map((sector, index) => {
         return (
           <TouchableOpacity
-            style={styles.row}
+            style={[
+              styles.row,
+              {borderColor: colors[index]},
+              currentToken.title === sector.title
+                ? {backgroundColor: colors[index]}
+                : {},
+            ]}
             key={index}
             onPress={() => handleTokenChange(sector)}>
             <Text
               style={[
-                styles.tokenSelector,
-                {
-                  backgroundColor: colors[index],
-                },
-              ]}>
-              {''}
-            </Text>
-            <Text
-              style={[
                 styles.strong,
-                {color: colors[index]},
-                currentToken.title === sector.title
-                  ? {
-                      fontFamily: theme.fontSemibold,
-                    }
-                  : {},
+                currentToken.title === sector.title ? styles.activeText : {},
               ]}
-              numberOfLines={2}
               ellipsizeMode="clip">
               {sector.title.length > 18
-                ? `${sector.title.slice(0, 15)}...`
+                ? `${sector.title.slice(0, 15)}..`
                 : sector.title}
             </Text>
           </TouchableOpacity>
@@ -72,7 +62,7 @@ const GeneralTokenAllocation = ({
         '#FF9900',
         '#FF7000',
         '#FF3D00',
-        '#CD1900',
+        '#E01C01',
       ]
     : [
         '#FF7000',
@@ -92,41 +82,6 @@ const GeneralTokenAllocation = ({
   };
 
   useEffect(() => {
-    // setLoading(true);
-    // setPercentagesData([]);
-    // const fetchTokenDistributionData = async () => {
-    //   try {
-    //     const response = await getSectionData(
-    //       `/api/get_tokenomics?coin_name=${coin}`,
-    //     );
-
-    //     if (response.status !== 200) {
-    //       setPercentagesData([]);
-    //     } else {
-    //       // console.log(response.message.token_distribution);
-    //       const parsed_data = response.message.token_distribution.map(
-    //         distribution => {
-    //           return {
-    //             title: distribution.token_distributions.holder_category,
-    //             percentage: parseFloat(
-    //               distribution.token_distributions.percentage_held.replace(
-    //                 '%',
-    //                 '',
-    //               ),
-    //             ),
-    //           };
-    //         },
-    //       );
-    //       // console.log('Parsed data:', parsed_data);
-    //       setPercentagesData(parsed_data.slice(0, 8));
-    //       setCurrentToken(parsed_data[0]);
-    //     }
-    //   } catch (error) {
-    //     console.log('Error trying to get token distribution data: ', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
     const fetchTokenDistributionData = () => {
       if (!globalData || globalData.tokenomics.status !== 200) {
         setPercentagesData([]);
@@ -155,11 +110,36 @@ const GeneralTokenAllocation = ({
     values => values.title === currentToken?.title,
   );
 
+  const sortTokenArrays = (data, colors) => {
+    const results = {dataArray: [], sortedColors: []};
+    if (!data || !colors) {
+      return results;
+    } else {
+      for (let i = 0; i < data.length; i++) {
+        if (i > 3) {
+          results.dataArray.unshift(data[i]);
+          results.sortedColors.unshift(colors[i]);
+        } else {
+          results.dataArray.push(data[i]);
+          results.sortedColors.push(colors[i]);
+        }
+      }
+    }
+    return results;
+  };
+
   useEffect(() => {
     if (!loading && percentagesData?.length === 0) {
       handleSectionContent('generalTokenAllocation', true);
     }
   }, [percentagesData, loading, handleSectionContent]);
+
+  const sortedReferencesData = sortTokenArrays(
+    percentagesData,
+    colors,
+  ).dataArray;
+
+  const sortedColors = sortTokenArrays(percentagesData, colors).sortedColors;
 
   return (
     <View style={styles.container}>
@@ -178,10 +158,10 @@ const GeneralTokenAllocation = ({
           />
           <GeneralTokenData
             currentToken={currentToken}
-            data={percentagesData}
+            data={sortedReferencesData}
             handleTokenChange={handleTokenChange}
             styles={styles}
-            colors={colors}
+            colors={sortedColors}
             theme={theme}
           />
         </>

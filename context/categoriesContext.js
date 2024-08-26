@@ -11,7 +11,10 @@ const CategoriesContextProvider = ({children}) => {
     const fetchCategories = async () => {
       try {
         const data = await getService('/get_categories');
-        setCategories(data.categories);
+        const filteredCategories = data.categories.filter(
+          category => category.category.toLowerCase() !== 'metals',
+        );
+        setCategories(filteredCategories);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching categories:', error.message);

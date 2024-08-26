@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useTopTenGainersStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     topTenGainersContainer: {
       height: 400,
@@ -12,7 +12,8 @@ const useTopTenGainersStyles = () => {
       borderRadius: 4,
     },
     topTenGainersTitle: {
-      marginVertical: 16,
+      marginTop: 24,
+      marginBottom: 8,
       paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: 16,
@@ -27,8 +28,8 @@ const useTopTenGainersStyles = () => {
       marginVertical: 2.5,
       display: 'flex',
       flexDirection: 'row',
-      borderBottomWidth: 0.5,
-      borderBottomColor: theme.secondaryGrayColor,
+      // borderBottomWidth: 0.5,
+      // borderBottomColor: theme.secondaryGrayColor,
       paddingHorizontal: 20,
       paddingVertical: 10,
       alignItems: 'flex-start',
@@ -64,18 +65,19 @@ const useTopTenGainersStyles = () => {
     },
     coinPosition: {
       color: theme.textColor,
-      fontSize: theme.responsiveFontSize,
+      fontSize: 14,
       fontFamily: theme.fontSemibold,
       textAlign: 'left',
     },
     coinData: {
       color: theme.textColor,
-      fontFamily: theme.fontMedium,
+      fontFamily: theme.font,
+      fontSize: 12,
     },
     coinName: {
-      fontSize: theme.responsiveFontSize * 1.125,
+      fontSize: 14,
       color: theme.textColor,
-      fontFamily: theme.fontBold,
+      fontFamily: theme.fontSemibold,
     },
     coinNumbersContainer: {
       flex: 1,
@@ -86,19 +88,49 @@ const useTopTenGainersStyles = () => {
     coinNumber: {
       textAlign: 'right',
       color: theme.secondaryTextColor,
-      fontFamily: theme.fontBold,
+      fontFamily: theme.fontSemibold,
+      fontSize: 14,
     },
     greenNumber: {
       color: theme.priceUpColor,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
+      fontSize: 12,
     },
     redNumber: {
       color: theme.priceDownColor,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
+      fontSize: 12,
     },
     titleRow: {
       marginVertical: 4,
       flexDirection: 'row',
+    },
+    horizontalLine: {
+      width: '85%',
+      marginLeft: '5%',
+      borderBottomWidth: 0.5,
+      borderBottomColor: theme.secondaryGrayColor,
+    },
+    scrollBarContainer: {
+      height: '96%',
+      marginBottom: 4,
+      marginRight: 10,
+      alignSelf: 'center',
+      alignItems: 'center',
+      width: 7,
+      backgroundColor: isDarkMode ? '#73737330' : '#D4D4D430',
+    },
+    scrollBar: {
+      width: 4,
+      borderRadius: 2,
+      backgroundColor: isDarkMode ? '#737373' : '#D4D4D4',
+    },
+    itemsContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      paddingRight: 14,
+      backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 4,
     },
   });
   return styles;

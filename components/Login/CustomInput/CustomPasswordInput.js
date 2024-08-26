@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
-import { View, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, {useContext, useState} from 'react';
+import {View, TextInput, TouchableOpacity, Image} from 'react-native';
 import CustomPasswordInputStyles from './CustomPasswordInputStyles';
-import { AppThemeContext } from '../../../context/themeContext';
+import {AppThemeContext} from '../../../context/themeContext';
 
-const CustomPasswordInput = ({ value, setValue, placeholder }) => {
+const CustomPasswordInput = ({value, setValue, placeholder}) => {
   const styles = CustomPasswordInputStyles();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { theme, isDarkMode } = useContext(AppThemeContext);
@@ -35,7 +35,7 @@ const CustomPasswordInput = ({ value, setValue, placeholder }) => {
               ? require('../../../assets/images/login/eyeIconLightCrossed.png')
               : require('../../../assets/images/login/eyeIconLight.png')
           }
-          style={{ width: 24, height: 15 }}
+          style={{width: 24, height: 15, tintColor: theme.inputColor}}
         />
       </TouchableOpacity>
     </View>

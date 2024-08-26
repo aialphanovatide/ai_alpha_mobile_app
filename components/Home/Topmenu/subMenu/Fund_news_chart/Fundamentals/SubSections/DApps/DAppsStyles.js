@@ -25,7 +25,6 @@ const useDappsStyles = () => {
       tintColor: theme.dAppsInactiveItem,
     },
     mainImageContainer: {
-      flex: 1,
       marginTop: theme.boxesVerticalMargin,
       justifyContent: 'center',
       alignItems: 'center',
@@ -35,8 +34,9 @@ const useDappsStyles = () => {
       height: 300,
     },
     dataContainer: {
-      margin: theme.boxesVerticalMargin,
+      marginTop: -24,
       padding: 10,
+      paddingTop: 0,
     },
     title: {
       marginVertical: theme.boxesVerticalMargin,
@@ -97,6 +97,8 @@ const useDappsStyles = () => {
       width: '85%',
       backgroundColor: theme.fundamentalsCompetitorsItemBg,
       padding: 12,
+      borderRadius: 2,
+
     },
     arrowButton: {
       width: 20,
@@ -123,6 +125,7 @@ const useDappsStyles = () => {
       fontFamily: theme.fontSemibold,
     },
     protocolDescription: {
+      height: 80,
       marginVertical: theme.boxesVerticalMargin,
       fontSize: theme.responsiveFontSize * 0.8,
       lineHeight: 16,
@@ -131,10 +134,10 @@ const useDappsStyles = () => {
     },
     hidden: {
       display: 'none',
+      opacity: 0,
     },
     activeItem: {
-      flex: 1,
-      height: 'auto',
+      height: 140,
     },
     emptySectionMessage: {
       margin: theme.boxesVerticalMargin,

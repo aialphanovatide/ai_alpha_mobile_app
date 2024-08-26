@@ -9,7 +9,7 @@ const useCustomButtonStyles = () => {
       paddingVertical: 11,
       paddingHorizontal: 10,
       marginVertical: 4,
-      borderRadius: 4,
+      borderRadius: 3,
       alignItems: 'center',
     },
     pressed: {
@@ -53,8 +53,8 @@ const useCustomButtonStyles = () => {
       borderColor: theme.orange,
     },
     text: {
-      fontFamily: theme.fontSemibold,
-      fontSize: 15,
+      fontFamily: theme.fontMedium,
+      fontSize: 14,
       color: theme.signUpButtonText,
     },
     text_PRIMARY: {

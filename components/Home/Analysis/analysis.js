@@ -1,13 +1,21 @@
 import * as React from 'react';
 import AnalysisItem from './analysisItem/analysisItem';
 import useHomeAnalysisStyles from './analysisStyles';
-import {Image, View, Text, TouchableOpacity} from 'react-native';
+import {Image, View, Text, TouchableOpacity, Platform, UIManager, LayoutAnimation} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
 import {AnalysisContext} from '../../../context/AnalysisContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 const Analysis = ({handleAboutPress}) => {
   const styles = useHomeAnalysisStyles();
   const {analysisItems, loading} = React.useContext(AnalysisContext);
@@ -15,7 +23,7 @@ const Analysis = ({handleAboutPress}) => {
   const [expanded, setExpanded] = React.useState(false);
   const navigation = useNavigation();
   const aboutIconStyles = {
-    top: 18,
+    top: 24,
   };
 
   React.useEffect(() => {
@@ -24,7 +32,10 @@ const Analysis = ({handleAboutPress}) => {
 
   //  Function to expand and close the Home Analysis component
 
-  const handlePress = () => setExpanded(!expanded);
+  const handlePress = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setExpanded(!expanded);
+  };
 
   // Function to handle the navigation to the full Analysis article when pressing it
 
@@ -58,7 +69,8 @@ const Analysis = ({handleAboutPress}) => {
       <Text style={styles.mainTitle}>Daily Deep Dives</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
-        description={home_static_data.narrativeTradings.sectionDescription}
+        title={home_static_data.analysis.sectionTitle}
+        description={home_static_data.analysis.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
       {loading ? (
@@ -82,6 +94,8 @@ const Analysis = ({handleAboutPress}) => {
                 image={story.image}
                 item={story}
                 handleAnalysisNavigation={handleAnalysisNavigation}
+                index={index}
+                expanded={expanded}
               />
               <TouchableOpacity
                 style={[styles.arrowContainer, index > 0 ? styles.hidden : {}]}

@@ -52,7 +52,7 @@ const useLoginFormStyles = () => {
       fontFamily: theme.font,
     },
     signUpButton: {
-      color: theme.activeOrange,
+      color: theme.orange,
       fontFamily: theme.fontMedium,
     },
     termsContainer: {

@@ -69,33 +69,24 @@ const CandlestickChart = ({route}) => {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeButtons, setActiveButtons] = useState([]);
-  const [subscribed, setSubscribed] = useState(false);
   const {activeCoin} = useContext(TopMenuContext);
-  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
+  const {findCategoryInIdentifiers, subscribed, userInfo} =
+    useContext(RevenueCatContext);
   const [activeAlertOption, setActiveAlertOption] = useState('1W');
   const {aboutDescription, aboutVisible, handleAboutPress} =
     useContext(AboutModalContext);
   const {isDarkMode} = useContext(AppThemeContext);
-  const [selectedPairing, setSelectedPairing] = useState(null);
   const pairings = useChartsSource(
     coinBot.toLowerCase(),
-    selectedPairing,
+    null,
     selectedInterval,
   ).pairings;
+  const [selectedPairing, setSelectedPairing] = useState(pairings[0]);
   const navigation = useNavigation();
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const [supportResistanceLoading, setSupportResistanceLoading] =
     useState(false);
-
-  // This useEffect handles the content regulation with the subscriptions from the user
-  useEffect(() => {
-    const hasCoinSubscription = findCategoryInIdentifiers(
-      activeCoin.category_name,
-      userInfo.entitlements,
-    );
-    setSubscribed(hasCoinSubscription);
-  }, [activeCoin, userInfo]);
 
   useEffect(() => {
     navigation.addListener('beforeRemove', e => {
@@ -158,7 +149,9 @@ const CandlestickChart = ({route}) => {
     setChartData([]);
     try {
       const data = await getService(
-        `api/chart/ohlc?coin=${coinBot.toLowerCase()}&vs_currency=${
+        `api/chart/ohlc?coin=${
+          coinBot.toLowerCase() === 'pol' ? 'polygon' : coinBot.toLowerCase()
+        }&vs_currency=${
           pairing === 'USDT' ? 'usd' : pairing.toLowerCase()
         }&interval=${interval.toLowerCase()}&precision=8`,
       );
@@ -261,16 +254,19 @@ const CandlestickChart = ({route}) => {
 
   // Show the height and width of the phone
   const {height, width} = Dimensions.get('window');
-
-  return subscribed ? (
+  return (
     <LinearGradient
       useAngle={true}
       angle={45}
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
       locations={[0.22, 0.97]}
-      style={[styles.flex]}>
+      style={[subscribed ? {flex: 1} : {height: 500}]}>
       <ScrollView
-        style={[styles.scroll, {width: '100%'}]}
+        style={[
+          styles.scroll,
+          {width: '100%'},
+          !subscribed ? {height: 300} : {},
+        ]}
         showsVerticalScrollIndicator={true}
         ref={ref}>
         {aboutVisible && (
@@ -330,7 +326,6 @@ const CandlestickChart = ({route}) => {
             setSupportResistanceLoading={setSupportResistanceLoading}
           />
         </View>
-
         <AlertMenu
           activeAlertOption={activeAlertOption}
           setActiveButtons={setActiveAlertOption}
@@ -341,16 +336,8 @@ const CandlestickChart = ({route}) => {
           botName={coinBot}
           styles={styles}
         />
+        {!subscribed && <UpgradeOverlay isCharts={true} />}
       </ScrollView>
-    </LinearGradient>
-  ) : (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-      locations={[0.22, 0.97]}
-      style={{flex: 1}}>
-      <UpgradeOverlay isBlockingByCoin={true} screen={'Charts'} />
     </LinearGradient>
   );
 };

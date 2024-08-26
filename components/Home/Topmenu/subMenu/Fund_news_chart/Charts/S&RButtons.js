@@ -11,31 +11,31 @@ const RsButton = ({activeButtons, setActiveButtons, disabled}) => {
     {
       label: 'Support',
       color: {
-        inactive: isDarkMode ? '#EC86E2' : '#A02B90',
+        inactive: isDarkMode ? '#E93334' : '#E93334',
         active: isDarkMode ? '#FFFFFF' : '#FFFFFF',
       },
       background: {
-        inactive: isDarkMode ? '#460C3C' : '#FEF5FE',
-        active: isDarkMode ? '#C539B4' : '#C539B4',
+        inactive: isDarkMode ? 'transparent' : 'transparent',
+        active: isDarkMode ? '#D82A2B' : '#D82A2B',
       },
       border: {
-        inactive: isDarkMode ? '#C539B4' : '#C539B4',
-        active: isDarkMode ? '#C539B4' : '#A02B90',
+        inactive: isDarkMode ? '#E93334' : '#E93334',
+        active: isDarkMode ? '#D82A2B' : '#D82A2B',
       },
     },
     {
       label: 'Resistance',
       color: {
-        inactive: isDarkMode ? '#FF63D6' : '#F012A1',
+        inactive: isDarkMode ? '#09C283' : '#2DDA99',
         active: isDarkMode ? '#FFFFFF' : '#FFFFFF',
       },
       background: {
-        inactive: isDarkMode ? '#580034' : '#FEF1FB',
-        active: isDarkMode ? '#FF3BC3' : '#FF3BC3',
+        inactive: isDarkMode ? 'transparent' : 'transparent',
+        active: isDarkMode ? '#09C283' : '#2DDA99',
       },
       border: {
-        inactive: isDarkMode ? '#D10583' : '#F012A1',
-        active: isDarkMode ? '#FF3BC3' : '#FF3BC3',
+        inactive: isDarkMode ? '#09C283' : '#2DDA99',
+        active: isDarkMode ? '#09C283' : '#2DDA99',
       },
     },
     // {

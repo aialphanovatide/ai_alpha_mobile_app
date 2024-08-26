@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, ScrollView, Text} from 'react-native';
+import {View, ScrollView, Text, Modal} from 'react-native';
 import MenuItem from './menuItem/menuItem';
 import useTopMenuStyles from './topmenuStyles';
 import {TopMenuContext} from '../../../../context/topMenuContext';
@@ -10,10 +10,14 @@ import SearchBar from '../../SearchBar/SearchBar';
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import NotificationsButton from '../../HomeNotifications/NotificationsButton';
+import Search from '../../../Search/Search';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
   const styles = useTopMenuStyles();
+  const [searchText, setSearchText] = useState('');
+  const [activeSearchBar, setActiveSearchBar] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(true);
   const {updateActiveCoin, updateActiveSubCoin, activeCoin} =
     useContext(TopMenuContext);
   const {categories, loading} = useContext(CategoriesContext);
@@ -26,7 +30,6 @@ const TopMenu = ({isAlertsMenu}) => {
       updateActiveCoin(category);
       updateActiveSubCoin(category.coin_bots[0].bot_name);
       if (!isAlertsMenu) {
-        navigation.pop(1);
         navigation.navigate('TopMenuScreen', {
           screen: 'SubMenuScreen',
           params: {
@@ -42,27 +45,23 @@ const TopMenu = ({isAlertsMenu}) => {
     }
   };
 
-  const handleSearchSectionNavigation = () => {
-    if (routeName.includes('Home')) {
-      navigation.navigate('SearchScreen', {
-        screen: 'SearchMain',
-      });
-    } else {
-      navigation.navigate('Home', {
-        screen: 'SearchScreen',
-        params: {
-          screen: 'SearchMain',
-          params: {},
-        },
-      });
-    }
+  const toggleActiveSearchBar = value => {
+    setActiveSearchBar(value);
+  };
+
+  const toggleMenuVisible = value => {
+    setMenuVisible(value);
+  };
+
+  const toggleTextValue = value => {
+    setSearchText(value);
   };
 
   const handleNotificationsNavigation = () => {
     navigation.navigate('HomeNotificationsScreen');
   };
 
-  if (routeName.includes('Search') || routeName.includes('HomeNotifications')) {
+  if (routeName.includes('HomeNotifications')) {
     return null;
   }
 
@@ -73,43 +72,64 @@ const TopMenu = ({isAlertsMenu}) => {
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
       locations={[0.22, 0.97]}
       style={styles.topContentWrapper}>
+      <Modal transparent={true} visible={searchText.length > 0}>
+        <View style={styles.modal}>
+          <SearchBar
+            toggleMenuVisible={toggleMenuVisible}
+            toggleTextValue={toggleTextValue}
+            searchText={searchText}
+            activeSearchBar={true}
+            toggleSearchBar={toggleActiveSearchBar}
+          />
+          <Search
+            currentTextValue={searchText}
+            contentVisible={searchText.length > 0}
+          />
+        </View>
+      </Modal>
       <View style={[styles.marginWrapper]}>
         <SearchBar
-          handleSearchSectionNavigation={handleSearchSectionNavigation}
+          toggleMenuVisible={toggleMenuVisible}
+          toggleTextValue={toggleTextValue}
+          searchText={searchText}
+          activeSearchBar={activeSearchBar}
+          toggleSearchBar={toggleActiveSearchBar}
         />
-        {routeName.includes('Home') && (
-          <NotificationsButton
-            handleButtonPress={handleNotificationsNavigation}
-          />
-        )}
+        <NotificationsButton
+          handleButtonPress={handleNotificationsNavigation}
+        />
       </View>
       <View style={styles.container}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          bounces={false}>
-          {loading ? (
-            <SkeletonLoader type={'circle'} quantity={14} />
-          ) : categories ? (
-            categories.map(category => (
-              <MenuItem
-                key={category.category_id}
-                onPress={() => handleButtonPress(category)}
-                category={category}
-                isDarkMode={isDarkMode}
-                isActive={
-                  activeCoin &&
-                  activeCoin !== undefined &&
-                  activeCoin === category
-                }
-              />
-            ))
-          ) : (
-            <View style={styles.loadingMessage}>
-              <Text style={styles.text}>Loading...</Text>
-            </View>
-          )}
-        </ScrollView>
+        {menuVisible ? (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            bounces={false}>
+            {loading ? (
+              <SkeletonLoader type={'circle'} quantity={14} />
+            ) : categories ? (
+              categories.map(category => (
+                <MenuItem
+                  key={category.category_id}
+                  onPress={() => handleButtonPress(category)}
+                  category={category}
+                  isDarkMode={isDarkMode}
+                  isActive={
+                    activeCoin &&
+                    activeCoin !== undefined &&
+                    activeCoin === category
+                  }
+                />
+              ))
+            ) : (
+              <View style={styles.loadingMessage}>
+                <Text style={styles.text}>Loading...</Text>
+              </View>
+            )}
+          </ScrollView>
+        ) : (
+          <></>
+        )}
       </View>
     </LinearGradient>
   );

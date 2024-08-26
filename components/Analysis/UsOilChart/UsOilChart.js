@@ -3,6 +3,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  Platform,
   SafeAreaView,
   ScrollView,
   Text,
@@ -28,6 +29,8 @@ import useChartSectionStyles from '../ChartSection/ChartSectionStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 const initialSessionData = {
   security_token: null,
@@ -45,6 +48,7 @@ const UsOilChart = ({route, navigation}) => {
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const [selectedCandle, setSelectedCandle] = useState(null);
+  const {subscribed} = useContext(RevenueCatContext);
 
   // Hook to request again the data to CapitalCom when changing the time interval or the coin (changing to other chart)
   useEffect(() => {
@@ -152,6 +156,7 @@ const UsOilChart = ({route, navigation}) => {
               />
             </View>
           </ScrollView>
+          {subscribed ? <></> : <UpgradeOverlay />}
         </SafeAreaView>
       </LinearGradient>
     );
@@ -261,6 +266,19 @@ const UsOilChart = ({route, navigation}) => {
                 source={require('../../../assets/images/chart_alpha_logo.png')}
                 style={styles.chartBackgroundImage}
                 resizeMode="contain"
+              />
+              <LinearGradient
+                useAngle
+                angle={90}
+                colors={['rgba(22, 22, 22, 1)', 'transparent']}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 50,
+                  zIndex: 1,
+                }}
               />
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
@@ -413,8 +431,10 @@ const UsOilChart = ({route, navigation}) => {
                     }
               }>
               <Image
-                style={[styles.chartsHorizontalButton, {bottom: Platform.OS === 'android' ? 80 : 90,
-                }]}
+                style={[
+                  styles.chartsHorizontalButton,
+                  {bottom: Platform.OS === 'android' ? 75 : 90},
+                ]}
                 resizeMode="contain"
                 source={
                   isLandscape && isHorizontal
@@ -441,6 +461,7 @@ const UsOilChart = ({route, navigation}) => {
             />
           </View>
         </ScrollView>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </SafeAreaView>
     </LinearGradient>
   );

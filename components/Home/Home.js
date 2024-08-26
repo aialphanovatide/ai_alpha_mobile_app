@@ -11,27 +11,21 @@ import {AppThemeContext} from '../../context/themeContext';
 import {useScrollToTop} from '@react-navigation/native';
 import NarrativeTradings from './HomeNarrativeTradings/NarrativeTradings';
 import TopTenLosers from './Top10Losers/TopTenLosers';
-import IntroductoryPopUpsOverlay from '../IntroductorySlides/IntroductoryPopUps/IntroductoryPopUpsOverlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRawUserId } from '../../context/RawUserIdContext';
-import { RevenueCatContext } from '../../context/RevenueCatContext';
+import {useRawUserId} from '../../context/RawUserIdContext';
+import {RevenueCatContext} from '../../context/RevenueCatContext';
 import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
-
 
 const Home = ({route}) => {
   const styles = useHomeStyles();
   const [aboutVisible, setAboutVisible] = useState(false);
   const [aboutDescription, setAboutDescription] = useState('');
-  const [activePopUps, setActivePopUps] = useState(false);
+  const [aboutTitle, setAboutTitle] = useState('About');
   const {isDarkMode} = useContext(AppThemeContext);
-  const { rawUserId } = useRawUserId();
-  const { packages, purchasePackage, userInfo } = useContext(RevenueCatContext);
-
+  const {rawUserId} = useRawUserId();
+  const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
 
   const ref = useRef(null);
-
-
-
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -44,31 +38,22 @@ const Home = ({route}) => {
           },
         });
         const userData = await userFetch.json();
-        console.log("USER DATA IN HOME", userData);
+        console.log('USER DATA IN HOME', userData);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error('Error fetching user data:', error);
       }
     };
     const fetchCustomerInfo = async () => {
       try {
         const customerInfo = await Purchases.getCustomerInfo();
-        console.log("Customer info IN HOME:", customerInfo);
+        console.log('Customer info IN HOME:', customerInfo);
       } catch (error) {
-        console.error("Error fetching customer info:", error);
+        console.error('Error fetching customer info:', error);
       }
     };
     fetchUserData();
     fetchCustomerInfo();
   }, []);
-
-
-
-
-
-
-
-
-
 
   useEffect(() => {
     const checkShowIntroductoryPopUp = async () => {
@@ -82,15 +67,16 @@ const Home = ({route}) => {
 
   useScrollToTop(ref);
 
-  const handleAboutPress = (description = null) => {
+  const handleAboutPress = (description = null, title = null) => {
     if (description) {
       setAboutDescription(description);
     }
-    setAboutVisible(!aboutVisible);
-  };
 
-  const handleActivePopUps = () => {
-    setActivePopUps(false);
+    if (title) {
+      setAboutTitle(title);
+    }
+
+    setAboutVisible(!aboutVisible);
   };
 
   return (
@@ -106,16 +92,17 @@ const Home = ({route}) => {
             description={aboutDescription}
             onClose={handleAboutPress}
             visible={aboutVisible}
+            title={aboutTitle}
           />
         )}
-        {activePopUps && activePopUps !== undefined ? (
+        {/* {activePopUps && activePopUps !== undefined ? (
           <IntroductoryPopUpsOverlay
             handleActivePopUps={handleActivePopUps}
             visible={activePopUps}
           />
         ) : (
           <></>
-        )}
+        )} */}
         <ScrollView
           bounces={false}
           alwaysBounceVertical={false}

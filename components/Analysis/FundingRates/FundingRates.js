@@ -8,6 +8,8 @@ import exchangesData from '../BTCFundingRates/ExchangesMetaData';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 const FUNDING_RATES_MOCK = {
   BTC: {Binance: '0.0221', Bybit: '0.0394', OKX: '0.0057', dYdX: '0.0022'},
@@ -46,6 +48,7 @@ const FundingRates = ({handleReturn}) => {
   const [fundingRates, setFundingRates] = useState(null);
   const [loading, setLoading] = useState(true);
   const {isDarkMode} = useContext(AppThemeContext);
+  const {subscribed} = useContext(RevenueCatContext);
 
   const COINS_STATIC_DATA = [
     {
@@ -116,7 +119,7 @@ const FundingRates = ({handleReturn}) => {
       useAngle={true}
       angle={45}
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
+      locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <ScrollView style={styles.mainSection}>
         <View style={styles.backButtonWrapper}>
@@ -175,6 +178,7 @@ const FundingRates = ({handleReturn}) => {
           </View>
         )}
       </ScrollView>
+      {subscribed ? <></> : <UpgradeOverlay />}
     </LinearGradient>
   );
 };

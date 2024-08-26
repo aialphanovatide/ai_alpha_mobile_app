@@ -7,6 +7,8 @@ import useFearAndGreedStyles from './FearAndGreedStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 const ReferenceItem = ({item, styles}) => {
   return (
@@ -80,6 +82,7 @@ const FearAndGreed = ({handleReturn}) => {
   const [loading, setLoading] = useState(true);
   const {isDarkMode} = useContext(AppThemeContext);
   const [activeOption, setActiveOption] = useState(null);
+  const {subscribed} = useContext(RevenueCatContext);
 
   const findActiveFngOption = value => {
     const found = referenceOptions.find(option => {
@@ -111,7 +114,7 @@ const FearAndGreed = ({handleReturn}) => {
       useAngle={true}
       angle={45}
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
+      locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <ScrollView style={styles.scrollView}>
         <SafeAreaView style={styles.mainSection}>
@@ -141,6 +144,7 @@ const FearAndGreed = ({handleReturn}) => {
           )}
         </SafeAreaView>
       </ScrollView>
+      {subscribed ? <></> : <UpgradeOverlay />}
     </LinearGradient>
   );
 };

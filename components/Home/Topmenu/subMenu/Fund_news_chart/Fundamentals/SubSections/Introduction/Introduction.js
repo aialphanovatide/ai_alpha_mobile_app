@@ -125,30 +125,6 @@ const Introduction = ({
   };
 
   useEffect(() => {
-    // setLoading(true);
-    // setContent(null);
-    // const fetchIntroductionContent = async () => {
-    //   try {
-    //     const response = await getSectionData(
-    //       `/api/get_introduction?coin_name=${coin}`,
-    //     );
-
-    //     if (response.status !== 200) {
-    //       setContent([]);
-    //     } else {
-    //       const parsedContent = {
-    //         description: response.message.content,
-    //         website: response.message.website,
-    //         whitepaper: response.message.whitepaper,
-    //       };
-    //       setContent(parsedContent);
-    //     }
-    //   } catch (error) {
-    //     console.log('Error trying to get introduction data: ', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
     const fetchIntroductionContent = () => {
       if (!globalData || globalData.introduction.status !== 200) {
         setContent([]);
@@ -164,7 +140,7 @@ const Introduction = ({
     fetchIntroductionContent();
   }, [coin, globalData]);
 
-  if (!loading && (content === null || content.length === 0)) {
+  if (!loading && !content) {
     handleSectionContent('introduction', true);
   }
 
@@ -172,13 +148,11 @@ const Introduction = ({
     <View style={styles.container}>
       {loading ? (
         <SkeletonLoader type="text" quantity={8} />
-      ) : content === null ? (
-        <NoContentMessage hasSectionName={false} />
       ) : (
         <>
           <RenderHTML
             source={{
-              html: parseHtmlTags(content.description),
+              html: parseHtmlTags(content?.description),
             }}
             contentWidth={theme.width - 50}
             systemFonts={systemFonts}

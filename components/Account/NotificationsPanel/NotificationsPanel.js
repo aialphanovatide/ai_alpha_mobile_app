@@ -387,6 +387,11 @@ const NotificationsPanel = ({route, options = null}) => {
   const handleToggleAnalysisNotifications = async (topic, initial = false) => {
     try {
       const isSubscribed = analysisNotifications[topic];
+      const newAnalysisNotifications = {
+        ...analysisNotifications,
+        [topic]: initial ? true : !isSubscribed,
+      };
+      setAnalysisNotifications(newAnalysisNotifications);
       if (isSubscribed && !initial) {
         console.log('* Unsubscribing from:', `${topic}_analysis`);
         await messaging().unsubscribeFromTopic(`${topic}_analysis`);
@@ -394,11 +399,6 @@ const NotificationsPanel = ({route, options = null}) => {
         console.log('* Subscribing to:', `${topic}_analysis`);
         await messaging().subscribeToTopic(`${topic}_analysis`);
       }
-      const newAnalysisNotifications = {
-        ...analysisNotifications,
-        [topic]: initial ? true : !isSubscribed,
-      };
-      setAnalysisNotifications(newAnalysisNotifications);
       await AsyncStorage.setItem(
         `@subscription_analysis_${topic}`,
         (initial ? true : !isSubscribed).toString(),
@@ -409,6 +409,11 @@ const NotificationsPanel = ({route, options = null}) => {
       );
     } catch (error) {
       console.error('Failed to toggle analysis notifications:', error);
+      const revertedAnalysisNotifications = {
+        ...analysisNotifications,
+        [topic]: !analysisNotifications[topic],
+      };
+      setAnalysisNotifications(revertedAnalysisNotifications);
     }
   };
 

@@ -1,4 +1,11 @@
-import {Text, ScrollView, SafeAreaView} from 'react-native';
+import {
+  Text,
+  ScrollView,
+  SafeAreaView,
+  Platform,
+  UIManager,
+  LayoutAnimation,
+} from 'react-native';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import SubSection from './SubSections/SubSection';
 import Introduction from './SubSections/Introduction/Introduction.js';
@@ -18,7 +25,6 @@ import {fundamentalsMock} from './fundamentalsMock';
 import TokenUtility from './SubSections/TokenUtility/TokenUtility';
 import AboutModal from './AboutModal';
 import {fundamentals_static_content} from './fundamentalsStaticData';
-import VestingSchedule from './SubSections/VestingSchedule/VestingSchedule';
 import LinearGradient from 'react-native-linear-gradient';
 import {useScrollToTop} from '@react-navigation/native';
 
@@ -34,6 +40,13 @@ const initialContentState = {
   upgrades: false,
   dapps: false,
 };
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const Fundamentals = ({route}) => {
   const {activeSubCoin} = useContext(TopMenuContext);
@@ -62,6 +75,7 @@ const Fundamentals = ({route}) => {
     if (description) {
       setAboutDescription(description);
     }
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setAboutVisible(!aboutVisible);
   };
 
@@ -99,8 +113,8 @@ const Fundamentals = ({route}) => {
     } catch (error) {
       console.error(`Error fetching crypto data: ${error.message}`);
       setFundamentalsData(null);
-      throw error;
     } finally {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setGlobalLoading(false);
     }
   };
@@ -148,7 +162,7 @@ const Fundamentals = ({route}) => {
       useAngle={true}
       angle={45}
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
+      locations={[0.22, 0.97]}
       style={styles.linearGradient}>
       <ScrollView
         nestedScrollEnabled={true}

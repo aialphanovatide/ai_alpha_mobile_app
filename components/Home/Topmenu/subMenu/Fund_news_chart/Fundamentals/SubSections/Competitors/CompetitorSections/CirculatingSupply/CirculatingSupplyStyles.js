@@ -10,7 +10,8 @@ const useCirculatingSupplyStyles = () => {
       marginVertical: 8,
     },
     progressBarContainer: {
-      padding: 10,
+      flex: 1,
+      padding: 2,
       alignItems: 'center',
     },
     progressBar: {
@@ -23,12 +24,9 @@ const useCirculatingSupplyStyles = () => {
     },
     progressBarFill: {
       height: '100%',
-      backgroundColor: theme.orange,
+      backgroundColor: '#FF9521',
     },
-    infinityBar: {
-      borderRightWidth: 0,
-      borderLeftWidth: 0,
-    },
+    infinityBar: {},
     symbolLabel: {
       paddingHorizontal: 10,
       paddingVertical: 2,
@@ -47,10 +45,10 @@ const useCirculatingSupplyStyles = () => {
     },
     labelRight: {
       marginHorizontal: 0,
-      backgroundColor: theme.orange,
+      backgroundColor: '#FF9521',
     },
     labelLeft: {
-      backgroundColor: theme.orange,
+      backgroundColor: '#FF9521',
     },
     symbolWrapper: {
       padding: 6,
@@ -62,13 +60,14 @@ const useCirculatingSupplyStyles = () => {
     },
     valueLabel: {
       position: 'absolute',
-      right: 16,
-      top: 16,
+      top: 2,
+      right: 4,
       marginVertical: 8,
       textAlign: 'right',
       color: theme.secondaryTextColor,
-      fontSize: 14,
+      fontSize: 12,
       fontFamily: theme.font,
+      alignSelf: 'flex-end',
     },
     infinityLabel: {
       color: theme.secondaryTextColor,
@@ -77,37 +76,36 @@ const useCirculatingSupplyStyles = () => {
     },
     infinityButton: {
       position: 'absolute',
-      right: 24,
-      top: 16,
-      zIndex: 2,
+      top: 4,
+      right: 4,
       paddingHorizontal: 6,
-      borderWidth: 1,
+      borderWidth: 1.5,
       borderRadius: 14,
       borderColor: theme.secondaryTextColor,
+      zIndex: 2,
     },
     labelBottom: {
-      marginTop: 2,
-      flex: 1,
-      fontSize: theme.responsiveFontSize,
-      color: theme.orange,
-      fontFamily: theme.fontMedium,
+      position: 'absolute',
+      top: 22,
+      fontSize: 12,
+      color: '#FF9521',
+      fontFamily: theme.font,
     },
     text: {
       color: theme.textColor,
-      fontFamily: theme.fontMedium,
+      fontFamily: theme.font,
+      fontSize: 10,
     },
     orange: {
       color: theme.activeOrange,
     },
     transparent: {
-      color: 'transparent'
+      color: 'transparent',
     },
     row: {
       position: 'relative',
-      marginVertical: 8,
       paddingHorizontal: 4,
       flexDirection: 'row',
-      justifyContent: 'space-between',
     },
     logoContainer: {
       marginLeft: 16,
@@ -137,24 +135,28 @@ const useCirculatingSupplyStyles = () => {
       marginHorizontal: 10,
       fontSize: theme.responsiveFontSize,
       fontFamily: theme.fontMedium,
+      alignSelf: 'center',
     },
     itemRow: {
       flexDirection: 'row',
+      alignItems: 'center',
     },
     image: {
-      width: 30,
-      height: 30,
-      borderRadius: 20,
+      width: 27,
+      height: 27,
+      borderRadius: 13.5,
       alignSelf: 'center',
       margin: 8,
+      marginVertical: 4,
     },
     dataContainer: {
       flex: 1,
     },
     inflationaryArrow: {
-      width: 14,
-      height: 14,
-      tintColor: theme.textColor,
+      width: 18,
+      height: 15,
+      marginLeft: 24,
+
     },
     inflationaryLabel: {
       fontSize: theme.responsiveFontSize * 0.8,
@@ -166,15 +168,15 @@ const useCirculatingSupplyStyles = () => {
     },
     circulatingSupplyItem: {
       paddingHorizontal: 10,
-      paddingVertical: 5,
-      marginVertical: 28,
+      marginVertical: 32,
     },
     itemIcon: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
+      width: 27,
+      height: 27,
+      borderRadius: 13.5,
       alignSelf: 'center',
       margin: 8,
+      marginVertical: 4,
     },
     marginLeft: {
       marginLeft: 8,
@@ -184,10 +186,10 @@ const useCirculatingSupplyStyles = () => {
       justifyContent: 'center',
     },
     button: {
-      width: '45%',
-      padding: 8,
-      borderRadius: 4,
-      alignItems: 'center',
+      width: 16,
+      height: 16,
+      marginRight: 4,
+      borderRadius: 2,
     },
     activeOrangeButton: {
       backgroundColor: theme.orangeTextColor,
@@ -198,36 +200,36 @@ const useCirculatingSupplyStyles = () => {
       fontFamily: theme.fontSemibold,
     },
     alignRight: {
-      right: 10,
+      marginLeft: 36,
       backgroundColor: theme.grayButtonColor,
     },
     alignLeft: {
-      left: 10,
-      backgroundColor: theme.orangeButton,
-      borderWidth: 1,
-      borderColor: theme.orangeTextColor,
+      marginLeft: 36,
+      backgroundColor: '#FF9521',
     },
     supplyText: {
-      color: theme.orangeTextColor,
-      fontSize: theme.responsiveFontSize * 0.8,
-      fontFamily: theme.fontMedium,
+      color: '#FF9521',
+      fontSize: 10,
+      fontFamily: theme.font,
     },
     totalText: {
-      color: theme.boxesBackgroundColor,
-      fontSize: theme.responsiveFontSize * 0.8,
-      fontFamily: theme.fontMedium,
+      color: theme.secondaryTextColor,
+      fontSize: 10,
+      fontFamily: theme.font,
     },
     tokenName: {
-      fontSize: theme.responsiveFontSize,
+      fontSize: 14,
       color: theme.textColor,
       textAlign: 'left',
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
     none: {
       display: 'none',
     },
     inflationaryRow: {
       flexDirection: 'row',
+      alignItems: 'center',
+      marginHorizontal: 8,
     },
   });
   return styles;

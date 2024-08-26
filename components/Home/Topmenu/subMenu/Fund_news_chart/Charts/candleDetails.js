@@ -43,6 +43,8 @@ const CandlestickDetails = ({
     return `${coin_word}/${coin.slice(pairing_word_index, coin.length)}`;
   };
 
+  console.log('Coin: ', coin, ' pairing: ', selectedPairing);
+
   return pairings.length > 1 ? (
     <View style={[styles.detailsContainer, styles.column]}>
       <View style={styles.flexRow}>

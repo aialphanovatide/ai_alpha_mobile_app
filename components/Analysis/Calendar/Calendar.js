@@ -7,6 +7,8 @@ import useCalendarStyles from './CalendarStyles.js';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext.js';
 import MacroEconomicCalendar from './MacroEconomicsCalendar/MacroEconomicCalendar.js';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay.js';
+import {RevenueCatContext} from '../../../context/RevenueCatContext.js';
 
 const Intervals = {
   today: {
@@ -36,6 +38,7 @@ const Calendar = ({handleReturn}) => {
   const handleEconomicEventPress = interval => {
     setEconomicSelectedInterval(interval);
   };
+  const {subscribed} = useContext(RevenueCatContext);
 
   return (
     <SafeAreaView style={styles.flex}>
@@ -53,7 +56,7 @@ const Calendar = ({handleReturn}) => {
           <View style={styles.backbuttonContainer}>
             <BackButton handleReturn={handleReturn} />
           </View>
-            <Text style={styles.title}>Calendar</Text>
+          <Text style={styles.title}>Calendar</Text>
           <Text style={styles.sectionDescription}>
             Presents key cryptocurrency events, such as token launches, protocol
             updates and regulatory decisions, serving as an aid to anticipate
@@ -80,6 +83,7 @@ const Calendar = ({handleReturn}) => {
             />
           </View>
         </ScrollView>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </LinearGradient>
     </SafeAreaView>
   );

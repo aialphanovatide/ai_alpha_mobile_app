@@ -1,5 +1,12 @@
-import React, {useState} from 'react';
-import {Image, Modal, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Animated,
+  Image,
+  Modal,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import useIntroductorySlidesStyles from '../IntroductorySlidesStyles';
 import {useNavigation} from '@react-navigation/core';
 
@@ -12,10 +19,11 @@ const IntroductoryPopUp = ({
   handleActivePopUps,
   activeStyles,
   handleSubscriptionButton,
+  opacity,
 }) => {
   const styles = useIntroductorySlidesStyles();
   return (
-    <View style={[styles.popUpModal, activeStyles]}>
+    <Animated.View style={[styles.popUpModal, activeStyles, {opacity}]}>
       <Text style={styles.popUpTitle}>{title}</Text>
       <Text style={styles.popUpText}>{description}</Text>
       {dotIndex === dots.length - 1 ? (
@@ -61,7 +69,7 @@ const IntroductoryPopUp = ({
           />
         ))}
       </View>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -74,12 +82,15 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
       description:
         'Explore the top bar to learn about the different categories and their assets.',
       popUpStyles: {
-        overlay: {
-          marginTop: 170,
-        },
+        overlay: {},
         modal: {},
         triangle: {},
+        navbar: {
+          left: 5,
+          width: '17.5%',
+        },
       },
+      sectionName: 'Home',
     },
     {
       title: 'Alerts',
@@ -98,7 +109,11 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           left: 105,
           transform: [{scaleY: -1}],
         },
+        navbar: {
+          left: 80,
+        },
       },
+      sectionName: 'Alerts',
     },
     {
       title: 'ASK AI',
@@ -117,7 +132,12 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           left: 185,
           transform: [{scaleY: -1}],
         },
+        navbar: {
+          left: 160,
+          height: 140,
+        },
       },
+      sectionName: 'AskAi',
     },
     {
       title: 'Dashboard',
@@ -136,7 +156,11 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           left: 270,
           transform: [{scaleY: -1}],
         },
+        navbar: {
+          left: 240,
+        },
       },
+      sectionName: 'Analysis',
     },
     {
       title: 'Account',
@@ -155,21 +179,67 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           left: 335,
           transform: [{scaleY: -1}],
         },
+        navbar: {
+          left: 325,
+        },
       },
+      sectionName: 'Account',
     },
   ];
+
+  useEffect(() => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: true,
+    }).start(() => {});
+  }, []);
+
   const [activeDotIndex, setActiveDotIndex] = useState(0);
 
+  const opacity = useRef(new Animated.Value(0)).current;
+
   const handleNextPress = current => {
-    if (current + 1 < POP_UPS_DATA.length) {
-      setActiveDotIndex(current + 1);
-    } else {
-      setActiveDotIndex(0);
-    }
+    Animated.timing(opacity, {
+      toValue: 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        if (current + 1 < POP_UPS_DATA.length) {
+          setActiveDotIndex(current + 1);
+        } else {
+          setActiveDotIndex(0);
+        }
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 250,
+          useNativeDriver: true,
+        }).start();
+      }, 1500);
+    });
   };
 
   const handleSubscriptionButton = () => {
     navigation.navigate('Account', {screen: 'Subscriptions'});
+  };
+
+  const handleNavbarPress = (current, sectionName) => {
+    Animated.timing(opacity, {
+      toValue: 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        setActiveDotIndex(current);
+        navigation.navigate(sectionName);
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 250,
+          useNativeDriver: true,
+        }).start();
+      }, 1500);
+    });
   };
 
   return (
@@ -178,15 +248,28 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
       transparent
       visible={visible}
       presentationStyle="overFullScreen">
+      {activeDotIndex === 0 ? (
+        <TouchableOpacity
+          style={styles.invisiblePressable}
+          onPress={() => handleNextPress(activeDotIndex)}
+        />
+      ) : (
+        <></>
+      )}
       <View
         style={[
           styles.popUpsOverlay,
           POP_UPS_DATA[activeDotIndex].popUpStyles.overlay,
         ]}>
-        <Image
+        <TouchableOpacity
+          style={[styles.popUpPressableOverlay]}
+          onPress={() => handleNextPress(activeDotIndex)}
+        />
+        <Animated.Image
           style={[
             styles.triangle,
             POP_UPS_DATA[activeDotIndex].popUpStyles.triangle,
+            {opacity},
           ]}
           source={require('../../../assets/images/introductorySection/pop-up-triangle.png')}
           resizeMode="contain"
@@ -200,7 +283,16 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           handleActivePopUps={handleActivePopUps}
           activeStyles={POP_UPS_DATA[activeDotIndex].popUpStyles.modal}
           handleSubscriptionButton={handleSubscriptionButton}
+          opacity={opacity}
         />
+        {POP_UPS_DATA.map((item, index) => (
+          <TouchableOpacity
+            key={item.title}
+            style={[styles.bottomTransparentButton, item.popUpStyles.navbar]}
+            delayPressIn={2000}
+            onPress={() => handleNavbarPress(index, item.sectionName)}
+          />
+        ))}
       </View>
     </Modal>
   );

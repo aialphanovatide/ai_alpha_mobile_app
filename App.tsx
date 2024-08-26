@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   Modal,
   Image,
+  Dimensions,
 } from 'react-native';
 import {useAuth0, Auth0Provider} from 'react-native-auth0';
 import Keys from 'react-native-keys';
@@ -42,14 +43,15 @@ import {
   auth0ManagementAPI_Secret,
 } from './src/constants/index';
 import eventEmitter from './eventEmitter';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
-
 import {Top10MoversContextProvider} from './context/TopTenMoversContext';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomSplashScreen from './components/SplashScreen/SplashScreen';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+const {width, height} = Dimensions.get('window');
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -62,6 +64,14 @@ const App = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [serverWentDown, setServerWentDown] = useState(0);
   const [userSignedUp, setUserSignedUp] = useState(false);
+  const [initialAnimationFinished, setInitialAnimationFinished] =
+    useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setInitialAnimationFinished(true);
+    }, 3500);
+  }, []);
 
   useEffect(() => {
     const darkModeSubscription = eventEmitter.addListener('darkModeChanged', isDark => {
@@ -78,23 +88,6 @@ const App = () => {
       backgroundColorSubscription.remove();
     };
   }, []);
-  /*
-  useEffect(() => {
-    console.log("socket->", socket);
-    //socket.emit('message', 'Hello server!');
-    if (socket) { // Only proceed if `socket` is not null
-      console.log('Entered not null socket flow')
-      socket.on('new_alert', (data) => {
-        console.log(`Received message: ${data}`);
-      });
-  
-      // Clean up the event listener when the component unmounts or the socket changes
-      return () => {
-        socket.off('new_alert');
-      };
-    }
-  }, [socket]); // Re-run the effect if `socket` changes
-  */
 
   const saveNotification = async alertData => {
     const extractCryptoName = symbol => {
@@ -180,9 +173,6 @@ const App = () => {
   // }, []);
 
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      SplashScreen.hide();
-    }
     const bar_theme = colorScheme === 'dark' ? 'light-content' : 'dark-content';
     setBarScheme(bar_theme);
   }, [colorScheme]);
@@ -245,9 +235,8 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsConnected(state.isConnected);
-      setModalVisible(!state.isConnected); // Show modal when not connected
+      setModalVisible(!state.isConnected);
       if (state.isConnected) {
-        //console.log("Connected to Internet");
         setRefreshTrigger(prev => prev + 1);
       }
     });
@@ -258,7 +247,6 @@ const App = () => {
 
   useEffect(() => {
     if (refreshTrigger > 0) {
-      //console.log('Internet is back, refreshing content...');
     }
   }, [refreshTrigger]);
 
@@ -283,12 +271,14 @@ const App = () => {
 
   return (
     <Auth0Provider domain={auth0Domain} clientId={auth0Client}>
-      <RevenueCatProvider>
-        <UserProvider>
-          <UserIdProvider>
-            <RawUserIdProvider>
-              <AppThemeProvider>
-                <SafeAreaView
+      <CategoriesContextProvider>
+        <TopMenuContextProvider>
+          <RevenueCatProvider>
+            <UserProvider>
+              <UserIdProvider>
+                <RawUserIdProvider>
+                  <AppThemeProvider>
+                  <SafeAreaView
                   style={{
                     flex: 0,
                     backgroundColor: backgroundColor,
@@ -308,15 +298,17 @@ const App = () => {
                         : 'dark-content' /*This changes the font color for SafeAreaView*/
                     }
                   />
-                  <SingletonHooksContainer />
-                  <CategoriesContextProvider>
-                    <TopMenuContextProvider>
+                      <SingletonHooksContainer />
                       <Top10MoversContextProvider>
                         <NarrativeTradingContextProvider>
                           <AnalysisContextProvider>
                             <GestureHandlerRootView style={{flex: 1}}>
                               <AboutModalProvider>
-                                <Navigation />
+                                {!initialAnimationFinished ? (
+                                  <CustomSplashScreen />
+                                ) : (
+                                  <Navigation />
+                                )}
                                 <ConnectivityModal
                                   serverError={serverError}
                                   setModalVisible={setModalVisible}
@@ -342,14 +334,14 @@ const App = () => {
                           </AnalysisContextProvider>
                         </NarrativeTradingContextProvider>
                       </Top10MoversContextProvider>
-                    </TopMenuContextProvider>
-                  </CategoriesContextProvider>
-                </SafeAreaView>
-              </AppThemeProvider>
-            </RawUserIdProvider>
-          </UserIdProvider>
-        </UserProvider>
-      </RevenueCatProvider>
+                    </SafeAreaView>
+                  </AppThemeProvider>
+                </RawUserIdProvider>
+              </UserIdProvider>
+            </UserProvider>
+          </RevenueCatProvider>
+        </TopMenuContextProvider>
+      </CategoriesContextProvider>
     </Auth0Provider>
   );
 };

@@ -182,7 +182,7 @@ const NarrativeTradingArticle = ({route}) => {
     },
   };
 
-  const imageUri = `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`;
+  const imageUri = `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${id}.jpg`;
 
   const html_source = {
     html: findHtmlContent(item_content),

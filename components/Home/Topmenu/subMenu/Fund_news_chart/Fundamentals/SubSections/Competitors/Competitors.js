@@ -5,6 +5,9 @@ import {
   ScrollView,
   Image,
   ImageBackground,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import TypeOfToken from './CompetitorSections/TypeOfToken/TypeOfToken';
@@ -24,6 +27,13 @@ import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
   const {theme} = useContext(AppThemeContext);
   return (
@@ -37,23 +47,21 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
         style={styles.menuItemContainer}
         resizeMode="contain"
         tintColor={theme.fundamentalsCompetitorsItemBg}>
-        <View style={styles.iconContainer}>
-          <Image
-            style={[
-              styles.itemIcon,
-              activeOption.name === item.name && {tintColor: theme.orange},
-            ]}
-            resizeMode={'contain'}
-            source={item.icon}
-          />
-        </View>
+        <Image
+          style={[
+            styles.itemIcon,
+            activeOption.name === item.name && {tintColor: theme.orange},
+          ]}
+          resizeMode={'contain'}
+          source={item.icon}
+        />
         <Text
           style={[
             styles.menuItemName,
             activeOption.name === item.name && styles.activeItem,
           ]}
           numberOfLines={2}>
-          {item.name}
+          {item.menuTitle}
         </Text>
       </ImageBackground>
     </TouchableOpacity>
@@ -125,6 +133,7 @@ const Competitors = ({
   const content = [
     {
       name: 'Current Market Cap',
+      menuTitle: 'Current\nMarket Cap',
       component: (
         <CurrentMarketCap
           coin={coin}
@@ -140,6 +149,7 @@ const Competitors = ({
     },
     {
       name: 'Supply Model',
+      menuTitle: 'Supply \n Model',
       component: (
         <CirculatingSupply
           getSectionData={getSectionData}
@@ -156,6 +166,7 @@ const Competitors = ({
     },
     {
       name: 'Type Of Token',
+      menuTitle: 'Type of \nToken',
       component: (
         <TypeOfToken
           tokens={cryptosData}
@@ -169,6 +180,7 @@ const Competitors = ({
     },
     {
       name: 'TVL',
+      menuTitle: 'TVL',
       component: (
         <TotalValueLocked
           cryptos={cryptosData}
@@ -182,6 +194,7 @@ const Competitors = ({
     },
     {
       name: 'Daily Active Users',
+      menuTitle: 'Daily Active \nUsers',
       component: (
         <DailyActiveUsers
           cryptos={cryptosData}
@@ -195,6 +208,7 @@ const Competitors = ({
     },
     {
       name: 'Transaction Fees',
+      menuTitle: 'Transaction \nFees',
       component: (
         <TransactionFees
           competitorsData={competitorsData}
@@ -207,6 +221,7 @@ const Competitors = ({
     },
     {
       name: 'Transaction Speed',
+      menuTitle: 'Transaction \nSpeed',
       component: (
         <TransactionSpeed
           competitorsData={competitorsData}
@@ -219,6 +234,7 @@ const Competitors = ({
     },
     {
       name: 'Inflation Rate',
+      menuTitle: 'Inflation \nRate',
       component: (
         <InflationRate
           cryptos={cryptosData}
@@ -232,6 +248,7 @@ const Competitors = ({
     },
     {
       name: 'APR',
+      menuTitle: 'APR',
       component: (
         <Apr
           competitorsData={competitorsData}
@@ -244,6 +261,7 @@ const Competitors = ({
     },
     {
       name: 'Active Developers',
+      menuTitle: 'Active \nDevelopers',
       component: (
         <ActiveDevelopers
           competitorsData={competitorsData}
@@ -256,6 +274,7 @@ const Competitors = ({
     },
     {
       name: 'Revenue',
+      menuTitle: 'Revenue',
       component: (
         <Revenue
           competitorsData={competitorsData}
@@ -280,15 +299,18 @@ const Competitors = ({
     fetchCompetitorsData(coin);
   }, [globalData, coin, getSectionData]);
 
-  const handleOptionChange = option => {
-    setActiveOption(option);
-  };
-
   useEffect(() => {
     if (!loading && competitorsData?.length === 0) {
       handleSectionContent('competitors', true);
     }
   }, [competitorsData, loading, handleSectionContent]);
+
+  // Function to handle the active competitors section, changing the active one, by default, it is set to the Current Market Cap section.
+
+  const handleOptionChange = option => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setActiveOption(option);
+  };
 
   return (
     <View style={styles.container}>

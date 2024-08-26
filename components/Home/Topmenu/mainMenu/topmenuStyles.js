@@ -22,7 +22,8 @@ const useTopMenuStyles = () => {
       textAlign: 'center',
     },
     topContentWrapper: {
-      width: '100%',
+      width: theme.width,
+      position: 'relative',
     },
     marginWrapper: {
       width: '100%',
@@ -30,8 +31,17 @@ const useTopMenuStyles = () => {
       alignItems: 'center',
       alignSelf: 'center',
       justifyContent: 'center',
-      backgroundColor: 'transparent'
-    }
+      backgroundColor: 'transparent',
+    },
+    modal: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      left: 0,
+      width: '100%',
+      height: theme.height,
+      backgroundColor: theme.boxesBackgroundColor,
+    },
   });
   return styles;
 };

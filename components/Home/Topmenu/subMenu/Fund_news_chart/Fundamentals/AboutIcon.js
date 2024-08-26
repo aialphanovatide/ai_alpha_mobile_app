@@ -4,13 +4,14 @@ import useFundamentalsStyles from './FundamentalsStyles';
 
 export const AboutIcon = ({
   handleAboutPress,
+  title,
   description,
   additionalStyles = {},
 }) => {
   const styles = useFundamentalsStyles();
   return (
     <TouchableOpacity
-      onPress={() => handleAboutPress(description)}
+      onPress={() => handleAboutPress(description, title)}
       style={[
         styles.aboutIconWrapper,
         additionalStyles ? additionalStyles : {},

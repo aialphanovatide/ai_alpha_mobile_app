@@ -43,7 +43,7 @@ const useInflationRateStyles = () => {
       alignItems: 'center',
     },
     currentValue: {
-      width: 70,
+      width: 80,
       marginVertical: 8,
       paddingHorizontal: 16,
       paddingVertical: 4,

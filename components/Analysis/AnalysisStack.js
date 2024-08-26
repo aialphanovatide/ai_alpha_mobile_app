@@ -19,7 +19,11 @@ const AnalysisScreen = () => {
   return (
     <AnalysisStack.Navigator
       initialRouteName="AnalysisMain"
-      screenOptions={{headerShown: 'false', header: () => null}}>
+      screenOptions={{
+        animation: 'slide_from_bottom',
+        headerShown: 'false',
+        header: () => null,
+      }}>
       <AnalysisStack.Screen name="AnalysisMain" component={Analysis} />
       <AnalysisStack.Screen name="History" component={History} />
       <AnalysisStack.Screen

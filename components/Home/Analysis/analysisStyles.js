@@ -6,8 +6,9 @@ const useHomeAnalysisStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     mainTitle: {
+      marginTop: 24,
+      marginBottom: 8,
       marginHorizontal: 16,
-      marginVertical: 18,
       color: theme.titleColor,
       fontSize: 16,
       fontFamily: theme.fontMedium,
@@ -16,7 +17,6 @@ const useHomeAnalysisStyles = () => {
       maxWidth: '80%',
       color: theme.titleColor,
       fontSize: 14,
-      marginBottom: 2,
       fontFamily: theme.fontMedium,
     },
     imageStyle: {
@@ -121,6 +121,7 @@ const useHomeAnalysisStyles = () => {
     },
     hidden: {
       display: 'none',
+      opacity: 0,
     },
     itemWrapper: {
       flex: 1,

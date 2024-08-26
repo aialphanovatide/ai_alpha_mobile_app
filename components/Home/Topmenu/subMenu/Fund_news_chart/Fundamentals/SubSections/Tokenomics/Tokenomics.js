@@ -1,5 +1,5 @@
 import {Image, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import useTokenomicsStyles from './TokenomicsStyles';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SupplyModal from '../SupplyModal/SupplyModal';
@@ -7,8 +7,10 @@ import {fundamentals_static_content} from '../../fundamentalsStaticData';
 import {findCoinNameBySymbol} from '../Competitors/coinsNames';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
+import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
 const TokenItem = ({item, styles, handleSupplyDataPress, activeSupply}) => {
+  const {isDarkMode} = useContext(AppThemeContext);
   const descriptionName =
     fundamentals_static_content.competitors.subsections.supplyModel
       .supplyDescriptions[item.symbol.toLowerCase()] ||
@@ -40,30 +42,31 @@ const TokenItem = ({item, styles, handleSupplyDataPress, activeSupply}) => {
           style={styles.itemIcon}
           resizeMode="contain"
         />
-        <View style={styles.column}>
+        <View style={[styles.tokenRow, {alignItems: 'center'}]}>
           <Text style={styles.tokenName}>{item.name}</Text>
-          <View style={styles.tokenRow}>
-            <Image
-              style={styles.inflationaryArrow}
-              resizeMode="contain"
-              source={
-                item.inflationary === null
-                  ? require('../../../../../../../../assets/images/fundamentals/tokenomics/hybrid.png')
-                  : item.inflationary === true
-                  ? require('../../../../../../../../assets/images/fundamentals/tokenomics/inflationary.png')
-                  : require('../../../../../../../../assets/images/fundamentals/tokenomics/deflationary.png')
-              }
-            />
-            <Text style={styles.text}>
-              {item.inflationary === null
-                ? 'Hybrid'
+          <Image
+            style={styles.inflationaryArrow}
+            resizeMode="contain"
+            source={
+              item.inflationary === null
+                ? require('../../../../../../../../assets/images/fundamentals/tokenomics/hybrid.png')
                 : item.inflationary === true
-                ? 'Inflationary'
-                : 'Deflationary'}
-            </Text>
-          </View>
+                ? isDarkMode
+                  ? require('../../../../../../../../assets/images/fundamentals/tokenomics/inflationary-dark.png')
+                  : require('../../../../../../../../assets/images/fundamentals/tokenomics/inflationary-light.png')
+                : isDarkMode
+                ? require('../../../../../../../../assets/images/fundamentals/tokenomics/deflationary-dark.png')
+                : require('../../../../../../../../assets/images/fundamentals/tokenomics/deflationary-light.png')
+            }
+          />
+          <Text style={styles.text}>
+            {item.inflationary === null
+              ? 'Hybrid'
+              : item.inflationary === true
+              ? 'Inflationary'
+              : 'Deflationary'}
+          </Text>
         </View>
-
         {item.maxSupply === Infinity ? (
           <TouchableOpacity
             onPress={() =>
@@ -150,7 +153,13 @@ const HorizontalProgressBar = ({maxValue, value, styles, activeSupply}) => {
   );
 };
 
-const Tokenomics = ({getSectionData, coin, handleSectionContent, globalData, loading}) => {
+const Tokenomics = ({
+  getSectionData,
+  coin,
+  handleSectionContent,
+  globalData,
+  loading,
+}) => {
   const styles = useTokenomicsStyles();
   const [cryptos, setCryptos] = useState(null);
   const [supplyDataVisible, setSupplyDataVisible] = useState(false);
@@ -176,85 +185,38 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent, globalData, loa
   };
 
   useEffect(() => {
-    // setLoading(true);
-    // setCryptos([]);
-    // const fetchTokenomicsData = async () => {
-    //   try {
-    //     const response = await getSectionData(
-    //       `/api/get_tokenomics?coin_name=${coin}`,
-    //     );
-
-    //     if (response.status !== 200) {
-    //       setCryptos([]);
-    //     } else {
-    //       const parsed_cryptos = response.message.tokenomics_data.map(
-    //         crypto => {
-    //           return {
-    //             name: findCoinNameBySymbol(
-    //               crypto.tokenomics.token.replace(' ', '').toUpperCase(),
-    //             ),
-    //             symbol: crypto.tokenomics.token.replace(' ', '').toUpperCase(),
-    //             circulatingSupply: Number(
-    //               crypto.tokenomics.circulating_supply.replace(/,/g, ''),
-    //             ),
-    //             totalSupply:
-    //               crypto.tokenomics.total_supply.replace(' ', '') === '∞'
-    //                 ? Infinity
-    //                 : parseNumberFromString(crypto.tokenomics.total_supply),
-    //             maxSupply:
-    //               crypto.tokenomics.max_supply.replace(' ', '') === '∞'
-    //                 ? Infinity
-    //                 : parseNumberFromString(crypto.tokenomics.max_supply),
-    //             inflationary:
-    //               crypto.tokenomics.supply_model === 'Inflationary'
-    //                 ? true
-    //                 : crypto.tokenomics.supply_model === 'Deflationary'
-    //                 ? false
-    //                 : null,
-    //           };
-    //         },
-    //       );
-    //       setCryptos(parsed_cryptos);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error trying to get tokenomics data: ', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    const fetchTokenomicsData =  () => {
-        if (!globalData || globalData.tokenomics.status !== 200) {
-          setCryptos([]);
-        } else {
-          const parsed_cryptos = globalData.tokenomics.message.tokenomics_data.map(
-            crypto => {
-              return {
-                name: findCoinNameBySymbol(
-                  crypto.tokenomics.token.replace(' ', '').toUpperCase(),
-                ),
-                symbol: crypto.tokenomics.token.replace(' ', '').toUpperCase(),
-                circulatingSupply: Number(
-                  crypto.tokenomics.circulating_supply.replace(/,/g, ''),
-                ),
-                totalSupply:
-                  crypto.tokenomics.total_supply.replace(' ', '') === '∞'
-                    ? Infinity
-                    : parseNumberFromString(crypto.tokenomics.total_supply),
-                maxSupply:
-                  crypto.tokenomics.max_supply.replace(' ', '') === '∞'
-                    ? Infinity
-                    : parseNumberFromString(crypto.tokenomics.max_supply),
-                inflationary:
-                  crypto.tokenomics.supply_model === 'Inflationary'
-                    ? true
-                    : crypto.tokenomics.supply_model === 'Deflationary'
-                    ? false
-                    : null,
-              };
-            },
-          );
-          setCryptos(parsed_cryptos);
-        }
+    const fetchTokenomicsData = () => {
+      if (!globalData || globalData.tokenomics.status !== 200) {
+        setCryptos([]);
+      } else {
+        const parsed_cryptos =
+          globalData.tokenomics.message.tokenomics_data.map(crypto => {
+            return {
+              name: findCoinNameBySymbol(
+                crypto.tokenomics.token.replace(' ', '').toUpperCase(),
+              ),
+              symbol: crypto.tokenomics.token.replace(' ', '').toUpperCase(),
+              circulatingSupply: Number(
+                crypto.tokenomics.circulating_supply.replace(/,/g, ''),
+              ),
+              totalSupply:
+                crypto.tokenomics.total_supply.replace(' ', '') === '∞'
+                  ? Infinity
+                  : parseNumberFromString(crypto.tokenomics.total_supply),
+              maxSupply:
+                crypto.tokenomics.max_supply.replace(' ', '') === '∞'
+                  ? Infinity
+                  : parseNumberFromString(crypto.tokenomics.max_supply),
+              inflationary:
+                crypto.tokenomics.supply_model === 'Inflationary'
+                  ? true
+                  : crypto.tokenomics.supply_model === 'Deflationary'
+                  ? false
+                  : null,
+            };
+          });
+        setCryptos(parsed_cryptos);
+      }
     };
     fetchTokenomicsData();
   }, [globalData, coin]);
@@ -288,15 +250,11 @@ const Tokenomics = ({getSectionData, coin, handleSectionContent, globalData, loa
                 styles.alignLeft,
                 activeSupply && styles.activeOrangeButton,
               ]}
-              onPress={() => handleSupplyButton()}>
-              <Text
-                style={[styles.supplyText, activeSupply && styles.activeText]}>
-                Circulating supply
-              </Text>
-            </TouchableOpacity>
-            <View style={[styles.button, styles.alignRight]}>
-              <Text style={styles.totalText}>Total Tokens in Supply</Text>
-            </View>
+              onPress={() => handleSupplyButton()}
+            />
+            <Text style={styles.supplyText}>Circulating Supply</Text>
+            <View style={[styles.button, styles.alignRight]} />
+            <Text style={styles.totalText}>Total Tokens in Supply</Text>
           </View>
           <View style={styles.tokenItemsContainer}>
             {cryptos &&

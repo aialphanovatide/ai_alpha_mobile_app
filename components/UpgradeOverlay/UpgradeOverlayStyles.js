@@ -3,17 +3,21 @@ const {StyleSheet} = require('react-native');
 const {AppThemeContext} = require('../../context/themeContext');
 
 const useUpgradeOverlayStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     overlayContainer: {
-      flex: 1,
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: theme.upgradeOverlayBgColor,
+      backgroundColor: 'transparent',
+      paddingTop: 36,
+      justifyContent: 'center',
+      zIndex: 10000,
     },
     overlayImage: {
-      flex: 1,
-      padding: '25%',
-      justifyContent: 'center',
+      width: 390,
+      height: 360,
+      paddingHorizontal: 30,
+      paddingBottom: 6,
+      justifyContent: 'flex-end',
       alignItems: 'center',
     },
     overlayContent: {
@@ -81,6 +85,48 @@ const useUpgradeOverlayStyles = () => {
       color: theme.textColor,
       fontSize: theme.responsiveFontSize,
       textAlign: 'center',
+    },
+    purchaseButton: {
+      width: '100%',
+      paddingVertical: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    purchaseButtonText: {
+      color: '#FFFFFF',
+      fontSize: theme.titleFontSize * 0.9,
+      fontFamily: theme.fontSemibold,
+    },
+    linearGradient: {
+      width: '100%',
+      height: 50,
+      borderRadius: 3,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginVertical: 10,
+    },
+    overlayTitle: {
+      width: '100%',
+      fontSize: 23,
+      fontFamily: theme.fontSemibold,
+      color: theme.upgradeOverlayTitleColor,
+      textAlign: 'center',
+    },
+    overlayDescription: {
+      width: '100%',
+      fontSize: 14,
+      fontFamily: theme.fontMedium,
+      color: theme.upgradeOverlayTitleColor,
+      textAlign: 'center',
+    },
+    absolute: {
+      ...StyleSheet.absoluteFillObject,
+    },
+    chartsOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      backgroundColor: isDarkMode ? '#33333380' : '#FFFFFF60',
     },
   });
   return styles;

@@ -61,9 +61,10 @@ const Alerts = ({route, navigation}) => {
   const options = ['1H', '4H', '1D', '1W'];
   const [activeAlertOption, setActiveAlertOption] = useState(options[0]);
   const [botName, setBotName] = useState(null);
-  const [subscribed, setSubscribed] = useState(null);
+  const [hasSubscription, setHasSubscription] = useState(null);
   const [subscribedCategories, setSubscribedCategories] = useState([]);
-  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
+  const {findCategoryInIdentifiers, userInfo, subscribed} =
+    useContext(RevenueCatContext);
   const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
   const styles = useAlertsStyles();
   const [alerts, setAlerts] = useState([]);
@@ -104,11 +105,14 @@ const Alerts = ({route, navigation}) => {
   // This useEffect handles the content regulation with the user's subscriptions
   useEffect(() => {
     if (Object.keys(activeCoin).length !== 0) {
-      const hasCoinSubscription = findCategoryInIdentifiers(
+      let hasCoinSubscription = findCategoryInIdentifiers(
         activeCoin.category_name,
         userInfo.entitlements,
       );
-      setSubscribed(hasCoinSubscription);
+      if (subscribed) {
+        hasCoinSubscription = true;
+      }
+      setHasSubscription(hasCoinSubscription);
     } else {
       const found_subscribed_categories = [];
       categories?.forEach(category => {
@@ -123,6 +127,7 @@ const Alerts = ({route, navigation}) => {
       });
       // console.log('Found subscribed categories: ', found_subscribed_categories);
       setSubscribedCategories(found_subscribed_categories);
+      setHasSubscription(subscribed);
     }
   }, [activeCoin, userInfo]);
 
@@ -195,6 +200,9 @@ const Alerts = ({route, navigation}) => {
     setActiveAlertOption(option);
   };
 
+  console.log('Alerts subscription: ', hasSubscription);
+  console.log('RC subscription: ', subscribed);
+
   return (
     <SafeAreaView style={styles.mainContainer} ref={ref}>
       <LinearGradient
@@ -216,8 +224,7 @@ const Alerts = ({route, navigation}) => {
           {isLoading ? (
             // Display the loader if the data requests didn't finish
             <SkeletonLoader quantity={5} type="alerts" />
-          ) : subscribed || subscribedCategories.length > 0 ? (
-            // If the user has at least one subscription, it will render alerts for all the coins from the categories that has subscribed
+          ) : (
             <FlatList
               ref={ref}
               data={alerts}
@@ -234,11 +241,9 @@ const Alerts = ({route, navigation}) => {
               keyExtractor={item => item.alert_id.toString()}
               ListEmptyComponent={<NoAlertsView styles={styles} />}
             />
-          ) : (
-            // If the user isn't subscribed to any package, it will display the overlay
-            <UpgradeOverlay isBlockingByCoin={true} screen={'Alerts'} />
           )}
         </View>
+        {hasSubscription ? <></> : <UpgradeOverlay />}
       </LinearGradient>
     </SafeAreaView>
   );

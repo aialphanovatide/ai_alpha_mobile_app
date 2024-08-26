@@ -40,8 +40,7 @@ const LoginForm = ({route}) => {
   const {setUserId} = useUserId();
   const {setRawUserId} = useRawUserId();
   const [error, setError] = useState('');
-  const colorScheme = Appearance.getColorScheme();
-  const {toggleDarkMode, isDarkMode} = useContext(AppThemeContext);
+  const {isDarkMode} = useContext(AppThemeContext);
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
   const styles = useLoginFormStyles();
 
@@ -61,10 +60,6 @@ const LoginForm = ({route}) => {
 
   useEffect(() => {
     const checkToken = async () => {
-      if (colorScheme === 'dark') {
-        toggleDarkMode();
-      }
-
       const shouldGoToIntroduction = await AsyncStorage.getItem(
         'hasIntroduced',
       );
@@ -74,6 +69,7 @@ const LoginForm = ({route}) => {
       const userEmail = await AsyncStorage.getItem('userEmail');
       const rawUserId = await AsyncStorage.getItem('rawUserId');
 
+      navigation.navigate('IntroductoryScreen');
       if (shouldGoToIntroduction === null) {
         await AsyncStorage.setItem('hasIntroduced', 'false');
         navigation.navigate('IntroductoryScreen');

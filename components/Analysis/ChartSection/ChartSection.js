@@ -31,6 +31,8 @@ import ChartButtons from './ChartButtons';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 const initialSessionData = {
   security_token: null,
@@ -54,7 +56,7 @@ const ChartSection = ({route, navigation}) => {
   const [supportResistanceLoading, setSupportResistanceLoading] =
     useState(false);
   const [selectedCandle, setSelectedCandle] = useState(null);
-
+  const {subscribed} = useContext(RevenueCatContext);
   // Hook to request again the data to CapitalCom when changing the time interval or the coin (changing to other chart)
   useEffect(() => {
     setLoading(true);
@@ -210,6 +212,7 @@ const ChartSection = ({route, navigation}) => {
               />
             </View>
           </ScrollView>
+          {subscribed ? <></> : <UpgradeOverlay />}
         </SafeAreaView>
       </LinearGradient>
     );
@@ -272,7 +275,7 @@ const ChartSection = ({route, navigation}) => {
   // Function to handle the X button interaction on the horizontal chart
 
   const handleBackInteraction = () => {
-    console.log("FUNCTION CALLED");
+    console.log('FUNCTION CALLED');
     if (isLandscape || isHorizontal) {
       handleScreenOrientationChange('PORTRAIT');
       navigation.canGoBack(false);
@@ -361,6 +364,19 @@ const ChartSection = ({route, navigation}) => {
                 source={require('../../../assets/images/chart_alpha_logo.png')}
                 style={styles.chartBackgroundImage}
                 resizeMode="contain"
+              />
+              <LinearGradient
+                useAngle
+                angle={90}
+                colors={['rgba(22, 22, 22, 1)', 'transparent']}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 40,
+                  zIndex: 1,
+                }}
               />
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
@@ -510,7 +526,7 @@ const ChartSection = ({route, navigation}) => {
                       ]}
                       key={`resistance-${index}`}
                       // styles for the line itself
-                      style={{data: {stroke: '#F012A1', strokeWidth: 2}}}
+                      style={{data: {stroke: '#2DDA99', strokeWidth: 2}}}
                       labels={() => [`$${formatLabelNumber(level)} `]}
                       labelComponent={
                         <VictoryLabel
@@ -519,17 +535,17 @@ const ChartSection = ({route, navigation}) => {
                           textAnchor="start"
                           inline={true}
                           style={{
-                            fill: '#fff',
-                            fontSize: 11,
-                            fontFamily: theme.fontMedium,
+                            fill: '#F7F7F7',
+                            fontSize: 10,
+                            fontFamily: theme.font,
                           }}
                           backgroundPadding={[
                             {top: -1, bottom: 6, left: 2.3, right: 0},
                           ]}
                           backgroundStyle={[
                             {
-                              fill: '#F012A1',
-                              opacity: 0.8,
+                              fill: '#2DDA99',
+                              opacity: 0.9,
                             },
                           ]}
                         />
@@ -548,7 +564,7 @@ const ChartSection = ({route, navigation}) => {
                       ]}
                       key={`support-${index}`}
                       style={{
-                        data: {stroke: '#C539B4', strokeWidth: 2},
+                        data: {stroke: '#D82A2B', strokeWidth: 2},
                       }}
                       labels={() => [`$${formatLabelNumber(level)} `]}
                       labelComponent={
@@ -563,14 +579,14 @@ const ChartSection = ({route, navigation}) => {
                           style={[
                             {
                               fill: '#F7F7F7',
-                              fontSize: 11,
-                              fontFamily: theme.fontMedium,
+                              fontSize: 10,
+                              fontFamily: theme.font,
                             },
                           ]}
                           backgroundStyle={[
                             {
-                              fill: '#C539B4',
-                              opacity: 0.8,
+                              fill: '#D82A2B',
+                              opacity: 1,
                             },
                           ]}
                         />
@@ -583,11 +599,11 @@ const ChartSection = ({route, navigation}) => {
               onPress={
                 isLandscape
                   ? () => {
-                      console.log("LANDSCAPE FUNCTION CALLED");
+                      console.log('LANDSCAPE FUNCTION CALLED');
                       handleBackInteraction();
                     }
                   : () => {
-                      console.log("PORTRAIT FUNCTION CALLED");
+                      console.log('PORTRAIT FUNCTION CALLED');
                       navigation.canGoBack(false);
                       handleScreenOrientationChange('LANDSCAPE');
                     }
@@ -619,6 +635,7 @@ const ChartSection = ({route, navigation}) => {
             />
           </View>
         </ScrollView>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </SafeAreaView>
     </LinearGradient>
   );

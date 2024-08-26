@@ -52,7 +52,7 @@ const useAccountStyles = () => {
     optionsContainer: {
       marginVertical: theme.boxesVerticalMargin,
       width: '100%',
-      padding: 20,
+      padding: 12,
     },
     itemContainer: {
       position: 'relative',
@@ -62,11 +62,11 @@ const useAccountStyles = () => {
       padding: 12,
       backgroundColor: theme.boxesBackgroundColor,
       alignItems: 'center',
-      borderRadius: 2,
+      borderRadius: 3,
     },
     itemLogoContainer: {
-      width: 28,
-      height: 28,
+      maxWidth: 26,
+      height: 26,
       marginHorizontal: 5,
       alignItems: 'center',
       justifyContent: 'center',

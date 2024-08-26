@@ -27,6 +27,8 @@ import {useNavigation} from '@react-navigation/core';
 import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes';
 import moment from 'moment';
 import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
 const VixChart = ({route, candlesToShow = 30}) => {
   const styles = useChartSectionStyles();
@@ -38,6 +40,7 @@ const VixChart = ({route, candlesToShow = 30}) => {
     useScreenOrientation();
   const [selectedCandle, setSelectedCandle] = useState(null);
   const navigation = useNavigation();
+  const {subscribed} = useContext(RevenueCatContext);
 
   // Hook to request again the data to CapitalCom when changing the time interval or the coin (changing to other chart)
   useEffect(() => {
@@ -196,6 +199,7 @@ const VixChart = ({route, candlesToShow = 30}) => {
               />
             </View>
           </ScrollView>
+          {subscribed ? <></> : <UpgradeOverlay />}
         </SafeAreaView>
       </LinearGradient>
     );
@@ -276,6 +280,19 @@ const VixChart = ({route, candlesToShow = 30}) => {
                 source={require('../../../assets/images/chart_alpha_logo.png')}
                 style={[styles.chartBackgroundImage, {top: 45}]}
                 resizeMode="contain"
+              />
+              <LinearGradient
+                useAngle
+                angle={90}
+                colors={['rgba(22, 22, 22, 1)', 'transparent']}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: '10%',
+                  bottom: 0,
+                  width: 50,
+                  zIndex: 1,
+                }}
               />
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
@@ -428,8 +445,10 @@ const VixChart = ({route, candlesToShow = 30}) => {
                     }
               }>
               <Image
-                style={[styles.chartsHorizontalButton, {bottom: Platform.OS === 'android' ? 90 : 100,
-                }]}
+                style={[
+                  styles.chartsHorizontalButton,
+                  {bottom: Platform.OS === 'android' ? 85 : 100},
+                ]}
                 resizeMode="contain"
                 source={
                   isLandscape && isHorizontal
@@ -450,13 +469,16 @@ const VixChart = ({route, candlesToShow = 30}) => {
               />
             </TouchableOpacity>
             <Image
-              style={[styles.chartsZoomIndicator, {bottom: Platform.OS === 'android' ? 60 : 70,
-              }]}
+              style={[
+                styles.chartsZoomIndicator,
+                {bottom: Platform.OS === 'android' ? 60 : 70},
+              ]}
               resizeMode="contain"
               source={require('../../../assets/images/home/charts/zoom-expand.png')}
             />
           </View>
         </ScrollView>
+        {subscribed ? <></> : <UpgradeOverlay />}
       </SafeAreaView>
     </LinearGradient>
   );

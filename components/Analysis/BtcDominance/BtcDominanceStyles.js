@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useBtcDominanceStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     background: {
       flex: 1,
@@ -41,12 +41,13 @@ const useBtcDominanceStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      top: 35,
+      top: 10,
       left: '7.5%',
-      width: 60,
-      height: 60,
-      opacity: 0.8,
-      zIndex: -10,
+      width: 52,
+      height: 44,
+      opacity: 0.5,
+      zIndex: -2,
+      tintColor: '#A3A3A350',
     },
     timeframeContainer: {
       flex: 1,
@@ -64,13 +65,29 @@ const useBtcDominanceStyles = () => {
       textAlign: 'left',
       lineHeight: 20,
     },
-    chartsZoomIndicator: {
-      width: 28,
-      height: 28,
+    chartsHorizontalButton: {
+      width: 24,
+      height: 24,
       position: 'absolute',
-      bottom: 55,
-      right: 80,
+      bottom: 50,
+      left: -160,
       tintColor: theme.textColor,
+    },
+    chartBackButton: {
+      width: 35,
+      height: 35,
+      position: 'absolute',
+      bottom: 280,
+      right: 30,
+      tintColor: theme.textColor,
+    },
+    chartsZoomIndicator: {
+      width: 20,
+      height: 24,
+      position: 'absolute',
+      bottom: 50,
+      right: 80,
+      tintColor: isDarkMode ? '#737373' : '#A3A3A3',
     },
   });
   return styles;

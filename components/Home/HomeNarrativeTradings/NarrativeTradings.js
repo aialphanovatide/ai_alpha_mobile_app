@@ -1,4 +1,12 @@
-import {Image, View, Text, TouchableOpacity} from 'react-native';
+import {
+  Image,
+  View,
+  Text,
+  TouchableOpacity,
+  Platform,
+  UIManager,
+  LayoutAnimation,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
@@ -10,14 +18,31 @@ import useHomeNarrativeTradingStyles from './NarrativeTradingsStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const NarrativeTradingItem = ({title, image, item, handleNavigation}) => {
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+const NarrativeTradingItem = ({
+  title,
+  image,
+  item,
+  handleNavigation,
+  index,
+  expanded,
+}) => {
   const styles = useHomeNarrativeTradingStyles();
   const {isDarkMode} = useContext(AppThemeContext);
 
   return (
     <TouchableOpacity
       onPress={() => handleNavigation(item)}
-      style={styles.item}>
+      style={[
+        styles.item,
+        index === 0 && !expanded ? {borderBottomWidth: 0} : {},
+      ]}>
       <FastImage
         source={{
           uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
@@ -30,7 +55,7 @@ const NarrativeTradingItem = ({title, image, item, handleNavigation}) => {
           }.png`,
           priority: FastImage.priority.high,
         }}
-        style={styles.imageStyle}
+        style={[styles.imageStyle, index > 0 && !expanded ? styles.hidden : {opacity: 1}]}
         resizeMode="contain"
         fallback={true}
       />
@@ -48,14 +73,17 @@ const NarrativeTradings = ({handleAboutPress}) => {
   const [expanded, setExpanded] = useState(false);
   const navigation = useNavigation();
   const aboutIconStyles = {
-    top: 22,
+    top: 24,
   };
 
   useEffect(() => {
     setNarrativeTradingItems(narrativeTradingData);
   }, [narrativeTradingData]);
 
-  const handlePress = () => setExpanded(!expanded);
+  const handlePress = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setExpanded(!expanded);
+  };
 
   const handleNavigation = async item => {
     navigation.navigate('NarrativeTradingArticleScreen', {
@@ -91,6 +119,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
       <Text style={styles.mainTitle}>Market Narratives</Text>
       <AboutIcon
         handleAboutPress={handleAboutPress}
+        title={home_static_data.narrativeTradings.sectionTitle}
         description={home_static_data.narrativeTradings.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
@@ -102,15 +131,17 @@ const NarrativeTradings = ({handleAboutPress}) => {
             <View
               style={[
                 styles.itemWrapper,
-                index > 0 && !expanded ? styles.hidden : {},
+                index > 0 && !expanded ? styles.hidden : {opacity: 1},
               ]}
               key={index}>
               <NarrativeTradingItem
                 key={item.id}
+                index={index}
                 title={item.title}
                 image={item.image}
                 item={item}
                 handleNavigation={handleNavigation}
+                expanded={expanded}
               />
               <TouchableOpacity
                 style={[styles.arrowContainer, index > 0 ? styles.hidden : {}]}

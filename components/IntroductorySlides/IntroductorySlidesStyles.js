@@ -13,22 +13,25 @@ const useIntroductorySlidesStyles = () => {
     },
     slide: {
       flex: 1,
+      position: 'relative',
       width: theme.width,
       height: theme.height,
-      padding: 20,
       alignSelf: 'center',
       alignItems: 'center',
     },
     mainImage: {
       width: 350,
       height: 200,
+      marginHorizontal: 18,
     },
     contentContainer: {
       width: '100%',
       marginVertical: 16,
-      padding: 8,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    items: {
+      paddingHorizontal: 22,
     },
     title: {
       textAlign: 'center',
@@ -60,11 +63,18 @@ const useIntroductorySlidesStyles = () => {
       alignSelf: 'flex-start',
     },
     informationText: {
+      maxWidth: 300,
       fontSize: 14,
       fontFamily: theme.font,
       color: '#FAFAFA',
       textAlign: 'left',
       alignSelf: 'center',
+    },
+    skipContainer: {
+      position: 'absolute',
+      width: '100%',
+      paddingHorizontal: 12,
+      bottom: 68,
     },
     boldInformativeText: {
       width: '100%',
@@ -77,11 +87,10 @@ const useIntroductorySlidesStyles = () => {
       textAlign: 'center',
     },
     skipButton: {
-      width: '100%',
       alignSelf: 'center',
       fontFamily: theme.font,
       color: '#A3A3A3',
-      fontSize: 10,
+      fontSize: 12,
       textAlign: 'center',
     },
     carouselContainer: {
@@ -229,7 +238,36 @@ const useIntroductorySlidesStyles = () => {
       width: 6,
       height: 10,
       tintColor: '#FF6C0D',
-    }
+    },
+    popUpPressableOverlay: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+    },
+    invisiblePressable: {
+      width: '100%',
+      height: 170,
+      backgroundColor: 'transparent',
+      alignSelf: 'flex-start',
+      justifyContent: 'flex-start',
+    },
+    bottomTransparentButton: {
+      position: 'absolute',
+      bottom: 0,
+      width: '20%',
+      height: 100,
+      zIndex: 30,
+    },
+    categoriesTape: {
+      position: 'absolute',
+      top: 135,
+      left: -150,
+      height: 70,
+      overflow: 'visible',
+      zIndex: 200,
+    },
   });
   return styles;
 };

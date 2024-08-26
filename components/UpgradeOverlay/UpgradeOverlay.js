@@ -1,107 +1,61 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ImageBackground,
-} from 'react-native';
+import {View, Text, TouchableOpacity, ImageBackground} from 'react-native';
 import useUpgradeOverlayStyles from './UpgradeOverlayStyles';
 import {useNavigation} from '@react-navigation/core';
-import {RevenueCatContext} from '../../context/RevenueCatContext';
-import {TopMenuContext} from '../../context/topMenuContext';
 import {AppThemeContext} from '../../context/themeContext';
+import LinearGradient from 'react-native-linear-gradient';
+import {BlurView} from '@react-native-community/blur';
 
-const UpgradeOverlay = ({isBlockingByCoin, screen}) => {
-  const screens = {
-    Charts: {
-      image: {
-        light: require('../../assets/images/home/upgradeOverlay/charts-light-blur-updated.png'),
-        dark: require('../../assets/images/home/upgradeOverlay/charts-dark-blur-updated.png'),
-      },
-    },
-    News: {
-      image: {
-        light: require('../../assets/images/home/upgradeOverlay/news-light-blur.png'),
-        dark: require('../../assets/images/home/upgradeOverlay/news-dark-blur.png'),
-      },
-    },
-    Alerts: {
-      image: {
-        light: require('../../assets/images/home/upgradeOverlay/alerts-blur-light-updated.png'),
-        dark: require('../../assets/images/home/upgradeOverlay/alerts-blur-dark-updated.png'),
-      },
-    },
-    Chatbot: {
-      image: {
-        light: require('../../assets/images/home/upgradeOverlay/chatbot-blur.png'),
-        dark: require('../../assets/images/home/upgradeOverlay/chatbot-dark.png'),
-      },
-    },
-  };
-  const [activeBlur, setActiveBlur] = useState(screens[screen]);
-  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
-  const [subscribed, setSubscribed] = useState(false);
+const UpgradeOverlay = ({isCharts = null}) => {
   const navigation = useNavigation();
-  const {activeCoin} = useContext(TopMenuContext);
   const styles = useUpgradeOverlayStyles();
   const {isDarkMode} = useContext(AppThemeContext);
-
-  // This useEffect handles the content regulation
-  useEffect(() => {
-    if (isBlockingByCoin && activeCoin && activeCoin !== undefined) {
-      const hasCoinSubscription = findCategoryInIdentifiers(
-        activeCoin.category_name,
-        userInfo.entitlements,
-      );
-      setSubscribed(hasCoinSubscription);
-    } else {
-      if (isBlockingByCoin === false) {
-        setSubscribed(userInfo.subscribed);
-      }
-    }
-  }, [activeCoin, userInfo]);
-
   const onUpgradePressed = () => {
     navigation.navigate('Account', {screen: 'Subscriptions'});
   };
 
-  return subscribed && subscribed === true ? (
-    <></>
-  ) : isBlockingByCoin ? (
-    <View style={styles.overlayContainer}>
-      <ImageBackground
-        style={styles.overlayImage}
-        source={isDarkMode ? activeBlur.image.dark : activeBlur.image.light}
-        resizeMode={'cover'}>
-        <View style={styles.lockContainer}>
-          <Image
-            resizeMode="contain"
-            style={styles.lockIcon}
-            source={require('../../assets/images/lock.png')}
-          />
-        </View>
-        <TouchableOpacity
-          style={styles.upgradeButton}
-          onPress={onUpgradePressed}>
-          <Text style={styles.buttonText}>Upgrade</Text>
-        </TouchableOpacity>
-      </ImageBackground>
-    </View>
-  ) : (
-    <View style={styles.overlayContainer}>
-      <View style={styles.analysisOverlayContent}>
-        <Image
-          resizeMode="contain"
-          style={styles.secondLockIcon}
-          source={require('../../assets/images/lock.png')}
+  return (
+    <View
+      style={[
+        styles.overlayContainer,
+        isCharts ? {justifyContent: 'flex-start'} : {},
+      ]}>
+      {isCharts ? (
+        <View style={styles.chartsOverlay} />
+      ) : (
+        <BlurView
+          style={styles.absolute}
+          blurType={isDarkMode ? 'dark' : 'light'}
+          blurAmount={1.75}
+          blurRadius={1}
         />
-        <TouchableOpacity
-          style={styles.upgradeButton}
-          onPress={onUpgradePressed}>
-          <Text style={styles.buttonText}>Upgrade</Text>
-        </TouchableOpacity>
-      </View>
+      )}
+      <ImageBackground
+        fadeDuration={0.125}
+        resizeMode="contain"
+        source={
+          isDarkMode
+            ? require('../../assets/images/home/upgradeOverlay/upgrade-overlay-dark.png')
+            : require('../../assets/images/home/upgradeOverlay/upgrade-overlay-light.png')
+        }
+        style={styles.overlayImage}>
+        <Text style={styles.overlayTitle}>Start your 7-day free trial</Text>
+        <Text
+          style={
+            styles.overlayDescription
+          }>{`with unlimited content, notifications,\n and premium features.`}</Text>
+        <LinearGradient
+          colors={['#F9AF08', '#FC5B04', '#FC5B04']}
+          style={styles.linearGradient}
+          start={{x: 0, y: 0.5}}
+          end={{x: 1, y: 0.5}}>
+          <TouchableOpacity
+            style={styles.purchaseButton}
+            onPress={() => onUpgradePressed()}>
+            <Text style={styles.purchaseButtonText}>Activate Now</Text>
+          </TouchableOpacity>
+        </LinearGradient>
+      </ImageBackground>
     </View>
   );
 };

@@ -16,15 +16,18 @@ const useTopStoriesStyles = () => {
     },
     storyWrapper: {
       flex: 1,
+      opacity: 1,
       flexDirection: 'row',
       position: 'relative',
     },
     hidden: {
       display: 'none',
+      opacity: 0,
     },
     mainTitle: {
       marginHorizontal: 16,
-      marginVertical: 18,
+      marginTop: 24,
+      marginBottom: 8,
       color: theme.titleColor,
       fontSize: 16,
       fontFamily: theme.fontMedium,

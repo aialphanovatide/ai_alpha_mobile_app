@@ -1,14 +1,30 @@
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  LayoutAnimation,
+  Platform,
+  Text,
+  TouchableOpacity,
+  UIManager,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useDappsStyles from './DAppsStyles';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const ProtocolItem = ({
   protocol,
   styles,
   handleActiveProtocol,
   activeProtocol,
+  maxLength,
 }) => {
   const [hasImage, setHasImage] = useState(false);
 
@@ -23,7 +39,7 @@ const ProtocolItem = ({
           setHasImage(true);
         }
       } catch (error) {
-        console.error('Error al verificar el URL de la imagen:', error);
+        console.error('Error verifying the image URL:', error);
         setHasImage(false);
       }
     };
@@ -44,25 +60,19 @@ const ProtocolItem = ({
 
     return formattedNum + abbrev[tier];
   };
-
-  const calculateMarginBottom = (text, threshold) => {
-    if (text.length > threshold) {
-      return '30%';
-    } else {
-      return '15%';
-    }
-  };
-
-  const marginValue = calculateMarginBottom(protocol.description, 40);
   return (
     <TouchableOpacity
-      onPress={() => handleActiveProtocol(protocol)}
+      onPress={() => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        handleActiveProtocol(protocol);
+      }}
       activeOpacity={1}
       style={[
         styles.protocolItemContainer,
         activeProtocol &&
           activeProtocol.name === protocol.name &&
-          styles.activeItem && {marginBottom: marginValue},
+          styles.activeItem,
+        maxLength < 100 && {height: 100},
       ]}>
       {hasImage ? (
         <FastImage
@@ -92,11 +102,12 @@ const ProtocolItem = ({
           </Text>
         </View>
         <Text
-          style={
+          style={[
             activeProtocol && activeProtocol.name === protocol.name
               ? styles.protocolDescription
-              : styles.hidden
-          }>
+              : styles.hidden,
+            maxLength < 100 && {height: 60},
+          ]}>
           {protocol.description}
         </Text>
         <View style={styles.arrowButton}>
@@ -125,6 +136,7 @@ const DApps = ({
   const styles = useDappsStyles();
   const [activeProtocol, setActiveProtocol] = useState(null);
   const [mappedData, setMappedData] = useState([]);
+  const [maxLength, setMaxLength] = useState(0);
 
   const generateImageUri = protocol => {
     const formatted_protocol = protocol.toLowerCase().replace(/\s/g, '');
@@ -132,36 +144,6 @@ const DApps = ({
   };
 
   useEffect(() => {
-    // setLoading(true);
-    // setMappedData([]);
-
-    // const fetchDAppsData = async coin => {
-    //   try {
-    //     const response = await getSectionData(
-    //       `/api/dapps?coin_bot_name=${coin}`,
-    //     );
-    //     if (response.status !== 200) {
-    //       setMappedData([]);
-    //     } else {
-    //       // console.log('Dapps: ', response.message);
-    //       const dapps_response = response.message.map(protocol => {
-    //         return {
-    //           id: protocol.id,
-    //           name: protocol.dapps,
-    //           description: protocol.description,
-    //           tvl: protocol.tvl,
-    //           image: generateImageUri(protocol.dapps),
-    //         };
-    //       });
-    //       setMappedData(dapps_response);
-    //     }
-    //   } catch (error) {
-    //     console.log('Error trying to get dApps data: ', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
     const fetchDAppsData = coin => {
       if (!globalData || globalData.dapps.status !== 200) {
         setMappedData([]);
@@ -176,6 +158,7 @@ const DApps = ({
           };
         });
         setMappedData(dapps_response);
+        setMaxLength(findMaxLengthDescription(dapps_response));
       }
     };
 
@@ -188,6 +171,17 @@ const DApps = ({
     } else {
       setActiveProtocol(protocol);
     }
+  };
+
+  const findMaxLengthDescription = data => {
+    let maxLength = 0;
+
+    data.forEach(item => {
+      if (item.description.length > maxLength) {
+        maxLength = item.description.length;
+      }
+    });
+    return maxLength;
   };
 
   useEffect(() => {
@@ -222,6 +216,7 @@ const DApps = ({
                 styles={styles}
                 handleActiveProtocol={handleActiveProtocol}
                 activeProtocol={activeProtocol}
+                maxLength={maxLength}
               />
             ))}
           </View>
