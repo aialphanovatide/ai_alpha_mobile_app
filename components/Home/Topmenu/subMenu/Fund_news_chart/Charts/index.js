@@ -310,7 +310,10 @@ const CandlestickChart = ({route}) => {
               disabled={loading}>
               <Image
                 source={require('../../../../../../assets/images/home/charts/chart-refresh.png')}
-                style={styles.refreshButton}
+                style={[
+                  styles.refreshButton,
+                  coinBot.toLowerCase() === 'btc' && loading ? {top: -110} : {},
+                ]}
                 resizeMode="contain"
               />
             </TouchableOpacity>

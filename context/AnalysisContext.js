@@ -88,10 +88,9 @@ const AnalysisContextProvider = ({children}) => {
               raw_analysis: item.analysis,
               id: item.analysis_id,
               coin_bot_id: item.coin_bot_id,
-              coin_bot_name: findCoinByCategoriesAndBotId(
-                categories,
-                item.coin_bot_id,
-              ),
+              coin_bot_name:
+                findCoinByCategoriesAndBotId(categories, item.coin_bot_id) ||
+                'btc',
               created_at: item.created_at,
               category: item.category_name,
               title: extractFirstTitleAndImage(item.analysis).title,

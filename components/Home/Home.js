@@ -11,10 +11,8 @@ import {AppThemeContext} from '../../context/themeContext';
 import {useScrollToTop} from '@react-navigation/native';
 import NarrativeTradings from './HomeNarrativeTradings/NarrativeTradings';
 import TopTenLosers from './Top10Losers/TopTenLosers';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useRawUserId} from '../../context/RawUserIdContext';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
-import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 
 const Home = ({route}) => {
   const styles = useHomeStyles();
@@ -43,16 +41,7 @@ const Home = ({route}) => {
         console.error('Error fetching user data:', error);
       }
     };
-    const fetchCustomerInfo = async () => {
-      try {
-        const customerInfo = await Purchases.getCustomerInfo();
-        console.log('Customer info IN HOME:', customerInfo);
-      } catch (error) {
-        console.error('Error fetching customer info:', error);
-      }
-    };
     fetchUserData();
-    fetchCustomerInfo();
   }, []);
 
   useScrollToTop(ref);
@@ -85,14 +74,6 @@ const Home = ({route}) => {
             title={aboutTitle}
           />
         )}
-        {/* {activePopUps && activePopUps !== undefined ? (
-          <IntroductoryPopUpsOverlay
-            handleActivePopUps={handleActivePopUps}
-            visible={activePopUps}
-          />
-        ) : (
-          <></>
-        )} */}
         <ScrollView
           bounces={false}
           alwaysBounceVertical={false}
