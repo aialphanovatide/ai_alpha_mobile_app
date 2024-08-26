@@ -33,11 +33,12 @@ const usePersonaliseProfileStyles = () => {
     },
     inputContainer: {
       alignSelf: 'stretch',
+      marginBottom: 20,
     },
     title: {
       color: theme.textColor,
       textAlign: 'left',
-      marginLeft: 0,
+      marginLeft: '3.5%',
       fontFamily: theme.fontSemibold,
     },
     loginContainer: {
@@ -159,7 +160,18 @@ const usePersonaliseProfileStyles = () => {
       fontFamily: theme.fontMedium,
       fontSize: 15,
       marginTop: 0,
-      marginBottom: 15,
+      marginLeft: '3.5%',
+    },
+    emailContainer: {
+      width: '100%',
+      paddingVertical: 10,
+      marginTop: 5,
+      marginBottom: 1,
+      borderRadius: 5,
+      borderWidth: 0.3,
+      borderColor: 'transparent',
+      opacity: 0.8,
+      backgroundColor: theme.loginInputBgColor,
     },
 
   });

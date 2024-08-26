@@ -42,6 +42,7 @@ import {
   auth0ManagementAPI_Secret,
 } from './src/constants/index';
 import eventEmitter from './eventEmitter';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {Top10MoversContextProvider} from './context/TopTenMoversContext';
@@ -52,6 +53,7 @@ PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [backgroundColor, setBackgroundColor] = useState(isDarkMode ? '#0b0b0a' : '#fbfbfa');
   const colorScheme = Appearance.getColorScheme();
   const [barScheme, setBarScheme] = useState('default');
   const [isConnected, setIsConnected] = useState(true);
@@ -59,14 +61,21 @@ const App = () => {
   const [serverError, setServerError] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [serverWentDown, setServerWentDown] = useState(0);
+  const [userSignedUp, setUserSignedUp] = useState(false);
 
   useEffect(() => {
-    const subscription = eventEmitter.addListener('darkModeChanged', isDark => {
+    const darkModeSubscription = eventEmitter.addListener('darkModeChanged', isDark => {
       setIsDarkMode(isDark);
+      setBackgroundColor(isDark ? '#0b0b0a' : '#fbfbfa');
+    });
+
+    const backgroundColorSubscription = eventEmitter.addListener('backgroundColorChange', color => {
+      setBackgroundColor(color);
     });
 
     return () => {
-      subscription.remove();
+      darkModeSubscription.remove();
+      backgroundColorSubscription.remove();
     };
   }, []);
   /*
@@ -282,14 +291,14 @@ const App = () => {
                 <SafeAreaView
                   style={{
                     flex: 0,
-                    backgroundColor: isDarkMode ? '#0F0F0F' : '#EDEDED',
+                    backgroundColor: backgroundColor,
                   }}></SafeAreaView>
                 <SafeAreaView
                   style={[
                     styles.container,
                     {
                       flex: 1,
-                      backgroundColor: isDarkMode ? '#0b0b0a' : '#fbfbfa',
+                      backgroundColor: backgroundColor === '#FFB76E' ? '#FC5404' : backgroundColor,
                     },
                   ]}>
                   <StatusBar

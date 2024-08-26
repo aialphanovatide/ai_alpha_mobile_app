@@ -10,10 +10,10 @@ const useCustomInputStyles = () => {
       paddingHorizontal: 12,
       paddingVertical: 10,
       marginTop: 5,
-      marginBottom: 15,
+      marginBottom: 1,
       borderRadius: 5,
       borderWidth: 0.3,
-      borderColor: theme.textColor,
+      borderColor: 'transparent',
       backgroundColor: theme.loginInputBgColor,
     },
     dateInput: {

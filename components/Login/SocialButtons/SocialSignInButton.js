@@ -12,6 +12,7 @@ import { authorize, refresh } from 'react-native-app-auth';
 import {
   GOOGLE_CLIENT_IOS_ID,
   GOOGLE_CLIENT_WEB_ID,
+  GOOGLE_CLIENT_ANDROID_ID,
 } from '../../../src/constants';
 
 import { useUser } from '../../../context/UserContext';
@@ -35,11 +36,11 @@ const SocialSignInButton = () => {
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
 
 
-
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: GOOGLE_CLIENT_WEB_ID,
       iosClientId: GOOGLE_CLIENT_IOS_ID,
+      androidClientId: GOOGLE_CLIENT_ANDROID_ID,
       offlineAccess: true,
     });
   }, []);
@@ -97,12 +98,19 @@ const SocialSignInButton = () => {
 
 
   const signInWithGoogle = async () => {
+    console.log("My GOOGLE CLIENT WEB ID", GOOGLE_CLIENT_WEB_ID);
+    console.log("My GOOGLE CLIENT IOS ID", GOOGLE_CLIENT_IOS_ID);
+    console.log("My GOOGLE CLIENT ANDROID ID", GOOGLE_CLIENT_ANDROID_ID);
     try {
       console.log("Before authorize");
   
       const authResult = await auth0.webAuth.authorize({
+        //redirectUrl: 'com.ai-alpha-mobile-app.auth0://dev-zoejuo0jssw5jiid.us.auth0.com/android/com.ai-alpha-mobile-app/callback',
         connection: 'google-oauth2',
+        ephemeralSession: true
       });
+
+      console.log("Auth Result: ", authResult);
   
       console.log("After authorize");
   
@@ -258,20 +266,21 @@ const signInWithApple = async () => {
       domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
       clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
       <View>
-        <CustomButton
-          text="Continue with Apple"
-          onPress={() => signInWithApple()}
-          type="APPLE"
-          disabled={loggedInUser !== null}
-        />
+      {Platform.OS === 'ios' && (
+          <CustomButton
+            text="Continue with Apple"
+            onPress={() => signInWithApple()}
+            type="APPLE"
+            disabled={loggedInUser !== null}
+          />
+        )}
 
         <CustomButton
           text="Continue with Google"
           onPress={() => signInWithGoogle()}
           type="GOOGLE"
           disabled={loggedInUser !== null}
-        /> 
-
+        />
 
       </View>
     </Auth0Provider>

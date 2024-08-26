@@ -17,12 +17,9 @@ const useLoginFormStyles = () => {
       backgroundColor: theme.mainBackgroundColor,
     },
     logo: {
-      width: '50%',
+      width: '55%',
       height: theme.height * 0.3,
-      marginTop: 10,
-      marginBottom: 10,
-      maxHeight: 120,
-      maxWidth: 220,
+      marginTop: 0,
     },
     labelContainer: {
       flexDirection: 'row',
@@ -46,11 +43,12 @@ const useLoginFormStyles = () => {
       fontSize: theme.responsiveFontSize,
     },
     signUpContainer: {
-      flexDirection: 'row',
+      flexDirection: 'column',
+      alignItems: 'center',
       marginTop: 5,
     },
     signUpText: {
-      color: theme.textColor,
+      color: theme.secondaryTextColor,
       fontFamily: theme.font,
     },
     signUpButton: {
@@ -58,19 +56,20 @@ const useLoginFormStyles = () => {
       fontFamily: theme.fontMedium,
     },
     termsContainer: {
-      flexDirection: 'row',
-      marginTop: 0,
-      marginBottom: 10,
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: 35,
     },
     termsText: {
-      color: theme.textColor,
+      color: theme.secondaryTextColor,
       fontFamily: theme.font,
-      fontSize: 10,
+      fontSize: theme.responsiveFontSize * 0.75,
     },
     termsButton: {
-      color: theme.orange,
       fontFamily: theme.fontMedium,
-      fontSize: 10,
+      color: theme.secondaryTextColor,
+      fontSize: theme.responsiveFontSize * 0.80,
+      textDecorationLine: 'underline',
     },
   });
   return styles;

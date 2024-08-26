@@ -6,7 +6,7 @@ const useCustomButtonStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     container: {
-      paddingVertical: 15,
+      paddingVertical: 11,
       paddingHorizontal: 10,
       marginVertical: 4,
       borderRadius: 4,
@@ -30,8 +30,8 @@ const useCustomButtonStyles = () => {
     },
     container_PRIMARY: {
       backgroundColor: theme.orange,
-      width: 150,
-      marginBottom: 0,
+      width: '100%',
+      marginBottom: 15,
     },
     container_SECONDARY: {
       backgroundColor: theme.orange,
@@ -58,16 +58,21 @@ const useCustomButtonStyles = () => {
       color: theme.signUpButtonText,
     },
     text_PRIMARY: {
-      color: theme.signUpButtonText,
+      color: 'white',
+      fontFamily: theme.fontMedium,
     },
     text_TERTIARY: {
       color: theme.orange,
+      textDecorationLine: 'underline',
+      fontSize: 14,
     },
     text_GOOGLE: {
       color: theme.textColor,
+      fontFamily: theme.fontMedium,
     },
     text_APPLE: {
       color: theme.textColor,
+      fontFamily: theme.fontMedium,
     },
   });
   return styles;

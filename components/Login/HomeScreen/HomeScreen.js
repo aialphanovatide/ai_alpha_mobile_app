@@ -1,5 +1,6 @@
 import {TopMenuContext} from '../../../context/topMenuContext';
 import React, {useContext, useEffect} from 'react';
+import { Platform } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
@@ -65,30 +66,42 @@ const HomeScreen = () => {
 
   return (
     <GestureHandlerRootView style={[{flex: 1}]}>
-      <Text >This is my 'Founders' Identifier:</Text>
-      <Text selectable>{userId}</Text>
       <Tab.Navigator
-        initialRouteName={Home}
-        backBehavior={isLandscape && isHorizontal ? 'none' : 'initialRoute'}
-        screenOptions={{
-          unmountOnBlur: true,
-          headerShown: false,
-          tabBarStyle: {
-            height: isLandscape && isHorizontal ? 0 : 90,
-            paddingTop: 8,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: theme.navbarBgColor,
-            elevation: 0,
-          },
-          tabBarActiveTintColor: theme.activeOrange,
-          tabBarLabelStyle: {
-            marginBottom: 10,
-            fontSize: theme.responsiveFontSize * 0.8,
-            fontFamily: theme.fontSemibold,
-          },
-          tabBarHideOnKeyboard: true,
-        }}>
+    initialRouteName={Home}
+    backBehavior={isLandscape && isHorizontal ? 'none' : 'initialRoute'}
+    screenOptions={{
+      unmountOnBlur: true,
+      headerShown: false,
+      tabBarStyle: Platform.select({
+        ios: {
+          borderBlockColor: 'transparent',
+          height: isLandscape && isHorizontal ? 0 : 90,
+          paddingTop: 8,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.navbarBgColor,
+          shadowColor: '#000',
+          shadowOpacity: 0.19,
+          shadowRadius: 4,
+        },
+        android: {
+          borderBlockColor: 'transparent',
+          height: isLandscape && isHorizontal ? 0 : 90,
+          paddingTop: 8,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: theme.navbarBgColor,
+          elevation: 0,
+        },
+      }),
+      tabBarActiveTintColor: theme.activeOrange,
+      tabBarLabelStyle: {
+        marginBottom: 10,
+        fontSize: theme.responsiveFontSize * 0.8,
+        fontFamily: theme.fontSemibold,
+      },
+      tabBarHideOnKeyboard: true,
+    }}>
         <Tab.Screen
           name="Home"
           component={HomeStackScreen}
