@@ -161,7 +161,11 @@ const Total3Chart = ({candlesToShow = 30}) => {
               <LinearGradient
                 useAngle
                 angle={90}
-                colors={['rgba(22, 22, 22, 1)', 'transparent']}
+                colors={
+                  isDarkMode
+                    ? ['rgba(22, 22, 22, 1)', 'transparent']
+                    : ['rgba(232, 232, 232, 1)', 'transparent']
+                }
                 style={{
                   position: 'absolute',
                   left: 0,

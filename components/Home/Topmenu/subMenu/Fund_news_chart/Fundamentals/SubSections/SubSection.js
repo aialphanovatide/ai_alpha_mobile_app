@@ -1,7 +1,7 @@
-import { Image, Text, View } from 'react-native';
+import {Image, Text, View} from 'react-native';
 import React from 'react';
 import useFundamentalsStyles from '../FundamentalsStyles';
-import { AboutIcon } from '../AboutIcon';
+import {AboutIcon} from '../AboutIcon';
 import NoContentMessage from '../NoContentMessage/NoContentMessage';
 
 const SubSection = ({
@@ -23,6 +23,7 @@ const SubSection = ({
             <Text style={styles.subTitle}>{subtitle}</Text>
             {hasAbout && (
               <AboutIcon
+                title={subtitle}
                 handleAboutPress={handleAboutPress}
                 description={description}
               />

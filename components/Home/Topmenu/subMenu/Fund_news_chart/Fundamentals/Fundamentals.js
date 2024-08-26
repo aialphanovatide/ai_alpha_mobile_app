@@ -27,6 +27,7 @@ import AboutModal from './AboutModal';
 import {fundamentals_static_content} from './fundamentalsStaticData';
 import LinearGradient from 'react-native-linear-gradient';
 import {useScrollToTop} from '@react-navigation/native';
+import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 
 const initialContentState = {
   introduction: false,
@@ -53,14 +54,27 @@ const Fundamentals = ({route}) => {
   const [coin, setCoin] = useState(activeSubCoin);
   const {isDarkMode} = useContext(AppThemeContext);
   const styles = useFundamentalsStyles();
-  const [aboutVisible, setAboutVisible] = useState(false);
-  const [aboutDescription, setAboutDescription] = useState('');
   const [currentContent, setCurrentContent] = useState(fundamentalsMock[coin]);
   const [sharedData, setSharedData] = useState([]);
   const [fundamentalsData, setFundamentalsData] = useState(null);
   const [globalLoading, setGlobalLoading] = useState(true);
   const [hasContent, setHasContent] = useState(initialContentState);
+  const [aboutVisible, setAboutVisible] = useState(false);
+  const [aboutDescription, setAboutDescription] = useState('');
+  const [aboutTitle, setAboutTitle] = useState('About');
   const ref = useRef(null);
+
+  const handleAboutPress = (description = null, title = null) => {
+    if (description) {
+      setAboutDescription(description);
+    }
+
+    if (title) {
+      setAboutTitle(title);
+    }
+
+    setAboutVisible(!aboutVisible);
+  };
 
   useScrollToTop(ref);
 
@@ -69,14 +83,6 @@ const Fundamentals = ({route}) => {
       ...prevState,
       [section]: value,
     }));
-  };
-
-  const handleAboutPress = (description = null) => {
-    if (description) {
-      setAboutDescription(description);
-    }
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setAboutVisible(!aboutVisible);
   };
 
   // Function to handle the requests to all the endpoints related to the coin
@@ -171,6 +177,7 @@ const Fundamentals = ({route}) => {
         <SafeAreaView style={styles.container}>
           {aboutVisible && (
             <AboutModal
+              title={aboutTitle}
               description={aboutDescription}
               onClose={handleAboutPress}
               visible={aboutVisible}

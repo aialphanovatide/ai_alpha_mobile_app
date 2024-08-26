@@ -221,6 +221,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
   };
 
   const handleSubscriptionButton = () => {
+    handleActivePopUps();
     navigation.navigate('Account', {screen: 'Subscriptions'});
   };
 

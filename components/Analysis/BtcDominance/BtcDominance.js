@@ -25,7 +25,7 @@ import SkeletonLoader from '../../Loader/SkeletonLoader';
 import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
-import { useScreenOrientation } from '../../../hooks/useScreenOrientation';
+import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 
 const BtcDominanceChart = ({route, navigation}) => {
   const [chartData, setChartData] = useState([]);
@@ -203,7 +203,11 @@ const BtcDominanceChart = ({route, navigation}) => {
             <LinearGradient
               useAngle
               angle={90}
-              colors={['rgba(22, 22, 22, 1)', 'transparent']}
+              colors={
+                isDarkMode
+                  ? ['rgba(22, 22, 22, 1)', 'transparent']
+                  : ['rgba(232, 232, 232, 1)', 'transparent']
+              }
               style={{
                 position: 'absolute',
                 left: 0,

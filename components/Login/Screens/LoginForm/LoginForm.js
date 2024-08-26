@@ -69,7 +69,6 @@ const LoginForm = ({route}) => {
       const userEmail = await AsyncStorage.getItem('userEmail');
       const rawUserId = await AsyncStorage.getItem('rawUserId');
 
-      navigation.navigate('IntroductoryScreen');
       if (shouldGoToIntroduction === null) {
         await AsyncStorage.setItem('hasIntroduced', 'false');
         navigation.navigate('IntroductoryScreen');
