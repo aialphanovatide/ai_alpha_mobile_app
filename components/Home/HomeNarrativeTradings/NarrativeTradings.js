@@ -1,4 +1,12 @@
-import {Image, View, Text, TouchableOpacity} from 'react-native';
+import {
+  Image,
+  View,
+  Text,
+  TouchableOpacity,
+  Platform,
+  UIManager,
+  LayoutAnimation,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
@@ -9,6 +17,13 @@ import {NarrativeTradingContext} from '../../../context/NarrativeTradingContext'
 import useHomeNarrativeTradingStyles from './NarrativeTradingsStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const NarrativeTradingItem = ({
   title,
@@ -40,7 +55,7 @@ const NarrativeTradingItem = ({
           }.png`,
           priority: FastImage.priority.high,
         }}
-        style={styles.imageStyle}
+        style={[styles.imageStyle, index > 0 && !expanded ? styles.hidden : {opacity: 1}]}
         resizeMode="contain"
         fallback={true}
       />
@@ -65,7 +80,10 @@ const NarrativeTradings = ({handleAboutPress}) => {
     setNarrativeTradingItems(narrativeTradingData);
   }, [narrativeTradingData]);
 
-  const handlePress = () => setExpanded(!expanded);
+  const handlePress = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setExpanded(!expanded);
+  };
 
   const handleNavigation = async item => {
     navigation.navigate('NarrativeTradingArticleScreen', {
@@ -113,7 +131,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
             <View
               style={[
                 styles.itemWrapper,
-                index > 0 && !expanded ? styles.hidden : {},
+                index > 0 && !expanded ? styles.hidden : {opacity: 1},
               ]}
               key={index}>
               <NarrativeTradingItem

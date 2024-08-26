@@ -48,7 +48,7 @@ export const lightThemeStyles = {
   speedometerIndicator: '#404040',
   backbuttonColor: '#A3A3A3',
   chartsColor: '#D4D4D4',
-  chartsAxisColor: '#D4D4D4',
+  chartsAxisColor: '#565656',
   chartsGridColor: '#D4D4D4',
   chartsBgColor: '#FEFDFD',
   cryptoSelectorText: '#A3A3A3',

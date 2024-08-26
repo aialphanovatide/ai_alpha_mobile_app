@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   Modal,
   Image,
+  Dimensions,
 } from 'react-native';
 import {useAuth0, Auth0Provider} from 'react-native-auth0';
 import Keys from 'react-native-keys';
@@ -49,6 +50,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomSplashScreen from './components/SplashScreen/SplashScreen';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+const {width, height} = Dimensions.get('window');
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);

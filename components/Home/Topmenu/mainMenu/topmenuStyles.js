@@ -22,7 +22,7 @@ const useTopMenuStyles = () => {
       textAlign: 'center',
     },
     topContentWrapper: {
-      width: '100%',
+      width: theme.width,
       position: 'relative',
     },
     marginWrapper: {

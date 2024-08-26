@@ -1,5 +1,11 @@
 import React, {useContext, useEffect, useState, useMemo} from 'react';
-import {View, ImageBackground, Dimensions, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  ImageBackground,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {
   VictoryChart,
   VictoryAxis,
@@ -15,6 +21,7 @@ import DataRenderer from './clickOnCandleDetails';
 import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/core';
 import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
+import LinearGradient from 'react-native-linear-gradient';
 
 // Format any number, including 0.0000
 const formatNumber = num => {
@@ -292,6 +299,20 @@ const Chart = ({
           resizeMode="contain"
         />
 
+        <LinearGradient
+          useAngle
+          angle={90}
+          colors={['rgba(22, 22, 22, 1)', 'transparent']}
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: 40,
+            zIndex: 1,
+          }}
+        />
+
         {/* CHART WRAPPER COMPONENT */}
         <VictoryChart
           style={styles.chartMainContainer}
@@ -456,7 +477,7 @@ const Chart = ({
                 ]}
                 key={`resistance-${index}`}
                 // styles for the line itself
-                style={{data: {stroke: '#FF3BC3', strokeWidth: 2}}}
+                style={{data: {stroke: '#2DDA99', strokeWidth: 2}}}
                 labels={() => [`$${formatLabelNumber(level)} `]}
                 labelComponent={
                   <VictoryLabel
@@ -465,17 +486,17 @@ const Chart = ({
                     textAnchor="start"
                     inline={true}
                     style={{
-                      fill: '#fff',
-                      fontSize: 11,
-                      fontFamily: theme.fontMedium,
+                      fill: '#F7F7F7',
+                      fontSize: 10,
+                      fontFamily: theme.font,
                     }}
                     backgroundPadding={[
                       {top: -1, bottom: 6, left: 2.3, right: 0},
                     ]}
                     backgroundStyle={[
                       {
-                        fill: '#FF3BC3',
-                        opacity: 0.8,
+                        fill: '#2DDA99',
+                        opacity: 0.9,
                       },
                     ]}
                   />
@@ -494,7 +515,7 @@ const Chart = ({
                 ]}
                 key={`support-${index}`}
                 style={{
-                  data: {stroke: '#C539B4', strokeWidth: 2},
+                  data: {stroke: '#D82A2B', strokeWidth: 2},
                 }}
                 labels={() => [`$${formatLabelNumber(level)} `]}
                 labelComponent={
@@ -508,15 +529,15 @@ const Chart = ({
                     ]}
                     style={[
                       {
-                        fill: '#FFFFFF',
-                        fontSize: 11,
-                        fontFamily: theme.fontMedium,
+                        fill: '#F7F7F7',
+                        fontSize: 10,
+                        fontFamily: theme.font,
                       },
                     ]}
                     backgroundStyle={[
                       {
-                        fill: '#C539B4',
-                        opacity: 0.8,
+                        fill: '#D82A2B',
+                        opacity: 1,
                       },
                     ]}
                   />
@@ -526,27 +547,27 @@ const Chart = ({
         </VictoryChart>
       </View>
       <TouchableOpacity
-              onPress={
-                isLandscape
-                  ? () => {
-                      console.log("LANDSCAPE FUNCTION CALLED");
-                      handleBackInteraction();
-                    }
-                  : () => {
-                      console.log("PORTRAIT FUNCTION CALLED");
-                      navigation.canGoBack(false);
-                      handleScreenOrientationChange('LANDSCAPE');
-                    }
-              }>
-              <Image
-                style={styles.chartsHorizontalButton}
-                source={
-                  isLandscape && isHorizontal
-                    ? require('../../../../../../assets/images/home/charts/deactivate-horizontal.png')
-                    : require('../../../../../../assets/images/home/charts/activate-horizontal.png')
-                }
-              />
-            </TouchableOpacity>
+        onPress={
+          isLandscape
+            ? () => {
+                console.log('LANDSCAPE FUNCTION CALLED');
+                handleBackInteraction();
+              }
+            : () => {
+                console.log('PORTRAIT FUNCTION CALLED');
+                navigation.canGoBack(false);
+                handleScreenOrientationChange('LANDSCAPE');
+              }
+        }>
+        <Image
+          style={styles.chartsHorizontalButton}
+          source={
+            isLandscape && isHorizontal
+              ? require('../../../../../../assets/images/home/charts/deactivate-horizontal.png')
+              : require('../../../../../../assets/images/home/charts/activate-horizontal.png')
+          }
+        />
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => handleBackInteraction()}>
         <Image
           style={

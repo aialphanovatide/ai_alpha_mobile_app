@@ -1,9 +1,9 @@
 import {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useChartSectionStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     mainSection: {
       flex: 1,
@@ -49,12 +49,13 @@ const useChartSectionStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      top: 50,
+      top: '10%',
       left: '7.5%',
       width: 52,
       height: 44,
-      opacity: 0.7,
+      opacity: 0.5,
       zIndex: -2,
+      tintColor: '#A3A3A350',
     },
     timeframeContainer: {
       flex: 1,
@@ -98,10 +99,10 @@ const useChartSectionStyles = () => {
       fontFamily: theme.fontMedium,
     },
     chartsHorizontalButton: {
-      width: 20,
-      height: 20,
+      width: 24,
+      height: 24,
       position: 'absolute',
-      bottom: 80,
+      bottom: 75,
       left: 25,
       tintColor: theme.textColor,
     },
@@ -114,12 +115,12 @@ const useChartSectionStyles = () => {
       tintColor: theme.textColor,
     },
     chartsZoomIndicator: {
-      width: 28,
-      height: 28,
+      width: 20,
+      height: 24,
       position: 'absolute',
-      bottom: Platform.OS === 'android' ? 80 : 90,
+      bottom: Platform.OS === 'android' ? 75 : 85,
       right: 80,
-      tintColor: theme.textColor,
+      tintColor: isDarkMode ? '#737373' : '#A3A3A3',
     },
     refreshButton: {
       position: 'absolute',

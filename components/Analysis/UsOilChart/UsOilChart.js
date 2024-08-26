@@ -3,6 +3,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  Platform,
   SafeAreaView,
   ScrollView,
   Text,
@@ -266,6 +267,19 @@ const UsOilChart = ({route, navigation}) => {
                 style={styles.chartBackgroundImage}
                 resizeMode="contain"
               />
+              <LinearGradient
+                useAngle
+                angle={90}
+                colors={['rgba(22, 22, 22, 1)', 'transparent']}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 50,
+                  zIndex: 1,
+                }}
+              />
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
                 domain={{x: domainX, y: domainY()}}
@@ -419,7 +433,7 @@ const UsOilChart = ({route, navigation}) => {
               <Image
                 style={[
                   styles.chartsHorizontalButton,
-                  {bottom: Platform.OS === 'android' ? 80 : 90},
+                  {bottom: Platform.OS === 'android' ? 75 : 90},
                 ]}
                 resizeMode="contain"
                 source={

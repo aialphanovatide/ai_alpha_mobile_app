@@ -24,14 +24,21 @@ const StoryItem = ({
               : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
             priority: FastImage.priority.high,
           }}
-          style={styles.imageStyle}
+          style={[
+            styles.imageStyle,
+            index > 0 && !expanded ? styles.hidden : {},
+          ]}
           resizeMode="contain"
           fallback={true}
         />
       )}
       titleStyle={styles.titleStyles}
       onPress={() => handleStoryRedirect(item, coinBotId)}
-      style={[styles.storyItem, index === 0 && !expanded? {borderBottomWidth: 0} : {}]}
+      style={[
+        styles.storyItem,
+        index === 0 && !expanded ? {borderBottomWidth: 0} : {},
+        index > 0 && !expanded ? styles.hidden : {},
+      ]}
     />
   );
 };

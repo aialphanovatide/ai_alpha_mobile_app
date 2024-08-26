@@ -281,6 +281,19 @@ const VixChart = ({route, candlesToShow = 30}) => {
                 style={[styles.chartBackgroundImage, {top: 45}]}
                 resizeMode="contain"
               />
+              <LinearGradient
+                useAngle
+                angle={90}
+                colors={['rgba(22, 22, 22, 1)', 'transparent']}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: '10%',
+                  bottom: 0,
+                  width: 50,
+                  zIndex: 1,
+                }}
+              />
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
                 domain={{x: domainX, y: domainY()}}
@@ -434,7 +447,7 @@ const VixChart = ({route, candlesToShow = 30}) => {
               <Image
                 style={[
                   styles.chartsHorizontalButton,
-                  {bottom: Platform.OS === 'android' ? 90 : 100},
+                  {bottom: Platform.OS === 'android' ? 85 : 100},
                 ]}
                 resizeMode="contain"
                 source={

@@ -8,6 +8,9 @@ const useAskAiStyles = () => {
     flex: {
       flex: 1,
     },
+    hidden: {
+      display: 'none',
+    },
     container: {
       flex: 1,
       width: theme.width,
@@ -23,13 +26,17 @@ const useAskAiStyles = () => {
       fontFamily: theme.fontSemibold,
       textAlign: 'left',
     },
-    searchInput: {
+    titleRow: {
       width: '100%',
-      marginVertical: 8,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    searchInput: {
+      width: 305,
       paddingHorizontal: 12,
-      paddingLeft: 18,
+      marginVertical: 8,
       backgroundColor: theme.loginInputBgColor,
-      borderRadius: 3,
+      borderRadius: 4,
       fontFamily: theme.font,
       fontSize: theme.responsiveFontSize * 0.925,
       color: theme.textColor,
@@ -38,7 +45,6 @@ const useAskAiStyles = () => {
       flexDirection: 'row',
       position: 'relative',
       height: 60,
-      marginHorizontal: 4,
     },
     placeholderText: {
       position: 'absolute',
@@ -49,7 +55,7 @@ const useAskAiStyles = () => {
       fontFamily: theme.font,
     },
     inputText: {
-      marginHorizontal: 26,
+      marginHorizontal: 14,
       fontFamily: theme.fontMedium,
       color: theme.titleColor,
       fontSize: 16,
@@ -69,6 +75,16 @@ const useAskAiStyles = () => {
       borderRadius: 4,
       overflow: 'hidden',
     },
+    historyButtonWrapper: {
+      position: 'absolute',
+      right: 14,
+      alignSelf: 'center',
+    },
+    historyButton: {
+      width: 21,
+      height: 23,
+      tintColor: '#A3A3A3',
+    },
     activeButton: {
       backgroundColor: theme.activeWhite,
       borderColor: theme.subMenuBgColor,
@@ -87,14 +103,20 @@ const useAskAiStyles = () => {
       color: theme.subMenuTextColor,
     },
     searchButton: {
-      width: 120,
-      height: 40,
+      width: 55,
+      height: 44,
+      marginHorizontal: 8,
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
-      marginVertical: 14,
       backgroundColor: theme.orange,
       borderRadius: 4,
+    },
+    searchButtonImage: {
+      width: 18,
+      height: 18,
+      alignSelf: 'center',
+      tintColor: '#FFFFFF',
     },
     searchButtonText: {
       color: '#FFFFFF',
@@ -135,7 +157,11 @@ const useAskAiStyles = () => {
       alignSelf: 'center',
     },
     resultsContainer: {
+      position: 'relative',
+      backgroundColor: theme.boxesBackgroundColor,
       marginBottom: 32,
+      padding: 12,
+      borderRadius: 4,
     },
     valueBoxContainer: {
       width: '100%',
@@ -158,7 +184,7 @@ const useAskAiStyles = () => {
       fontSize: 14,
       fontFamily: theme.font,
       color: theme.textColor,
-      backgroundColor: theme.boxesBackgroundColor,
+      backgroundColor: theme.tableHeaderColor,
     },
     iconImage: {
       width: 48,
@@ -192,9 +218,20 @@ const useAskAiStyles = () => {
       marginVertical: 16,
     },
     cleanButton: {
+      flexDirection: 'row',
       marginVertical: 8,
       marginRight: 6,
       alignSelf: 'flex-end',
+      alignItems: 'center',
+    },
+    trashIcon: {
+      width: 12,
+      height: 12,
+      marginRight: 4,
+      tintColor: theme.secondaryTextColor,
+      alignSelf: 'center',
+    },
+    cleanText: {
       textAlign: 'right',
       color: theme.secondaryTextColor,
       fontSize: 12,
@@ -257,10 +294,20 @@ const useAskAiStyles = () => {
     },
     noContentMessage: {
       margin: theme.boxesVerticalMargin,
-      fontSize: 14,
+      fontSize: 12,
       color: theme.secondaryTextColor,
       alignSelf: 'center',
-      fontFamily: theme.fontBoldItalic,
+      fontFamily: theme.font,
+    },
+    closeButton: {
+      position: 'absolute',
+      top: 15,
+      right: 14,
+    },
+    closeButtonImage: {
+      width: 20,
+      height: 20,
+      tintColor: theme.secondaryGrayColor,
     },
   });
   return styles;

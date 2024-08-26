@@ -37,6 +37,7 @@ const useHomeNarrativeTradingStyles = () => {
       borderBottomColor: theme.boxesBorderColor,
       borderBottomWidth: 0.5,
       borderRadius: 2,
+      opacity: 1,
     },
     itemPreview: {
       flex: 1,
@@ -120,6 +121,8 @@ const useHomeNarrativeTradingStyles = () => {
     },
     hidden: {
       display: 'none',
+      opacity: 0,
+
     },
     itemWrapper: {
       flexDirection: 'row',

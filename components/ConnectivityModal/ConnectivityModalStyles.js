@@ -13,7 +13,7 @@ const useConnectivityModalStyles = () => {
     },
     orangeBox: {
       top: '30%',
-      width: theme.width,
+      width: theme.width - 10,
       backgroundColor: '#FFF7EC',
       justifyContent: 'center',
       alignItems: 'center',

@@ -57,7 +57,6 @@ const ChartSection = ({route, navigation}) => {
     useState(false);
   const [selectedCandle, setSelectedCandle] = useState(null);
   const {subscribed} = useContext(RevenueCatContext);
-
   // Hook to request again the data to CapitalCom when changing the time interval or the coin (changing to other chart)
   useEffect(() => {
     setLoading(true);
@@ -366,6 +365,19 @@ const ChartSection = ({route, navigation}) => {
                 style={styles.chartBackgroundImage}
                 resizeMode="contain"
               />
+              <LinearGradient
+                useAngle
+                angle={90}
+                colors={['rgba(22, 22, 22, 1)', 'transparent']}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 40,
+                  zIndex: 1,
+                }}
+              />
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
                 domain={{x: domainX, y: domainY()}}
@@ -514,7 +526,7 @@ const ChartSection = ({route, navigation}) => {
                       ]}
                       key={`resistance-${index}`}
                       // styles for the line itself
-                      style={{data: {stroke: '#F012A1', strokeWidth: 2}}}
+                      style={{data: {stroke: '#2DDA99', strokeWidth: 2}}}
                       labels={() => [`$${formatLabelNumber(level)} `]}
                       labelComponent={
                         <VictoryLabel
@@ -523,17 +535,17 @@ const ChartSection = ({route, navigation}) => {
                           textAnchor="start"
                           inline={true}
                           style={{
-                            fill: '#fff',
-                            fontSize: 11,
-                            fontFamily: theme.fontMedium,
+                            fill: '#F7F7F7',
+                            fontSize: 10,
+                            fontFamily: theme.font,
                           }}
                           backgroundPadding={[
                             {top: -1, bottom: 6, left: 2.3, right: 0},
                           ]}
                           backgroundStyle={[
                             {
-                              fill: '#F012A1',
-                              opacity: 0.8,
+                              fill: '#2DDA99',
+                              opacity: 0.9,
                             },
                           ]}
                         />
@@ -552,7 +564,7 @@ const ChartSection = ({route, navigation}) => {
                       ]}
                       key={`support-${index}`}
                       style={{
-                        data: {stroke: '#C539B4', strokeWidth: 2},
+                        data: {stroke: '#D82A2B', strokeWidth: 2},
                       }}
                       labels={() => [`$${formatLabelNumber(level)} `]}
                       labelComponent={
@@ -567,14 +579,14 @@ const ChartSection = ({route, navigation}) => {
                           style={[
                             {
                               fill: '#F7F7F7',
-                              fontSize: 11,
-                              fontFamily: theme.fontMedium,
+                              fontSize: 10,
+                              fontFamily: theme.font,
                             },
                           ]}
                           backgroundStyle={[
                             {
-                              fill: '#C539B4',
-                              opacity: 0.8,
+                              fill: '#D82A2B',
+                              opacity: 1,
                             },
                           ]}
                         />

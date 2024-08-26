@@ -134,6 +134,7 @@ const useDappsStyles = () => {
     },
     hidden: {
       display: 'none',
+      opacity: 0,
     },
     activeItem: {
       height: 140,

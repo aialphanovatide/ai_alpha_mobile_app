@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import {
   REVENUECAT_IOS_API_KEY,
   REVENUECAT_ANDROID_API_KEY,
@@ -7,7 +7,7 @@ import {createContext, useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 import messaging from '@react-native-firebase/messaging';
-import { TopMenuContext } from './topMenuContext';
+import {TopMenuContext} from './topMenuContext';
 
 const RevenueCatContext = createContext();
 
@@ -30,6 +30,13 @@ const RevenueCatProvider = ({children}) => {
       userInfo.entitlements,
     );
     setSubscribed(hasCoinSubscription);
+    if (
+      userInfo.entitlements.some(subscription =>
+        subscription.toLowerCase().includes('founders'),
+      )
+    ) {
+      setSubscribed(true);
+    }
   }, [activeCoin, userInfo]);
 
   // This function order the packages in the Figma defined order.
@@ -193,7 +200,12 @@ const RevenueCatProvider = ({children}) => {
     }
   };
 
-  const purchasePackage = async (pack, packageIdentifier, packagePrice, rawUserId) => {
+  const purchasePackage = async (
+    pack,
+    packageIdentifier,
+    packagePrice,
+    rawUserId,
+  ) => {
     try {
       console.log('Pack being purchased', pack);
       const {customerInfo, productIdentifier} = await Purchases.purchasePackage(
@@ -208,19 +220,21 @@ const RevenueCatProvider = ({children}) => {
       console.log(`Package Identifier: ${packageIdentifier}`);
       console.log(`Package Price: ${packagePrice}`);
 
-      const postResponse = await fetch(`https://aialpha.ngrok.io/purchase_plan`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          auth0id: rawUserId,
-          price: packagePrice,
-          reference_name: packageIdentifier,
-        }),
-      });
+      const postResponse = await fetch(
+        `https://aialpha.ngrok.io/purchase_plan`,
+        {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            auth0id: rawUserId,
+            price: packagePrice,
+            reference_name: packageIdentifier,
+          }),
+        },
+      );
 
       const data = await postResponse.json();
-      console.log("DATA SENT TO BACKEND", data);
-
+      console.log('DATA SENT TO BACKEND', data);
     } catch (error) {
       console.log(
         `[Error trying to purchase the package]\n - Error code: ${error.code}\n - Error message: ${error.message} \n - Error description: ${error.underlyingErrorMessage} `,
@@ -265,9 +279,12 @@ const RevenueCatProvider = ({children}) => {
 
     return identifiers.some(identifier => {
       const lowercaseIdentifier = identifier.toLowerCase();
-      if (lowercaseIdentifier.includes('founders') || lowercaseIdentifier.includes('fullaccess')) {
+      if (
+        lowercaseIdentifier.includes('founders') ||
+        lowercaseIdentifier.includes('fullaccess')
+      ) {
         return true;
-      }      
+      }
       return lowercaseIdentifier.includes(categoryKeyword);
     });
   };
@@ -283,7 +300,7 @@ const RevenueCatProvider = ({children}) => {
         findCategoryInIdentifiers,
         findProductIdInIdentifiers,
         restorePurchases,
-        subscribed
+        subscribed,
       }}>
       {children}
     </RevenueCatContext.Provider>

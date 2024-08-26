@@ -1,25 +1,36 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
+  Image,
+  LayoutAnimation,
   Platform,
   SafeAreaView,
   ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
+  UIManager,
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import useAskAiStyles from './AskAiStyles';
 import FastImage from 'react-native-fast-image';
-import AskAiHistory from './AskAiHistory/AskAiHistory';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SkeletonLoader from '../Loader/SkeletonLoader';
+import {AboutIcon} from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import AboutModal from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
+import {AboutModalContext} from '../../context/AboutModalContext';
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 // Function to combine the multiple responses coming from the ASK AI Alpha endpoint, to handle them more easily in one object.
 const combineResponses = (response, searchedValue) => {
   const FILTER_KEYS = [
-    // 'symbol',
     'name',
     'website',
     'whitepaper',
@@ -31,8 +42,6 @@ const combineResponses = (response, searchedValue) => {
     'ath_change_percentage',
     'percentage_circulating_supply',
     'fully_diluted_valuation',
-    // 'max_supply',
-    // 'circulating_supply',
   ];
   const KEY_DISPLAY_TITLES = [
     {key: 'ath', displayName: 'ATH', valueType: 'price'},
@@ -43,11 +52,6 @@ const combineResponses = (response, searchedValue) => {
     },
     {key: 'categories', displayName: 'Categories', valueType: ''},
     {key: 'chains', displayName: 'Chains', valueType: ''},
-    // {
-    //   key: 'circulating_supply',
-    //   displayName: 'Circulating Supply',
-    //   valueType: 'price',
-    // },
     {
       key: 'percentage_circulating_supply',
       displayName: 'Circulating Supply %',
@@ -63,9 +67,7 @@ const combineResponses = (response, searchedValue) => {
       displayName: 'Fully Diluted Valuation',
       valueType: 'price',
     },
-    // {key: 'symbol', displayName: 'Symbol', valueType: 'symbol'},
     {key: 'market_cap_usd', displayName: 'Market Cap USD', valueType: 'price'},
-    // {key: 'max_supply', displayName: 'Max Supply', valueType: 'price'},
     {key: 'website', displayName: 'Website', valueType: ''},
     {key: 'whitepaper', displayName: 'Whitepaper', valueType: ''},
     {key: 'name', displayName: 'Token Name', valueType: ''},
@@ -161,53 +163,57 @@ const ValueBox = ({title, content, valueType}) => {
   );
 };
 
-// Component that renders the menu of 'Results' and 'History' allowing to switch between the ASK AI section's content
-
-const AskMenu = ({options, activeOption, handleOptionChange}) => {
-  const styles = useAskAiStyles();
-  return (
-    <View style={styles.menuContainer}>
-      {options.map((option, index) => (
-        <TouchableOpacity
-          key={index}
-          style={[
-            styles.menuButton,
-            activeOption.name === option.name && styles.activeButton,
-          ]}
-          onPress={() => handleOptionChange(option)}>
-          <Text
-            style={[
-              styles.menuText,
-              activeOption.name === option.name && styles.activeText,
-            ]}>
-            {option.name}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </View>
-  );
-};
-
 // Component of the input that the user will use to pass the text values of the search
 
-const Input = ({textHandler, textValue}) => {
+const Input = ({
+  textHandler,
+  textValue,
+  loading,
+  handleButtonSearch,
+  handleSectionNavigation,
+}) => {
   const styles = useAskAiStyles();
   return (
-    <View>
-      <Text style={styles.inputText}>Token Name</Text>
-      <View style={styles.inputWrapper}>
-        <TextInput
-          style={styles.searchInput}
-          onChangeText={text => textHandler(text)}
-          value={textValue}
-        />
-        <Text
-          style={[
-            styles.placeholderText,
-            textValue !== '' ? {opacity: 0} : {},
-          ]}>
-          E.g: SOIL
-        </Text>
+    <View style={{width: '100%'}}>
+      <View style={[styles.row, {position: 'relative', width: '100%'}]}>
+        <Text style={styles.inputText}>Token Name</Text>
+        <TouchableOpacity
+          style={styles.historyButtonWrapper}
+          onPress={() => handleSectionNavigation()}>
+          <Image
+            style={styles.historyButton}
+            source={require('../../assets/images/askAi/history.png')}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.row}>
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.searchInput}
+            onChangeText={text => textHandler(text)}
+            value={textValue}
+          />
+          <Text
+            style={[
+              styles.placeholderText,
+              textValue !== '' ? {opacity: 0} : {},
+            ]}>
+            E.g: SOIL
+          </Text>
+        </View>
+        <TouchableOpacity
+          disabled={loading}
+          style={[styles.searchButton, loading ? styles.disabledButton : {}]}
+          onPress={() => handleButtonSearch(textValue)}>
+          <Image
+            styles={styles.searchButtonImage}
+            source={require('../../assets/images/askAi/search_button.png')}
+            width={18}
+            height={18}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -215,71 +221,32 @@ const Input = ({textHandler, textValue}) => {
 
 // Main component for all the section's features
 
-const AskAiMain = () => {
+const AskAiMain = ({route, navigation}) => {
+  const selectedResult =
+    route.params && route.params.selectedResult !== undefined
+      ? route.params.selectedResult
+      : null;
   const {isDarkMode} = useContext(AppThemeContext);
   const styles = useAskAiStyles();
   const [searchText, setSearchText] = useState('');
-  const options = [
-    {
-      name: 'Results',
-    },
-    {
-      name: 'History',
-    },
-  ];
-  const [activeOption, setActiveOption] = useState(options[0]);
-  const [resultData, setResultData] = useState(null);
+  const [resultData, setResultData] = useState(selectedResult);
   const [savedResults, setSavedResults] = useState([]);
-  const [filteredResults, setFilteredResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const historyOptions = [
-    {
-      name: 'All',
-    },
-    {
-      name: 'Gaming',
-    },
-    {
-      name: 'Defi',
-    },
-    {
-      name: 'LSDs',
-    },
-    {
-      name: 'Standard',
-    },
-  ];
-  const [activeHistoryOption, setActiveHistoryOption] = useState(
-    historyOptions[0],
-  );
-  // Hook to load the saved data on every rendering of the section
-
-  useEffect(() => {
-    const loadAskAiData = async () => {
-      try {
-        const loadedData = await AsyncStorage.getItem('askAiData');
-        if (loadedData) {
-          const parsedData = JSON.parse(loadedData);
-          setSavedResults(parsedData.reverse());
-          if (filteredResults.length === 0) {
-            setFilteredResults(parsedData);
-          }
-        }
-      } catch (error) {
-        console.error("There's no saved data for ASK AI Alpha section.");
-      }
-    };
-
-    loadAskAiData();
-  }, []);
+  const {
+    aboutVisible,
+    aboutTitle,
+    aboutDescription,
+    handleAboutPress,
+    handleClose,
+  } = useContext(AboutModalContext);
 
   //  Hook to reset the search value state on every rendering
 
   useEffect(() => {
     setSearchText('');
-    setActiveOption(options[0]);
-    setActiveHistoryOption(historyOptions[0]);
-  }, []);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setResultData(selectedResult);
+  }, [selectedResult]);
 
   // Function to save the results data in the AsyncStorage API to persist them between app executions
 
@@ -305,10 +272,10 @@ const AskAiMain = () => {
     setSearchText(text);
   };
 
-  // Function to handle the ASK AI alpha menu options (switch between results and history)
+  // Function to handle the ASK AI alpha switching between the History section and the Results section
 
-  const handleOptionChange = item => {
-    setActiveOption(item);
+  const handleSectionNavigation = () => {
+    navigation.navigate('AskAiHistory');
   };
 
   // Function to make the request to the endpoint by triggering the search button, passing the values of the text input as parameter to get the corresponding data from the server
@@ -343,6 +310,7 @@ const AskAiMain = () => {
             data.response.response,
             searchValue,
           );
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
           setResultData(formattedData);
           saveAskAiData(formattedData, savedResults);
         }
@@ -355,62 +323,12 @@ const AskAiMain = () => {
     fetchAskAiData(searchValue);
   };
 
-  // Function to handle the history section's active option change, filtering the coin searchs that are saved and loaded from the AsyncStorage to display them as items.
+  // Function to close the results pop-up, resetting the results data and hiding the content.
 
-  const handleHistoryOption = option => {
-    setActiveHistoryOption(option);
-    filterHistoryItems(option.name, savedResults);
+  const handleResultsClose = () => {
+    setResultData(null);
   };
 
-  // Function to change the content rendered on the results section by selecting it from the history section, it searches the coin data on all the results saved and set it as the current result data
-
-  const handleActiveResultData = data => {
-    setResultData(data);
-    setLoading(false);
-  };
-
-  // Function to clean the saved ASK AI section History data, removing all the items storaged on the user device's cache (Async Storage)
-
-  const handleHistoryClean = () => {
-    const cleanAsyncStorageData = async () => {
-      try {
-        await AsyncStorage.removeItem('askAiData');
-        setSavedResults([]);
-        setFilteredResults([]);
-        setSearchText('');
-        setResultData(null);
-      } catch (error) {}
-    };
-    cleanAsyncStorageData();
-  };
-
-  // Function to filter the items on the ASK AI History section by the selected category.
-
-  const filterHistoryItems = (option, items) => {
-    const filtered_items = [];
-
-    if (option.toLowerCase() === 'all') {
-      setFilteredResults(items);
-      return;
-    }
-
-    items.forEach(item => {
-      const itemCategories = item?.content?.find(
-        datum => datum.title.toLowerCase() === 'categories',
-      );
-      if (
-        itemCategories &&
-        itemCategories !== undefined &&
-        itemCategories?.data &&
-        itemCategories?.data?.length > 0 &&
-        itemCategories?.data?.toLowerCase().match(option.toLowerCase())
-      ) {
-        filtered_items.push(item);
-      }
-    });
-    setFilteredResults(filtered_items);
-    return;
-  };
   return (
     <LinearGradient
       useAngle={true}
@@ -426,25 +344,40 @@ const AskAiMain = () => {
           ]}
           nestedScrollEnabled
           showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>ASK AI Alpha</Text>
-          <Input textHandler={handleTextChange} textValue={searchText} />
-          <TouchableOpacity
-            disabled={loading}
-            style={[styles.searchButton, loading ? styles.disabledButton : {}]}
-            onPress={() => handleButtonSearch(searchText)}>
-            <Text style={styles.searchButtonText}>Search</Text>
-          </TouchableOpacity>
-          <AskMenu
-            options={options}
-            activeOption={activeOption}
-            handleOptionChange={handleOptionChange}
+          <View style={styles.titleRow}>
+            <Text style={styles.title}>ASK AI Alpha</Text>
+            <AboutIcon
+              title={'ASK AI Alpha'}
+              description={'This is the ASK AI Alpha section description.'}
+              handleAboutPress={handleAboutPress}
+              additionalStyles={{top: '52.5%'}}
+            />
+          </View>
+          <Input
+            textHandler={handleTextChange}
+            textValue={searchText}
+            handleButtonSearch={handleButtonSearch}
+            handleSectionNavigation={handleSectionNavigation}
           />
           {loading ? (
             <SkeletonLoader type="askAi" quantity={8} />
-          ) : activeOption.name === 'Results' ? (
-            <View style={[styles.resultsContainer]}>
-              <View style={styles.row}>
-                {!loading && resultData && resultData !== undefined ? (
+          ) : (
+            <View
+              style={[
+                styles.resultsContainer,
+                !resultData ? styles.hidden : {},
+              ]}>
+              {!loading && resultData && resultData !== undefined ? (
+                <>
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={() => handleResultsClose()}>
+                    <Image
+                      source={require('../../assets/images/askAi/close_button.png')}
+                      style={styles.closeButtonImage}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
                   <View style={styles.row}>
                     <View style={styles.imageBackground}>
                       <FastImage
@@ -460,49 +393,35 @@ const AskAiMain = () => {
                     </View>
                     <Text style={styles.coinName}>{resultData.name}</Text>
                   </View>
-                ) : (
-                  <>
-                    <View style={styles.emptyIcon} />
-                    <View style={styles.emptyTitle} />
-                  </>
-                )}
-              </View>
-              {!loading && resultData && resultData !== undefined ? (
-                <View>
-                  {resultData.content.map((datum, index) => {
-                    if (datum.data === null || datum.title === 'success') {
-                      return;
-                    } else {
-                      return (
-                        <ValueBox
-                          key={index}
-                          title={datum.displayName}
-                          content={JSON.stringify(datum.data)}
-                          valueType={datum.valueType}
-                        />
-                      );
-                    }
-                  })}
-                </View>
-              ) : (
-                <>
-                  <View style={[styles.emptyTitle, styles.emptySecondTitle]} />
-                  <View style={styles.emptyContent} />
+                  <View>
+                    {resultData.content.map((datum, index) => {
+                      if (datum.data === null || datum.title === 'success') {
+                        return;
+                      } else {
+                        return (
+                          <ValueBox
+                            key={index}
+                            title={datum.displayName}
+                            content={JSON.stringify(datum.data)}
+                            valueType={datum.valueType}
+                          />
+                        );
+                      }
+                    })}
+                  </View>
                 </>
+              ) : (
+                <></>
               )}
             </View>
-          ) : (
-            <AskAiHistory
-              options={historyOptions}
-              activeHistoryOption={activeHistoryOption}
-              coins={[resultData]}
-              handleHistoryOption={handleHistoryOption}
-              handleActiveResultData={handleActiveResultData}
-              savedResults={filteredResults}
-              handleHistoryClean={handleHistoryClean}
-            />
           )}
         </ScrollView>
+        <AboutModal
+          visible={aboutVisible}
+          description={aboutDescription}
+          title={aboutTitle}
+          onClose={handleClose}
+        />
       </SafeAreaView>
     </LinearGradient>
   );

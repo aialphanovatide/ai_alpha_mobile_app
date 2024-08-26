@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useEthBtcStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     background: {
       flex: 1,
@@ -40,11 +40,12 @@ const useEthBtcStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      top: 50,
+      top: '10%',
       left: '7.5%',
-      width: 60,
-      height: 60,
-      opacity: 0.8,
+      width: 52,
+      height: 44,
+      opacity: 0.5,
+      tintColor: '#A3A3A350',
       zIndex: -2,
     },
     timeframeContainer: {
@@ -67,10 +68,10 @@ const useEthBtcStyles = () => {
       marginHorizontal: 20,
     },
     chartsHorizontalButton: {
-      width: 20,
-      height: 20,
+      width: 24,
+      height: 24,
       position: 'absolute',
-      bottom: Platform.OS === 'android' ? 80 : 85,
+      bottom: Platform.OS === 'android' ? 77.5 : 85,
       left: 25,
       tintColor: theme.textColor,
     },
@@ -83,12 +84,12 @@ const useEthBtcStyles = () => {
       tintColor: theme.textColor,
     },
     chartsZoomIndicator: {
-      width: 28,
-      height: 28,
+      width: 20,
+      height: 24,
       position: 'absolute',
-      bottom: Platform.OS === 'android' ? 80 : 85,
-      right: 85,
-      tintColor: theme.textColor,
+      bottom: Platform.OS === 'android' ? 77.5 : 85,
+      right: 80,
+      tintColor: isDarkMode ? '#737373' : '#A3A3A3',
     },
   });
   return styles;

@@ -60,15 +60,6 @@ const ProtocolItem = ({
 
     return formattedNum + abbrev[tier];
   };
-
-  const calculateMarginBottom = (text, threshold) => {
-    if (text.length > threshold) {
-      return '27.5%';
-    } else {
-      return '15%';
-    }
-  };
-
   return (
     <TouchableOpacity
       onPress={() => {

@@ -1,5 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, ImageBackground, Text, Image, Dimensions} from 'react-native';
+import {
+  View,
+  ImageBackground,
+  Text,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import {
   VictoryChart,
   VictoryAxis,
@@ -18,8 +25,9 @@ import SkeletonLoader from '../../Loader/SkeletonLoader';
 import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
+import { useScreenOrientation } from '../../../hooks/useScreenOrientation';
 
-const BtcDominanceChart = ({candlesToShow = 30}) => {
+const BtcDominanceChart = ({route, navigation}) => {
   const [chartData, setChartData] = useState([]);
   const [selectedInterval, setSelectedInterval] = useState('1D');
   const [loading, setLoading] = useState(true);
@@ -27,6 +35,8 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
   const {isDarkMode, theme} = useContext(AppThemeContext);
   const [selectedCandle, setSelectedCandle] = useState(null);
   const {subscribed} = useContext(RevenueCatContext);
+  const {isLandscape, isHorizontal, handleScreenOrientationChange} =
+    useScreenOrientation();
 
   async function fetchChartData(interval = selectedInterval) {
     try {
@@ -119,6 +129,16 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
     return (candle.open + candle.close) / 2;
   };
 
+  // Function to handle the X button interaction on the horizontal chart
+
+  const handleBackInteraction = () => {
+    console.log('FUNCTION CALLED');
+    if (isLandscape || isHorizontal) {
+      handleScreenOrientationChange('PORTRAIT');
+      navigation.canGoBack(false);
+    }
+  };
+
   // Extracting low and high values from candlestick data
   const lows = chartData.map(d => d.low);
   const highs = chartData.map(d => d.high);
@@ -180,6 +200,19 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
         </View>
         <View style={styles.container}>
           <View style={styles.chart}>
+            <LinearGradient
+              useAngle
+              angle={90}
+              colors={['rgba(22, 22, 22, 1)', 'transparent']}
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: 40,
+                zIndex: 1,
+              }}
+            />
             <VictoryChart
               width={375}
               domain={{x: domainX, y: domainY}}
@@ -319,6 +352,38 @@ const BtcDominanceChart = ({candlesToShow = 30}) => {
                 resizeMode="contain"
               />
             </VictoryChart>
+            <TouchableOpacity
+              onPress={
+                isLandscape
+                  ? () => {
+                      handleBackInteraction();
+                    }
+                  : () => {
+                      navigation.canGoBack(false);
+                      handleScreenOrientationChange('LANDSCAPE');
+                    }
+              }>
+              <Image
+                style={styles.chartsHorizontalButton}
+                resizeMode="contain"
+                source={
+                  isLandscape && isHorizontal
+                    ? require('../../../assets/images/home/charts/deactivate-horizontal.png')
+                    : require('../../../assets/images/home/charts/activate-horizontal.png')
+                }
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleBackInteraction()}>
+              <Image
+                style={
+                  isLandscape && isHorizontal
+                    ? styles.chartBackButton
+                    : {display: 'none'}
+                }
+                resizeMode="contain"
+                source={require('../../../assets/images/home/charts/back.png')}
+              />
+            </TouchableOpacity>
             <Image
               style={styles.chartsZoomIndicator}
               resizeMode="contain"

@@ -121,6 +121,7 @@ const useHomeAnalysisStyles = () => {
     },
     hidden: {
       display: 'none',
+      opacity: 0,
     },
     itemWrapper: {
       flex: 1,

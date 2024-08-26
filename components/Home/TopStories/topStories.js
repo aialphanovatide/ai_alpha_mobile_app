@@ -1,13 +1,21 @@
 import React, {useState, useEffect, useContext} from 'react';
 import StoryItem from './Storyitem/storyItem';
 import useTopStoriesStyles from './topStoriesStyles';
-import {Image, Text, View, TouchableOpacity} from 'react-native';
+import {Image, Text, View, TouchableOpacity, Platform, UIManager, LayoutAnimation} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext';
 import {CategoriesContext} from '../../../context/categoriesContext';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
+
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const TopStories = ({handleAboutPress}) => {
   const styles = useTopStoriesStyles();
@@ -20,7 +28,11 @@ const TopStories = ({handleAboutPress}) => {
   const aboutIconStyles = {
     top: 24,
   };
+
+  // Function to handle the pressing of the arrow, expanding or hiding the top stories list, depending on the case
+
   const handlePress = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(!expanded);
   };
 

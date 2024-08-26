@@ -61,9 +61,10 @@ const Alerts = ({route, navigation}) => {
   const options = ['1H', '4H', '1D', '1W'];
   const [activeAlertOption, setActiveAlertOption] = useState(options[0]);
   const [botName, setBotName] = useState(null);
-  const [subscribed, setSubscribed] = useState(null);
+  const [hasSubscription, setHasSubscription] = useState(null);
   const [subscribedCategories, setSubscribedCategories] = useState([]);
-  const {findCategoryInIdentifiers, userInfo} = useContext(RevenueCatContext);
+  const {findCategoryInIdentifiers, userInfo, subscribed} =
+    useContext(RevenueCatContext);
   const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
   const styles = useAlertsStyles();
   const [alerts, setAlerts] = useState([]);
@@ -104,11 +105,14 @@ const Alerts = ({route, navigation}) => {
   // This useEffect handles the content regulation with the user's subscriptions
   useEffect(() => {
     if (Object.keys(activeCoin).length !== 0) {
-      const hasCoinSubscription = findCategoryInIdentifiers(
+      let hasCoinSubscription = findCategoryInIdentifiers(
         activeCoin.category_name,
         userInfo.entitlements,
       );
-      setSubscribed(hasCoinSubscription);
+      if (subscribed) {
+        hasCoinSubscription = true;
+      }
+      setHasSubscription(hasCoinSubscription);
     } else {
       const found_subscribed_categories = [];
       categories?.forEach(category => {
@@ -123,6 +127,7 @@ const Alerts = ({route, navigation}) => {
       });
       // console.log('Found subscribed categories: ', found_subscribed_categories);
       setSubscribedCategories(found_subscribed_categories);
+      setHasSubscription(subscribed);
     }
   }, [activeCoin, userInfo]);
 
@@ -195,6 +200,9 @@ const Alerts = ({route, navigation}) => {
     setActiveAlertOption(option);
   };
 
+  console.log('Alerts subscription: ', hasSubscription);
+  console.log('RC subscription: ', subscribed);
+
   return (
     <SafeAreaView style={styles.mainContainer} ref={ref}>
       <LinearGradient
@@ -235,7 +243,7 @@ const Alerts = ({route, navigation}) => {
             />
           )}
         </View>
-        {subscribed ? <></> : <UpgradeOverlay />}
+        {hasSubscription ? <></> : <UpgradeOverlay />}
       </LinearGradient>
     </SafeAreaView>
   );

@@ -50,8 +50,8 @@ const useCoinMenuStyles = () => {
       alignItems: 'center',
     },
     buttonImage: {
-      width: 18,
-      height: 18,
+      width: 16,
+      height: 16,
       marginRight: 8,
     },
     buttonText: {

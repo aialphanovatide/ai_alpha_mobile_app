@@ -207,6 +207,19 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                 style={styles.chartBackgroundImage}
                 resizeMode="contain"
               />
+              <LinearGradient
+                useAngle
+                angle={90}
+                colors={['rgba(22, 22, 22, 1)', 'transparent']}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 40,
+                  zIndex: 1,
+                }}
+              />
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : chartWidth}
                 domain={{x: domainX, y: domainY}}

@@ -16,11 +16,13 @@ const useTopStoriesStyles = () => {
     },
     storyWrapper: {
       flex: 1,
+      opacity: 1,
       flexDirection: 'row',
       position: 'relative',
     },
     hidden: {
       display: 'none',
+      opacity: 0,
     },
     mainTitle: {
       marginHorizontal: 16,
