@@ -198,7 +198,7 @@ const SettingsScreen = ({route}) => {
 
       console.log('user fetch: ', userFetch);
       const userData = await userFetch.json();
-      console.log('User Data!!:', userData);
+      //console.log('User Data!!:', userData);
 
       const response = await fetch(
         `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
@@ -213,14 +213,31 @@ const SettingsScreen = ({route}) => {
 
       if (response.ok) {
         console.log('Account deletion initiated');
+
+
         await AsyncStorage.removeItem('accessToken');
         await AsyncStorage.removeItem('refreshToken');
         await AsyncStorage.removeItem('userEmail');
         await AsyncStorage.removeItem('userId');
         await AsyncStorage.removeItem('rawUserId');
+        await AsyncStorage.removeItem('loginMethod');
         await AsyncStorage.removeItem('fullName');
         await AsyncStorage.removeItem('username');
         await AsyncStorage.removeItem('birthDate');
+        await AsyncStorage.removeItem('userImage');
+
+        const backendDeleteResponse = await fetch(`https://aialpha.ngrok.io/delete_user`, {
+          method: 'DELETE',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            user_id: 'auth0|66c7927c048b91de03853388',
+          }),
+        });
+        const data = await backendDeleteResponse.json();
+        console.log("Response from Backend DELETE: ", backendDeleteResponse);
+        console.log("DATA SENT TO BACKEND",data);
+
+
         resetLoginForm();
         RNRestart.restart();
         //navigation.navigate('SignIn', {resetForm: true});

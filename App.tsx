@@ -43,6 +43,7 @@ import {
   auth0ManagementAPI_Secret,
 } from './src/constants/index';
 import eventEmitter from './eventEmitter';
+import LinearGradient from 'react-native-linear-gradient';
 import {Top10MoversContextProvider} from './context/TopTenMoversContext';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';
@@ -54,6 +55,7 @@ const {width, height} = Dimensions.get('window');
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [backgroundColor, setBackgroundColor] = useState(isDarkMode ? '#0b0b0a' : '#fbfbfa');
   const colorScheme = Appearance.getColorScheme();
   const [barScheme, setBarScheme] = useState('default');
   const [isConnected, setIsConnected] = useState(true);
@@ -61,6 +63,7 @@ const App = () => {
   const [serverError, setServerError] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [serverWentDown, setServerWentDown] = useState(0);
+  const [userSignedUp, setUserSignedUp] = useState(false);
   const [initialAnimationFinished, setInitialAnimationFinished] =
     useState(false);
 
@@ -71,12 +74,18 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const subscription = eventEmitter.addListener('darkModeChanged', isDark => {
+    const darkModeSubscription = eventEmitter.addListener('darkModeChanged', isDark => {
       setIsDarkMode(isDark);
+      setBackgroundColor(isDark ? '#0b0b0a' : '#fbfbfa');
+    });
+
+    const backgroundColorSubscription = eventEmitter.addListener('backgroundColorChange', color => {
+      setBackgroundColor(color);
     });
 
     return () => {
-      subscription.remove();
+      darkModeSubscription.remove();
+      backgroundColorSubscription.remove();
     };
   }, []);
 
@@ -269,26 +278,26 @@ const App = () => {
               <UserIdProvider>
                 <RawUserIdProvider>
                   <AppThemeProvider>
-                    <SafeAreaView
-                      style={{
-                        flex: 0,
-                        backgroundColor: isDarkMode ? '#0F0F0F' : '#EDEDED',
-                      }}></SafeAreaView>
-                    <SafeAreaView
-                      style={[
-                        styles.container,
-                        {
-                          flex: 1,
-                          backgroundColor: isDarkMode ? '#0b0b0a' : '#fbfbfa',
-                        },
-                      ]}>
-                      <StatusBar
-                        barStyle={
-                          isDarkMode
-                            ? 'light-content'
-                            : 'dark-content' /*This changes the font color for SafeAreaView*/
-                        }
-                      />
+                  <SafeAreaView
+                  style={{
+                    flex: 0,
+                    backgroundColor: backgroundColor,
+                  }}></SafeAreaView>
+                <SafeAreaView
+                  style={[
+                    styles.container,
+                    {
+                      flex: 1,
+                      backgroundColor: backgroundColor === '#FFB76E' ? '#FC5404' : backgroundColor,
+                    },
+                  ]}>
+                  <StatusBar
+                    barStyle={
+                      isDarkMode
+                        ? 'light-content'
+                        : 'dark-content' /*This changes the font color for SafeAreaView*/
+                    }
+                  />
                       <SingletonHooksContainer />
                       <Top10MoversContextProvider>
                         <NarrativeTradingContextProvider>

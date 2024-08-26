@@ -103,25 +103,27 @@ const SocialSignInButton = () => {
   }, []);
 
   const signInWithGoogle = async () => {
+    console.log("My GOOGLE CLIENT WEB ID", GOOGLE_CLIENT_WEB_ID);
+    console.log("My GOOGLE CLIENT IOS ID", GOOGLE_CLIENT_IOS_ID);
+    console.log("My GOOGLE CLIENT ANDROID ID", GOOGLE_CLIENT_ANDROID_ID);
     try {
       console.log('Before authorize');
 
       const authResult = await auth0.webAuth.authorize({
-        redirectUrl:
-          'com.ai-alpha-mobile-app.auth0://dev-zoejuo0jssw5jiid.us.auth0.com/android/com.ai-alpha-mobile-app/callback',
+        //redirectUrl: 'com.ai-alpha-mobile-app.auth0://dev-zoejuo0jssw5jiid.us.auth0.com/android/com.ai-alpha-mobile-app/callback',
         connection: 'google-oauth2',
-        ephemeralSession: true,
+        ephemeralSession: true
       });
 
-      console.log('After authorize');
-
-      const userProfile = await auth0.auth.userInfo({
-        token: authResult.accessToken,
-      });
-
-      console.log('User Profile: ', userProfile);
-      console.log('Auth0 User ID: ', userProfile.sub);
-
+      console.log("Auth Result: ", authResult);
+  
+      console.log("After authorize");
+  
+      const userProfile = await auth0.auth.userInfo({ token: authResult.accessToken });
+  
+      console.log("User Profile: ", userProfile);
+      console.log("Auth0 User ID: ", userProfile.sub);
+  
       const userId = userProfile.sub;
       console.log('User ID:', userId);
       const formatted_id = formatUserId(userId);
@@ -258,13 +260,15 @@ const SocialSignInButton = () => {
     <Auth0Provider
       domain={'dev-zoejuo0jssw5jiid.us.auth0.com'}
       clientId={'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg'}>
-      <View style={{marginTop: 36}}>
-        <CustomButton
-          text="Continue with Apple"
-          onPress={() => signInWithApple()}
-          type="APPLE"
-          disabled={loggedInUser !== null}
-        />
+      <View>
+      {Platform.OS === 'ios' && (
+          <CustomButton
+            text="Continue with Apple"
+            onPress={() => signInWithApple()}
+            type="APPLE"
+            disabled={loggedInUser !== null}
+          />
+        )}
 
         <CustomButton
           text="Continue with Google"

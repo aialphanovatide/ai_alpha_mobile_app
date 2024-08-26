@@ -240,6 +240,12 @@ const LoginForm = ({route}) => {
                 <Text style={styles.signUpButton}>Sign Up for Free</Text>
               </TouchableOpacity>
             </View>
+            <View style={styles.termsContainer}>
+          <Text style={styles.termsText}>By registering you agree to our </Text>
+          <TouchableOpacity onPress={onTermsPressed}>
+            <Text style={styles.termsButton}>Terms and Conditions</Text>
+          </TouchableOpacity>
+        </View>
           </View>
         </ScrollView>
       </LinearGradient>

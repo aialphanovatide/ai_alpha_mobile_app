@@ -6,7 +6,6 @@ import SignupForm from '../components/Login/Screens/SignUp/SignupForm';
 import ForgotPasswordForm from '../components/Login/Screens/ForgotPassword/ForgotPasswordForm';
 import HomeScreen from '../components/Login/HomeScreen/HomeScreen';
 import PaywallScreen from '../src/screens/PaywallScreen';
-import DeleteAccountForm from '../components/Login/DeleteAccount/DeleteUserForm';
 import TermsAndConditions from '../components/Login/Screens/TermsAndConditions/TermsAndConditions';
 import {AppThemeContext} from '../context/themeContext';
 import {Appearance} from 'react-native';
@@ -83,10 +82,7 @@ const Navigation = () => {
         />
 
         <Stack.Screen name="PaywallScreen" component={PaywallScreen} />
-        <Stack.Screen
-          name="DeleteAccountScreen"
-          component={DeleteAccountForm}
-        />
+
         <Stack.Screen
           name="TermsAndConditionsScreen"
           component={TermsAndConditions}

@@ -6,7 +6,8 @@ import {AppThemeContext} from '../../../context/themeContext';
 const CustomPasswordInput = ({value, setValue, placeholder}) => {
   const styles = CustomPasswordInputStyles();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const {theme} = useContext(AppThemeContext);
+  const { theme, isDarkMode } = useContext(AppThemeContext);
+
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(prev => !prev);
   };
@@ -17,7 +18,7 @@ const CustomPasswordInput = ({value, setValue, placeholder}) => {
         value={value}
         onChangeText={setValue}
         placeholder={placeholder}
-        placeholderTextColor={theme.secondaryTextColor}
+        placeholderTextColor={theme.textColor}
         style={styles.input}
         secureTextEntry={!isPasswordVisible}
       />
@@ -26,11 +27,15 @@ const CustomPasswordInput = ({value, setValue, placeholder}) => {
         onPress={togglePasswordVisibility}>
         <Image
           source={
-            isPasswordVisible
-              ? require('../../../assets/images/login/eyeIconCrossed.png')
-              : require('../../../assets/images/login/eyeIcon.png')
+            isDarkMode
+              ? isPasswordVisible
+                ? require('../../../assets/images/login/eyeIconDarkCrossed.png')
+                : require('../../../assets/images/login/eyeIconDark.png')
+              : isPasswordVisible
+              ? require('../../../assets/images/login/eyeIconLightCrossed.png')
+              : require('../../../assets/images/login/eyeIconLight.png')
           }
-          style={{width: 20, height: 20, tintColor: theme.inputColor}}
+          style={{width: 24, height: 15, tintColor: theme.inputColor}}
         />
       </TouchableOpacity>
     </View>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Image,
@@ -11,7 +11,7 @@ import CustomInput from '../../CustomInput/CustomInput';
 import CustomPasswordInput from '../../CustomInput/CustomPasswordInput';
 import CustomButton from '../../CustomButton/CustomButton';
 import Separator from '../../CustomButton/Separator';
-import GreenTick from '../../../../assets/images/greenTick.png';
+import GreenTick from '../../../../assets/images/greenTick2.png';
 import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
 import useSignUpStyles from './SignUpStyles';
@@ -19,7 +19,9 @@ import { useRawUserId } from '../../../../context/RawUserIdContext';
 import { useUser } from '../../../../context/UserContext';
 import { useUserId } from '../../../../context/UserIdContext';
 import { auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret } from '../../../../src/constants';
-import BackButton from '../../../Analysis/BackButton/BackButton';
+import LinearGradient from 'react-native-linear-gradient';
+import eventEmitter from '../../../../eventEmitter';
+import { AppThemeContext } from '../../../../context/themeContext';
 
 
 const SignupForm = () => {
@@ -27,6 +29,7 @@ const SignupForm = () => {
   const [password, setPassword] = useState('');
   const {rawUserId, setRawUserId} = useRawUserId();
   const [passwordRepeat, setPasswordRepeat] = useState('');
+  const [fullname, setFullname] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const [signupSuccessful, setSignupSuccessful] = useState(false);
   const [passwordStrengthMessages, setPasswordStrengthMessages] = useState({
@@ -41,8 +44,7 @@ const SignupForm = () => {
   const { userEmail, setUserEmail } = useUser();
   const { userId, setUserId } = useUserId();
   const [emailInUse, setEmailInUse] = useState(false);
-
-
+  const {isDarkMode} = useContext(AppThemeContext);
   
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -110,7 +112,7 @@ const SignupForm = () => {
     updatePasswordStrength(value);
   };
 
-  const onSignInPressed = () => {
+  const onLoginPressed = () => {
     navigation.navigate('SignIn');
   };
 
@@ -131,6 +133,39 @@ const SignupForm = () => {
     });
     const data = await response.json();
     return data.access_token;
+  };
+
+  const sendFullnameToMetadata = async (fullname, newRawUserId) => {
+    console.log("AWAIT CALLED with fullname: ", fullname);
+    console.log("RAW USER ID: ", newRawUserId);
+    const token = await getManagementApiToken();
+    console.log("Token after AWAIT: ", token);
+    const userMetadata = {
+      fullname: fullname,
+    };
+
+    const response = await fetch(
+      `https://${auth0Domain}/api/v2/users/${encodeURIComponent(newRawUserId)}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({user_metadata: userMetadata}),
+      },
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('User updated in SIGNUP:', data);
+    } else {
+      console.error(
+        'Failed to update user:',
+        response.status,
+        response.statusText,
+      );
+    }
   };
 
   const onRegisterPressed = async () => {
@@ -167,7 +202,7 @@ const SignupForm = () => {
 
       } 
       if (isUsernamePasswordAuthenticationUser == false){
-        console.log("entered here!!!")
+        console.log("Entered False Conditional")
         const response = await axios.post(
           'https://dev-zoejuo0jssw5jiid.us.auth0.com/dbconnections/signup',
           {
@@ -177,12 +212,20 @@ const SignupForm = () => {
             connection: 'Username-Password-Authentication',
           },
         );
-        console.log("here!!!")
+        console.log("After POST to Auth0")
+        console.log("Response after POST: ", response);
         setUserId(response.data._id);
         setUserEmail(email);
         setSignupSuccessful(true);
-  
+
+        const originalColor = isDarkMode ? '#0b0b0a' : '#fbfbfa';
+
+        // Update the SafeAreaView for SignUp animation should go here
+        eventEmitter.emit('backgroundColorChange', '#FFB76E');
+        console.log("ISDARKMODE: ", isDarkMode);
+
         setTimeout(() => {
+          eventEmitter.emit('backgroundColorChange', originalColor);
           navigation.navigate('SignIn');
         }, 2000);
       }
@@ -198,11 +241,16 @@ const SignupForm = () => {
           },
         },
       );
+
+      await sendFullnameToMetadata(fullname, secondEmailCheckResponse.data[0].user_id);
+
+
       console.log("secondEmailCheckResponse: ", secondEmailCheckResponse);
       console.log("User ID: ", secondEmailCheckResponse.data[0].user_id);
       console.log("nickname: ", secondEmailCheckResponse.data[0].nickname);
       console.log("picture: ", secondEmailCheckResponse.data[0].picture);
       console.log("provider: ", secondEmailCheckResponse.data[0].identities[0].provider);
+
       const response = await fetch(`https://aialpha.ngrok.io/register`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
@@ -210,6 +258,7 @@ const SignupForm = () => {
             auth0id: secondEmailCheckResponse.data[0].user_id,
             email: email,
             email_verified: false,
+            full_name: fullname,
             nickname: secondEmailCheckResponse.data[0].nickname,
             picture: secondEmailCheckResponse.data[0].picture,
             provider: "Username-Password-Authentication",
@@ -225,41 +274,52 @@ const SignupForm = () => {
   };
   if (signupSuccessful) {
     return (
-      <View style={styles.successContainer}>
-        <Image source={GreenTick} style={styles.tickImage} />
-        <Text style={styles.successText}>User Created</Text>
-      </View>
+      <LinearGradient
+      colors={['#FFB76E', '#FC5404']}
+      start={{ x: 0.8, y: -0.19 }}
+      end={{ x: 0.88, y: 0.99 }}
+      style={styles.successContainer}
+    >
+      <Image source={GreenTick} style={styles.tickImage} />
+      <Text style={styles.successText}>User created</Text>
+    </LinearGradient>
     );
   }
   return (
     <ScrollView style={styles.scrollview} showsVerticalScrollIndicator={false}>
-      <BackButton />
       <View style={styles.root}>
         <Image source={Logo} style={styles.logo} resizeMode="contain" />
         <View style={styles.inputContainer}>
         <View style={styles.labelContainer}>
-            <Text style={styles.title}>Email</Text>
+          </View>
+          <CustomInput
+            placeholder="Full Name"
+            value={fullname}
+            setValue={setFullname}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+        <View style={styles.labelContainer}>
             {emailInUse && (
           <Text style={styles.errorLabel}>Email already in use</Text>
           )}
           </View>
           <CustomInput
-            placeholder=""
+            placeholder="Email"
             value={email}
             setValue={setEmail}
           />
 
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.title}>Password</Text>
           <CustomPasswordInput
-            placeholder=""
+            placeholder="Password"
             value={password}
             setValue={handlePasswordChange}
             secureTextEntry={true}
           />
           {password && (
-            <View>
+            <View style={{marginTop: 10, marginBottom: -10}}>
               <Text style={{ color: passwordStrengthMessages.lowercase ? 'green' : 'red' }}>
                 ● Lower case letters (a-z)
               </Text>
@@ -279,13 +339,23 @@ const SignupForm = () => {
           )}
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.title}>Repeat Password</Text>
           <CustomPasswordInput
-            placeholder=""
+            placeholder="Repeat Password"
             value={passwordRepeat}
             setValue={setPasswordRepeat}
             secureTextEntry={true}
           />
+        </View>
+        <CustomButton
+          text="Sign Up"
+          onPress={onRegisterPressed}
+          disabled={!isFormValid}
+        />
+        <View style={styles.loginContainer}>
+            <Text style={styles.loginText}>Already have an account? </Text>
+            <TouchableOpacity onPress={onLoginPressed}>
+              <Text style={styles.loginButton}>Sign In</Text>
+            </TouchableOpacity>
         </View>
         <View style={styles.termsContainer}>
           <Text style={styles.termsText}>By registering you agree to our </Text>
@@ -293,21 +363,6 @@ const SignupForm = () => {
             <Text style={styles.termsButton}>Terms and Conditions</Text>
           </TouchableOpacity>
         </View>
-        <CustomButton
-          text="Register"
-          onPress={onRegisterPressed}
-          disabled={!isFormValid}
-        />
-        {/*
-        <Separator />
-        <View style={styles.loginContainer}>
-          <Text style={styles.loginText}>Already have an account? </Text>
-          <TouchableOpacity onPress={onSignInPressed}>
-            <Text style={styles.loginButton}>Log In</Text>
-          </TouchableOpacity>
-        </View>
-        */}
-
       </View>
     </ScrollView>
   );

@@ -48,6 +48,59 @@ const PersonaliseProfile = () => {
 
   useEffect(() => {
     const loadStoredData = async () => {
+      if (storedFullName === null || storedFullName === undefined || storedFullName === '') {
+        const getManagementApiToken = async () => {
+          const response = await fetch(`https://${auth0Domain}/oauth/token`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              client_id: auth0ManagementAPI_Client,
+              client_secret: auth0ManagementAPI_Secret,
+              audience: `https://${auth0Domain}/api/v2/`,
+              grant_type: 'client_credentials',
+            }),
+          });
+          const data = await response.json();
+          return data.access_token;
+        };
+        const token = await getManagementApiToken();
+        const userFetch = await fetch(
+          `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        
+        if (userFetch.ok) {
+          const userData = await userFetch.json();
+          console.log('User fetch successful', userData);
+        
+          const userFetchedFullname = userData.user_metadata.fullname;
+          console.log('User fetched fullname:', userFetchedFullname);
+
+          const userFetchedUsername = userData.user_metadata.username;
+          console.log('User fetched username:', userFetchedUsername);
+
+          if (userFetchedFullname !== null && userFetchedFullname !== undefined && userFetchedFullname !== '') {
+            await AsyncStorage.setItem('fullName', userFetchedFullname);
+          }
+
+          if (userFetchedUsername !== null && userFetchedUsername !== undefined && userFetchedUsername !== '') {
+            await AsyncStorage.setItem('username', userFetchedUsername);
+          }
+
+
+
+        } else {
+          console.error('Failed to fetch user:', userFetch.status, userFetch.statusText);
+        }
+      
+      }
+      
       const storedFullName = await AsyncStorage.getItem('fullName');
       const storedUsername = await AsyncStorage.getItem('username');
       const storedBirthDate = await AsyncStorage.getItem('birthDate');
@@ -189,7 +242,7 @@ const PersonaliseProfile = () => {
         await AsyncStorage.setItem('username', newUsername);
         await AsyncStorage.setItem('birthDate', newBirthDate);
 
-        console.log('AsyncStorage updated with new values'); // Debug log
+        console.log('AsyncStorage updated with new values');
 
         await updateUserMetadata(newFullName, newUsername, newBirthDate);
 
@@ -362,7 +415,9 @@ const PersonaliseProfile = () => {
       {connectionType === 'Username-Password-Authentication' && (
         <View style={styles.inputContainer}>
           <Text style={styles.title}>Email</Text>
-          <Text style={styles.emailTitle}>{userEmail}</Text>
+          <View style={styles.emailContainer}>
+            <Text style={styles.emailTitle}>{userEmail}</Text>
+          </View>
         </View>
       )}
           <View style={styles.inputContainer}>
@@ -371,7 +426,7 @@ const PersonaliseProfile = () => {
               placeholder="Enter your full name"
               value={fullName}
               setValue={setFullName}
-              containerStyles={{paddingVertical: 5, borderWidth: 0}}
+              containerStyles={{paddingVertical: 10, borderWidth: 0}}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -380,7 +435,7 @@ const PersonaliseProfile = () => {
               placeholder="Choose a username"
               value={username}
               setValue={setUsername}
-              containerStyles={{paddingVertical: 5, borderWidth: 0}}
+              containerStyles={{paddingVertical: 10, borderWidth: 0}}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -417,6 +472,7 @@ const PersonaliseProfile = () => {
                     borderColor: theme.orange,
                     borderWidth: 1,
                     borderRadius: 5,
+                    marginTop: 10,
                     width: '28%',
                   }}
                 />

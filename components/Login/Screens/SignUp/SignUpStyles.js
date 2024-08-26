@@ -8,7 +8,8 @@ const useSignUpStyles = () => {
     root: {
       alignItems: 'center',
       backgroundColor: theme.mainBackgroundColor,
-      padding: 20,
+      paddingHorizontal: 20,
+      paddingVertical: 0,
     },
     scrollview: {
       backgroundColor: theme.mainBackgroundColor,
@@ -17,10 +18,8 @@ const useSignUpStyles = () => {
       height: theme.height * 0.3,
       margin: 0,
       padding: 0,
-      width: '40%',
-      maxHeight: 100,
-      maxWidth: 200,
-      marginBottom: 20,
+      width: '55%',
+      marginBottom: 0,
     },
     mainTitle: {
       fontSize: theme.titleFontSize,
@@ -30,6 +29,7 @@ const useSignUpStyles = () => {
     },
     inputContainer: {
       alignSelf: 'stretch',
+      marginBottom: 17,
     },
     title: {
       color: theme.textColor,
@@ -50,34 +50,36 @@ const useSignUpStyles = () => {
       fontFamily: theme.fontMedium,
     },
     termsContainer: {
-      flexDirection: 'row',
+      flexDirection: 'column',
+      alignItems: 'center',
       marginTop: 0,
       marginBottom: 10,
     },
     termsText: {
-      color: theme.textColor,
+      color: theme.secondaryTextColor,
       fontFamily: theme.font,
       fontSize: theme.responsiveFontSize * 0.75,
     },
     termsButton: {
       fontFamily: theme.fontMedium,
-      color: theme.orange,
-      fontSize: theme.responsiveFontSize * 0.75,
+      color: theme.secondaryTextColor,
+      fontSize: theme.responsiveFontSize * 0.80,
+      textDecorationLine: 'underline',
     },
     successContainer: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.mainBackgroundColor,
     },
     successText: {
-      fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontSize: theme.titleFontSize * 1.5,
+      fontFamily: theme.fontMedium,
       color: theme.signUpTitlesColor,
+      marginTop: 20,
     },
     tickImage: {
       width: 120,
-      height: 88,
+      height: 120,
       marginBottom: 10,
     },
     labelContainer: {
@@ -90,6 +92,20 @@ const useSignUpStyles = () => {
       fontFamily: theme.fontMedium,
       fontSize: 12,
       marginLeft: 8,
+    },
+    loginContainer: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: 15,
+      marginBottom: 20,
+    },
+    loginText: {
+      color: theme.secondaryTextColor,
+      fontFamily: theme.font,
+    },
+    loginButton: {
+      color: theme.activeOrange,
+      fontFamily: theme.fontMedium,
     },
   });
   return styles;
