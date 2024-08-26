@@ -225,12 +225,12 @@ const SettingsScreen = ({route}) => {
         await AsyncStorage.removeItem('username');
         await AsyncStorage.removeItem('birthDate');
         await AsyncStorage.removeItem('userImage');
-
+        
         const backendDeleteResponse = await fetch(`https://aialpha.ngrok.io/delete_user`, {
           method: 'DELETE',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
-            user_id: 'auth0|66c7927c048b91de03853388',
+            user_id: 999999,
           }),
         });
         const data = await backendDeleteResponse.json();

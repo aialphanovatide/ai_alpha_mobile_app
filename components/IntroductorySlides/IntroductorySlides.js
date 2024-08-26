@@ -234,6 +234,7 @@ const IntroductorySlides = ({route}) => {
   };
 
   const handleSkip = () => {
+    console.log('Entered Skip');
     navigation.navigate(chosenScreen, {shouldShowPopUps: true});
   };
 

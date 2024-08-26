@@ -69,7 +69,6 @@ const LoginForm = ({route}) => {
       const userEmail = await AsyncStorage.getItem('userEmail');
       const rawUserId = await AsyncStorage.getItem('rawUserId');
 
-      navigation.navigate('IntroductoryScreen');
       if (shouldGoToIntroduction === null) {
         await AsyncStorage.setItem('hasIntroduced', 'false');
         navigation.navigate('IntroductoryScreen');
@@ -81,7 +80,6 @@ const LoginForm = ({route}) => {
               ? route.params.shouldShowPopUps
               : null,
           );
-          //console.log("LoginForm Entered accesToken");
           const user_id = formatUserId(userId);
           //console.log("LoginForm NEWuserEmail ->", userEmail);
           //console.log("LoginForm NEWuserID ->", user_id);

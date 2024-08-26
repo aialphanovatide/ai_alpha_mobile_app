@@ -55,16 +55,6 @@ const Home = ({route}) => {
     fetchCustomerInfo();
   }, []);
 
-  useEffect(() => {
-    const checkShowIntroductoryPopUp = async () => {
-      const popUpsData = await AsyncStorage.getItem('hasIntroduced');
-      let shouldShowPopUp = popUpsData === 'false' ? true : false;
-      setActivePopUps(shouldShowPopUp);
-      await AsyncStorage.setItem('hasIntroduced', 'true');
-    };
-    checkShowIntroductoryPopUp();
-  }, []);
-
   useScrollToTop(ref);
 
   const handleAboutPress = (description = null, title = null) => {

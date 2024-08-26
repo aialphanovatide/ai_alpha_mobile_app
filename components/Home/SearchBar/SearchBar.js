@@ -81,8 +81,12 @@ const SearchBar = ({toggleMenuVisible, toggleTextValue, searchText, activeSearch
                 height: 40,
               },
         ]}>
-        <TouchableOpacity onPress={() => handleSearchActivation()}>
-          <Image
+        <TouchableOpacity
+          onPress={() => handleSearchActivation()}
+          style={[
+          Platform.OS === 'ios' && styles.magnifierTouchableContainer,
+          ]}>
+            <Image
             source={require('../../../assets/images/home/search_icon.png')}
             style={[styles.magnifierIcon, styles.magnifierTintColor]}
             resizeMode="contain"

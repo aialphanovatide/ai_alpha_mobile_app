@@ -38,7 +38,6 @@ const AppThemeProvider = ({children}) => {
   }, [isDarkMode]);
 
   const toggleDarkMode = () => {
-    console.log("isDarkMode -> ", !isDarkMode);
     setIsDarkMode(!isDarkMode);
   };
 

@@ -46,7 +46,6 @@ const useSearchBarStyles = () => {
       display: 'none',
     },
     magnifierIcon: {
-      position: 'absolute',
       top: 20,
       left: 12,
       width: 24,
@@ -54,6 +53,9 @@ const useSearchBarStyles = () => {
       marginHorizontal: 4,
       zIndex: 1100,
       tintColor: theme.searchPlaceHolderColor,
+    },
+    magnifierTouchableContainer:{
+      flex: 1,
     },
     magnifierTintColor: {
       tintColor: theme.textColor,

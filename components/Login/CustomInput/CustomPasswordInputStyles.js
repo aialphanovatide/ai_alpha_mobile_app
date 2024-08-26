@@ -9,7 +9,7 @@ const CustomPasswordInputStyles = () => {
     container: {
       width: '100%',
       paddingHorizontal: 12,
-      paddingVertical: 2,
+      paddingVertical: 10,
       marginTop: 5,
       marginBottom: 1,
       borderRadius: 5,
