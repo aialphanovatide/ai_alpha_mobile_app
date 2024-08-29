@@ -121,6 +121,7 @@ export const lightThemeStyles = {
     : 'Unbounded-SemiBold',
   fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
   backgroundSubscriptionsModal: '#FAFAFA',
+  notificationsHorizontalLineColor: '#D4D4D4',
 };
 
 export const darkThemeStyles = {
@@ -244,4 +245,5 @@ export const darkThemeStyles = {
   backgroundSubscriptionsModal: '#404040',
   personalizeProfileSaveButtonBackground: '#A02E0C',
   personalizeProfileSaveButtonText: 'white',
+  notificationsHorizontalLineColor: '#737373',
 };

@@ -160,7 +160,7 @@ const RevenueCatProvider = ({children}) => {
   const getUserSubscriptionData = async () => {
     try {
       const customerInfo = await Purchases.getCustomerInfo();
-      //console.log('\nCustomer info:', customerInfo);
+      //console.log('Customer Info: ', customerInfo);
       updateCustomerInformation(customerInfo);
     } catch (error) {
       console.log('Error purchasing package:', error);

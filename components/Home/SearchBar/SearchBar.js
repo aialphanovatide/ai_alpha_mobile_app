@@ -31,9 +31,11 @@ const SearchBar = ({toggleMenuVisible, toggleTextValue, searchText, activeSearch
   );
 
   useEffect(() => {
+    const toValue = Platform.OS === 'ios' ? -50 : 0;
+  
     if (activeSearchBar) {
       Animated.timing(slideAnim, {
-        toValue: 0,
+        toValue: toValue,
         duration: 300,
         easing: Easing.out(Easing.ease),
         useNativeDriver: true,
@@ -76,16 +78,16 @@ const SearchBar = ({toggleMenuVisible, toggleTextValue, searchText, activeSearch
             android: styles.textInputContainer,
           }),
           activeSearchBar
-            ? {}
+            ? {
+              zIndex: 3000,
+            }
             : {
                 height: 40,
+                zIndex: 1000,
               },
         ]}>
         <TouchableOpacity
-          onPress={() => handleSearchActivation()}
-          style={[
-          Platform.OS === 'ios' && styles.magnifierTouchableContainer,
-          ]}>
+          onPress={() => handleSearchActivation()}>
             <Image
             source={require('../../../assets/images/home/search_icon.png')}
             style={[styles.magnifierIcon, styles.magnifierTintColor]}
@@ -97,14 +99,14 @@ const SearchBar = ({toggleMenuVisible, toggleTextValue, searchText, activeSearch
           <Animated.View
             style={[
               Platform.select({
-                ios: styles.textInputContainerIOS,
+                ios: styles.textInputContainerIOSAfter,
                 android: styles.textInputContainer,
               }),
               {transform: [{translateX: slideAnim}]},
             ]}>
             <Image
               source={require('../../../assets/images/home/search_icon.png')}
-              style={styles.magnifierIcon}
+              style={styles.magnifierIconAfter}
               resizeMode="contain"
               fadeDuration={100}
             />

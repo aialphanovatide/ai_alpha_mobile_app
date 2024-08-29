@@ -550,7 +550,7 @@ const Chart = ({
             ))}
         </VictoryChart>
       </View>
-      <TouchableOpacity
+      {/*<TouchableOpacity
         onPress={
           isLandscape
             ? () => {
@@ -571,7 +571,7 @@ const Chart = ({
               : require('../../../../../../assets/images/home/charts/activate-horizontal.png')
           }
         />
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
       <TouchableOpacity onPress={() => handleBackInteraction()}>
         <Image
           style={

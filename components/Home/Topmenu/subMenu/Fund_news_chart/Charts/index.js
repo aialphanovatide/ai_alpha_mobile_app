@@ -312,7 +312,7 @@ const CandlestickChart = ({route}) => {
                 source={require('../../../../../../assets/images/home/charts/chart-refresh.png')}
                 style={[
                   styles.refreshButton,
-                  coinBot.toLowerCase() === 'btc' && loading ? {top: -110} : {},
+                  coinBot.toLowerCase() === 'btc' && loading ? {top: -108} : {},
                 ]}
                 resizeMode="contain"
               />
