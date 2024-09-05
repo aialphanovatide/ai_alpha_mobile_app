@@ -18,7 +18,7 @@ const useHomeNarrativeTradingStyles = () => {
       marginLeft: 8,
       color: theme.titleColor,
       fontSize: 14,
-      fontFamily: theme.fontMedium,
+      fontFamily: theme.font,
     },
     imageStyle: {
       width: 30,

@@ -41,7 +41,6 @@ const PersonaliseProfile = () => {
   const currentYear = new Date().getFullYear();
   const [isBirthDateValid, setIsBirthDateValid] = useState(false);
 
-
   useEffect(() => {
     const loadStoredData = async () => {
       try {
@@ -63,7 +62,9 @@ const PersonaliseProfile = () => {
         // Fetch user metadata if missing
         const token = await getManagementApiToken();
         const userFetch = await fetch(
-          `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+          `https://${auth0Domain}/api/v2/users/${encodeURIComponent(
+            rawUserId,
+          )}`,
           {
             method: 'GET',
             headers: {
@@ -100,7 +101,11 @@ const PersonaliseProfile = () => {
           setUserEmail(userFetchedEmail);
           setConnectionType(userFetchedConnection);
         } else {
-          console.error('Failed to fetch user:', userFetch.status, userFetch.statusText);
+          console.error(
+            'Failed to fetch user:',
+            userFetch.status,
+            userFetch.statusText,
+          );
         }
   
         // Load data from AsyncStorage

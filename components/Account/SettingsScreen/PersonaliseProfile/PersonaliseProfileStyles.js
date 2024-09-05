@@ -95,24 +95,24 @@ const usePersonaliseProfileStyles = () => {
       fontSize: 12,
     },
     imageContainer: {
-        alignItems: 'center',
-        marginBottom: 20,
+      alignItems: 'center',
+      marginBottom: 20,
     },
     userImage: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+      width: 100,
+      height: 100,
+      borderRadius: 50,
     },
-    infoTitle:{
-        color: theme.textColor,
-        textAlign: 'left',
-        marginLeft: 0,
-        fontSize: 17,
-        fontFamily: theme.fontSemibold,
+    infoTitle: {
+      color: theme.textColor,
+      textAlign: 'left',
+      marginLeft: 0,
+      fontSize: 17,
+      fontFamily: theme.fontSemibold,
     },
-    infoText:{
-        fontSize:16,
-        marginBottom:10,
+    infoText: {
+      fontSize: 16,
+      marginBottom: 10,
     },
     optionalLabel: {
       color: 'grey',
@@ -138,7 +138,7 @@ const usePersonaliseProfileStyles = () => {
       textDecorationLine: 'underline',
       marginBottom: 75,
     },
-    dateContainer:{
+    dateContainer: {
       alignItems: 'left',
       backgroundColor: 'transparent',
       borderRadius: 5,
@@ -150,11 +150,16 @@ const usePersonaliseProfileStyles = () => {
       padding: 10,
       justifyContent: 'center',
     },
+    dateInput: {
+      fontSize: 14,
+      fontFamily: theme.font,
+      color: theme.inputColor,
+    },
     input: {
       fontSize: 16,
       color: '#000',
     },
-    emailTitle:{
+    emailTitle: {
       color: theme.textColor,
       textAlign: 'left',
       fontFamily: theme.fontMedium,
@@ -172,7 +177,6 @@ const usePersonaliseProfileStyles = () => {
       borderColor: theme.loginInputBgColor,
       backgroundColor: 'transparent',
     },
-
   });
   return styles;
 };

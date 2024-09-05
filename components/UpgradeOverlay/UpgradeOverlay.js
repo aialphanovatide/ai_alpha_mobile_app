@@ -6,13 +6,17 @@ import {AppThemeContext} from '../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import {BlurView} from '@react-native-community/blur';
 
-const UpgradeOverlay = ({isCharts = null}) => {
+const UpgradeOverlay = ({isCharts = null, subscribed = false}) => {
   const navigation = useNavigation();
   const styles = useUpgradeOverlayStyles();
   const {isDarkMode} = useContext(AppThemeContext);
   const onUpgradePressed = () => {
     navigation.navigate('Account', {screen: 'Subscriptions'});
   };
+
+  if (subscribed) {
+    return <></>;
+  }
 
   return (
     <View

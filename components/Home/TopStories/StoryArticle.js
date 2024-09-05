@@ -24,6 +24,7 @@ const StoryArticle = ({route, navigation}) => {
   const isStory = route.params.isStory;
   const {theme} = useContext(AppThemeContext);
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
+  const [hasImage, setHasImage] = useState(false);
 
   // Animation for the whole article component's first rendering, swiping from the right side of the screen
 
@@ -38,6 +39,26 @@ const StoryArticle = ({route, navigation}) => {
     });
 
     animation.start();
+  }, []);
+
+  useEffect(() => {
+    const checkImageURL = async url => {
+      try {
+        const response = await fetch(url);
+        if (
+          response.headers.map['content-type'] &&
+          response.headers.map['content-type'].startsWith('binary/octet-stream')
+        ) {
+          setHasImage(true);
+        }
+      } catch (error) {
+        console.error('Error verifying the image URL:', error);
+        setHasImage(false);
+      }
+    };
+    checkImageURL(
+      `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`,
+    );
   }, []);
 
   const handleReturn = () => {
@@ -87,7 +108,9 @@ const StoryArticle = ({route, navigation}) => {
             style={styles.zoomedImage}
             resizeMode={'contain'}
             source={{
-              uri: imageUri,
+              uri: hasImage
+                ? imageUri
+                : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
               priority: FastImage.priority.normal,
             }}
             fallback={true}

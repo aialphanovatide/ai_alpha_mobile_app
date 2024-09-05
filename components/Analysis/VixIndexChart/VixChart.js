@@ -30,7 +30,7 @@ import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clic
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
-const VixChart = ({route, candlesToShow = 30}) => {
+const VixChart = ({route}) => {
   const styles = useChartSectionStyles();
   const {isDarkMode, theme} = useContext(AppThemeContext);
   const [chartData, setChartData] = useState([]);
@@ -41,6 +41,10 @@ const VixChart = ({route, candlesToShow = 30}) => {
   const [selectedCandle, setSelectedCandle] = useState(null);
   const navigation = useNavigation();
   const {subscribed} = useContext(RevenueCatContext);
+  const [showGradient, setShowGradient] = useState(true);
+  const [hasUpdatedZoomDomain, setHasUpdatedZoomDomain] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
+  const candlesToShow = selectedInterval.toLowerCase() === '1w' ? 30 : 20;
 
   // Hook to request again the data to CapitalCom when changing the time interval or the coin (changing to other chart)
   useEffect(() => {
@@ -59,14 +63,14 @@ const VixChart = ({route, candlesToShow = 30}) => {
         const mapped_hour = new Date(price?.datetime);
         const hour_to_seconds = mapped_hour.getTime();
         return {
-          x: moment(hour_to_seconds),
+          x: hour_to_seconds,
           open: parseFloat(price.open),
           high: parseFloat(price.high),
           low: parseFloat(price.low),
           close: parseFloat(price.close),
         };
       });
-      setChartData(mapped_prices);
+      setChartData(mapped_prices.reverse());
       setLoading(false);
     } catch (error) {
       console.error('Error getting the VIX Index data: ', error);
@@ -107,49 +111,25 @@ const VixChart = ({route, candlesToShow = 30}) => {
     }
   };
 
-  // X-Axis domain for the chart
-  // const [zoomDomain, setZoomDomain] = useState({
-  //   x: [
-  //     chartData[chartData?.length - candlesToShow]?.x,
-  //     chartData[chartData.length - 1]?.x,
-  //   ],
-  // });
+  // State variable and hook effect to handle the chart's domain including the zoom interaction, due to it is updated on every chart panning or zooming
 
-  // useEffect(() => {
-  //   setZoomDomain({
-  //     x: [
-  //       chartData[chartData?.length - candlesToShow]?.x,
-  //       chartData[chartData?.length - 1]?.x,
-  //     ],
-  //   });
-  // }, [chartData, candlesToShow, selectedInterval]);
+  const [zoomDomain, setZoomDomain] = useState({
+    x: [
+      chartData[chartData?.length - candlesToShow]?.x,
+      chartData[chartData?.length - 1]?.x,
+    ],
+  });
 
-  // // Y-Axis domain for the chart
-
-  // const lows = chartData?.map(d => d.low);
-  // const highs = chartData?.map(d => d.high);
-  // const low = Math.min(...lows);
-  // const high = Math.max(...highs);
-
-  // const domainY = useMemo(() => {
-  //   if (chartData && chartData?.length > 0) {
-  //     const priceRange = chartData?.slice(-candlesToShow).reduce(
-  //       (acc, dataPoint) => {
-  //         const {open, close, high, low} = dataPoint;
-  //         return [
-  //           Math.min(acc[0], open, close, high, low),
-  //           Math.max(acc[1], open, close, high, low),
-  //         ];
-  //       },
-  //       [Infinity, -Infinity],
-  //     );
-
-  //     let maxPrice = Math.max(priceRange[1], high);
-  //     let minPrice = Math.min(priceRange[0], low);
-
-  //     return [minPrice, maxPrice];
-  //   }
-  // }, [selectedInterval, chartData]);
+  useEffect(() => {
+    if (chartData.length >= candlesToShow) {
+      setZoomDomain({
+        x: [
+          chartData[chartData.length - candlesToShow]?.x,
+          chartData[chartData.length - 1]?.x,
+        ],
+      });
+    }
+  }, [chartData, selectedInterval]);
 
   const domainY = () => {
     return chartData?.reduce(
@@ -163,47 +143,7 @@ const VixChart = ({route, candlesToShow = 30}) => {
     );
   };
 
-  const domainX = [
-    chartData[chartData?.length - candlesToShow]?.x,
-    chartData[chartData.length - 1]?.x,
-  ];
-
-  if (loading || chartData?.length === 0) {
-    return (
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={{flex: 1}}>
-        <SafeAreaView
-          style={[
-            styles.background,
-            isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
-          ]}>
-          <ScrollView style={{flex: 1}}>
-            <View style={styles.backButtonWrapper}>
-              <BackButton />
-            </View>
-            <Text style={styles.title}>VIX Index Chart</Text>
-            <Text style={styles.sectionDescription}>
-              This Index measures the volatility in the markets - it spikes up
-              when sudden shocks happen and stays low when things are much
-              calmer.
-            </Text>
-            <View style={styles.container}>
-              <SkeletonLoader type="timeframe" quantity={2} />
-              <SkeletonLoader
-                type="chart"
-                style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
-              />
-            </View>
-          </ScrollView>
-          {subscribed ? <></> : <UpgradeOverlay />}
-        </SafeAreaView>
-      </LinearGradient>
-    );
-  }
+  const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
 
   // Function to handle candle click events
   const handleCandleClick = (event, data) => {
@@ -232,6 +172,57 @@ const VixChart = ({route, candlesToShow = 30}) => {
   const chartWidth = width > 500 ? 860 : 400;
   const chartHeight = 340;
 
+  // Function to handle the gradient rendering by calculating the difference between the last candle's x-axis value with the current x-axis domain lower value
+  const handleGradientRender = domainChange => {
+    const chartDataTimeStamp = new Date(chartData[0].x);
+    const isFirstCandleVisible = zoomDomain.x[0] <= chartDataTimeStamp;
+    setShowGradient(!isFirstCandleVisible);
+    setZoomDomain(domainChange);
+  };
+
+  // Function to enable and disable the scroll interactions when zooming the chart
+
+  const handleOnZoom = value => {
+    setScrollEnabled(value);
+  };
+
+  if (loading || chartData?.length === 0) {
+    return (
+      <LinearGradient
+        useAngle={true}
+        angle={45}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
+        style={{flex: 1}}>
+        <SafeAreaView
+          style={[
+            styles.background,
+            isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
+          ]}>
+          <ScrollView style={{flex: 1}} scrollEnabled={scrollEnabled}>
+            <View style={styles.backButtonWrapper}>
+              <BackButton />
+            </View>
+            <Text style={styles.title}>VIX Index Chart</Text>
+            <Text style={styles.sectionDescription}>
+              This Index measures the volatility in the markets - it spikes up
+              when sudden shocks happen and stays low when things are much
+              calmer.
+            </Text>
+            <View style={styles.container}>
+              <SkeletonLoader type="timeframe" quantity={2} />
+              <SkeletonLoader
+                type="chart"
+                style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+              />
+            </View>
+          </ScrollView>
+          {subscribed ? <></> : <UpgradeOverlay />}
+        </SafeAreaView>
+      </LinearGradient>
+    );
+  }
+
   return (
     <LinearGradient
       useAngle={true}
@@ -244,7 +235,7 @@ const VixChart = ({route, candlesToShow = 30}) => {
           styles.mainSection,
           isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
         ]}>
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{flex: 1}} scrollEnabled={scrollEnabled}>
           <View style={styles.backButtonWrapper}>
             <BackButton />
           </View>
@@ -265,6 +256,7 @@ const VixChart = ({route, candlesToShow = 30}) => {
                 changeInterval={changeInterval}
                 disabled={loading}
               />
+              {/* Refresh data button */}
               <TouchableOpacity
                 onPress={() => handleDataUpdate(selectedInterval)}
                 disabled={loading}>
@@ -281,26 +273,28 @@ const VixChart = ({route, candlesToShow = 30}) => {
                 style={[styles.chartBackgroundImage, {top: 45}]}
                 resizeMode="contain"
               />
-              <LinearGradient
-                useAngle
-                angle={90}
-                colors={
-                  isDarkMode
-                    ? ['rgba(22, 22, 22, 1)', 'transparent']
-                    : ['rgba(232, 232, 232, 1)', 'transparent']
-                }
-                style={{
-                  position: 'absolute',
-                  left: 0,
-                  top: '10%',
-                  bottom: 0,
-                  width: 50,
-                  zIndex: 1,
-                }}
-              />
+              {showGradient && (
+                <LinearGradient
+                  useAngle
+                  angle={90}
+                  colors={
+                    isDarkMode
+                      ? ['rgba(22, 22, 22, 1)', 'transparent']
+                      : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
+                  }
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: '10%',
+                    bottom: 0,
+                    width: 50,
+                    zIndex: 1,
+                  }}
+                />
+              )}
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
-                domain={{x: domainX, y: domainY()}}
+                domain={{x: zoomDomain.x, y: domainY()}}
                 events={[
                   {
                     target: 'parent',
@@ -315,7 +309,15 @@ const VixChart = ({route, candlesToShow = 30}) => {
                 padding={{top: 10, bottom: 40, left: 20, right: 70}}
                 scale={{x: 'time', y: 'linear'}}
                 height={300}
-                containerComponent={<VictoryZoomContainer />}>
+                containerComponent={
+                  <VictoryZoomContainer
+                    zoomDomain={zoomDomain.x}
+                    onZoomDomainChange={domain => handleGradientRender(domain)}
+                    onTouchStart={() => handleOnZoom(false)}
+                    onTouchEnd={() => handleOnZoom(true)}
+                  />
+                }>
+                {/* X-Axis */}
                 <VictoryAxis
                   fixLabelOverlap
                   style={{
@@ -333,12 +335,13 @@ const VixChart = ({route, candlesToShow = 30}) => {
                     const month = (t.getMonth() + 1)
                       .toString()
                       .padStart(2, '0');
-                    const day = t.getDate().toString().padStart(2, '0');
+                    const day = t.getDate().toString().padStart(2, '');
                     const hour = t.getHours().toString().padStart(2, '0');
                     const minute = t.getMinutes().toString().padStart(2, '0');
-                    return `${year}-${day}-${month}`;
+                    return ` ${day}/${month}/${year} `;
                   }}
                 />
+                {/* Y-Axis */}
                 <VictoryAxis
                   dependentAxis
                   fixLabelOverlap
@@ -361,11 +364,11 @@ const VixChart = ({route, candlesToShow = 30}) => {
                   <VictoryLine
                     data={[
                       {
-                        x: domainX[0],
+                        x: zoomDomain.x[0],
                         y: (selectedCandle.open + selectedCandle.close) / 2,
                       },
                       {
-                        x: domainX[1],
+                        x: zoomDomain.x[1],
                         y: (selectedCandle.open + selectedCandle.close) / 2,
                       },
                     ]}
@@ -380,13 +383,13 @@ const VixChart = ({route, candlesToShow = 30}) => {
                     }}
                   />
                 )}
-
+                {/* Click on candle data component */}
                 <DataRenderer
-                  domainX={domainX}
+                  domainX={zoomDomain.x}
                   yPoint={
                     selectedCandle && calculateCandleMiddle(selectedCandle)
                   }
-                  domainY={domainY}
+                  domainY={domainY()}
                   chartWidth={chartWidth}
                   screenWidth={width}
                   chartHeight={chartHeight}
@@ -411,7 +414,7 @@ const VixChart = ({route, candlesToShow = 30}) => {
                     }}
                   />
                 )}
-
+                {/* Candle component */}
                 <VictoryCandlestick
                   data={chartData}
                   events={[
@@ -437,7 +440,8 @@ const VixChart = ({route, candlesToShow = 30}) => {
                 />
               </VictoryChart>
             </View>
-            <TouchableOpacity
+            {/* Horizontal view button [DEACTIVATED UNTIL SOLVING ISSUES] */}
+            {/* <TouchableOpacity
               onPress={
                 isLandscape
                   ? () => {
@@ -460,8 +464,9 @@ const VixChart = ({route, candlesToShow = 30}) => {
                     : require('../../../assets/images/home/charts/activate-horizontal.png')
                 }
               />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleBackInteraction()}>
+            </TouchableOpacity> */}
+            {/* Horizontal view close button */}
+            {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
               <Image
                 style={
                   isLandscape && isHorizontal
@@ -471,11 +476,13 @@ const VixChart = ({route, candlesToShow = 30}) => {
                 resizeMode="contain"
                 source={require('../../../assets/images/home/charts/back.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            {/* Zoom interaction indicator */}
             <Image
               style={[
                 styles.chartsZoomIndicator,
                 {bottom: Platform.OS === 'android' ? 60 : 70},
+                selectedCandle && {zIndex: -1},
               ]}
               resizeMode="contain"
               source={require('../../../assets/images/home/charts/zoom-expand.png')}

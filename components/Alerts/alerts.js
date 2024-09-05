@@ -59,7 +59,7 @@ const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
 
 const Alerts = ({route, navigation}) => {
   const options = ['1H', '4H', '1D', '1W'];
-  const [activeAlertOption, setActiveAlertOption] = useState(options[0]);
+  const [activeAlertOption, setActiveAlertOption] = useState(options[1]);
   const [botName, setBotName] = useState(null);
   const [hasSubscription, setHasSubscription] = useState(null);
   const [subscribedCategories, setSubscribedCategories] = useState([]);
@@ -85,7 +85,6 @@ const Alerts = ({route, navigation}) => {
 
   // Use effect to load the current active coin from the route (when navigating from Home with an active coin) or from the bottom menu, in which case, there is not active coin. Also for the case where the coin switches from the alerts section
   useEffect(() => {
-    setActiveAlertOption(options[0]);
     if (route.params) {
       const paramsBotName = route.params.botName;
       setBotName(paramsBotName);
@@ -125,7 +124,6 @@ const Alerts = ({route, navigation}) => {
           found_subscribed_categories.push(category);
         }
       });
-      // console.log('Found subscribed categories: ', found_subscribed_categories);
       setSubscribedCategories(found_subscribed_categories);
       setHasSubscription(subscribed);
     }
@@ -149,7 +147,6 @@ const Alerts = ({route, navigation}) => {
         ) {
           setAlerts([]);
         } else {
-          //console.log('Alerts: ', response.alerts);
           setAlerts(filterAlertsByDate(response.alerts, activeAlertOption));
         }
       } catch (error) {
@@ -175,7 +172,6 @@ const Alerts = ({route, navigation}) => {
           for (const key in response) {
             response[key].slice(0, 10).map(alert => mapped_alerts.push(alert));
           }
-          // console.log(mapped_alerts);
           const filtered_alerts = filterAlertsByDate(
             mapped_alerts,
             activeAlertOption,
@@ -199,9 +195,6 @@ const Alerts = ({route, navigation}) => {
   const handleOptionChange = option => {
     setActiveAlertOption(option);
   };
-
-  console.log('Alerts subscription: ', hasSubscription);
-  console.log('RC subscription: ', subscribed);
 
   return (
     <SafeAreaView style={styles.mainContainer} ref={ref}>
@@ -243,7 +236,13 @@ const Alerts = ({route, navigation}) => {
             />
           )}
         </View>
-        {hasSubscription ? <></> : <UpgradeOverlay />}
+        {hasSubscription ? (
+          <></>
+        ) : (
+          <UpgradeOverlay
+            subscribed={subscribedCategories || hasSubscription}
+          />
+        )}
       </LinearGradient>
     </SafeAreaView>
   );

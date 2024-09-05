@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../../../context/themeContext';
 
 const useCoinMenuStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     menu: {
       justifyContent: 'space-between',
@@ -27,23 +27,8 @@ const useCoinMenuStyles = () => {
       justifyContent: 'center',
       borderRadius: 30,
       borderWidth: 1,
-      borderColor: theme.secondaryTextColor,
+      borderColor: '#A3A3A3',
       height: 30,
-    },
-    firstActiveButton: {
-      backgroundColor: theme.activePurple,
-      color: theme.activeWhite,
-      borderColor: theme.activePurple,
-    },
-    secondActiveButton: {
-      backgroundColor: theme.activePink,
-      color: theme.activeWhite,
-      borderColor: theme.activePink,
-    },
-    thirdActiveButton: {
-      backgroundColor: theme.activeBlack,
-      borderColor: theme.activeBlack,
-      color: theme.activeWhite,
     },
     buttonContainer: {
       flexDirection: 'row',
@@ -53,9 +38,10 @@ const useCoinMenuStyles = () => {
       width: 16,
       height: 16,
       marginRight: 8,
+      tintColor: '#A3A3A3',
     },
     buttonText: {
-      color: theme.secondaryTextColor,
+      color: '#A3A3A3',
       textTransform: 'uppercase',
       fontSize: 13.33333,
       fontFamily: theme.fontMedium,

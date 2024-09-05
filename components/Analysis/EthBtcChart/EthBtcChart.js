@@ -42,6 +42,8 @@ const EthBtcChart = ({candlesToShow = 30}) => {
     useScreenOrientation();
   const [selectedCandle, setSelectedCandle] = useState(null);
   const {subscribed} = useContext(RevenueCatContext);
+  const [showGradient, setShowGradient] = useState(true);
+  const [hasUpdatedZoomDomain, setHasUpdatedZoomDomain] = useState(false);
 
   // Use Effect that gets the chart data from the Binance API, mapping it to the Victory Chart necessary format
   async function fetchChartData() {
@@ -91,6 +93,89 @@ const EthBtcChart = ({candlesToShow = 30}) => {
     return (candle.open + candle.close) / 2;
   };
 
+  // Function to change the time interval of the chart
+  const changeInterval = async newInterval => {
+    setLoading(true);
+    try {
+      setSelectedInterval(newInterval);
+      setChartData([]);
+    } catch (error) {
+      console.error(`Failed to change interval: ${error}`);
+    }
+  };
+
+  // Function to handle the X button interaction on the horizontal chart
+
+  const handleBackInteraction = () => {
+    if (isLandscape || isHorizontal) {
+      handleScreenOrientationChange('PORTRAIT');
+      navigation.canGoBack(false);
+    }
+  };
+
+  // Extracting low and high values from candlestick data
+  const lows = chartData.map(d => d.low);
+  const highs = chartData.map(d => d.high);
+
+  // Calculate Fibonacci retracement levels
+  const low = Math.min(...lows);
+  const high = Math.max(...highs);
+
+  const {height, width} = Dimensions.get('window');
+  const chartWidth = width > 500 ? 860 : 400;
+  const chartHeight = 300;
+
+  // State variable and hook effect to handle the chart's domain including the zoom interaction, due to it is updated on every chart panning or zooming
+
+  const [zoomDomain, setZoomDomain] = useState({
+    x: [
+      chartData[chartData.length - 30]?.x,
+      chartData[chartData.length - 1]?.x,
+    ],
+  });
+
+  useEffect(() => {
+    if (
+      !hasUpdatedZoomDomain ||
+      zoomDomain.x[0] === undefined ||
+      !zoomDomain.x
+    ) {
+      setHasUpdatedZoomDomain(true);
+      setZoomDomain({
+        x: [
+          chartData[chartData.length - 30]?.x,
+          chartData[chartData.length - 1]?.x,
+        ],
+      });
+    }
+  }, [chartData, selectedInterval]);
+
+  // Function to handle the gradient rendering by calculating the difference between the last candle's x-axis value with the current x-axis domain lower value
+  const handleGradientRender = domainChange => {
+    const chartDataTimeStamp = new Date(chartData[0].x).getTime();
+    const chartDataMaxTimeStamp = new Date(
+      chartData[chartData?.length - 1].x,
+    ).getTime();
+    const isFirstCandleVisible = zoomDomain.x[0] <= chartDataTimeStamp;
+
+    if (domainChange.x[0] < chartDataTimeStamp) {
+      setZoomDomain({
+        x: [chartDataTimeStamp, domainChange.x[1]],
+        y: domainChange.y,
+      });
+    } else {
+      if (domainChange.x[1] > chartDataMaxTimeStamp) {
+        setZoomDomain({
+          x: [domainChange.x[0], chartDataMaxTimeStamp],
+          y: domainChange.y,
+        });
+      } else {
+        setZoomDomain(domainChange);
+      }
+    }
+    setShowGradient(!isFirstCandleVisible);
+  };
+
   // If the chart data is loading, then display a loader
   if (loading || chartData.length === 0) {
     return (
@@ -123,6 +208,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
       </LinearGradient>
     );
   }
+
   // Function that generates the Y-Axis domain with the charts data
   const domainY = chartData.reduce(
     (acc, dataPoint) => [
@@ -134,38 +220,6 @@ const EthBtcChart = ({candlesToShow = 30}) => {
   // Function that generates the X-Axis domain with the charts data
 
   const domainX = [chartData[0].x, chartData[chartData.length - 1].x];
-
-  // Function to change the time interval of the chart
-  const changeInterval = async newInterval => {
-    setLoading(true);
-    try {
-      setSelectedInterval(newInterval);
-      setChartData([]);
-    } catch (error) {
-      console.error(`Failed to change interval: ${error}`);
-    }
-  };
-
-  // Function to handle the X button interaction on the horizontal chart
-
-  const handleBackInteraction = () => {
-    if (isLandscape || isHorizontal) {
-      handleScreenOrientationChange('PORTRAIT');
-      navigation.canGoBack(false);
-    }
-  };
-
-  // Extracting low and high values from candlestick data
-  const lows = chartData.map(d => d.low);
-  const highs = chartData.map(d => d.high);
-
-  // Calculate Fibonacci retracement levels
-  const low = Math.min(...lows);
-  const high = Math.max(...highs);
-
-  const {height, width} = Dimensions.get('window');
-  const chartWidth = width > 500 ? 860 : 400;
-  const chartHeight = 300;
 
   return (
     <LinearGradient
@@ -207,26 +261,29 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                 style={styles.chartBackgroundImage}
                 resizeMode="contain"
               />
-              <LinearGradient
-                useAngle
-                angle={90}
-                colors={
-                  isDarkMode
-                    ? ['rgba(22, 22, 22, 1)', 'transparent']
-                    : ['rgba(232, 232, 232, 1)', 'transparent']
-                }
-                style={{
-                  position: 'absolute',
-                  left: 0,
-                  top: 0,
-                  bottom: 0,
-                  width: 40,
-                  zIndex: 1,
-                }}
-              />
+              {showGradient && (
+                <LinearGradient
+                  useAngle
+                  angle={90}
+                  colors={
+                    isDarkMode
+                      ? ['rgba(22, 22, 22, 1)', 'transparent']
+                      : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
+                  }
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: 40,
+                    zIndex: 1,
+                  }}
+                />
+              )}
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : chartWidth}
-                domain={{x: domainX, y: domainY}}
+                standalone={true}
+                domain={{x: zoomDomain.x, y: domainY}}
                 events={[
                   {
                     target: 'parent',
@@ -242,7 +299,12 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                 domainPadding={{x: 2.5, y: 3}}
                 scale={{x: 'time', y: 'linear'}}
                 height={chartHeight}
-                containerComponent={<VictoryZoomContainer />}>
+                containerComponent={
+                  <VictoryZoomContainer
+                    zoomDomain={zoomDomain.x}
+                    onZoomDomainChange={domain => handleGradientRender(domain)}
+                  />
+                }>
                 <VictoryAxis
                   fixLabelOverlap
                   style={{
@@ -263,7 +325,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                     const day = t.getDate().toString().padStart(2, '0');
                     const hour = t.getHours().toString().padStart(2, '0');
                     const minute = t.getMinutes().toString().padStart(2, '0');
-                    return `${year}-${day}-${month}`;
+                    return `${day}/${month}/${year}`;
                   }}
                 />
                 <VictoryAxis
@@ -281,9 +343,9 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                   tickCount={8}
                   tickFormat={t => `$${t}`}
                 />
-
+                {/* Component to render the clicked candle's data */}
                 <DataRenderer
-                  domainX={domainX}
+                  domainX={zoomDomain.x}
                   yPoint={
                     selectedCandle && calculateCandleMiddle(selectedCandle)
                   }
@@ -299,11 +361,11 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                   <VictoryLine
                     data={[
                       {
-                        x: domainX[0],
+                        x: zoomDomain.x[0],
                         y: (selectedCandle.open + selectedCandle.close) / 2,
                       },
                       {
-                        x: domainX[1],
+                        x: zoomDomain.x[1],
                         y: (selectedCandle.open + selectedCandle.close) / 2,
                       },
                     ]}
@@ -337,7 +399,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                     }}
                   />
                 )}
-
+                {/* Candle component */}
                 <VictoryCandlestick
                   data={chartData}
                   events={[
@@ -363,7 +425,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                 />
               </VictoryChart>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={
                 isLandscape
                   ? () => {
@@ -394,7 +456,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                 resizeMode="contain"
                 source={require('../../../assets/images/home/charts/back.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <Image
               style={styles.chartsZoomIndicator}
               resizeMode="contain"

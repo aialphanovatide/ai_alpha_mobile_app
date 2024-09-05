@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useMemo} from 'react';
 import {
   View,
   ImageBackground,
@@ -37,6 +37,8 @@ const BtcDominanceChart = ({route, navigation}) => {
   const {subscribed} = useContext(RevenueCatContext);
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
+  const [showGradient, setShowGradient] = useState(true);
+  const [hasUpdatedZoomDomain, setHasUpdatedZoomDomain] = useState(false);
 
   async function fetchChartData(interval = selectedInterval) {
     try {
@@ -84,37 +86,6 @@ const BtcDominanceChart = ({route, navigation}) => {
     }
   };
 
-  if (loading || chartData.length === 0) {
-    return (
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={{flex: 1}}>
-        <SafeAreaView style={styles.background}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton />
-          </View>
-          <Text style={styles.analysisTitle}>BTC Dominance Chart</Text>
-          <Text style={styles.sectionDescription}>
-            Reflects the proportion of the total cryptocurrency market held by
-            Bitcoin. It is a vital indicator for assessing the market's
-            preference for BTC over other altcoins.
-          </Text>
-          <View style={styles.container}>
-            <SkeletonLoader type="timeframe" quantity={2} />
-            <SkeletonLoader
-              type="chart"
-              style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
-            />
-          </View>
-          {subscribed ? <></> : <UpgradeOverlay />}
-        </SafeAreaView>
-      </LinearGradient>
-    );
-  }
-
   // Function to handle candle click events
   const handleCandleClick = (event, data) => {
     const linesColor = data.close > data.open ? '#09C283' : '#E93334';
@@ -151,6 +122,88 @@ const BtcDominanceChart = ({route, navigation}) => {
   const chartWidth = width > 500 ? 860 : 400;
   const chartHeight = 300;
 
+  // State variable and hook effect to handle the chart's domain including the zoom interaction, due to it is updated on every chart panning or zooming
+
+  const [zoomDomain, setZoomDomain] = useState({
+    x: [
+      chartData[chartData.length - 30]?.x,
+      chartData[chartData.length - 1]?.x,
+    ],
+  });
+
+  useEffect(() => {
+    if (
+      !hasUpdatedZoomDomain ||
+      zoomDomain.x[0] === undefined ||
+      !zoomDomain.x
+    ) {
+      setHasUpdatedZoomDomain(true);
+      setZoomDomain({
+        x: [
+          chartData[chartData.length - 30]?.x,
+          chartData[chartData.length - 1]?.x,
+        ],
+      });
+    }
+  }, [chartData, selectedInterval]);
+
+  // Function to handle the gradient rendering by calculating the difference between the last candle's x-axis value with the current x-axis domain lower value
+  const handleGradientRender = domainChange => {
+    const chartDataTimeStamp = new Date(chartData[0].x).getTime();
+    const chartDataMaxTimeStamp = new Date(
+      chartData[chartData?.length - 1].x,
+    ).getTime();
+    const isFirstCandleVisible = zoomDomain.x[0] <= chartDataTimeStamp;
+
+    if (domainChange.x[0] < chartDataTimeStamp) {
+      setZoomDomain({
+        x: [chartDataTimeStamp, domainChange.x[1]],
+        y: domainChange.y,
+      });
+    } else {
+      if (domainChange.x[1] > chartDataMaxTimeStamp) {
+        setZoomDomain({
+          x: [domainChange.x[0], chartDataMaxTimeStamp],
+          y: domainChange.y,
+        });
+      } else {
+        setZoomDomain(domainChange);
+      }
+    }
+    setShowGradient(!isFirstCandleVisible);
+  };
+
+  if (loading || chartData.length === 0) {
+    return (
+      <LinearGradient
+        useAngle={true}
+        angle={45}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
+        style={{flex: 1}}>
+        <SafeAreaView style={styles.background}>
+          <View style={styles.backButtonWrapper}>
+            <BackButton />
+          </View>
+          <Text style={styles.analysisTitle}>BTC Dominance Chart</Text>
+          <Text style={styles.sectionDescription}>
+            Reflects the proportion of the total cryptocurrency market held by
+            Bitcoin. It is a vital indicator for assessing the market's
+            preference for BTC over other altcoins.
+          </Text>
+          <View style={styles.container}>
+            <SkeletonLoader type="timeframe" quantity={2} />
+            <SkeletonLoader
+              type="chart"
+              style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+            />
+          </View>
+          {subscribed ? <></> : <UpgradeOverlay />}
+        </SafeAreaView>
+      </LinearGradient>
+    );
+  }
+
   const domainY = chartData.reduce(
     (acc, dataPoint) => [
       Math.min(
@@ -170,8 +223,6 @@ const BtcDominanceChart = ({route, navigation}) => {
     ],
     [Infinity, -Infinity],
   );
-
-  const domainX = [chartData[0].x, chartData[chartData.length - 1].x];
 
   return (
     <LinearGradient
@@ -200,26 +251,30 @@ const BtcDominanceChart = ({route, navigation}) => {
         </View>
         <View style={styles.container}>
           <View style={styles.chart}>
-            <LinearGradient
-              useAngle
-              angle={90}
-              colors={
-                isDarkMode
-                  ? ['rgba(22, 22, 22, 1)', 'transparent']
-                  : ['rgba(232, 232, 232, 1)', 'transparent']
-              }
-              style={{
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: 40,
-                zIndex: 1,
-              }}
-            />
+            {showGradient && (
+              <LinearGradient
+                useAngle
+                angle={90}
+                colors={
+                  isDarkMode
+                    ? ['rgba(22, 22, 22, 1)', 'transparent']
+                    : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
+                }
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 40,
+                  height: '85%',
+                  marginTop: '5%',
+                  zIndex: 1,
+                }}
+              />
+            )}
             <VictoryChart
               width={375}
-              domain={{x: domainX, y: domainY}}
+              domain={{x: zoomDomain.x, y: domainY}}
               events={[
                 {
                   target: 'parent',
@@ -234,8 +289,14 @@ const BtcDominanceChart = ({route, navigation}) => {
               padding={{top: 10, bottom: 40, left: 20, right: 70}}
               domainPadding={{x: 5, y: 3}}
               scale={{x: 'time', y: 'linear'}}
-              containerComponent={<VictoryZoomContainer />}
+              containerComponent={
+                <VictoryZoomContainer
+                  zoomDomain={zoomDomain.x}
+                  onZoomDomainChange={domain => handleGradientRender(domain)}
+                />
+              }
               height={300}>
+              {/* X-Axis */}
               <VictoryAxis
                 fixLabelOverlap
                 style={{
@@ -251,12 +312,13 @@ const BtcDominanceChart = ({route, navigation}) => {
                 tickFormat={t => {
                   const year = t.getFullYear();
                   const month = (t.getMonth() + 1).toString().padStart(2, '0');
-                  const day = t.getDate().toString().padStart(2, '0');
+                  const day = t.getDate().toString().padStart(2, '');
                   const hour = t.getHours().toString().padStart(2, '0');
                   const minute = t.getMinutes().toString().padStart(2, '0');
-                  return `${year}-${day}-${month}`;
+                  return `${day}/${month}/${year}`;
                 }}
               />
+              {/* Y Axis */}
               <VictoryAxis
                 dependentAxis
                 style={{
@@ -272,9 +334,9 @@ const BtcDominanceChart = ({route, navigation}) => {
                 tickFormat={t => `$${t}`}
                 orientation="right"
               />
-
+              {/* Selected candle data component */}
               <DataRenderer
-                domainX={domainX}
+                domainX={zoomDomain.x}
                 yPoint={selectedCandle && calculateCandleMiddle(selectedCandle)}
                 domainY={domainY}
                 chartWidth={chartWidth}
@@ -288,11 +350,11 @@ const BtcDominanceChart = ({route, navigation}) => {
                 <VictoryLine
                   data={[
                     {
-                      x: domainX[0],
+                      x: zoomDomain.x[0],
                       y: (selectedCandle.open + selectedCandle.close) / 2,
                     },
                     {
-                      x: domainX[1],
+                      x: zoomDomain.x[1],
                       y: (selectedCandle.open + selectedCandle.close) / 2,
                     },
                   ]}
@@ -326,7 +388,7 @@ const BtcDominanceChart = ({route, navigation}) => {
                   }}
                 />
               )}
-
+              {/* Candle component */}
               <VictoryCandlestick
                 data={chartData}
                 events={[
@@ -356,7 +418,8 @@ const BtcDominanceChart = ({route, navigation}) => {
                 resizeMode="contain"
               />
             </VictoryChart>
-            <TouchableOpacity
+            {/* Horizontal view button [DEACTIVATED UNTIL SOLVING ISSUES] */}
+            {/* <TouchableOpacity
               onPress={
                 isLandscape
                   ? () => {
@@ -376,8 +439,9 @@ const BtcDominanceChart = ({route, navigation}) => {
                     : require('../../../assets/images/home/charts/activate-horizontal.png')
                 }
               />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleBackInteraction()}>
+            </TouchableOpacity> */}
+            {/* Horizontal view close button */}
+            {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
               <Image
                 style={
                   isLandscape && isHorizontal
@@ -387,9 +451,13 @@ const BtcDominanceChart = ({route, navigation}) => {
                 resizeMode="contain"
                 source={require('../../../assets/images/home/charts/back.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            {/* Zoom interaction indicator */}
             <Image
-              style={styles.chartsZoomIndicator}
+              style={[
+                styles.chartsZoomIndicator,
+                selectedCandle && {zIndex: -1},
+              ]}
               resizeMode="contain"
               source={require('../../../assets/images/home/charts/zoom-expand.png')}
             />

@@ -34,7 +34,7 @@ const useTopStoriesStyles = () => {
     },
     titleStyles: {
       maxWidth: '85%',
-      fontFamily: theme.fontMedium,
+      fontFamily: theme.font,
       color: theme.titleColor,
       marginBottom: 2,
       fontSize: 14,

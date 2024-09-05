@@ -1,6 +1,7 @@
-import React, {createContext, useEffect, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import {getService} from '../services/aiAlphaApi';
 import {io} from 'socket.io-client';
+import {CategoriesContext} from './categoriesContext';
 
 const Top10MoversContext = createContext();
 
@@ -8,6 +9,27 @@ const Top10MoversContextProvider = ({children}) => {
   const [topTenMoversData, setTopTenMoversData] = useState([]);
   const [topTenLosersData, setTopTenLosersData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {categories} = useContext(CategoriesContext);
+
+  // Function to find the category that the top 10 gainers item's coin belongs to
+
+  const findCategoryOfItem = (coin, fullName, categories) => {
+    if (coin.toLowerCase() === 'matic') {
+      coin = 'pol';
+    }
+    const found = categories.find(category => {
+      return (
+        category.coin_bots.length > 0 &&
+        category.coin_bots.some(categoryCoin => {
+          return (
+            categoryCoin.bot_name.toLowerCase() === coin.toLowerCase() ||
+            categoryCoin.bot_name.toLowerCase() === fullName.toLowerCase()
+          );
+        })
+      );
+    });
+    return found;
+  };
 
   // useEffect(() => {
   //   const socket = io('https://aialpha.ngrok.io/');
@@ -45,12 +67,14 @@ const Top10MoversContextProvider = ({children}) => {
                 coin.name.length > 15
                   ? coin.name.trim().split(/\s+/g)[0]
                   : coin.name,
-              symbol: coin.symbol,
+              symbol:
+                coin.symbol.toLowerCase() === 'matic' ? 'pol' : coin.symbol,
               image: coin.image,
               currentPrice: coin.current_price,
               priceChange24H: coin.price_change_percentage_24h
                 ? coin.price_change_percentage_24h
                 : 0.0,
+              category: findCategoryOfItem(coin.symbol, coin.name, categories),
             };
             top10CoinsInfo.push(coinInfo);
           }
@@ -62,12 +86,14 @@ const Top10MoversContextProvider = ({children}) => {
                 coin.name.length > 15
                   ? coin.name.trim().split(/\s+/)[0]
                   : coin.name,
-              symbol: coin.symbol,
+              symbol:
+                coin.symbol.toLowerCase() === 'matic' ? 'pol' : coin.symbol,
               image: coin.image,
               currentPrice: coin.current_price,
               priceChange24H: coin.price_change_percentage_24h
                 ? coin.price_change_percentage_24h
                 : 0.0,
+              category: findCategoryOfItem(coin.symbol, coin.name, categories),
             };
             top10LosersInfo.push(coinInfo);
           }

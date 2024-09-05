@@ -1,12 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  Animated,
-  Image,
-  Modal,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Animated, Modal, Text, TouchableOpacity, View} from 'react-native';
 import useIntroductorySlidesStyles from '../IntroductorySlidesStyles';
 import {useNavigation} from '@react-navigation/core';
 
@@ -24,24 +17,26 @@ const IntroductoryPopUp = ({
   const styles = useIntroductorySlidesStyles();
   return (
     <Animated.View style={[styles.popUpModal, activeStyles, {opacity}]}>
-      <Text style={styles.popUpTitle}>{title}</Text>
-      <Text style={styles.popUpText}>{description}</Text>
-      {dotIndex === dots.length - 1 ? (
-        <TouchableOpacity
-          style={styles.subscribePopUpsButton}
-          onPress={() => handleSubscriptionButton()}>
-          <Text style={[styles.buttonText, styles.popUpsButtonText]}>
-            Start the 7-day free trial
-          </Text>
-        </TouchableOpacity>
-      ) : (
-        <></>
-      )}
-      <View style={styles.row}>
+      <View
+        style={[
+          styles.row,
+          {marginVertical: 8, justifyContent: 'space-between'},
+        ]}>
+        <View style={styles.dotsContainer}>
+          {dots.map((dot, index) => (
+            <View
+              key={index}
+              style={[
+                styles.popUpDot,
+                index === dotIndex ? styles.popUpActiveDot : {},
+              ]}
+            />
+          ))}
+        </View>
         <Text style={styles.popUpSkip} onPress={() => handleActivePopUps()}>
           Skip
         </Text>
-        {dotIndex === dots.length - 1 ? (
+        {/* {dotIndex === dots.length - 1 ? (
           <></>
         ) : (
           <>
@@ -56,19 +51,23 @@ const IntroductoryPopUp = ({
               style={styles.nextRightArrow}
             />
           </>
-        )}
+        )} */}
       </View>
-      <View style={styles.dotsContainer}>
-        {dots.map((dot, index) => (
-          <View
-            key={index}
-            style={[
-              styles.popUpDot,
-              index === dotIndex ? styles.popUpActiveDot : {},
-            ]}
-          />
-        ))}
-      </View>
+      <Text style={styles.popUpTitle}>{title}</Text>
+      <Text style={styles.popUpText}>{description}</Text>
+      <TouchableOpacity
+        style={styles.subscribePopUpsButton}
+        onPress={() => {
+          dotIndex === dots.length - 1
+            ? handleSubscriptionButton()
+            : handleNextPress(dotIndex);
+        }}>
+        <Text style={[styles.buttonText, styles.popUpsButtonText]}>
+          {dotIndex === dots.length - 1
+            ? 'Start the 7-day free trial'
+            : 'Got it'}
+        </Text>
+      </TouchableOpacity>
     </Animated.View>
   );
 };
@@ -84,7 +83,9 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
       popUpStyles: {
         overlay: {},
         modal: {},
-        triangle: {},
+        triangle: {
+          left: '50%'
+        },
         navbar: {
           left: 5,
           width: '17.5%',
@@ -98,14 +99,14 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Set up custom alerts to stay notified about crucial market movements.',
       popUpStyles: {
         overlay: {
-          marginBottom: 50,
+          height: '87.5%',
           justifyContent: 'flex-end',
         },
         modal: {
-          marginBottom: 120,
+          marginBottom: 20,
         },
         triangle: {
-          bottom: 100,
+          bottom: 0,
           left: 105,
           transform: [{scaleY: -1}],
         },
@@ -121,15 +122,14 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Need quick insights? Use the Ask AI to get real-time information from our curated database.',
       popUpStyles: {
         overlay: {
-          marginBottom: 50,
+          height: '87.5%',
           justifyContent: 'flex-end',
         },
         modal: {
-          marginBottom: 150,
+          marginBottom: 20,
         },
         triangle: {
-          bottom: 130,
-          left: 185,
+          left: '50%',
           transform: [{scaleY: -1}],
         },
         navbar: {
@@ -145,14 +145,14 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Access curated and unbiased analyses and charts by category.',
       popUpStyles: {
         overlay: {
-          marginBottom: 50,
+          height: '87.5%',
           justifyContent: 'flex-end',
         },
         modal: {
-          marginBottom: 120,
+          marginBottom: 20,
         },
         triangle: {
-          bottom: 100,
+          bottom: 0,
           left: 270,
           transform: [{scaleY: -1}],
         },
@@ -168,14 +168,14 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Manage your account settings, subscription options, and custom-tailored notifications here.',
       popUpStyles: {
         overlay: {
-          marginBottom: 50,
+          height: '87.5%',
           justifyContent: 'flex-end',
         },
         modal: {
-          marginBottom: 120,
+          marginBottom: 20,
         },
         triangle: {
-          bottom: 100,
+          bottom: 0,
           left: 335,
           transform: [{scaleY: -1}],
         },
@@ -250,10 +250,19 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
       visible={visible}
       presentationStyle="overFullScreen">
       {activeDotIndex === 0 ? (
-        <TouchableOpacity
-          style={styles.invisiblePressable}
-          onPress={() => handleNextPress(activeDotIndex)}
-        />
+        <>
+          <TouchableOpacity
+            style={[
+              styles.invisiblePressable,
+              {height: 80, backgroundColor: 'rgba(10,10,10,0.6)'},
+            ]}
+            onPress={() => handleNextPress(activeDotIndex)}
+          />
+          <TouchableOpacity
+            style={[styles.invisiblePressable, {height: 100}]}
+            onPress={() => handleNextPress(activeDotIndex)}
+          />
+        </>
       ) : (
         <></>
       )}
