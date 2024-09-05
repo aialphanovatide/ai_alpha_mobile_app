@@ -94,7 +94,7 @@ const SocialSignInButton = () => {
         setUserId(user_id);
         navigation.navigate('HomeScreen');
       } else {
-        console.log('Entered else');
+        //console.log('Entered else');
         navigation.navigate('SignIn');
       }
     };
@@ -103,11 +103,10 @@ const SocialSignInButton = () => {
   }, []);
 
   const signInWithGoogle = async () => {
-    console.log("My GOOGLE CLIENT WEB ID", GOOGLE_CLIENT_WEB_ID);
-    console.log("My GOOGLE CLIENT IOS ID", GOOGLE_CLIENT_IOS_ID);
-    console.log("My GOOGLE CLIENT ANDROID ID", GOOGLE_CLIENT_ANDROID_ID);
+    //console.log("My GOOGLE CLIENT WEB ID", GOOGLE_CLIENT_WEB_ID);
+    //console.log("My GOOGLE CLIENT IOS ID", GOOGLE_CLIENT_IOS_ID);
+    //console.log("My GOOGLE CLIENT ANDROID ID", GOOGLE_CLIENT_ANDROID_ID);
     try {
-      console.log('Before authorize');
 
       const authResult = await auth0.webAuth.authorize({
         //redirectUrl: 'com.ai-alpha-mobile-app.auth0://dev-zoejuo0jssw5jiid.us.auth0.com/android/com.ai-alpha-mobile-app/callback',
@@ -117,12 +116,11 @@ const SocialSignInButton = () => {
 
       console.log("Auth Result: ", authResult);
   
-      console.log("After authorize");
   
       const userProfile = await auth0.auth.userInfo({ token: authResult.accessToken });
   
-      console.log("User Profile: ", userProfile);
-      console.log("Auth0 User ID: ", userProfile.sub);
+      //console.log("User Profile: ", userProfile);
+      //console.log("Auth0 User ID: ", userProfile.sub);
   
       const userId = userProfile.sub;
       console.log('User ID:', userId);
@@ -178,10 +176,10 @@ const SocialSignInButton = () => {
         const {fullName, email, authorizationCode, user} =
           appleAuthRequestResponse;
         const {familyName, givenName} = fullName || {};
-        console.log('User Data:', user);
-        console.log('Full Name:', fullName);
-        console.log('User Email:', user?.email);
-        console.log('User2 Email:', email);
+        //console.log('User Data:', user);
+        //console.log('Full Name:', fullName);
+        //console.log('User Email:', user?.email);
+        //console.log('User2 Email:', email);
         const payload = {
           grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
           subject_token_type:
