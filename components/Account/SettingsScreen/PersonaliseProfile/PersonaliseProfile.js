@@ -45,10 +45,13 @@ const PersonaliseProfile = () => {
   const {theme} = useContext(AppThemeContext);
   const [connectionType, setConnectionType] = useState('');
 
-
   useEffect(() => {
     const loadStoredData = async () => {
-      if (storedFullName === null || storedFullName === undefined || storedFullName === '') {
+      if (
+        storedFullName === null ||
+        storedFullName === undefined ||
+        storedFullName === ''
+      ) {
         const getManagementApiToken = async () => {
           const response = await fetch(`https://${auth0Domain}/oauth/token`, {
             method: 'POST',
@@ -65,7 +68,9 @@ const PersonaliseProfile = () => {
         };
         const token = await getManagementApiToken();
         const userFetch = await fetch(
-          `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+          `https://${auth0Domain}/api/v2/users/${encodeURIComponent(
+            rawUserId,
+          )}`,
           {
             method: 'GET',
             headers: {
@@ -74,33 +79,41 @@ const PersonaliseProfile = () => {
             },
           },
         );
-        
+
         if (userFetch.ok) {
           const userData = await userFetch.json();
           console.log('User fetch successful', userData);
-        
+
           const userFetchedFullname = userData.user_metadata.fullname;
           console.log('User fetched fullname:', userFetchedFullname);
 
           const userFetchedUsername = userData.user_metadata.username;
           console.log('User fetched username:', userFetchedUsername);
 
-          if (userFetchedFullname !== null && userFetchedFullname !== undefined && userFetchedFullname !== '') {
+          if (
+            userFetchedFullname !== null &&
+            userFetchedFullname !== undefined &&
+            userFetchedFullname !== ''
+          ) {
             await AsyncStorage.setItem('fullName', userFetchedFullname);
           }
 
-          if (userFetchedUsername !== null && userFetchedUsername !== undefined && userFetchedUsername !== '') {
+          if (
+            userFetchedUsername !== null &&
+            userFetchedUsername !== undefined &&
+            userFetchedUsername !== ''
+          ) {
             await AsyncStorage.setItem('username', userFetchedUsername);
           }
-
-
-
         } else {
-          console.error('Failed to fetch user:', userFetch.status, userFetch.statusText);
+          console.error(
+            'Failed to fetch user:',
+            userFetch.status,
+            userFetch.statusText,
+          );
         }
-      
       }
-      
+
       const storedFullName = await AsyncStorage.getItem('fullName');
       const storedUsername = await AsyncStorage.getItem('username');
       const storedBirthDate = await AsyncStorage.getItem('birthDate');
@@ -335,7 +348,9 @@ const PersonaliseProfile = () => {
       try {
         const token = await getManagementApiToken();
         const userFetch = await fetch(
-          `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+          `https://${auth0Domain}/api/v2/users/${encodeURIComponent(
+            rawUserId,
+          )}`,
           {
             method: 'GET',
             headers: {
@@ -351,7 +366,8 @@ const PersonaliseProfile = () => {
         // Extracting connection type and email
         const identities = userData.identities || [];
         const usernamePasswordIdentity = identities.find(
-          (identity) => identity.connection === 'Username-Password-Authentication'
+          identity =>
+            identity.connection === 'Username-Password-Authentication',
         );
 
         if (usernamePasswordIdentity) {
@@ -412,14 +428,14 @@ const PersonaliseProfile = () => {
               <Image source={{uri: userImage}} style={styles.userImage} />
             </View>
           )}
-      {connectionType === 'Username-Password-Authentication' && (
-        <View style={styles.inputContainer}>
-          <Text style={styles.title}>Email</Text>
-          <View style={styles.emailContainer}>
-            <Text style={styles.emailTitle}>{userEmail}</Text>
-          </View>
-        </View>
-      )}
+          {connectionType === 'Username-Password-Authentication' && (
+            <View style={styles.inputContainer}>
+              <Text style={styles.title}>Email</Text>
+              <View style={styles.emailContainer}>
+                <Text style={styles.emailTitle}>{userEmail}</Text>
+              </View>
+            </View>
+          )}
           <View style={styles.inputContainer}>
             <Text style={styles.title}>Full Name</Text>
             <CustomInput
@@ -474,6 +490,7 @@ const PersonaliseProfile = () => {
                     borderRadius: 5,
                     marginTop: 10,
                     width: '28%',
+                    color: theme.inputColor,
                   }}
                 />
               ) : showDatePicker ? (
@@ -487,6 +504,7 @@ const PersonaliseProfile = () => {
                     borderWidth: 1,
                     borderRadius: 5,
                     width: '28%',
+                    color: theme.inputColor,
                   }}
                 />
               ) : (

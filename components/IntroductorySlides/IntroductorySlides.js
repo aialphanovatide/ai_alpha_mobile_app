@@ -13,6 +13,7 @@ import {AppThemeContext} from '../../context/themeContext';
 import useIntroductorySlidesStyles from './IntroductorySlidesStyles';
 import {useNavigation} from '@react-navigation/core';
 import FastImage from 'react-native-fast-image';
+// import Video from 'react-native-video';
 
 const IntroductoryCarousel = ({children, toggleActiveSlide}) => {
   const {theme} = useContext(AppThemeContext);
@@ -75,6 +76,7 @@ const Slide = ({
   hasButton,
   handleSkip,
   activeSlide,
+  // video,
 }) => {
   const styles = useIntroductorySlidesStyles();
   const buttonOpacity = useRef(new Animated.Value(0)).current;
@@ -93,21 +95,22 @@ const Slide = ({
 
   return (
     <View style={styles.slide}>
-      <FastImage
-        style={[
-          styles.mainImage,
-          {width: mainImageSource.width, height: mainImageSource.height},
-        ]}
-        source={mainImageSource.source}
-        resizeMode={FastImage.resizeMode.contain}
-        loop={true}
-      />
+      {/* {video ? (
+        <Video />
+      ) : ( */}
+        <FastImage
+          style={[styles.mainImage, mainImageSource.style]}
+          source={mainImageSource.source}
+          resizeMode={FastImage.resizeMode.contain}
+          loop={true}
+        />
+      {/* )} */}
       <View style={styles.contentContainer}>
         <Text
           style={[
             styles.title,
             id === 1 ? {marginTop: 62} : {},
-            id === 3 ? {marginTop: 12} : {},
+            id === 3 ? {marginTop: -28} : {},
           ]}>
           {title}
         </Text>
@@ -172,9 +175,12 @@ const IntroductorySlides = ({route}) => {
       subtitle: 'Welcome!',
       mainImageSource: {
         source: require('../../assets/images/introductorySection/layers.gif'),
-        width: 350,
-        height: 300,
+        style: {width: 350, height: 300},
       },
+      // video: {
+      //   source: require('../../assets/images/introductorySection/Slide1.mp4'),
+      //   style: {width: 350, height: 300},
+      // },
       content: [
         {
           information:
@@ -195,9 +201,12 @@ const IntroductorySlides = ({route}) => {
       subtitle: 'We cover all layers.',
       mainImageSource: {
         source: require('../../assets/images/introductorySection/topmenu_tape.gif'),
-        width: 350,
-        height: 330,
+        style: {width: 350, height: 330},
       },
+      // video: {
+      //   source: require('../../assets/images/introductorySection/Slide2.mp4'),
+      //   style: {width: 350, height: 330},
+      // },
       content: [
         {
           information:
@@ -218,9 +227,9 @@ const IntroductorySlides = ({route}) => {
       subtitle: 'Our place.',
       mainImageSource: {
         source: require('../../assets/images/introductorySection/discord-server-example.png'),
-        width: 350,
-        height: 320,
+        style: {width: 400, height: 360},
       },
+      // video: null,
       content: [],
       hasButton: true,
     },
@@ -253,6 +262,7 @@ const IntroductorySlides = ({route}) => {
               hasButton={item.hasButton}
               handleSkip={handleSkip}
               activeSlide={activeSlide}
+              video={item.video}
             />
           ))}
         </IntroductoryCarousel>

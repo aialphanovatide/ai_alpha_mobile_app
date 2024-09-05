@@ -1,6 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Platform, View, Text, Image, Animated} from 'react-native';
+import {
+  Platform,
+  View,
+  Text,
+  Image,
+  Animated,
+  TouchableOpacity,
+} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenGainersStyles from './TopTenGainersStyle.js';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
@@ -9,13 +16,16 @@ import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
 import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
 import {AppThemeContext} from '../../../context/themeContext.js';
+import {useNavigation} from '@react-navigation/core';
+import {TopMenuContext} from '../../../context/topMenuContext.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
-const Item = ({position, coin, index}) => {
+const Item = ({position, coin, index, handleItemClick}) => {
   const styles = useTopTenGainersStyles();
   return (
-    <>
+    <TouchableOpacity
+      onPress={() => handleItemClick(coin.symbol.toLowerCase(), coin.category)}>
       <View style={styles.row}>
         <View style={styles.positionContainer}>
           <Text style={styles.coinPosition}>{position}</Text>
@@ -51,16 +61,22 @@ const Item = ({position, coin, index}) => {
         </View>
       </View>
       {position !== 10 && <View style={[styles.horizontalLine]} />}
-    </>
+    </TouchableOpacity>
   );
 };
 
 const TopTenGainers = ({handleAboutPress}) => {
+  const navigation = useNavigation();
   const styles = useTopTenGainersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
   const {topTenMoversData, loading} = useContext(Top10MoversContext);
   const {isDarkMode} = useContext(AppThemeContext);
+  const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
 
+  topTenMoversData?.forEach((item) => {
+    console.log(item.category);
+  })
+  
   const additionalAboutStyles = {
     marginRight: Platform.OS === 'android' ? 20 : 0,
     top: 24,
@@ -72,8 +88,7 @@ const TopTenGainers = ({handleAboutPress}) => {
 
   const scrollIndicatorSize =
     completeScrollBarHeight > visibleScrollBarHeight
-      ? (visibleScrollBarHeight * 100) /
-        completeScrollBarHeight
+      ? (visibleScrollBarHeight * 100) / completeScrollBarHeight
       : visibleScrollBarHeight;
 
   const difference =
@@ -83,12 +98,26 @@ const TopTenGainers = ({handleAboutPress}) => {
 
   const scrollIndicatorPosition = Animated.multiply(
     scrollIndicator,
-    (visibleScrollBarHeight / completeScrollBarHeight) - 0.2,
+    visibleScrollBarHeight / completeScrollBarHeight - 0.2,
   ).interpolate({
     inputRange: [0, difference],
     outputRange: [0, difference],
     extrapolate: 'clamp',
   });
+
+  // Function that handles the click on an item, navigating to the categories section, and setting the coin and category from the item as active
+
+  const handleItemClick = (coin, category) => {
+    updateActiveCoin(category);
+    updateActiveSubCoin(coin);
+    navigation.navigate('TopMenuScreen', {
+      screen: 'SubMenuScreen',
+      params: {
+        screen: 'Charts',
+        params: {},
+      },
+    });
+  };
 
   useEffect(() => {
     setTopTenCoins(topTenMoversData);
@@ -182,7 +211,12 @@ const TopTenGainers = ({handleAboutPress}) => {
             scrollEventThrottle={16}>
             {topTenCoins.length > 0 &&
               topTenCoins.map((coin, index) => (
-                <Item key={index} coin={coin} position={index + 1} />
+                <Item
+                  key={index}
+                  coin={coin}
+                  position={index + 1}
+                  handleItemClick={handleItemClick}
+                />
               ))}
           </ScrollView>
           <View style={styles.scrollBarContainer}>

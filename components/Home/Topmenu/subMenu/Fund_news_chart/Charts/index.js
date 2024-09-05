@@ -72,7 +72,7 @@ const CandlestickChart = ({route}) => {
   const {activeCoin} = useContext(TopMenuContext);
   const {findCategoryInIdentifiers, subscribed, userInfo} =
     useContext(RevenueCatContext);
-  const [activeAlertOption, setActiveAlertOption] = useState('1W');
+  const [activeAlertOption, setActiveAlertOption] = useState('4H');
   const {aboutDescription, aboutVisible, handleAboutPress} =
     useContext(AboutModalContext);
   const {isDarkMode} = useContext(AppThemeContext);
@@ -87,6 +87,7 @@ const CandlestickChart = ({route}) => {
     useScreenOrientation();
   const [supportResistanceLoading, setSupportResistanceLoading] =
     useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
 
   useEffect(() => {
     navigation.addListener('beforeRemove', e => {
@@ -223,6 +224,12 @@ const CandlestickChart = ({route}) => {
     }
   };
 
+  // Function to handle enabling and disabling the scroll on the whole section when zooming on the chart, preventing that the scroll from bothering the zoom interaction
+
+  const handleOnZoom = value => {
+    setScrollEnabled(value);
+  };
+
   // Socket to detect coin price updates
 
   // useEffect(() => {
@@ -262,6 +269,7 @@ const CandlestickChart = ({route}) => {
       locations={[0.22, 0.97]}
       style={[subscribed ? {flex: 1} : {height: 500}]}>
       <ScrollView
+        scrollEnabled={scrollEnabled}
         style={[
           styles.scroll,
           {width: '100%'},
@@ -312,13 +320,15 @@ const CandlestickChart = ({route}) => {
                 source={require('../../../../../../assets/images/home/charts/chart-refresh.png')}
                 style={[
                   styles.refreshButton,
-                  coinBot.toLowerCase() === 'btc' && loading ? {top: -110} : {},
+                  // Styles for preventing the bug with the refresh button on the btc section
+                  coinBot.toLowerCase() === 'btc' ? {top: -110} : {},
                 ]}
                 resizeMode="contain"
               />
             </TouchableOpacity>
           </View>
           <Chart
+            candlesToShow={20}
             symbol={symbol}
             selectedInterval={selectedInterval}
             chartData={chartData}
@@ -327,7 +337,18 @@ const CandlestickChart = ({route}) => {
             coinBot={coinBot}
             selectedPairing={selectedPairing}
             setSupportResistanceLoading={setSupportResistanceLoading}
+            handleOnZoom={handleOnZoom}
           />
+          {/* <CWChart
+            symbol={symbol}
+            selectedInterval={selectedInterval}
+            chartData={chartData}
+            loading={loading}
+            activeButtons={activeButtons}
+            coinBot={coinBot}
+            selectedPairing={selectedPairing}
+            setSupportResistanceLoading={setSupportResistanceLoading}
+          /> */}
         </View>
         <AlertMenu
           activeAlertOption={activeAlertOption}

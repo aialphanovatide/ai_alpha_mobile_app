@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Image,
   Modal,
@@ -75,6 +75,30 @@ const AnalysisArticle = ({route}) => {
   const navigation = useNavigation();
   const {userInfo} = useContext(RevenueCatContext);
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
+  const [hasImage, setHasImage] = useState(false);
+
+  useEffect(() => {
+    const checkImageURL = async url => {
+      try {
+        const response = await fetch(url);
+        console.log(response.headers)
+        if (
+          response.headers.map['content-type'] &&
+          response.headers.map['content-type'].startsWith('binary/octet-stream')
+        ) {
+          setHasImage(true);
+        }
+      } catch (error) {
+        console.error('Error verifying the image URL:', error);
+        setHasImage(false);
+      }
+    };
+    checkImageURL(
+      `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
+    );
+  }, []);
+
+  console.log('Article has image?: ', hasImage);
 
   const simplifyDateTime = dateTimeString => {
     const dateTime = new Date(dateTimeString);
@@ -204,7 +228,7 @@ const AnalysisArticle = ({route}) => {
     html: findHtmlContent(analysis_content),
   };
 
-  const imageUri = `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`;
+  const imageUri = `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`;
 
   const images = [{url: imageUri, width: 500, height: 400}];
 

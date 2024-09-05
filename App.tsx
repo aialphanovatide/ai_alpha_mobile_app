@@ -102,19 +102,21 @@ const App = () => {
       }
       return symbol;
     };
-
+  
+    const MAX_NOTIFICATIONS = 50;
+  
     try {
       const storedNotifications = await AsyncStorage.getItem('notifications');
       const currentNotifications = storedNotifications
         ? JSON.parse(storedNotifications)
         : [];
-
+  
       const today = new Date();
       const day = String(today.getDate()).padStart(2, '0');
       const month = String(today.getMonth() + 1).padStart(2, '0');
       const year = today.getFullYear();
       const notificationDate = `${day}/${month}/${year}`;
-
+  
       const notificationCoin = extractCryptoName(alertData.title);
       const notificationType =
         alertData.type !== undefined
@@ -122,7 +124,7 @@ const App = () => {
           : alertData.title.toLowerCase().includes('chart')
           ? 'alerts'
           : 'analysis';
-
+  
       const newNotification = {
         title: alertData.title,
         description: alertData.title.toLowerCase().includes('chart')
@@ -133,6 +135,7 @@ const App = () => {
         category: null,
         type: notificationType,
       };
+  
       const combinedNotifications = [
         ...currentNotifications,
         newNotification,
@@ -141,7 +144,11 @@ const App = () => {
           index ===
           self.findIndex(t => t.title === item.title && t.date === item.date),
       );
-
+  
+      if (combinedNotifications.length > MAX_NOTIFICATIONS) {
+        combinedNotifications.splice(0, combinedNotifications.length - MAX_NOTIFICATIONS);
+      }
+  
       console.log('Saving notification: ', newNotification);
       await AsyncStorage.setItem(
         'notifications',
@@ -228,7 +235,7 @@ const App = () => {
     getUserNotificationsToken();
 
     return () => {
-      pushNotificationsSubscriber;
+      pushNotificationsSubscriber();
     };
   }, []);
 

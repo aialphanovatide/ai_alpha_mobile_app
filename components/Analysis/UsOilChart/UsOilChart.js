@@ -49,6 +49,9 @@ const UsOilChart = ({route, navigation}) => {
     useScreenOrientation();
   const [selectedCandle, setSelectedCandle] = useState(null);
   const {subscribed} = useContext(RevenueCatContext);
+  const [showGradient, setShowGradient] = useState(true);
+  const [hasUpdatedZoomDomain, setHasUpdatedZoomDomain] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
 
   // Hook to request again the data to CapitalCom when changing the time interval or the coin (changing to other chart)
   useEffect(() => {
@@ -129,39 +132,6 @@ const UsOilChart = ({route, navigation}) => {
     setLoading(true);
   }, [symbol, selectedInterval]);
 
-  if (loading || chartData?.length === 0) {
-    return (
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={{flex: 1}}>
-        <SafeAreaView
-          style={[
-            styles.background,
-            isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
-          ]}>
-          <ScrollView style={{flex: 1}}>
-            <View style={styles.backButtonWrapper}>
-              <BackButton />
-            </View>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.sectionDescription}>{description}</Text>
-            <View style={styles.container}>
-              <SkeletonLoader type="timeframe" quantity={2} />
-              <SkeletonLoader
-                type="chart"
-                style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
-              />
-            </View>
-          </ScrollView>
-          {subscribed ? <></> : <UpgradeOverlay />}
-        </SafeAreaView>
-      </LinearGradient>
-    );
-  }
-
   // [TEMPORARY] Function to manually update the data of the chart
 
   const handleDataUpdate = async currentInterval => {
@@ -172,6 +142,8 @@ const UsOilChart = ({route, navigation}) => {
       sessionData.security_cst,
     );
   };
+
+  const candlesToShow = selectedInterval.toLowerCase() === '1w' ? 30 : 20;
 
   const domainY = () => {
     return chartData?.reduce(
@@ -185,7 +157,32 @@ const UsOilChart = ({route, navigation}) => {
     );
   };
 
-  const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
+  // State variable and hook effect to handle the chart's domain including the zoom interaction, due to it is updated on every chart panning or zooming
+
+  const [zoomDomain, setZoomDomain] = useState({
+    x: [
+      chartData[chartData.length - candlesToShow]?.x,
+      chartData[chartData.length - 1]?.x,
+    ],
+  });
+
+  useEffect(() => {
+    if (
+      !hasUpdatedZoomDomain ||
+      zoomDomain.x[0] === undefined ||
+      !zoomDomain.x
+    ) {
+      setHasUpdatedZoomDomain(true);
+      setZoomDomain({
+        x: [
+          chartData[chartData.length - candlesToShow]?.x,
+          chartData[chartData.length - 1]?.x,
+        ],
+      });
+    }
+  }, [chartData, selectedInterval]);
+
+  // const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
 
   const changeInterval = async newInterval => {
     setLoading(true);
@@ -225,6 +222,71 @@ const UsOilChart = ({route, navigation}) => {
   const chartWidth = width > 500 ? 860 : 400;
   const chartHeight = 340;
 
+  // Function to handle the gradient rendering by calculating the difference between the last candle's x-axis value with the current x-axis domain lower value
+  const handleGradientRender = domainChange => {
+    const chartDataTimeStamp = new Date(chartData[0].x).getTime();
+    const chartDataMaxTimeStamp = new Date(
+      chartData[chartData?.length - 1].x,
+    ).getTime();
+    const isFirstCandleVisible = zoomDomain.x[0] <= chartDataTimeStamp;
+
+    if (domainChange.x[0] < chartDataTimeStamp) {
+      setZoomDomain({
+        x: [chartDataTimeStamp, domainChange.x[1]],
+        y: domainChange.y,
+      });
+    } else {
+      if (domainChange.x[1] > chartDataMaxTimeStamp) {
+        setZoomDomain({
+          x: [domainChange.x[0], chartDataMaxTimeStamp],
+          y: domainChange.y,
+        });
+      } else {
+        setZoomDomain(domainChange);
+      }
+    }
+    setShowGradient(!isFirstCandleVisible);
+  };
+
+  // Function to enable and disable the scroll interactions when zooming the chart
+
+  const handleOnZoom = value => {
+    setScrollEnabled(value);
+  };
+
+  if (loading || chartData?.length === 0) {
+    return (
+      <LinearGradient
+        useAngle={true}
+        angle={45}
+        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
+        locations={[0.22, 0.97]}
+        style={{flex: 1}}>
+        <SafeAreaView
+          style={[
+            styles.background,
+            isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
+          ]}>
+          <ScrollView style={{flex: 1}}>
+            <View style={styles.backButtonWrapper}>
+              <BackButton />
+            </View>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.sectionDescription}>{description}</Text>
+            <View style={styles.container}>
+              <SkeletonLoader type="timeframe" quantity={2} />
+              <SkeletonLoader
+                type="chart"
+                style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+              />
+            </View>
+          </ScrollView>
+          {subscribed ? <></> : <UpgradeOverlay />}
+        </SafeAreaView>
+      </LinearGradient>
+    );
+  }
+
   return (
     <LinearGradient
       useAngle={true}
@@ -237,7 +299,7 @@ const UsOilChart = ({route, navigation}) => {
           styles.mainSection,
           isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
         ]}>
-        <ScrollView style={{flex: 1}}>
+        <ScrollView scrollEnabled={scrollEnabled} style={{flex: 1}}>
           <View style={styles.backButtonWrapper}>
             <BackButton />
           </View>
@@ -250,6 +312,7 @@ const UsOilChart = ({route, navigation}) => {
               changeInterval={changeInterval}
               disabled={loading}
             />
+            {/* Refresh data button */}
             <TouchableOpacity
               onPress={() => handleDataUpdate(selectedInterval)}
               disabled={loading}>
@@ -267,26 +330,28 @@ const UsOilChart = ({route, navigation}) => {
                 style={styles.chartBackgroundImage}
                 resizeMode="contain"
               />
-              <LinearGradient
-                useAngle
-                angle={90}
-                colors={
-                  isDarkMode
-                    ? ['rgba(22, 22, 22, 1)', 'transparent']
-                    : ['rgba(232, 232, 232, 1)', 'transparent']
-                }
-                style={{
-                  position: 'absolute',
-                  left: 0,
-                  top: 0,
-                  bottom: 0,
-                  width: 50,
-                  zIndex: 1,
-                }}
-              />
+              {showGradient && (
+                <LinearGradient
+                  useAngle
+                  angle={90}
+                  colors={
+                    isDarkMode
+                      ? ['rgba(22, 22, 22, 1)', 'transparent']
+                      : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
+                  }
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: 50,
+                    zIndex: 1,
+                  }}
+                />
+              )}
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
-                domain={{x: domainX, y: domainY()}}
+                domain={{x: zoomDomain.x, y: domainY()}}
                 events={[
                   {
                     target: 'parent',
@@ -302,7 +367,15 @@ const UsOilChart = ({route, navigation}) => {
                 domainPadding={{x: 5, y: 3}}
                 scale={{x: 'time', y: 'linear'}}
                 height={300}
-                containerComponent={<VictoryZoomContainer />}>
+                containerComponent={
+                  <VictoryZoomContainer
+                    zoomDomain={zoomDomain.x}
+                    onZoomDomainChange={domain => handleGradientRender(domain)}
+                    onTouchStart={() => handleOnZoom(false)}
+                    onTouchEnd={() => handleOnZoom(true)}
+                  />
+                }>
+                {/* X-Axis */}
                 <VictoryAxis
                   fixLabelOverlap
                   style={{
@@ -320,12 +393,13 @@ const UsOilChart = ({route, navigation}) => {
                     const month = (t.getMonth() + 1)
                       .toString()
                       .padStart(2, '0');
-                    const day = t.getDate().toString().padStart(2, '0');
+                    const day = t.getDate().toString().padStart(2, '');
                     const hour = t.getHours().toString().padStart(2, '0');
                     const minute = t.getMinutes().toString().padStart(2, '0');
-                    return `${year}-${day}-${month}`;
+                    return `${day}/${month}/${year}`;
                   }}
                 />
+                {/* Y-Axis */}
                 <VictoryAxis
                   dependentAxis
                   style={{
@@ -347,11 +421,11 @@ const UsOilChart = ({route, navigation}) => {
                   <VictoryLine
                     data={[
                       {
-                        x: domainX[0],
+                        x: zoomDomain.x[0],
                         y: (selectedCandle.open + selectedCandle.close) / 2,
                       },
                       {
-                        x: domainX[1],
+                        x: zoomDomain.x[1],
                         y: (selectedCandle.open + selectedCandle.close) / 2,
                       },
                     ]}
@@ -366,9 +440,9 @@ const UsOilChart = ({route, navigation}) => {
                     }}
                   />
                 )}
-
+                {/* Click on candle data component */}
                 <DataRenderer
-                  domainX={domainX}
+                  domainX={zoomDomain.x}
                   yPoint={
                     selectedCandle && calculateCandleMiddle(selectedCandle)
                   }
@@ -397,7 +471,7 @@ const UsOilChart = ({route, navigation}) => {
                     }}
                   />
                 )}
-
+                {/* Candle component */}
                 <VictoryCandlestick
                   data={chartData}
                   events={[
@@ -423,7 +497,8 @@ const UsOilChart = ({route, navigation}) => {
                 />
               </VictoryChart>
             </View>
-            <TouchableOpacity
+            {/* Horizontal view button [DEACTIVATED UNTIL SOLVING ISSUES] */}
+            {/* <TouchableOpacity
               onPress={
                 isLandscape
                   ? () => {
@@ -446,8 +521,9 @@ const UsOilChart = ({route, navigation}) => {
                     : require('../../../assets/images/home/charts/activate-horizontal.png')
                 }
               />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleBackInteraction()}>
+            </TouchableOpacity> */}
+            {/* Horizontal view close button */}
+            {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
               <Image
                 style={
                   isLandscape && isHorizontal
@@ -457,9 +533,13 @@ const UsOilChart = ({route, navigation}) => {
                 resizeMode="contain"
                 source={require('../../../assets/images/home/charts/back.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            {/* Zoom interaction indicator */}
             <Image
-              style={styles.chartsZoomIndicator}
+              style={[
+                styles.chartsZoomIndicator,
+                selectedCandle && {zIndex: -1},
+              ]}
               resizeMode="contain"
               source={require('../../../assets/images/home/charts/zoom-expand.png')}
             />

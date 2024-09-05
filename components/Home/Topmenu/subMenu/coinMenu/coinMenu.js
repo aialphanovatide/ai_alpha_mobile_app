@@ -41,7 +41,12 @@ const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
                   source={{
                     uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/submenuicons/${coin.bot_name}.png`,
                   }}
-                  style={styles.buttonImage}
+                  style={[
+                    styles.buttonImage,
+                    activeSubCoin === coin.bot_name
+                      ? {tintColor: '#FFFFFF'}
+                      : {},
+                  ]}
                   resizeMode="contain"
                 />
                 <Text

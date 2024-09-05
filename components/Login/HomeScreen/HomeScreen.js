@@ -1,5 +1,5 @@
 import {TopMenuContext} from '../../../context/topMenuContext';
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Platform } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';

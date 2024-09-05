@@ -18,7 +18,7 @@ const useTopTenLosersStyles = () => {
       paddingHorizontal: 16,
       color: theme.titleColor,
       fontSize: 16,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
     },
     table: {
       backgroundColor: theme.boxesBackgroundColor,

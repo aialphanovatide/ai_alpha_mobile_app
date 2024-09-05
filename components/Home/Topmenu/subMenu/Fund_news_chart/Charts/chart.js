@@ -92,6 +92,7 @@ const Chart = ({
   coinBot,
   selectedPairing,
   setSupportResistanceLoading,
+  handleOnZoom
 }) => {
   const styles = useChartsStyles();
   const {isDarkMode, theme} = useContext(AppThemeContext);
@@ -100,6 +101,7 @@ const Chart = ({
   const [selectedCandle, setSelectedCandle] = useState(null);
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
+  const [showGradient, setShowGradient] = useState(true);
   const navigation = useNavigation();
 
   // Function to handle the X button interaction on the horizontal chart
@@ -175,8 +177,13 @@ const Chart = ({
     });
   };
 
+  // State variable and hook effect to handle the chart's domain including the zoom interaction, due to it is updated on every chart panning or zooming
+
   const [zoomDomain, setZoomDomain] = useState({
-    x: [chartData[0]?.x, chartData[chartData.length - 1]?.x],
+    x: [
+      chartData[chartData.length - candlesToShow]?.x,
+      chartData[chartData.length - 1]?.x,
+    ],
   });
 
   useEffect(() => {
@@ -260,12 +267,10 @@ const Chart = ({
   //   }
   // };
 
-  const domainX = [
-    chartData[chartData.length - candlesToShow]?.x,
-    chartData && chartData[chartData.length - 1]?.x,
-  ];
-
-  const lastCandle = chartData[chartData.length - 1]; // Get the last candlestick data
+  // const domainX = [
+  //   chartData[chartData.length - candlesToShow]?.x,
+  //   chartData && chartData[chartData.length - 1]?.x,
+  // ];
 
   // Function to handle candle click events
   const handleCandleClick = (event, data) => {
@@ -286,6 +291,33 @@ const Chart = ({
   const chartWidth = width > 500 ? 860 : 400;
   const chartHeight = 340;
 
+  // Function to handle the gradient rendering by calculating the difference between the last candle's x-axis value with the current x-axis domain lower value
+  const handleGradientRender = domainChange => {
+    const chartDataTimeStamp = new Date(chartData[0].x).getTime();
+    const chartDataMaxTimeStamp = new Date(
+      chartData[chartData?.length - 1].x,
+    ).getTime();
+    const isFirstCandleVisible = zoomDomain.x[0] <= chartDataTimeStamp;
+
+    if (domainChange.x[0] < chartDataTimeStamp) {
+      setZoomDomain({
+        x: [chartDataTimeStamp, domainChange.x[1]],
+        y: domainChange.y,
+      });
+    } else {
+      if (domainChange.x[1] > chartDataMaxTimeStamp) {
+        setZoomDomain({
+          x: [domainChange.x[0], chartDataMaxTimeStamp],
+          y: domainChange.y,
+        });
+      } else {
+        setZoomDomain(domainChange);
+      }
+    }
+    setShowGradient(!isFirstCandleVisible);
+  };
+
+
   if (loading || chartData.length === 0) {
     return <SkeletonLoader type="chart" style={{height: 300}} />;
   }
@@ -299,32 +331,42 @@ const Chart = ({
           resizeMode="contain"
         />
 
-        <LinearGradient
-          useAngle
-          angle={90}
-          colors={
-            isDarkMode
-              ? ['rgba(22, 22, 22, 1)', 'transparent']
-              : ['rgba(232, 232, 232, 1)', 'transparent']
-          }
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: 40,
-            zIndex: 1,
-          }}
-        />
+        {showGradient && (
+          <LinearGradient
+            useAngle
+            angle={90}
+            colors={
+              isDarkMode
+                ? ['rgba(22, 22, 22, 1)', 'transparent']
+                : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
+            }
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: 40,
+              height: '80%',
+              marginTop: '5%',
+              zIndex: 1,
+            }}
+          />
+        )}
 
         {/* CHART WRAPPER COMPONENT */}
         <VictoryChart
           style={styles.chartMainContainer}
           width={chartWidth}
+          standalone={true}
           containerComponent={
             <VictoryZoomContainer
-            // zoomDomain={zoomDomain}
-            // onZoomDomainChange={domain => setZoomDomain(domain)}
+              responsive={true}
+              allowPan={true}
+              allowZoom={true}
+              zoomDomain={zoomDomain.x}
+              onZoomDomainChange={domain => handleGradientRender(domain)}
+              onTouchStart={() => handleOnZoom(false)}
+              onTouchEnd={() => handleOnZoom(true)}
             />
           }
           domain={{x: zoomDomain.x, y: domainY}}
@@ -366,10 +408,10 @@ const Chart = ({
             tickFormat={t => {
               const year = t.getFullYear();
               const month = (t.getMonth() + 1).toString().padStart(2, '0');
-              const day = t.getDate().toString().padStart(2, '0');
+              const day = t.getDate().toString().padStart(2, '');
               const hour = t.getHours().toString().padStart(2, '0');
               const minute = t.getMinutes().toString().padStart(2, '0');
-              return `${year}-${day}-${month}`;
+              return `${day}/${month}/${year}`;
             }}
           />
 
@@ -454,6 +496,9 @@ const Chart = ({
                     handleCandleClick(event, props.datum);
                     return []; // Return an empty array to avoid any state mutation on the chart itself
                   },
+                  onRender: props => {
+                    handleGradientRender(props.datum, chartData);
+                  },
                 },
               },
             ]}
@@ -476,8 +521,8 @@ const Chart = ({
             resistanceLevels?.map((level, index) => (
               <VictoryLine
                 data={[
-                  {x: domainX[0], y: level},
-                  {x: domainX[1], y: level},
+                  {x: zoomDomain.x[0], y: level},
+                  {x: zoomDomain.x[1], y: level},
                 ]}
                 key={`resistance-${index}`}
                 // styles for the line itself
@@ -514,8 +559,8 @@ const Chart = ({
             supportLevels?.map((level, index) => (
               <VictoryLine
                 data={[
-                  {x: domainX[0], y: level},
-                  {x: domainX[1], y: level},
+                  {x: zoomDomain.x[0], y: level},
+                  {x: zoomDomain.x[1], y: level},
                 ]}
                 key={`support-${index}`}
                 style={{
@@ -550,7 +595,7 @@ const Chart = ({
             ))}
         </VictoryChart>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={
           isLandscape
             ? () => {
@@ -582,9 +627,9 @@ const Chart = ({
           resizeMode="contain"
           source={require('../../../../../../assets/images/home/charts/back.png')}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Image
-        style={styles.chartsZoomIndicator}
+        style={[styles.chartsZoomIndicator, selectedCandle && {zIndex: -1}]}
         resizeMode="contain"
         source={require('../../../../../../assets/images/home/charts/zoom-expand.png')}
       />

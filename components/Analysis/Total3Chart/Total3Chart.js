@@ -18,7 +18,7 @@ import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/core';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
-import { RevenueCatContext } from '../../../context/RevenueCatContext';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
 
 const Total3Chart = ({candlesToShow = 30}) => {
   const styles = useTotal3Styles();
@@ -36,10 +36,10 @@ const Total3Chart = ({candlesToShow = 30}) => {
 
     // Format a date to the required format
     function formatDate(date) {
-      const day = String(date.getDate()).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '');
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
-      return `${year}-${day}-${month}`;
+      return `${day}/${month}/${year}`;
     }
 
     // Map the received array to days by the index value
@@ -164,21 +164,25 @@ const Total3Chart = ({candlesToShow = 30}) => {
                 colors={
                   isDarkMode
                     ? ['rgba(22, 22, 22, 1)', 'transparent']
-                    : ['rgba(232, 232, 232, 1)', 'transparent']
+                    : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
                 }
                 style={{
                   position: 'absolute',
                   left: 0,
                   top: 0,
                   bottom: 0,
-                  width: 70,
-                  zIndex: 15,
+                  width: 40,
+                  height: '80%',
+                  marginTop: '5%',
+                  zIndex: 1,
                 }}
               />
               <VictoryChart
                 width={isLandscape && isHorizontal ? 700 : 375}
                 domainPadding={{x: 10, y: 10}}>
+                {/* X-Axis */}
                 <VictoryAxis
+                  fixLabelOverlap
                   style={{
                     axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
                     tickLabels: {
@@ -193,6 +197,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
                     `${formatDateArray(t, chartData.length)}`
                   }
                 />
+                {/* Y-Axis */}
                 <VictoryAxis
                   dependentAxis
                   style={{
@@ -217,7 +222,8 @@ const Total3Chart = ({candlesToShow = 30}) => {
                 />
               </VictoryChart>
             </View>
-            <TouchableOpacity
+            {/* Horizontal view button [DEACTIVATED UNTIL SOLVING ISSUES] */}
+            {/* <TouchableOpacity
               onPress={
                 isLandscape
                   ? () => {
@@ -237,8 +243,9 @@ const Total3Chart = ({candlesToShow = 30}) => {
                     : require('../../../assets/images/home/charts/activate-horizontal.png')
                 }
               />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleBackInteraction()}>
+            </TouchableOpacity> */}
+            {/* Horizontal view close button */}
+            {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
               <Image
                 style={
                   isLandscape && isHorizontal
@@ -248,7 +255,8 @@ const Total3Chart = ({candlesToShow = 30}) => {
                 resizeMode="contain"
                 source={require('../../../assets/images/home/charts/back.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            {/* Zoom interaction indicator */}
             <Image
               style={styles.chartsZoomIndicator}
               resizeMode="contain"
