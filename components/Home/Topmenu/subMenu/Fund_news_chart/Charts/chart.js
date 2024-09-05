@@ -92,7 +92,7 @@ const Chart = ({
   coinBot,
   selectedPairing,
   setSupportResistanceLoading,
-  handleOnZoom
+  handleOnZoom,
 }) => {
   const styles = useChartsStyles();
   const {isDarkMode, theme} = useContext(AppThemeContext);
@@ -316,7 +316,6 @@ const Chart = ({
     }
     setShowGradient(!isFirstCandleVisible);
   };
-
 
   if (loading || chartData.length === 0) {
     return <SkeletonLoader type="chart" style={{height: 300}} />;
@@ -617,7 +616,7 @@ const Chart = ({
           }
         />
       </TouchableOpacity>*/}
-      <TouchableOpacity onPress={() => handleBackInteraction()}>
+      {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
         <Image
           style={
             isLandscape && isHorizontal

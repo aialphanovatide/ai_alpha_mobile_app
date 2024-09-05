@@ -9,27 +9,7 @@ const Top10MoversContextProvider = ({children}) => {
   const [topTenMoversData, setTopTenMoversData] = useState([]);
   const [topTenLosersData, setTopTenLosersData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {categories} = useContext(CategoriesContext);
-
-  // Function to find the category that the top 10 gainers item's coin belongs to
-
-  const findCategoryOfItem = (coin, fullName, categories) => {
-    if (coin.toLowerCase() === 'matic') {
-      coin = 'pol';
-    }
-    const found = categories.find(category => {
-      return (
-        category.coin_bots.length > 0 &&
-        category.coin_bots.some(categoryCoin => {
-          return (
-            categoryCoin.bot_name.toLowerCase() === coin.toLowerCase() ||
-            categoryCoin.bot_name.toLowerCase() === fullName.toLowerCase()
-          );
-        })
-      );
-    });
-    return found;
-  };
+  const {categories, findCategoryOfItem} = useContext(CategoriesContext);
 
   // useEffect(() => {
   //   const socket = io('https://aialpha.ngrok.io/');
@@ -62,19 +42,27 @@ const Top10MoversContextProvider = ({children}) => {
         if (response.success) {
           for (let i = 0; i < response.data.top_10_gainers.length; i++) {
             const coin = response.data.top_10_gainers[i];
+            const coin_category = findCategoryOfItem(
+              coin.symbol.toLowerCase(),
+              coin.name.toLowerCase(),
+            );
             const coinInfo = {
               name:
                 coin.name.length > 15
                   ? coin.name.trim().split(/\s+/g)[0]
                   : coin.name,
               symbol:
-                coin.symbol.toLowerCase() === 'matic' ? 'pol' : coin.symbol,
+                coin.symbol.toLowerCase() === 'ethdydx'
+                  ? 'dydx'
+                  : coin.symbol.toLowerCase() === 'matic'
+                  ? 'pol'
+                  : coin.symbol,
               image: coin.image,
               currentPrice: coin.current_price,
               priceChange24H: coin.price_change_percentage_24h
                 ? coin.price_change_percentage_24h
                 : 0.0,
-              category: findCategoryOfItem(coin.symbol, coin.name, categories),
+              category: coin_category,
             };
             top10CoinsInfo.push(coinInfo);
           }

@@ -92,15 +92,19 @@ const TopTenLosers = ({handleAboutPress}) => {
   // Function that handles the click on an item, navigating to the categories section, and setting the coin and category from the item as active
 
   const handleItemClick = (coin, category) => {
-    updateActiveCoin(category);
-    updateActiveSubCoin(coin);
-    navigation.navigate('TopMenuScreen', {
-      screen: 'SubMenuScreen',
-      params: {
-        screen: 'Charts',
-        params: {},
-      },
-    });
+    if (category === null || category === undefined) {
+      return;
+    } else {
+      updateActiveCoin(category);
+      updateActiveSubCoin(coin);
+      navigation.navigate('TopMenuScreen', {
+        screen: 'SubMenuScreen',
+        params: {
+          screen: 'Charts',
+          params: {},
+        },
+      });
+    }
   };
 
   useEffect(() => {
