@@ -214,18 +214,21 @@ const Search = ({currentTextValue, contentVisible}) => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
-  useEffect(() => {
-    if (!isFocused) {
-      setAnalysisSearchResult([]);
-      setCryptoSearchResult([]);
-      setNtSearchResult([]);
-    }
-  }, [isFocused]);
+  // Unused hook for resetting the content when leaving the section
+  // useEffect(() => {
+  //   if (!isFocused) {
+  //     setAnalysisSearchResult([]);
+  //     setCryptoSearchResult([]);
+  //     setNtSearchResult([]);
+  //   }
+  // }, [isFocused]);
 
+  // Hook to change the results content based on the text change
   useEffect(() => {
     handleTextChange(currentTextValue);
   }, [currentTextValue]);
 
+  // Function to handle all the content search when typing new values on the search input
   const handleTextChange = value => {
     setLoading(true);
     handleCryptosSearch(categories, value);

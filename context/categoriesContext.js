@@ -38,8 +38,32 @@ const CategoriesContextProvider = ({children}) => {
     return newCategories;
   };
 
+  // Function to find the category that the top 10 gainers item's coin belongs to
+
+  const findCategoryOfItem = (coin, fullName) => {
+    if (!categories || categories.length === 0) {
+      return null;
+    }
+    if (coin.toLowerCase() === 'matic') {
+      coin = 'pol';
+    }
+    const found = categories.find(category => {
+      return (
+        category.coin_bots.length > 0 &&
+        category.coin_bots.some(categoryCoin => {
+          return (
+            categoryCoin.bot_name.toLowerCase() === coin.toLowerCase() ||
+            categoryCoin.bot_name.toLowerCase() === fullName.toLowerCase()
+          );
+        })
+      );
+    });
+    return found !== undefined ? found : null;
+  };
+
   return (
-    <CategoriesContext.Provider value={{categories, updateCategories, loading}}>
+    <CategoriesContext.Provider
+      value={{categories, updateCategories, loading, findCategoryOfItem}}>
       {children}
     </CategoriesContext.Provider>
   );
