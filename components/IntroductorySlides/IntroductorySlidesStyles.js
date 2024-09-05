@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../context/themeContext';
 
 const useIntroductorySlidesStyles = () => {
@@ -18,6 +18,7 @@ const useIntroductorySlidesStyles = () => {
       height: theme.height,
       alignSelf: 'center',
       alignItems: 'center',
+      paddingTop: 40,
     },
     mainImage: {
       width: 350,
@@ -74,7 +75,7 @@ const useIntroductorySlidesStyles = () => {
       position: 'absolute',
       width: '100%',
       paddingHorizontal: 12,
-      bottom: 68,
+      bottom: Platform.OS === 'ios' ? 120 : 68,
     },
     boldInformativeText: {
       width: '100%',
@@ -248,7 +249,7 @@ const useIntroductorySlidesStyles = () => {
     },
     invisiblePressable: {
       width: '100%',
-      height: 170,
+      height: Platform.OS === 'ios' ? 240 : 170,
       backgroundColor: 'transparent',
       alignSelf: 'flex-start',
       justifyContent: 'flex-start',

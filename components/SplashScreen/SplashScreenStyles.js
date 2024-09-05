@@ -1,7 +1,7 @@
 import {useContext} from 'react';
 import {AppThemeContext} from '../../context/themeContext';
 
-const {StyleSheet} = require('react-native');
+const {StyleSheet, Platform} = require('react-native');
 
 const useSplashScreenStyles = () => {
   const {theme} = useContext(AppThemeContext);
@@ -18,6 +18,7 @@ const useSplashScreenStyles = () => {
     alphaLogo: {
         width: 100,
         height: 86,
+        marginBottom: Platform.OS === 'ios' ? 100 : 0,
     }
   });
   return styles;

@@ -230,11 +230,10 @@ const SettingsScreen = ({route}) => {
           method: 'DELETE',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
-            user_id: 'auth0|66c7927c048b91de03853388',
+            user_id: userId,
           }),
         });
         const data = await backendDeleteResponse.json();
-        console.log("Response from Backend DELETE: ", backendDeleteResponse);
         console.log("DATA SENT TO BACKEND",data);
 
 
@@ -253,9 +252,6 @@ const SettingsScreen = ({route}) => {
 
   const handleDeleteAccount = async () => {
     try {
-      console.log('User id: ', {userId});
-      console.log('User email: ', {userEmail});
-      console.log('Raw user ID: ', rawUserId);
 
       // Case for Username-Password users
       try {

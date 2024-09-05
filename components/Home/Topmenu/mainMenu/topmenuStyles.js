@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../../context/themeContext';
 
 const useTopMenuStyles = () => {
@@ -34,6 +34,7 @@ const useTopMenuStyles = () => {
       backgroundColor: 'transparent',
     },
     modal: {
+      paddingTop: Platform.OS === 'ios' ? 80 : 0,
       position: 'absolute',
       top: 0,
       right: 0,

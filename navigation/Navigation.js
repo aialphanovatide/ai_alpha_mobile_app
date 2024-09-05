@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
+import { Platform } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginForm from '../components/Login/Screens/LoginForm/LoginForm';
@@ -21,9 +22,6 @@ const Navigation = () => {
 
   useEffect(() => {
     const checkToken = async () => {
-      if (colorScheme === 'dark') {
-        toggleDarkMode();
-      }
       const accessToken = await AsyncStorage.getItem('accessToken');
       const refreshToken = await AsyncStorage.getItem('refreshToken');
 
@@ -45,16 +43,20 @@ const Navigation = () => {
           headerShown: false,
           animation: 'fade',
         }}>
-        <Stack.Screen
-          name="IntroductoryScreen"
-          component={IntroductorySlides}
-          options={{
-            statusBarHidden: true,
-            gestureEnabled: false,
-            animation: 'slide_from_right',
-          }}
-          initialParams={{chosenScreen: chosenScreen}}
-        />
+<Stack.Screen
+  name="IntroductoryScreen"
+  component={IntroductorySlides}
+  options={{
+    ...Platform.select({
+      android: {
+        statusBarHidden: true,  // This will only apply to Android
+      },
+    }),
+    gestureEnabled: false,
+    animation: 'slide_from_right',
+  }}
+  initialParams={{ chosenScreen: chosenScreen }}
+/>
         <Stack.Screen
           name="SignIn"
           component={LoginForm}

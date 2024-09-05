@@ -173,10 +173,9 @@ const usePersonaliseProfileStyles = () => {
       marginTop: 5,
       marginBottom: 1,
       borderRadius: 5,
-      borderWidth: 0.3,
-      borderColor: 'transparent',
-      opacity: 0.8,
-      backgroundColor: theme.loginInputBgColor,
+      borderWidth: 1,
+      borderColor: theme.loginInputBgColor,
+      backgroundColor: 'transparent',
     },
   });
   return styles;

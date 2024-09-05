@@ -56,6 +56,7 @@ const {width, height} = Dimensions.get('window');
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [backgroundColor, setBackgroundColor] = useState(isDarkMode ? '#0b0b0a' : '#fbfbfa');
+  const [upperBackgroundColor, setUpperBackgroundColor] = useState(isDarkMode ? '#0F0F0F' : '#E5E5E5');
   const colorScheme = Appearance.getColorScheme();
   const [barScheme, setBarScheme] = useState('default');
   const [isConnected, setIsConnected] = useState(true);
@@ -77,10 +78,12 @@ const App = () => {
     const darkModeSubscription = eventEmitter.addListener('darkModeChanged', isDark => {
       setIsDarkMode(isDark);
       setBackgroundColor(isDark ? '#0b0b0a' : '#fbfbfa');
+      setUpperBackgroundColor(isDark ? '#0F0F0F' : '#E5E5E5');
     });
 
     const backgroundColorSubscription = eventEmitter.addListener('backgroundColorChange', color => {
       setBackgroundColor(color);
+      setUpperBackgroundColor(color);
     });
 
     return () => {
@@ -257,10 +260,6 @@ const App = () => {
     }
   }, [refreshTrigger]);
 
-  const handleStatusBarChange = theme => {
-    setBarScheme(theme);
-  };
-
   const checkConnectivityAndCloseModal = async () => {
     const state = await NetInfo.fetch();
     setIsConnected(state.isConnected);
@@ -288,7 +287,7 @@ const App = () => {
                   <SafeAreaView
                   style={{
                     flex: 0,
-                    backgroundColor: backgroundColor,
+                    backgroundColor: upperBackgroundColor === '#FC5404' ? '#FFB76E' : upperBackgroundColor,
                   }}></SafeAreaView>
                 <SafeAreaView
                   style={[
@@ -358,7 +357,7 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? 0 : StatusBar.currentHeight,
+    paddingTop: Platform.OS === 'android' ? 0 : 0,
   },
   centeredView: {
     flex: 1,

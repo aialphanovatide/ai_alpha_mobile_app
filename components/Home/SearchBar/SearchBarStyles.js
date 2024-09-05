@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useSearchBarStyles = () => {
@@ -36,9 +36,19 @@ const useSearchBarStyles = () => {
       zIndex: 2001,
     },
     textInputContainerIOS: {
+      width: '97%',
       flexDirection: 'row',
       position: 'relative',
-      marginHorizontal: 14,
+      marginRight: 22,
+      height: 60,
+      zIndex: 1999,
+    },
+    textInputContainerIOSAfter: {
+      width: '97%',
+      flexDirection: 'row',
+      position: 'relative',
+      marginRight: 22,
+      marginLeft: -38,
       height: 60,
       zIndex: 2001,
     },
@@ -46,14 +56,25 @@ const useSearchBarStyles = () => {
       display: 'none',
     },
     magnifierIcon: {
-      position: 'absolute',
       top: 20,
-      left: 12,
-      width: 24,
+      left: Platform.OS === 'ios' ? 13 : 12,
+      width: 44,
       height: 24,
       marginHorizontal: 4,
       zIndex: 1100,
       tintColor: theme.searchPlaceHolderColor,
+    },
+    magnifierIconAfter: {
+      top: 20,
+      left: 49,
+      width: 44,
+      height: 24,
+      marginHorizontal: 4,
+      zIndex: 1100,
+      tintColor: theme.searchPlaceHolderColor,
+    },
+    magnifierTouchableContainer:{
+      flex: 1,
     },
     magnifierTintColor: {
       tintColor: theme.textColor,
@@ -63,6 +84,7 @@ const useSearchBarStyles = () => {
       height: 36,
       marginTop: 42,
       alignSelf: 'center',
+      marginLeft: Platform.OS === 'ios' ? -25 : 0,
     },
     transparentOverlay: {
       ...StyleSheet.absoluteFillObject,

@@ -616,7 +616,7 @@ const Chart = ({
               : require('../../../../../../assets/images/home/charts/activate-horizontal.png')
           }
         />
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
       <TouchableOpacity onPress={() => handleBackInteraction()}>
         <Image
           style={

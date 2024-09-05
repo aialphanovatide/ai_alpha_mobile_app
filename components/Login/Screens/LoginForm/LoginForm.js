@@ -80,7 +80,6 @@ const LoginForm = ({route}) => {
               ? route.params.shouldShowPopUps
               : null,
           );
-          //console.log("LoginForm Entered accesToken");
           const user_id = formatUserId(userId);
           //console.log("LoginForm NEWuserEmail ->", userEmail);
           //console.log("LoginForm NEWuserID ->", user_id);

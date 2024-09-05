@@ -42,6 +42,7 @@ const useNotificationsStyles = () => {
       flexDirection: 'row',
       alignSelf: 'center',
       fontFamily: theme.fontSemibold,
+      marginVertical: 1,
     },
     itemName: {
       marginRight: 20,
@@ -89,12 +90,13 @@ const useNotificationsStyles = () => {
     },
     horizontalLine: {
       width: '80%',
-      borderBottomColor: theme.secondaryItemColor,
+      borderBottomColor: theme.notificationsHorizontalLineColor,
       borderBottomWidth: 1,
       alignSelf: 'flex-end',
       marginRight: 15,
     },
     switch: {
+      marginBottom: 5,
       transform: [{scaleX: 0.85}, {scaleY: 0.85}],
     },
     allNotificationsItem: {
