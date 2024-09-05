@@ -31,10 +31,11 @@ const useSaveButtonStyles = () => {
       color: theme.subscriptions.activeButtonText, // color when the button is clickable
     },
     textDisabled: {
-      color: theme.inactiveButtonText, // color when the button is disabled
+      color: theme.personalizeProfileSaveButtonText, // color when the button is unclickable
     },
     disabled: {
-      backgroundColor: theme.subscriptions.purchaseButtonBgColor, // style for the disabled container
+      backgroundColor: theme.personalizeProfileSaveButtonBackground, // style for the disabled container
+      opacity: 0.7,
     },
   });
   return styles;

@@ -1,7 +1,7 @@
-import React, {useContext, useState, useEffect} from 'react';
-import {View, TextInput, Text, StyleSheet} from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, TextInput } from 'react-native';
 import useCustomInputStyles from './CustomInputStyles';
-import {AppThemeContext} from '../../../context/themeContext';
+import { AppThemeContext } from '../../../context/themeContext';
 
 const CustomInput = ({
   value,
@@ -13,8 +13,11 @@ const CustomInput = ({
   containerStyles = null,
 }) => {
   const styles = useCustomInputStyles();
-  const {theme} = useContext(AppThemeContext);
-  const [error, setError] = useState('');
+  const { theme } = useContext(AppThemeContext);
+
+  if (value === '//'){
+    value = '';
+  }
 
   useEffect(() => {
     if (isDateInput) {
@@ -22,56 +25,59 @@ const CustomInput = ({
     }
   }, [value, isDateInput]);
 
-  const validateDate = date => {
-    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date) && date !== '') {
-      setError('Please enter the date in DD/MM/YYYY format.');
-      onError('Please enter the date in DD/MM/YYYY format.');
+  const validateDate = (date) => {
+    // Allow empty input
+
+    if (date === '//') {
+      date = '';
+    };
+
+    if (date === '') {
+      date = 'DD/MM/YYYY';
+      onError(false); // No error if the input is empty
       return;
     }
 
-    const [day, month, year] = date.split('/');
+    // Ensure the format is "DD/MM/YYYY"
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date)) {
+      onError(true);
+      return;
+    }
+
+    const [day, month, year] = date.split('/').map(Number);
     const userDate = new Date(year, month - 1, day);
     const today = new Date();
+    const currentYear = today.getFullYear();
 
+    // Validate the date logic
     if (
-      userDate.getFullYear() !== parseInt(year) ||
-      userDate.getMonth() + 1 !== parseInt(month) ||
-      userDate.getDate() !== parseInt(day)
+      month < 1 || month > 12 ||
+      day < 1 || day > 31 ||
+      year > currentYear ||
+      userDate.getFullYear() !== year ||
+      userDate.getMonth() + 1 !== month ||
+      userDate.getDate() !== day ||
+      userDate > today
     ) {
-      setError('Invalid date. Please check the values entered.');
-      onError('Invalid date. Please check the values entered.');
+      onError(true);
       return;
     }
 
-    if (userDate > today) {
-      setError('Date cannot be in the future.');
-      onError('Date cannot be in the future.');
-      return;
-    }
 
-    setError('');
-    onError('');
+    onError(false); // Date is valid
   };
 
-  const handleDateInputChange = text => {
+  const handleDateInputChange = (text) => {
     if (isDateInput) {
-      const filteredText = text.replace(/[^0-9/]/g, '');
+      // Only add slashes when the user starts typing
+      const filteredText = text.replace(/[^0-9]/g, '').substring(0, 8);
       let newText = filteredText;
+
       const isDeleting = text.length < value.length;
 
-      if (
-        (filteredText.length === 2 || filteredText.length === 5) &&
-        !isDeleting
-      ) {
-        if (filteredText[filteredText.length - 1] !== '/') {
-          newText += '/';
-        }
-      } else if (filteredText.length > 10) {
-        newText = filteredText.substring(0, 10);
-      } else if (filteredText.length === 3 || filteredText.length === 6) {
-        if (isDeleting && newText.endsWith('/')) {
-          newText = newText.slice(0, -1); // Remove the trailing slash
-        }
+      console.log('filteredText length', filteredText.length);
+      if (filteredText.length >= 2 && !isDeleting ) {
+        newText = `${filteredText.slice(0, 2)}/${filteredText.slice(2, 4)}${filteredText.length > 3 ? '/' + filteredText.slice(4) : ''}`;
       }
 
       setValue(newText);
@@ -94,16 +100,8 @@ const CustomInput = ({
         autoCapitalize="none"
         keyboardType={isDateInput ? 'numeric' : 'default'}
       />
-      {error !== '' && <Text style={localStyles.errorText}>{error}</Text>}
     </View>
   );
 };
-
-const localStyles = StyleSheet.create({
-  errorText: {
-    color: 'red',
-    fontSize: 12,
-  },
-});
 
 export default CustomInput;

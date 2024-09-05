@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   SafeAreaView,
+  Linking,
 } from 'react-native';
 import Purchases from 'react-native-purchases';
 import {useNavigation} from '@react-navigation/core';
@@ -149,7 +150,17 @@ const Account = ({route}) => {
       },
       screenName: null,
       component: null,
-    },
+    },/*
+    {
+      name: 'Test',
+      logo: {
+        width: 31,
+        height: 30,
+        source: require('../../assets/images/account/faqslogo.png'),
+      },
+      screenName: null,
+      component: null,
+    },*/
     {
       name: 'Log Out',
       logo: {
@@ -161,6 +172,21 @@ const Account = ({route}) => {
       component: null,
     },
   ];
+
+  const openManageSubscriptions = () => {
+    const url = 'https://apps.apple.com/account/subscriptions';
+    
+    
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (supported) {
+          Linking.openURL(url);
+        } else {
+          Alert.alert('Error', 'Unable to open the Manage Subscriptions page.');
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
+  };
 
   const handleItemTouch = option => {
     switch (option.name) {
@@ -180,6 +206,9 @@ const Account = ({route}) => {
       case 'FAQs':
         navigation.navigate('FAQs');
         break;
+      /*case 'Test':
+        openManageSubscriptions();
+        break;*/
       case 'Notifications':
         navigation.navigate('Notifications', {options: NOTIFICATIONS_MOCK});
         break;

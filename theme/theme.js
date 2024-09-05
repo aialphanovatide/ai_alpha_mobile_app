@@ -122,6 +122,8 @@ export const lightThemeStyles = {
   fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
   backgroundSubscriptionsModal: '#FAFAFA',
   notificationsHorizontalLineColor: '#D4D4D4',
+  personalizeProfileSaveButtonBackground: '#FFECD3',
+  personalizeProfileSaveButtonText: '#FF8D34',
 };
 
 export const darkThemeStyles = {
@@ -244,6 +246,6 @@ export const darkThemeStyles = {
   fontUnboundedBlack: isAndroid ? 'unbounded_black' : 'Unbounded-Black',
   backgroundSubscriptionsModal: '#404040',
   personalizeProfileSaveButtonBackground: '#A02E0C',
-  personalizeProfileSaveButtonText: 'white',
+  personalizeProfileSaveButtonText: '#a0a3a1',
   notificationsHorizontalLineColor: '#737373',
 };
