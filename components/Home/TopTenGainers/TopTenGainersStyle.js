@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useTopTenGainersStyles = () => {
@@ -8,7 +8,7 @@ const useTopTenGainersStyles = () => {
   const styles = StyleSheet.create({
     topTenGainersContainer: {
       height: 400,
-      width: theme.width,
+      width: Platform.OS === 'ios' ? '100%' : theme.width,
       borderRadius: 4,
     },
     topTenGainersTitle: {
@@ -114,7 +114,7 @@ const useTopTenGainersStyles = () => {
     scrollBarContainer: {
       height: '96%',
       marginBottom: 4,
-      marginRight: 10,
+      marginRight: Platform.OS === 'ios' ? 0 : 10,
       alignSelf: 'center',
       alignItems: 'center',
       width: 7,
@@ -128,7 +128,7 @@ const useTopTenGainersStyles = () => {
     itemsContainer: {
       flex: 1,
       flexDirection: 'row',
-      paddingRight: 14,
+      paddingRight: Platform.OS === 'ios' ? 7 : 14,
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
