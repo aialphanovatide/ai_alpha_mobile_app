@@ -106,6 +106,7 @@ const CandlestickChart = ({route}) => {
   // Restart the last price on every coin update
 
   useEffect(() => {
+    setActiveButtons([]);
     setLoading(true);
     setLastPrice(undefined);
     setSelectedPairing(pairings[0]);
