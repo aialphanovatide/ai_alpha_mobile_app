@@ -104,6 +104,13 @@ const Chart = ({
   const [showGradient, setShowGradient] = useState(true);
   const navigation = useNavigation();
 
+  // Hook to restart the S&R values when switching the coin, and setting the buttons to inactive
+
+  useEffect(() => {
+    setSupportLevels([]);
+    setResistanceLevels([]);
+  }, [coinBot])
+  
   // Function to handle the X button interaction on the horizontal chart
 
   const handleBackInteraction = () => {
