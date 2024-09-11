@@ -82,9 +82,7 @@ const Account = ({route}) => {
   useEffect(() => {
     const loadStoredData = async () => {
       const storedUserImage = await AsyncStorage.getItem('userImage');
-      console.log('Stored user image: ', storedUserImage);
       const storedUsername = await AsyncStorage.getItem('username');
-      console.log('Stored username: ', storedUsername);
 
       setUsername(storedUsername || '');
 
@@ -98,8 +96,7 @@ const Account = ({route}) => {
     loadStoredData();
   }, []);
 
-  console.log(userInfo);
-  // Account menu!!
+  // Account menu
   const options = [
     {
       name: 'Subscriptions Options',
@@ -258,8 +255,7 @@ const Account = ({route}) => {
 
   const handleLogout = async () => {
     try {
-      console.log('Logging out...');
-      console.log('Removing login data...');
+      console.log('Logging out and removing login data...');
       await AsyncStorage.removeItem('accessToken');
       await AsyncStorage.removeItem('refreshToken');
       await AsyncStorage.removeItem('userEmail');

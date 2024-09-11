@@ -156,7 +156,7 @@ const PackageSubscriptions = () => {
   };
 
   const handleActiveSubOption = option => {
-    console.log('Sub-option selected:', option);
+    //console.log('Sub-option selected:', option);
     setActiveSubOption(option);
     if (option !== 'Ethereum') {
       setShowMoreVisible(false);
@@ -242,13 +242,13 @@ const PackageSubscriptions = () => {
 
     if (activeItem.title === 'By Category') {
       let subOptionName = activeSubOption.toLowerCase() + '_4999_m1';
-      console.log('SUB OPTION NAME', subOptionName);
+      //console.log('SUB OPTION NAME', subOptionName);
   
       if (hasPreviousSubscription) {
-        console.log('PREVIOUSLY PURCHASED');
+        //console.log('PREVIOUSLY PURCHASED');
         subOptionName = `${subOptionName}_nofreetrial`;
       } else {
-        console.log('NEVER PURCHASED BEFORE');
+        //console.log('NEVER PURCHASED BEFORE');
       }
       console.log('SUB OPTION NAME AFTER', subOptionName);
   
@@ -266,16 +266,12 @@ const PackageSubscriptions = () => {
       let subOptionNamePremium = activeItem.title.toLowerCase().replace(/\s+/g, '');
 
       if (subOptionNamePremium === 'founder' && !hasPreviousSubscription) {
-        console.log('NEVER PURCHASED BEFORE');
         subOptionNamePremium = subOptionNamePremium + 's_14999_m1';
       } else if (subOptionNamePremium === 'founder' && hasPreviousSubscription) {
-        console.log('PREVIOUSLY PURCHASED');
         subOptionNamePremium = subOptionNamePremium + 's_14999_m1_nofreetrial';
       } else if (subOptionNamePremium === 'fullaccess' && !hasPreviousSubscription) {
-        console.log('NEVER PURCHASED BEFORE');
         subOptionNamePremium = subOptionNamePremium + '_5999_m1';
       } else if (subOptionNamePremium === 'fullaccess' && hasPreviousSubscription) {
-        console.log('PREVIOUSLY PURCHASED');
         subOptionNamePremium = subOptionNamePremium + '_5999_m1_nofreetrial';
       }
 

@@ -136,10 +136,9 @@ const SignupForm = () => {
   };
 
   const sendFullnameToMetadata = async (fullname, newRawUserId) => {
-    console.log("AWAIT CALLED with fullname: ", fullname);
-    console.log("RAW USER ID: ", newRawUserId);
+    //console.log("Fullname in sendFullnameToMetadata(): ", fullname);
+    //console.log("RawUserID in sendFullnameToMetadata(): ", newRawUserId);
     const token = await getManagementApiToken();
-    console.log("Token after AWAIT: ", token);
     const userMetadata = {
       fullname: fullname,
     };
@@ -212,7 +211,6 @@ const SignupForm = () => {
             connection: 'Username-Password-Authentication',
           },
         );
-        console.log("After POST to Auth0")
         console.log("Response after POST: ", response);
         setUserId(response.data._id);
         setUserEmail(email);

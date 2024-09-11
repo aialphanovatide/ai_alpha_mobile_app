@@ -280,7 +280,6 @@ const PersonaliseProfile = () => {
       const userData = await userFetch.json();
       const extractedEmail = userData.email;
 
-      console.log("INSIDE USER FETCH", userData);
       setUserEmail(extractedEmail);
 
       try {

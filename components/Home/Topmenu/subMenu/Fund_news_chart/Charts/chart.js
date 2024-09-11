@@ -605,11 +605,9 @@ const Chart = ({
         onPress={
           isLandscape
             ? () => {
-                console.log('LANDSCAPE FUNCTION CALLED');
                 handleBackInteraction();
               }
             : () => {
-                console.log('PORTRAIT FUNCTION CALLED');
                 navigation.canGoBack(false);
                 handleScreenOrientationChange('LANDSCAPE');
               }

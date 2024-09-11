@@ -159,9 +159,6 @@ const SettingsScreen = ({route}) => {
       const deleteToken = await getDeleteApiToken();
       const token = await getManagementApiToken();
 
-      console.log('User id: ', {userId});
-      console.log('User email: ', {userEmail});
-      console.log('token: ', token);
       console.log(
         'url: ',
         `https://${auth0Domain}/api/v2/users/auth0|${encodeURIComponent(
@@ -177,8 +174,6 @@ const SettingsScreen = ({route}) => {
         prefix = 'auth0|';
       }
 
-      console.log('prefix: ', prefix);
-      console.log('user idddd: ', userId);
 
       console.log(
         'url: ',
@@ -198,7 +193,7 @@ const SettingsScreen = ({route}) => {
 
       console.log('user fetch: ', userFetch);
       const userData = await userFetch.json();
-      //console.log('User Data!!:', userData);
+      //console.log('User Data:', userData);
 
       const response = await fetch(
         `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
@@ -255,7 +250,6 @@ const SettingsScreen = ({route}) => {
 
       // Case for Username-Password users
       try {
-        console.log('starting');
         let isUsernamePasswordAuthenticationUser = false;
 
         if (rawUserId && rawUserId.startsWith('auth0|')) {
@@ -267,7 +261,6 @@ const SettingsScreen = ({route}) => {
         );
 
         if (isUsernamePasswordAuthenticationUser) {
-          console.log('Entered true line of auth type!');
           Alert.prompt(
             'Delete Account',
             'Enter your password to delete your account',
@@ -288,7 +281,7 @@ const SettingsScreen = ({route}) => {
                       scope: 'openid profile email offline_access',
                     });
 
-                    console.log('got credentials');
+                    console.log('Got credentials');
 
                     if (credentials.idToken) {
                       Alert.alert(
@@ -314,7 +307,6 @@ const SettingsScreen = ({route}) => {
           );
         } else {
           // Case for Google/Apple users
-          console.log('Entered false line of auth type!');
           console.log('Will proceed in passwordless delete process');
           Alert.alert(
             'Delete Account',

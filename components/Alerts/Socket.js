@@ -24,7 +24,6 @@
  export const SocketProvider = ({children}) => {
    const env = SOCKET_DEV;
    const socket = useRef(socketIOClient(env, connectionConfig));
-   //console.log("INITIALIZED PROVIDER")
    //console.log("SOCKET IN PROVIDER ->", socket)
 /*
  

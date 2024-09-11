@@ -163,11 +163,8 @@ const App = () => {
   };
 
   // useEffect(() => {
-  //   console.log('NEw INITIALIZING SOCKET');
   //   const socket = io('https://aialpha.ngrok.io/');
   //   socket.on('new_alert', messageData => {
-  //     console.log('Received message:', messageData);
-  //     console.log('SOCKET ID --->', socket.id);
   //     const data =
   //       typeof messageData === 'string' ? JSON.parse(messageData) : messageData;
   //     const {alert_name, message} = data;

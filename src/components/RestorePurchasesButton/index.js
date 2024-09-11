@@ -11,10 +11,8 @@ import Purchases from 'react-native-purchases';
 const RestorePurchasesButton = () => {
   const restorePurchases = async () => {
     try{
-      console.log("here")
       const restore = await Purchases.restorePurchases();
       console.log(restore);
-      console.log("after restore")
     } catch (e) {
       Alert.alert('Error restoring purchases', e.message);
     }

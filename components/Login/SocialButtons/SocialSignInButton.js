@@ -266,7 +266,7 @@ const SocialSignInButton = () => {
           payload,
         );
         console.log('Auth0 Response:', auth0Response.data);
-        console.log('Acess tokenn!!', auth0Response.data.access_token);
+        console.log('Acess token:', auth0Response.data.access_token);
         console.log('User id is: ', user);
         let newUser = 'apple|' + user;
         console.log('New User id is: ', newUser);
@@ -283,9 +283,7 @@ const SocialSignInButton = () => {
         setUserId(user);
         setRawUserId(newUser);
         //setUserEmail(email);
-        console.log('auth0Response.data._id', auth0Response.data._id);
-        console.log('email!: ', email);
-        console.log('After navigation');
+        //console.log('auth0Response.data._id', auth0Response.data._id);
 
         const response = await fetch(`https://aialpha.ngrok.io/register`, {
           method: 'POST',

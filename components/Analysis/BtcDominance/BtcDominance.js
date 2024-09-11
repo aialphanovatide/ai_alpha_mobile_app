@@ -103,7 +103,6 @@ const BtcDominanceChart = ({route, navigation}) => {
   // Function to handle the X button interaction on the horizontal chart
 
   const handleBackInteraction = () => {
-    console.log('FUNCTION CALLED');
     if (isLandscape || isHorizontal) {
       handleScreenOrientationChange('PORTRAIT');
       navigation.canGoBack(false);
