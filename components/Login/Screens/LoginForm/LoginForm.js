@@ -88,7 +88,6 @@ const LoginForm = ({route}) => {
           setUserId(user_id);
           setRawUserId(rawUserId);
         } else {
-          //console.log("LoginForm Entered else");
           navigation.navigate('SignIn');
         }
 

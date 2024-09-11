@@ -48,7 +48,6 @@ export const useScreenOrientation = singletonHook(
     }, []);
 
     const handleScreenOrientationChange = orientation => {
-      console.log("SCREEN ORIENTATION FUNCTION CALLED");
       if (orientation === 'PORTRAIT') {
         Orientation.unlockAllOrientations();
         setIsManuallyHorizontal(false);

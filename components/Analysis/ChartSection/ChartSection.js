@@ -274,7 +274,6 @@ const ChartSection = ({route, navigation}) => {
   // Function to handle the X button interaction on the horizontal chart
 
   const handleBackInteraction = () => {
-    console.log('FUNCTION CALLED');
     if (isLandscape || isHorizontal) {
       handleScreenOrientationChange('PORTRAIT');
       navigation.canGoBack(false);
@@ -672,11 +671,9 @@ const ChartSection = ({route, navigation}) => {
               onPress={
                 isLandscape
                   ? () => {
-                      console.log('LANDSCAPE FUNCTION CALLED');
                       handleBackInteraction();
                     }
                   : () => {
-                      console.log('PORTRAIT FUNCTION CALLED');
                       navigation.canGoBack(false);
                       handleScreenOrientationChange('LANDSCAPE');
                     }
