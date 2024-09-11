@@ -15,6 +15,7 @@ import {AppThemeContext} from '../../../context/themeContext';
 import {useNavigation} from '@react-navigation/core';
 import useFAQsStyles from './FAQsStyles';
 import LinearGradient from 'react-native-linear-gradient';
+import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 
 if (
   Platform.OS === 'android' &&
@@ -81,49 +82,45 @@ const FAQs = () => {
     },
   ];
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-      style={{flex: 1}}>
-      <SafeAreaView style={styles.backgroundColor}>
-        <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
-          <View style={styles.backButtonContainer}>
-            <BackButton />
-          </View>
-          <Text style={styles.title}>FAQs</Text>
-          {faqs.map((faq, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => toggleFAQ(index)}
-              style={[
-                styles.faqContainer,
-                index === faqs.length - 1 && styles.lastFAQContainer
-              ]}>
-              <View style={styles.faqTouchable}>
-                <View style={styles.faqQuestionRow}>
-                  <Text style={styles.faqQuestionText}>{faq.question}</Text>
-                  <Image
-                    source={
-                      openedFAQ === index
-                        ? require('../../../assets/images/arrow-up.png')
-                        : require('../../../assets/images/arrow-down.png')
-                    }
-                    style={styles.faqArrow}
-                  />
-                </View>
-                {openedFAQ === index && (
-                  <View style={styles.faqAnswer}>
-                    <Text style={styles.faqAnswerText}>{faq.answer}</Text>
+    <View style={styles.flex}>
+      <BackgroundGradient />
+        <SafeAreaView style={styles.backgroundColor}>
+          <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
+            <View style={styles.backButtonContainer}>
+              <BackButton />
+            </View>
+            <Text style={styles.title}>FAQs</Text>
+            {faqs.map((faq, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => toggleFAQ(index)}
+                style={[
+                  styles.faqContainer,
+                  index === faqs.length - 1 && styles.lastFAQContainer,
+                ]}>
+                <View style={styles.faqTouchable}>
+                  <View style={styles.faqQuestionRow}>
+                    <Text style={styles.faqQuestionText}>{faq.question}</Text>
+                    <Image
+                      source={
+                        openedFAQ === index
+                          ? require('../../../assets/images/arrow-up.png')
+                          : require('../../../assets/images/arrow-down.png')
+                      }
+                      style={styles.faqArrow}
+                    />
                   </View>
-                )}
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </SafeAreaView>
-    </LinearGradient>
+                  {openedFAQ === index && (
+                    <View style={styles.faqAnswer}>
+                      <Text style={styles.faqAnswerText}>{faq.answer}</Text>
+                    </View>
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </SafeAreaView>
+    </View>
   );
 };
 

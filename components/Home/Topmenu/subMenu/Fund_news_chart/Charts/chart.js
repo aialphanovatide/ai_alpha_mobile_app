@@ -349,10 +349,10 @@ const Chart = ({
             style={{
               position: 'absolute',
               left: 0,
-              top: 0,
+              top: '3%',
               bottom: 0,
               width: 40,
-              height: '80%',
+              height: '68.5%',
               marginTop: '5%',
               zIndex: 1,
             }}

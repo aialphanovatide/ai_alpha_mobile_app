@@ -4,7 +4,6 @@ import { Platform } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
-import Chatbot from '../../Chatbot/Chatbot';
 import Alerts from '../../Alerts/alerts';
 import {Image, View, Text} from 'react-native';
 import HomeStackScreen from '../../Home/HomeStack';

@@ -18,6 +18,7 @@ import filterData from './FilterData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
+import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 
 const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -246,12 +247,7 @@ const NarrativeTrading = () => {
   };
   return (
     <SafeAreaView style={styles.flex}>
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={{flex: 1}}>
+      <BackgroundGradient />
         <View style={styles.container}>
           <View style={styles.backButtonWrapper}>
             <BackButton navigationHandler={handleNavigationToAnalysis} />
@@ -293,7 +289,6 @@ const NarrativeTrading = () => {
           </ScrollView>
         </View>
         {subscribed ? <></> : <UpgradeOverlay />}
-      </LinearGradient>
     </SafeAreaView>
   );
 };

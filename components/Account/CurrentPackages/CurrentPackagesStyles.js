@@ -1,8 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 import {useContext} from 'react';
-import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
-
 const useCurrentPackagesStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
@@ -140,7 +138,7 @@ const useCurrentPackagesStyles = () => {
     },
     preSecondaryTextFounders: {
       color: theme.titleColor,
-      fontSize: theme.responsiveFontSize * 0.80,
+      fontSize: theme.responsiveFontSize * 0.8,
       fontFamily: theme.font,
       lineHeight: 18,
       textAlign: 'center',
@@ -149,7 +147,7 @@ const useCurrentPackagesStyles = () => {
     },
     secondaryTextFounders: {
       color: theme.subscriptions.secondaryText,
-      fontSize: theme.responsiveFontSize * 0.80,
+      fontSize: theme.responsiveFontSize * 0.8,
       fontFamily: theme.font,
       lineHeight: 18,
       textAlign: 'center',
@@ -157,8 +155,8 @@ const useCurrentPackagesStyles = () => {
       marginLeft: 15,
     },
     subscriptionImage: {
-      width:390,
-      height:270,
+      width: 390,
+      height: 270,
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
@@ -184,6 +182,13 @@ const useCurrentPackagesStyles = () => {
       color: '#FFFFFF',
       fontSize: theme.titleFontSize * 0.7,
       fontFamily: theme.fontSemibold,
+    },
+    gradient: {
+      width: theme.width,
+      height: 800,
+      position: 'absolute',
+      top: 0,
+      left: 0,
     },
   });
   return styles;

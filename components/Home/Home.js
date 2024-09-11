@@ -1,5 +1,5 @@
 import React, {useContext, useState, useRef, useEffect} from 'react';
-import {ScrollView, SafeAreaView} from 'react-native';
+import {ScrollView, SafeAreaView, View} from 'react-native';
 import TickerTape from './Tickertape/TickerTape';
 import TopStories from './TopStories/topStories';
 import Analysis from './Analysis/analysis';
@@ -13,6 +13,7 @@ import NarrativeTradings from './HomeNarrativeTradings/NarrativeTradings';
 import TopTenLosers from './Top10Losers/TopTenLosers';
 import {useRawUserId} from '../../context/RawUserIdContext';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
+import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 
 const Home = ({route}) => {
   const styles = useHomeStyles();
@@ -59,12 +60,8 @@ const Home = ({route}) => {
   };
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-      locations={[0.22, 0.97]}
-      style={styles.flex}>
+    <View style={styles.flex}>
+    <BackgroundGradient />
       <SafeAreaView style={styles.container}>
         {aboutVisible && (
           <AboutModal
@@ -88,7 +85,7 @@ const Home = ({route}) => {
           <TopTenLosers handleAboutPress={handleAboutPress} />
         </ScrollView>
       </SafeAreaView>
-    </LinearGradient>
+            </View>
   );
 };
 

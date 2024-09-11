@@ -19,6 +19,7 @@ import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/core';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 
 const Total3Chart = ({candlesToShow = 30}) => {
   const styles = useTotal3Styles();
@@ -126,104 +127,99 @@ const Total3Chart = ({candlesToShow = 30}) => {
   }
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-      locations={[0.22, 0.97]}
-      style={{flex: 1}}>
-      <SafeAreaView
-        style={[
-          styles.background,
-          isLandscape && isHorizontal && {width: '100%'},
-        ]}>
-        <ScrollView
-          style={{flex: 1}}
-          showsVerticalScrollIndicator={false}
-          bounces={false}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton />
-          </View>
-          <Text style={styles.title}>Total 3 Chart</Text>
-          <Text style={styles.sectionDescription}>
-            This chart aggregates the market value of all cryptocurrencies
-            excluding Bitcoin and Ethereum. It provides an overview of the
-            health and trends of the altcoin market and is essential for
-            diversified investment strategies.
-          </Text>
-          <View style={styles.container}>
-            <View style={styles.chart}>
-              <ImageBackground
-                source={require('../../../assets/images/chart_alpha_logo.png')}
-                style={styles.chartBackgroundImage}
-                resizeMode="contain"
-              />
-              <LinearGradient
-                useAngle
-                angle={90}
-                colors={
-                  isDarkMode
-                    ? ['rgba(22, 22, 22, 1)', 'transparent']
-                    : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
-                }
+    <SafeAreaView
+      style={[
+        styles.background,
+        isLandscape && isHorizontal && {width: '100%'},
+      ]}>
+      <BackgroundGradient />
+      <ScrollView
+        style={{flex: 1}}
+        showsVerticalScrollIndicator={false}
+        bounces={false}>
+        <View style={styles.backButtonWrapper}>
+          <BackButton />
+        </View>
+        <Text style={styles.title}>Total 3 Chart</Text>
+        <Text style={styles.sectionDescription}>
+          This chart aggregates the market value of all cryptocurrencies
+          excluding Bitcoin and Ethereum. It provides an overview of the health
+          and trends of the altcoin market and is essential for diversified
+          investment strategies.
+        </Text>
+        <View style={styles.container}>
+          <View style={styles.chart}>
+            <ImageBackground
+              source={require('../../../assets/images/chart_alpha_logo.png')}
+              style={styles.chartBackgroundImage}
+              resizeMode="contain"
+            />
+            <LinearGradient
+              useAngle
+              angle={90}
+              colors={
+                isDarkMode
+                  ? ['rgba(22, 22, 22, 1)', 'transparent']
+                  : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
+              }
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: 40,
+                height: '80%',
+                marginTop: '5%',
+                zIndex: 1,
+              }}
+            />
+            <VictoryChart
+              width={isLandscape && isHorizontal ? 700 : 375}
+              domainPadding={{x: 10, y: 10}}>
+              {/* X-Axis */}
+              <VictoryAxis
+                fixLabelOverlap
                 style={{
-                  position: 'absolute',
-                  left: 0,
-                  top: 0,
-                  bottom: 0,
-                  width: 40,
-                  height: '80%',
-                  marginTop: '5%',
-                  zIndex: 1,
+                  axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
+                  tickLabels: {
+                    fontSize: theme.responsiveFontSize * 0.7,
+                    fill: theme.titleColor,
+                    fontFamily: theme.font,
+                  },
+                  grid: {stroke: theme.chartsGridColor},
+                }}
+                tickCount={isLandscape && isHorizontal ? 6 : 4}
+                tickFormat={(t, index) =>
+                  `${formatDateArray(t, chartData.length)}`
+                }
+              />
+              {/* Y-Axis */}
+              <VictoryAxis
+                dependentAxis
+                style={{
+                  axis: {stroke: theme.chartsAxisColor},
+                  tickLabels: {
+                    fontSize: theme.responsiveFontSize * 0.55,
+                    fill: theme.titleColor,
+                    fontFamily: theme.font,
+                    overflow: 'visible',
+                  },
+                  grid: {stroke: theme.chartsGridColor},
+                }}
+                orientation="right"
+                tickCount={8}
+                tickFormat={t => `$${formatNumber(t)}`}
+              />
+              <VictoryLine
+                data={chartData.map((value, index) => ({x: index, y: value}))}
+                style={{
+                  data: {stroke: '#C43A31'},
                 }}
               />
-              <VictoryChart
-                width={isLandscape && isHorizontal ? 700 : 375}
-                domainPadding={{x: 10, y: 10}}>
-                {/* X-Axis */}
-                <VictoryAxis
-                  fixLabelOverlap
-                  style={{
-                    axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
-                    tickLabels: {
-                      fontSize: theme.responsiveFontSize * 0.7,
-                      fill: theme.titleColor,
-                      fontFamily: theme.font,
-                    },
-                    grid: {stroke: theme.chartsGridColor},
-                  }}
-                  tickCount={isLandscape && isHorizontal ? 6 : 4}
-                  tickFormat={(t, index) =>
-                    `${formatDateArray(t, chartData.length)}`
-                  }
-                />
-                {/* Y-Axis */}
-                <VictoryAxis
-                  dependentAxis
-                  style={{
-                    axis: {stroke: theme.chartsAxisColor},
-                    tickLabels: {
-                      fontSize: theme.responsiveFontSize * 0.55,
-                      fill: theme.titleColor,
-                      fontFamily: theme.font,
-                      overflow: 'visible',
-                    },
-                    grid: {stroke: theme.chartsGridColor},
-                  }}
-                  orientation="right"
-                  tickCount={8}
-                  tickFormat={t => `$${formatNumber(t)}`}
-                />
-                <VictoryLine
-                  data={chartData.map((value, index) => ({x: index, y: value}))}
-                  style={{
-                    data: {stroke: '#C43A31'},
-                  }}
-                />
-              </VictoryChart>
-            </View>
-            {/* Horizontal view button [DEACTIVATED UNTIL SOLVING ISSUES] */}
-            {/* <TouchableOpacity
+            </VictoryChart>
+          </View>
+          {/* Horizontal view button [DEACTIVATED UNTIL SOLVING ISSUES] */}
+          {/* <TouchableOpacity
               onPress={
                 isLandscape
                   ? () => {
@@ -244,8 +240,8 @@ const Total3Chart = ({candlesToShow = 30}) => {
                 }
               />
             </TouchableOpacity> */}
-            {/* Horizontal view close button */}
-            {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
+          {/* Horizontal view close button */}
+          {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
               <Image
                 style={
                   isLandscape && isHorizontal
@@ -256,17 +252,16 @@ const Total3Chart = ({candlesToShow = 30}) => {
                 source={require('../../../assets/images/home/charts/back.png')}
               />
             </TouchableOpacity> */}
-            {/* Zoom interaction indicator */}
-            <Image
-              style={styles.chartsZoomIndicator}
-              resizeMode="contain"
-              source={require('../../../assets/images/home/charts/zoom-expand.png')}
-            />
-          </View>
-        </ScrollView>
-        {subscribed ? <></> : <UpgradeOverlay />}
-      </SafeAreaView>
-    </LinearGradient>
+          {/* Zoom interaction indicator */}
+          <Image
+            style={styles.chartsZoomIndicator}
+            resizeMode="contain"
+            source={require('../../../assets/images/home/charts/zoom-expand.png')}
+          />
+        </View>
+      </ScrollView>
+      {subscribed ? <></> : <UpgradeOverlay />}
+    </SafeAreaView>
   );
 };
 

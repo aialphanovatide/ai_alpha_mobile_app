@@ -31,6 +31,7 @@ import {AppThemeContext} from '../../../../context/themeContext';
 import useLoginFormStyles from './LoginFormStyles';
 import {RevenueCatContext} from '../../../../context/RevenueCatContext';
 import LinearGradient from 'react-native-linear-gradient';
+import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
 
 const LoginForm = ({route}) => {
   const [username, setUsername] = useState();
@@ -70,8 +71,8 @@ const LoginForm = ({route}) => {
       const rawUserId = await AsyncStorage.getItem('rawUserId');
 
       if (shouldGoToIntroduction === null) {
-        await AsyncStorage.setItem('hasIntroduced', 'false');
         navigation.navigate('IntroductoryScreen');
+        await AsyncStorage.setItem('hasIntroduced', 'false');
       } else {
         if (accessToken && refreshToken) {
           navigation.navigate(
@@ -187,69 +188,63 @@ const LoginForm = ({route}) => {
 
   return (
     <SafeAreaView style={styles.background}>
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={styles.flex}>
-        <ScrollView
-          style={styles.scrollview}
-          showsVerticalScrollIndicator={false}>
-          <View style={styles.root}>
-            <Image source={Logo} style={styles.logo} resizeMode="contain" />
-            <View style={styles.inputContainer}>
-              <View style={styles.labelContainer}>
-                {/* <Text style={styles.title}>Email</Text> */}
-                {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
-              </View>
-              <CustomInput
-                placeholder="Email"
-                value={username}
-                setValue={setUsername}
-              />
+      <BackgroundGradient />
+      <ScrollView
+        style={styles.scrollview}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.root}>
+          <Image source={Logo} style={styles.logo} resizeMode="contain" />
+          <View style={styles.inputContainer}>
+            <View style={styles.labelContainer}>
+              {/* <Text style={styles.title}>Email</Text> */}
+              {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
             </View>
-
-            <View style={styles.inputContainer}>
-              <View style={styles.labelContainer}>
-                {/* <Text style={styles.title}>Password</Text> */}
-                {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
-              </View>
-              <CustomPasswordInput
-                placeholder="Password"
-                value={password}
-                setValue={setPassword}
-                secureTextEntry={true}
-              />
-            </View>
-            <CustomButton
-              text="Sign In"
-              onPress={onSignInPressed}
-              type="PRIMARY"
+            <CustomInput
+              placeholder="Email"
+              value={username}
+              setValue={setUsername}
             />
-            <SocialSignInButton />
-            <CustomButton
-              text="Forgot Password"
-              onPress={onForgotPasswordPressed}
-              type="TERTIARY"
-            />
-            <View style={styles.signUpContainer}>
-              <Text style={styles.signUpText}>Don't have an account? </Text>
-              <TouchableOpacity onPress={onSignUpPressed}>
-                <Text style={styles.signUpButton}>Sign Up for Free</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.termsContainer}>
-              <Text style={styles.termsText}>
-                By registering you agree to our{' '}
-              </Text>
-              <TouchableOpacity onPress={onTermsPressed}>
-                <Text style={styles.termsButton}>Terms and Conditions</Text>
-              </TouchableOpacity>
-            </View>
           </View>
-        </ScrollView>
-      </LinearGradient>
+
+          <View style={styles.inputContainer}>
+            <View style={styles.labelContainer}>
+              {/* <Text style={styles.title}>Password</Text> */}
+              {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
+            </View>
+            <CustomPasswordInput
+              placeholder="Password"
+              value={password}
+              setValue={setPassword}
+              secureTextEntry={true}
+            />
+          </View>
+          <CustomButton
+            text="Sign In"
+            onPress={onSignInPressed}
+            type="PRIMARY"
+          />
+          <SocialSignInButton />
+          <CustomButton
+            text="Forgot Password"
+            onPress={onForgotPasswordPressed}
+            type="TERTIARY"
+          />
+          <View style={styles.signUpContainer}>
+            <Text style={styles.signUpText}>Don't have an account? </Text>
+            <TouchableOpacity onPress={onSignUpPressed}>
+              <Text style={styles.signUpButton}>Sign Up for Free</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.termsContainer}>
+            <Text style={styles.termsText}>
+              By registering you agree to our{' '}
+            </Text>
+            <TouchableOpacity onPress={onTermsPressed}>
+              <Text style={styles.termsButton}>Terms and Conditions</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

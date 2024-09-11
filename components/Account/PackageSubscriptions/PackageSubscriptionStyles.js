@@ -1,10 +1,17 @@
-import { StyleSheet } from 'react-native';
-import { useContext } from 'react';
-import { AppThemeContext } from '../../../context/themeContext';
+import {StyleSheet} from 'react-native';
+import {useContext} from 'react';
+import {AppThemeContext} from '../../../context/themeContext';
 
 const usePackageSubscriptionStyles = () => {
-  const { theme } = useContext(AppThemeContext);
+  const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
+    gradient: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
     backgroundContainer: {
       backgroundColor: theme.mainBackgroundColor,
     },
@@ -20,7 +27,7 @@ const usePackageSubscriptionStyles = () => {
       padding: 10,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.mainBackgroundColor,
+      // backgroundColor: theme.mainBackgroundColor,
     },
     flex: {
       flex: 1,
@@ -50,7 +57,7 @@ const usePackageSubscriptionStyles = () => {
       textAlign: 'left',
       marginRight: 29,
     },
-    preTertiaryText:{
+    preTertiaryText: {
       color: theme.subscriptions.secondaryText,
       fontSize: theme.responsiveFontSize * 0.75,
       fontFamily: theme.font,
@@ -230,7 +237,6 @@ const usePackageSubscriptionStyles = () => {
       flexDirection: 'row',
       alignItems: 'center',
       marginBottom: 5,
-
     },
     subOptionTextShowMore: {
       color: theme.activeOrange,
@@ -321,15 +327,15 @@ const usePackageSubscriptionStyles = () => {
     },
     secondaryTextFounders: {
       color: theme.subscriptions.secondaryText,
-      fontSize: theme.responsiveFontSize * 0.80,
+      fontSize: theme.responsiveFontSize * 0.8,
       fontFamily: theme.font,
       lineHeight: 22,
       textAlign: 'center',
       margin: 25,
     },
     subscriptionImage: {
-      width:390,
-      height:270,
+      width: 390,
+      height: 270,
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',

@@ -18,7 +18,13 @@ import useSearchBarStyles from './SearchBarStyles';
 import {useFocusEffect} from '@react-navigation/core';
 import {AppThemeContext} from '../../../context/themeContext';
 
-const SearchBar = ({toggleMenuVisible, toggleTextValue, searchText, activeSearchBar, toggleSearchBar}) => {
+const SearchBar = ({
+  toggleMenuVisible,
+  toggleTextValue,
+  searchText,
+  activeSearchBar,
+  toggleSearchBar,
+}) => {
   const styles = useSearchBarStyles();
   const {theme} = useContext(AppThemeContext);
   const [contentVisible, setContentVisible] = useState(false);
@@ -27,12 +33,12 @@ const SearchBar = ({toggleMenuVisible, toggleTextValue, searchText, activeSearch
   useFocusEffect(
     useCallback(() => {
       toggleSearchBar(false);
+      toggleTextValue('');
     }, []),
   );
 
   useEffect(() => {
-    const toValue = Platform.OS === 'ios' ? -50 : 0;
-  
+    const toValue = Platform.OS === 'ios' ? -50 : -30;
     if (activeSearchBar) {
       Animated.timing(slideAnim, {
         toValue: toValue,
@@ -55,10 +61,10 @@ const SearchBar = ({toggleMenuVisible, toggleTextValue, searchText, activeSearch
   };
 
   const handleTextChange = value => {
-    toggleMenuVisible(false);
     if (contentVisible === false) {
       setContentVisible(true);
     }
+    toggleMenuVisible(false);
     toggleTextValue(value);
   };
 
@@ -70,73 +76,75 @@ const SearchBar = ({toggleMenuVisible, toggleTextValue, searchText, activeSearch
   };
 
   return (
-      <View
-        style={[
-          styles.searchBar,
-          Platform.select({
-            ios: styles.textInputContainerIOS,
-            android: styles.textInputContainer,
-          }),
-          activeSearchBar
-            ? {
+    <View
+      style={[
+        styles.searchBar,
+        Platform.select({
+          ios: styles.textInputContainerIOS,
+          android: styles.textInputContainer,
+        }),
+        activeSearchBar
+          ? {
+              height: 40,
               zIndex: 3000,
             }
-            : {
-                height: 40,
-                zIndex: 1000,
-              },
-        ]}>
-        <TouchableOpacity
-          onPress={() => handleSearchActivation()}>
-            <Image
+          : {
+              height: 40,
+              zIndex: 2001,
+            },
+      ]}>
+      {activeSearchBar ? (
+        <Animated.View
+          style={[
+            Platform.select({
+              ios: styles.textInputContainerIOSAfter,
+              android: styles.textInputContainerAfter,
+            }),
+            {transform: [{translateX: slideAnim}]},
+          ]}>
+          <Image
             source={require('../../../assets/images/home/search_icon.png')}
-            style={[styles.magnifierIcon, styles.magnifierTintColor]}
+            style={styles.magnifierIconAfter}
             resizeMode="contain"
             fadeDuration={100}
           />
-        </TouchableOpacity>
-        {activeSearchBar ? (
-          <Animated.View
-            style={[
-              Platform.select({
-                ios: styles.textInputContainerIOSAfter,
-                android: styles.textInputContainer,
-              }),
-              {transform: [{translateX: slideAnim}]},
-            ]}>
+          <TextInput
+            style={[styles.searchInput]}
+            value={searchText}
+            onChangeText={text => handleTextChange(text)}
+            placeholder="Search Token"
+            placeholderTextColor={theme.searchPlaceHolderColor}
+          />
+          <TouchableOpacity
+            onPress={() => handleSearchClose()}
+            style={styles.closeButton}>
+            <Image
+              source={require('../../../assets/images/closev2.png')}
+              style={styles.closeImage}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+        </Animated.View>
+      ) : (
+        <View style={styles.inactiveSearchBar}>
+          <TouchableOpacity
+            style={styles.magnifierButton}
+            onPress={() => handleSearchActivation()}>
             <Image
               source={require('../../../assets/images/home/search_icon.png')}
-              style={styles.magnifierIconAfter}
+              style={[styles.magnifierIcon, styles.magnifierTintColor]}
               resizeMode="contain"
               fadeDuration={100}
             />
-            <TextInput
-              style={[styles.searchInput]}
-              value={searchText}
-              onChangeText={text => handleTextChange(text)}
-              placeholder="Search Token"
-              placeholderTextColor={theme.searchPlaceHolderColor}
-            />
-            <TouchableOpacity
-              onPress={() => handleSearchClose()}
-              style={{zIndex: 100}}>
-              <Image
-                source={require('../../../assets/images/close.png')}
-                style={styles.closeButton}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </Animated.View>
-        ) : (
-          <View style={styles.inactiveSearchBar}>
-            <Image
-              style={styles.aiAlphaTextImage}
-              source={require('../../../assets/images/topMenu/ai_alpha_search_text.png')}
-              resizeMode="cover"
-            />
-          </View>
-        )}
-      </View>
+          </TouchableOpacity>
+          <Image
+            style={styles.aiAlphaTextImage}
+            source={require('../../../assets/images/topMenu/ai_alpha_search_text.png')}
+            resizeMode="cover"
+          />
+        </View>
+      )}
+    </View>
   );
 };
 

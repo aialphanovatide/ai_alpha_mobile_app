@@ -74,6 +74,7 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-use-websocket": "^0.2.6",
     "react-native-vector-icons": "^10.1.0",
+    "react-native-video": "^6.5.0",
     "react-native-websocket": "^1.0.2",
     "react-native-webview": "^13.6.3",
     "react-native-zoom-toolkit": "^2.0.1",

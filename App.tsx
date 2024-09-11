@@ -1,17 +1,12 @@
 import React, {useEffect, useState, useContext} from 'react';
 import Navigation from './navigation/Navigation';
 import {
-  View,
   Alert,
   SafeAreaView,
   StyleSheet,
   StatusBar,
   Platform,
   Appearance,
-  Text,
-  TouchableOpacity,
-  Modal,
-  Image,
   Dimensions,
 } from 'react-native';
 import {useAuth0, Auth0Provider} from 'react-native-auth0';
@@ -22,7 +17,6 @@ import {UserIdProvider} from './context/UserIdContext';
 import {RawUserIdProvider, useRawUserId} from './context/RawUserIdContext';
 import {CategoriesContextProvider} from './context/categoriesContext';
 import {AppThemeProvider, AppThemeContext} from './context/themeContext';
-import SplashScreen from 'react-native-splash-screen';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 import {AboutModalProvider} from './context/AboutModalContext';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
@@ -43,7 +37,6 @@ import {
   auth0ManagementAPI_Secret,
 } from './src/constants/index';
 import eventEmitter from './eventEmitter';
-import LinearGradient from 'react-native-linear-gradient';
 import {Top10MoversContextProvider} from './context/TopTenMoversContext';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';

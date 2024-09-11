@@ -18,14 +18,17 @@ import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
 import {AppThemeContext} from '../../../context/themeContext.js';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext.js';
+import {CategoriesContext} from '../../../context/categoriesContext.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
-const Item = ({position, coin, index, handleItemClick}) => {
+const Item = ({position, coin, index, handleItemClick, findCategoryOfItem}) => {
   const styles = useTopTenGainersStyles();
+  const itemCategory = findCategoryOfItem(coin.symbol, coin.name);
+
   return (
     <TouchableOpacity
-      onPress={() => handleItemClick(coin.symbol.toLowerCase(), coin.category)}>
+      onPress={() => handleItemClick(coin.symbol.toLowerCase(), itemCategory)}>
       <View style={styles.row}>
         <View style={styles.positionContainer}>
           <Text style={styles.coinPosition}>{position}</Text>
@@ -69,6 +72,7 @@ const TopTenGainers = ({handleAboutPress}) => {
   const navigation = useNavigation();
   const styles = useTopTenGainersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
+  const {findCategoryOfItem} = useContext(CategoriesContext);
   const {topTenMoversData, loading} = useContext(Top10MoversContext);
   const {isDarkMode} = useContext(AppThemeContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
@@ -121,52 +125,6 @@ const TopTenGainers = ({handleAboutPress}) => {
 
   useEffect(() => {
     setTopTenCoins(topTenMoversData);
-    /*
-    const fetchTopTenCoins = async () => {
-      try {
-        const data = await topTenGainersService.getTop10Coins();
-        setTopTenCoins(data.top10Gainers);
-        console.log('TopTenGainers data:', data);
-      } catch (error) {
-        console.error('Error fetching top 10 gainers:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    setTopTenCoins(TOP_TEN_GAINERS_MOCK);
-    setLoading(false);
-    */
-    // const fetchTopTenCoinsFromServer = async () => {
-    //   try {
-    //     const response = await getService(
-    //       `api/top-movers?vs_currency=usd&order=price_change_desc&precision=2`,
-    //     );
-    //     // setTopTenCoins(data.top10Gainers);
-    //     const top10CoinsInfo = [];
-    //     for (let i = 0; i < response.data.top_10_gainers.length; i++) {
-    //       const coin = response.data.top_10_gainers[i];
-    //       const coinInfo = {
-    //         name: coin.name,
-    //         symbol: coin.symbol,
-    //         image: coin.image,
-    //         currentPrice: coin.current_price,
-    //         priceChange24H: coin.price_change_percentage_24h
-    //           ? coin.price_change_percentage_24h
-    //           : 0.0,
-    //       };
-    //       top10CoinsInfo.push(coinInfo);
-    //     }
-    //     setTopTenCoins(top10CoinsInfo);
-    //     console.log('TopTenGainers data:', top10CoinsInfo);
-    //   } catch (error) {
-    //     console.error('Error fetching top 10 gainers:', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // fetchTopTenCoinsFromServer();
-    // setTopTenCoins(TOP_TEN_GAINERS_MOCK);
-    // setLoading(false);
   }, [topTenMoversData]);
   return (
     <View style={styles.topTenGainersContainer}>
@@ -216,6 +174,7 @@ const TopTenGainers = ({handleAboutPress}) => {
                   coin={coin}
                   position={index + 1}
                   handleItemClick={handleItemClick}
+                  findCategoryOfItem={findCategoryOfItem}
                 />
               ))}
           </ScrollView>

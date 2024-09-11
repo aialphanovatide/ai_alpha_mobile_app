@@ -28,6 +28,7 @@ import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
+import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 
 // This component generates a chart with ETH/BTC pairing data coming from the binance API
 
@@ -179,13 +180,8 @@ const EthBtcChart = ({candlesToShow = 30}) => {
   // If the chart data is loading, then display a loader
   if (loading || chartData.length === 0) {
     return (
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={{flex: 1}}>
         <SafeAreaView style={styles.background}>
+          <BackgroundGradient />
           <View style={styles.backButtonWrapper}>
             <BackButton />
           </View>
@@ -205,7 +201,6 @@ const EthBtcChart = ({candlesToShow = 30}) => {
           </View>
           {subscribed ? <></> : <UpgradeOverlay />}
         </SafeAreaView>
-      </LinearGradient>
     );
   }
 
@@ -272,8 +267,9 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                   }
                   style={{
                     position: 'absolute',
-                    left: 0,
-                    top: 0,
+                    left: '4%',
+                    top: '10%',
+                    height: '71%',
                     bottom: 0,
                     width: 40,
                     zIndex: 1,

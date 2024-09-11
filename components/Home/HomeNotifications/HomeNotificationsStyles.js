@@ -60,12 +60,13 @@ const useHomeNotificationsStyles = () => {
     },
     notificationsButton: {
       position: 'absolute',
-      top: 26,
-      right: 26,
-      flex: 1,
+      top: '15%',
+      right: '5%',
+      width: 60,
+      height: 60,
       justifyContent: 'center',
       alignItems: 'center',
-      zIndex: 2000,     // This was causing issues on iOS
+      zIndex: 1000,
     },
     timeFrameContainer: {
       height: 32,

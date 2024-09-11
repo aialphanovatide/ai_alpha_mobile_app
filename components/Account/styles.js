@@ -112,20 +112,27 @@ const useAccountStyles = () => {
       width: '80%',
       flexDirection: 'row',
     },
-    gradient: {
+    mainView: {
       flex: 1,
       width: '100%',
       height: theme.height,
     },
     imageContainer: {
       alignItems: 'center',
-  },
-  userImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
-},
+    },
+    gradient: {
+      width: theme.width,
+      height: 800,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    },
+    userImage: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      marginBottom: 10,
+    },
     socialMediaContainer: {
       width: '100%',
       marginVertical: 22,

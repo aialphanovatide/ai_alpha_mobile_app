@@ -13,6 +13,13 @@ const useLegalStyles = () => {
     backButtonContainer: {
       marginHorizontal: 20,
     },
+    gradient: {
+      width: theme.width,
+      height: 600,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    },
     title: {
       marginHorizontal: 26,
       marginTop: 18,

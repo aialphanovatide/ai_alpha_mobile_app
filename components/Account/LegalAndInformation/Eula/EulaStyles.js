@@ -5,6 +5,16 @@ import {AppThemeContext} from '../../../../context/themeContext';
 const useEulaStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
+    flex: {
+      flex: 1,
+    },
+    gradient: {
+      width: theme.width,
+      height: 800,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    },
     mainView: {
       width: theme.width,
       height: theme.height,

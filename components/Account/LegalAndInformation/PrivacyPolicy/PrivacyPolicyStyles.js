@@ -10,6 +10,13 @@ const usePrivacyPolicyStyles = () => {
       height: theme.height,
       backgroundColor: 'transparent',
     },
+    gradient: {
+      width: theme.width,
+      height: 800,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    },
     scrollview: {
       flex: 1,
       backgroundColor: 'transparent',

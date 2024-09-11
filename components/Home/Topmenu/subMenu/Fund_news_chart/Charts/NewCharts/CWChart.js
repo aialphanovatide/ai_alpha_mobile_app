@@ -16,6 +16,22 @@ import {useScreenOrientation} from '../../../../../../../hooks/useScreenOrientat
 import {useNavigation} from '@react-navigation/core';
 import {getService} from '../../../../../../../services/aiAlphaApi';
 import SkeletonLoader from '../../../../../../Loader/SkeletonLoader';
+import LinearGradient from 'react-native-linear-gradient';
+
+// Function to adapt the chartData to the required react-native-charts-wrapper format
+
+const mapChartDataFormat = chartsData => {
+  return chartsData.map(candle => ({
+    x: new Date(candle.x).getTime(),
+    shadowH: candle.high,
+    shadowL: candle.low,
+    open: candle.open,
+    close: candle.close,
+    marker: `H: $${candle.high}\nO: $${candle.open}\nC: $${candle.close}\nL: $${
+      candle.low
+    }\nDate: ${new Date(candle.x).toLocaleString()}`,
+  }));
+};
 
 const CWChart = ({
   symbol,
@@ -34,7 +50,13 @@ const CWChart = ({
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const navigation = useNavigation();
+  const {isDarkMode} = useContext(AppThemeContext);
   const [selectedCandleColor, setSelectedCandleColor] = useState(null);
+  const [showGradient, setShowGradient] = useState(true);
+  const [zoomDomain, setZoomDomain] = useState({
+    minX: mapChartDataFormat(chartData)[0]?.x,
+    maxX: mapChartDataFormat(chartData)[chartData.length - 1]?.x,
+  });
 
   useEffect(() => {
     if (
@@ -107,6 +129,28 @@ const CWChart = ({
           style={styles.chartBackgroundImage}
           resizeMode="contain"
         />
+        {showGradient && (
+          <LinearGradient
+            useAngle
+            angle={90}
+            colors={
+              isDarkMode
+                ? ['rgba(22, 22, 22, 1)', 'transparent']
+                : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
+            }
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: 40,
+              height: '80%',
+              marginTop: '5%',
+              zIndex: 1,
+            }}
+          />
+        )}
+
         <CandleStickChart
           style={{height: chartHeight, width: chartWidth}}
           // Candles data configuration

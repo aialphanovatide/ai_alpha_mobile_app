@@ -8,6 +8,7 @@ import {home_static_data} from '../../../../../homeStaticData';
 import {AboutModalContext} from '../../../../../../../context/AboutModalContext';
 import AboutModal from '../../Fundamentals/AboutModal';
 import Chart from './NewChart';
+import BackgroundGradient from '../../../../../../BackgroundGradient/BackgroundGradient';
 
 const initialCoinPriceData = {
   price: null,
@@ -56,50 +57,44 @@ const ChartsSection = ({route}) => {
   };
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-      style={[styles.flex]}>
-      <ScrollView
-        style={[styles.flex, {padding: 10}]}
-        bounces={false}
-        bouncesZoom={false}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.titleRow}>
-          <Text style={styles.detailslabel}>
-            {`${coinBot.toUpperCase()}/${currentPrice?.pairing.toUpperCase()}`}
-          </Text>
-          <Text
-            style={[
-              styles.lastPrice,
-              currentPrice?.isPriceUp !== null
-                ? currentPrice?.isPriceUp
-                  ? styles.priceUpColor
-                  : styles.priceDownColor
-                : {},
-            ]}>
-            {`${currentPrice?.pairing.toUpperCase() === 'USDT' ? '$' : ''}${
-              currentPrice?.price ? formatNumber(currentPrice?.price) : ' ...'
-            }`}
-          </Text>
-          <AboutIcon
-            description={home_static_data.charts.sectionDescription}
-            handleAboutPress={handleAboutPress}
-          />
-        </View>
-        {aboutVisible && (
-          <AboutModal
-            description={aboutDescription}
-            onClose={handleAboutPress}
-            visible={aboutVisible}
-          />
-        )}
-        <Chart coinBot={coinBot} handlePriceChange={handlePriceChange} />
-      </ScrollView>
-    </LinearGradient>
+    <ScrollView
+      style={[styles.flex, {padding: 10}]}
+      bounces={false}
+      bouncesZoom={false}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}>
+      <BackgroundGradient />
+      <View style={styles.titleRow}>
+        <Text style={styles.detailslabel}>
+          {`${coinBot.toUpperCase()}/${currentPrice?.pairing.toUpperCase()}`}
+        </Text>
+        <Text
+          style={[
+            styles.lastPrice,
+            currentPrice?.isPriceUp !== null
+              ? currentPrice?.isPriceUp
+                ? styles.priceUpColor
+                : styles.priceDownColor
+              : {},
+          ]}>
+          {`${currentPrice?.pairing.toUpperCase() === 'USDT' ? '$' : ''}${
+            currentPrice?.price ? formatNumber(currentPrice?.price) : ' ...'
+          }`}
+        </Text>
+        <AboutIcon
+          description={home_static_data.charts.sectionDescription}
+          handleAboutPress={handleAboutPress}
+        />
+      </View>
+      {aboutVisible && (
+        <AboutModal
+          description={aboutDescription}
+          onClose={handleAboutPress}
+          visible={aboutVisible}
+        />
+      )}
+      <Chart coinBot={coinBot} handlePriceChange={handlePriceChange} />
+    </ScrollView>
   );
 };
 
