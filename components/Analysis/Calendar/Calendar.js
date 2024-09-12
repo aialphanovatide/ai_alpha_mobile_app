@@ -9,6 +9,7 @@ import {AppThemeContext} from '../../../context/themeContext.js';
 import MacroEconomicCalendar from './MacroEconomicsCalendar/MacroEconomicCalendar.js';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay.js';
 import {RevenueCatContext} from '../../../context/RevenueCatContext.js';
+import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient.js';
 
 const Intervals = {
   today: {
@@ -42,12 +43,7 @@ const Calendar = ({handleReturn}) => {
 
   return (
     <SafeAreaView style={styles.flex}>
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={{flex: 1}}>
+      <BackgroundGradient />
         <ScrollView
           style={styles.container}
           nestedScrollEnabled={true}
@@ -84,7 +80,6 @@ const Calendar = ({handleReturn}) => {
           </View>
         </ScrollView>
         {subscribed ? <></> : <UpgradeOverlay />}
-      </LinearGradient>
     </SafeAreaView>
   );
 };

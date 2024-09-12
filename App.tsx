@@ -1,17 +1,12 @@
 import React, {useEffect, useState, useContext} from 'react';
 import Navigation from './navigation/Navigation';
 import {
-  View,
   Alert,
   SafeAreaView,
   StyleSheet,
   StatusBar,
   Platform,
   Appearance,
-  Text,
-  TouchableOpacity,
-  Modal,
-  Image,
   Dimensions,
 } from 'react-native';
 import {useAuth0, Auth0Provider} from 'react-native-auth0';
@@ -22,7 +17,6 @@ import {UserIdProvider} from './context/UserIdContext';
 import {RawUserIdProvider, useRawUserId} from './context/RawUserIdContext';
 import {CategoriesContextProvider} from './context/categoriesContext';
 import {AppThemeProvider, AppThemeContext} from './context/themeContext';
-import SplashScreen from 'react-native-splash-screen';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 import {AboutModalProvider} from './context/AboutModalContext';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
@@ -43,7 +37,6 @@ import {
   auth0ManagementAPI_Secret,
 } from './src/constants/index';
 import eventEmitter from './eventEmitter';
-import LinearGradient from 'react-native-linear-gradient';
 import {Top10MoversContextProvider} from './context/TopTenMoversContext';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';
@@ -55,8 +48,12 @@ const {width, height} = Dimensions.get('window');
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [backgroundColor, setBackgroundColor] = useState(isDarkMode ? '#0b0b0a' : '#fbfbfa');
-  const [upperBackgroundColor, setUpperBackgroundColor] = useState(isDarkMode ? '#0F0F0F' : '#E5E5E5');
+  const [backgroundColor, setBackgroundColor] = useState(
+    isDarkMode ? '#0b0b0a' : '#fbfbfa',
+  );
+  const [upperBackgroundColor, setUpperBackgroundColor] = useState(
+    isDarkMode ? '#0F0F0F' : '#E5E5E5',
+  );
   const colorScheme = Appearance.getColorScheme();
   const [barScheme, setBarScheme] = useState('default');
   const [isConnected, setIsConnected] = useState(true);
@@ -75,16 +72,22 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const darkModeSubscription = eventEmitter.addListener('darkModeChanged', isDark => {
-      setIsDarkMode(isDark);
-      setBackgroundColor(isDark ? '#0b0b0a' : '#fbfbfa');
-      setUpperBackgroundColor(isDark ? '#0F0F0F' : '#E5E5E5');
-    });
+    const darkModeSubscription = eventEmitter.addListener(
+      'darkModeChanged',
+      isDark => {
+        setIsDarkMode(isDark);
+        setBackgroundColor(isDark ? '#0b0b0a' : '#fbfbfa');
+        setUpperBackgroundColor(isDark ? '#0F0F0F' : '#E5E5E5');
+      },
+    );
 
-    const backgroundColorSubscription = eventEmitter.addListener('backgroundColorChange', color => {
-      setBackgroundColor(color);
-      setUpperBackgroundColor(color);
-    });
+    const backgroundColorSubscription = eventEmitter.addListener(
+      'backgroundColorChange',
+      color => {
+        setBackgroundColor(color);
+        setUpperBackgroundColor(color);
+      },
+    );
 
     return () => {
       darkModeSubscription.remove();
@@ -105,21 +108,21 @@ const App = () => {
       }
       return symbol;
     };
-  
+
     const MAX_NOTIFICATIONS = 50;
-  
+
     try {
       const storedNotifications = await AsyncStorage.getItem('notifications');
       const currentNotifications = storedNotifications
         ? JSON.parse(storedNotifications)
         : [];
-  
+
       const today = new Date();
       const day = String(today.getDate()).padStart(2, '0');
       const month = String(today.getMonth() + 1).padStart(2, '0');
       const year = today.getFullYear();
       const notificationDate = `${day}/${month}/${year}`;
-  
+
       const notificationCoin = extractCryptoName(alertData.title);
       const notificationType =
         alertData.type !== undefined
@@ -127,7 +130,7 @@ const App = () => {
           : alertData.title.toLowerCase().includes('chart')
           ? 'alerts'
           : 'analysis';
-  
+
       const newNotification = {
         title: alertData.title,
         description: alertData.title.toLowerCase().includes('chart')
@@ -138,7 +141,7 @@ const App = () => {
         category: null,
         type: notificationType,
       };
-  
+
       const combinedNotifications = [
         ...currentNotifications,
         newNotification,
@@ -147,11 +150,14 @@ const App = () => {
           index ===
           self.findIndex(t => t.title === item.title && t.date === item.date),
       );
-  
+
       if (combinedNotifications.length > MAX_NOTIFICATIONS) {
-        combinedNotifications.splice(0, combinedNotifications.length - MAX_NOTIFICATIONS);
+        combinedNotifications.splice(
+          0,
+          combinedNotifications.length - MAX_NOTIFICATIONS,
+        );
       }
-  
+
       console.log('Saving notification: ', newNotification);
       await AsyncStorage.setItem(
         'notifications',
@@ -193,7 +199,12 @@ const App = () => {
       try {
         const data = await getService('/get_categories');
         setServerError(false);
-        if (serverWentDown == 1) {
+        if (data.length === 0) {
+          throw new Error(
+            'Error trying to get categories: the server is down.',
+          );
+        }
+        if (serverWentDown === 1) {
           RNRestart.restart();
           setServerWentDown(0);
         }
@@ -281,26 +292,32 @@ const App = () => {
               <UserIdProvider>
                 <RawUserIdProvider>
                   <AppThemeProvider>
-                  <SafeAreaView
-                  style={{
-                    flex: 0,
-                    backgroundColor: upperBackgroundColor === '#FC5404' ? '#FFB76E' : upperBackgroundColor,
-                  }}></SafeAreaView>
-                <SafeAreaView
-                  style={[
-                    styles.container,
-                    {
-                      flex: 1,
-                      backgroundColor: backgroundColor === '#FFB76E' ? '#FC5404' : backgroundColor,
-                    },
-                  ]}>
-                  <StatusBar
-                    barStyle={
-                      isDarkMode
-                        ? 'light-content'
-                        : 'dark-content' /*This changes the font color for SafeAreaView*/
-                    }
-                  />
+                    <SafeAreaView
+                      style={{
+                        flex: 0,
+                        backgroundColor:
+                          upperBackgroundColor === '#FC5404'
+                            ? '#FFB76E'
+                            : upperBackgroundColor,
+                      }}></SafeAreaView>
+                    <SafeAreaView
+                      style={[
+                        styles.container,
+                        {
+                          flex: 1,
+                          backgroundColor:
+                            backgroundColor === '#FFB76E'
+                              ? '#FC5404'
+                              : backgroundColor,
+                        },
+                      ]}>
+                      <StatusBar
+                        barStyle={
+                          isDarkMode
+                            ? 'light-content'
+                            : 'dark-content' /*This changes the font color for SafeAreaView*/
+                        }
+                      />
                       <SingletonHooksContainer />
                       <Top10MoversContextProvider>
                         <NarrativeTradingContextProvider>

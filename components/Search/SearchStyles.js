@@ -3,15 +3,15 @@ import {useContext} from 'react';
 import {AppThemeContext} from '../../context/themeContext';
 
 const useSearchStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     flex: {
       flex: 1,
     },
     container: {
       width: '95%',
-      marginHorizontal: 10,
-      height: theme.height,
+      height: 800,
+      marginTop: 8,
       paddingHorizontal: 10,
       borderRadius: 2,
       backgroundColor: theme.boxesBackgroundColor,
@@ -147,6 +147,7 @@ const useSearchStyles = () => {
       width: '100%',
       padding: 4,
       marginTop: theme.boxesVerticalMargin,
+      backgroundColor: theme.boxesBackgroundColor,
     },
     searchContainer: {
       backgroundColor: theme.boxesBackgroundColor,
@@ -167,6 +168,16 @@ const useSearchStyles = () => {
       textTransform: 'uppercase',
       alignSelf: 'center',
       fontFamily: theme.fontRegular,
+    },
+    searchSection: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: 800,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: isDarkMode ? '#171717' : '#D4D4D4'
     },
   });
   return styles;

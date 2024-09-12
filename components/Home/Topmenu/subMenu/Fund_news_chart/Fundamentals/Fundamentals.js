@@ -28,6 +28,7 @@ import {fundamentals_static_content} from './fundamentalsStaticData';
 import LinearGradient from 'react-native-linear-gradient';
 import {useScrollToTop} from '@react-navigation/native';
 import {AboutModalContext} from '../../../../../../context/AboutModalContext';
+import BackgroundGradient from '../../../../../BackgroundGradient/BackgroundGradient';
 
 const initialContentState = {
   introduction: false,
@@ -164,16 +165,11 @@ const Fundamentals = ({route}) => {
   }, [coin]);
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-      locations={[0.22, 0.97]}
-      style={styles.linearGradient}>
       <ScrollView
         nestedScrollEnabled={true}
         style={styles.backgroundColor}
         ref={ref}>
+          <BackgroundGradient />
         <SafeAreaView style={styles.container}>
           {aboutVisible && (
             <AboutModal
@@ -384,7 +380,6 @@ const Fundamentals = ({route}) => {
           />
         </SafeAreaView>
       </ScrollView>
-    </LinearGradient>
   );
 };
 

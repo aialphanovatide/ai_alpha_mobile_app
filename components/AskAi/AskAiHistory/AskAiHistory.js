@@ -10,6 +10,7 @@ import AboutModal from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/
 import {AboutModalContext} from '../../../context/AboutModalContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from '../../Analysis/BackButton/BackButton';
+import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 
 const HistoryContent = ({
   activeHistoryOption,
@@ -210,13 +211,8 @@ const AskAiHistory = ({route, navigation}) => {
   };
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-      locations={[0.22, 0.97]}
-      style={styles.flex}>
       <SafeAreaView style={styles.container}>
+        <BackgroundGradient />
         <View style={{marginHorizontal: 18, marginTop: 8}}>
           <BackButton />
         </View>
@@ -246,7 +242,6 @@ const AskAiHistory = ({route, navigation}) => {
           onClose={handleClose}
         />
       </SafeAreaView>
-    </LinearGradient>
   );
 };
 

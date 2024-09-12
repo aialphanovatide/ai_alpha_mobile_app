@@ -20,7 +20,7 @@ const AnalysisScreen = () => {
     <AnalysisStack.Navigator
       initialRouteName="AnalysisMain"
       screenOptions={{
-        animation: 'slide_from_bottom',
+        animation: 'slide_from_right',
         headerShown: 'false',
         header: () => null,
       }}>

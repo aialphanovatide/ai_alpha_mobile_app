@@ -14,11 +14,11 @@ import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
 import SubMenu from '../Home/Topmenu/subMenu/SubMenu';
 import UpgradeOverlay from '../UpgradeOverlay/UpgradeOverlay';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
-import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import {CategoriesContext} from '../../context/categoriesContext';
 import {useScrollToTop} from '@react-navigation/native';
 import SkeletonLoader from '../Loader/SkeletonLoader';
+import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 
 // Component that renders when there are no alerts on the server's response
 const NoAlertsView = ({styles}) => (
@@ -198,12 +198,7 @@ const Alerts = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.mainContainer} ref={ref}>
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={{flex: 1}}>
+      <BackgroundGradient />
         <TopMenu isAlertsMenu={true} />
         <SubMenu isAlertsMenu={true} />
         <Text style={styles.title}>Alerts</Text>
@@ -243,7 +238,6 @@ const Alerts = ({route, navigation}) => {
             subscribed={subscribedCategories || hasSubscription}
           />
         )}
-      </LinearGradient>
     </SafeAreaView>
   );
 };

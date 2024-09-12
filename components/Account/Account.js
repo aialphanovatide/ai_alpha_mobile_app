@@ -27,6 +27,7 @@ import {
   auth0ManagementAPI_Client,
   auth0ManagementAPI_Secret,
 } from '../../src/constants';
+import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 
 const AccountItem = ({
   styles,
@@ -147,7 +148,7 @@ const Account = ({route}) => {
       },
       screenName: null,
       component: null,
-    },/*
+    } /*
     {
       name: 'Test',
       logo: {
@@ -157,7 +158,7 @@ const Account = ({route}) => {
       },
       screenName: null,
       component: null,
-    },*/
+    },*/,
     {
       name: 'Log Out',
       logo: {
@@ -172,17 +173,16 @@ const Account = ({route}) => {
 
   const openManageSubscriptions = () => {
     const url = 'https://apps.apple.com/account/subscriptions';
-    
-    
+
     Linking.canOpenURL(url)
-      .then((supported) => {
+      .then(supported => {
         if (supported) {
           Linking.openURL(url);
         } else {
           Alert.alert('Error', 'Unable to open the Manage Subscriptions page.');
         }
       })
-      .catch((err) => console.error('An error occurred', err));
+      .catch(err => console.error('An error occurred', err));
   };
 
   const handleItemTouch = option => {
@@ -437,50 +437,46 @@ async function Buy_now() {
 
   return (
     <SafeAreaView style={styles.backgroundColor}>
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={styles.gradient}>
-        <ScrollView style={styles.backgroundColor}>
-          <View style={styles.container}>
-            <View style={styles.alphaLogoContainer}>
-              <Image
-                source={require('../../assets/images/account/alphalogo.png')}
-                resizeMode="contain"
-                style={styles.image}
-              />
-            </View>
-            {userImage && (
-              <View style={styles.imageContainer}>
-                <Image source={{uri: userImage}} style={styles.userImage} />
+      <View style={styles.mainView}>
+       <BackgroundGradient />
+          <ScrollView style={styles.backgroundColor}>
+            <View style={styles.container}>
+              <View style={styles.alphaLogoContainer}>
+                <Image
+                  source={require('../../assets/images/account/alphalogo.png')}
+                  resizeMode="contain"
+                  style={styles.image}
+                />
               </View>
-            )}
-            <Text style={styles.username}>
-              {username ? `@${username}` : ''}
-            </Text>
+              {userImage && (
+                <View style={styles.imageContainer}>
+                  <Image source={{uri: userImage}} style={styles.userImage} />
+                </View>
+              )}
+              <Text style={styles.username}>
+                {username ? `@${username}` : ''}
+              </Text>
 
-            <View style={styles.optionsContainer}>
-              {options &&
-                options.map((option, index) => {
-                  const isLastItem = index === options.length - 1;
-                  return (
-                    <React.Fragment key={index}>
-                      {isLastItem && <SocialMedia />}
-                      <AccountItem
-                        option={option}
-                        styles={styles}
-                        handleItemTouch={handleItemTouch}
-                        itemComponent={option.component && option.component}
-                      />
-                    </React.Fragment>
-                  );
-                })}
+              <View style={styles.optionsContainer}>
+                {options &&
+                  options.map((option, index) => {
+                    const isLastItem = index === options.length - 1;
+                    return (
+                      <React.Fragment key={index}>
+                        {isLastItem && <SocialMedia />}
+                        <AccountItem
+                          option={option}
+                          styles={styles}
+                          handleItemTouch={handleItemTouch}
+                          itemComponent={option.component && option.component}
+                        />
+                      </React.Fragment>
+                    );
+                  })}
+              </View>
             </View>
-          </View>
-        </ScrollView>
-      </LinearGradient>
+          </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };

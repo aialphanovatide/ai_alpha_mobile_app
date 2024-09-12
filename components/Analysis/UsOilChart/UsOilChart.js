@@ -31,6 +31,7 @@ import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
+import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 
 const initialSessionData = {
   security_token: null,
@@ -288,217 +289,217 @@ const UsOilChart = ({route, navigation}) => {
   }
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-      locations={[0.22, 0.97]}
-      style={{flex: 1}}>
-      <SafeAreaView
-        style={[
-          styles.mainSection,
-          isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
-        ]}>
-        <ScrollView scrollEnabled={scrollEnabled} style={{flex: 1}}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton />
-          </View>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.sectionDescription}>{description}</Text>
-          <View style={styles.timeframeContainer}>
-            <TimeframeSelector
-              selectedPairing={'null'}
-              selectedInterval={selectedInterval}
-              changeInterval={changeInterval}
-              disabled={loading}
+    <SafeAreaView
+      style={[
+        styles.mainSection,
+        isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
+      ]}>
+      <BackgroundGradient />
+      <ScrollView scrollEnabled={scrollEnabled} style={{flex: 1}}>
+        <View style={styles.backButtonWrapper}>
+          <BackButton />
+        </View>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.sectionDescription}>{description}</Text>
+        <View style={styles.timeframeContainer}>
+          <TimeframeSelector
+            selectedPairing={'null'}
+            selectedInterval={selectedInterval}
+            changeInterval={changeInterval}
+            disabled={loading}
+          />
+          {/* Refresh data button */}
+          <TouchableOpacity
+            onPress={() => handleDataUpdate(selectedInterval)}
+            disabled={loading}>
+            <Image
+              source={require('../../../assets/images/home/charts/chart-refresh.png')}
+              style={[styles.refreshButton, {top: 20, left: 20}]}
+              resizeMode="contain"
             />
-            {/* Refresh data button */}
-            <TouchableOpacity
-              onPress={() => handleDataUpdate(selectedInterval)}
-              disabled={loading}>
-              <Image
-                source={require('../../../assets/images/home/charts/chart-refresh.png')}
-                style={[styles.refreshButton, {top: 20, left: 20}]}
-                resizeMode="contain"
+          </TouchableOpacity>
+        </View>
+        <View style={styles.container}>
+          <View style={styles.chart}>
+            <ImageBackground
+              source={require('../../../assets/images/chart_alpha_logo.png')}
+              style={styles.chartBackgroundImage}
+              resizeMode="contain"
+            />
+            {showGradient && (
+              <LinearGradient
+                useAngle
+                angle={90}
+                colors={
+                  isDarkMode
+                    ? ['rgba(22, 22, 22, 1)', 'transparent']
+                    : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
+                }
+                style={{
+                  position: 'absolute',
+                  left: '5%',
+                  top: '10.5%',
+                  bottom: 0,
+                  width: 50,
+                  height: '70%',
+                  zIndex: 1,
+                }}
               />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.container}>
-            <View style={styles.chart}>
-              <ImageBackground
-                source={require('../../../assets/images/chart_alpha_logo.png')}
-                style={styles.chartBackgroundImage}
-                resizeMode="contain"
+            )}
+            <VictoryChart
+              width={isLandscape && isHorizontal ? 700 : 375}
+              domain={{x: zoomDomain.x, y: domainY()}}
+              events={[
+                {
+                  target: 'parent',
+                  eventHandlers: {
+                    onPressOut: () => {
+                      handleCandlePressOut();
+                      return [];
+                    },
+                  },
+                },
+              ]}
+              padding={{top: 10, bottom: 40, left: 20, right: 70}}
+              domainPadding={{x: 5, y: 3}}
+              scale={{x: 'time', y: 'linear'}}
+              height={300}
+              containerComponent={
+                <VictoryZoomContainer
+                  zoomDomain={zoomDomain.x}
+                  onZoomDomainChange={domain => handleGradientRender(domain)}
+                  onTouchStart={() => handleOnZoom(false)}
+                  onTouchEnd={() => handleOnZoom(true)}
+                />
+              }>
+              {/* X-Axis */}
+              <VictoryAxis
+                fixLabelOverlap
+                style={{
+                  axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
+                  tickLabels: {
+                    fontSize: theme.responsiveFontSize * 0.65,
+                    fill: theme.titleColor,
+                    fontFamily: theme.font,
+                  },
+                  grid: {stroke: theme.chartsGridColor},
+                }}
+                tickCount={
+                  selectedInterval.toUpperCase() === '1W'
+                    ? !showGradient
+                      ? 2
+                      : 3
+                    : !showGradient
+                    ? 3
+                    : 6
+                }
+                tickFormat={t => {
+                  const year = t.getFullYear().toString().slice(2, 4);
+                  const month = (t.getMonth() + 1).toString().padStart(2, '0');
+                  const day = t.getDate().toString().padStart(2, '');
+                  const hour = t.getHours().toString().padStart(2, '0');
+                  const minute = t.getMinutes().toString().padStart(2, '0');
+                  return `${day}/${month}/${year}`;
+                }}
               />
-              {showGradient && (
-                <LinearGradient
-                  useAngle
-                  angle={90}
-                  colors={
-                    isDarkMode
-                      ? ['rgba(22, 22, 22, 1)', 'transparent']
-                      : ['rgba(232, 232, 232, 1)', 'rgba(233 ,233 ,233 ,0)']
-                  }
+              {/* Y-Axis */}
+              <VictoryAxis
+                dependentAxis
+                style={{
+                  axis: {stroke: theme.chartsAxisColor},
+                  tickLabels: {
+                    fontSize: theme.responsiveFontSize * 0.725,
+                    fill: theme.titleColor,
+                    fontFamily: theme.font,
+                  },
+                  grid: {stroke: theme.chartsGridColor},
+                }}
+                orientation="right"
+                tickCount={8}
+                tickFormat={t => `$${t}`}
+              />
+
+              {/* HORIZONTAL LINE */}
+              {selectedCandle && (
+                <VictoryLine
+                  data={[
+                    {
+                      x: zoomDomain.x[0],
+                      y: (selectedCandle.open + selectedCandle.close) / 2,
+                    },
+                    {
+                      x: zoomDomain.x[1],
+                      y: (selectedCandle.open + selectedCandle.close) / 2,
+                    },
+                  ]}
                   style={{
-                    position: 'absolute',
-                    left: 0,
-                    top: 0,
-                    bottom: 0,
-                    width: 50,
-                    zIndex: 1,
+                    data: {
+                      stroke: selectedCandle
+                        ? selectedCandle.linesColor
+                        : '#E93334',
+                      strokeWidth: 1,
+                      strokeDasharray: [4, 4],
+                    },
                   }}
                 />
               )}
-              <VictoryChart
-                width={isLandscape && isHorizontal ? 700 : 375}
-                domain={{x: zoomDomain.x, y: domainY()}}
+              {/* Click on candle data component */}
+              <DataRenderer
+                domainX={zoomDomain.x}
+                yPoint={selectedCandle && calculateCandleMiddle(selectedCandle)}
+                domainY={domainY}
+                chartWidth={chartWidth}
+                screenWidth={width}
+                chartHeight={chartHeight}
+                data={selectedCandle && selectedCandle}
+              />
+
+              {/* VERTICAL LINE */}
+              {selectedCandle && (
+                <VictoryLine
+                  data={[
+                    {x: new Date(selectedCandle.x), y: high},
+                    {x: new Date(selectedCandle.x), y: low},
+                  ]}
+                  style={{
+                    data: {
+                      stroke: selectedCandle
+                        ? selectedCandle.linesColor
+                        : '#E93334',
+                      strokeWidth: 1,
+                      strokeDasharray: [4, 4],
+                    },
+                  }}
+                />
+              )}
+              {/* Candle component */}
+              <VictoryCandlestick
+                data={chartData}
                 events={[
                   {
-                    target: 'parent',
+                    target: 'data',
                     eventHandlers: {
-                      onPressOut: () => {
-                        handleCandlePressOut();
-                        return [];
+                      onPressIn: (event, props) => {
+                        handleCandleClick(event, props.datum);
+                        return []; // Return an empty array to avoid any state mutation on the chart itself
                       },
                     },
                   },
                 ]}
-                padding={{top: 10, bottom: 40, left: 20, right: 70}}
-                domainPadding={{x: 5, y: 3}}
-                scale={{x: 'time', y: 'linear'}}
-                height={300}
-                containerComponent={
-                  <VictoryZoomContainer
-                    zoomDomain={zoomDomain.x}
-                    onZoomDomainChange={domain => handleGradientRender(domain)}
-                    onTouchStart={() => handleOnZoom(false)}
-                    onTouchEnd={() => handleOnZoom(true)}
-                  />
-                }>
-                {/* X-Axis */}
-                <VictoryAxis
-                  fixLabelOverlap
-                  style={{
-                    axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
-                    tickLabels: {
-                      fontSize: theme.responsiveFontSize * 0.65,
-                      fill: theme.titleColor,
-                      fontFamily: theme.font,
-                    },
-                    grid: {stroke: theme.chartsGridColor},
-                  }}
-                  tickCount={selectedInterval.toUpperCase() === '1W' ? 3 : 6}
-                  tickFormat={t => {
-                    const year = t.getFullYear();
-                    const month = (t.getMonth() + 1)
-                      .toString()
-                      .padStart(2, '0');
-                    const day = t.getDate().toString().padStart(2, '');
-                    const hour = t.getHours().toString().padStart(2, '0');
-                    const minute = t.getMinutes().toString().padStart(2, '0');
-                    return `${day}/${month}/${year}`;
-                  }}
-                />
-                {/* Y-Axis */}
-                <VictoryAxis
-                  dependentAxis
-                  style={{
-                    axis: {stroke: theme.chartsAxisColor},
-                    tickLabels: {
-                      fontSize: theme.responsiveFontSize * 0.725,
-                      fill: theme.titleColor,
-                      fontFamily: theme.font,
-                    },
-                    grid: {stroke: theme.chartsGridColor},
-                  }}
-                  orientation="right"
-                  tickCount={8}
-                  tickFormat={t => `$${t}`}
-                />
-
-                {/* HORIZONTAL LINE */}
-                {selectedCandle && (
-                  <VictoryLine
-                    data={[
-                      {
-                        x: zoomDomain.x[0],
-                        y: (selectedCandle.open + selectedCandle.close) / 2,
-                      },
-                      {
-                        x: zoomDomain.x[1],
-                        y: (selectedCandle.open + selectedCandle.close) / 2,
-                      },
-                    ]}
-                    style={{
-                      data: {
-                        stroke: selectedCandle
-                          ? selectedCandle.linesColor
-                          : '#E93334',
-                        strokeWidth: 1,
-                        strokeDasharray: [4, 4],
-                      },
-                    }}
-                  />
-                )}
-                {/* Click on candle data component */}
-                <DataRenderer
-                  domainX={zoomDomain.x}
-                  yPoint={
-                    selectedCandle && calculateCandleMiddle(selectedCandle)
-                  }
-                  domainY={domainY}
-                  chartWidth={chartWidth}
-                  screenWidth={width}
-                  chartHeight={chartHeight}
-                  data={selectedCandle && selectedCandle}
-                />
-
-                {/* VERTICAL LINE */}
-                {selectedCandle && (
-                  <VictoryLine
-                    data={[
-                      {x: new Date(selectedCandle.x), y: high},
-                      {x: new Date(selectedCandle.x), y: low},
-                    ]}
-                    style={{
-                      data: {
-                        stroke: selectedCandle
-                          ? selectedCandle.linesColor
-                          : '#E93334',
-                        strokeWidth: 1,
-                        strokeDasharray: [4, 4],
-                      },
-                    }}
-                  />
-                )}
-                {/* Candle component */}
-                <VictoryCandlestick
-                  data={chartData}
-                  events={[
-                    {
-                      target: 'data',
-                      eventHandlers: {
-                        onPressIn: (event, props) => {
-                          handleCandleClick(event, props.datum);
-                          return []; // Return an empty array to avoid any state mutation on the chart itself
-                        },
-                      },
-                    },
-                  ]}
-                  candleRatio={0.6}
-                  candleColors={{positive: '#09C283', negative: '#E93334'}}
-                  style={{
-                    data: {
-                      strokeWidth: 0.75,
-                      stroke: datum =>
-                        datum.close < datum.open ? '#09C283' : '#E93334',
-                    },
-                  }}
-                />
-              </VictoryChart>
-            </View>
-            {/* Horizontal view button [DEACTIVATED UNTIL SOLVING ISSUES] */}
-            {/* <TouchableOpacity
+                candleRatio={0.6}
+                candleColors={{positive: '#09C283', negative: '#E93334'}}
+                style={{
+                  data: {
+                    strokeWidth: 0.75,
+                    stroke: datum =>
+                      datum.close < datum.open ? '#09C283' : '#E93334',
+                  },
+                }}
+              />
+            </VictoryChart>
+          </View>
+          {/* Horizontal view button [DEACTIVATED UNTIL SOLVING ISSUES] */}
+          {/* <TouchableOpacity
               onPress={
                 isLandscape
                   ? () => {
@@ -522,8 +523,8 @@ const UsOilChart = ({route, navigation}) => {
                 }
               />
             </TouchableOpacity> */}
-            {/* Horizontal view close button */}
-            {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
+          {/* Horizontal view close button */}
+          {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
               <Image
                 style={
                   isLandscape && isHorizontal
@@ -534,20 +535,16 @@ const UsOilChart = ({route, navigation}) => {
                 source={require('../../../assets/images/home/charts/back.png')}
               />
             </TouchableOpacity> */}
-            {/* Zoom interaction indicator */}
-            <Image
-              style={[
-                styles.chartsZoomIndicator,
-                selectedCandle && {zIndex: -1},
-              ]}
-              resizeMode="contain"
-              source={require('../../../assets/images/home/charts/zoom-expand.png')}
-            />
-          </View>
-        </ScrollView>
-        {subscribed ? <></> : <UpgradeOverlay />}
-      </SafeAreaView>
-    </LinearGradient>
+          {/* Zoom interaction indicator */}
+          <Image
+            style={[styles.chartsZoomIndicator, selectedCandle && {zIndex: -1}]}
+            resizeMode="contain"
+            source={require('../../../assets/images/home/charts/zoom-expand.png')}
+          />
+        </View>
+      </ScrollView>
+      {subscribed ? <></> : <UpgradeOverlay />}
+    </SafeAreaView>
   );
 };
 

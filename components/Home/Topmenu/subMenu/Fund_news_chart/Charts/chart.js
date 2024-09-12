@@ -109,8 +109,8 @@ const Chart = ({
   useEffect(() => {
     setSupportLevels([]);
     setResistanceLevels([]);
-  }, [coinBot])
-  
+  }, [coinBot]);
+
   // Function to handle the X button interaction on the horizontal chart
 
   const handleBackInteraction = () => {
@@ -178,7 +178,7 @@ const Chart = ({
   const filterExcessiveLevels = (levels, currentPrice, type) => {
     return levels.filter(level => {
       if (type === 'support' || type === 'resistance') {
-        return level <= currentPrice * 1.6 && level >= currentPrice * 0.4;
+        return level <= currentPrice * 1.8 && level >= currentPrice * 0.2;
       }
       return false;
     });
@@ -349,10 +349,10 @@ const Chart = ({
             style={{
               position: 'absolute',
               left: 0,
-              top: 0,
+              top: '3%',
               bottom: 0,
               width: 40,
-              height: '80%',
+              height: '68.5%',
               marginTop: '5%',
               zIndex: 1,
             }}
@@ -410,9 +410,9 @@ const Chart = ({
               },
               grid: {stroke: theme.chartsGridColor},
             }}
-            tickCount={4}
+            tickCount={!showGradient ? 2 : 4}
             tickFormat={t => {
-              const year = t.getFullYear();
+              const year = t.getFullYear().toString().slice(2, 4);
               const month = (t.getMonth() + 1).toString().padStart(2, '0');
               const day = t.getDate().toString().padStart(2, '');
               const hour = t.getHours().toString().padStart(2, '0');

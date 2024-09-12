@@ -38,7 +38,7 @@ const useHomeStyles = () => {
       textAlign: 'center',
       fontSize: theme.responsiveFontSize * 0.875,
       color: theme.subMenuTextColor,
-      fontFamily: theme.fontMedium
+      fontFamily: theme.fontMedium,
     },
     activeItem: {
       backgroundColor: theme.activeWhite,
@@ -52,6 +52,13 @@ const useHomeStyles = () => {
     },
     flex: {
       flex: 1,
+    },
+    linearBackground: {
+      width: theme.width,
+      height: 600,
+      position: 'absolute',
+      top: 0,
+      left: 0,
     },
   });
   return styles;

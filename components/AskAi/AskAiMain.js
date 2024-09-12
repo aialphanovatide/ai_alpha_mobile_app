@@ -20,6 +20,7 @@ import SkeletonLoader from '../Loader/SkeletonLoader';
 import {AboutIcon} from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import AboutModal from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
 import {AboutModalContext} from '../../context/AboutModalContext';
+import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 
 if (
   Platform.OS === 'android' &&
@@ -330,100 +331,91 @@ const AskAiMain = ({route, navigation}) => {
   };
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-      locations={[0.22, 0.97]}
-      style={styles.flex}>
-      <SafeAreaView style={styles.container}>
-        <ScrollView
-          style={[
-            styles.searchContainer,
-            Platform.OS === 'ios' ? {paddingHorizontal: 12} : {},
-          ]}
-          nestedScrollEnabled
-          showsVerticalScrollIndicator={false}>
-          <View style={styles.titleRow}>
-            <Text style={styles.title}>ASK AI Alpha</Text>
-            <AboutIcon
-              title={'ASK AI Alpha'}
-              description={'This is the ASK AI Alpha section description.'}
-              handleAboutPress={handleAboutPress}
-              additionalStyles={{top: '52.5%'}}
-            />
-          </View>
-          <Input
-            textHandler={handleTextChange}
-            textValue={searchText}
-            handleButtonSearch={handleButtonSearch}
-            handleSectionNavigation={handleSectionNavigation}
+    <SafeAreaView style={styles.container}>
+      <BackgroundGradient />
+      <ScrollView
+        style={[
+          styles.searchContainer,
+          Platform.OS === 'ios' ? {paddingHorizontal: 12} : {},
+        ]}
+        nestedScrollEnabled
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>ASK AI Alpha</Text>
+          <AboutIcon
+            title={'ASK AI Alpha'}
+            description={'This is the ASK AI Alpha section description.'}
+            handleAboutPress={handleAboutPress}
+            additionalStyles={{top: '52.5%'}}
           />
-          {loading ? (
-            <SkeletonLoader type="askAi" quantity={8} />
-          ) : (
-            <View
-              style={[
-                styles.resultsContainer,
-                !resultData ? styles.hidden : {},
-              ]}>
-              {!loading && resultData && resultData !== undefined ? (
-                <>
-                  <TouchableOpacity
-                    style={styles.closeButton}
-                    onPress={() => handleResultsClose()}>
-                    <Image
-                      source={require('../../assets/images/askAi/close_button.png')}
-                      style={styles.closeButtonImage}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                  <View style={styles.row}>
-                    <View style={styles.imageBackground}>
-                      <FastImage
-                        source={{
-                          uri:
-                            resultData && resultData !== undefined
-                              ? resultData.logo
-                              : '',
-                        }}
-                        resizeMode={'contain'}
-                        style={styles.iconImage}
-                      />
-                    </View>
-                    <Text style={styles.coinName}>{resultData.name}</Text>
-                  </View>
-                  <View>
-                    {resultData.content.map((datum, index) => {
-                      if (datum.data === null || datum.title === 'success') {
-                        return;
-                      } else {
-                        return (
-                          <ValueBox
-                            key={index}
-                            title={datum.displayName}
-                            content={JSON.stringify(datum.data)}
-                            valueType={datum.valueType}
-                          />
-                        );
-                      }
-                    })}
-                  </View>
-                </>
-              ) : (
-                <></>
-              )}
-            </View>
-          )}
-        </ScrollView>
-        <AboutModal
-          visible={aboutVisible}
-          description={aboutDescription}
-          title={aboutTitle}
-          onClose={handleClose}
+        </View>
+        <Input
+          textHandler={handleTextChange}
+          textValue={searchText}
+          handleButtonSearch={handleButtonSearch}
+          handleSectionNavigation={handleSectionNavigation}
         />
-      </SafeAreaView>
-    </LinearGradient>
+        {loading ? (
+          <SkeletonLoader type="askAi" quantity={8} />
+        ) : (
+          <View
+            style={[styles.resultsContainer, !resultData ? styles.hidden : {}]}>
+            {!loading && resultData && resultData !== undefined ? (
+              <>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={() => handleResultsClose()}>
+                  <Image
+                    source={require('../../assets/images/askAi/close_button.png')}
+                    style={styles.closeButtonImage}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+                <View style={styles.row}>
+                  <View style={styles.imageBackground}>
+                    <FastImage
+                      source={{
+                        uri:
+                          resultData && resultData !== undefined
+                            ? resultData.logo
+                            : '',
+                      }}
+                      resizeMode={'contain'}
+                      style={styles.iconImage}
+                    />
+                  </View>
+                  <Text style={styles.coinName}>{resultData.name}</Text>
+                </View>
+                <View>
+                  {resultData.content.map((datum, index) => {
+                    if (datum.data === null || datum.title === 'success') {
+                      return;
+                    } else {
+                      return (
+                        <ValueBox
+                          key={index}
+                          title={datum.displayName}
+                          content={JSON.stringify(datum.data)}
+                          valueType={datum.valueType}
+                        />
+                      );
+                    }
+                  })}
+                </View>
+              </>
+            ) : (
+              <></>
+            )}
+          </View>
+        )}
+      </ScrollView>
+      <AboutModal
+        visible={aboutVisible}
+        description={aboutDescription}
+        title={aboutTitle}
+        onClose={handleClose}
+      />
+    </SafeAreaView>
   );
 };
 

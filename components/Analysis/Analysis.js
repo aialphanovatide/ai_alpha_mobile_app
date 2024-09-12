@@ -8,10 +8,10 @@ import {
   SafeAreaView,
 } from 'react-native';
 import useAnalysisStyles from './AnalysisStyles';
-import UpgradeOverlay from '../UpgradeOverlay/UpgradeOverlay';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
+import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 
 // Component to render an item for each section, that redirects the user to the assigned section of the item
 
@@ -163,13 +163,8 @@ const Analysis = () => {
   };
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-      locations={[0.22, 0.97]}
-      style={{flex: 1, justifyContent: 'center'}}>
-      <SafeAreaView style={styles.background}>
+    <SafeAreaView style={[styles.background, { justifyContent: 'center'}]}>
+       <BackgroundGradient />
         <ScrollView
           style={[styles.background, {padding: 10}]}
           nestedScrollEnabled={true}>
@@ -188,7 +183,6 @@ const Analysis = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </LinearGradient>
   );
 };
 

@@ -8,12 +8,13 @@ import {
   View,
 } from 'react-native';
 import BackButton from '../../Analysis/BackButton/BackButton';
-import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import useHomeNotificationsStyles from './HomeNotificationsStyles';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
+import {useRoute} from '@react-navigation/native';
 
 // Function to handle the sorting of the notifications items by the date
 
@@ -122,6 +123,7 @@ const HomeNotifications = ({route, navigation}) => {
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const [notificationsData, setNotificationsData] = useState([]);
   const styles = useHomeNotificationsStyles();
+  const routeName = useRoute().name;
 
   const saveNotifications = async newNotifications => {
     try {
@@ -202,27 +204,21 @@ const HomeNotifications = ({route, navigation}) => {
 
   if (loading) {
     return (
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={{flex: 1}}>
-        <SafeAreaView style={styles.background}>
-          <ScrollView style={{flex: 1}}>
-            <View style={styles.backButtonWrapper}>
-              <BackButton />
-            </View>
-            <Text style={styles.title}>Notifications</Text>
-            <View style={styles.container}>
-              <SkeletonLoader type="timeframe" quantity={4} />
-              <SkeletonLoader
-                style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
-              />
-            </View>
-          </ScrollView>
-        </SafeAreaView>
-      </LinearGradient>
+      <SafeAreaView style={styles.background}>
+        <BackgroundGradient />
+        <ScrollView style={{flex: 1}}>
+          <View style={styles.backButtonWrapper}>
+            <BackButton />
+          </View>
+          <Text style={styles.title}>Notifications</Text>
+          <View style={styles.container}>
+            <SkeletonLoader type="timeframe" quantity={4} />
+            <SkeletonLoader
+              style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+            />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
@@ -239,69 +235,68 @@ const HomeNotifications = ({route, navigation}) => {
     setNotificationsData(groupAndSortByDate(filteredItems));
   };
 
+  // Function to handle the back button navigation when the section is acceeded through the alerts tab
+
+  const handleBackNavigation = () => {
+      navigation.navigate('Home', {screen: 'InitialHome'});
+  };
+
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-      style={{flex: 1}}>
-      <SafeAreaView style={styles.mainSection}>
-        <View
-          style={[{flex: 1, paddingTop: 36}]}
-          showsVerticalScrollIndicator={false}
-          bounces={false}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton />
-          </View>
-          <Text style={styles.title}>Notifications</Text>
-          <NotificationsMenu
-            options={options}
-            selectedOption={selectedOption}
-            changeOption={changeSelectedOption}
-          />
-          <ScrollView
-            style={styles.container}
-            bounces={false}
-            showsVerticalScrollIndicator={false}>
-            {notificationsData.map(group => {
-              return group.items.map((item, index) => {
-                const isLastItem =
-                  group.items.length === 1 || index === group.items.length - 1;
-                const imageSource =
-                  item.type === 'alerts'
-                    ? `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.coin.toLowerCase()}.png`
-                    : `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
-                        isDarkMode ? 'dark' : 'light'
-                      }/${
-                        item.category !== null &&
-                        item.category.toLowerCase().replace(/\s/g, '') ===
-                          'total3'
-                          ? 'total3'
-                          : item.coin
-                      }.png`;
-                return (
-                  <React.Fragment
-                    key={`${item.title}_${item.category}_${index}`}>
-                    <NotificationItem
-                      imageSource={imageSource}
-                      item={item}
-                      isNew={true}
-                    />
-                    {isLastItem && (
-                      <View
-                        key={`divider_${item.title}_${item.category}_${index}`}
-                        style={styles.divider}
-                      />
-                    )}
-                  </React.Fragment>
-                );
-              });
-            })}
-          </ScrollView>
+    <SafeAreaView style={styles.mainSection}>
+      <BackgroundGradient />
+      <View
+        style={[{flex: 1, paddingTop: 36}]}
+        showsVerticalScrollIndicator={false}
+        bounces={false}>
+        <View style={styles.backButtonWrapper}>
+          <BackButton navigationHandler={handleBackNavigation} />
         </View>
-      </SafeAreaView>
-    </LinearGradient>
+        <Text style={styles.title}>Notifications</Text>
+        <NotificationsMenu
+          options={options}
+          selectedOption={selectedOption}
+          changeOption={changeSelectedOption}
+        />
+        <ScrollView
+          style={styles.container}
+          bounces={false}
+          showsVerticalScrollIndicator={false}>
+          {notificationsData.map(group => {
+            return group.items.map((item, index) => {
+              const isLastItem =
+                group.items.length === 1 || index === group.items.length - 1;
+              const imageSource =
+                item.type === 'alerts'
+                  ? `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.coin.toLowerCase()}.png`
+                  : `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
+                      isDarkMode ? 'dark' : 'light'
+                    }/${
+                      item.category !== null &&
+                      item.category.toLowerCase().replace(/\s/g, '') ===
+                        'total3'
+                        ? 'total3'
+                        : item.coin
+                    }.png`;
+              return (
+                <React.Fragment key={`${item.title}_${item.category}_${index}`}>
+                  <NotificationItem
+                    imageSource={imageSource}
+                    item={item}
+                    isNew={true}
+                  />
+                  {isLastItem && (
+                    <View
+                      key={`divider_${item.title}_${item.category}_${index}`}
+                      style={styles.divider}
+                    />
+                  )}
+                </React.Fragment>
+              );
+            });
+          })}
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 

@@ -10,14 +10,17 @@ import SkeletonLoader from '../../Loader/SkeletonLoader.js';
 import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
 import {TopMenuContext} from '../../../context/topMenuContext.js';
 import {useNavigation} from '@react-navigation/core';
+import {CategoriesContext} from '../../../context/categoriesContext.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
-const Item = ({position, coin, handleItemClick}) => {
+const Item = ({position, coin, handleItemClick, findCategoryOfItem}) => {
   const styles = useTopTenLosersStyles();
+  const itemCategory = findCategoryOfItem(coin.symbol, coin.name);
+
   return (
     <TouchableOpacity
-      onPress={() => handleItemClick(coin.symbol.toLowerCase(), coin.category)}>
+      onPress={() => handleItemClick(coin.symbol.toLowerCase(), itemCategory)}>
       <View key={position} style={styles.row}>
         <View style={styles.positionContainer}>
           <Text style={styles.coinPosition}>{position}</Text>
@@ -25,7 +28,10 @@ const Item = ({position, coin, handleItemClick}) => {
         <View style={styles.logoContainer}>
           <FastImage
             style={styles.coinLogo}
-            source={{uri: coin.image, priority: FastImage.priority.high}}
+            source={{
+              uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coin.symbol.toLowerCase()}.png`,
+              priority: FastImage.priority.high,
+            }}
             resizeMode="contain"
             fallback={true}
           />
@@ -56,7 +62,7 @@ const Item = ({position, coin, handleItemClick}) => {
 const TopTenLosers = ({handleAboutPress}) => {
   const styles = useTopTenLosersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  const {findCategoryOfItem} = useContext(CategoriesContext);
   const {topTenLosersData, loading} = useContext(Top10MoversContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const navigation = useNavigation();
@@ -108,22 +114,6 @@ const TopTenLosers = ({handleAboutPress}) => {
   };
 
   useEffect(() => {
-    /*
-    const fetchTopTenLosers = async () => {
-      try {
-        const data = await topTenGainersService.getTop10Coins();
-        setTopTenCoins(data.top10Losers);
-        console.log('TopTenLosers data:', data.top10Losers);
-      } catch (error) {
-        console.error('Error fetching top 10 losers:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTopTenLosers();
-    setTopTenCoins(TOP_TEN_LOSERS_MOCK);
-    setLoading(false);
-    */
     setTopTenCoins(topTenLosersData);
   }, [topTenLosersData]);
   return (
@@ -170,6 +160,7 @@ const TopTenLosers = ({handleAboutPress}) => {
                   coin={coin}
                   position={index + 1}
                   handleItemClick={handleItemClick}
+                  findCategoryOfItem={findCategoryOfItem}
                 />
               ))}
           </ScrollView>

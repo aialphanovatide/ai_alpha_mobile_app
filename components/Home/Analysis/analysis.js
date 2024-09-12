@@ -1,7 +1,15 @@
 import * as React from 'react';
 import AnalysisItem from './analysisItem/analysisItem';
 import useHomeAnalysisStyles from './analysisStyles';
-import {Image, View, Text, TouchableOpacity, Platform, UIManager, LayoutAnimation} from 'react-native';
+import {
+  Image,
+  View,
+  Text,
+  TouchableOpacity,
+  Platform,
+  UIManager,
+  LayoutAnimation,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';

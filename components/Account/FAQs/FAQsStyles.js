@@ -1,10 +1,20 @@
-import { useContext } from 'react';
-import { StyleSheet } from 'react-native';
-import { AppThemeContext } from '../../../context/themeContext';
+import {useContext} from 'react';
+import {StyleSheet} from 'react-native';
+import {AppThemeContext} from '../../../context/themeContext';
 
 const useFAQsStyles = () => {
-  const { theme } = useContext(AppThemeContext);
+  const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
+    flex: {
+      flex: 1,
+    },
+    gradient: {
+      width: theme.width,
+      height: 800,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    },
     backgroundColor: {
       flex: 1,
       backgroundColor: 'transparent',

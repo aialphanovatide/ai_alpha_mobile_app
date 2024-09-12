@@ -108,9 +108,7 @@ const StoryArticle = ({route, navigation}) => {
             style={styles.zoomedImage}
             resizeMode={'contain'}
             source={{
-              uri: hasImage
-                ? imageUri
-                : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
+              uri: imageUri,
               priority: FastImage.priority.normal,
             }}
             fallback={true}

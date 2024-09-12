@@ -8,17 +8,16 @@ import {
   View,
 } from 'react-native';
 import BackButton from '../BackButton/BackButton';
-import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
 import useHistoryStyles from './HistoryStyles';
 import CryptoFilter from '../Calendar/CryptoCalendar/CryptoFilter';
-import {AnalysisContext} from '../../../context/AnalysisContext';
 import {useNavigation} from '@react-navigation/core';
 import historyFilterData from './HistoryFilterData';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
+import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 
 const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -127,7 +126,6 @@ const HistoryTimeMenu = ({
 };
 
 const History = () => {
-  const {isDarkMode} = useContext(AppThemeContext);
   const options = ['today', 'this week'];
   const [cryptoOptions, setCryptoOptions] = useState([]);
   const [activeOption, setActiveOption] = useState(null);
@@ -250,12 +248,7 @@ const History = () => {
 
   return (
     <SafeAreaView style={styles.flex}>
-      <LinearGradient
-        useAngle={true}
-        angle={45}
-        colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-        locations={[0.22, 0.97]}
-        style={{flex: 1}}>
+      <BackgroundGradient />
         <View style={styles.container}>
           <View style={styles.backButtonWrapper}>
             <BackButton />
@@ -297,7 +290,6 @@ const History = () => {
           </ScrollView>
         </View>
         {subscribed ? <></> : <UpgradeOverlay />}
-      </LinearGradient>
     </SafeAreaView>
   );
 };

@@ -9,6 +9,7 @@ import {AppThemeContext} from '../../../context/themeContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
+import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 
 const ReferenceItem = ({item, styles}) => {
   return (
@@ -110,42 +111,36 @@ const FearAndGreed = ({handleReturn}) => {
   }, []);
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-      locations={[0.22, 0.97]}
-      style={{flex: 1}}>
-      <ScrollView style={styles.scrollView}>
-        <SafeAreaView style={styles.mainSection}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton handleReturn={handleReturn} />
-          </View>
-          <Text style={styles.title}>Fear and Greed Index</Text>
-          <Text style={styles.sectionDescription}>
-            Indicates the current sentiment of the cryptocurrency market using
-            various factors. It helps investors understand the psychology of the
-            market and make more informed decisions based on fear or greed in
-            the market.
-          </Text>
-          {loading ? (
-            <SkeletonLoader type="speedometer" />
-          ) : (
-            <>
-              <View style={styles.fearAndGreedWidgetContainer}>
-                {<FearAndGreedIndex styles={styles} />}
-              </View>
-              <Text style={styles.subTitle}>References</Text>
-              <References
-                references={referenceOptions}
-                activeReference={activeOption}
-              />
-            </>
-          )}
-        </SafeAreaView>
-      </ScrollView>
+    <ScrollView style={styles.scrollView}>
+      <BackgroundGradient />
+      <SafeAreaView style={styles.mainSection}>
+        <View style={styles.backButtonWrapper}>
+          <BackButton handleReturn={handleReturn} />
+        </View>
+        <Text style={styles.title}>Fear and Greed Index</Text>
+        <Text style={styles.sectionDescription}>
+          Indicates the current sentiment of the cryptocurrency market using
+          various factors. It helps investors understand the psychology of the
+          market and make more informed decisions based on fear or greed in the
+          market.
+        </Text>
+        {loading ? (
+          <SkeletonLoader type="speedometer" />
+        ) : (
+          <>
+            <View style={styles.fearAndGreedWidgetContainer}>
+              {<FearAndGreedIndex styles={styles} />}
+            </View>
+            <Text style={styles.subTitle}>References</Text>
+            <References
+              references={referenceOptions}
+              activeReference={activeOption}
+            />
+          </>
+        )}
+      </SafeAreaView>
       {subscribed ? <></> : <UpgradeOverlay />}
-    </LinearGradient>
+    </ScrollView>
   );
 };
 

@@ -5,6 +5,13 @@ import {AppThemeContext} from '../../context/themeContext';
 const useAlertsStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
+    gradient: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
     mainContainer: {
       flex: 1,
     },

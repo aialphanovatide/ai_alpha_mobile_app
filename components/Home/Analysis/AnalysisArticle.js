@@ -81,7 +81,6 @@ const AnalysisArticle = ({route}) => {
     const checkImageURL = async url => {
       try {
         const response = await fetch(url);
-        console.log(response.headers)
         if (
           response.headers.map['content-type'] &&
           response.headers.map['content-type'].startsWith('binary/octet-stream')
@@ -98,8 +97,6 @@ const AnalysisArticle = ({route}) => {
     );
   }, []);
 
-  console.log('Article has image?: ', hasImage);
-
   const simplifyDateTime = dateTimeString => {
     const dateTime = new Date(dateTimeString);
     const year = dateTime.getFullYear();
@@ -109,23 +106,6 @@ const AnalysisArticle = ({route}) => {
     const minutes = String(dateTime.getMinutes()).padStart(2, '0');
 
     return `${day}-${month}-${year} ${hours}:${minutes}`;
-  };
-
-  // Function to extract the images from the html content received
-
-  const extractImages = htmlContent => {
-    const imageMatches = [
-      ...htmlContent.matchAll(
-        /<img[^>]*src="([^"]+)"[^>]*height="([^"]+)"[^>]*>/g,
-      ),
-    ];
-
-    const imagesArray = imageMatches.map(match => ({
-      source: match[1],
-      height: parseInt(match[2], 10),
-    }));
-
-    return imagesArray;
   };
 
   const findHtmlContent = content => {
