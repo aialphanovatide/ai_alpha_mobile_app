@@ -483,9 +483,17 @@ const ChartSection = ({route, navigation}) => {
                   },
                   grid: {stroke: theme.chartsGridColor},
                 }}
-                tickCount={selectedInterval.toUpperCase() === '1W' ? 3 : 6}
+                tickCount={
+                  selectedInterval.toUpperCase() === '1W'
+                    ? !showGradient
+                      ? 2
+                      : 3
+                    : !showGradient
+                    ? 3
+                    : 6
+                }
                 tickFormat={t => {
-                  const year = t.getFullYear();
+                  const year = t.getFullYear().toString().slice(2, 4);
                   const month = (t.getMonth() + 1).toString().padStart(2, '0');
                   const day = t.getDate().toString().padStart(2, '0');
                   const hour = t.getHours().toString().padStart(2, '0');

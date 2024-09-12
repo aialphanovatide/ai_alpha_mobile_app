@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useHomeAnalysisStyles = () => {
@@ -247,7 +247,7 @@ const useHomeAnalysisStyles = () => {
     },
     zoomImageDismissOverlay: {
       width: '100%',
-      height: '25%',
+      height: Platform.OS === 'ios' ? '30%' : '25%',
       backgroundColor: '#00000050',
       opacity: 0.8,
     },

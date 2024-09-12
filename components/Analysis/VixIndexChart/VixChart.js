@@ -326,9 +326,9 @@ const VixChart = ({route}) => {
                   },
                   grid: {stroke: theme.chartsGridColor},
                 }}
-                tickCount={8}
+                tickCount={!showGradient ? 3 : 8}
                 tickFormat={t => {
-                  const year = t.getFullYear();
+                  const year = t.getFullYear().toString().slice(2, 4);
                   const month = (t.getMonth() + 1).toString().padStart(2, '0');
                   const day = t.getDate().toString().padStart(2, '');
                   const hour = t.getHours().toString().padStart(2, '0');

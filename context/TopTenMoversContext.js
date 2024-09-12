@@ -74,6 +74,8 @@ const Top10MoversContextProvider = ({children}) => {
                   ? 'dydx'
                   : coin.symbol.toLowerCase() === 'matic'
                   ? 'pol'
+                  : coin.symbol.toLowerCase() === 'render'
+                  ? 'rndr'
                   : coin.symbol,
               image: coin.image,
               currentPrice: coin.current_price,

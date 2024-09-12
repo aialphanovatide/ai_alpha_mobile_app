@@ -81,7 +81,7 @@ const AnalysisArticle = ({route}) => {
     const checkImageURL = async url => {
       try {
         const response = await fetch(url);
-        console.log(response.headers)
+        console.log(response.headers);
         if (
           response.headers.map['content-type'] &&
           response.headers.map['content-type'].startsWith('binary/octet-stream')
@@ -229,6 +229,8 @@ const AnalysisArticle = ({route}) => {
   };
 
   const imageUri = `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`;
+
+  console.log(imageUri);
 
   const images = [{url: imageUri, width: 500, height: 400}];
 

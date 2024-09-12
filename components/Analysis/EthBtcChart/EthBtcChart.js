@@ -314,7 +314,7 @@ const EthBtcChart = ({candlesToShow = 30}) => {
                   }}
                   tickCount={6}
                   tickFormat={t => {
-                    const year = t.getFullYear();
+                    const year = t.getFullYear().toString().slice(2, 4);
                     const month = (t.getMonth() + 1)
                       .toString()
                       .padStart(2, '0');
