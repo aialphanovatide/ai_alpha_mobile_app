@@ -1,5 +1,5 @@
 import React, {useContext, useState, useRef, useEffect} from 'react';
-import {ScrollView, SafeAreaView} from 'react-native';
+import {View, Modal, ScrollView, SafeAreaView, Text, Button} from 'react-native';
 import TickerTape from './Tickertape/TickerTape';
 import TopStories from './TopStories/topStories';
 import Analysis from './Analysis/analysis';
@@ -13,6 +13,32 @@ import NarrativeTradings from './HomeNarrativeTradings/NarrativeTradings';
 import TopTenLosers from './Top10Losers/TopTenLosers';
 import {useRawUserId} from '../../context/RawUserIdContext';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+const FreePopup = ({ visible, onClose }) => {
+  const handleClose = async () => {
+    await AsyncStorage.setItem('signupDateValidator', 'true');
+    const signupDateValidatorv2 = await AsyncStorage.getItem('signupDateValidator');
+    onClose();
+  };
+
+  return (
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={visible}
+      onRequestClose={onClose}
+    >
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+        <View style={{ width: 300, padding: 20, backgroundColor: 'white', borderRadius: 10 }}>
+          <Text style={{ fontSize: 16, marginBottom: 20 }}>Three days have already passed since you signed up into the app!</Text>
+          <Button title="Close" onPress={handleClose} />
+        </View>
+      </View>
+    </Modal>
+  );
+};
 
 const Home = ({route}) => {
   const styles = useHomeStyles();
@@ -22,6 +48,8 @@ const Home = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   const {rawUserId} = useRawUserId();
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   const ref = useRef(null);
 
@@ -43,7 +71,18 @@ const Home = ({route}) => {
     };
     fetchUserData();
   }, []);
+  /*
+  useEffect(() => {
+    const showReminderModal = async () => {
+      const shouldShowModal = await checkForModalDisplay();
+      if (shouldShowModal) {
+        setModalVisible(true);
+      }
+    };
 
+    showReminderModal();
+  }, []);
+  */
   useScrollToTop(ref);
 
   const handleAboutPress = (description = null, title = null) => {
@@ -57,6 +96,29 @@ const Home = ({route}) => {
 
     setAboutVisible(!aboutVisible);
   };
+
+  const checkForModalDisplay = async () => {
+    const signupDateStr = await AsyncStorage.getItem('signupDate');
+    const signupDateValidator = await AsyncStorage.getItem('signupDateValidator');
+
+    console.log('SIGNUP DATE FROM ASYNC STORAGE', signupDateStr);
+    if (!signupDateStr) return false; // If signup date is not found, this does nothing
+  
+    const signupDate = new Date(signupDateStr);
+    const currentDate = new Date();
+    
+    const diffTime = Math.abs(currentDate - signupDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // This converts milliseconds to days
+
+    console.log("Validator: ", signupDateValidator);
+
+    if (diffDays < 3) {
+      return false;
+    } else if(diffDays >= 3 && signupDateValidator !== 'true') {
+      return true;
+    }
+  };
+  
 
   return (
     <LinearGradient
@@ -80,6 +142,7 @@ const Home = ({route}) => {
           showsVerticalScrollIndicator={false}
           style={[styles.paddingH, styles.paddingB]}
           ref={ref}>
+          <FreePopup visible={modalVisible} onClose={() => setModalVisible(false)} />
           <TickerTape />
           <TopStories handleAboutPress={handleAboutPress} />
           <Analysis handleAboutPress={handleAboutPress} />
