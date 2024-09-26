@@ -82,7 +82,6 @@ const AnalysisContextProvider = ({children}) => {
       try {
         const data = await getService(`/get_analysis`);
         if (data.success) {
-          console.log(data.data);
           const parsed_data = data.data.map(item => {
             return {
               analysis: parseAnalysisContent(item.analysis)[0],

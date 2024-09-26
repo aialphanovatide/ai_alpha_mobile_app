@@ -4,7 +4,6 @@ import {Platform, SafeAreaView, ScrollView, Text, View} from 'react-native';
 import {Image, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {AboutIcon} from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
-import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
 import AboutModal from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
 import {AboutModalContext} from '../../../context/AboutModalContext';
@@ -207,41 +206,42 @@ const AskAiHistory = ({route, navigation}) => {
   // Function to handle the pressing of the History section items, passing the data of the selected item to the main ASK AI section.
 
   const handleActiveResultData = data => {
+    console.log('Data: ', data);
     navigation.navigate('AskAiMain', {selectedResult: data});
   };
 
   return (
-      <SafeAreaView style={styles.container}>
-        <BackgroundGradient />
-        <View style={{marginHorizontal: 18, marginTop: 8}}>
-          <BackButton />
-        </View>
-        <View style={styles.titleRow}>
-          <Text style={styles.title}>History</Text>
-          <AboutIcon
-            title={'History'}
-            description={
-              'In this section you can see the previously ASK AI searched coins.'
-            }
-            handleAboutPress={handleAboutPress}
-            additionalStyles={{top: '52.5%'}}
-          />
-        </View>
-        <HistoryContent
-          historyOptions={historyOptions}
-          activeHistoryOption={activeHistoryOption}
-          handleHistoryOption={handleHistoryOption}
-          savedResults={filteredResults}
-          handleHistoryClean={handleHistoryClean}
-          handleActiveResultData={handleActiveResultData}
+    <SafeAreaView style={styles.container}>
+      <BackgroundGradient />
+      <View style={{marginHorizontal: 6, marginTop: 12}}>
+        <BackButton />
+      </View>
+      <View style={styles.titleRow}>
+        <Text style={styles.title}>History</Text>
+        <AboutIcon
+          title={'History'}
+          description={
+            'In this section you can see the previously ASK AI searched coins.'
+          }
+          handleAboutPress={handleAboutPress}
+          additionalStyles={{top: '52.5%', right: '3%'}}
         />
-        <AboutModal
-          visible={aboutVisible}
-          description={aboutDescription}
-          title={aboutTitle}
-          onClose={handleClose}
-        />
-      </SafeAreaView>
+      </View>
+      <HistoryContent
+        historyOptions={historyOptions}
+        activeHistoryOption={activeHistoryOption}
+        handleHistoryOption={handleHistoryOption}
+        savedResults={filteredResults}
+        handleHistoryClean={handleHistoryClean}
+        handleActiveResultData={handleActiveResultData}
+      />
+      <AboutModal
+        visible={aboutVisible}
+        description={aboutDescription}
+        title={aboutTitle}
+        onClose={handleClose}
+      />
+    </SafeAreaView>
   );
 };
 

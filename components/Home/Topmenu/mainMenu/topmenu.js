@@ -1,5 +1,13 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {View, ScrollView, Text, Modal} from 'react-native';
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  Modal,
+  Platform,
+  UIManager,
+  LayoutAnimation,
+} from 'react-native';
 import MenuItem from './menuItem/menuItem';
 import useTopMenuStyles from './topmenuStyles';
 import {TopMenuContext} from '../../../../context/topMenuContext';
@@ -22,9 +30,22 @@ const TopMenu = ({isAlertsMenu}) => {
     useContext(TopMenuContext);
   const {categories, loading} = useContext(CategoriesContext);
   const navigation = useNavigation();
-  const {isDarkMode} = useContext(AppThemeContext);
-  const handleButtonPress = category => {
+  const {theme, isDarkMode} = useContext(AppThemeContext);
+  const topMenuScrollRef = useRef(null);
+  const [scrollX, setScrollX] = useState(0);
+
+  // Function to handle the button pressing of a category, setting it as active and navigating to the corresponding section. In case the category has more coins, set the first coin as active. Also, the top menu scrolls the category to the middle of the view.
+  const handleButtonPress = (category, index) => {
     if (activeCoin.category_name === category.category_name) {
+      setScrollX(0);
+      setTimeout(() => {
+        if (topMenuScrollRef.current) {
+          topMenuScrollRef.current.scrollTo({
+            x: 0,
+            animated: true,
+          });
+        }
+      }, 20);
       navigation.navigate('Home', {screen: 'InitialHome'});
     } else {
       updateActiveCoin(category);
@@ -43,6 +64,29 @@ const TopMenu = ({isAlertsMenu}) => {
         });
       }
     }
+
+    setTimeout(() => {
+      if (topMenuScrollRef.current) {
+        const itemWidth = 60;
+        const scrollViewWidth = itemWidth * categories.length;
+        const scrollOffset = itemWidth * index;
+        const scrollPosition =
+          scrollOffset > scrollViewWidth || index <= 2
+            ? 0
+            : scrollOffset > scrollX && scrollOffset <= 300
+            ? scrollOffset - 30
+            : scrollOffset > scrollX
+            ? scrollOffset + 10
+            : scrollOffset - 30;
+        // console.log('Scroll view width: ', scrollViewWidth);
+        // console.log('Scroll view scroll x: ', scrollX);
+        // console.log('Scroll view new position: ', scrollPosition);
+        topMenuScrollRef.current.scrollTo({
+          x: scrollX >= 700 ? 700 : scrollPosition,
+          animated: true,
+        });
+      }
+    }, 100);
   };
 
   const toggleActiveSearchBar = value => {
@@ -55,6 +99,11 @@ const TopMenu = ({isAlertsMenu}) => {
 
   const toggleTextValue = value => {
     setSearchText(value);
+  };
+
+  const handleScroll = event => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    setScrollX(offsetX);
   };
 
   const handleNotificationsNavigation = () => {
@@ -103,15 +152,18 @@ const TopMenu = ({isAlertsMenu}) => {
         {menuVisible ? (
           <ScrollView
             horizontal
+            ref={topMenuScrollRef}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
             showsHorizontalScrollIndicator={false}
             bounces={false}>
             {loading ? (
               <SkeletonLoader type={'circle'} quantity={14} />
             ) : categories ? (
-              categories.map(category => (
+              categories.map((category, index) => (
                 <MenuItem
                   key={category.category_id}
-                  onPress={() => handleButtonPress(category)}
+                  onPress={() => handleButtonPress(category, index)}
                   category={category}
                   isDarkMode={isDarkMode}
                   isActive={

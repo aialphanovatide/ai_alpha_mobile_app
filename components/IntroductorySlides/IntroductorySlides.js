@@ -101,7 +101,7 @@ const Slide = ({
             {
               width: video.style.width,
               height: video.style.height,
-              backgroundColor: '#171717',
+              backgroundColor: 'transparent',
             },
           ]}>
           <Video
@@ -195,11 +195,11 @@ const IntroductorySlides = ({route}) => {
       title: 'Welcome to AI Alpha',
       subtitle: 'Welcome!',
       mainImageSource: {
-        source: require('../../assets/images/introductorySection/layers.gif'),
+        source: require('../../assets/images/introductorySection/slide1anim.gif'),
         style: {width: 350, height: 300},
       },
       video: {
-        source: require('../../assets/images/introductorySection/Slide1-v2.mp4'),
+        source: require('../../assets/images/introductorySection/Slide1-v3.mp4'),
         style: {width: 350, height: 300},
       },
       content: [

@@ -354,7 +354,7 @@ const Chart = ({
               width: 40,
               height: '68.5%',
               marginTop: '5%',
-              zIndex: 1,
+              zIndex: activeButtons.length > 0 ? 0 : 200,
             }}
           />
         )}
@@ -551,7 +551,6 @@ const Chart = ({
                     backgroundStyle={[
                       {
                         fill: '#2DDA99',
-                        opacity: 0.9,
                       },
                     ]}
                   />
@@ -592,7 +591,6 @@ const Chart = ({
                     backgroundStyle={[
                       {
                         fill: '#D82A2B',
-                        opacity: 1,
                       },
                     ]}
                   />

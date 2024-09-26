@@ -26,6 +26,7 @@ import useCompetitorsStyles from './CompetitorsStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
+import ActiveTriangle from '../../../../../../../../assets/images/fundamentals/competitors/active-triangle.svg';
 
 if (
   Platform.OS === 'android' &&
@@ -37,8 +38,11 @@ if (
 const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
   const {theme} = useContext(AppThemeContext);
   return (
-    <TouchableOpacity onPress={() => handleOptionChange(item)}>
-      <ImageBackground
+    <View style={styles.relativeContainer}>
+      <TouchableOpacity
+        onPress={() => handleOptionChange(item)}
+        style={styles.menuItemContainer}>
+        {/* <ImageBackground
         source={
           activeOption.name === item.name
             ? require('../../../../../../../../assets/images/fundamentals/competitors/competitors-active-item.png')
@@ -46,7 +50,7 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
         }
         style={styles.menuItemContainer}
         resizeMode="contain"
-        tintColor={theme.fundamentalsCompetitorsItemBg}>
+        tintColor={theme.fundamentalsCompetitorsItemBg}> */}
         <Image
           style={[
             styles.itemIcon,
@@ -63,8 +67,12 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
           numberOfLines={2}>
           {item.menuTitle}
         </Text>
-      </ImageBackground>
-    </TouchableOpacity>
+        {/* </ImageBackground> */}
+      </TouchableOpacity>
+      {activeOption.name === item.name && (
+        <ActiveTriangle style={styles.activeTriangle} />
+      )}
+    </View>
   );
 };
 

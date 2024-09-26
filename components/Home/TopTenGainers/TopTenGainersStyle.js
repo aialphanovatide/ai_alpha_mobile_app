@@ -108,7 +108,7 @@ const useTopTenGainersStyles = () => {
     horizontalLine: {
       width: '85%',
       marginLeft: '5%',
-      borderBottomWidth: 0.5,
+      borderBottomWidth: 1.5,
       borderBottomColor: theme.secondaryGrayColor,
     },
     scrollBarContainer: {

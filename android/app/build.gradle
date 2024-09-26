@@ -78,7 +78,7 @@ android {
         applicationId "com.ai_alpha_mobile_app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 11
+        versionCode 12
         versionName "1.0"
         manifestPlaceholders = [
                 appAuthRedirectScheme: 'com.aialpha.com',
