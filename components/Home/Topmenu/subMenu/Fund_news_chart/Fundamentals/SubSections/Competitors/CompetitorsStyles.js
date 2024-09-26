@@ -11,28 +11,36 @@ const useCompetitorsStyles = () => {
     menuContainer: {
       flex: 1,
       flexDirection: 'row',
+      marginBottom: 16,
     },
     menuItemContainer: {
       width: theme.width * 0.225,
-      height: theme.height * 0.125,
+      height: theme.height * 0.1,
       margin: 4,
       padding: 4,
       paddingTop: 6,
-      borderRadius: 4,
+      borderRadius: 2,
       overflow: 'hidden',
       alignItems: 'center',
       justifyContent: 'flex-start',
+      backgroundColor: theme.fundamentalsCompetitorsItemBg,
+    },
+    relativeContainer: {
+      flex: 1,
+      position: 'relative',
+      backgroundColor: 'transparent',
     },
     itemIcon: {
       width: 20,
-      height: 18,
-      marginVertical: 6,
+      height: 20,
+      marginTop: 7,
       tintColor: theme.fundamentalsMenuText,
     },
     none: {
       display: 'none',
     },
     menuItemName: {
+      marginTop: 5,
       marginBottom: 2,
       color: theme.fundamentalsMenuText,
       textAlign: 'center',
@@ -80,6 +88,13 @@ const useCompetitorsStyles = () => {
     },
     loaderWrapper: {
       paddingVertical: 48,
+    },
+    activeTriangle: {
+      position: 'absolute',
+      top: 80,
+      left: '40%',
+      tintColor: theme.fundamentalsCompetitorsItemBg,
+      zIndex: 200,
     },
   });
   return styles;

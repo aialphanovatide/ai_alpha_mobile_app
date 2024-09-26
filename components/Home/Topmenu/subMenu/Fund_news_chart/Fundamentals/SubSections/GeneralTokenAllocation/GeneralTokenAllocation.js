@@ -34,8 +34,8 @@ const GeneralTokenData = ({
                 currentToken.title === sector.title ? styles.activeText : {},
               ]}
               ellipsizeMode="clip">
-              {sector.title.length > 18
-                ? `${sector.title.slice(0, 15)}..`
+              {sector.title.length > 21
+                ? `${sector.title.slice(0, 21)}..`
                 : sector.title}
             </Text>
           </TouchableOpacity>

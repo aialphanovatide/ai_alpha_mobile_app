@@ -16,9 +16,9 @@ const CircleChart = ({
   return (
     <View style={styles.circleChartContainer}>
       <VictoryPie
-        width={235}
-        radius={105}
-        innerRadius={90}
+        width={200}
+        radius={100}
+        innerRadius={85}
         data={data.map((sector, index) => {
           return {
             x: sector.percentage,
@@ -40,7 +40,7 @@ const CircleChart = ({
                 : theme.boxesBackgroundColor,
             },
             styles.currentTokenPercentage,
-            currentToken?.percentage % 1 !== 0 ? {left: 80} : {},
+            currentToken?.percentage % 1 !== 0 ? {left: 70} : {},
           ]
         }>
         {currentToken?.percentage && currentToken?.percentage !== undefined
