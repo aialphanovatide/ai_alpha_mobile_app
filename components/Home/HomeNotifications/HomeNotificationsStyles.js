@@ -66,7 +66,7 @@ const useHomeNotificationsStyles = () => {
       height: 60,
       justifyContent: 'center',
       alignItems: 'center',
-      zIndex: 1000,
+      zIndex: 2002,
     },
     timeFrameContainer: {
       height: 32,
