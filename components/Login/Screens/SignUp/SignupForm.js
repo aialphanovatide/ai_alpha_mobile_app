@@ -22,6 +22,7 @@ import { auth0Domain, auth0ManagementAPI_Client, auth0ManagementAPI_Secret } fro
 import LinearGradient from 'react-native-linear-gradient';
 import eventEmitter from '../../../../eventEmitter';
 import { AppThemeContext } from '../../../../context/themeContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const SignupForm = () => {
@@ -215,6 +216,10 @@ const SignupForm = () => {
         setUserId(response.data._id);
         setUserEmail(email);
         setSignupSuccessful(true);
+
+        const signupDate = new Date();
+        await AsyncStorage.setItem('signupDate', signupDate.toISOString());
+        await AsyncStorage.setItem('signupDateValidator', 'false');
 
         const originalColor = isDarkMode ? '#0b0b0a' : '#fbfbfa';
 
