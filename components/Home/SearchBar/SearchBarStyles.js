@@ -12,14 +12,14 @@ const useSearchBarStyles = () => {
     },
     searchBar: {
       position: 'relative',
-      width: '98%',
+      width: '95%',
       marginVertical: 8,
-      marginLeft: -12,
       alignContent: 'center',
+      alignSelf: 'center',
       borderRadius: 3,
     },
     searchInput: {
-      width: '97%',
+      width: '100%',
       marginVertical: 8,
       paddingHorizontal: 12,
       paddingLeft: 48,
@@ -30,14 +30,6 @@ const useSearchBarStyles = () => {
       color: theme.textColor,
     },
     textInputContainer: {
-      alignSelf: 'flex-start',
-      flexDirection: 'row',
-      position: 'relative',
-      height: 60,
-      zIndex: 2001,
-    },
-    textInputContainerAfter: {
-      width: '100%',
       flexDirection: 'row',
       position: 'relative',
       height: 60,
@@ -49,8 +41,7 @@ const useSearchBarStyles = () => {
       position: 'relative',
       marginRight: 22,
       height: 60,
-      zIndex: 2001,
-
+      zIndex: 1999,
     },
     textInputContainerIOSAfter: {
       width: '97%',
@@ -63,15 +54,6 @@ const useSearchBarStyles = () => {
     },
     none: {
       display: 'none',
-    },
-    magnifierButton: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: 80,
-      height: 40,
-      alignItems: 'center',
-      justifyContent: 'center',
     },
     magnifierIcon: {
       top: 20,
@@ -91,7 +73,7 @@ const useSearchBarStyles = () => {
       zIndex: 1100,
       tintColor: theme.searchPlaceHolderColor,
     },
-    magnifierTouchableContainer: {
+    magnifierTouchableContainer:{
       flex: 1,
     },
     magnifierTintColor: {
@@ -117,19 +99,12 @@ const useSearchBarStyles = () => {
     },
     closeButton: {
       position: 'absolute',
-      top: '20%',
-      right: '-7.5%',
-      width: 40,
-      height: 40,
-      backgroundColor: 'transparent',
-      alignItems: 'flex-end',
-      justifyContent: 'center',
-    },
-    closeImage: {
-      width: 25,
-      height: 25,
+      top: 24,
+      right: 6,
+      width: 17,
+      height: 17,
       tintColor: theme.grayButtonColor,
-    },
+    }
   });
   return styles;
 };
