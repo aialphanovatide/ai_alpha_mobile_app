@@ -11,7 +11,6 @@ import {
   UIManager,
   View,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import useAskAiStyles from './AskAiStyles';
 import FastImage from 'react-native-fast-image';
@@ -21,6 +20,7 @@ import {AboutIcon} from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/Ab
 import AboutModal from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
 import {AboutModalContext} from '../../context/AboutModalContext';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
+import SearchButtonSvg from '../../assets/images/askAi/search-button.svg';
 
 if (
   Platform.OS === 'android' &&
@@ -200,20 +200,14 @@ const Input = ({
               styles.placeholderText,
               textValue !== '' ? {opacity: 0} : {},
             ]}>
-            E.g: SOIL
+            Type here
           </Text>
         </View>
         <TouchableOpacity
           disabled={loading}
           style={[styles.searchButton, loading ? styles.disabledButton : {}]}
           onPress={() => handleButtonSearch(textValue)}>
-          <Image
-            styles={styles.searchButtonImage}
-            source={require('../../assets/images/askAi/search_button.png')}
-            width={18}
-            height={18}
-            resizeMode="contain"
-          />
+          <SearchButtonSvg width={18} height={18} />
         </TouchableOpacity>
       </View>
     </View>
@@ -240,6 +234,7 @@ const AskAiMain = ({route, navigation}) => {
     handleAboutPress,
     handleClose,
   } = useContext(AboutModalContext);
+  const [logoSize, setLogoSize] = useState({width: 50, height: 50});
 
   //  Hook to reset the search value state on every rendering
 
@@ -248,6 +243,12 @@ const AskAiMain = ({route, navigation}) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setResultData(selectedResult);
   }, [selectedResult]);
+
+  useEffect(() => {
+    if (resultData) {
+      getImageMetadata(resultData.logo);
+    }
+  }, []);
 
   // Function to save the results data in the AsyncStorage API to persist them between app executions
 
@@ -296,6 +297,7 @@ const AskAiMain = ({route, navigation}) => {
         );
 
         if (existingResult) {
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
           setResultData(existingResult);
           return;
         } else {
@@ -330,6 +332,26 @@ const AskAiMain = ({route, navigation}) => {
     setResultData(null);
   };
 
+  // Function to get the width, height and other metadata from the image or logo that has come with the search data
+
+  const getImageMetadata = imageUrl => {
+    if (!imageUrl || imageUrl === undefined || imageUrl === '') {
+      return null;
+    }
+    Image.getSize(
+      imageUrl,
+      (width, height) => {
+        console.log(`Image width: ${width}, height: ${height}`);
+        const result = {width, height};
+        setLogoSize(result);
+      },
+      error => {
+        console.log(`Error getting the image size: ${error}`);
+        return null;
+      },
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundGradient />
@@ -346,7 +368,7 @@ const AskAiMain = ({route, navigation}) => {
             title={'ASK AI Alpha'}
             description={'This is the ASK AI Alpha section description.'}
             handleAboutPress={handleAboutPress}
-            additionalStyles={{top: '52.5%'}}
+            additionalStyles={{top: '52.5%', right: '3.5%'}}
           />
         </View>
         <Input
@@ -372,7 +394,11 @@ const AskAiMain = ({route, navigation}) => {
                   />
                 </TouchableOpacity>
                 <View style={styles.row}>
-                  <View style={styles.imageBackground}>
+                  <View
+                    style={[
+                      styles.imageBackground,
+                      {width: logoSize.width, height: logoSize.height},
+                    ]}>
                     <FastImage
                       source={{
                         uri:

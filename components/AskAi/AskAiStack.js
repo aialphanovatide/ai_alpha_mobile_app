@@ -19,8 +19,17 @@ const AskAiScreen = () => {
         name={'AskAiMain'}
         component={AskAiMain}
         initialParams={{selectedResult: null}}
+        options={{
+          animation: 'fade',
+        }}
       />
-      <AskAiStack.Screen name={'AskAiHistory'} component={AskAiHistory} />
+      <AskAiStack.Screen
+        name={'AskAiHistory'}
+        component={AskAiHistory}
+        options={{
+          animation: 'slide_from_right',
+        }}
+      />
     </AskAiStack.Navigator>
   );
 };

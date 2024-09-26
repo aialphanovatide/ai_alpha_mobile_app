@@ -324,7 +324,16 @@ const SkeletonLoader = ({style, type = 'item', quantity = 1}) => {
         },
       ]}>
       <View style={styles.container}>
-        <SkeletonItem style={[styles.textLine, {width: '25%'}]} />
+        <SkeletonItem
+          style={[
+            {
+              width: '25%',
+              marginVertical: 4,
+              marginHorizontal: 14,
+              backgroundColor: 'transparent',
+            },
+          ]}
+        />
         {Array.from({length: 3}).map((_, index) => (
           <View
             key={index}

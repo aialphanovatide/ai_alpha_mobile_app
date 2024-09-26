@@ -20,10 +20,10 @@ const useAskAiStyles = () => {
     title: {
       marginTop: 48,
       marginBottom: 24,
-      marginLeft: 28,
+      marginLeft: 12,
       fontSize: 25,
       color: theme.titleColor,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.fontMedium,
       textAlign: 'left',
     },
     titleRow: {
@@ -51,14 +51,15 @@ const useAskAiStyles = () => {
       top: 18,
       left: 24,
       color: theme.searchPlaceHolderColor,
-      fontSize: 14,
+      fontSize: 16,
       fontFamily: theme.font,
     },
     inputText: {
       marginHorizontal: 14,
       fontFamily: theme.fontMedium,
       color: theme.titleColor,
-      fontSize: 16,
+      fontSize: 18,
+      marginBottom: 4,
     },
     menuContainer: {
       width: '100%',
@@ -83,6 +84,7 @@ const useAskAiStyles = () => {
     historyButton: {
       width: 21,
       height: 23,
+      marginBottom: 4,
       tintColor: '#A3A3A3',
     },
     activeButton: {
@@ -94,7 +96,7 @@ const useAskAiStyles = () => {
     menuText: {
       marginVertical: 5,
       textAlign: 'center',
-      fontSize: 12,
+      fontSize: 14,
       fontFamily: theme.font,
       color: theme.secondaryTextColor,
     },
@@ -113,8 +115,8 @@ const useAskAiStyles = () => {
       borderRadius: 4,
     },
     searchButtonImage: {
-      width: 18,
-      height: 18,
+      width: 12,
+      height: 12,
       alignSelf: 'center',
       tintColor: '#FFFFFF',
     },
@@ -199,7 +201,7 @@ const useAskAiStyles = () => {
       marginLeft: 6,
       borderRadius: 24,
       justifyContent: 'center',
-      backgroundColor: theme.boxesBackgroundColor,
+      backgroundColor: theme.tableHeaderColor,
       overflow: 'hidden',
     },
     coinName: {
@@ -225,16 +227,16 @@ const useAskAiStyles = () => {
       alignItems: 'center',
     },
     trashIcon: {
-      width: 12,
-      height: 12,
-      marginRight: 4,
+      width: 14,
+      height: 14,
+      marginRight: 6,
       tintColor: theme.secondaryTextColor,
       alignSelf: 'center',
     },
     cleanText: {
       textAlign: 'right',
       color: theme.secondaryTextColor,
-      fontSize: 12,
+      fontSize: 14,
       fontFamily: theme.font,
     },
     historyMenuContainer: {
@@ -259,7 +261,7 @@ const useAskAiStyles = () => {
       marginBottom: 4,
       flexDirection: 'row',
       paddingHorizontal: 12,
-      paddingVertical: 10,
+      paddingVertical: 12,
       borderRadius: 3,
       alignItems: 'center',
       backgroundColor: theme.boxesBackgroundColor,
@@ -279,7 +281,7 @@ const useAskAiStyles = () => {
     },
     historyItemName: {
       marginHorizontal: 10,
-      fontSize: 14,
+      fontSize: 16,
       color: theme.textColor,
       fontFamily: theme.fontMedium,
       textTransform: 'uppercase',
@@ -294,7 +296,7 @@ const useAskAiStyles = () => {
     },
     noContentMessage: {
       margin: theme.boxesVerticalMargin,
-      fontSize: 12,
+      fontSize: 14,
       color: theme.secondaryTextColor,
       alignSelf: 'center',
       fontFamily: theme.font,

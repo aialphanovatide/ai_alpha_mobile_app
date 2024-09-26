@@ -1,8 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, Image, SafeAreaView, ScrollView} from 'react-native';
+import {View, Text, Image, ScrollView} from 'react-native';
 import BackButton from '../BackButton/BackButton';
 import FundingRatesServices from '../../../services/FundingRatesServices';
-import Loader from '../../Loader/Loader';
 import useFundingRatesStyles from './FundingRatesStyles';
 import exchangesData from '../BTCFundingRates/ExchangesMetaData';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,9 +16,17 @@ const FUNDING_RATES_MOCK = {
   SOL: {Binance: '0.0261', OKX: '0.0253', dYdX: '0.0037'},
 };
 
-const TableHeaderCell = ({title, styles, logoSource}) => {
+const TableHeaderCell = ({title, styles, logoSource, index, itemsLength}) => {
   return (
-    <View style={styles.headerCell}>
+    <View
+      style={[
+        styles.headerCell,
+        styles.headerBg,
+        index === 0 ? {borderTopLeftRadius: 3, borderBottomLeftRadius: 3} : {},
+        index === itemsLength - 1
+          ? {borderTopRightRadius: 3, borderBottomRightRadius: 3}
+          : {},
+      ]}>
       <Image
         style={styles.coinLogo}
         source={{uri: logoSource}}
@@ -140,21 +147,33 @@ const FundingRates = ({handleReturn}) => {
         ) : (
           <View style={styles.tableContainer}>
             <View style={styles.tableHeader}>
-              <View style={[styles.headerCell, styles.alignCenter]}>
-                <Text style={styles.exchangeName}>Exchange</Text>
-              </View>
               {COINS_STATIC_DATA.map((coin, index) => (
                 <TableHeaderCell
                   key={index}
                   title={coin.title}
                   logoSource={coin.source}
                   styles={styles}
+                  index={index}
+                  itemsLength={COINS_STATIC_DATA.length}
                 />
               ))}
             </View>
             {exchangesData.map((exchange, index) => (
               <View key={index} style={styles.dataRow}>
-                <View style={[styles.headerCell, styles.exchangeHeader]}>
+                <View
+                  style={[
+                    styles.headerCell,
+                    styles.exchangeHeader,
+                    index === 0
+                      ? {borderTopLeftRadius: 3, borderTopRightRadius: 3}
+                      : {},
+                    index === exchangesData.length - 1
+                      ? {
+                          borderTopBottomLeftRadius: 3,
+                          borderBottomRightRadius: 3,
+                        }
+                      : {},
+                  ]}>
                   <Image
                     style={styles.exchangeLogo}
                     source={exchange.static_logo}
