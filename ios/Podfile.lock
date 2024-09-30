@@ -677,7 +677,7 @@ PODS:
     - React-Core
   - RNSecureStorage (3.0.1):
     - React
-  - RNSVG (14.1.0):
+  - RNSVG (14.2.0):
     - React-Core
   - RNVectorIcons (10.1.0):
     - RCT-Folly (= 2021.07.22.00)
@@ -1054,7 +1054,7 @@ SPEC CHECKSUMS:
   RNReanimated: 6f36e44a9e55ccf5c252a51d08f52ed49c68ad48
   RNScreens: 1c2444658fbb696a094272d946708167b1f63409
   RNSecureStorage: d7de7dd7321ae113a6f7dad1747a4992a20b4955
-  RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
+  RNSVG: 963a95f1f5d512a13d11ffd50d351c87fb5c6890
   RNVectorIcons: 084c5c365eca594f94fda0192d8a380b2b40f9b5
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
@@ -1063,6 +1063,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   Yoga: 4c3aa327e4a6a23eeacd71f61c81df1bcdf677d5
 
-PODFILE CHECKSUM: 44219011ab661c2b2b5ec55fc05ced1842223666
+PODFILE CHECKSUM: ea73a89e03f25892967e9b02d8bd9cd6fce5c46c
 
 COCOAPODS: 1.15.2
