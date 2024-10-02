@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 
 const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -44,13 +45,11 @@ const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
       style={styles.historyItemContainer}>
       <FastImage
         source={{
-          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
-            isDarkMode ? 'dark' : 'light'
-          }/${
+          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${
             item.category !== null &&
             item.category.toLowerCase().replace(/\s/g, '') === 'total3'
               ? 'total3'
-              : item.coin_bot_name
+              : item.coin_bot_name.toLowerCase()
           }.png`,
           priority: FastImage.priority.normal,
         }}
@@ -138,22 +137,36 @@ const History = () => {
 
   // Hook to load the data from the previous analysis that the user has seen
   useEffect(() => {
-    const fetchData = async () => {
+    const interval = activeOption === 'today' ? 1 : 7;
+    const fetchData = async interval => {
       try {
         const keys = await AsyncStorage.getAllKeys();
         const analysisKeys = keys.filter(key => key.startsWith('analysis_'));
         const analysisItems = await AsyncStorage.multiGet(analysisKeys);
-
         const parsedItems = analysisItems.map(item => JSON.parse(item[1]));
-        setLoadedHistoryItems(parsedItems);
+        const currentDate = new Date();
+
+        const filteredItems = parsedItems.filter(item => {
+          const clickedAt = new Date(item.clickedAt);
+          const timeDifference = Math.abs(currentDate - clickedAt);
+          const daysDifference = timeDifference / (1000 * 3600 * 24);
+
+          return daysDifference <= interval;
+        });
+
+        console.log(
+          `Loaded analysis items within ${interval} days: `,
+          filteredItems,
+        );
+        setLoadedHistoryItems(filteredItems);
       } catch (e) {
         console.error('Failed to load the data from storage', e);
       }
     };
     if (loadedHistoryItems.length === 0) {
-      fetchData();
+      fetchData(interval);
     }
-  }, []);
+  }, [activeOption]);
 
   useEffect(() => {
     setCryptoOptions(historyFilterData);
@@ -176,16 +189,25 @@ const History = () => {
       return filtered_items;
     }
 
-    category.coin_bots.forEach(coin => {
-      items.forEach(item => {
-        if (
-          item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===
-          coin.bot_name.toLowerCase().replace(/\s/g, '')
-        ) {
-          filtered_items.push(item);
-        }
-      });
+    // category.coin_bots.forEach(coin => {
+    //   items.forEach(item => {
+    //     if (
+    //       item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===
+    //       coin.bot_name.toLowerCase().replace(/\s/g, '')
+    //     ) {
+    //       filtered_items.push(item);
+    //     }
+    //   });
+    // });
+
+    items.forEach(item => {
+      if (
+        item.category.toLowerCase() === category.category_name.toLowerCase()
+      ) {
+        filtered_items.push(item);
+      }
     });
+
     return filtered_items;
   };
 
@@ -193,7 +215,7 @@ const History = () => {
     const currentDate = new Date();
 
     const filteredArray = analysisArray.filter(item => {
-      const createdAtDate = new Date(item.created_at);
+      const createdAtDate = new Date(item.clickedAt);
       if (interval === 'today') {
         return createdAtDate.toDateString() === currentDate.toDateString();
       }
@@ -249,47 +271,45 @@ const History = () => {
   return (
     <SafeAreaView style={styles.flex}>
       <BackgroundGradient />
-        <View style={styles.container}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton />
-          </View>
-          <Text style={styles.title}>History</Text>
-          <Text style={styles.sectionDescription}>
-            The history section consolidates all analysis conducted on a
-            specific coin, allowing users to access today's and the week's
-            insights conveniently categorized in one place.
-          </Text>
-          <View style={styles.menusContainer}>
-            <HistoryTimeMenu
-              options={options}
-              activeOption={activeOption}
-              handleTimeIntervalChange={handleTimeIntervalChange}
-              styles={styles}
-            />
-            <CryptoFilter
-              options={cryptoOptions}
-              currentFilter={activeCryptoOption}
-              handleOptionTouch={handleCryptoTouch}
-            />
-          </View>
-          <ScrollView style={styles.itemsContainer}>
-            {historyItems.length > 0 ? (
-              historyItems.map(item => (
-                <HistoryItem
-                  key={item.id}
-                  item={item}
-                  styles={styles}
-                  handleHistoryNavigation={handleHistoryNavigation}
-                />
-              ))
-            ) : (
-              <Text style={styles.emptyMessage}>
-                There isn't any analysis to show at the moment
-              </Text>
-            )}
-          </ScrollView>
+      <View style={styles.container}>
+        <View style={styles.backButtonWrapper}>
+          <BackButton />
         </View>
-        {subscribed ? <></> : <UpgradeOverlay />}
+        <Text style={styles.title}>History</Text>
+        <Text style={styles.sectionDescription}>
+          The history section consolidates all analysis conducted on a specific
+          coin, allowing users to access today's and the week's insights
+          conveniently categorized in one place.
+        </Text>
+        <View style={styles.menusContainer}>
+          <HistoryTimeMenu
+            options={options}
+            activeOption={activeOption}
+            handleTimeIntervalChange={handleTimeIntervalChange}
+            styles={styles}
+          />
+          <CryptoFilter
+            options={cryptoOptions}
+            currentFilter={activeCryptoOption}
+            handleOptionTouch={handleCryptoTouch}
+          />
+        </View>
+        <ScrollView style={styles.itemsContainer}>
+          {historyItems.length > 0 ? (
+            historyItems.map(item => (
+              <HistoryItem
+                key={item.id}
+                item={item}
+                styles={styles}
+                handleHistoryNavigation={handleHistoryNavigation}
+              />
+            ))
+          ) : (
+            <NoContentDisclaimer />
+          )}
+        </ScrollView>
+      </View>
+      {subscribed ? <></> : <UpgradeOverlay />}
     </SafeAreaView>
   );
 };

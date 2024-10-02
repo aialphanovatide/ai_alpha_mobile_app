@@ -19,6 +19,7 @@ import {CategoriesContext} from '../../context/categoriesContext';
 import {useScrollToTop} from '@react-navigation/native';
 import SkeletonLoader from '../Loader/SkeletonLoader';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
+import NoContentDisclaimer from '../NoContentDisclaimer/NoContentDisclaimer';
 
 // Component that renders when there are no alerts on the server's response
 const NoAlertsView = ({styles}) => (
@@ -199,45 +200,43 @@ const Alerts = ({route, navigation}) => {
   return (
     <SafeAreaView style={styles.mainContainer} ref={ref}>
       <BackgroundGradient />
-        <TopMenu isAlertsMenu={true} />
-        <SubMenu isAlertsMenu={true} />
-        <Text style={styles.title}>Alerts</Text>
-        <View style={styles.background}>
-          <AlertMenu
-            options={options}
-            setActiveOption={handleOptionChange}
-            styles={styles}
-            activeOption={activeAlertOption}
-          />
-          {isLoading ? (
-            // Display the loader if the data requests didn't finish
-            <SkeletonLoader quantity={5} type="alerts" />
-          ) : (
-            <FlatList
-              ref={ref}
-              data={alerts}
-              renderItem={({item}) => (
-                <AlertDetails
-                  key={item.alert_id}
-                  message={item.alert_message}
-                  timeframe={item.alert_name}
-                  price={item.price}
-                  styles={styles}
-                  created_at={item.created_at}
-                />
-              )}
-              keyExtractor={item => item.alert_id.toString()}
-              ListEmptyComponent={<NoAlertsView styles={styles} />}
-            />
-          )}
-        </View>
-        {hasSubscription ? (
-          <></>
+      <TopMenu isAlertsMenu={true} />
+      <SubMenu isAlertsMenu={true} />
+      <Text style={styles.title}>Alerts</Text>
+      <View style={styles.background}>
+        <AlertMenu
+          options={options}
+          setActiveOption={handleOptionChange}
+          styles={styles}
+          activeOption={activeAlertOption}
+        />
+        {isLoading ? (
+          // Display the loader if the data requests didn't finish
+          <SkeletonLoader quantity={5} type="alerts" />
         ) : (
-          <UpgradeOverlay
-            subscribed={subscribedCategories || hasSubscription}
+          <FlatList
+            ref={ref}
+            data={alerts}
+            renderItem={({item}) => (
+              <AlertDetails
+                key={item.alert_id}
+                message={item.alert_message}
+                timeframe={item.alert_name}
+                price={item.price}
+                styles={styles}
+                created_at={item.created_at}
+              />
+            )}
+            keyExtractor={item => item.alert_id.toString()}
+            ListEmptyComponent={<NoContentDisclaimer />}
           />
         )}
+      </View>
+      {hasSubscription ? (
+        <></>
+      ) : (
+        <UpgradeOverlay subscribed={subscribedCategories || hasSubscription} />
+      )}
     </SafeAreaView>
   );
 };

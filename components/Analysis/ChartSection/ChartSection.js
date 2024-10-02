@@ -359,7 +359,7 @@ const ChartSection = ({route, navigation}) => {
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.sectionDescription}>{description}</Text>
             <View style={styles.container}>
-              <SkeletonLoader type="timeframe" quantity={4} />
+              <SkeletonLoader type="timeframe" quantity={2} />
               <SkeletonLoader
                 type="chart"
                 style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}

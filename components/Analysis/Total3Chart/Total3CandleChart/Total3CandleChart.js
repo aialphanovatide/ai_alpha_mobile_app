@@ -1,149 +1,99 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
-  Dimensions,
-  Image,
-  ImageBackground,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
   View,
+  Text,
+  ImageBackground,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
-import BackButton from '../BackButton/BackButton';
-import LinearGradient from 'react-native-linear-gradient';
-import {AppThemeContext} from '../../../context/themeContext';
 import {
-  VictoryAxis,
-  VictoryCandlestick,
   VictoryChart,
+  VictoryAxis,
   VictoryLine,
+  VictoryCandlestick,
   VictoryZoomContainer,
 } from 'victory-native';
-import useChartSectionStyles from '../ChartSection/ChartSectionStyles';
-import SkeletonLoader from '../../Loader/SkeletonLoader';
-import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/core';
-import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes';
-import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
-import {RevenueCatContext} from '../../../context/RevenueCatContext';
-import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
-import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
-import {
-  getCapitalComPrices,
-  postCCSession,
-} from '../../../services/CapitalComServices';
+import {useScreenOrientation} from '../../../../hooks/useScreenOrientation';
+import {RevenueCatContext} from '../../../../context/RevenueCatContext';
+import {getTestService} from '../../../../services/aiAlphaApi';
+import BackButton from '../../BackButton/BackButton';
+import SkeletonLoader from '../../../Loader/SkeletonLoader';
+import UpgradeOverlay from '../../../UpgradeOverlay/UpgradeOverlay';
+import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
+import DataRenderer from '../../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
+import useTotal3Styles from '../Total3ChartStyles';
+import {AppThemeContext} from '../../../../context/themeContext';
 
-const initialSessionData = {
-  security_token: null,
-  security_cst: null,
-};
-
-const VixChart = ({route}) => {
-  const styles = useChartSectionStyles();
-  const {isDarkMode, theme} = useContext(AppThemeContext);
+const Total3CandleChart = ({candlesToShow = 25}) => {
+  const styles = useTotal3Styles();
   const [chartData, setChartData] = useState([]);
-  const [sessionData, setSessionData] = useState(initialSessionData);
-  const [selectedInterval, setSelectedInterval] = useState('1D');
+  const {isDarkMode, theme} = useContext(AppThemeContext);
   const [loading, setLoading] = useState(true);
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
-  const [selectedCandle, setSelectedCandle] = useState(null);
   const navigation = useNavigation();
+  // const [selectedInterval, setSelectedInterval] = useState('1D');
+  const [selectedCandle, setSelectedCandle] = useState(null);
   const {subscribed} = useContext(RevenueCatContext);
   const [showGradient, setShowGradient] = useState(true);
   const [hasUpdatedZoomDomain, setHasUpdatedZoomDomain] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(true);
-  const candlesToShow = selectedInterval.toLowerCase() === '1w' ? 30 : 20;
+  const [hasRequestedData, setHasRequestedData] = useState(false);
 
-  // Hook to request again the data to CapitalCom when changing the time interval or the coin (changing to other chart)
-  useEffect(() => {
-    setLoading(true);
-    if (!sessionData.security_cst && !sessionData.security_token) {
-      loadChartsData();
-    } else {
-      fetchVixIndexData(sessionData.security_token, sessionData.security_cst);
-    }
-  }, [selectedInterval]);
+  const formatNumber = num => {
+    const absNum = Math.abs(num);
 
-  // Function to obtain both session and charts data from CapitalCom
+    const abbrev = ['', 'k', 'm', 'b', 't'];
+    const tier = Math.log10(absNum) / 3 || 0;
 
-  async function loadChartsData() {
+    if (tier === 0) return num;
+
+    if (num <= 0.01) return num.toExponential();
+
+    const divisor = Math.pow(1000, Math.round(tier - 1));
+    const formattedNum = (num / divisor).toFixed(2);
+
+    return formattedNum + abbrev[Math.round(tier - 1)];
+  };
+  async function fetchChartData() {
     try {
-      const response = await postCCSession();
-      const {security_token, security_cst} = response;
-      setSessionData({security_token, security_cst});
-
-      fetchVixIndexData(security_token, security_cst);
+      const response = await getTestService(`/chart/total3?days=${100}`);
+      if (response.data) {
+        const mappedData = response?.data?.map(datum => {
+          const hour_to_seconds = new Date(datum.date);
+          return {
+            x: hour_to_seconds.getTime(),
+            high: datum.high,
+            close: datum.close,
+            low: datum.low,
+            open: datum.open,
+          };
+        });
+        setHasRequestedData(true);
+        setChartData(mappedData.reverse());
+      } else {
+        setChartData([]);
+      }
     } catch (error) {
-      console.error('Error creating the new session', error);
-      setSessionData({security_token: null, security_cst: null});
-    }
-  }
-
-  // Function to fetch the chart data from the CapitalCom API, passing the previously requested session data
-
-  async function fetchVixIndexData(security_token, security_cst) {
-    const adapted_interval =
-      selectedInterval.toUpperCase() === '1H'
-        ? 'HOUR'
-        : selectedInterval.toUpperCase() === '4H'
-        ? 'HOUR_4'
-        : selectedInterval.toUpperCase() === '1D'
-        ? 'DAY'
-        : 'WEEK';
-    try {
-      const response = await getCapitalComPrices(
-        'VIX',
-        adapted_interval,
-        60,
-        security_token,
-        security_cst,
-      );
-      const mapped_prices = response?.prices?.map(price => {
-        const mapped_hour = new Date(price?.snapshotTime);
-        const hour_to_seconds = mapped_hour.getTime();
-        return {
-          x: hour_to_seconds,
-          open: parseFloat(price.openPrice.ask),
-          high: parseFloat(price.highPrice.ask),
-          low: parseFloat(price.lowPrice.ask),
-          close: parseFloat(price.closePrice.ask),
-        };
-      });
-      setChartData(mapped_prices);
+      console.error('Failed to fetch data:', error);
+    } finally {
       setLoading(false);
-    } catch (error) {
-      console.error('Error getting the prices data: ', error);
-      setSessionData({security_token: null, security_cst: null});
     }
   }
 
-  // [TEMPORARY] Function to manually update the data of the chart
-
-  const handleDataUpdate = async currentInterval => {
-    setLoading(true);
-    setChartData([]);
-    await fetchVixIndexData(
-      sessionData.security_token,
-      sessionData.security_cst,
-    );
-  };
-
-  // Function to trigger the time interval change of the charts, requesting again the data
-
-  const changeInterval = async newInterval => {
-    setLoading(true);
-    try {
-      setSelectedInterval(newInterval);
-      setChartData([]);
-    } catch (error) {
-      console.error('Failed to change interval: ${error}');
+  useEffect(() => {
+    if (!hasRequestedData) {
+      fetchChartData();
+    } else {
+      const intervalId = setInterval(() => fetchChartData(), 30000);
+      return () => clearInterval(intervalId);
     }
-  };
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => fetchVixIndexData(), 8000);
-  //   return () => clearInterval(intervalId);
-  // }, [selectedInterval]);
+  }, [hasRequestedData]);
 
   // Function to handle the X button interaction on the horizontal chart
 
@@ -154,25 +104,7 @@ const VixChart = ({route}) => {
     }
   };
 
-  // State variable and hook effect to handle the chart's domain including the zoom interaction, due to it is updated on every chart panning or zooming
-
-  const [zoomDomain, setZoomDomain] = useState({
-    x: [
-      chartData[chartData?.length - candlesToShow]?.x,
-      chartData[chartData?.length - 1]?.x,
-    ],
-  });
-
-  useEffect(() => {
-    if (chartData.length >= candlesToShow) {
-      setZoomDomain({
-        x: [
-          chartData[chartData.length - candlesToShow]?.x,
-          chartData[chartData.length - 1]?.x,
-        ],
-      });
-    }
-  }, [chartData, selectedInterval]);
+  // Function to generate the Y-Domain for the charts
 
   const domainY = () => {
     return chartData?.reduce(
@@ -186,7 +118,42 @@ const VixChart = ({route}) => {
     );
   };
 
-  const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
+  // State variable and hook effect to handle the chart's domain including the zoom interaction, due to it is updated on every chart panning or zooming
+
+  const [zoomDomain, setZoomDomain] = useState({
+    x: [
+      chartData[chartData.length - candlesToShow]?.x,
+      chartData[chartData.length - 1]?.x,
+    ],
+  });
+
+  useEffect(() => {
+    if (
+      !hasUpdatedZoomDomain ||
+      zoomDomain.x[0] === undefined ||
+      !zoomDomain.x
+    ) {
+      setHasUpdatedZoomDomain(true);
+      setZoomDomain({
+        x: [
+          chartData[chartData.length - candlesToShow]?.x,
+          chartData[chartData.length - 1]?.x,
+        ],
+      });
+    }
+  }, [chartData]);
+
+  // Function to trigger the time interval change of the charts, requesting again the data
+
+  // const changeInterval = async newInterval => {
+  //   setLoading(true);
+  //   try {
+  //     setSelectedInterval(newInterval);
+  //     setChartData([]);
+  //   } catch (error) {
+  //     console.error('Failed to change interval: ${error}');
+  //   }
+  // };
 
   // Function to handle candle click events
   const handleCandleClick = (event, data) => {
@@ -222,18 +189,15 @@ const VixChart = ({route}) => {
       chartData[chartData?.length - 1].x,
     ).getTime();
     const isFirstCandleVisible = zoomDomain.x[0] <= chartDataTimeStamp;
-
-    if (domainChange.x[0] < chartDataTimeStamp) {
-      console.log('Entered left margin branch');
+    if (domainChange.x[0] < chartData[0].x) {
       setZoomDomain({
-        x: [chartDataTimeStamp, domainChange.x[1]],
+        x: [chartData[0].x, domainChange.x[1]],
         y: domainChange.y,
       });
     } else {
-      if (domainChange.x[1] > chartDataMaxTimeStamp) {
-        console.log('Entered right margin branch');
+      if (domainChange.x[1] > chartData[chartData?.length - 1].x) {
         setZoomDomain({
-          x: [domainChange.x[0], chartDataMaxTimeStamp],
+          x: [domainChange.x[0], chartData[chartData?.length - 1].x],
           y: domainChange.y,
         });
       } else {
@@ -249,7 +213,7 @@ const VixChart = ({route}) => {
     setScrollEnabled(value);
   };
 
-  if (loading || chartData?.length === 0) {
+  if (loading) {
     return (
       <LinearGradient
         useAngle={true}
@@ -257,29 +221,23 @@ const VixChart = ({route}) => {
         colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
         locations={[0.22, 0.97]}
         style={{flex: 1}}>
-        <SafeAreaView
-          style={[
-            styles.background,
-            isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
-          ]}>
-          <ScrollView style={{flex: 1}} scrollEnabled={scrollEnabled}>
-            <View style={styles.backButtonWrapper}>
-              <BackButton />
-            </View>
-            <Text style={styles.title}>VIX Index Chart</Text>
-            <Text style={styles.sectionDescription}>
-              This Index measures the volatility in the markets - it spikes up
-              when sudden shocks happen and stays low when things are much
-              calmer.
-            </Text>
-            <View style={styles.container}>
-              <SkeletonLoader type="timeframe" quantity={2} />
-              <SkeletonLoader
-                type="chart"
-                style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
-              />
-            </View>
-          </ScrollView>
+        <SafeAreaView style={styles.background}>
+          <View style={styles.backButtonWrapper}>
+            <BackButton />
+          </View>
+          <Text style={styles.title}>Total 3 Chart</Text>
+          <Text style={styles.sectionDescription}>
+            This chart aggregates the market value of all cryptocurrencies
+            excluding Bitcoin and Ethereum. It provides an overview of the
+            health and trends of the altcoin market and is essential for
+            diversified investment strategies.
+          </Text>
+          <View style={[styles.container, {paddingHorizontal: 10}]}>
+            <SkeletonLoader
+              type="chart"
+              style={{marginVertical: 0, paddingTop: 24, paddingVertical: 16}}
+            />
+          </View>
           {subscribed ? <></> : <UpgradeOverlay />}
         </SafeAreaView>
       </LinearGradient>
@@ -289,49 +247,41 @@ const VixChart = ({route}) => {
   return (
     <SafeAreaView
       style={[
-        styles.mainSection,
-        isLandscape && isHorizontal && {width: '100%', paddingTop: 0},
+        styles.background,
+        isLandscape && isHorizontal && {width: '100%'},
       ]}>
       <BackgroundGradient />
-      <ScrollView style={{flex: 1}} scrollEnabled={scrollEnabled}>
+      <ScrollView
+        scrollEnabled={scrollEnabled}
+        style={{flex: 1}}
+        showsVerticalScrollIndicator={false}
+        bounces={false}>
         <View style={styles.backButtonWrapper}>
           <BackButton />
         </View>
-        <Text style={styles.title}>VIX Index Chart</Text>
+        <Text style={styles.title}>Total 3 Chart</Text>
         <Text style={styles.sectionDescription}>
-          This Index measures the volatility in the markets - it spikes up when
-          sudden shocks happen and stays low when things are much calmer.
+          This chart aggregates the market value of all cryptocurrencies
+          excluding Bitcoin and Ethereum. It provides an overview of the health
+          and trends of the altcoin market and is essential for diversified
+          investment strategies.
         </Text>
+        {/* <View style={styles.timeframeContainer}>
+          <TimeframeSelector
+            selectedInterval={selectedInterval}
+            changeInterval={changeInterval}
+            selectedPairing={'usdt'}
+            disabled={loading}
+          />
+        </View> */}
         <View style={styles.container}>
-          <View
-            style={[
-              styles.timeframeContainer,
-              {marginTop: 8, marginBottom: 16},
-            ]}>
-            <TimeframeSelector
-              selectedPairing={'null'}
-              selectedInterval={selectedInterval}
-              changeInterval={changeInterval}
-              disabled={loading}
-            />
-            {/* Refresh data button */}
-            <TouchableOpacity
-              onPress={() => handleDataUpdate(selectedInterval)}
-              disabled={loading}>
-              <Image
-                source={require('../../../assets/images/home/charts/chart-refresh.png')}
-                style={[styles.refreshButton, {top: 0, left: 20}]}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={[styles.chart, {marginVertical: 8}]}>
+          <View style={styles.chart}>
             <ImageBackground
-              source={require('../../../assets/images/chart_alpha_logo.png')}
-              style={[styles.chartBackgroundImage, {top: 45}]}
+              source={require('../../../../assets/images/chart_alpha_logo.png')}
+              style={styles.chartBackgroundImage}
               resizeMode="contain"
             />
-            {showGradient && (
+            {showGradient && !selectedCandle && (
               <LinearGradient
                 useAngle
                 angle={90}
@@ -342,11 +292,11 @@ const VixChart = ({route}) => {
                 }
                 style={{
                   position: 'absolute',
-                  left: '4%',
-                  top: '10%',
+                  left: '4.25%',
+                  top: '8.5%',
                   bottom: 0,
-                  width: 50,
-                  height: '71%',
+                  width: 40,
+                  height: '72.5%',
                   zIndex: 1,
                 }}
               />
@@ -365,7 +315,8 @@ const VixChart = ({route}) => {
                   },
                 },
               ]}
-              padding={{top: 10, bottom: 40, left: 20, right: 70}}
+              padding={{top: 10, bottom: 40, left: 40, right: 70}}
+              domainPadding={{x: 5, y: 3}}
               scale={{x: 'time', y: 'linear'}}
               height={300}
               containerComponent={
@@ -382,26 +333,32 @@ const VixChart = ({route}) => {
                 style={{
                   axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
                   tickLabels: {
-                    fontSize: theme.responsiveFontSize * 0.7,
+                    fontSize: 9.25,
                     fill: theme.titleColor,
                     fontFamily: theme.font,
                   },
                   grid: {stroke: theme.chartsGridColor},
                 }}
-                tickCount={!showGradient ? 3 : 8}
+                tickCount={
+                  // selectedInterval.toUpperCase() === '1W'
+                  //   ? !showGradient
+                  //     ? 2
+                  //     : 3
+                  // :
+                  !showGradient ? 3 : 6
+                }
                 tickFormat={t => {
                   const year = t.getFullYear().toString().slice(2, 4);
                   const month = (t.getMonth() + 1).toString().padStart(2, '0');
-                  const day = t.getDate().toString().padStart(2, '');
+                  const day = t.getDate().toString().padStart(2, '0');
                   const hour = t.getHours().toString().padStart(2, '0');
                   const minute = t.getMinutes().toString().padStart(2, '0');
-                  return ` ${day}/${month}/${year} `;
+                  return `${day}/${month}/${year}`;
                 }}
               />
               {/* Y-Axis */}
               <VictoryAxis
                 dependentAxis
-                fixLabelOverlap
                 style={{
                   axis: {stroke: theme.chartsAxisColor},
                   tickLabels: {
@@ -412,8 +369,8 @@ const VixChart = ({route}) => {
                   grid: {stroke: theme.chartsGridColor},
                 }}
                 orientation="right"
-                tickCount={8}
-                tickFormat={t => `$${t}`}
+                tickCount={6}
+                tickFormat={t => `$${formatNumber(t)}`}
               />
 
               {/* HORIZONTAL LINE */}
@@ -421,7 +378,7 @@ const VixChart = ({route}) => {
                 <VictoryLine
                   data={[
                     {
-                      x: zoomDomain.x[0],
+                      x: zoomDomain.x[-candlesToShow],
                       y: (selectedCandle.open + selectedCandle.close) / 2,
                     },
                     {
@@ -440,17 +397,16 @@ const VixChart = ({route}) => {
                   }}
                 />
               )}
-              {/* Click on candle data component */}
+              {/* Component that renders when clicking a candle */}
               <DataRenderer
                 domainX={zoomDomain.x}
                 yPoint={selectedCandle && calculateCandleMiddle(selectedCandle)}
-                domainY={domainY()}
+                domainY={domainY}
                 chartWidth={chartWidth}
                 screenWidth={width}
                 chartHeight={chartHeight}
                 data={selectedCandle && selectedCandle}
               />
-
               {/* VERTICAL LINE */}
               {selectedCandle && (
                 <VictoryLine
@@ -483,7 +439,7 @@ const VixChart = ({route}) => {
                     },
                   },
                 ]}
-                candleRatio={0.8}
+                candleRatio={1}
                 candleColors={{positive: '#09C283', negative: '#E93334'}}
                 style={{
                   data: {
@@ -508,15 +464,12 @@ const VixChart = ({route}) => {
                     }
               }>
               <Image
-                style={[
-                  styles.chartsHorizontalButton,
-                  {bottom: Platform.OS === 'android' ? 85 : 100},
-                ]}
+                style={styles.chartsHorizontalButton}
                 resizeMode="contain"
                 source={
                   isLandscape && isHorizontal
-                    ? require('../../../assets/images/home/charts/deactivate-horizontal.png')
-                    : require('../../../assets/images/home/charts/activate-horizontal.png')
+                    ? require('../../../../assets/images/home/charts/deactivate-horizontal.png')
+                    : require('../../../../assets/images/home/charts/activate-horizontal.png')
                 }
               />
             </TouchableOpacity> */}
@@ -534,13 +487,9 @@ const VixChart = ({route}) => {
             </TouchableOpacity> */}
           {/* Zoom interaction indicator */}
           <Image
-            style={[
-              styles.chartsZoomIndicator,
-              {bottom: Platform.OS === 'android' ? 60 : 70},
-              selectedCandle && {zIndex: -1},
-            ]}
+            style={styles.chartsZoomIndicator}
             resizeMode="contain"
-            source={require('../../../assets/images/home/charts/zoom-expand.png')}
+            source={require('../../../../assets/images/home/charts/zoom-expand.png')}
           />
         </View>
       </ScrollView>
@@ -549,4 +498,4 @@ const VixChart = ({route}) => {
   );
 };
 
-export default VixChart;
+export default Total3CandleChart;

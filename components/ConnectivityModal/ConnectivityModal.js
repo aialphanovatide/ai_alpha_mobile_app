@@ -1,7 +1,13 @@
 import React, {useContext} from 'react';
-import {Image, Modal, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ImageBackground,
+  Modal,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import useConnectivityModalStyles from './ConnectivityModalStyles';
 import {AppThemeContext} from '../../context/themeContext';
+import {BlurView} from '@react-native-community/blur';
 
 const ConnectivityModal = ({
   serverError,
@@ -12,93 +18,53 @@ const ConnectivityModal = ({
   type = 'connection',
 }) => {
   const styles = useConnectivityModalStyles();
-  const {isDarkMode} = useContext(AppThemeContext);
-  return type === 'serverDown' ? (
+  const {theme, isDarkMode} = useContext(AppThemeContext);
+  return (
     <Modal
+      style={styles.modal}
       animationType="slide"
       transparent={true}
-      visible={serverError}
+      visible={type === 'serverDown' ? serverError : modalVisible}
       onRequestClose={() => {
-        setServerError(false);
+        type === 'serverDown' ? setServerError(false) : setModalVisible(false);
       }}>
-      <View style={styles.centeredView}>
-        <View
-          style={[
-            styles.orangeBox,
-            {
-              backgroundColor: isDarkMode ? '#451205' : '#FFF7EC',
-            },
-          ]}>
-          <View style={styles.row}>
-            <Image
-              source={require('../../assets/images/login/serverdown.png')}
-              style={styles.imageStyle3}
-            />
-            <Text
-              style={[
-                styles.labelText1,
-                {
-                  color: isDarkMode ? '#FF8D34' : '#FF6C0D',
-                },
-              ]}>
-              Seems like the server is down
+      <BlurView
+        style={styles.absolute}
+        blurType={isDarkMode ? 'dark' : 'light'}
+        blurAmount={1.75}
+        blurRadius={1}
+      />
+      <ImageBackground
+        source={
+          isDarkMode
+            ? require('../../assets/images/connectivity-image-dark.png')
+            : require('../../assets/images/connectivity-image.png')
+        }
+        style={[styles.connectivityImage]}
+        resizeMode="contain">
+        {type === 'serverDown' ? (
+          <>
+            <Text style={styles.title}>
+              {'Uh Oh.\nSeems like the server is down'}
             </Text>
-          </View>
-          <Text
-            style={[
-              styles.labelText3,
-              {
-                color: isDarkMode ? '#FF6C0D' : '#A02E0C',
-              },
-            ]}>
-            Please wait a few minutes while our technicians work to solve this
-            problem
-          </Text>
-        </View>
-      </View>
-    </Modal>
-  ) : (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(false);
-      }}>
-      <View style={styles.centeredView}>
-        <View
-          style={[
-            styles.orangeBox,
-            {
-              backgroundColor: isDarkMode ? '#451205' : '#FFF7EC',
-            },
-          ]}>
-          <View style={styles.row}>
-            <Image
-              source={require('../../assets/images/login/nointernet.png')}
-              style={styles.imageStyle1}
-            />
-            <Text
-              style={[
-                styles.labelText1,
-                {
-                  color: isDarkMode ? '#FF8D34' : '#FF6C0D',
-                },
-              ]}>
-              It seems that you are offline.
+            <Text style={[styles.title, styles.subtitle, {fontFamily: isDarkMode ? theme.fontSemibold : theme.fontMedium }]}>
+              Please wait a few minutes until our technicians work to solve the
+              problem
             </Text>
-          </View>
-          <View style={styles.row}>
-            <Image
-              source={require('../../assets/images/login/reloadsymbol.png')}
-              style={styles.imageStyle2}
-            />
-            <TouchableOpacity onPress={checkConnectivityAndCloseModal}>
-              <Text style={styles.labelText2}>Reload</Text>
+          </>
+        ) : (
+          <>
+            <Text style={styles.title}>
+              {'Uh Oh.\nIt seems that you are offline.'}
+            </Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => checkConnectivityAndCloseModal()}>
+              <Text style={styles.buttonText}>Reload</Text>
             </TouchableOpacity>
-          </View>
-        </View>
-      </View>
+          </>
+        )}
+      </ImageBackground>
     </Modal>
   );
 };

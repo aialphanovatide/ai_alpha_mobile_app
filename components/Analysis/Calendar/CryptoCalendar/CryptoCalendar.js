@@ -1,13 +1,12 @@
 import {React, useState, useEffect, useContext} from 'react';
 import {View, Text, ScrollView, Image} from 'react-native';
 import calendarService from '../../../../services/CalendarService';
-import Loader from '../../../Loader/Loader';
 import CryptoFilter from './CryptoFilter';
-import menuData from '../../../Home/Topmenu/mainMenu/menuData';
 import calendarCryptos from './calendarCryptos';
 import useCryptoCalendarStyles from './CryptoCalendarStyles';
 import {CategoriesContext} from '../../../../context/categoriesContext';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
+import NoContentDisclaimer from '../../../NoContentDisclaimer/NoContentDisclaimer';
 
 const eventTags = [
   {
@@ -183,11 +182,7 @@ const CryptoCalendar = ({selectedInterval}) => {
         <View style={styles.container}>
           <ScrollView style={styles.eventsContainer}>
             {events.length === 0 ? (
-              <View style={styles.messageContainer}>
-                <Text style={styles.emptyEventsMessage}>
-                  No events were found.
-                </Text>
-              </View>
+              <NoContentDisclaimer />
             ) : (
               events.map((event, index) => (
                 <CalendarItem

@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 
 const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -41,13 +42,11 @@ const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
       onPress={() => handleHistoryNavigation(item)}>
       <FastImage
         source={{
-          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
-            isDarkMode ? 'dark' : 'light'
-          }/${
+          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${
             item.category !== null &&
             item.category.toLowerCase().replace(/\s/g, '') === 'total3'
               ? 'total3'
-              : item.coin_bot_name
+              : item.coin_bot_name.toLowerCase()
           }.png`,
           priority: FastImage.priority.normal,
         }}
@@ -135,7 +134,8 @@ const NarrativeTrading = () => {
 
   // Hook to load the data from the previous narrative tradings that the user has seen
   useEffect(() => {
-    const fetchData = async () => {
+    const interval = activeOption === 'today' ? 1 : 7;
+    const fetchData = async interval => {
       try {
         const keys = await AsyncStorage.getAllKeys();
         const narrativeTradingKeys = keys.filter(key =>
@@ -145,15 +145,32 @@ const NarrativeTrading = () => {
           narrativeTradingKeys,
         );
         const parsedItems = narrativeItems.map(item => JSON.parse(item[1]));
-        setLoadedNarrativeTradingItems(parsedItems);
+
+        const currentDate = new Date();
+
+        const filteredItems = parsedItems.filter(item => {
+          const clickedAt = new Date(item.clickedAt);
+          const timeDifference = Math.abs(currentDate - clickedAt);
+          const daysDifference = timeDifference / (1000 * 3600 * 24);
+
+          return daysDifference <= interval;
+        });
+
+        console.log(
+          `Loaded narrative trading items within ${interval} days: `,
+          filteredItems,
+        );
+
+        setLoadedNarrativeTradingItems(filteredItems);
       } catch (e) {
         console.error('Failed to load the data from storage', e);
       }
     };
     if (loadedNarrativeTradingItems.length === 0) {
-      fetchData();
+      fetchData(interval);
     }
-  }, []);
+  }, [activeOption]);
+
   useEffect(() => {
     setCryptoOptions(filterData);
     setActiveCryptoOption(filterData[0]);
@@ -162,6 +179,7 @@ const NarrativeTrading = () => {
       handleTimeIntervalChange(options[0]);
     }
   }, [loadedNarrativeTradingItems]);
+
   const filterItemsByCategory = (category, items) => {
     const filtered_items = [];
     if (category.category_name.toLowerCase().replace(/\s/g, '') === 'total3') {
@@ -175,24 +193,34 @@ const NarrativeTrading = () => {
       });
       return filtered_items;
     }
-    category.coin_bots.forEach(coin => {
-      // console.log(items);
-      items.forEach(item => {
-        if (
-          item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===
-          coin.bot_name.toLowerCase().replace(/\s/g, '')
-        ) {
-          filtered_items.push(item);
-        }
-      });
+    // category.coin_bots.forEach(coin => {
+    //   // console.log(items);
+    //   items.forEach(item => {
+    //     if (
+    //       item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===
+    //       coin.bot_name.toLowerCase().replace(/\s/g, '')
+    //     ) {
+    //       filtered_items.push(item);
+    //     }
+    //   });
+    // });
+
+    items.forEach(item => {
+      if (
+        item.category.toLowerCase() === category.category_name.toLowerCase()
+      ) {
+        filtered_items.push(item);
+      }
     });
+
     return filtered_items;
   };
+
   const filterItemsByTime = (interval, items) => {
     const currentDate = new Date();
     // console.log(items);
     const filteredArray = items.filter(item => {
-      const createdAtDate = new Date(item.created_at);
+      const createdAtDate = new Date(item.clickedAt);
       if (interval === 'today') {
         return createdAtDate.toDateString() === currentDate.toDateString();
       }
@@ -206,6 +234,7 @@ const NarrativeTrading = () => {
     });
     return filteredArray;
   };
+
   const handleCryptoTouch = option => {
     setActiveCryptoOption(option);
     const filtered_by_time = filterItemsByTime(
@@ -218,6 +247,7 @@ const NarrativeTrading = () => {
     );
     setNarrativeTradingItems(filtered_narrative_tradings.reverse());
   };
+
   const handleNarrativeTradingNavigation = item => {
     navigation.navigate('Home', {
       screen: 'NarrativeTradingArticleScreen',
@@ -229,6 +259,7 @@ const NarrativeTrading = () => {
       },
     });
   };
+
   const handleTimeIntervalChange = interval => {
     setActiveOption(interval);
     setActiveCryptoOption(filterData[0]);
@@ -239,6 +270,7 @@ const NarrativeTrading = () => {
     const filtered_items = filterItemsByTime(interval, filtered_by_crypto);
     setNarrativeTradingItems(filtered_items.reverse());
   };
+
   const handleNavigationToAnalysis = () => {
     navigation.navigate('Analysis', {
       screen: 'AnalysisMain',
@@ -248,47 +280,45 @@ const NarrativeTrading = () => {
   return (
     <SafeAreaView style={styles.flex}>
       <BackgroundGradient />
-        <View style={styles.container}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton navigationHandler={handleNavigationToAnalysis} />
-          </View>
-          <Text style={styles.title}>Narrative Trading</Text>
-          <Text style={styles.sectionDescription}>
-            Analyzing specific cryptocurrency sectors (e.g. RWA) and trends
-            (SocialFi) in order to capitalise on their momentum.
-          </Text>
-          <View style={styles.menusContainer}>
-            <TimeMenu
-              options={options}
-              activeOption={activeOption}
-              handleTimeIntervalChange={handleTimeIntervalChange}
-              styles={styles}
-            />
-            <CryptoFilter
-              options={cryptoOptions}
-              currentFilter={activeCryptoOption}
-              handleOptionTouch={handleCryptoTouch}
-            />
-          </View>
-          <ScrollView style={styles.itemsContainer}>
-            {narrativeTradingItems.length > 0 ? (
-              narrativeTradingItems.map(item => (
-                <NarrativeTradingItem
-                  key={item.id}
-                  item={item}
-                  styles={styles}
-                  handleHistoryNavigation={handleNarrativeTradingNavigation}
-                />
-              ))
-            ) : (
-              <Text style={styles.emptyMessage}>
-                There aren't narrative tradings to show.
-              </Text>
-            )}
-            <View style={styles.spacing} />
-          </ScrollView>
+      <View style={styles.container}>
+        <View style={styles.backButtonWrapper}>
+          <BackButton navigationHandler={handleNavigationToAnalysis} />
         </View>
-        {subscribed ? <></> : <UpgradeOverlay />}
+        <Text style={styles.title}>Narrative Trading</Text>
+        <Text style={styles.sectionDescription}>
+          Analyzing specific cryptocurrency sectors (e.g. RWA) and trends
+          (SocialFi) in order to capitalise on their momentum.
+        </Text>
+        <View style={styles.menusContainer}>
+          <TimeMenu
+            options={options}
+            activeOption={activeOption}
+            handleTimeIntervalChange={handleTimeIntervalChange}
+            styles={styles}
+          />
+          <CryptoFilter
+            options={cryptoOptions}
+            currentFilter={activeCryptoOption}
+            handleOptionTouch={handleCryptoTouch}
+          />
+        </View>
+        <ScrollView style={styles.itemsContainer}>
+          {narrativeTradingItems.length > 0 ? (
+            narrativeTradingItems.map(item => (
+              <NarrativeTradingItem
+                key={item.id}
+                item={item}
+                styles={styles}
+                handleHistoryNavigation={handleNarrativeTradingNavigation}
+              />
+            ))
+          ) : (
+            <NoContentDisclaimer />
+          )}
+          <View style={styles.spacing} />
+        </ScrollView>
+      </View>
+      {subscribed ? <></> : <UpgradeOverlay />}
     </SafeAreaView>
   );
 };

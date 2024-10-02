@@ -12,6 +12,7 @@ import NarrativeTrading from './NarrativeTrading/NarrativeTrading';
 import FundingRates from './FundingRates/FundingRates';
 import VixChart from './VixIndexChart/VixChart';
 import UsOilChart from './UsOilChart/UsOilChart';
+import Total3CandleChart from './Total3Chart/Total3CandleChart/Total3CandleChart';
 
 const AnalysisStack = createNativeStackNavigator();
 
@@ -75,7 +76,16 @@ const AnalysisScreen = () => {
             'When the price of oil is higher, inflation is likely to be higher, which in turn means the US economy is likely to be weaker medium term and therefore crypto prices will come down.',
         }}
       />
-      <AnalysisStack.Screen name="VIX" component={VixChart} />
+      <AnalysisStack.Screen
+        name="VIX"
+        component={ChartSection}
+        initialParams={{
+          title: 'VIX Index Chart',
+          symbol: 'VIX',
+          description:
+            'This Index measures the volatility in the markets - it spikes up when sudden shocks happen and stays low when things are much calmer.',
+        }}
+      />
       <AnalysisStack.Screen name="FearAndGreed" component={FearAndGreed} />
     </AnalysisStack.Navigator>
   );

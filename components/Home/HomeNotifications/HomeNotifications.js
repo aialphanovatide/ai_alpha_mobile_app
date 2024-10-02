@@ -15,6 +15,7 @@ import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import {useRoute} from '@react-navigation/native';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 
 // Function to handle the sorting of the notifications items by the date
 
@@ -153,7 +154,6 @@ const HomeNotifications = ({route, navigation}) => {
   const loadNotifications = async () => {
     try {
       const storedNotifications = await AsyncStorage.getItem('notifications');
-      console.log(storedNotifications);
       const currentNotifications = storedNotifications
         ? JSON.parse(storedNotifications)
         : [];
@@ -176,14 +176,6 @@ const HomeNotifications = ({route, navigation}) => {
       );
       return [];
     }
-  };
-
-  const findAppNotification = (title, type, notifications) => {
-    return (
-      notifications.find(
-        notif => notif.title === title && notif.type === type,
-      ) !== undefined
-    );
   };
 
   useEffect(() => {
@@ -238,7 +230,7 @@ const HomeNotifications = ({route, navigation}) => {
   // Function to handle the back button navigation when the section is acceeded through the alerts tab
 
   const handleBackNavigation = () => {
-      navigation.navigate('Home', {screen: 'InitialHome'});
+    navigation.navigate('Home', {screen: 'InitialHome'});
   };
 
   return (
@@ -261,39 +253,33 @@ const HomeNotifications = ({route, navigation}) => {
           style={styles.container}
           bounces={false}
           showsVerticalScrollIndicator={false}>
-          {notificationsData.map(group => {
-            return group.items.map((item, index) => {
-              const isLastItem =
-                group.items.length === 1 || index === group.items.length - 1;
-              const imageSource =
-                item.type === 'alerts'
-                  ? `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.coin.toLowerCase()}.png`
-                  : `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
-                      isDarkMode ? 'dark' : 'light'
-                    }/${
-                      item.category !== null &&
-                      item.category.toLowerCase().replace(/\s/g, '') ===
-                        'total3'
-                        ? 'total3'
-                        : item.coin
-                    }.png`;
-              return (
-                <React.Fragment key={`${item.title}_${item.category}_${index}`}>
-                  <NotificationItem
-                    imageSource={imageSource}
-                    item={item}
-                    isNew={true}
-                  />
-                  {isLastItem && (
-                    <View
-                      key={`divider_${item.title}_${item.category}_${index}`}
-                      style={styles.divider}
+          {notificationsData?.length > 0 ? (
+            notificationsData.map(group => {
+              return group.items.map((item, index) => {
+                const isLastItem =
+                  group.items.length === 1 || index === group.items.length - 1;
+                const imageSource = `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${item.coin.toLowerCase()}.png`;
+                return (
+                  <React.Fragment
+                    key={`${item.title}_${item.category}_${index}`}>
+                    <NotificationItem
+                      imageSource={imageSource}
+                      item={item}
+                      isNew={true}
                     />
-                  )}
-                </React.Fragment>
-              );
-            });
-          })}
+                    {isLastItem && (
+                      <View
+                        key={`divider_${item.title}_${item.category}_${index}`}
+                        style={styles.divider}
+                      />
+                    )}
+                  </React.Fragment>
+                );
+              });
+            })
+          ) : (
+            <NoContentDisclaimer />
+          )}
         </ScrollView>
       </View>
     </SafeAreaView>

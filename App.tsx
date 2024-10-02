@@ -42,6 +42,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomSplashScreen from './components/SplashScreen/SplashScreen';
+import SubscriptionPopUp from './components/SubscriptionPopUps/SubscriptionPopUp';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 const {width, height} = Dimensions.get('window');
@@ -64,6 +65,8 @@ const App = () => {
   const [userSignedUp, setUserSignedUp] = useState(false);
   const [initialAnimationFinished, setInitialAnimationFinished] =
     useState(false);
+  // const [subscriptionPopUpsVisible, setSubscriptionPopUpsVisible] =
+  //   useState(true);
 
   useEffect(() => {
     setTimeout(() => {
@@ -349,6 +352,10 @@ const App = () => {
                                   }
                                   type="serverDown"
                                 />
+                                {/* <SubscriptionPopUp
+                                  visible={subscriptionPopUpsVisible}
+                                  setVisible={setSubscriptionPopUpsVisible}
+                                /> */}
                               </AboutModalProvider>
                             </GestureHandlerRootView>
                           </AnalysisContextProvider>

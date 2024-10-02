@@ -16,6 +16,7 @@ import {home_static_data} from '../homeStaticData';
 import {AnalysisContext} from '../../../context/AnalysisContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 
 if (
   Platform.OS === 'android' &&
@@ -45,7 +46,7 @@ const Analysis = ({handleAboutPress}) => {
     setExpanded(!expanded);
   };
 
-  // Function to handle the navigation to the full Analysis article when pressing it
+  // Function to handle the navigation to the full Analysis article when pressing it, saving the item with the current date for filtering the articles on the History section later
 
   const handleAnalysisNavigation = async analysis => {
     navigation.navigate('AnalysisArticleScreen', {
@@ -55,10 +56,18 @@ const Analysis = ({handleAboutPress}) => {
       date: analysis.created_at,
       isHistoryArticle: false,
     });
+
+    const clickedAt = new Date().toISOString();
+
+    const analysisWithDate = {
+      ...analysis,
+      clickedAt: clickedAt,
+    };
+
     try {
       await AsyncStorage.setItem(
         `analysis_${analysis.id}`,
-        JSON.stringify(analysis),
+        JSON.stringify(analysisWithDate),
       );
     } catch (error) {
       console.error(`Failed to save the data of analysis ${analysis.id}`);
@@ -72,6 +81,21 @@ const Analysis = ({handleAboutPress}) => {
     });
   };
 
+  if (!loading && analysisData?.length === 0) {
+    <View style={styles.analysisItemsContainer}>
+      <Text style={styles.mainTitle}>Daily Deep Dives</Text>
+      <AboutIcon
+        handleAboutPress={handleAboutPress}
+        title={home_static_data.analysis.sectionTitle}
+        description={home_static_data.analysis.sectionDescription}
+        additionalStyles={aboutIconStyles}
+      />
+      <NoContentDisclaimer
+        additionalStyles={{disclaimer: {marginVertical: '5%'}}}
+      />
+    </View>;
+  }
+
   return (
     <View style={styles.analysisItemsContainer}>
       <Text style={styles.mainTitle}>Daily Deep Dives</Text>
@@ -83,10 +107,6 @@ const Analysis = ({handleAboutPress}) => {
       />
       {loading ? (
         <SkeletonLoader />
-      ) : analysisData?.length === 0 ? (
-        <Text style={styles.emptyMessage}>
-          {home_static_data.analysis.noContentMessage}
-        </Text>
       ) : (
         <View style={styles.itemsContainer}>
           {analysisData?.slice(0, 5).map((story, index) => (

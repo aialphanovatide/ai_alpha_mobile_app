@@ -17,6 +17,7 @@ import {NarrativeTradingContext} from '../../../context/NarrativeTradingContext'
 import useHomeNarrativeTradingStyles from './NarrativeTradingsStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 
 if (
   Platform.OS === 'android' &&
@@ -45,17 +46,18 @@ const NarrativeTradingItem = ({
       ]}>
       <FastImage
         source={{
-          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
-            isDarkMode ? 'dark' : 'light'
-          }/${
+          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${
             item.category !== null &&
             item.category.toLowerCase().replace(/\s/g, '') === 'total3'
               ? 'total3'
-              : item.coin_bot_name
+              : item.coin_bot_name.toLowerCase()
           }.png`,
           priority: FastImage.priority.high,
         }}
-        style={[styles.imageStyle, index > 0 && !expanded ? styles.hidden : {opacity: 1}]}
+        style={[
+          styles.imageStyle,
+          index > 0 && !expanded ? styles.hidden : {opacity: 1},
+        ]}
         resizeMode="contain"
         fallback={true}
       />
@@ -93,10 +95,18 @@ const NarrativeTradings = ({handleAboutPress}) => {
       date: item.created_at,
       isNavigateFromHome: true,
     });
+
+    const clickedAt = new Date().toISOString();
+
+    const itemWithDate = {
+      ...item,
+      clickedAt: clickedAt,
+    };
+
     try {
       await AsyncStorage.setItem(
         `narrative_trading_${item.id}`,
-        JSON.stringify(item),
+        JSON.stringify(itemWithDate),
       );
     } catch (error) {
       console.error(`Failed to save the data of narrative trading ${item.id}`);
@@ -111,7 +121,20 @@ const NarrativeTradings = ({handleAboutPress}) => {
   };
 
   if (!loading && narrativeTradingItems?.length === 0) {
-    return <></>;
+    return (
+      <View style={styles.container}>
+        <Text style={styles.mainTitle}>Market Narratives</Text>
+        <AboutIcon
+          handleAboutPress={handleAboutPress}
+          title={home_static_data.narrativeTradings.sectionTitle}
+          description={home_static_data.narrativeTradings.sectionDescription}
+          additionalStyles={aboutIconStyles}
+        />
+        <NoContentDisclaimer
+          additionalStyles={{disclaimer: {marginVertical: '5%'}}}
+        />
+      </View>
+    );
   }
 
   return (

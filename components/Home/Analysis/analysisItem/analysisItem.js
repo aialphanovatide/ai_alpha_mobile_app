@@ -13,7 +13,6 @@ const AnalysisItem = ({
 }) => {
   const styles = useHomeAnalysisStyles();
   const {isDarkMode} = useContext(AppThemeContext);
-
   return (
     <List.Item
       style={[
@@ -26,13 +25,11 @@ const AnalysisItem = ({
       left={() => (
         <FastImage
           source={{
-            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
-              isDarkMode ? 'dark' : 'light'
-            }/${
+            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${
               item.category !== null &&
               item.category.toLowerCase().replace(/\s/g, '') === 'total3'
                 ? 'total3'
-                : item.coin_bot_name
+                : item.coin_bot_name.toLowerCase()
             }.png`,
             priority: FastImage.priority.high,
             cache: FastImage.cacheControl.immutable,

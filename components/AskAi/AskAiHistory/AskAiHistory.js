@@ -10,6 +10,7 @@ import {AboutModalContext} from '../../../context/AboutModalContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from '../../Analysis/BackButton/BackButton';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 
 const HistoryContent = ({
   activeHistoryOption,
@@ -77,18 +78,11 @@ const HistoryContent = ({
                     />
                   </View>
                   <Text style={styles.historyItemName}>{coin.name}</Text>
-                  <Image
-                    source={require('../../../assets/images/arrow-right.png')}
-                    style={styles.rightArrow}
-                    resizeMode="contain"
-                  />
                 </TouchableOpacity>
               );
             })
           ) : (
-            <Text style={styles.noContentMessage}>
-              There are no previous searches.
-            </Text>
+            <NoContentDisclaimer />
           )}
         </View>
       </View>

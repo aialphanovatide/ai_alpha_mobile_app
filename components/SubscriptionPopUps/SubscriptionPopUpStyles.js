@@ -1,8 +1,9 @@
+import {AppThemeContext} from '../../context/themeContext';
+
 const {useContext} = require('react');
 const {StyleSheet, Platform, StatusBar} = require('react-native');
-const {AppThemeContext} = require('../../context/themeContext');
 
-const useConnectivityModalStyles = () => {
+const useSubscriptionPopUpStyles = () => {
   const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     centeredView: {
@@ -28,43 +29,9 @@ const useConnectivityModalStyles = () => {
       alignItems: 'center',
       paddingVertical: 5,
     },
-    imageStyle1: {
-      width: 35,
-      height: 28,
-      marginRight: 30,
-    },
-    imageStyle2: {
-      width: 20,
-      height: 20,
-      marginRight: 10,
-    },
-    imageStyle3: {
-      width: 26,
-      height: 25,
-      marginLeft: 40,
-      marginRight: 20,
-      marginBottom: 10,
-    },
-    labelText1: {
-      color: '#FF6C0D',
-      fontSize: 16,
-      marginRight: 60,
-      fontFamily: theme.font,
-    },
-    labelText2: {
-      color: '#FF6C0D',
-      fontSize: 16,
-      textDecorationLine: 'underline',
-      fontFamily: theme.fontMedium,
-    },
-    labelText3: {
-      fontSize: 10,
-      fontFamily: theme.font,
-      textAlign: 'center',
-    },
-    title: {
-      marginHorizontal: '5%',
-      fontSize: 23,
+    mainTitle: {
+      marginHorizontal: '15%',
+      fontSize: 30,
       fontFamily: theme.fontSemibold,
       color: '#FF6C0D',
       textAlign: 'center',
@@ -73,12 +40,26 @@ const useConnectivityModalStyles = () => {
     },
     subtitle: {
       fontSize: 14,
+      lineHeight: 25,
+      fontFamily: theme.font,
+      color: '#FF6C0D',
+      textAlign: 'center',
+      alignSelf: 'center',
     },
-    connectivityImage: {
+    secondaryTitle: {
+      fontSize: 18,
+    },
+    graySecondaryText: {
+      marginTop: 16,
+      fontFamily: theme.font,
+      color: '#A3A3A3',
+      fontSize: 11,
+    },
+    imageContainer: {
       width: '100%',
-      height: 360,
-      marginTop: '70%',
-      paddingBottom: '10%',
+      height: 460,
+      marginTop: '50%',
+      paddingBottom: 20,
       justifyContent: 'flex-end',
       alignItems: 'center',
       alignSelf: 'center',
@@ -93,8 +74,8 @@ const useConnectivityModalStyles = () => {
       justifyContent: 'center',
     },
     button: {
-      width: '80%',
-      marginTop: 32,
+      width: '85%',
+      marginTop: 16,
       paddingVertical: 8,
       backgroundColor: '#FF6C0D',
       alignItems: 'center',
@@ -106,9 +87,9 @@ const useConnectivityModalStyles = () => {
       fontSize: 16,
       fontFamily: theme.fontSemibold,
       color: '#FAFAFA',
-    }
+    },
   });
   return styles;
 };
 
-export default useConnectivityModalStyles;
+export default useSubscriptionPopUpStyles;

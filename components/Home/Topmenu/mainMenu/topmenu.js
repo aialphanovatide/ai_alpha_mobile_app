@@ -63,7 +63,10 @@ const TopMenu = ({isAlertsMenu}) => {
         });
       }
     }
+  };
 
+  const scrollToActiveCategory = category => {
+    const index = findIndexByCategory(category);
     setTimeout(() => {
       if (topMenuScrollRef.current) {
         const itemWidth = 60;
@@ -86,6 +89,37 @@ const TopMenu = ({isAlertsMenu}) => {
         });
       }
     }, 100);
+  };
+
+  // Hook to handle the scroll feature of the top menu when switching between categories or redirecting from clicking a topTenGainers item
+
+  useEffect(() => {
+    if (
+      Object.keys(activeCoin).length !== 0 &&
+      activeCoin &&
+      activeCoin !== undefined
+    ) {
+      scrollToActiveCategory(activeCoin);
+    } else {
+      setScrollX(0);
+      setTimeout(() => {
+        if (topMenuScrollRef.current) {
+          topMenuScrollRef.current.scrollTo({
+            x: 0,
+            animated: true,
+          });
+        }
+      }, 20);
+    }
+  }, [activeCoin]);
+
+  const findIndexByCategory = category => {
+    const found = categories.findIndex(
+      cat =>
+        category.category_name.toLowerCase() ===
+        cat.category_name.toLowerCase(),
+    );
+    return found !== -1 ? found : 0;
   };
 
   const toggleActiveSearchBar = value => {

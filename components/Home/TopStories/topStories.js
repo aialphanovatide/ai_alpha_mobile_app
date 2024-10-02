@@ -1,14 +1,22 @@
 import React, {useState, useEffect, useContext} from 'react';
 import StoryItem from './Storyitem/storyItem';
 import useTopStoriesStyles from './topStoriesStyles';
-import {Image, Text, View, TouchableOpacity, Platform, UIManager, LayoutAnimation} from 'react-native';
+import {
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+  UIManager,
+  LayoutAnimation,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext';
 import {CategoriesContext} from '../../../context/categoriesContext';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import {home_static_data} from '../homeStaticData';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
-
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 
 if (
   Platform.OS === 'android' &&
@@ -105,9 +113,9 @@ const TopStories = ({handleAboutPress}) => {
       {loading ? (
         <SkeletonLoader />
       ) : stories.length === 0 ? (
-        <Text style={styles.emptyMessage}>
-          {home_static_data.topStories.noContentMessage}
-        </Text>
+        <NoContentDisclaimer
+          additionalStyles={{disclaimer: {marginVertical: '5%'}}}
+        />
       ) : (
         <View style={[styles.storiesContainer]}>
           {stories?.slice(0, 10).map((story, i) => (
