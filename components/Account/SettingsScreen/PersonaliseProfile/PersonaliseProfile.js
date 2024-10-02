@@ -22,6 +22,8 @@ import GreenTick from '../../../../assets/images/greenTick.png';
 import { useNavigation } from '@react-navigation/core';
 import auth0 from '../../../Login/auth0';
 import { AppThemeContext } from '../../../../context/themeContext';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'; // Import the package
+
 
 const PersonaliseProfile = () => {
   const styles = usePersonaliseProfileStyles();
@@ -307,6 +309,11 @@ const PersonaliseProfile = () => {
   }
 
   return (
+    <KeyboardAwareScrollView
+    style={{ flex: 1, backgroundColor: theme.mainBackgroundColor,}}
+    enableOnAndroid={true}
+    keyboardShouldPersistTaps="handled"
+  >
     <SafeAreaView style={styles.backgroundColor}>
       <ScrollView style={styles.scrollview}>
         <View style={styles.backbuttonContainer}>
@@ -374,6 +381,7 @@ const PersonaliseProfile = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
+    </KeyboardAwareScrollView>
   );
 };
 

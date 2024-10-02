@@ -9,7 +9,7 @@ const usePersonaliseProfileStyles = () => {
       alignItems: 'center',
       backgroundColor: theme.mainBackgroundColor,
       padding: 20,
-      height: 720, // Keyboard blocks Birthdate Input container
+      //height: 720, // Keyboard blocks Birthdate Input container
     },
     scrollview: {
       backgroundColor: theme.mainBackgroundColor,
