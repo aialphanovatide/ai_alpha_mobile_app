@@ -158,10 +158,17 @@ const TopMenu = ({isAlertsMenu}) => {
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
       locations={[0.22, 0.97]}
       style={styles.topContentWrapper}>
-      <View style={[styles.marginWrapper]}>
+      <View style={[
+          styles.marginWrapper,
+          searchText.length > 0 && Platform.OS === 'ios'
+            ? {width: '100%', height: 650, alignItems: 'flex-end'}
+            : {},
+        ]}>
+        
         {menuVisible && (
           <NotificationsButton
             handleButtonPress={handleNotificationsNavigation}
+            activeSearchBar={activeSearchBar}
           />
         )}
         <SearchWithBar

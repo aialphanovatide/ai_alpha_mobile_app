@@ -53,11 +53,11 @@ const useSearchBarStyles = () => {
 
     },
     textInputContainerIOSAfter: {
-      width: '97%',
+      width: Platform.OS === 'ios' ? '100%' : '97%',
       flexDirection: 'row',
       position: 'relative',
-      marginRight: 22,
-      marginLeft: -38,
+      marginRight: Platform.OS === 'ios' ? 0 : 22,
+      marginLeft: Platform.OS === 'ios' ? 20 : -38,
       height: 60,
       zIndex: 2001,
     },
@@ -102,7 +102,7 @@ const useSearchBarStyles = () => {
       height: 36,
       marginTop: 42,
       alignSelf: 'center',
-      marginLeft: Platform.OS === 'ios' ? -25 : 0,
+      marginLeft: Platform.OS === 'ios' ? 40 : 0,
     },
     transparentOverlay: {
       ...StyleSheet.absoluteFillObject,
