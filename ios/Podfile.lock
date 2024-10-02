@@ -514,6 +514,13 @@ PODS:
     - React-Core
   - react-native-splash-screen (3.3.0):
     - React-Core
+  - react-native-video (6.5.0):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
+    - react-native-video/Video (= 6.5.0)
+  - react-native-video/Video (6.5.0):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - react-native-webview (13.6.4):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -670,7 +677,7 @@ PODS:
     - React-Core
   - RNSecureStorage (3.0.1):
     - React
-  - RNSVG (14.1.0):
+  - RNSVG (14.2.0):
     - React-Core
   - RNVectorIcons (10.1.0):
     - RCT-Folly (= 2021.07.22.00)
@@ -728,6 +735,7 @@ DEPENDENCIES:
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -873,6 +881,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
@@ -1009,6 +1019,7 @@ SPEC CHECKSUMS:
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
   react-native-safe-area-context: 422017db8bcabbada9ad607d010996c56713234c
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
+  react-native-video: 2f9a689dcdfb9b7efe881304b8791a5b53de24d7
   react-native-webview: 121397a02eb58554c24d0c3e26acf676ff6a87d2
   React-NativeModulesApple: ac9cea059dfe97cf3a4f00aa2774293bf5a99463
   React-perflogger: 31ea61077185eb1428baf60c0db6e2886f141a5a
@@ -1043,7 +1054,7 @@ SPEC CHECKSUMS:
   RNReanimated: 6f36e44a9e55ccf5c252a51d08f52ed49c68ad48
   RNScreens: 1c2444658fbb696a094272d946708167b1f63409
   RNSecureStorage: d7de7dd7321ae113a6f7dad1747a4992a20b4955
-  RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
+  RNSVG: 963a95f1f5d512a13d11ffd50d351c87fb5c6890
   RNVectorIcons: 084c5c365eca594f94fda0192d8a380b2b40f9b5
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
@@ -1052,6 +1063,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   Yoga: 4c3aa327e4a6a23eeacd71f61c81df1bcdf677d5
 
-PODFILE CHECKSUM: 44219011ab661c2b2b5ec55fc05ced1842223666
+PODFILE CHECKSUM: ea73a89e03f25892967e9b02d8bd9cd6fce5c46c
 
 COCOAPODS: 1.15.2

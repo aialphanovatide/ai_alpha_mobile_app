@@ -23,6 +23,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import eventEmitter from '../../../../eventEmitter';
 import { AppThemeContext } from '../../../../context/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'; // Import the package
 
 
 const SignupForm = () => {
@@ -46,6 +47,8 @@ const SignupForm = () => {
   const { userId, setUserId } = useUserId();
   const [emailInUse, setEmailInUse] = useState(false);
   const {isDarkMode} = useContext(AppThemeContext);
+  const { theme } = useContext(AppThemeContext);
+
   
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -289,6 +292,11 @@ const SignupForm = () => {
     );
   }
   return (
+    <KeyboardAwareScrollView
+    style={{ flex: 1, backgroundColor: theme.mainBackgroundColor,}}
+    enableOnAndroid={true}
+    keyboardShouldPersistTaps="handled"
+  >
     <ScrollView style={styles.scrollview} showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
         <Image source={Logo} style={styles.logo} resizeMode="contain" />
@@ -368,6 +376,7 @@ const SignupForm = () => {
         </View>
       </View>
     </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 

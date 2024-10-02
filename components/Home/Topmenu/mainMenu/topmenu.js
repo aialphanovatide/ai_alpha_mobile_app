@@ -14,10 +14,11 @@ import {TopMenuContext} from '../../../../context/topMenuContext';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import {CategoriesContext} from '../../../../context/categoriesContext';
 import {AppThemeContext} from '../../../../context/themeContext';
+import SearchBar from '../../SearchBar/SearchBar';
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import NotificationsButton from '../../HomeNotifications/NotificationsButton';
-import SearchWithBar from '../../../Search/SearchWithBar';
+import Search from '../../../Search/Search';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
@@ -140,11 +141,7 @@ const TopMenu = ({isAlertsMenu}) => {
   };
 
   const handleNotificationsNavigation = () => {
-    if (routeName.includes('Alerts')) {
-      navigation.navigate('Home', {screen: 'HomeNotificationsScreen'});
-    } else {
-      navigation.navigate('HomeNotificationsScreen');
-    }
+    navigation.navigate('HomeNotificationsScreen');
   };
 
   if (routeName.includes('HomeNotifications')) {
@@ -158,18 +155,31 @@ const TopMenu = ({isAlertsMenu}) => {
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
       locations={[0.22, 0.97]}
       style={styles.topContentWrapper}>
-      <View style={[styles.marginWrapper]}>
-        {menuVisible && (
-          <NotificationsButton
-            handleButtonPress={handleNotificationsNavigation}
+      <Modal transparent={true} visible={searchText.length > 0}>
+        <View style={styles.modal}>
+          <SearchBar
+            toggleMenuVisible={toggleMenuVisible}
+            toggleTextValue={toggleTextValue}
+            searchText={searchText}
+            activeSearchBar={true}
+            toggleSearchBar={toggleActiveSearchBar}
           />
-        )}
-        <SearchWithBar
+          <Search
+            currentTextValue={searchText}
+            contentVisible={searchText.length > 0}
+          />
+        </View>
+      </Modal>
+      <View style={[styles.marginWrapper]}>
+        <SearchBar
           toggleMenuVisible={toggleMenuVisible}
           toggleTextValue={toggleTextValue}
           searchText={searchText}
           activeSearchBar={activeSearchBar}
           toggleSearchBar={toggleActiveSearchBar}
+        />
+        <NotificationsButton
+          handleButtonPress={handleNotificationsNavigation}
         />
       </View>
       <View style={styles.container}>
@@ -198,7 +208,9 @@ const TopMenu = ({isAlertsMenu}) => {
                 />
               ))
             ) : (
-              <></>
+              <View style={styles.loadingMessage}>
+                <Text style={styles.text}>Loading...</Text>
+              </View>
             )}
           </ScrollView>
         ) : (

@@ -26,19 +26,22 @@ const useTopMenuStyles = () => {
       position: 'relative',
     },
     marginWrapper: {
-      position: 'relative',
+      width: '100%',
       marginTop: 8,
+      alignItems: 'center',
+      alignSelf: 'center',
+      justifyContent: 'center',
       backgroundColor: 'transparent',
     },
     modal: {
+      paddingTop: Platform.OS === 'ios' ? 80 : 0,
       position: 'absolute',
-      top: '100%',
-      width: '95%',
-      height: 800,
-      alignSelf: 'center',
+      top: 0,
+      right: 0,
+      left: 0,
+      width: '100%',
+      height: theme.height,
       backgroundColor: theme.boxesBackgroundColor,
-      borderRadius: 4,
-      zIndex: 3000
     },
   });
   return styles;
