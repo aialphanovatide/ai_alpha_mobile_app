@@ -1,5 +1,5 @@
 import React, {useContext, useState, useRef, useEffect} from 'react';
-import {View, Modal, ScrollView, SafeAreaView, Text, Button} from 'react-native';
+import {View, Modal, ScrollView, SafeAreaView, Text, ImageBackground, TouchableOpacity, Button} from 'react-native';
 import TickerTape from './Tickertape/TickerTape';
 import TopStories from './TopStories/topStories';
 import Analysis from './Analysis/analysis';
@@ -15,28 +15,80 @@ import {useRawUserId} from '../../context/RawUserIdContext';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
+import SubscriptionPopUp from '../SubscriptionPopUps/SubscriptionPopUp';
+import useSubscriptionPopUpStyles from '../SubscriptionPopUps/SubscriptionPopUpStyles';
 
+const FreePopup = ({ visible, onClose, setVisible }) => {
+  const styles = useSubscriptionPopUpStyles();
+  const {isDarkMode} = useContext(AppThemeContext);
 
-const FreePopup = ({ visible, onClose }) => {
+  const updateValidator = async () => {
+    console.log('Updating validator...');
+    try {
+      console.log('Validator updated to TRUE');
+      await AsyncStorage.setItem('signupDateValidator', 'true');
+    } catch (error) {
+      console.error('Error updating validator');
+    }
+  };
+
   const handleClose = async () => {
-    await AsyncStorage.setItem('signupDateValidator', 'true');
-    const signupDateValidatorv2 = await AsyncStorage.getItem('signupDateValidator');
-    onClose();
+    setVisible(false);
+    console.log('Closing modal');
+    await updateValidator(); // Ensure that updateValidator is called asynchronously
   };
 
   return (
     <Modal
-      animationType="fade"
+      style={styles.modal}
+      animationType={'slide'}
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}
-    >
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-        <View style={{ width: 300, padding: 20, backgroundColor: 'white', borderRadius: 10 }}>
-          <Text style={{ fontSize: 16, marginBottom: 20 }}>Three days have already passed since you signed up into the app!</Text>
-          <Button title="Close" onPress={handleClose} />
-        </View>
-      </View>
+      onRequestClose={handleClose}>
+      {/* <BlurView
+        style={styles.absolute}
+        blurType={isDarkMode ? 'dark' : 'light'}
+        blurAmount={1.75}
+        blurRadius={1}
+      /> */}
+      <LinearGradient
+        style={styles.absolute}
+        colors={
+          isDarkMode ? ['#0B0B0B38', '#0B0B0B'] : ['#FFFFFF38', '#FFFFFF']
+        }
+        locations={[0.38, 0.97]}
+      />
+      <ImageBackground
+        source={
+          isDarkMode
+            ? require('../../assets/images/popUps/discount-rocket-dark.png')
+            : require('../../assets/images/popUps/discount-rocket.png')
+        }
+        style={[styles.imageContainer]}
+        resizeMode="contain">
+        <Text style={styles.subtitle}>
+          {`Are you enjoying the app? As a thank you,`}
+        </Text>
+        <Text style={styles.mainTitle}>Enjoy 50% OFF</Text>
+        <Text style={[styles.mainTitle, styles.secondaryTitle]}>
+          on your first three months!
+        </Text>
+        <Text style={styles.graySecondaryText}>
+          No need to do anything-it's already set up for you!
+        </Text>
+        <TouchableOpacity
+          style={{width: '100%'}}
+          onPress={handleClose}>
+          <LinearGradient
+            useAngle
+            angle={90}
+            colors={['#F9AF08', '#FC5B04']}
+            locations={[0, 0.5]}
+            style={styles.button}>
+            <Text style={styles.buttonText}>Awesome, thanks!</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </ImageBackground>
     </Modal>
   );
 };
@@ -50,6 +102,7 @@ const Home = ({route}) => {
   const {rawUserId} = useRawUserId();
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
   const [modalVisible, setModalVisible] = useState(false);
+  const [subscriptionPopUpsVisible, setSubscriptionPopUpsVisible] = useState(false);
 
 
   const ref = useRef(null);
@@ -72,18 +125,21 @@ const Home = ({route}) => {
     };
     fetchUserData();
   }, []);
-  /*
+  
+  // This triggers a function to show a modal-popup
   useEffect(() => {
     const showReminderModal = async () => {
       const shouldShowModal = await checkForModalDisplay();
+      console.log('SHOULD SHOW MODAL', shouldShowModal);
       if (shouldShowModal) {
-        setModalVisible(true);
+        console.log('SHOWING MODAL');
+        setSubscriptionPopUpsVisible(true);
       }
     };
 
     showReminderModal();
   }, []);
-  */
+  
   useScrollToTop(ref);
 
   const handleAboutPress = (description = null, title = null) => {
@@ -100,9 +156,9 @@ const Home = ({route}) => {
 
   const checkForModalDisplay = async () => {
     const signupDateStr = await AsyncStorage.getItem('signupDate');
+    //console.log('SIGNUP DATE FROM ASYNC STORAGE', signupDateStr);
     const signupDateValidator = await AsyncStorage.getItem('signupDateValidator');
 
-    console.log('SIGNUP DATE FROM ASYNC STORAGE', signupDateStr);
     if (!signupDateStr) return false; // If signup date is not found, this does nothing
   
     const signupDate = new Date(signupDateStr);
@@ -111,12 +167,18 @@ const Home = ({route}) => {
     const diffTime = Math.abs(currentDate - signupDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // This converts milliseconds to days
 
+    console.log('Diff days: ', diffDays);
     console.log("Validator: ", signupDateValidator);
 
     if (diffDays < 3) {
+      console.log('Less than 3 days');
       return false;
     } else if(diffDays >= 3 && signupDateValidator !== 'true') {
+      console.log('Equal or greater than 3 days');
       return true;
+    } else {
+      console.log('None of the above');
+      return false;
     }
   };
   
@@ -139,7 +201,7 @@ const Home = ({route}) => {
           showsVerticalScrollIndicator={false}
           style={[styles.paddingH, styles.paddingB]}
           ref={ref}>
-          <FreePopup visible={modalVisible} onClose={() => setModalVisible(false)} />
+          <FreePopup visible={subscriptionPopUpsVisible} setVisible={setSubscriptionPopUpsVisible} />
           <TickerTape />
           <TopStories handleAboutPress={handleAboutPress} />
           <Analysis handleAboutPress={handleAboutPress} />
@@ -148,7 +210,7 @@ const Home = ({route}) => {
           <TopTenLosers handleAboutPress={handleAboutPress} />
         </ScrollView>
       </SafeAreaView>
-            </View>
+      </View>
   );
 };
 

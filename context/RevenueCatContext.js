@@ -8,6 +8,7 @@ import {Platform} from 'react-native';
 import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 import messaging from '@react-native-firebase/messaging';
 import {TopMenuContext} from './topMenuContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RevenueCatContext = createContext();
 
@@ -215,6 +216,17 @@ const RevenueCatProvider = ({children}) => {
       console.log(
         `Purchased: ${productIdentifier}\n New customer data: ${customerInfo.entitlements} `,
       );
+
+      // Popup logic
+      const signupDate = new Date();
+      await AsyncStorage.setItem('signupDate', signupDate.toISOString());
+      validatorVariable = await AsyncStorage.getItem('signupDateValidator');
+
+      if (validatorVariable === null) {
+        await AsyncStorage.setItem('signupDateValidator', 'false');
+      }
+      console.log('SIGNUP DATE in RevenueCatContext', signupDate);
+
 
       console.log(`User Auth0 ID: ${rawUserId}`);
       console.log(`Package Identifier: ${packageIdentifier}`);

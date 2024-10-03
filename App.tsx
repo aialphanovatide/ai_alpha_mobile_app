@@ -63,10 +63,7 @@ const App = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [serverWentDown, setServerWentDown] = useState(0);
   const [userSignedUp, setUserSignedUp] = useState(false);
-  const [initialAnimationFinished, setInitialAnimationFinished] =
-    useState(false);
-  // const [subscriptionPopUpsVisible, setSubscriptionPopUpsVisible] =
-  //   useState(true);
+  const [initialAnimationFinished, setInitialAnimationFinished] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -352,10 +349,6 @@ const App = () => {
                                   }
                                   type="serverDown"
                                 />
-                                {/* <SubscriptionPopUp
-                                  visible={subscriptionPopUpsVisible}
-                                  setVisible={setSubscriptionPopUpsVisible}
-                                /> */}
                               </AboutModalProvider>
                             </GestureHandlerRootView>
                           </AnalysisContextProvider>

@@ -220,9 +220,6 @@ const SignupForm = () => {
         setUserEmail(email);
         setSignupSuccessful(true);
 
-        const signupDate = new Date();
-        await AsyncStorage.setItem('signupDate', signupDate.toISOString());
-        await AsyncStorage.setItem('signupDateValidator', 'false');
 
         const originalColor = isDarkMode ? '#0b0b0a' : '#fbfbfa';
 

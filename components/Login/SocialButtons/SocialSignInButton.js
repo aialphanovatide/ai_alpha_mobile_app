@@ -90,14 +90,6 @@ const SocialSignInButton = () => {
     checkToken();
   }, []);
 
-  const setPopupDate = async () => {
-    const signupDate = new Date();
-    await AsyncStorage.setItem('signupDate', signupDate.toISOString());
-    await AsyncStorage.setItem('signupDateValidator', 'false');
-    const signupvalidator = await AsyncStorage.getItem('signupDateValidator');
-    //console.log('Signup validator in CREATION:', signupvalidator);
-  };
-
 
   const getManagementApiToken = async () => {
     const response = await fetch(`https://${auth0Domain}/oauth/token`, {
@@ -165,7 +157,6 @@ const SocialSignInButton = () => {
 
         navigation.navigate('HomeScreen');
 
-        setPopupDate();
 
         const response = await fetch(`https://aialpha.ngrok.io/register`, {
           method: 'POST',
@@ -212,8 +203,6 @@ const SocialSignInButton = () => {
         updateUserEmail(userProfile.email);
 
         navigation.navigate('HomeScreen');
-
-        setPopupDate();
 
         const response = await fetch(`https://aialpha.ngrok.io/register`, {
           method: 'POST',
@@ -297,7 +286,6 @@ const SocialSignInButton = () => {
         setRawUserId(newUser);
         //setUserEmail(email);
         //console.log('auth0Response.data._id', auth0Response.data._id);
-        setPopupDate();
 
         const response = await fetch(`https://aialpha.ngrok.io/register`, {
           method: 'POST',
