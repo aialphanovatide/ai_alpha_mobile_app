@@ -44,10 +44,17 @@ const usePackageSubscriptionStyles = () => {
       flexDirection: 'row',
       alignSelf: 'flex-start',
     },
+    smallSubtitle: {
+      color: theme.smallSubtitleColor,
+      fontFamily: theme.fontMedium,
+      fontSize: 16,
+      alignSelf: 'flex-start',
+      marginLeft: 15,
+    },
     description: {
       marginVertical: theme.boxesVerticalMargin,
       marginTop: 4,
-      marginHorizontal: 16,
+      marginHorizontal: 35,
     },
     secondaryText: {
       color: theme.textColor,
@@ -78,7 +85,7 @@ const usePackageSubscriptionStyles = () => {
       textAlign: 'center',
       flexDirection: 'row', // Arrange icon and text in a row
       alignItems: 'center', // Vertically center the items
-      marginBottom: 5,
+      marginBottom: 10,
       marginRight: 10,
     },
     textCenteredRow: {
@@ -347,6 +354,40 @@ const usePackageSubscriptionStyles = () => {
       alignItems: 'center', // Vertically center the items
       marginBottom: 5,
       marginRight: 10,
+    },
+    textWithIconTitle:{
+      color: '#FF6C0D',
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
+      fontSize: 18,
+      marginLeft: 5,
+      marginRight: 5,
+    },
+    textWithIconTitleNotPushed:{
+      color: '#FF6C0D',
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
+      fontSize: 18,
+      marginLeft: 25,
+      marginRight: 25,
+    },
+    textWithIconTitlePushed:{
+      color: '#FF6C0D',
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
+      fontSize: 18,
+      marginLeft: 25,
+      marginRight: 25,
+      marginBottom: 50,
+    },
+    textWithIconTitlePushedv2:{
+      color: '#FF6C0D',
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
+      fontSize: 18,
+      marginLeft: 25,
+      marginRight: 25,
+      marginBottom: 30,
     },
   });
   return styles;

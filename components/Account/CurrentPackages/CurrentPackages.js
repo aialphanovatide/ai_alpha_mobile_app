@@ -91,9 +91,7 @@ const CurrentPackages = () => {
     return acc;
   }, []);
 
-  const navigateBack = () => {
-    navigation.navigate('AccountMain');
-  };
+
 
   const navigateToSubscriptionOptions = () => {
     navigation.navigate('Subscriptions');
@@ -103,9 +101,6 @@ const CurrentPackages = () => {
     <View style={styles.flex}>
       <BackgroundGradient />
         <SafeAreaView style={styles.container}>
-          <View style={styles.alignStart}>
-            <BackButton navigationHandler={navigateBack} />
-          </View>
           <View style={styles.innerContainer}>
             <Text style={styles.mainTitle}>My Packages</Text>
             {userPurchasedOptions.length > 0 ? (

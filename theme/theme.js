@@ -69,6 +69,7 @@ export const lightThemeStyles = {
   grayArrowColor: '#A6ACC4',
   loaderColor: '#5F6466',
   loaderBgColor: '#FFFFFF',
+  smallSubtitleColor: '#A3A3A3',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {
@@ -196,6 +197,7 @@ export const darkThemeStyles = {
   askAiButtonColor: '#0A0A0A',
   skeletonLoaderBg: '#151515',
   horizontalLineColor: '#474747',
+  smallSubtitleColor: '#7C7C7C',
   responsiveFontSize,
   titleFontSize: responsiveFontSize * 1.2,
   subscriptions: {

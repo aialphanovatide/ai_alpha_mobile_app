@@ -100,13 +100,13 @@ const Account = ({route}) => {
   // Account menu
   const options = [
     {
-      name: 'Subscriptions Options',
+      name: 'Membership',
       logo: {
         width: 28,
         height: 20,
         source: require('../../assets/images/account/subscription.png'),
       },
-      screenName: 'Subscriptions',
+      screenName: 'Membership',
       component: null,
     },
     {
@@ -194,7 +194,7 @@ const Account = ({route}) => {
       case 'Settings':
         navigation.navigate('SettingsScreen');
         break;
-      case 'Subscriptions Options':
+      case 'Membership':
         navigation.navigate(option.screenName);
         break;
       case 'Legal and Information':
@@ -266,6 +266,8 @@ const Account = ({route}) => {
       await AsyncStorage.removeItem('username');
       await AsyncStorage.removeItem('birthDate');
       await AsyncStorage.removeItem('userImage');
+      await AsyncStorage.removeItem('signupDate');
+      await AsyncStorage.removeItem('signupDateValidator');
       console.log('Successfully removed login data...');
       resetLoginForm();
       console.log('After loginForm reset');

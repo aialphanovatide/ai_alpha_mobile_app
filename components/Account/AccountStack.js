@@ -22,7 +22,7 @@ const AccountScreen = () => {
       screenOptions={{header: () => null, headerShown: false}}>
       <AccountStack.Screen name="AccountMain" component={Account} />
       <AccountStack.Screen
-        name="Subscriptions"
+        name="Membership"
         component={PackageSubscriptions}
       />
       <AccountStack.Screen name="Legal" component={LegalAndInformation} />

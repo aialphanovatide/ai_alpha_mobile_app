@@ -14,10 +14,6 @@ const useCurrentPackagesStyles = () => {
     backgroundContainer: {
       flex: 1,
     },
-    alignStart: {
-      alignSelf: 'flex-start',
-      marginVertical: theme.boxesVerticalMargin,
-    },
     scrollViewContent: {
       paddingVertical: 16,
     },

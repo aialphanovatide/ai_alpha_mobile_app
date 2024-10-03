@@ -27,20 +27,49 @@ const TextWithIcon = ({text}) => {
     text === 'Simple but powerful.'
       ? [styles.smallTickIcon, {marginTop: 0}]
       : text ===
-        'Ideal for a comprehensive market view and convenient if you want to track more than one package.'
-      ? [styles.smallTickIcon, {marginTop: -45}]
-      : [styles.smallTickIcon, {marginTop: -21}];
+        'Lead an Alpha Club on campus.'
+      ? [styles.smallTickIcon, {marginTop: 0}]
+      : [styles.smallTickIcon, {marginTop: -20}];
 
-  const descriptionText =
-    text ===
-      "Join our exclusive group of pioneers and get full access to AI ALPHA's current and future products." ||
-    text ===
-      'Get full access to each and every AI Alpha package - both current and future.'
-      ? [
-          styles.secondaryText,
-          {fontFamily: theme.fontSemibold, marginRight: 20},
-        ]
-      : [styles.secondaryText, {fontFamily: theme.font}];
+      const descriptionText = (() => {
+        if (
+          text === "Full access to all categories for precise, up-to-date info."
+        ) {
+          return [
+            styles.secondaryText,
+            { fontFamily: theme.fontSemibold, marginRight: 20 },
+          ];
+        } else if (
+          text ===
+          "Access Founder membership at a student rate."
+        ) {
+          return [
+            styles.secondaryText,
+            { fontFamily: theme.fontSemibold, marginRight: 20, fontSize: 12.75 , marginTop: -20},
+          ];
+        } else if (
+          text ===
+          "Track crypto projects by category, like stock sectors, to stay informed without the noise."
+        ){
+          return [
+            styles.secondaryText,
+            { fontFamily: theme.fontSemibold, marginRight: 20 },
+          ];
+        } else if (
+          text ===
+          "Get full access to each and every AI Alpha package - both current and future."
+        ){
+          return [
+            styles.secondaryText,
+            { fontFamily: theme.fontSemibold, marginRight: 20 },
+          ];
+        } else if (text === "Lead an Alpha Club on campus.") {
+          return [styles.secondaryText];
+        } else {
+          return [styles.secondaryText];
+        }
+      })();
+      
 
   return (
     <View style={styles.textRow}>
@@ -216,23 +245,29 @@ const PackageSubscriptions = () => {
       case 'Founder':
         return (
           <>
-            <TextWithIcon text="Join our exclusive group of pioneers and get full access to AI ALPHA's current and future products." />
-            <TextWithIcon text="You'll shape the community experience, test improvements and participate in launches." />
-            <TextWithIcon text="We're building a meaningful ecosystem. Let's build, learn and grow together!" />
+          <Text style={styles.textWithIconTitle}>Community Building & Early Access</Text>
+            <TextWithIcon text="Full access to all categories for precise, up-to-date info." />
+            <TextWithIcon text="Be the first to test new features and products." />
+            <TextWithIcon text="Connect with a community that shapes the future with meaningful content daily." />
           </>
         );
       case 'Full Access':
         return (
           <>
-            <TextWithIcon text="Get full access to each and every AI Alpha package - both current and future." />
-            <TextWithIcon text="Ideal for a comprehensive market view and convenient if you want to track more than one package." />
+          <Text style={styles.textWithIconTitle}>Founder Membership &</Text>
+          <Text style={styles.textWithIconTitlePushed}>Leadership Opportunities</Text>
+            <TextWithIcon text="Access Founder membership at a student rate." />
+            <TextWithIcon text="Lead an Alpha Club on campus." />
+            <TextWithIcon text="Empower others, gain insights, and grow your crypto expertise daily." />
           </>
         );
       case 'By Category':
         return (
           <>
-            <TextWithIcon text="Simple but powerful." />
-            <TextWithIcon text="Get real-time price pop-ups and the most curated news and analysis on your chosen package." />
+          <Text style={styles.textWithIconTitlePushedv2}>Personalised Tracking & Alerts</Text>
+            <TextWithIcon text="Track crypto projects by category, like stock sectors, to stay informed without the noise." />
+            <TextWithIcon text="Get real-time alerts and personalised insights based on your preferences." />
+            <TextWithIcon text="Monitor fundamentals, charts, and news efficiently, saving time daily." />
           </>
         );
       default:
@@ -331,7 +366,7 @@ const PackageSubscriptions = () => {
           </View>
           {hasFoundersPackage ? (
             <View style={styles.foundersContainer}>
-              <Text style={styles.mainTitle}>Subscriptions Options</Text>
+              <Text style={styles.mainTitle}>Membership</Text>
               <Image
                 source={
                   isDarkMode
@@ -358,7 +393,9 @@ const PackageSubscriptions = () => {
             </View>
           ) : (
             <>
-              <Text style={styles.mainTitle}>Subscription Options</Text>
+              <Text style={styles.mainTitle}>Membership</Text>
+
+              <Text style={styles.smallSubtitle}>Upgrade</Text>
               <View style={styles.packagesContainer}>
                 {subscriptionOptions.map((item, index) => (
                   <TouchableOpacity
