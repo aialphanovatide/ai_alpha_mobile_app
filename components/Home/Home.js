@@ -173,7 +173,7 @@ const Home = ({route}) => {
     if (diffDays < 3) {
       console.log('Less than 3 days');
       return false;
-    } else if(diffDays >= 3 && signupDateValidator !== 'true') {
+    } else if(diffDays >= 3 && signupDateValidator == 'false') {
       console.log('Equal or greater than 3 days');
       return true;
     } else {
