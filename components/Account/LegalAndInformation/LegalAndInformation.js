@@ -71,7 +71,7 @@ const LegalAndInformation = ({route}) => {
         navigation.navigate('PrivacyPolicy');
         break;
       case 'Terms and Conditions':
-        navigation.navigate('TermsAndConditionsScreen');
+        navigation.navigate('TermsAndConditionsInAppScreen');
         break;
       case 'End User License Agreement':
         navigation.navigate('Eula');
