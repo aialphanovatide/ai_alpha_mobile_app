@@ -27,14 +27,14 @@ const usePackageSubscriptionStyles = () => {
       padding: 10,
       alignItems: 'center',
       justifyContent: 'center',
-      // backgroundColor: theme.mainBackgroundColor,
+      backgroundColor: theme.mainBackgroundColor,
     },
     flex: {
       flex: 1,
     },
     mainTitle: {
       marginTop: 11,
-      marginBottom: 5,
+      marginBottom: 25,
       marginLeft: 15,
       marginVertical: theme.titlesVerticalMargin,
       color: theme.titleColor,
@@ -97,7 +97,7 @@ const usePackageSubscriptionStyles = () => {
     },
     packagesContainer: {
       width: '100%',
-      marginVertical: theme.boxesVerticalMargin,
+      marginVertical: 16,
       padding: 10,
     },
     itemContainer: {
@@ -388,6 +388,64 @@ const usePackageSubscriptionStyles = () => {
       marginLeft: 25,
       marginRight: 25,
       marginBottom: 30,
+    },
+
+
+  
+
+
+    itemContainerCurrent: {
+      borderWidth: 1,
+      borderRadius: 8,
+      borderColor: 'transparent',
+      backgroundColor: theme.secondaryBgColor,
+      padding: 16,
+      marginBottom: 8,
+    },
+    itemRowCurrent: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    itemIconCurrent: {
+      width: 30,
+      height: 25,
+      marginRight: 16,
+      marginLeft: 8,
+    },
+    titleCurrent: {
+      flex: 1,
+      fontSize: 18,
+      fontWeight: '600',
+      fontFamily: theme.fontSemibold,
+      color: theme.titleColor,
+    },
+    priceTextCurrent: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: theme.titleColor,
+    },
+    perMonthTextCurrent: {
+      fontSize: 12,
+      color: '#888',
+    },
+    subOptionsContainerCurrent: {
+      marginTop: 8,
+      paddingHorizontal: 8,
+    },
+    subOptionCurrent: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 4,
+      paddingHorizontal: 8,
+      backgroundColor: 'transparent',
+      borderRadius: 4,
+      marginBottom: 4,
+    },
+    subOptionTextCurrent: {
+      fontSize: 14,
+      color: theme.mainTextColor,
+      fontFamily: theme.font,
+      paddingLeft: 38,
     },
   });
   return styles;

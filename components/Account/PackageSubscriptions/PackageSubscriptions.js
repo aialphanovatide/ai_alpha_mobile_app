@@ -89,24 +89,6 @@ const PackageSubscriptions = () => {
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
   const {rawUserId, setRawUserId} = useRawUserId();
 
-  //console.log("REVENUE CAT PACKAGES", packages);
-
-  // ITERATING THROUGH PACKAGES TO FIND THE PRODUCT IDENTIFIER
-  for (let i = 0; i < packages.length; i++) {
-    console.log('PACKAGE IDENTIFIER', packages[i].product.identifier);
-  }
-
-  const getIdentifierByKeyword = keyword => {
-    const foundPackage = packages.find(pkg =>
-      pkg.product.title.includes(keyword),
-    );
-    return foundPackage ? foundPackage.product.identifier : null;
-  };
-
-  const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
-    subscription.toLowerCase().includes('founders'),
-  );
-
   const subscriptionOptions = [
     {
       title: 'Founder',
@@ -141,6 +123,91 @@ const PackageSubscriptions = () => {
     'Intellichain',
   ];
 
+    // Known category names for display
+    const categoryNames = [
+      'Ethereum',
+      'Bitcoin',
+      'RootLink',
+      'BaseBlock',
+      'CoreChain',
+      'XPayments',
+      'LSDs',
+      'BoostLayer',
+      'Truthnodes',
+      'CycleSwap',
+      'Nextrade',
+      'Diversefi',
+      'Intellichain',
+    ];
+
+  // Here Starts the code for Current Packages
+
+      // Extract purchased packages from user's entitlements
+  const purchasedPackages = userInfo?.entitlements || [];
+
+// Create a map for user purchased packages
+const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
+  const lowerCaseEntitlement = entitlement.toLowerCase();
+
+  // Check for founders entitlement
+  if (lowerCaseEntitlement.includes('founders')) {
+    if (!acc.some(item => item.title === 'Founder')) {
+      acc.push(subscriptionOptions[0]);  // Corrected index for 'Founder'
+    }
+  }
+  // Check for full access entitlement
+  else if (lowerCaseEntitlement.includes('fullaccess')) {
+    if (!acc.some(item => item.title === 'Full Access')) {
+      acc.push(subscriptionOptions[1]);  // Corrected index for 'Full Access'
+    }
+  }
+  // Handle by category entitlement
+  else {
+    const categoryName = categoryNames.find(name =>
+      lowerCaseEntitlement.includes(name.toLowerCase()),
+    );
+    if (categoryName) {
+      const categoryPackage = acc.find(item => item.title === 'By Category');
+      if (categoryPackage) {
+        if (!categoryPackage.subOptions.includes(categoryName)) {
+          categoryPackage.subOptions.push(categoryName);
+        }
+      } else {
+        acc.push({
+          ...subscriptionOptions[2],  // Corrected index for 'By Category'
+          subOptions: [categoryName],
+        });
+      }
+    }
+  }
+  return acc;
+}, []);
+
+
+
+
+  // Here Starts the code for Subscription Options
+
+  //console.log("REVENUE CAT PACKAGES", packages);
+
+  // ITERATING THROUGH PACKAGES TO FIND THE PRODUCT IDENTIFIER
+  for (let i = 0; i < packages.length; i++) {
+    console.log('PACKAGE IDENTIFIER', packages[i].product.identifier);
+  }
+
+  const getIdentifierByKeyword = keyword => {
+    const foundPackage = packages.find(pkg =>
+      pkg.product.title.includes(keyword),
+    );
+    return foundPackage ? foundPackage.product.identifier : null;
+  };
+
+  const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
+    subscription.toLowerCase().includes('founders'),
+  );
+
+
+
   const [activeItem, setActiveItem] = useState(subscriptionOptions[0]); // Set "Founder" as default
   const [activeSubOption, setActiveSubOption] = useState('Ethereum'); // Default sub-option to 'Ethereum'
   const [selectedAdditionalOptions, setSelectedAdditionalOptions] = useState(
@@ -173,7 +240,6 @@ const PackageSubscriptions = () => {
         userNewestID,
       );
       setMissingMessageActive(false);
-      navigation.navigate('CurrentPackages');
     } catch (error) {
       console.error('Error during purchase:', error);
       setMissingMessageActive(true);
@@ -394,6 +460,45 @@ const PackageSubscriptions = () => {
           ) : (
             <>
               <Text style={styles.mainTitle}>Membership</Text>
+
+              {userPurchasedOptions.length > 0 ? (
+  <>
+    <Text style={styles.smallSubtitle}>Current</Text>
+    <View style={styles.packagesContainer}>
+      {userPurchasedOptions.map((item, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.itemContainerCurrent}
+          onPress={() => console.log('Package:', item.title)}>
+          <View style={styles.itemRowCurrent}>
+            <Image source={item.icon} style={styles.itemIconCurrent} />
+            <Text style={styles.titleCurrent}>{item.title}</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.priceTextCurrent}>{item.price}</Text>
+              <Text style={styles.perMonthTextCurrent}>Per month</Text>
+            </View>
+          </View>
+          {item.title === 'By Category' && item.subOptions && (
+            <View style={styles.subOptionsContainerCurrent}>
+              {item.subOptions.map((subOption, subIndex) => (
+                <TouchableOpacity
+                  key={subIndex}
+                  style={styles.subOptionCurrent}
+                  onPress={() =>
+                    console.log('Sub-option:', subOption)
+                  }>
+                  <Text style={styles.subOptionTextCurrent}>
+                    {subOption}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </TouchableOpacity>
+      ))}
+    </View>
+  </>
+) : null}
 
               <Text style={styles.smallSubtitle}>Upgrade</Text>
               <View style={styles.packagesContainer}>
