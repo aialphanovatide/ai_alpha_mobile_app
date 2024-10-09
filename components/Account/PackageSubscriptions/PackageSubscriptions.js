@@ -18,6 +18,8 @@ import {AppThemeContext} from '../../../context/themeContext';
 import {useRawUserId} from '../../../context/RawUserIdContext';
 import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
+import AboutModal from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
+import { AboutIcon } from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 
 const TextWithIcon = ({text}) => {
   const styles = usePackageSubscriptionStyles();
@@ -88,6 +90,22 @@ const PackageSubscriptions = () => {
   const {isDarkMode} = useContext(AppThemeContext);
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
   const {rawUserId, setRawUserId} = useRawUserId();
+
+    // Modal visibility state
+    const [aboutVisible, setAboutVisible] = useState(false);
+    const [aboutDescription, setAboutDescription] = useState('This is information about the package.');
+    const [aboutTitle, setAboutTitle] = useState('About Package Subscription');
+
+    // Function to handle About button press
+    const handleAboutPress = (description = null, title = null) => {
+      if (description) {
+        setAboutDescription(description);
+      }
+      if (title) {
+        setAboutTitle(title);
+      }
+      setAboutVisible(!aboutVisible);
+    };
 
   const subscriptionOptions = [
     {
@@ -430,6 +448,14 @@ const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
           <View style={styles.alignStart}>
             <BackButton navigationHandler={navigateBack} />
           </View>
+          {/* About Button */}
+          <TouchableOpacity style={styles.aboutButtonContainer} onPress={() => handleAboutPress("If you wish to upgrade your subscription, you must first cancel your current subscription.\n\nTo cancel your membership, go to the App Store or Play Store:\n\n1. Settings.\n2. Subscriptions.\n3. Find the subscription and select 'Cancel'.", 'About Membership')}>
+          <Image
+              style={styles.aboutButton}
+              source={require('../../../assets/images/fundamentals/about-icon.png')}
+              resizeMode={'contain'}
+            />
+          </TouchableOpacity>
           {hasFoundersPackage ? (
             <View style={styles.foundersContainer}>
               <Text style={styles.mainTitle}>Membership</Text>
@@ -615,16 +641,7 @@ const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
               </View>
 
               <View style={styles.description}>{getDescription()}</View>
-              <SubscriptionsLoader isLoading={loading} />
-            </>
-          )}
-        </SafeAreaView>
-      </ScrollView>
-
-      {/* Conditionally render the fixed footer if the user does not have the Founders Package */}
-      {!hasFoundersPackage && (
-        <View style={styles.fixedFooter}>
-          <LinearGradient
+              <LinearGradient
             colors={['#F9AF08', '#FC5B04', '#FC5B04']}
             style={styles.linearGradient}
             start={{x: 0, y: 0.5}}
@@ -639,13 +656,22 @@ const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
           </LinearGradient>
           <View style={styles.footerTextContainer}>
             <Text style={styles.preTertiaryText}>
-              Valid for first purchase only
+            Subscription activates post-trial.
             </Text>
-            <Text style={styles.tertiaryText}>Pay after the trial period</Text>
-            <Text style={styles.tertiaryText}>Cancel at anytime</Text>
+            <Text style={styles.tertiaryText}>Cancel anytime.</Text>
           </View>
-        </View>
-      )}
+              <SubscriptionsLoader isLoading={loading} />
+            </>
+          )}
+        </SafeAreaView>
+      </ScrollView>
+            {/* AboutModal */}
+      <AboutModal
+        description={aboutDescription}
+        onClose={handleAboutPress}
+        visible={aboutVisible}
+        title={aboutTitle}
+      />
 
       <Modal visible={showMoreVisible} transparent={true} animationType="fade">
         <View style={styles.modalContainer}>

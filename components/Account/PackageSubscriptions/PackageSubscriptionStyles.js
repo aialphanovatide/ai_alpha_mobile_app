@@ -19,7 +19,7 @@ const usePackageSubscriptionStyles = () => {
       flex: 1,
     },
     scrollViewContent: {
-      paddingBottom: 160, // Add some bottom padding to avoid content being hidden behind the fixed footer
+      paddingBottom: 10, // Add some bottom padding to avoid content being hidden behind the fixed footer
     },
     innerContainer: {
       flex: 1,
@@ -446,6 +446,17 @@ const usePackageSubscriptionStyles = () => {
       color: theme.mainTextColor,
       fontFamily: theme.font,
       paddingLeft: 38,
+    },
+    aboutButtonContainer:{
+      flexDirection: 'row',
+      marginTop: 50,  
+      marginBottom: -40,
+      marginRight: -300,
+    },
+    aboutButton: {
+      color: 'white',
+      width: 21,
+      height: 21,
     },
   });
   return styles;
