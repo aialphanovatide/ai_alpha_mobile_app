@@ -18,6 +18,8 @@ import {AppThemeContext} from '../../../context/themeContext';
 import {useRawUserId} from '../../../context/RawUserIdContext';
 import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
+import AboutModal from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
+import { AboutIcon } from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 
 const TextWithIcon = ({text}) => {
   const styles = usePackageSubscriptionStyles();
@@ -89,23 +91,21 @@ const PackageSubscriptions = () => {
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
   const {rawUserId, setRawUserId} = useRawUserId();
 
-  //console.log("REVENUE CAT PACKAGES", packages);
+    // Modal visibility state
+    const [aboutVisible, setAboutVisible] = useState(false);
+    const [aboutDescription, setAboutDescription] = useState('This is information about the package.');
+    const [aboutTitle, setAboutTitle] = useState('About Package Subscription');
 
-  // ITERATING THROUGH PACKAGES TO FIND THE PRODUCT IDENTIFIER
-  for (let i = 0; i < packages.length; i++) {
-    console.log('PACKAGE IDENTIFIER', packages[i].product.identifier);
-  }
-
-  const getIdentifierByKeyword = keyword => {
-    const foundPackage = packages.find(pkg =>
-      pkg.product.title.includes(keyword),
-    );
-    return foundPackage ? foundPackage.product.identifier : null;
-  };
-
-  const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
-    subscription.toLowerCase().includes('founders'),
-  );
+    // Function to handle About button press
+    const handleAboutPress = (description = null, title = null) => {
+      if (description) {
+        setAboutDescription(description);
+      }
+      if (title) {
+        setAboutTitle(title);
+      }
+      setAboutVisible(!aboutVisible);
+    };
 
   const subscriptionOptions = [
     {
@@ -141,6 +141,91 @@ const PackageSubscriptions = () => {
     'Intellichain',
   ];
 
+    // Known category names for display
+    const categoryNames = [
+      'Ethereum',
+      'Bitcoin',
+      'RootLink',
+      'BaseBlock',
+      'CoreChain',
+      'XPayments',
+      'LSDs',
+      'BoostLayer',
+      'Truthnodes',
+      'CycleSwap',
+      'Nextrade',
+      'Diversefi',
+      'Intellichain',
+    ];
+
+  // Here Starts the code for Current Packages
+
+      // Extract purchased packages from user's entitlements
+  const purchasedPackages = userInfo?.entitlements || [];
+
+// Create a map for user purchased packages
+const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
+  const lowerCaseEntitlement = entitlement.toLowerCase();
+
+  // Check for founders entitlement
+  if (lowerCaseEntitlement.includes('founders')) {
+    if (!acc.some(item => item.title === 'Founder')) {
+      acc.push(subscriptionOptions[0]);  // Corrected index for 'Founder'
+    }
+  }
+  // Check for full access entitlement
+  else if (lowerCaseEntitlement.includes('fullaccess')) {
+    if (!acc.some(item => item.title === 'Full Access')) {
+      acc.push(subscriptionOptions[1]);  // Corrected index for 'Full Access'
+    }
+  }
+  // Handle by category entitlement
+  else {
+    const categoryName = categoryNames.find(name =>
+      lowerCaseEntitlement.includes(name.toLowerCase()),
+    );
+    if (categoryName) {
+      const categoryPackage = acc.find(item => item.title === 'By Category');
+      if (categoryPackage) {
+        if (!categoryPackage.subOptions.includes(categoryName)) {
+          categoryPackage.subOptions.push(categoryName);
+        }
+      } else {
+        acc.push({
+          ...subscriptionOptions[2],  // Corrected index for 'By Category'
+          subOptions: [categoryName],
+        });
+      }
+    }
+  }
+  return acc;
+}, []);
+
+
+
+
+  // Here Starts the code for Subscription Options
+
+  //console.log("REVENUE CAT PACKAGES", packages);
+
+  // ITERATING THROUGH PACKAGES TO FIND THE PRODUCT IDENTIFIER
+  for (let i = 0; i < packages.length; i++) {
+    console.log('PACKAGE IDENTIFIER', packages[i].product.identifier);
+  }
+
+  const getIdentifierByKeyword = keyword => {
+    const foundPackage = packages.find(pkg =>
+      pkg.product.title.includes(keyword),
+    );
+    return foundPackage ? foundPackage.product.identifier : null;
+  };
+
+  const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
+    subscription.toLowerCase().includes('founders'),
+  );
+
+
+
   const [activeItem, setActiveItem] = useState(subscriptionOptions[0]); // Set "Founder" as default
   const [activeSubOption, setActiveSubOption] = useState('Ethereum'); // Default sub-option to 'Ethereum'
   const [selectedAdditionalOptions, setSelectedAdditionalOptions] = useState(
@@ -173,7 +258,6 @@ const PackageSubscriptions = () => {
         userNewestID,
       );
       setMissingMessageActive(false);
-      navigation.navigate('CurrentPackages');
     } catch (error) {
       console.error('Error during purchase:', error);
       setMissingMessageActive(true);
@@ -364,6 +448,14 @@ const PackageSubscriptions = () => {
           <View style={styles.alignStart}>
             <BackButton navigationHandler={navigateBack} />
           </View>
+          {/* About Button */}
+          <TouchableOpacity style={styles.aboutButtonContainer} onPress={() => handleAboutPress("If you wish to upgrade your subscription, you must first cancel your current subscription.\n\nTo cancel your membership, go to the App Store or Play Store:\n\n1. Settings.\n2. Subscriptions.\n3. Find the subscription and select 'Cancel'.", 'About Membership')}>
+          <Image
+              style={styles.aboutButton}
+              source={require('../../../assets/images/fundamentals/about-icon.png')}
+              resizeMode={'contain'}
+            />
+          </TouchableOpacity>
           {hasFoundersPackage ? (
             <View style={styles.foundersContainer}>
               <Text style={styles.mainTitle}>Membership</Text>
@@ -394,6 +486,45 @@ const PackageSubscriptions = () => {
           ) : (
             <>
               <Text style={styles.mainTitle}>Membership</Text>
+
+              {userPurchasedOptions.length > 0 ? (
+  <>
+    <Text style={styles.smallSubtitle}>Current</Text>
+    <View style={styles.packagesContainer}>
+      {userPurchasedOptions.map((item, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.itemContainerCurrent}
+          onPress={() => console.log('Package:', item.title)}>
+          <View style={styles.itemRowCurrent}>
+            <Image source={item.icon} style={styles.itemIconCurrent} />
+            <Text style={styles.titleCurrent}>{item.title}</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.priceTextCurrent}>{item.price}</Text>
+              <Text style={styles.perMonthTextCurrent}>Per month</Text>
+            </View>
+          </View>
+          {item.title === 'By Category' && item.subOptions && (
+            <View style={styles.subOptionsContainerCurrent}>
+              {item.subOptions.map((subOption, subIndex) => (
+                <TouchableOpacity
+                  key={subIndex}
+                  style={styles.subOptionCurrent}
+                  onPress={() =>
+                    console.log('Sub-option:', subOption)
+                  }>
+                  <Text style={styles.subOptionTextCurrent}>
+                    {subOption}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </TouchableOpacity>
+      ))}
+    </View>
+  </>
+) : null}
 
               <Text style={styles.smallSubtitle}>Upgrade</Text>
               <View style={styles.packagesContainer}>
@@ -510,16 +641,7 @@ const PackageSubscriptions = () => {
               </View>
 
               <View style={styles.description}>{getDescription()}</View>
-              <SubscriptionsLoader isLoading={loading} />
-            </>
-          )}
-        </SafeAreaView>
-      </ScrollView>
-
-      {/* Conditionally render the fixed footer if the user does not have the Founders Package */}
-      {!hasFoundersPackage && (
-        <View style={styles.fixedFooter}>
-          <LinearGradient
+              <LinearGradient
             colors={['#F9AF08', '#FC5B04', '#FC5B04']}
             style={styles.linearGradient}
             start={{x: 0, y: 0.5}}
@@ -534,13 +656,22 @@ const PackageSubscriptions = () => {
           </LinearGradient>
           <View style={styles.footerTextContainer}>
             <Text style={styles.preTertiaryText}>
-              Valid for first purchase only
+            Subscription activates post-trial.
             </Text>
-            <Text style={styles.tertiaryText}>Pay after the trial period</Text>
-            <Text style={styles.tertiaryText}>Cancel at anytime</Text>
+            <Text style={styles.tertiaryText}>Cancel anytime.</Text>
           </View>
-        </View>
-      )}
+              <SubscriptionsLoader isLoading={loading} />
+            </>
+          )}
+        </SafeAreaView>
+      </ScrollView>
+            {/* AboutModal */}
+      <AboutModal
+        description={aboutDescription}
+        onClose={handleAboutPress}
+        visible={aboutVisible}
+        title={aboutTitle}
+      />
 
       <Modal visible={showMoreVisible} transparent={true} animationType="fade">
         <View style={styles.modalContainer}>

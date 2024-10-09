@@ -158,6 +158,7 @@ const Home = ({route}) => {
     const signupDateStr = await AsyncStorage.getItem('signupDate');
     //console.log('SIGNUP DATE FROM ASYNC STORAGE', signupDateStr);
     const signupDateValidator = await AsyncStorage.getItem('signupDateValidator');
+    console.log('SIGNUP DATE VALIDATOR', signupDateValidator);
 
     if (!signupDateStr) return false; // If signup date is not found, this does nothing
   

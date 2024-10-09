@@ -86,12 +86,6 @@ const SettingsScreen = ({route}) => {
       component: null,
     },
     {
-      name: 'My Packages',
-      logo: require('../../../assets/images/account/currentpackages.png'),
-      screenName: null,
-      component: null,
-    },
-    {
       name: 'Personalise Profile',
       logo: require('../../../assets/images/account/personalise-profile.png'),
       screenName: null,
@@ -354,9 +348,6 @@ const SettingsScreen = ({route}) => {
         break;
       case 'Restore Purchases':
         handleRestorePurchase();
-        break;
-      case 'My Packages':
-        navigation.navigate('CurrentPackages');
         break;
       case 'Personalise Profile':
         navigation.navigate('PersonaliseProfile');
