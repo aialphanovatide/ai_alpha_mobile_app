@@ -84,28 +84,26 @@ const LegalAndInformation = ({route}) => {
   return (
     <View style={{flex: 1}}>
       <BackgroundGradient />
-        <SafeAreaView style={styles.backgroundColor}>
-          <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
-            <View style={styles.backButtonContainer}>
-              <BackButton />
+      <SafeAreaView style={styles.backgroundColor}>
+        <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
+          <BackButton />
+          <Text style={styles.title}>Legal and Information</Text>
+          <View style={styles.container}>
+            <View style={styles.optionsContainer}>
+              {options &&
+                options.map((option, index) => (
+                  <LegalItem
+                    key={index}
+                    option={option}
+                    styles={styles}
+                    handleItemTouch={handleItemTouch}
+                    itemComponent={option.component && option.component}
+                  />
+                ))}
             </View>
-            <Text style={styles.title}>Legal and Information</Text>
-            <View style={styles.container}>
-              <View style={styles.optionsContainer}>
-                {options &&
-                  options.map((option, index) => (
-                    <LegalItem
-                      key={index}
-                      option={option}
-                      styles={styles}
-                      handleItemTouch={handleItemTouch}
-                      itemComponent={option.component && option.component}
-                    />
-                  ))}
-              </View>
-            </View>
-          </ScrollView>
-        </SafeAreaView>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 };

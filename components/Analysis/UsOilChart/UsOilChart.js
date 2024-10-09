@@ -181,7 +181,7 @@ const UsOilChart = ({route, navigation}) => {
         ],
       });
     }
-  }, [chartData, selectedInterval]);
+  }, [chartData, selectedInterval, hasUpdatedZoomDomain]);
 
   // const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
 
@@ -189,6 +189,7 @@ const UsOilChart = ({route, navigation}) => {
     setLoading(true);
 
     try {
+      setHasUpdatedZoomDomain(false);
       setSelectedInterval(newInterval);
       setChartData([]);
     } catch (error) {

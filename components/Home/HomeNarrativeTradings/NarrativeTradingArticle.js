@@ -226,11 +226,9 @@ const NarrativeTradingArticle = ({route}) => {
           style={styles.zoomImageDismissOverlay}
         />
       </Modal>
-      <View style={styles.backButtonWrapper}>
-        <BackButton
-          navigationHandler={isNavigateFromHome ? null : handleBackNavigation}
-        />
-      </View>
+      <BackButton
+        navigationHandler={isNavigateFromHome ? null : handleBackNavigation}
+      />
       <View style={styles.article}>
         <View style={styles.articleImageContainer}>
           <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>

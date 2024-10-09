@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useHomeNotificationsStyles = () => {
@@ -61,7 +61,7 @@ const useHomeNotificationsStyles = () => {
     notificationsButton: {
       position: 'absolute',
       top: '15%',
-      right: '5%',
+      right: Platform.OS === 'android' ? '4%' : '4.5%',
       width: 60,
       height: 60,
       justifyContent: 'center',

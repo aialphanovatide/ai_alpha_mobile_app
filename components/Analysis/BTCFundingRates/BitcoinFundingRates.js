@@ -63,9 +63,7 @@ const BitcoinFundingRates = ({handleReturn}) => {
   return (
     <SafeAreaView style={styles.mainSection}>
       <BackgroundGradient />
-      <View style={styles.backButtonWrapper}>
-        <BackButton handleReturn={handleReturn} />
-      </View>
+      <BackButton handleReturn={handleReturn} />
       <View style={styles.titleContainer}>
         <Text style={styles.title}>BTC Funding Rates</Text>
       </View>

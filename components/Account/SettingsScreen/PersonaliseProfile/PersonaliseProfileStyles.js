@@ -13,7 +13,10 @@ const usePersonaliseProfileStyles = () => {
     },
     scrollview: {
       backgroundColor: theme.mainBackgroundColor,
-      marginTop: 30,
+    },
+    backbuttonContainer: {
+      marginTop: 22,
+      marginHorizontal: 18,
     },
     logo: {
       height: theme.height * 0.3,

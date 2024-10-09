@@ -1,7 +1,6 @@
 import {COINGECKO_PRO_KEY} from '../src/constants';
 
 const useChartsSource = (coin, pairing, interval) => {
-  
   const DAYS_INTERVALS = {
     '1W': 180,
     '1D': 30,
@@ -243,6 +242,12 @@ const useChartsSource = (coin, pairing, interval) => {
       baseUrl: {USDT: 'binance', ETH: 'coingecko'},
       urlName: {USDT: '1inch', ETH: '1inch'},
       pairings: ['USDT', 'ETH'],
+    },
+    {
+      name: 'ton',
+      baseUrl: {USDT: 'binance', BTC: 'coingecko'},
+      urlName: {USDT: 'ton', BTC: 'ton'},
+      pairings: ['USDT', 'BTC'],
     },
   ];
 

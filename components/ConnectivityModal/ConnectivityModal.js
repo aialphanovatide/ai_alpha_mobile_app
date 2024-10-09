@@ -1,13 +1,9 @@
 import React, {useContext} from 'react';
-import {
-  ImageBackground,
-  Modal,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import {ImageBackground, Modal, Text, TouchableOpacity} from 'react-native';
 import useConnectivityModalStyles from './ConnectivityModalStyles';
 import {AppThemeContext} from '../../context/themeContext';
 import {BlurView} from '@react-native-community/blur';
+import LinearGradient from 'react-native-linear-gradient';
 
 const ConnectivityModal = ({
   serverError,
@@ -28,11 +24,18 @@ const ConnectivityModal = ({
       onRequestClose={() => {
         type === 'serverDown' ? setServerError(false) : setModalVisible(false);
       }}>
-      <BlurView
+      {/* <BlurView
         style={styles.absolute}
         blurType={isDarkMode ? 'dark' : 'light'}
         blurAmount={1.75}
         blurRadius={1}
+      /> */}
+      <LinearGradient
+        style={styles.absolute}
+        colors={
+          isDarkMode ? ['#0B0B0B38', '#0B0B0B'] : ['#FFFFFF38', '#FFFFFF']
+        }
+        locations={[0.38, 0.97]}
       />
       <ImageBackground
         source={
@@ -47,7 +50,16 @@ const ConnectivityModal = ({
             <Text style={styles.title}>
               {'Uh Oh.\nSeems like the server is down'}
             </Text>
-            <Text style={[styles.title, styles.subtitle, {fontFamily: isDarkMode ? theme.fontSemibold : theme.fontMedium }]}>
+            <Text
+              style={[
+                styles.title,
+                styles.subtitle,
+                {
+                  fontFamily: isDarkMode
+                    ? theme.fontSemibold
+                    : theme.fontMedium,
+                },
+              ]}>
               Please wait a few minutes until our technicians work to solve the
               problem
             </Text>

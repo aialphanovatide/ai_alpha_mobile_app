@@ -85,6 +85,12 @@ android {
                 auth0Domain: 'dev-zoejuo0jssw5jiid.us.auth0.com',
                 auth0Scheme: "${applicationId}.auth0"
             ]
+
+             externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++20"
+            }
+        }
     }
     signingConfigs {
         debug {

@@ -207,7 +207,7 @@ const AskAiHistory = ({route, navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundGradient />
-      <View style={{marginHorizontal: 6, marginTop: 12}}>
+      <View style={{marginTop: 12}}>
         <BackButton />
       </View>
       <View style={styles.titleRow}>

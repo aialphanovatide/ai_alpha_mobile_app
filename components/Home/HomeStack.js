@@ -15,7 +15,7 @@ import useHomeStyles from './HomeStyles';
 import AnalysisArticle from './Analysis/AnalysisArticle';
 import NarrativeTradingArticle from './HomeNarrativeTradings/NarrativeTradingArticle';
 import {useScreenOrientation} from '../../hooks/useScreenOrientation';
-import {useNavigation, Sta} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Search from '../Search/Search';
 import HomeNotifications from './HomeNotifications/HomeNotifications';
 import ChartsSection from './Topmenu/subMenu/Fund_news_chart/Charts/NewCharts/ChartsSection';
@@ -262,7 +262,7 @@ const HomeStackScreen = () => {
         name="AnalysisArticleScreen"
         component={AnalysisArticle}
         options={{
-          animation: 'slide_from_right',
+          animation: 'fade',
           animationDuration: 250,
           gestureEnabled: 'true',
           gestureDirection: 'horizontal',
@@ -282,7 +282,7 @@ const HomeStackScreen = () => {
         name="NarrativeTradingArticleScreen"
         component={NarrativeTradingArticle}
         options={{
-          animation: 'slide_from_right',
+          animation: 'fade',
           animationDuration: 250,
           gestureEnabled: 'true',
           gestureDirection: 'horizontal',

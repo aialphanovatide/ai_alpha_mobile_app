@@ -174,7 +174,6 @@ const SettingsScreen = ({route}) => {
         prefix = 'auth0|';
       }
 
-
       console.log(
         'url: ',
         `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
@@ -209,7 +208,6 @@ const SettingsScreen = ({route}) => {
       if (response.ok) {
         console.log('Account deletion initiated');
 
-
         await AsyncStorage.removeItem('accessToken');
         await AsyncStorage.removeItem('refreshToken');
         await AsyncStorage.removeItem('userEmail');
@@ -221,16 +219,18 @@ const SettingsScreen = ({route}) => {
         await AsyncStorage.removeItem('birthDate');
         await AsyncStorage.removeItem('userImage');
 
-        const backendDeleteResponse = await fetch(`https://aialpha.ngrok.io/delete_user`, {
-          method: 'DELETE',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            user_id: userId,
-          }),
-        });
+        const backendDeleteResponse = await fetch(
+          `https://aialpha.ngrok.io/delete_user`,
+          {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              user_id: userId,
+            }),
+          },
+        );
         const data = await backendDeleteResponse.json();
-        console.log("DATA SENT TO BACKEND",data);
-
+        console.log('DATA SENT TO BACKEND', data);
 
         resetLoginForm();
         RNRestart.restart();
@@ -247,7 +247,6 @@ const SettingsScreen = ({route}) => {
 
   const handleDeleteAccount = async () => {
     try {
-
       // Case for Username-Password users
       try {
         let isUsernamePasswordAuthenticationUser = false;
@@ -370,9 +369,7 @@ const SettingsScreen = ({route}) => {
   return (
     <SafeAreaView style={styles.backgroundColor}>
       <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
-        <View style={styles.backButtonContainer}>
-          <BackButton />
-        </View>
+        <BackButton />
         <Text style={styles.title}>Settings</Text>
         <View style={styles.container}>
           <View style={styles.optionsContainer}>

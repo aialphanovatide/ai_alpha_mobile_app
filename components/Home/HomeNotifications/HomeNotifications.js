@@ -198,10 +198,8 @@ const HomeNotifications = ({route, navigation}) => {
     return (
       <SafeAreaView style={styles.background}>
         <BackgroundGradient />
-        <ScrollView style={{flex: 1}}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton />
-          </View>
+        <ScrollView style={{flex: 1, paddingTop: 22}}>
+          <BackButton />
           <Text style={styles.title}>Notifications</Text>
           <View style={styles.container}>
             <SkeletonLoader type="timeframe" quantity={4} />
@@ -237,12 +235,10 @@ const HomeNotifications = ({route, navigation}) => {
     <SafeAreaView style={styles.mainSection}>
       <BackgroundGradient />
       <View
-        style={[{flex: 1, paddingTop: 36}]}
+        style={[{flex: 1, paddingTop: 22}]}
         showsVerticalScrollIndicator={false}
         bounces={false}>
-        <View style={styles.backButtonWrapper}>
-          <BackButton navigationHandler={handleBackNavigation} />
-        </View>
+        <BackButton navigationHandler={handleBackNavigation} />
         <Text style={styles.title}>Notifications</Text>
         <NotificationsMenu
           options={options}

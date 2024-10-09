@@ -90,7 +90,7 @@ const SearchBar = ({
             }
           : {
               height: 40,
-              zIndex: 2001,
+              zIndex: 2003,
             },
       ]}>
       {activeSearchBar ? (

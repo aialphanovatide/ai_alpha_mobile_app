@@ -10,7 +10,9 @@ const useNotificationsStyles = () => {
       flex: 1,
       width: theme.width,
       backgroundColor: theme.mainBackgroundColor,
-      padding: 10,
+      paddingHorizontal: 10,
+      paddingTop: 24,
+      paddingBottom: 10,
     },
     mainContainer: {
       alignContent: 'center',

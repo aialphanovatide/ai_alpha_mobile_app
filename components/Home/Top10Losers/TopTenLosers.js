@@ -11,6 +11,7 @@ import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
 import {TopMenuContext} from '../../../context/topMenuContext.js';
 import {useNavigation} from '@react-navigation/core';
 import {CategoriesContext} from '../../../context/categoriesContext.js';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
@@ -127,12 +128,14 @@ const TopTenLosers = ({handleAboutPress}) => {
           additionalStyles={additionalAboutStyles}
         />
       </View>
-      {loading || topTenCoins.length === 0 ? (
+      {loading ? (
         <ScrollView>
           <View style={styles.table} showsVerticalScrollIndicator={false}>
             <SkeletonLoader quantity={10} />
           </View>
         </ScrollView>
+      ) : !loading && topTenCoins.length === 0 ? (
+        <NoContentDisclaimer />
       ) : (
         <View style={styles.itemsContainer}>
           <ScrollView

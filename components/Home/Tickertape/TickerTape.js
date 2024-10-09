@@ -93,7 +93,7 @@ const TickerTape = ({coins}) => {
                 title: "LDO / USD",
               },
               {
-                proName: "BINANCE:RPLUSD",
+                proName: "COINBASE:RPLUSD",
                 title: "RPL / USD",
               },
               {
@@ -101,8 +101,8 @@ const TickerTape = ({coins}) => {
                 title: "FXS / USD",
               },
               {
-                proName: "BINANCE:MATICUSD",
-                title: "MATIC / USD",
+                proName: "KRAKEN:POLUSD",
+                title: "POL / USD",
               },
               {
                 proName: "COINBASE:ARBUSD",
@@ -161,7 +161,7 @@ const TickerTape = ({coins}) => {
                 title: "1INCH / USD",
               },
               {
-                proName: "BINANCE:OCEANUSD",
+                proName: "COINBASE:OCEANUSD",
                 title: "OCEAN / USD",
               },
               {
@@ -169,7 +169,7 @@ const TickerTape = ({coins}) => {
                 title: "FET / USD",
               },
               {
-                proName: "BINANCE:RNDRUSD",
+                proName: "GEMINI:RNDRUSD",
                title: "RNDR / USD",
               },
             ],

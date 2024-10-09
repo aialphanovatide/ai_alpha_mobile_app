@@ -4,7 +4,6 @@ import CryptoCalendar from './CryptoCalendar/CryptoCalendar.js';
 import BackButton from '../BackButton/BackButton.js';
 import SubMenu from './SubMenu/SubMenu.js';
 import useCalendarStyles from './CalendarStyles.js';
-import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext.js';
 import MacroEconomicCalendar from './MacroEconomicsCalendar/MacroEconomicCalendar.js';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay.js';
@@ -44,42 +43,38 @@ const Calendar = ({handleReturn}) => {
   return (
     <SafeAreaView style={styles.flex}>
       <BackgroundGradient />
-        <ScrollView
-          style={styles.container}
-          nestedScrollEnabled={true}
-          bounces={false}
-          alwaysBounceVertical={false}>
-          <View style={styles.backbuttonContainer}>
-            <BackButton handleReturn={handleReturn} />
-          </View>
-          <Text style={styles.title}>Calendar</Text>
-          <Text style={styles.sectionDescription}>
-            Presents key cryptocurrency events, such as token launches, protocol
-            updates and regulatory decisions, serving as an aid to anticipate
-            market movements and adjust trading strategies.
-          </Text>
-          <Text style={styles.subTitle}>Crypto</Text>
-          <View style={styles.calendarContent}>
-            <SubMenu
-              Intervals={Intervals}
-              handlePress={handleCryptoPress}
-              selectedInterval={cryptoSelectedInterval}
-            />
-            <CryptoCalendar selectedInterval={cryptoSelectedInterval.days} />
-          </View>
-          <Text style={styles.subTitle}>Macroeconomics</Text>
-          <View style={[styles.calendarContent, styles.marginBottom]}>
-            <SubMenu
-              Intervals={Intervals}
-              handlePress={handleEconomicEventPress}
-              selectedInterval={economicSelectedInterval}
-            />
-            <MacroEconomicCalendar
-              selectedInterval={economicSelectedInterval}
-            />
-          </View>
-        </ScrollView>
-        {subscribed ? <></> : <UpgradeOverlay />}
+      <ScrollView
+        style={styles.container}
+        nestedScrollEnabled={true}
+        bounces={false}
+        alwaysBounceVertical={false}>
+        <BackButton handleReturn={handleReturn} />
+        <Text style={styles.title}>Calendar</Text>
+        <Text style={styles.sectionDescription}>
+          Presents key cryptocurrency events, such as token launches, protocol
+          updates and regulatory decisions, serving as an aid to anticipate
+          market movements and adjust trading strategies.
+        </Text>
+        <Text style={styles.subTitle}>Crypto</Text>
+        <View style={styles.calendarContent}>
+          <SubMenu
+            Intervals={Intervals}
+            handlePress={handleCryptoPress}
+            selectedInterval={cryptoSelectedInterval}
+          />
+          <CryptoCalendar selectedInterval={cryptoSelectedInterval.days} />
+        </View>
+        <Text style={styles.subTitle}>Macroeconomics</Text>
+        <View style={[styles.calendarContent, styles.marginBottom]}>
+          <SubMenu
+            Intervals={Intervals}
+            handlePress={handleEconomicEventPress}
+            selectedInterval={economicSelectedInterval}
+          />
+          <MacroEconomicCalendar selectedInterval={economicSelectedInterval} />
+        </View>
+      </ScrollView>
+      {subscribed ? <></> : <UpgradeOverlay />}
     </SafeAreaView>
   );
 };

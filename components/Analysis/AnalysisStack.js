@@ -5,12 +5,11 @@ import Calendar from './Calendar/Calendar';
 import EthBtcChart from './EthBtcChart/EthBtcChart';
 import ChartSection from './ChartSection/ChartSection';
 import FearAndGreed from './FearAndGreed/FearAndGreed';
-import BtcDominanceChart from './BtcDominance/BtcDominance';
+import BinanceChart from './BinanceChart/BinanceChart';
 import Total3Chart from './Total3Chart/Total3Chart';
 import History from './HistorySection/History';
 import NarrativeTrading from './NarrativeTrading/NarrativeTrading';
 import FundingRates from './FundingRates/FundingRates';
-import VixChart from './VixIndexChart/VixChart';
 import UsOilChart from './UsOilChart/UsOilChart';
 import Total3CandleChart from './Total3Chart/Total3CandleChart/Total3CandleChart';
 
@@ -33,8 +32,27 @@ const AnalysisScreen = () => {
       />
       <AnalysisStack.Screen name="Calendar" component={Calendar} />
       <AnalysisStack.Screen name="FundingRates" component={FundingRates} />
-      <AnalysisStack.Screen name="BTCDominance" component={BtcDominanceChart} />
-      <AnalysisStack.Screen name="EthBtc" component={EthBtcChart} />
+      <AnalysisStack.Screen
+        name="BTCDominance"
+        component={BinanceChart}
+        initialParams={{
+          title: 'BTC Dominance Chart',
+          symbol: 'BTCDOMUSDT',
+          description:
+            "Reflects the proportion of the total cryptocurrency market held by Bitcoin. It is a vital indicator for assessing the market's preference for BTC over other altcoins.",
+        }}
+      />
+      <AnalysisStack.Screen
+        name="EthBtc"
+        component={BinanceChart}
+        initialParams={{
+          title: 'ETH/BTC Chart',
+          symbol: 'ETHBTC',
+          description:
+            'The strength of ETH against BTC helps us understand how strong Ethereum and its ecosystem projects are while also telling us how strong the entire altcoin market is too.',
+        }}
+      />
+      {/* <AnalysisStack.Screen name="EthBtc" component={EthBtcChart} /> */}
       <AnalysisStack.Screen name="Total3" component={Total3Chart} />
       <AnalysisStack.Screen
         name="DXYChart"
@@ -68,7 +86,7 @@ const AnalysisScreen = () => {
       />
       <AnalysisStack.Screen
         name="USOIL"
-        component={UsOilChart}
+        component={ChartSection}
         initialParams={{
           title: 'U.S. Oil Chart',
           symbol: 'USO',

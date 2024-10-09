@@ -71,7 +71,7 @@ const Slide = ({
   id,
   title,
   subtitle,
-  mainImageSource,
+  images,
   content,
   hasButton,
   handleSkip,
@@ -118,13 +118,28 @@ const Slide = ({
             onError={e => console.error('Video error', e)}
           />
         </View>
-      ) : (
+      ) : images.length === 1 ? (
         <FastImage
-          style={[styles.mainImage, mainImageSource.style]}
-          source={mainImageSource.source}
+          style={[styles.mainImage, images[0].style]}
+          source={images[0].source}
           resizeMode={FastImage.resizeMode.contain}
           loop={true}
         />
+      ) : (
+        <View style={styles.imagesContainer}>
+          <FastImage
+            style={[styles.mainImage, images[0].style]}
+            source={images[0].source}
+            resizeMode={FastImage.resizeMode.contain}
+            loop={true}
+          />
+          <FastImage
+            style={[styles.secondaryImage, images[1].style]}
+            source={images[1].source}
+            resizeMode={FastImage.resizeMode.contain}
+            loop={true}
+          />
+        </View>
       )}
       <View style={styles.contentContainer}>
         <Text
@@ -194,12 +209,14 @@ const IntroductorySlides = ({route}) => {
       id: 1,
       title: 'Welcome to AI Alpha',
       subtitle: 'Welcome!',
-      mainImageSource: {
-        source: require('../../assets/images/introductorySection/slide1anim.gif'),
-        style: {width: 350, height: 300},
-      },
+      images: [
+        {
+          source: require('../../assets/images/introductorySection/slide1anim.gif'),
+          style: {width: 350, height: 300},
+        },
+      ],
       video: {
-        source: require('../../assets/images/introductorySection/Slide1-v3.mp4'),
+        source: require('../../assets/images/introductorySection/Slide1b.mp4'),
         style: {width: 350, height: 300},
       },
       content: [
@@ -220,14 +237,27 @@ const IntroductorySlides = ({route}) => {
       id: 2,
       title: 'Categories & \nFundamental Section',
       subtitle: 'We cover all layers.',
-      mainImageSource: {
-        source: require('../../assets/images/introductorySection/topmenu_tape.gif'),
-        style: {width: 350, height: 330},
-      },
-      video: {
-        source: require('../../assets/images/introductorySection/Slide2-v2.mp4'),
-        style: {width: 350, height: 330},
-      },
+      images: [
+        {
+          source: require('../../assets/images/introductorySection/top-menu-background.png'),
+          style: {width: 350, height: 330},
+        },
+        {
+          source: require('../../assets/images/introductorySection/only_topmenu.gif'),
+          style: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: 420,
+            height: 330,
+          },
+        },
+      ],
+      video: null,
+      // {
+      //   source: require('../../assets/images/introductorySection/Slide2-v2.mp4'),
+      //   style: {width: 350, height: 330},
+      // },
       content: [
         {
           information:
@@ -246,10 +276,12 @@ const IntroductorySlides = ({route}) => {
       id: 3,
       title: 'AI Alpha \nDiscord Community',
       subtitle: 'Our place.',
-      mainImageSource: {
-        source: require('../../assets/images/introductorySection/discord-server-example.png'),
-        style: {width: 400, height: 360},
-      },
+      images: [
+        {
+          source: require('../../assets/images/introductorySection/discord-server-example.png'),
+          style: {width: 400, height: 360},
+        },
+      ],
       video: null,
       content: [],
       hasButton: true,
@@ -269,7 +301,7 @@ const IntroductorySlides = ({route}) => {
 
   return (
     <SafeAreaView
-      style={{flex: 1, width: theme.width, backgroundColor: '#171717'}}>
+      style={{flex: 1, width: theme.width, backgroundColor: '#000000'}}>
       <View style={styles.sectionContainer}>
         <IntroductoryCarousel toggleActiveSlide={toggleActiveSlide}>
           {SLIDES_DATA.map(item => (
@@ -278,7 +310,7 @@ const IntroductorySlides = ({route}) => {
               id={item.id}
               title={item.title}
               subtitle={item.subtitle}
-              mainImageSource={item.mainImageSource}
+              images={item.images}
               content={item.content}
               hasButton={item.hasButton}
               handleSkip={handleSkip}

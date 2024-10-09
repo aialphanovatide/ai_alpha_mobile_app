@@ -8,7 +8,8 @@ const useTopMenuStyles = () => {
     container: {
       flexDirection: 'row',
       minWidth: 60,
-      paddingVertical: 10,
+      paddingTop: 10,
+      paddingBottom: 4,
     },
     loadingMessage: {
       flex: 1,

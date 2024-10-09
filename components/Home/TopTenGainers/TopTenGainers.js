@@ -19,6 +19,7 @@ import {AppThemeContext} from '../../../context/themeContext.js';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext.js';
 import {CategoriesContext} from '../../../context/categoriesContext.js';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
@@ -137,7 +138,7 @@ const TopTenGainers = ({handleAboutPress}) => {
           additionalStyles={additionalAboutStyles}
         />
       </View>
-      {loading || topTenCoins.length === 0 ? (
+      {loading ? (
         <ScrollView
           persistentScrollbar={true}
           indicatorStyle={isDarkMode ? 'white' : 'dark'}
@@ -147,6 +148,8 @@ const TopTenGainers = ({handleAboutPress}) => {
             <SkeletonLoader quantity={10} />
           </View>
         </ScrollView>
+      ) : !loading && topTenCoins.length === 0 ? (
+        <NoContentDisclaimer />
       ) : (
         <View style={styles.itemsContainer}>
           <ScrollView

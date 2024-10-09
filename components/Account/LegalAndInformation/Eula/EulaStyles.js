@@ -23,7 +23,6 @@ const useEulaStyles = () => {
     scrollview: {
       flex: 1,
       backgroundColor: 'transparent',
-      paddingVertical: 10,
     },
     container: {
       flex: 1,

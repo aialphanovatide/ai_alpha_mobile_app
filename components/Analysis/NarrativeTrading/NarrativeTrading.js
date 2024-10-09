@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import BackButton from '../BackButton/BackButton';
-import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
 import CryptoFilter from '../Calendar/CryptoCalendar/CryptoFilter';
 import {useNavigation} from '@react-navigation/core';
@@ -193,18 +192,6 @@ const NarrativeTrading = () => {
       });
       return filtered_items;
     }
-    // category.coin_bots.forEach(coin => {
-    //   // console.log(items);
-    //   items.forEach(item => {
-    //     if (
-    //       item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===
-    //       coin.bot_name.toLowerCase().replace(/\s/g, '')
-    //     ) {
-    //       filtered_items.push(item);
-    //     }
-    //   });
-    // });
-
     items.forEach(item => {
       if (
         item.category.toLowerCase() === category.category_name.toLowerCase()
@@ -218,7 +205,6 @@ const NarrativeTrading = () => {
 
   const filterItemsByTime = (interval, items) => {
     const currentDate = new Date();
-    // console.log(items);
     const filteredArray = items.filter(item => {
       const createdAtDate = new Date(item.clickedAt);
       if (interval === 'today') {
@@ -281,9 +267,7 @@ const NarrativeTrading = () => {
     <SafeAreaView style={styles.flex}>
       <BackgroundGradient />
       <View style={styles.container}>
-        <View style={styles.backButtonWrapper}>
-          <BackButton navigationHandler={handleNavigationToAnalysis} />
-        </View>
+        <BackButton navigationHandler={handleNavigationToAnalysis} />
         <Text style={styles.title}>Narrative Trading</Text>
         <Text style={styles.sectionDescription}>
           Analyzing specific cryptocurrency sectors (e.g. RWA) and trends

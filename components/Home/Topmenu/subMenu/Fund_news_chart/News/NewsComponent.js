@@ -25,7 +25,9 @@ const NewsComponent = ({route}) => {
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin,
   );
-  const options = ['Today', 'This Week'];
+  const options = ['btc', 'eth'].includes(botname)
+    ? ['Today', 'This Week']
+    : ['Today', 'This Month'];
   const [activeFilter, setActiveFilter] = useState(options[0]);
   const {handleAboutPress, aboutDescription, aboutVisible} =
     useContext(AboutModalContext);
@@ -74,6 +76,11 @@ const NewsComponent = ({route}) => {
         const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
         startOfWeek.setHours(0, 0, 0, 0);
         return articleDate >= startOfWeek;
+      } else if (filter === 'This Month') {
+        return (
+          articleDate.getMonth() === now.getMonth() &&
+          articleDate.getFullYear() === now.getFullYear()
+        );
       }
 
       return false;
@@ -106,8 +113,7 @@ const NewsComponent = ({route}) => {
     setLoading(true);
     const fetchNews = async () => {
       try {
-        const newsLimit =
-          activeFilter && activeFilter === 'This Week' ? 20 : 10;
+        const newsLimit = activeFilter && activeFilter === 'Today' ? 10 : 20;
         const endpoint = `bot_name=${botname}&limit=${newsLimit}`;
         const response = await fetch(
           `https://newsbotv2.ngrok.io/get_articles?${endpoint}`,

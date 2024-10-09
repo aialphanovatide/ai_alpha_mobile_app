@@ -8,7 +8,7 @@ const useCalendarStyles = () => {
       flex: 1,
       width: theme.width,
       height: 'auto',
-      paddingTop: 45,
+      paddingTop: 24,
       backgroundColor: 'transparent',
     },
     flex: {

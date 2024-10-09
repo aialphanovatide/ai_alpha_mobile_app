@@ -252,11 +252,9 @@ const AnalysisArticle = ({route}) => {
         isSubscribed={userInfo?.subscribed}
         handleSubscriptionNavigation={handleSuscriptionNavigation}
       />
-      <View style={styles.backButtonWrapper}>
-        <BackButton
-          navigationHandler={isHistoryArticle ? handleBackNavigation : null}
-        />
-      </View>
+      <BackButton
+        navigationHandler={isHistoryArticle ? handleBackNavigation : null}
+      />
       <View
         style={[styles.article, !userInfo.subscribed ? {height: 1250} : {}]}>
         <View style={styles.articleImageContainer}>

@@ -44,22 +44,15 @@ const NewsArticle = ({route, navigation}) => {
     navigation.goBack();
   };
 
-  const formatDate = dateString => {
-    if (dateString.includes('ago')) {
-      return dateString;
-    }
+  const simplifyDateTime = dateTimeString => {
+    const dateTime = new Date(dateTimeString);
+    const year = dateTime.getFullYear();
+    const month = String(dateTime.getMonth() + 1).padStart(2, '0');
+    const day = String(dateTime.getDate()).padStart(2, '0');
+    const hours = String(dateTime.getHours()).padStart(2, '0');
+    const minutes = String(dateTime.getMinutes()).padStart(2, '0');
 
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-
-    return (
-      `${year}/${month}/${day}` +
-      (hours !== '00' || minutes !== '00' ? ` ${hours}:${minutes}` : '')
-    );
+    return `${day}-${month}-${year} ${hours}:${minutes}`;
   };
 
   const filterArticleTitle = summary => {
@@ -152,9 +145,7 @@ const NewsArticle = ({route, navigation}) => {
           style={styles.zoomImageDismissOverlay}
         />
       </Modal>
-      <View style={styles.marginVertical}>
-        <BackButton handleReturn={handleReturn} />
-      </View>
+      <BackButton handleReturn={handleReturn} />
       <View style={styles.article}>
         <View style={styles.articleImageContainer}>
           <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
@@ -180,9 +171,7 @@ const NewsArticle = ({route, navigation}) => {
         </View>
         <View style={styles.contentContainer}>
           <Text style={styles.articleTitle}>{item.title}</Text>
-          <Text style={styles.articleDate}>
-            {item.date}
-          </Text>
+          <Text style={styles.articleDate}>{simplifyDateTime(item.date)}</Text>
           <Text style={styles.articleSummary}>{item.content}</Text>
         </View>
       </View>

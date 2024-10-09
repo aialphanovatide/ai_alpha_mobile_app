@@ -12,8 +12,8 @@ const TimeframeSelector = ({
 }) => {
   const timeframes = hasHourlyTimes
     ? ['1h', '4h', '1d', '1w']
-    : selectedPairing.toLowerCase() === 'btc'
-    ? ['1W']
+    : ['btc', 'eth'].includes(selectedPairing.toLowerCase())
+    ? ['1D']
     : ['1D', '1W'];
 
   const styles = useChartsStyles();

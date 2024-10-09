@@ -20,7 +20,7 @@ const useAskAiStyles = () => {
     title: {
       marginTop: 48,
       marginBottom: 24,
-      marginLeft: 12,
+      marginLeft: 24,
       fontSize: 25,
       color: theme.titleColor,
       fontFamily: theme.fontMedium,

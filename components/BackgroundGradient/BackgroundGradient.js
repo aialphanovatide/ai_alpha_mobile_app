@@ -8,7 +8,7 @@ const BackgroundGradient = () => {
   return (
     <LinearGradient
       useAngle={true}
-      angle={-16}
+      angle={20}
       colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
       locations={[0.05, 0.97]}
       style={styles.gradient}

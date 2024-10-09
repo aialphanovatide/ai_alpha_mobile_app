@@ -10,7 +10,7 @@ const useFearAndGreedStyles = () => {
       width: theme.width,
       backgroundColor: 'transparent',
       padding: 10,
-      paddingTop: 36,
+      paddingTop: 24,
     },
     scrollView: {
       flex: 1,

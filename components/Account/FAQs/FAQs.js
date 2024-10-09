@@ -84,42 +84,40 @@ const FAQs = () => {
   return (
     <View style={styles.flex}>
       <BackgroundGradient />
-        <SafeAreaView style={styles.backgroundColor}>
-          <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
-            <View style={styles.backButtonContainer}>
-              <BackButton />
-            </View>
-            <Text style={styles.title}>FAQs</Text>
-            {faqs.map((faq, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => toggleFAQ(index)}
-                style={[
-                  styles.faqContainer,
-                  index === faqs.length - 1 && styles.lastFAQContainer,
-                ]}>
-                <View style={styles.faqTouchable}>
-                  <View style={styles.faqQuestionRow}>
-                    <Text style={styles.faqQuestionText}>{faq.question}</Text>
-                    <Image
-                      source={
-                        openedFAQ === index
-                          ? require('../../../assets/images/arrow-up.png')
-                          : require('../../../assets/images/arrow-down.png')
-                      }
-                      style={styles.faqArrow}
-                    />
-                  </View>
-                  {openedFAQ === index && (
-                    <View style={styles.faqAnswer}>
-                      <Text style={styles.faqAnswerText}>{faq.answer}</Text>
-                    </View>
-                  )}
+      <SafeAreaView style={styles.backgroundColor}>
+        <ScrollView style={[styles.backgroundColor, styles.paddingV]}>
+          <BackButton />
+          <Text style={styles.title}>FAQs</Text>
+          {faqs.map((faq, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => toggleFAQ(index)}
+              style={[
+                styles.faqContainer,
+                index === faqs.length - 1 && styles.lastFAQContainer,
+              ]}>
+              <View style={styles.faqTouchable}>
+                <View style={styles.faqQuestionRow}>
+                  <Text style={styles.faqQuestionText}>{faq.question}</Text>
+                  <Image
+                    source={
+                      openedFAQ === index
+                        ? require('../../../assets/images/arrow-up.png')
+                        : require('../../../assets/images/arrow-down.png')
+                    }
+                    style={styles.faqArrow}
+                  />
                 </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </SafeAreaView>
+                {openedFAQ === index && (
+                  <View style={styles.faqAnswer}>
+                    <Text style={styles.faqAnswerText}>{faq.answer}</Text>
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 };

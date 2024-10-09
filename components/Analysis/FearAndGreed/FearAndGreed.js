@@ -111,12 +111,10 @@ const FearAndGreed = ({handleReturn}) => {
   }, []);
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <SafeAreaView style={styles.mainSection}>
       <BackgroundGradient />
-      <SafeAreaView style={styles.mainSection}>
-        <View style={styles.backButtonWrapper}>
-          <BackButton handleReturn={handleReturn} />
-        </View>
+      <ScrollView style={styles.scrollView}>
+        <BackButton handleReturn={handleReturn} />
         <Text style={styles.title}>Fear and Greed Index</Text>
         <Text style={styles.sectionDescription}>
           Indicates the current sentiment of the cryptocurrency market using
@@ -138,9 +136,9 @@ const FearAndGreed = ({handleReturn}) => {
             />
           </>
         )}
-      </SafeAreaView>
-      {subscribed ? <></> : <UpgradeOverlay />}
-    </ScrollView>
+        {subscribed ? <></> : <UpgradeOverlay />}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

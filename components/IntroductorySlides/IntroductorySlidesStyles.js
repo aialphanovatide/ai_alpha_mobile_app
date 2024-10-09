@@ -9,7 +9,7 @@ const useIntroductorySlidesStyles = () => {
       flex: 1,
       width: theme.width,
       height: theme.height,
-      backgroundColor: '#171717',
+      backgroundColor: '#000000',
     },
     slide: {
       flex: 1,
@@ -268,6 +268,11 @@ const useIntroductorySlidesStyles = () => {
       height: 70,
       overflow: 'visible',
       zIndex: 200,
+    },
+    imagesContainer: {
+      position: 'relative',
+      marginTop: -32,
+      marginBottom: 24,
     },
   });
   return styles;

@@ -2,11 +2,7 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   View,
   ScrollView,
-  Text,
-  Modal,
   Platform,
-  UIManager,
-  LayoutAnimation,
 } from 'react-native';
 import MenuItem from './menuItem/menuItem';
 import useTopMenuStyles from './topmenuStyles';

@@ -222,9 +222,7 @@ const Total3CandleChart = ({candlesToShow = 25}) => {
         locations={[0.22, 0.97]}
         style={{flex: 1}}>
         <SafeAreaView style={styles.background}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton />
-          </View>
+          <BackButton />
           <Text style={styles.title}>Total 3 Chart</Text>
           <Text style={styles.sectionDescription}>
             This chart aggregates the market value of all cryptocurrencies
@@ -256,9 +254,7 @@ const Total3CandleChart = ({candlesToShow = 25}) => {
         style={{flex: 1}}
         showsVerticalScrollIndicator={false}
         bounces={false}>
-        <View style={styles.backButtonWrapper}>
-          <BackButton />
-        </View>
+        <BackButton />
         <Text style={styles.title}>Total 3 Chart</Text>
         <Text style={styles.sectionDescription}>
           This chart aggregates the market value of all cryptocurrencies

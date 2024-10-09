@@ -10,7 +10,8 @@ const useCoinMenuStyles = () => {
       borderRadius: 20,
       width: '96%',
       backgroundColor: theme.mainBackgroundColor,
-      marginVertical: 12,
+      marginTop: 8,
+      marginBottom: 12,
       overflow: 'visible',
     },
     subMenu: {
@@ -52,7 +53,7 @@ const useCoinMenuStyles = () => {
     },
     activeCoinIndicator: {
       position: 'absolute',
-      top: -10,
+      top: -8,
       right: '47.5%',
       width: 25,
       height: 12,

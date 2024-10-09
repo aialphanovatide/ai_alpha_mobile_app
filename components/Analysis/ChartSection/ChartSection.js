@@ -244,7 +244,7 @@ const ChartSection = ({route, navigation}) => {
         ],
       });
     }
-  }, [chartData, selectedInterval]);
+  }, [chartData, selectedInterval, hasUpdatedZoomDomain]);
 
   // const domainX = [chartData[0]?.x, chartData[chartData.length - 1]?.x];
 
@@ -264,6 +264,7 @@ const ChartSection = ({route, navigation}) => {
   const changeInterval = async newInterval => {
     setLoading(true);
     try {
+      setHasUpdatedZoomDomain(false);
       setSelectedInterval(newInterval);
       setChartData([]);
     } catch (error) {
@@ -352,10 +353,8 @@ const ChartSection = ({route, navigation}) => {
             styles.background,
             isLandscape && isHorizontal && {width: '100%'},
           ]}>
-          <ScrollView style={{flex: 1}}>
-            <View style={styles.backButtonWrapper}>
-              <BackButton />
-            </View>
+          <ScrollView style={{flex: 1, paddingTop: 24}}>
+            <BackButton />
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.sectionDescription}>{description}</Text>
             <View style={styles.container}>
@@ -382,14 +381,12 @@ const ChartSection = ({route, navigation}) => {
       <ScrollView
         scrollEnabled={scrollEnabled}
         style={[
-          {flex: 1, paddingTop: 36},
+          {flex: 1, paddingTop: 24},
           isLandscape && isHorizontal && {paddingTop: 36},
         ]}
         showsVerticalScrollIndicator={false}
         bounces={false}>
-        <View style={styles.backButtonWrapper}>
-          <BackButton />
-        </View>
+        <BackButton />
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.sectionDescription}>{description}</Text>
         <View style={styles.timeframeContainer}>

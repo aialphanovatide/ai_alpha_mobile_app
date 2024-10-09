@@ -9,7 +9,7 @@ const useNarrativeTradingStyles = () => {
     container: {
       flex: 1,
       width: theme.width,
-      paddingTop: 36,
+      paddingTop: 24,
       backgroundColor: 'transparent',
     },
     menusContainer: {

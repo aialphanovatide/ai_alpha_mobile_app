@@ -127,7 +127,7 @@ const HistoryTimeMenu = ({
 const History = () => {
   const options = ['today', 'this week'];
   const [cryptoOptions, setCryptoOptions] = useState([]);
-  const [activeOption, setActiveOption] = useState(null);
+  const [activeOption, setActiveOption] = useState(options[0]);
   const [activeCryptoOption, setActiveCryptoOption] = useState(null);
   const [historyItems, setHistoryItems] = useState([]);
   const [loadedHistoryItems, setLoadedHistoryItems] = useState([]);
@@ -169,11 +169,25 @@ const History = () => {
   }, [activeOption]);
 
   useEffect(() => {
+    if (loadedHistoryItems.length !== 0) {
+      const filtered_by_time = filterItemsByTime(
+        activeOption,
+        loadedHistoryItems,
+      );
+      const filtered_history_items = filterItemsByCategory(
+        activeCryptoOption,
+        filtered_by_time,
+      );
+      setHistoryItems(filtered_history_items.reverse());
+    }
+  }, [loadedHistoryItems]);
+
+  useEffect(() => {
     setCryptoOptions(historyFilterData);
     setActiveOption(options[0]);
     setActiveCryptoOption(historyFilterData[0]);
     handleCryptoTouch(historyFilterData[0]);
-  }, [loadedHistoryItems]);
+  }, []);
 
   const filterItemsByCategory = (category, items) => {
     const filtered_items = [];
@@ -188,17 +202,6 @@ const History = () => {
       });
       return filtered_items;
     }
-
-    // category.coin_bots.forEach(coin => {
-    //   items.forEach(item => {
-    //     if (
-    //       item.coin_bot_name.toLowerCase().replace(/\s/g, '') ===
-    //       coin.bot_name.toLowerCase().replace(/\s/g, '')
-    //     ) {
-    //       filtered_items.push(item);
-    //     }
-    //   });
-    // });
 
     items.forEach(item => {
       if (
@@ -272,9 +275,7 @@ const History = () => {
     <SafeAreaView style={styles.flex}>
       <BackgroundGradient />
       <View style={styles.container}>
-        <View style={styles.backButtonWrapper}>
-          <BackButton />
-        </View>
+        <BackButton />
         <Text style={styles.title}>History</Text>
         <Text style={styles.sectionDescription}>
           The history section consolidates all analysis conducted on a specific

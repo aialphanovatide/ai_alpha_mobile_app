@@ -1,12 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  View,
-  Text,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import {View, Text, ImageBackground, Image, ScrollView} from 'react-native';
 import {VictoryChart, VictoryAxis, VictoryLine} from 'victory-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import useTotal3Styles from './Total3ChartStyles';
@@ -104,9 +97,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
         locations={[0.22, 0.97]}
         style={{flex: 1}}>
         <SafeAreaView style={styles.background}>
-          <View style={styles.backButtonWrapper}>
-            <BackButton />
-          </View>
+          <BackButton />
           <Text style={styles.title}>Total 3 Chart</Text>
           <Text style={styles.sectionDescription}>
             This chart aggregates the market value of all cryptocurrencies
@@ -137,9 +128,7 @@ const Total3Chart = ({candlesToShow = 30}) => {
         style={{flex: 1}}
         showsVerticalScrollIndicator={false}
         bounces={false}>
-        <View style={styles.backButtonWrapper}>
-          <BackButton />
-        </View>
+        <BackButton />
         <Text style={styles.title}>Total 3 Chart</Text>
         <Text style={styles.sectionDescription}>
           This chart aggregates the market value of all cryptocurrencies

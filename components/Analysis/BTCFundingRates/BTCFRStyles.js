@@ -6,10 +6,8 @@ const useBtcFundingRatesStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     mainSection: {
-      flex: 1,
       height: theme.height,
       backgroundColor: 'transparent',
-      paddingTop: 36,
     },
     titleContainer: {
       flexDirection: 'row',
@@ -112,7 +110,7 @@ const useBtcFundingRatesStyles = () => {
       justifyContent: 'flex-start',
     },
     backButtonWrapper: {
-      marginHorizontal: 20,
+      marginTop: -20,
     }
   });
   return styles;

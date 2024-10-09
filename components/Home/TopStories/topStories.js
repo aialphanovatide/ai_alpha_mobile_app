@@ -123,7 +123,7 @@ const TopStories = ({handleAboutPress}) => {
               key={i}
               style={[
                 styles.storyWrapper,
-                i > 0 && !expanded ? styles.hidden : {},
+                i > 0 && !expanded ? styles.hidden : {opacity: 1},
               ]}>
               <StoryItem
                 item={story}
@@ -134,7 +134,7 @@ const TopStories = ({handleAboutPress}) => {
                 handleStoryRedirect={handleStoryRedirect}
                 coinBotId={story.bot_id}
                 index={i}
-                expanded
+                expanded={expanded}
               />
               <TouchableOpacity
                 style={[styles.arrowContainer, i > 0 ? styles.hidden : {}]}

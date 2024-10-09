@@ -24,7 +24,9 @@ const usePackageSubscriptionStyles = () => {
     innerContainer: {
       flex: 1,
       width: theme.width,
-      padding: 10,
+      paddingHorizontal: 10,
+      paddingBottom: 10,
+      paddingTop: 16,
       alignItems: 'center',
       justifyContent: 'center',
       // backgroundColor: theme.mainBackgroundColor,
@@ -355,7 +357,7 @@ const usePackageSubscriptionStyles = () => {
       marginBottom: 5,
       marginRight: 10,
     },
-    textWithIconTitle:{
+    textWithIconTitle: {
       color: '#FF6C0D',
       fontFamily: theme.fontMedium,
       textAlign: 'center',
@@ -363,7 +365,7 @@ const usePackageSubscriptionStyles = () => {
       marginLeft: 5,
       marginRight: 5,
     },
-    textWithIconTitleNotPushed:{
+    textWithIconTitleNotPushed: {
       color: '#FF6C0D',
       fontFamily: theme.fontMedium,
       textAlign: 'center',
@@ -371,7 +373,7 @@ const usePackageSubscriptionStyles = () => {
       marginLeft: 25,
       marginRight: 25,
     },
-    textWithIconTitlePushed:{
+    textWithIconTitlePushed: {
       color: '#FF6C0D',
       fontFamily: theme.fontMedium,
       textAlign: 'center',
@@ -380,7 +382,7 @@ const usePackageSubscriptionStyles = () => {
       marginRight: 25,
       marginBottom: 50,
     },
-    textWithIconTitlePushedv2:{
+    textWithIconTitlePushedv2: {
       color: '#FF6C0D',
       fontFamily: theme.fontMedium,
       textAlign: 'center',

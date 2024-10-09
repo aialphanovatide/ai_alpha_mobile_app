@@ -129,9 +129,7 @@ const FundingRates = ({handleReturn}) => {
       locations={[0.22, 0.97]}
       style={{flex: 1}}>
       <ScrollView style={styles.mainSection}>
-        <View style={styles.backButtonWrapper}>
-          <BackButton handleReturn={handleReturn} />
-        </View>
+        <BackButton handleReturn={handleReturn} />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Funding Rates</Text>
         </View>

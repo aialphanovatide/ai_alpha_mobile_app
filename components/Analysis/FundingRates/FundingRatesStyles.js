@@ -8,7 +8,7 @@ const useFundingRatesStyles = () => {
     mainSection: {
       width: '100%',
       backgroundColor: 'transparent',
-      paddingTop: 36,
+      paddingTop: 24,
       paddingHorizontal: 12,
     },
     titleContainer: {
