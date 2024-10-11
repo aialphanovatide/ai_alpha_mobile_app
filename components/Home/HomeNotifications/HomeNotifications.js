@@ -274,7 +274,12 @@ const HomeNotifications = ({route, navigation}) => {
               });
             })
           ) : (
-            <NoContentDisclaimer />
+            <NoContentDisclaimer
+              title={
+                'This is where the app notifications will appear as you use it.'
+              }
+              description={''}
+            />
           )}
         </ScrollView>
       </View>

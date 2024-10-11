@@ -46,15 +46,15 @@ const useTopStoriesStyles = () => {
       borderRadius: 2,
     },
     storyItem: {
-      flexDirection: 'row',
+      // flexDirection: 'row',
       width: '100%',
       paddingVertical: 8,
       paddingLeft: 4,
       backgroundColor: theme.boxesBackgroundColor,
-      alignItems: 'center',
+      // alignItems: 'center',
       alignSelf: 'center',
-      borderBottomColor: theme.boxesBorderColor,
-      borderBottomWidth: 0.75,
+      // borderBottomColor: theme.boxesBorderColor,
+      // borderBottomWidth: 0.75,
       borderRadius: 3,
       opacity: 1,
     },
@@ -79,6 +79,17 @@ const useTopStoriesStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
     },
+    horizontalLine: {
+      width: '90%',
+      marginLeft: '5%',
+      borderBottomWidth: 0.75,
+      borderBottomColor: theme.secondaryGrayColor,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 8,
+    }
   });
   return styles;
 };

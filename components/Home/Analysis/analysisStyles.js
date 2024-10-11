@@ -14,7 +14,8 @@ const useHomeAnalysisStyles = () => {
       fontFamily: theme.fontMedium,
     },
     titleStyles: {
-      maxWidth: '80%',
+      maxWidth: '65%',
+      marginLeft: 8,
       color: theme.titleColor,
       fontSize: 14,
       fontFamily: theme.font,
@@ -23,18 +24,25 @@ const useHomeAnalysisStyles = () => {
       width: 30,
       height: 30,
       borderRadius: 15,
-      marginLeft: 8,
+      marginHorizontal: 8,
       alignSelf: 'center',
     },
     item: {
+      // flexDirection: 'row',
       width: '100%',
+      paddingVertical: 14,
       paddingLeft: 4,
       backgroundColor: theme.boxesBackgroundColor,
-      alignSelf: 'center',
-      alignItems: 'center',
-      borderBottomColor: theme.boxesBorderColor,
-      borderBottomWidth: 0.5,
+      // alignItems: 'center',
+      // borderBottomColor: theme.boxesBorderColor,
+      // borderBottomWidth: 0.5,
       borderRadius: 2,
+      opacity: 1,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 8,
     },
     itemPreview: {
       flex: 1,
@@ -91,6 +99,7 @@ const useHomeAnalysisStyles = () => {
     contentContainer: {
       width: '100%',
       padding: 14,
+      paddingBottom: '10%',
     },
     analysisArticleText: {
       fontSize: theme.responsiveFontSize * 0.825,
@@ -242,7 +251,7 @@ const useHomeAnalysisStyles = () => {
     },
     zoomedImage: {
       width: 380,
-      height: 380,
+      height: '50%',
       alignSelf: 'center',
     },
     zoomImageDismissOverlay: {
@@ -250,6 +259,12 @@ const useHomeAnalysisStyles = () => {
       height: Platform.OS === 'ios' ? '30%' : '25%',
       backgroundColor: '#00000050',
       opacity: 0.8,
+    },
+    horizontalLine: {
+      width: '90%',
+      marginLeft: '5%',
+      borderBottomWidth: 0.75,
+      borderBottomColor: theme.secondaryGrayColor,
     },
   });
   return styles;

@@ -12,7 +12,8 @@ const TimeframeSelector = ({
 }) => {
   const timeframes = hasHourlyTimes
     ? ['1h', '4h', '1d', '1w']
-    : ['btc', 'eth'].includes(selectedPairing.toLowerCase())
+    : selectedPairing.toLowerCase() === 'btc' ||
+      selectedPairing.toLowerCase() === 'eth'
     ? ['1D']
     : ['1D', '1W'];
 

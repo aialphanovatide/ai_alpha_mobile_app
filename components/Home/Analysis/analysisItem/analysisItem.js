@@ -1,8 +1,12 @@
+import React from 'react';
 import {List} from 'react-native-paper';
 import useHomeAnalysisStyles from '../analysisStyles';
 import {useContext} from 'react';
 import {AppThemeContext} from '../../../../context/themeContext';
 import FastImage from 'react-native-fast-image';
+import {TouchableOpacity} from 'react-native';
+import {Text} from 'react-native';
+import {View} from 'react-native';
 
 const AnalysisItem = ({
   title,
@@ -14,15 +18,15 @@ const AnalysisItem = ({
   const styles = useHomeAnalysisStyles();
   const {isDarkMode} = useContext(AppThemeContext);
   return (
-    <List.Item
+    <TouchableOpacity
+      onPress={() => handleAnalysisNavigation(item)}
       style={[
         styles.item,
-        index === 0 && !expanded ? {borderBottomWidth: 0} : {},
-        index > 0 && !expanded ? styles.hidden : {opacity: 1},
-      ]}
-      title={title}
-      titleNumberOfLines={2}
-      left={() => (
+        // index === 0 && !expanded ? {borderBottomWidth: 0} : {},
+        index === 0 && !expanded && {marginBottom: 0},
+        index !== 0 && expanded && {paddingVertical: 0, paddingBottom: 14},
+      ]}>
+      <View style={[styles.row, index === 0 && !expanded && {marginBottom: 0}]}>
         <FastImage
           source={{
             uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${
@@ -41,10 +45,13 @@ const AnalysisItem = ({
           resizeMode="contain"
           fallback={true}
         />
-      )}
-      titleStyle={styles.titleStyles}
-      onPress={() => handleAnalysisNavigation(item)}
-    />
+        <Text style={styles.titleStyles} numberOfLines={2}>
+          {title}
+        </Text>
+      </View>
+      {index !== 0 && <View style={[styles.horizontalLine]} />}
+      {index === 0 && expanded && <View style={[styles.horizontalLine]} />}
+    </TouchableOpacity>
   );
 };
 

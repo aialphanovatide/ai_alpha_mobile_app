@@ -30,7 +30,6 @@ import {decode as base64decode} from 'base-64';
 import {AppThemeContext} from '../../../../context/themeContext';
 import useLoginFormStyles from './LoginFormStyles';
 import {RevenueCatContext} from '../../../../context/RevenueCatContext';
-import LinearGradient from 'react-native-linear-gradient';
 import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
 
 const LoginForm = ({route}) => {

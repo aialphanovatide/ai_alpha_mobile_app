@@ -36,23 +36,34 @@ const CustomImageRenderer = props => {
     setImageZoomVisible(false);
   };
 
-  const images = [{url: thumbnailSource.uri, width: 700, height: 400}];
+  const images = [{url: thumbnailSource.uri, width: 700, height: '50%'}];
   return (
     <View style={{alignItems: 'center'}}>
       <Renderer {...rendererProps} onPress={() => setImageZoomVisible(true)} />
       <Modal
         visible={isImageZoomVisible}
         transparent={true}
+        animationType="fade"
         style={styles.zoomImageBackground}
         onRequestClose={() => handleBackButtonImageClose()}>
-        <ImageViewer
-          imageUrls={images}
-          enableSwipeDown={true}
-          enableImageZoom={true}
-          onSwipeDown={() => setImageZoomVisible(false)}
-          index={0}
-          renderIndicator={() => null}
-          backgroundColor={'rgba(0,0,0,0.45)'}
+        <TouchableOpacity
+          onPress={() => handleBackButtonImageClose()}
+          style={[styles.zoomImageDismissOverlay, {height: '38%'}]}
+        />
+        <ResumableZoom maxScale={1.5} minScale={1}>
+          <FastImage
+            style={styles.zoomedImage}
+            resizeMode={'contain'}
+            source={{
+              uri: thumbnailSource.uri,
+              priority: FastImage.priority.normal,
+            }}
+            fallback={true}
+          />
+        </ResumableZoom>
+        <TouchableOpacity
+          onPress={() => handleBackButtonImageClose()}
+          style={[styles.zoomImageDismissOverlay, {height: '34%'}]}
         />
       </Modal>
     </View>

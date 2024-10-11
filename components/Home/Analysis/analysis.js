@@ -91,11 +91,12 @@ const Analysis = ({handleAboutPress}) => {
         additionalStyles={aboutIconStyles}
       />
       <NoContentDisclaimer
-        additionalStyles={{disclaimer: {marginVertical: '5%'}}}
+        title={'Oops, something went wrong.'}
+        description={''}
+        // additionalStyles={{disclaimer: {marginVertical: '5%'}}}
       />
     </View>;
   }
-
   return (
     <View style={styles.analysisItemsContainer}>
       <Text style={styles.mainTitle}>Daily Deep Dives</Text>

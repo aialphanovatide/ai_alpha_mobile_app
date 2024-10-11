@@ -28,14 +28,14 @@ const useHomeNarrativeTradingStyles = () => {
       alignSelf: 'center',
     },
     item: {
-      flexDirection: 'row',
+      // flexDirection: 'row',
       width: '100%',
       paddingVertical: 14,
       paddingLeft: 4,
       backgroundColor: theme.boxesBackgroundColor,
-      alignItems: 'center',
-      borderBottomColor: theme.boxesBorderColor,
-      borderBottomWidth: 0.5,
+      // alignItems: 'center',
+      // borderBottomColor: theme.boxesBorderColor,
+      // borderBottomWidth: 0.5,
       borderRadius: 2,
       opacity: 1,
     },
@@ -91,6 +91,7 @@ const useHomeNarrativeTradingStyles = () => {
     contentContainer: {
       width: '100%',
       padding: 14,
+      paddingBottom: '10%',
     },
     articleText: {
       fontSize: theme.responsiveFontSize * 0.825,
@@ -122,7 +123,6 @@ const useHomeNarrativeTradingStyles = () => {
     hidden: {
       display: 'none',
       opacity: 0,
-
     },
     itemWrapper: {
       flexDirection: 'row',
@@ -192,6 +192,17 @@ const useHomeNarrativeTradingStyles = () => {
       height: '25%',
       backgroundColor: '#00000050',
       opacity: 0.8,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    horizontalLine: {
+      width: '90%',
+      marginLeft: '5%',
+      borderBottomWidth: 0.75,
+      borderBottomColor: theme.secondaryGrayColor,
     },
   });
   return styles;

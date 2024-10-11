@@ -59,7 +59,7 @@ const useIntroductorySlidesStyles = () => {
     informationIcon: {
       width: 35,
       height: 30,
-      marginHorizontal: 4,
+      marginHorizontal: 8,
       tintColor: '#FC5404',
       alignSelf: 'flex-start',
     },

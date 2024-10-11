@@ -78,6 +78,7 @@ const useNewsStyles = () => {
     contentContainer: {
       width: '100%',
       padding: 10,
+      paddingBottom: '10%',
     },
     articleTitle: {
       marginVertical: theme.titlesVerticalMargin,

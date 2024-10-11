@@ -5,7 +5,7 @@ import DarkDisclaimer from '../../assets/images/nocontent-dark.svg';
 import useNoContentDisclaimerStyles from './NoContentDisclaimerStyles';
 import {AppThemeContext} from '../../context/themeContext';
 
-const NoContentDisclaimer = ({additionalStyles = null}) => {
+const NoContentDisclaimer = ({title, description, additionalStyles = null}) => {
   const styles = useNoContentDisclaimerStyles();
   const {isDarkMode} = useContext(AppThemeContext);
   return (
@@ -23,10 +23,8 @@ const NoContentDisclaimer = ({additionalStyles = null}) => {
           <Disclaimer width={90} height={60} />
         </View>
       )}
-      <Text style={styles.title}>Whoops, no matches.</Text>
-      <Text style={styles.description}>
-        {"We couldn't find any search results.\nGive it another go."}
-      </Text>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.description}>{description}</Text>
     </View>
   );
 };

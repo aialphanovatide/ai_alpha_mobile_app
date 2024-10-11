@@ -42,28 +42,34 @@ const NarrativeTradingItem = ({
       onPress={() => handleNavigation(item)}
       style={[
         styles.item,
-        index === 0 && !expanded ? {borderBottomWidth: 0} : {},
+        // index === 0 && !expanded ? {borderBottomWidth: 0} : {},
+        index === 0 && !expanded && {marginBottom: 0},
+        index !== 0 && expanded && {paddingVertical: 0, paddingBottom: 14},
       ]}>
-      <FastImage
-        source={{
-          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${
-            item.category !== null &&
-            item.category.toLowerCase().replace(/\s/g, '') === 'total3'
-              ? 'total3'
-              : item.coin_bot_name.toLowerCase()
-          }.png`,
-          priority: FastImage.priority.high,
-        }}
-        style={[
-          styles.imageStyle,
-          index > 0 && !expanded ? styles.hidden : {opacity: 1},
-        ]}
-        resizeMode="contain"
-        fallback={true}
-      />
-      <Text style={styles.titleStyles} numberOfLines={2}>
-        {title}
-      </Text>
+      <View style={[styles.row, index === 0 && !expanded && {marginBottom: 0}]}>
+        <FastImage
+          source={{
+            uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${
+              item.category !== null &&
+              item.category.toLowerCase().replace(/\s/g, '') === 'total3'
+                ? 'total3'
+                : item.coin_bot_name.toLowerCase()
+            }.png`,
+            priority: FastImage.priority.high,
+          }}
+          style={[
+            styles.imageStyle,
+            index > 0 && !expanded ? styles.hidden : {opacity: 1},
+          ]}
+          resizeMode="contain"
+          fallback={true}
+        />
+        <Text style={styles.titleStyles} numberOfLines={2}>
+          {title}
+        </Text>
+      </View>
+      {index !== 0 && <View style={[styles.horizontalLine]} />}
+      {index === 0 && expanded && <View style={[styles.horizontalLine]} />}
     </TouchableOpacity>
   );
 };
@@ -131,6 +137,8 @@ const NarrativeTradings = ({handleAboutPress}) => {
           additionalStyles={aboutIconStyles}
         />
         <NoContentDisclaimer
+          title={'Oops, something went wrong.'}
+          description={''}
           additionalStyles={{disclaimer: {marginVertical: '5%'}}}
         />
       </View>

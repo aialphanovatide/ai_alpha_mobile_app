@@ -9,16 +9,19 @@ const NarrativeTradingContextProvider = ({children}) => {
   const [narrativeTradingData, setNarrativeTradingData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const findCoinByCategoriesAndBotId = (categories, coin_id) => {
+  const findCoinByCategoriesAndBotId = (categories, coin_id, itemCategory) => {
     let found;
     categories.forEach(category => {
       category.coin_bots.forEach(coin => {
-        if (coin.bot_id === coin_id) {
+        if (
+          coin.bot_id === coin_id ||
+          category.category_name.toLowerCase === itemCategory.toLowerCase()
+        ) {
           found = coin.bot_name;
         }
       });
     });
-    return found && found !== undefined ? found : null;
+    return found && found !== undefined ? found : 'btc';
   };
 
   const extractFirstTitleAndImage = content => {
@@ -58,9 +61,11 @@ const NarrativeTradingContextProvider = ({children}) => {
               coin_bot_name: findCoinByCategoriesAndBotId(
                 categories,
                 item.coin_bot_id,
+                item.category_name,
               ),
               created_at: item.created_at,
-              category: item.category_name,
+              category:
+                item.category_name !== '' ? item.category_name : 'Bitcoin',
               title: extractFirstTitleAndImage(item.narrative_trading).title,
               image: extractFirstTitleAndImage(item.narrative_trading).imageSrc,
             };

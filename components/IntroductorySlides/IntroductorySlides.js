@@ -106,7 +106,7 @@ const Slide = ({
           ]}>
           <Video
             source={{uri: video.source}}
-            style={[styles.mainImage, {width: '100%', height: '100%'}]}
+            style={[styles.mainImage, {width: '100%', height: '100%', marginHorizontal: 0}]}
             muted={true}
             repeat={true}
             shutterColor="transparent"
@@ -145,7 +145,7 @@ const Slide = ({
         <Text
           style={[
             styles.title,
-            id === 1 ? {marginTop: 62} : {},
+            id === 1 ? {marginTop: 26} : {},
             id === 3 ? {marginTop: -28} : {},
           ]}>
           {title}
@@ -217,7 +217,7 @@ const IntroductorySlides = ({route}) => {
       ],
       video: {
         source: require('../../assets/images/introductorySection/Slide1b.mp4'),
-        style: {width: 350, height: 300},
+        style: {width: 380, height: 330},
       },
       content: [
         {

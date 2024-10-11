@@ -28,16 +28,14 @@ const useTopTenGainersStyles = () => {
       marginVertical: 2.5,
       display: 'flex',
       flexDirection: 'row',
-      // borderBottomWidth: 0.5,
-      // borderBottomColor: theme.secondaryGrayColor,
-      paddingHorizontal: 20,
+      paddingHorizontal: 10,
       paddingVertical: 10,
       alignItems: 'flex-start',
     },
     logoContainer: {
       width: 30,
       height: 30,
-      marginRight: 25,
+      marginRight: 18,
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
@@ -58,7 +56,6 @@ const useTopTenGainersStyles = () => {
     },
     positionContainer: {
       width: 30,
-      marginRight: 4,
       alignItems: 'center',
       justifyContent: 'center',
       alignSelf: 'center',
@@ -82,7 +79,8 @@ const useTopTenGainersStyles = () => {
     coinNumbersContainer: {
       flex: 1,
       marginLeft: 20,
-      paddingHorizontal: 20,
+      paddingRight: 8,
+      paddingLeft: 20,
       justifyContent: 'center',
     },
     coinNumber: {
@@ -106,9 +104,9 @@ const useTopTenGainersStyles = () => {
       flexDirection: 'row',
     },
     horizontalLine: {
-      width: '85%',
+      width: '90%',
       marginLeft: '5%',
-      borderBottomWidth: 1.5,
+      borderBottomWidth: 0.75,
       borderBottomColor: theme.secondaryGrayColor,
     },
     scrollBarContainer: {

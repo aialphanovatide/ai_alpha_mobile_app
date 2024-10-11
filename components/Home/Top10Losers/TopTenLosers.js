@@ -135,7 +135,10 @@ const TopTenLosers = ({handleAboutPress}) => {
           </View>
         </ScrollView>
       ) : !loading && topTenCoins.length === 0 ? (
-        <NoContentDisclaimer />
+        <NoContentDisclaimer
+          title={'Oops, something went wrong.'}
+          description={''}
+        />
       ) : (
         <View style={styles.itemsContainer}>
           <ScrollView

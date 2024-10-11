@@ -100,7 +100,7 @@ const useSearchStyles = () => {
       width: 40,
       height: 40,
       borderRadius: 20,
-      marginLeft: 14,
+      marginLeft: 6,
       alignSelf: 'center',
     },
     cryptoItem: {
@@ -115,7 +115,8 @@ const useSearchStyles = () => {
       width: 40,
       height: 40,
       borderRadius: 20,
-      marginHorizontal: 14,
+      marginLeft: 6,
+      marginRight: 14,
       alignSelf: 'center',
     },
     cryptoName: {
@@ -127,7 +128,7 @@ const useSearchStyles = () => {
     },
     rightArrowImage: {
       position: 'absolute',
-      right: 16,
+      right: 0,
       top: '45%',
       width: 14,
       height: 14,
@@ -139,7 +140,7 @@ const useSearchStyles = () => {
       flex: 1,
       minWidth: '40%',
       marginHorizontal: 4,
-      borderBottomColor: theme.secondaryItemColor,
+      borderBottomColor: theme.secondaryGrayColor,
       borderBottomWidth: 1,
       alignSelf: 'center',
     },

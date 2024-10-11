@@ -82,7 +82,12 @@ const HistoryContent = ({
               );
             })
           ) : (
-            <NoContentDisclaimer />
+            <NoContentDisclaimer
+              title={'Whoops, no matches.'}
+              description={
+                "We couldn't find any search results.\nGive it another go."
+              }
+            />
           )}
         </View>
       </View>

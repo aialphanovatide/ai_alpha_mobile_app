@@ -42,7 +42,7 @@ const CustomImageRenderer = props => {
   return (
     <View style={{alignItems: 'center'}}>
       <Renderer {...rendererProps} onPress={() => setImageZoomVisible(true)} />
-      <Modal
+      {/* <Modal
         visible={isImageZoomVisible}
         transparent={true}
         style={styles.zoomImageBackground}
@@ -55,6 +55,31 @@ const CustomImageRenderer = props => {
           index={0}
           renderIndicator={() => null}
           backgroundColor={'rgba(0,0,0,0.45)'}
+        />
+      </Modal> */}
+      <Modal
+        visible={isImageZoomVisible}
+        animationType="fade"
+        style={styles.zoomImageBackground}
+        onRequestClose={() => handleBackButtonImageClose()}>
+        <TouchableOpacity
+          onPress={() => handleBackButtonImageClose()}
+          style={[styles.zoomImageDismissOverlay, {height: '38%'}]}
+        />
+        <ResumableZoom maxScale={1.5} minScale={1}>
+          <FastImage
+            style={styles.zoomedImage}
+            resizeMode={'contain'}
+            source={{
+              uri: thumbnailSource.uri,
+              priority: FastImage.priority.normal,
+            }}
+            fallback={true}
+          />
+        </ResumableZoom>
+        <TouchableOpacity
+          onPress={() => handleBackButtonImageClose()}
+          style={[styles.zoomImageDismissOverlay, {height: '34%'}]}
         />
       </Modal>
     </View>
@@ -224,8 +249,8 @@ const AnalysisArticle = ({route}) => {
     <ScrollView style={styles.container}>
       <Modal
         visible={isImageZoomVisible}
-        animationType="fade"
         transparent={true}
+        animationType="fade"
         style={styles.zoomImageBackground}
         onRequestClose={() => handleBackButtonImageClose()}>
         <TouchableOpacity

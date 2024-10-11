@@ -30,9 +30,18 @@ import {io} from 'socket.io-client';
 import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
 import CWChart from './NewCharts/CWChart';
 
-const IntervalSelector = ({selectedInterval, changeInterval, disabled}) => {
+const IntervalSelector = ({
+  selectedPairing,
+  selectedInterval,
+  changeInterval,
+  disabled,
+}) => {
   const styles = useChartsStyles();
-  const timeframes = ['1d', '1w'];
+  const timeframes =
+    selectedPairing.toLowerCase() === 'btc' ||
+    selectedPairing.toLowerCase() === 'eth'
+      ? ['1d']
+      : ['1d', '1w'];
   return (
     <View style={styles.timeFrameContainer}>
       {timeframes.map(interval => (
@@ -212,10 +221,10 @@ const CandlestickChart = ({route}) => {
     setLoading(true);
     try {
       setSelectedPairing(pairing);
-      if (pairing.toLowerCase() === 'btc') {
-        setSelectedInterval('1w');
+      if (pairing.toLowerCase() === 'btc' || pairing.toLowerCase() === 'eth') {
+        setSelectedInterval('1d');
         setChartData([]);
-        fetchChartDataFromServer(pairing, '1w');
+        fetchChartDataFromServer(pairing, '1d');
       } else {
         setChartData([]);
         fetchChartDataFromServer(pairing, currentInterval);
@@ -304,6 +313,7 @@ const CandlestickChart = ({route}) => {
             ]}>
             <IntervalSelector
               selectedInterval={selectedInterval}
+              selectedPairing={selectedPairing}
               changeInterval={changeInterval}
               disabled={loading}
             />

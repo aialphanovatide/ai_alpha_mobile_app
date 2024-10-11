@@ -130,9 +130,7 @@ const Home = ({route}) => {
   useEffect(() => {
     const showReminderModal = async () => {
       const shouldShowModal = await checkForModalDisplay();
-      console.log('SHOULD SHOW MODAL', shouldShowModal);
       if (shouldShowModal) {
-        console.log('SHOWING MODAL');
         setSubscriptionPopUpsVisible(true);
       }
     };

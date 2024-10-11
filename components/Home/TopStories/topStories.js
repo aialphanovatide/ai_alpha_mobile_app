@@ -114,8 +114,10 @@ const TopStories = ({handleAboutPress}) => {
         <SkeletonLoader />
       ) : stories.length === 0 ? (
         <NoContentDisclaimer
-          additionalStyles={{disclaimer: {marginVertical: '5%'}}}
-        />
+        title={'Oops, something went wrong.'}
+        description={''}
+        additionalStyles={{disclaimer: {marginVertical: '5%'}}}
+      />
       ) : (
         <View style={[styles.storiesContainer]}>
           {stories?.slice(0, 10).map((story, i) => (

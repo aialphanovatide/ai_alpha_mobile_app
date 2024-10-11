@@ -1,5 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, Modal, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Animated,
+  Modal,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import useIntroductorySlidesStyles from '../IntroductorySlidesStyles';
 import {useNavigation} from '@react-navigation/core';
 
@@ -84,7 +91,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         overlay: {},
         modal: {},
         triangle: {
-          left: '50%'
+          left: '50%',
         },
         navbar: {
           left: 5,
@@ -99,7 +106,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Set up custom alerts to stay notified about crucial market movements.',
       popUpStyles: {
         overlay: {
-          height: '87.5%',
+          height: '86%',
           justifyContent: 'flex-end',
         },
         modal: {
@@ -122,7 +129,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Need quick insights? Use the Ask AI to get real-time information from our curated database.',
       popUpStyles: {
         overlay: {
-          height: '87.5%',
+          height: '86%',
           justifyContent: 'flex-end',
         },
         modal: {
@@ -145,7 +152,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Access curated and unbiased analyses and charts by category.',
       popUpStyles: {
         overlay: {
-          height: '87.5%',
+          height: '86%',
           justifyContent: 'flex-end',
         },
         modal: {
@@ -168,7 +175,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Manage your account settings, subscription options, and custom-tailored notifications here.',
       popUpStyles: {
         overlay: {
-          height: '87.5%',
+          height: '86%',
           justifyContent: 'flex-end',
         },
         modal: {
@@ -222,7 +229,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
 
   const handleSubscriptionButton = () => {
     handleActivePopUps();
-    navigation.navigate('Account', {screen: 'Subscriptions'});
+    navigation.navigate('Account', {screen: 'Membership'});
   };
 
   const handleNavbarPress = (current, sectionName) => {
@@ -254,12 +261,18 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           <TouchableOpacity
             style={[
               styles.invisiblePressable,
-              {height: 80, backgroundColor: 'rgba(10,10,10,0.6)'},
+              {
+                height: Platform.OS === 'android' ? 80 : 120,
+                backgroundColor: 'rgba(10,10,10,0.6)',
+              },
             ]}
             onPress={() => handleNextPress(activeDotIndex)}
           />
           <TouchableOpacity
-            style={[styles.invisiblePressable, {height: 100}]}
+            style={[
+              styles.invisiblePressable,
+              {height: Platform.OS === 'android' ? 100 : 120},
+            ]}
             onPress={() => handleNextPress(activeDotIndex)}
           />
         </>
