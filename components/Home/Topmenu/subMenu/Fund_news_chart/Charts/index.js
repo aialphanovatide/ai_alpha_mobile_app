@@ -115,7 +115,7 @@ const CandlestickChart = ({route}) => {
   // Restart the last price on every coin update
 
   useEffect(() => {
-    setActiveButtons([]);
+    setActiveButtons(['Support', 'Resistance']);
     setLoading(true);
     setLastPrice(undefined);
     setSelectedPairing(pairings[0]);
@@ -303,8 +303,10 @@ const CandlestickChart = ({route}) => {
             styles={styles}
             isPriceUp={isPriceUp}
             selectedPairing={selectedPairing}
+            selectedInterval={selectedInterval}
             pairings={pairings}
             handlePairingChange={handlePairingChange}
+            handleDataUpdate={handleDataUpdate}
           />
           <View
             style={[
@@ -322,21 +324,6 @@ const CandlestickChart = ({route}) => {
               setActiveButtons={setActiveButtons}
               disabled={loading || supportResistanceLoading}
             />
-            <TouchableOpacity
-              onPress={() =>
-                handleDataUpdate(selectedPairing, selectedInterval)
-              }
-              disabled={loading}>
-              <Image
-                source={require('../../../../../../assets/images/home/charts/chart-refresh.png')}
-                style={[
-                  styles.refreshButton,
-                  // Styles for preventing the bug with the refresh button on the btc section
-                  coinBot.toLowerCase() === 'btc' ? {top: -110} : {},
-                ]}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
           </View>
           <Chart
             candlesToShow={20}

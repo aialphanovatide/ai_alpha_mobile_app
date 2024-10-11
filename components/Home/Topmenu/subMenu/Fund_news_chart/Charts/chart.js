@@ -424,6 +424,36 @@ const Chart = ({
           {/* Y AXIS */}
           <VictoryAxis
             dependentAxis
+            // Events configuration for preventing the scroll issue with the Y-axis values
+            events={[
+              {
+                childName: 'all',
+                target: 'tickLabels',
+                eventHandlers: {
+                  onClick: () => {
+                    return;
+                  },
+                },
+              },
+              {
+                childName: 'all',
+                target: 'axis',
+                eventHandlers: {
+                  onClick: () => {
+                    return;
+                  },
+                },
+              },
+              {
+                childName: 'all',
+                target: 'axisLabel',
+                eventHandlers: {
+                  onClick: () => {
+                    return;
+                  },
+                },
+              },
+            ]}
             style={{
               axis: {stroke: theme.chartsAxisColor},
               tickLabels: {
@@ -509,7 +539,11 @@ const Chart = ({
               },
             ]}
             candleRatio={
-              usesAlternativeSource && selectedInterval !== '1W' ? 2.75 : 0.9
+              (usesAlternativeSource && selectedInterval !== '1W') ||
+              selectedPairing.toLowerCase() === 'eth' ||
+              selectedPairing.toLowerCase() === 'btc'
+                ? 2.75
+                : 0.9
             }
             candleColors={{positive: '#09C283', negative: '#E93334'}}
             style={{

@@ -3,6 +3,7 @@ import {View, Text, ScrollView} from 'react-native';
 import AlertDetails from './alertDetails';
 import {getService} from '../../../../../../../services/aiAlphaApi';
 import SkeletonLoader from '../../../../../../Loader/SkeletonLoader';
+import NoContentDisclaimer from '../../../../../../NoContentDisclaimer/NoContentDisclaimer';
 
 const AlertListComponent = ({botName, timeframe, styles}) => {
   const [alerts, setAlerts] = useState([]);
@@ -63,9 +64,12 @@ const AlertListComponent = ({botName, timeframe, styles}) => {
           <SkeletonLoader type="alerts" quantity={3} />
         </View>
       ) : alerts.length === 0 ? (
-        <Text style={styles.alertsTextMessage}>
-          There aren't any alerts to show
-        </Text>
+        <NoContentDisclaimer
+          title={'Whoops, no matches.'}
+          description={
+            "We couldn't find any search results.\nGive it another go."
+          }
+        />
       ) : (
         alerts.map(alert => (
           <AlertDetails

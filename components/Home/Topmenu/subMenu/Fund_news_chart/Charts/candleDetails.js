@@ -13,7 +13,9 @@ const CandlestickDetails = ({
   loading,
   pairings,
   selectedPairing,
+  selectedInterval,
   handlePairingChange,
+  handleDataUpdate,
 }) => {
   const {handleAboutPress} = useContext(AboutModalContext);
 
@@ -62,6 +64,15 @@ const CandlestickDetails = ({
             lastPrice && !loading ? formatNumber(lastPrice) : ' ...'
           }`}
         </Text>
+        <TouchableOpacity
+          onPress={() => handleDataUpdate(selectedPairing, selectedInterval)}
+          disabled={loading}>
+          <Image
+            source={require('../../../../../../assets/images/home/charts/chart-refresh.png')}
+            style={[styles.refreshButton]}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
         <AboutIcon
           description={home_static_data.charts.sectionDescription}
           handleAboutPress={handleAboutPress}

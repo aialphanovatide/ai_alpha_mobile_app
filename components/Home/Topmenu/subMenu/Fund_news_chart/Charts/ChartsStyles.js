@@ -32,10 +32,11 @@ const useChartsStyles = () => {
     },
     lastPrice: {
       textTransform: 'uppercase',
-      fontSize: theme.titleFontSize,
+      fontSize: 24,
+      marginTop: -6,
       marginLeft: 10,
       color: theme.textColor,
-      fontFamily: theme.fontSemibold,
+      fontFamily: theme.font,
     },
     timeFrameContainer: {
       height: 28,
@@ -104,7 +105,7 @@ const useChartsStyles = () => {
     chartsRow: {
       flex: 1,
       width: '100%',
-      marginBottom: 16,
+      marginBottom: 8,
       marginTop: 10,
       justifyContent: 'flex-start',
     },
@@ -118,7 +119,7 @@ const useChartsStyles = () => {
     chartContainer: {
       width: '100%',
       height: theme.height * 0.45,
-      marginVertical: theme.boxesVerticalMargin,
+      marginVertical: 8,
       justifyContent: 'center',
       alignItems: 'top',
       borderRadius: 4,
@@ -346,8 +347,7 @@ const useChartsStyles = () => {
     },
     titleRow: {
       width: '100%',
-      marginTop: theme.titlesVerticalMargin,
-      marginBottom: theme.boxesVerticalMargin,
+      marginVertical: theme.boxesVerticalMargin,
       flexDirection: 'row',
     },
     fibonacciContainer: {
@@ -396,13 +396,10 @@ const useChartsStyles = () => {
       flexDirection: 'row',
     },
     refreshButton: {
-      position: 'absolute',
-      top: -150,
-      left: '70%',
-      width: 18,
-      height: 18,
-      tintColor: theme.titleColor,
-      alignSelf: 'center',
+      width: 20,
+      height: 20,
+      marginLeft: 10,
+      tintColor: isDarkMode ? '' : '#4D4D4D',
     },
   });
   return styles;
