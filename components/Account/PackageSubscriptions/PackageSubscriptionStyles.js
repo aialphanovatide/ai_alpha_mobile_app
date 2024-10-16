@@ -98,7 +98,7 @@ const usePackageSubscriptionStyles = () => {
       marginBottom: 15,
     },
     packagesContainer: {
-      width: '100%',
+      width: '104%',
       marginVertical: 16,
       padding: 10,
     },
@@ -392,10 +392,6 @@ const usePackageSubscriptionStyles = () => {
       marginBottom: 30,
     },
 
-
-  
-
-
     itemContainerCurrent: {
       borderWidth: 1,
       borderRadius: 8,
@@ -449,9 +445,9 @@ const usePackageSubscriptionStyles = () => {
       fontFamily: theme.font,
       paddingLeft: 38,
     },
-    aboutButtonContainer:{
+    aboutButtonContainer: {
       flexDirection: 'row',
-      marginTop: 50,  
+      marginTop: 5,
       marginBottom: -40,
       marginRight: -300,
     },
@@ -459,6 +455,92 @@ const usePackageSubscriptionStyles = () => {
       color: 'white',
       width: 21,
       height: 21,
+    },
+    discordContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    discordIcon: {
+      marginTop: 50,
+      width: 78,
+      height: 55,
+    },
+    discordOrangeText: {
+      fontSize: 20,
+      fontFamily: theme.fontMedium,
+      color: theme.orange,
+      textAlign: 'center',
+      marginTop: 15,
+      marginBottom: 15,
+    },
+    discordGreyText: {
+      color: theme.discordGreyColor,
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
+      marginTop: 5,
+    },
+    discordSubcontainer: {
+      backgroundColor: 'transparent',
+      width: '104%',
+      padding: 10,
+      borderRadius: 3,
+      borderColor: '#444',
+      borderWidth: 1,
+      marginTop: 20,
+      marginBottom: 50,
+    },
+    titleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 15, // Add some space between the title and the token text
+    },
+    discordSmallIcon: {
+      width: 35,
+      height: 24,
+      marginRight: 15,
+      marginLeft: 3,
+    },
+    discordTitle: {
+      color: '#fff',
+      fontFamily: theme.fontMedium,
+      fontSize: 16,
+      marginTop: -7,
+    },
+    tokenRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    tokenText: {
+      color: '#fff',
+      fontSize: 16,
+      flex: 1,
+      marginLeft: 10,
+      fontFamily: theme.font,
+    },
+    copyIcon: {
+      width: 23,
+      height: 26,
+      marginLeft: 10,
+    },
+    foundersSmallSubtitle: {
+      color: theme.smallSubtitleColor,
+      fontFamily: theme.fontMedium,
+      fontSize: 16,
+      alignSelf: 'flex-start',
+      marginLeft: 15,
+      marginBottom: -20,
+    },
+    foundersMainTitle: {
+      marginTop: 1,
+      marginBottom: 25,
+      marginLeft: 15,
+      marginVertical: theme.titlesVerticalMargin,
+      color: theme.titleColor,
+      fontSize: theme.titleFontSize * 1.25,
+      fontFamily: theme.fontSemibold,
+      textAlign: 'center',
+      flexDirection: 'row',
+      alignSelf: 'flex-start',
     },
   });
   return styles;

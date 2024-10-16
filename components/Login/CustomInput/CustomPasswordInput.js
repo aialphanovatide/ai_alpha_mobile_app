@@ -6,7 +6,7 @@ import {AppThemeContext} from '../../../context/themeContext';
 const CustomPasswordInput = ({value, setValue, placeholder}) => {
   const styles = CustomPasswordInputStyles();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { theme, isDarkMode } = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(prev => !prev);
@@ -18,7 +18,7 @@ const CustomPasswordInput = ({value, setValue, placeholder}) => {
         value={value}
         onChangeText={setValue}
         placeholder={placeholder}
-        placeholderTextColor={theme.textColor}
+        placeholderTextColor={theme.placeHolderPasswordTextColor}
         style={styles.input}
         secureTextEntry={!isPasswordVisible}
       />

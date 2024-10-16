@@ -14,7 +14,10 @@ const BackButton = ({navigationHandler = null}) => {
   };
   return (
     <TouchableOpacity
-      style={[styles.row, {marginHorizontal: 16, marginVertical: 32}]}
+      style={[
+        styles.row,
+        {marginHorizontal: 3, marginBottom: 22, marginTop: 5},
+      ]}
       onPress={() => handleReturn()}>
       <View style={styles.arrowContainer}>
         <Image

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Modal,
+  Alert,
 } from 'react-native';
 import usePackageSubscriptionStyles from './PackageSubscriptionStyles';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
@@ -19,7 +20,8 @@ import {useRawUserId} from '../../../context/RawUserIdContext';
 import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import AboutModal from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
-import { AboutIcon } from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import {AboutIcon} from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import Clipboard from '@react-native-community/clipboard';
 
 const TextWithIcon = ({text}) => {
   const styles = usePackageSubscriptionStyles();
@@ -28,50 +30,50 @@ const TextWithIcon = ({text}) => {
   const iconStyle =
     text === 'Simple but powerful.'
       ? [styles.smallTickIcon, {marginTop: 0}]
-      : text ===
-        'Lead an Alpha Club on campus.'
+      : text === 'Lead an Alpha Club on campus.'
       ? [styles.smallTickIcon, {marginTop: 0}]
       : [styles.smallTickIcon, {marginTop: -20}];
 
-      const descriptionText = (() => {
-        if (
-          text === "Full access to all categories for precise, up-to-date info."
-        ) {
-          return [
-            styles.secondaryText,
-            { fontFamily: theme.fontSemibold, marginRight: 20 },
-          ];
-        } else if (
-          text ===
-          "Access Founder membership at a student rate."
-        ) {
-          return [
-            styles.secondaryText,
-            { fontFamily: theme.fontSemibold, marginRight: 20, fontSize: 12.75 , marginTop: -20},
-          ];
-        } else if (
-          text ===
-          "Track crypto projects by category, like stock sectors, to stay informed without the noise."
-        ){
-          return [
-            styles.secondaryText,
-            { fontFamily: theme.fontSemibold, marginRight: 20 },
-          ];
-        } else if (
-          text ===
-          "Get full access to each and every AI Alpha package - both current and future."
-        ){
-          return [
-            styles.secondaryText,
-            { fontFamily: theme.fontSemibold, marginRight: 20 },
-          ];
-        } else if (text === "Lead an Alpha Club on campus.") {
-          return [styles.secondaryText];
-        } else {
-          return [styles.secondaryText];
-        }
-      })();
-      
+  const descriptionText = (() => {
+    if (
+      text === 'Full access to all categories for precise, up-to-date info.'
+    ) {
+      return [
+        styles.secondaryText,
+        {fontFamily: theme.fontSemibold, marginRight: 20},
+      ];
+    } else if (text === 'Access Founder membership at a student rate.') {
+      return [
+        styles.secondaryText,
+        {
+          fontFamily: theme.fontSemibold,
+          marginRight: 20,
+          fontSize: 12.75,
+          marginTop: -20,
+        },
+      ];
+    } else if (
+      text ===
+      'Track crypto projects by category, like stock sectors, to stay informed without the noise.'
+    ) {
+      return [
+        styles.secondaryText,
+        {fontFamily: theme.fontSemibold, marginRight: 20},
+      ];
+    } else if (
+      text ===
+      'Get full access to each and every AI Alpha package - both current and future.'
+    ) {
+      return [
+        styles.secondaryText,
+        {fontFamily: theme.fontSemibold, marginRight: 20},
+      ];
+    } else if (text === 'Lead an Alpha Club on campus.') {
+      return [styles.secondaryText];
+    } else {
+      return [styles.secondaryText];
+    }
+  })();
 
   return (
     <View style={styles.textRow}>
@@ -91,21 +93,35 @@ const PackageSubscriptions = () => {
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
   const {rawUserId, setRawUserId} = useRawUserId();
 
-    // Modal visibility state
-    const [aboutVisible, setAboutVisible] = useState(false);
-    const [aboutDescription, setAboutDescription] = useState('This is information about the package.');
-    const [aboutTitle, setAboutTitle] = useState('About Package Subscription');
+  // Modal visibility state
+  const [aboutVisible, setAboutVisible] = useState(false);
+  const [aboutDescription, setAboutDescription] = useState(
+    'This is information about the package.',
+  );
+  const [aboutTitle, setAboutTitle] = useState('About Package Subscription');
 
-    // Function to handle About button press
-    const handleAboutPress = (description = null, title = null) => {
-      if (description) {
-        setAboutDescription(description);
-      }
-      if (title) {
-        setAboutTitle(title);
-      }
-      setAboutVisible(!aboutVisible);
+  const [copiedText, setCopiedText] = useState('');
+  const [discordToken, setDiscordToken] = useState(''); // To store the token
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const token = await discordTokenFetcher(); // Fetch the token asynchronously
+      setDiscordToken(token);
     };
+
+    fetchToken();
+  }, [rawUserId]);
+
+  // Function to handle About button press
+  const handleAboutPress = (description = null, title = null) => {
+    if (description) {
+      setAboutDescription(description);
+    }
+    if (title) {
+      setAboutTitle(title);
+    }
+    setAboutVisible(!aboutVisible);
+  };
 
   const subscriptionOptions = [
     {
@@ -141,68 +157,65 @@ const PackageSubscriptions = () => {
     'Intellichain',
   ];
 
-    // Known category names for display
-    const categoryNames = [
-      'Ethereum',
-      'Bitcoin',
-      'RootLink',
-      'BaseBlock',
-      'CoreChain',
-      'XPayments',
-      'LSDs',
-      'BoostLayer',
-      'Truthnodes',
-      'CycleSwap',
-      'Nextrade',
-      'Diversefi',
-      'Intellichain',
-    ];
+  // Known category names for display
+  const categoryNames = [
+    'Ethereum',
+    'Bitcoin',
+    'RootLink',
+    'BaseBlock',
+    'CoreChain',
+    'XPayments',
+    'LSDs',
+    'BoostLayer',
+    'Truthnodes',
+    'CycleSwap',
+    'Nextrade',
+    'Diversefi',
+    'Intellichain',
+  ];
 
   // Here Starts the code for Current Packages
 
-      // Extract purchased packages from user's entitlements
+  // Extract purchased packages from user's entitlements
   const purchasedPackages = userInfo?.entitlements || [];
 
-// Create a map for user purchased packages
-const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
-  const lowerCaseEntitlement = entitlement.toLowerCase();
+  // Create a map for user purchased packages
+  const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
+    const lowerCaseEntitlement = entitlement.toLowerCase();
 
-  // Check for founders entitlement
-  if (lowerCaseEntitlement.includes('founders')) {
-    if (!acc.some(item => item.title === 'Founder')) {
-      acc.push(subscriptionOptions[0]);  // Corrected index for 'Founder'
-    }
-  }
-  // Check for full access entitlement
-  else if (lowerCaseEntitlement.includes('fullaccess')) {
-    if (!acc.some(item => item.title === 'Full Access')) {
-      acc.push(subscriptionOptions[1]);  // Corrected index for 'Full Access'
-    }
-  }
-  // Handle by category entitlement
-  else {
-    const categoryName = categoryNames.find(name =>
-      lowerCaseEntitlement.includes(name.toLowerCase()),
-    );
-    if (categoryName) {
-      const categoryPackage = acc.find(item => item.title === 'By Category');
-      if (categoryPackage) {
-        if (!categoryPackage.subOptions.includes(categoryName)) {
-          categoryPackage.subOptions.push(categoryName);
-        }
-      } else {
-        acc.push({
-          ...subscriptionOptions[2],  // Corrected index for 'By Category'
-          subOptions: [categoryName],
-        });
+    // Check for founders entitlement
+    if (lowerCaseEntitlement.includes('founders')) {
+      if (!acc.some(item => item.title === 'Founder')) {
+        acc.push(subscriptionOptions[0]); // Corrected index for 'Founder'
       }
     }
-  }
-  return acc;
-}, []);
-
-
-
+    // Check for full access entitlement
+    else if (lowerCaseEntitlement.includes('fullaccess')) {
+      if (!acc.some(item => item.title === 'Full Access')) {
+        acc.push(subscriptionOptions[1]); // Corrected index for 'Full Access'
+      }
+    }
+    // Handle by category entitlement
+    else {
+      const categoryName = categoryNames.find(name =>
+        lowerCaseEntitlement.includes(name.toLowerCase()),
+      );
+      if (categoryName) {
+        const categoryPackage = acc.find(item => item.title === 'By Category');
+        if (categoryPackage) {
+          if (!categoryPackage.subOptions.includes(categoryName)) {
+            categoryPackage.subOptions.push(categoryName);
+          }
+        } else {
+          acc.push({
+            ...subscriptionOptions[2], // Corrected index for 'By Category'
+            subOptions: [categoryName],
+          });
+        }
+      }
+    }
+    return acc;
+  }, []);
 
   // Here Starts the code for Subscription Options
 
@@ -223,8 +236,6 @@ const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
   const hasFoundersPackage = userInfo?.entitlements?.some(subscription =>
     subscription.toLowerCase().includes('founders'),
   );
-
-
 
   const [activeItem, setActiveItem] = useState(subscriptionOptions[0]); // Set "Founder" as default
   const [activeSubOption, setActiveSubOption] = useState('Ethereum'); // Default sub-option to 'Ethereum'
@@ -324,12 +335,44 @@ const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
     navigation.navigate('AccountMain');
   };
 
+  const discordTokenFetcher = async () => {
+    const url = `https://aialpha.ngrok.io/user?auth0id=${rawUserId}`;
+    try {
+      const userFetch = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const userData = await userFetch.json();
+      console.log('USER FROM DISCORD FETCHER', userData);
+
+      //return userData.auth_token;
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      return 'No Token'; // Fallback token in case of error
+    }
+  };
+
+  const copyToClipboard = async () => {
+    const token = discordTokenFetcher();
+    Clipboard.setString(token);
+
+    // Fetch the copied text to confirm
+    //const copiedText = await Clipboard.getString();
+
+    // Alert the copied text
+    //Alert.alert('Copied to Clipboard', `Copied text: ${copiedText}`);
+  };
+
   const getDescription = () => {
     switch (activeItem?.title) {
       case 'Founder':
         return (
           <>
-          <Text style={styles.textWithIconTitle}>Community Building & Early Access</Text>
+            <Text style={styles.textWithIconTitle}>
+              Community Building & Early Access
+            </Text>
             <TextWithIcon text="Full access to all categories for precise, up-to-date info." />
             <TextWithIcon text="Be the first to test new features and products." />
             <TextWithIcon text="Connect with a community that shapes the future with meaningful content daily." />
@@ -338,8 +381,10 @@ const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
       case 'Full Access':
         return (
           <>
-          <Text style={styles.textWithIconTitle}>Founder Membership &</Text>
-          <Text style={styles.textWithIconTitlePushed}>Leadership Opportunities</Text>
+            <Text style={styles.textWithIconTitle}>Founder Membership &</Text>
+            <Text style={styles.textWithIconTitlePushed}>
+              Leadership Opportunities
+            </Text>
             <TextWithIcon text="Access Founder membership at a student rate." />
             <TextWithIcon text="Lead an Alpha Club on campus." />
             <TextWithIcon text="Empower others, gain insights, and grow your crypto expertise daily." />
@@ -348,7 +393,9 @@ const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
       case 'By Category':
         return (
           <>
-          <Text style={styles.textWithIconTitlePushedv2}>Personalised Tracking & Alerts</Text>
+            <Text style={styles.textWithIconTitlePushedv2}>
+              Personalised Tracking & Alerts
+            </Text>
             <TextWithIcon text="Track crypto projects by category, like stock sectors, to stay informed without the noise." />
             <TextWithIcon text="Get real-time alerts and personalised insights based on your preferences." />
             <TextWithIcon text="Monitor fundamentals, charts, and news efficiently, saving time daily." />
@@ -379,7 +426,7 @@ const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
     if (activeItem.title === 'By Category') {
       let subOptionName = activeSubOption.toLowerCase() + '_4999_m1';
       //console.log('SUB OPTION NAME', subOptionName);
-  
+
       if (hasPreviousSubscription) {
         //console.log('PREVIOUSLY PURCHASED');
         subOptionName = `${subOptionName}_nofreetrial`;
@@ -443,88 +490,140 @@ const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
       <ScrollView
         style={styles.backgroundContainer}
         contentContainerStyle={styles.scrollViewContent}>
-       <BackgroundGradient />
+        <BackgroundGradient />
         <SafeAreaView style={styles.innerContainer}>
           <View style={styles.alignStart}>
             <BackButton navigationHandler={navigateBack} />
           </View>
           {/* About Button */}
-          <TouchableOpacity style={styles.aboutButtonContainer} onPress={() => handleAboutPress("If you wish to upgrade your subscription, you must first cancel your current subscription.\n\nTo cancel your membership, go to the App Store or Play Store:\n\n1. Settings.\n2. Subscriptions.\n3. Find the subscription and select 'Cancel'.", 'About Membership')}>
-          <Image
+          <TouchableOpacity
+            style={styles.aboutButtonContainer}
+            onPress={() =>
+              handleAboutPress(
+                "If you wish to upgrade your subscription, you must first cancel your current subscription.\n\nTo cancel your membership, go to the App Store or Play Store:\n\n1. Settings.\n2. Subscriptions.\n3. Find the subscription and select 'Cancel'.",
+                'About Membership',
+              )
+            }>
+            <Image
               style={styles.aboutButton}
               source={require('../../../assets/images/fundamentals/about-icon.png')}
               resizeMode={'contain'}
             />
           </TouchableOpacity>
           {hasFoundersPackage ? (
-            <View style={styles.foundersContainer}>
-              <Text style={styles.mainTitle}>Membership</Text>
-              <Image
-                source={
-                  isDarkMode
-                    ? require('../../../assets/images/account/subscriptionicondark-removebg.png')
-                    : require('../../../assets/images/account/subscriptioniconlight-removebg.png')
-                }
-                resizeMode="contain"
-                style={styles.subscriptionImage}
-              />
-              <View style={styles.textFoundersRow}>
-                <Text style={styles.textFounders}>Exclusive new content</Text>
-              </View>
-              <View>
-                <Text style={styles.bigTextFounders}>
-                  ONLY FOR OUR FOUNDERS
-                </Text>
-                <View style={styles.textFoundersRow}>
-                  <Text style={styles.secondaryTextFounders}>
-                    As an OG AI Alpha Founder watch this space for access to
-                    exclusive new content and packages
+            <>
+              <Text style={styles.foundersMainTitle}>Membership</Text>
+              <Text style={styles.foundersSmallSubtitle}>Current</Text>
+              <View style={styles.packagesContainer}>
+                {userPurchasedOptions.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.itemContainerCurrent}
+                    onPress={() => console.log('Package:', item.title)}>
+                    <View style={styles.itemRowCurrent}>
+                      <Image
+                        source={item.icon}
+                        style={styles.itemIconCurrent}
+                      />
+                      <Text style={styles.titleCurrent}>{item.title}</Text>
+                      <View style={styles.priceContainer}>
+                        <Text style={styles.priceTextCurrent}>
+                          {item.price}
+                        </Text>
+                        <Text style={styles.perMonthTextCurrent}>
+                          Per month
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+                <View style={styles.discordContainer}>
+                  <Image
+                    source={require('../../../assets/images/account/socialMedia/discord.png')}
+                    style={styles.discordIcon}
+                  />
+                  <Text style={styles.discordOrangeText}>
+                    We're waiting for you on Discord!{' '}
                   </Text>
+                  <Text style={styles.discordGreyText}>
+                    Use your token to unlock the Founder role, get personalised
+                    support, and participate in community discussions.
+                  </Text>
+
+                  <View style={styles.discordSubcontainer}>
+                    <View style={styles.titleRow}>
+                      <Image
+                        source={require('../../../assets/images/account/socialMedia/discordSmall.png')} // Adjust to your Discord icon path
+                        style={styles.discordSmallIcon}
+                      />
+                      <Text style={styles.discordTitle}>Discord Token</Text>
+                    </View>
+
+                    <View style={styles.tokenRow}>
+                      <Text style={styles.tokenText}>
+                        {discordToken || 'Coming Soon!'}{' '}
+                        {/* Show token when available or a loading message */}
+                      </Text>
+                      <TouchableOpacity onPress={copyToClipboard}>
+                        <Image
+                          source={require('../../../assets/images/account/socialMedia/copyToClipboard.png')} // Replace with your copy icon
+                          style={styles.copyIcon}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
               </View>
-            </View>
+            </>
           ) : (
             <>
               <Text style={styles.mainTitle}>Membership</Text>
 
               {userPurchasedOptions.length > 0 ? (
-  <>
-    <Text style={styles.smallSubtitle}>Current</Text>
-    <View style={styles.packagesContainer}>
-      {userPurchasedOptions.map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          style={styles.itemContainerCurrent}
-          onPress={() => console.log('Package:', item.title)}>
-          <View style={styles.itemRowCurrent}>
-            <Image source={item.icon} style={styles.itemIconCurrent} />
-            <Text style={styles.titleCurrent}>{item.title}</Text>
-            <View style={styles.priceContainer}>
-              <Text style={styles.priceTextCurrent}>{item.price}</Text>
-              <Text style={styles.perMonthTextCurrent}>Per month</Text>
-            </View>
-          </View>
-          {item.title === 'By Category' && item.subOptions && (
-            <View style={styles.subOptionsContainerCurrent}>
-              {item.subOptions.map((subOption, subIndex) => (
-                <TouchableOpacity
-                  key={subIndex}
-                  style={styles.subOptionCurrent}
-                  onPress={() =>
-                    console.log('Sub-option:', subOption)
-                  }>
-                  <Text style={styles.subOptionTextCurrent}>
-                    {subOption}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-        </TouchableOpacity>
-      ))}
-    </View>
-  </>
-) : null}
+                <>
+                  <Text style={styles.smallSubtitle}>Current</Text>
+                  <View style={styles.packagesContainer}>
+                    {userPurchasedOptions.map((item, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        style={styles.itemContainerCurrent}
+                        onPress={() => console.log('Package:', item.title)}>
+                        <View style={styles.itemRowCurrent}>
+                          <Image
+                            source={item.icon}
+                            style={styles.itemIconCurrent}
+                          />
+                          <Text style={styles.titleCurrent}>{item.title}</Text>
+                          <View style={styles.priceContainer}>
+                            <Text style={styles.priceTextCurrent}>
+                              {item.price}
+                            </Text>
+                            <Text style={styles.perMonthTextCurrent}>
+                              Per month
+                            </Text>
+                          </View>
+                        </View>
+                        {item.title === 'By Category' && item.subOptions && (
+                          <View style={styles.subOptionsContainerCurrent}>
+                            {item.subOptions.map((subOption, subIndex) => (
+                              <TouchableOpacity
+                                key={subIndex}
+                                style={styles.subOptionCurrent}
+                                onPress={() =>
+                                  console.log('Sub-option:', subOption)
+                                }>
+                                <Text style={styles.subOptionTextCurrent}>
+                                  {subOption}
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
+                          </View>
+                        )}
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </>
+              ) : null}
 
               <Text style={styles.smallSubtitle}>Upgrade</Text>
               <View style={styles.packagesContainer}>
@@ -642,30 +741,30 @@ const userPurchasedOptions = purchasedPackages.reduce((acc, entitlement) => {
 
               <View style={styles.description}>{getDescription()}</View>
               <LinearGradient
-            colors={['#F9AF08', '#FC5B04', '#FC5B04']}
-            style={styles.linearGradient}
-            start={{x: 0, y: 0.5}}
-            end={{x: 1, y: 0.5}}>
-            <TouchableOpacity
-              style={styles.purchaseButton}
-              onPress={handlePurchase}>
-              <Text style={styles.purchaseButtonText}>
-                Start 7 Day Free Trial
-              </Text>
-            </TouchableOpacity>
-          </LinearGradient>
-          <View style={styles.footerTextContainer}>
-            <Text style={styles.preTertiaryText}>
-            Subscription activates post-trial.
-            </Text>
-            <Text style={styles.tertiaryText}>Cancel anytime.</Text>
-          </View>
+                colors={['#F9AF08', '#FC5B04', '#FC5B04']}
+                style={styles.linearGradient}
+                start={{x: 0, y: 0.5}}
+                end={{x: 1, y: 0.5}}>
+                <TouchableOpacity
+                  style={styles.purchaseButton}
+                  onPress={handlePurchase}>
+                  <Text style={styles.purchaseButtonText}>
+                    Start 7 Day Free Trial
+                  </Text>
+                </TouchableOpacity>
+              </LinearGradient>
+              <View style={styles.footerTextContainer}>
+                <Text style={styles.preTertiaryText}>
+                  Subscription activates post-trial.
+                </Text>
+                <Text style={styles.tertiaryText}>Cancel anytime.</Text>
+              </View>
               <SubscriptionsLoader isLoading={loading} />
             </>
           )}
         </SafeAreaView>
       </ScrollView>
-            {/* AboutModal */}
+      {/* AboutModal */}
       <AboutModal
         description={aboutDescription}
         onClose={handleAboutPress}

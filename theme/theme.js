@@ -24,6 +24,8 @@ export const lightThemeStyles = {
   activeSubMenuText: '#A6ACC4',
   titleColor: '#171717',
   textColor: '#404040',
+  placeHolderTextColor: '#A3A3A3',
+  placeHolderPasswordTextColor: '#B2B2B2',
   searchPlaceHolderColor: '#A3A3A3',
   supportAndResistanceText: '#80290E',
   priceUpColor: '#2DDA99',
@@ -126,6 +128,7 @@ export const lightThemeStyles = {
   notificationsHorizontalLineColor: '#D4D4D4',
   personalizeProfileSaveButtonBackground: '#FFECD3',
   personalizeProfileSaveButtonText: '#FF8D34',
+  discordGreyColor: '#737373',
 };
 
 export const darkThemeStyles = {
@@ -146,6 +149,8 @@ export const darkThemeStyles = {
   subMenuBgColor: '#525252',
   titleColor: '#FFFFFF',
   textColor: '#FAFAFA',
+  placeHolderTextColor: '#A3A3A3',
+  placeHolderPasswordTextColor: '#B2B2B2',
   searchPlaceHolderColor: '#A3A3A3',
   supportAndResistanceText: '#FAFAFA',
   subMenuTextColor: '#FFFFFF',
@@ -252,4 +257,5 @@ export const darkThemeStyles = {
   personalizeProfileSaveButtonBackground: '#A02E0C',
   personalizeProfileSaveButtonText: '#a0a3a1',
   notificationsHorizontalLineColor: '#737373',
+  discordGreyColor: '#737373',
 };
