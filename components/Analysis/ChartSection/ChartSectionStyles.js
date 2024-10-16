@@ -124,8 +124,8 @@ const useChartSectionStyles = () => {
     },
     refreshButton: {
       position: 'absolute',
-      top: -35,
-      left: 200,
+      top: 5,
+      left: 25,
       width: 18,
       height: 18,
       tintColor: theme.titleColor,

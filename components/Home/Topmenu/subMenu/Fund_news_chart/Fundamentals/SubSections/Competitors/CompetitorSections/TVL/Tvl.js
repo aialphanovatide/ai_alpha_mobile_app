@@ -107,7 +107,7 @@ const TotalValueLocked = ({competitorsData, isSectionWithoutData}) => {
           <VictoryChart
             height={450}
             width={375}
-            padding={{left: 75, right: 50, bottom: 40, top: 16}}>
+            padding={{left: 55, right: 40, bottom: 40, top: 16}}>
             <VictoryAxis
               style={{
                 axis: {stroke: theme.chartsColor},

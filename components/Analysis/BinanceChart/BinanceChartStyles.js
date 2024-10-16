@@ -50,7 +50,6 @@ const useBinanceChartStyles = () => {
       tintColor: '#A3A3A350',
     },
     timeframeContainer: {
-      flex: 1,
       paddingHorizontal: 8,
       marginHorizontal: 16,
     },

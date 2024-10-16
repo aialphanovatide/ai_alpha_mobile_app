@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 
 const useCompetitorsStyles = () => {
@@ -91,7 +91,7 @@ const useCompetitorsStyles = () => {
     },
     activeTriangle: {
       position: 'absolute',
-      top: 80,
+      top: Platform.OS === 'android' ? 80 : 100,
       left: '40%',
       tintColor: theme.fundamentalsCompetitorsItemBg,
       zIndex: 200,

@@ -205,7 +205,6 @@ const AskAiHistory = ({route, navigation}) => {
   // Function to handle the pressing of the History section items, passing the data of the selected item to the main ASK AI section.
 
   const handleActiveResultData = data => {
-    console.log('Data: ', data);
     navigation.navigate('AskAiMain', {selectedResult: data});
   };
 

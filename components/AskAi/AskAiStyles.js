@@ -20,7 +20,7 @@ const useAskAiStyles = () => {
     title: {
       marginTop: 48,
       marginBottom: 24,
-      marginLeft: 24,
+      marginLeft: 14,
       fontSize: 25,
       color: theme.titleColor,
       fontFamily: theme.fontMedium,
@@ -49,7 +49,7 @@ const useAskAiStyles = () => {
     placeholderText: {
       position: 'absolute',
       top: 18,
-      left: 24,
+      left: 14,
       color: theme.searchPlaceHolderColor,
       fontSize: 16,
       fontFamily: theme.font,
@@ -222,7 +222,6 @@ const useAskAiStyles = () => {
     cleanButton: {
       flexDirection: 'row',
       marginVertical: 8,
-      marginRight: 6,
       alignSelf: 'flex-end',
       alignItems: 'center',
     },
@@ -303,12 +302,16 @@ const useAskAiStyles = () => {
     },
     closeButton: {
       position: 'absolute',
-      top: 15,
-      right: 14,
+      top: 8,
+      right: 24,
+      width: '12.5%',
+      height: '3.5%',
     },
     closeButtonImage: {
-      width: 20,
-      height: 20,
+      width: 24,
+      height: 24,
+      marginTop: 6,
+      marginLeft: 12,
       tintColor: theme.secondaryGrayColor,
     },
   });

@@ -14,6 +14,7 @@ const GeneralTokenData = ({
   colors,
   theme,
 }) => {
+  const {isDarkMode} = useContext(AppThemeContext);
   return (
     <View style={styles.circleDataContainer}>
       {data.map((sector, index) => {
@@ -32,6 +33,7 @@ const GeneralTokenData = ({
               style={[
                 styles.strong,
                 currentToken.title === sector.title ? styles.activeText : {},
+                // currentToken.title === sector.title && isDarkMode && index > 4,
               ]}
               ellipsizeMode="clip">
               {sector.title.length > 21

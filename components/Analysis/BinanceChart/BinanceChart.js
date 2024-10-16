@@ -297,11 +297,11 @@ const BinanceChart = ({route, navigation}) => {
           changeInterval={changeInterval}
           additionalStyles={{marginVertical: 0}}
         />
-        <ChartButtons
+        {/* <ChartButtons
           activeButtons={activeButtons}
           setActiveButtons={setActiveButtons}
           disabled={loading || supportResistanceLoading}
-        />
+        /> */}
       </View>
       <View style={styles.container}>
         <View style={styles.chart}>
@@ -375,6 +375,36 @@ const BinanceChart = ({route, navigation}) => {
             {/* Y Axis */}
             <VictoryAxis
               dependentAxis
+              // Events configuration for preventing the scroll issue with the Y-axis values
+              events={[
+                {
+                  childName: 'all',
+                  target: 'tickLabels',
+                  eventHandlers: {
+                    onClick: () => {
+                      return;
+                    },
+                  },
+                },
+                {
+                  childName: 'all',
+                  target: 'axis',
+                  eventHandlers: {
+                    onClick: () => {
+                      return;
+                    },
+                  },
+                },
+                {
+                  childName: 'all',
+                  target: 'axisLabel',
+                  eventHandlers: {
+                    onClick: () => {
+                      return;
+                    },
+                  },
+                },
+              ]}
               style={{
                 axis: {stroke: theme.chartsAxisColor, strokeWidth: 2.5},
                 tickLabels: {

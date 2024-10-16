@@ -1,9 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {
-  View,
-  ScrollView,
-  Platform,
-} from 'react-native';
+import {View, ScrollView, Platform} from 'react-native';
 import MenuItem from './menuItem/menuItem';
 import useTopMenuStyles from './topmenuStyles';
 import {TopMenuContext} from '../../../../context/topMenuContext';
@@ -14,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import NotificationsButton from '../../HomeNotifications/NotificationsButton';
 import SearchWithBar from '../../../Search/SearchWithBar';
+import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
@@ -49,12 +46,12 @@ const TopMenu = ({isAlertsMenu}) => {
         navigation.navigate('TopMenuScreen', {
           screen: 'SubMenuScreen',
           params: {
-            screen: 'Charts',
-            params: {
-              interval: '1h',
-              symbol: `${category.coin_bots[0].bot_name}USDT`,
-              coinBot: category.coin_bots[0].bot_name,
-            },
+            screen: 'Fundamentals',
+            // params: {
+            //   interval: '1h',
+            //   symbol: `${category.coin_bots[0].bot_name}USDT`,
+            //   coinBot: category.coin_bots[0].bot_name,
+            // },
           },
         });
       }
@@ -148,19 +145,23 @@ const TopMenu = ({isAlertsMenu}) => {
   }
 
   return (
-    <LinearGradient
-      useAngle={true}
-      angle={45}
-      colors={isDarkMode ? ['#0F0F0F', '#171717'] : ['#F5F5F5', '#E5E5E5']}
-      locations={[0.22, 0.97]}
-      style={styles.topContentWrapper}>
-      <View style={[
+    <View
+      style={[
+        styles.topContentWrapper,
+        searchText.length === 0
+          ? {}
+          : {
+              // height: 700
+            },
+      ]}>
+      <BackgroundGradient />
+      <View
+        style={[
           styles.marginWrapper,
-          searchText.length > 0 && Platform.OS === 'ios'
-            ? {width: '100%', height: 650, alignItems: 'flex-end'}
+          searchText.length > 0
+            ? {width: '100%', height: '100%', alignItems: 'flex-start'}
             : {},
         ]}>
-        
         {menuVisible && (
           <NotificationsButton
             handleButtonPress={handleNotificationsNavigation}
@@ -208,7 +209,7 @@ const TopMenu = ({isAlertsMenu}) => {
           <></>
         )}
       </View>
-    </LinearGradient>
+    </View>
   );
 };
 

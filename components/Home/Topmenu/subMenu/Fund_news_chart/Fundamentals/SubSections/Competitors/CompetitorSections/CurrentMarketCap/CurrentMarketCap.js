@@ -56,7 +56,8 @@ const CurrentMarketCap = ({competitorsData, coin, loading}) => {
     return (
       <VictoryChart
         height={450}
-        padding={{left: 65, right: 40, top: 16, bottom: 40}}>
+        width={375}
+        padding={{left: 65, right: 40, bottom: 40, top: 16}}>
         <VictoryAxis
           style={{
             axis: {stroke: theme.chartsColor},

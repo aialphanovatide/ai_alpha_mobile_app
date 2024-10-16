@@ -21,6 +21,7 @@ import AboutModal from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/Abo
 import {AboutModalContext} from '../../context/AboutModalContext';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 import SearchButtonSvg from '../../assets/images/askAi/search-button.svg';
+import {RESULTS_MOCK} from './mockedAskAiData';
 
 if (
   Platform.OS === 'android' &&
@@ -191,9 +192,13 @@ const Input = ({
       <View style={styles.row}>
         <View style={styles.inputWrapper}>
           <TextInput
-            style={styles.searchInput}
+            style={[
+              styles.searchInput,
+              textValue !== '' ? {paddingLeft: 18} : {},
+            ]}
             onChangeText={text => textHandler(text)}
             value={textValue}
+            underlineColorAndroid={'transparent'}
           />
           <Text
             style={[
@@ -288,6 +293,7 @@ const AskAiMain = ({route, navigation}) => {
       try {
         const loadedData = await AsyncStorage.getItem('askAiData');
         let parsedData = [];
+
         if (loadedData) {
           parsedData = JSON.parse(loadedData);
         }

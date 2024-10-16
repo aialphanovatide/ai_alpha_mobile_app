@@ -396,14 +396,14 @@ const ChartSection = ({route, navigation}) => {
             selectedPairing={'usdt'}
             disabled={loading}
           />
-          {(selectedInterval.toUpperCase() === '1W' ||
+          {/* {(selectedInterval.toUpperCase() === '1W' ||
             selectedInterval.toUpperCase() === '1D') && (
             <ChartButtons
               activeButtons={activeButtons}
               setActiveButtons={setActiveButtons}
               disabled={loading || supportResistanceLoading}
             />
-          )}
+          )} */}
           {/* Refresh data button */}
           <TouchableOpacity
             onPress={() => handleDataUpdate(selectedInterval)}
@@ -501,6 +501,36 @@ const ChartSection = ({route, navigation}) => {
               {/* Y-Axis */}
               <VictoryAxis
                 dependentAxis
+                // Events configuration for preventing the scroll issue with the Y-axis values
+            events={[
+              {
+                childName: 'all',
+                target: 'tickLabels',
+                eventHandlers: {
+                  onClick: () => {
+                    return;
+                  },
+                },
+              },
+              {
+                childName: 'all',
+                target: 'axis',
+                eventHandlers: {
+                  onClick: () => {
+                    return;
+                  },
+                },
+              },
+              {
+                childName: 'all',
+                target: 'axisLabel',
+                eventHandlers: {
+                  onClick: () => {
+                    return;
+                  },
+                },
+              },
+            ]}
                 style={{
                   axis: {stroke: theme.chartsAxisColor},
                   tickLabels: {
