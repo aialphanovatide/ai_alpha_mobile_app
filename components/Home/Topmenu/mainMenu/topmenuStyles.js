@@ -10,6 +10,7 @@ const useTopMenuStyles = () => {
       minWidth: 60,
       paddingTop: 10,
       paddingBottom: 4,
+      backgroundColor: 'transparent',
     },
     loadingMessage: {
       flex: 1,
@@ -39,7 +40,7 @@ const useTopMenuStyles = () => {
       alignSelf: 'center',
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
-      zIndex: 3000
+      zIndex: 3000,
     },
   });
   return styles;

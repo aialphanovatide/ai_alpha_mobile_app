@@ -341,10 +341,35 @@ const SearchWithBar = ({
     navigation.navigate(sectionName, options);
   };
 
+  const countTotalItems = (cryptos, analysis, narratives) => {
+    const total =
+      cryptos.length + 1 + (analysis.length + 1) + (narratives.length + 1);
+    return total;
+  };
+
+  useEffect(() => {
+    const totalItems = countTotalItems(
+      cryptoSearchResult,
+      analysisSearchResult,
+      ntSearchResult,
+    );
+  }, [cryptoSearchResult, analysisSearchResult, ntSearchResult]);
+
   return (
     <View
       style={
-        activeSearchBar && searchText.length > 0 ? styles.searchSection : {}
+        activeSearchBar && searchText.length > 0
+          ? [
+              styles.searchSection,
+              countTotalItems(
+                cryptoSearchResult,
+                analysisSearchResult,
+                ntSearchResult,
+              ) > 30
+                ? {height: '100%'}
+                : {},
+            ]
+          : {}
       }>
       <SearchBar
         toggleMenuVisible={toggleMenuVisible}
@@ -354,7 +379,12 @@ const SearchWithBar = ({
         toggleSearchBar={toggleSearchBar}
       />
       {activeSearchBar && searchText.length > 0 ? (
-        <ScrollView style={styles.container} nestedScrollEnabled={true}>
+        <ScrollView
+          style={[
+            styles.container,
+            {height: '100%',}
+          ]}
+          nestedScrollEnabled={true}>
           <View style={styles.titleContainer}>
             <Text style={[styles.searchSubTitle, styles.inactiveSubtitle]}>
               Cryptocurrencies

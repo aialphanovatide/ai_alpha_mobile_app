@@ -10,9 +10,10 @@ const useSearchStyles = () => {
     },
     container: {
       width: '95%',
-      height: 800,
+      height: '100%',
       marginTop: 8,
       paddingHorizontal: 10,
+      paddingBottom: '40%',
       borderRadius: 2,
       backgroundColor: theme.boxesBackgroundColor,
     },
@@ -175,10 +176,11 @@ const useSearchStyles = () => {
       top: 0,
       left: 0,
       width: '100%',
-      height: 800,
+      height: '100%',
+      paddingBottom: '7.5%',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: isDarkMode ? '#171717' : '#D4D4D4'
+      backgroundColor: isDarkMode ? '#171717' : '#E5E5E5',
     },
   });
   return styles;

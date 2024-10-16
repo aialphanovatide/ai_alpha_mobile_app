@@ -117,7 +117,7 @@ const TopTenGainers = ({handleAboutPress}) => {
       navigation.navigate('TopMenuScreen', {
         screen: 'SubMenuScreen',
         params: {
-          screen: 'Charts',
+          screen: 'Fundamentals',
           params: {},
         },
       });

@@ -9,7 +9,7 @@ const NotificationsButton = ({handleButtonPress, activeSearchBar}) => {
       onPress={() => handleButtonPress()}
       style={[
         styles.notificationsButton,
-        activeSearchBar ? {display: 'none'} : {zIndex: 2002},
+        activeSearchBar ? {display: 'none'} : {zIndex: 2004},
       ]}>
       <Image
         source={require('../../../assets/images/home/notifications_light.png')}

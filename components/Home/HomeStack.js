@@ -159,7 +159,7 @@ const SubMenuScreen = () => {
       backBehavior={
         isLandscape && isHorizontal ? 'initialRoute' : 'initialRoute'
       }
-      initialRouteName="Charts"
+      initialRouteName="Fundamentals"
       screenOptions={{
         lazy: true,
         swipeEnabled: false,
