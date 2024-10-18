@@ -91,8 +91,8 @@ const useCompetitorsStyles = () => {
     },
     activeTriangle: {
       position: 'absolute',
-      top: Platform.OS === 'android' ? 80 : 100,
-      left: '40%',
+      top: Platform.OS === 'android' ? 80 : 98,
+      left: Platform.OS === 'android' ? '40%' : '38%',
       tintColor: theme.fundamentalsCompetitorsItemBg,
       zIndex: 200,
     },
