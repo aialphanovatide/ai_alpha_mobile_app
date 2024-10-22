@@ -501,7 +501,7 @@ const usePackageSubscriptionStyles = () => {
       marginLeft: 3,
     },
     discordTitle: {
-      color: '#fff',
+      color: theme.textColor,
       fontFamily: theme.fontMedium,
       fontSize: 16,
       marginTop: -7,
@@ -511,7 +511,7 @@ const usePackageSubscriptionStyles = () => {
       alignItems: 'center',
     },
     tokenText: {
-      color: '#fff',
+      color: theme.textColor,
       fontSize: 16,
       flex: 1,
       marginLeft: 10,

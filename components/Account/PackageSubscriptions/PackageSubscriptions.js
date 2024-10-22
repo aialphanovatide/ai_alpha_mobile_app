@@ -22,6 +22,8 @@ import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import AboutModal from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
 import {AboutIcon} from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
 import Clipboard from '@react-native-community/clipboard';
+import {aialpha2keydev} from '../../../src/constants';
+import {aialpha2key} from '../../../src/constants';
 
 const TextWithIcon = ({text}) => {
   const styles = usePackageSubscriptionStyles();
@@ -336,18 +338,19 @@ const PackageSubscriptions = () => {
   };
 
   const discordTokenFetcher = async () => {
-    const url = `https://aialpha.ngrok.io/user?auth0id=${rawUserId}`;
+    const url = `https://aialpha2.ngrok.io/user?auth0id=${rawUserId}`;
     try {
       const userFetch = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'x-api-key': aialpha2key,
         },
       });
       const userData = await userFetch.json();
       console.log('USER FROM DISCORD FETCHER', userData);
 
-      //return userData.auth_token;
+      return userData.data.auth_token;
     } catch (error) {
       console.error('Error fetching user data:', error);
       return 'No Token'; // Fallback token in case of error
@@ -355,7 +358,7 @@ const PackageSubscriptions = () => {
   };
 
   const copyToClipboard = async () => {
-    const token = discordTokenFetcher();
+    const token = await discordTokenFetcher();
     Clipboard.setString(token);
 
     // Fetch the copied text to confirm
@@ -553,7 +556,11 @@ const PackageSubscriptions = () => {
                   <View style={styles.discordSubcontainer}>
                     <View style={styles.titleRow}>
                       <Image
-                        source={require('../../../assets/images/account/socialMedia/discordSmall.png')} // Adjust to your Discord icon path
+                        source={
+                          isDarkMode
+                            ? require('../../../assets/images/account/socialMedia/discordSmallDark.png')
+                            : require('../../../assets/images/account/socialMedia/discordSmallLight.png')
+                        }
                         style={styles.discordSmallIcon}
                       />
                       <Text style={styles.discordTitle}>Discord Token</Text>

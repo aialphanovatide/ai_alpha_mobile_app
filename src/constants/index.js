@@ -42,3 +42,6 @@ export const TOP_MENU_IMAGES_URL =
 export const auth0ClonedGoogleAudience = 'https://aialpha-google-test';
 export const auth0ClonedGoogleClient = 'Rr0xvkmUdxACllY2wFPq9k6CFRnq01CO';
 export const auth0ClonedDomain = 'dev-kqugsqvoounaylft.us.auth0.com';
+
+export const aialpha2keydev = 'alpha_auxQDT_5rIy7unRVveat6Nb6pwqhXPW4_e9e5';
+export const aialpha2key = 'alpha_zx24ws3-2zXv2sy6JrRWs-4ob3HhWKNL_5290';
