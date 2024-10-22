@@ -1,16 +1,16 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {View, ScrollView, Platform} from 'react-native';
+import {View, ScrollView, Platform, Animated} from 'react-native';
 import MenuItem from './menuItem/menuItem';
 import useTopMenuStyles from './topmenuStyles';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import {CategoriesContext} from '../../../../context/categoriesContext';
 import {AppThemeContext} from '../../../../context/themeContext';
-import LinearGradient from 'react-native-linear-gradient';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import NotificationsButton from '../../HomeNotifications/NotificationsButton';
 import SearchWithBar from '../../../Search/SearchWithBar';
 import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
+import {HeaderVisibilityContext} from '../../../../context/HeadersVisibilityContext';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
@@ -140,6 +140,27 @@ const TopMenu = ({isAlertsMenu}) => {
     }
   };
 
+  // Scroll and hide the top menu variables and functions
+
+  const {headersVisibility} = useContext(HeaderVisibilityContext);
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      // Animated.timing(opacity, {
+      //   toValue: headersVisibility.TopMenu ? 1 : 0,
+      //   duration: 300,
+      //   useNativeDriver: true,
+      // }),
+      Animated.timing(animatedValue, {
+        toValue: headersVisibility.TopMenu ? 0 : isAlertsMenu ? -75 : -100,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {});
+  }, [headersVisibility.TopMenu, animatedValue, opacity]);
+
   if (routeName.includes('HomeNotifications')) {
     return null;
   }
@@ -153,62 +174,77 @@ const TopMenu = ({isAlertsMenu}) => {
           : {
               // height: 700
             },
+
+        !headersVisibility.TopMenu
+          ? isAlertsMenu
+            ? {height: 115}
+            : {height: 1}
+          : {},
       ]}>
       <BackgroundGradient />
-      <View
+      <Animated.View
         style={[
-          styles.marginWrapper,
-          searchText.length > 0
-            ? {width: '100%', height: '100%', alignItems: 'flex-start'}
-            : {},
+          {
+            transform: [{translateY: animatedValue}],
+            opacity: opacity,
+            overflow: 'hidden',
+          },
         ]}>
-        {menuVisible && (
-          <NotificationsButton
-            handleButtonPress={handleNotificationsNavigation}
+        <View
+          style={[
+            styles.marginWrapper,
+            searchText.length > 0
+              ? {width: '100%', height: '100%', alignItems: 'flex-start'}
+              : {},
+          ]}>
+          {menuVisible && (
+            <NotificationsButton
+              handleButtonPress={handleNotificationsNavigation}
+              activeSearchBar={activeSearchBar}
+            />
+          )}
+          <SearchWithBar
+            toggleMenuVisible={toggleMenuVisible}
+            toggleTextValue={toggleTextValue}
+            searchText={searchText}
             activeSearchBar={activeSearchBar}
+            toggleSearchBar={toggleActiveSearchBar}
           />
-        )}
-        <SearchWithBar
-          toggleMenuVisible={toggleMenuVisible}
-          toggleTextValue={toggleTextValue}
-          searchText={searchText}
-          activeSearchBar={activeSearchBar}
-          toggleSearchBar={toggleActiveSearchBar}
-        />
-      </View>
-      <View style={styles.container}>
-        {menuVisible ? (
-          <ScrollView
-            horizontal
-            ref={topMenuScrollRef}
-            onScroll={handleScroll}
-            scrollEventThrottle={16}
-            showsHorizontalScrollIndicator={false}
-            bounces={false}>
-            {loading ? (
-              <SkeletonLoader type={'circle'} quantity={14} />
-            ) : categories ? (
-              categories.map((category, index) => (
-                <MenuItem
-                  key={category.category_id}
-                  onPress={() => handleButtonPress(category, index)}
-                  category={category}
-                  isDarkMode={isDarkMode}
-                  isActive={
-                    activeCoin &&
-                    activeCoin !== undefined &&
-                    activeCoin === category
-                  }
-                />
-              ))
-            ) : (
-              <></>
-            )}
-          </ScrollView>
-        ) : (
-          <></>
-        )}
-      </View>
+        </View>
+        <View style={styles.container}>
+          {menuVisible ? (
+            <ScrollView
+              horizontal
+              ref={topMenuScrollRef}
+              onScroll={handleScroll}
+              scrollEventThrottle={16}
+              showsHorizontalScrollIndicator={false}
+              bounces={false}>
+              {loading ? (
+                <SkeletonLoader type={'circle'} quantity={14} />
+              ) : categories ? (
+                categories.map((category, index) => (
+                  <MenuItem
+                    key={category.category_id}
+                    onPress={() => handleButtonPress(category, index)}
+                    category={category}
+                    isDarkMode={isDarkMode}
+                    isActive={
+                      activeCoin &&
+                      activeCoin !== undefined &&
+                      activeCoin === category
+                    }
+                  />
+                ))
+              ) : (
+                <></>
+              )}
+            </ScrollView>
+          ) : (
+            <></>
+          )}
+        </View>
+      </Animated.View>
     </View>
   );
 };

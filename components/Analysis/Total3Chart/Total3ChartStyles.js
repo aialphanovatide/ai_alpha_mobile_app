@@ -22,12 +22,14 @@ const useChartSectionStyles = () => {
       width: '100%',
       height: theme.height * 0.45,
       marginVertical: theme.boxesVerticalMargin,
+      justifyContent: 'center',
+      alignItems: 'top',
       borderRadius: 4,
     },
     chart: {
       width: '100%',
       height: '100%',
-      paddingRight: 48,
+      justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
     },
@@ -91,7 +93,7 @@ const useChartSectionStyles = () => {
       position: 'absolute',
       bottom: Platform.OS === 'android' ? 110 : 140,
       right: 95,
-      tintColor:  isDarkMode ? '#737373' : '#A3A3A3',
+      tintColor: isDarkMode ? '#737373' : '#A3A3A3',
     },
   });
   return styles;

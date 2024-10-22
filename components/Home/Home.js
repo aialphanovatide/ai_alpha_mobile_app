@@ -1,5 +1,14 @@
 import React, {useContext, useState, useRef, useEffect} from 'react';
-import {View, Modal, ScrollView, SafeAreaView, Text, ImageBackground, TouchableOpacity, Button} from 'react-native';
+import {
+  View,
+  Modal,
+  ScrollView,
+  SafeAreaView,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import TickerTape from './Tickertape/TickerTape';
 import TopStories from './TopStories/topStories';
 import Analysis from './Analysis/analysis';
@@ -17,8 +26,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 import SubscriptionPopUp from '../SubscriptionPopUps/SubscriptionPopUp';
 import useSubscriptionPopUpStyles from '../SubscriptionPopUps/SubscriptionPopUpStyles';
+import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
+import {throttle} from 'lodash';
 
-const FreePopup = ({ visible, onClose, setVisible }) => {
+const FreePopup = ({visible, onClose, setVisible}) => {
   const styles = useSubscriptionPopUpStyles();
   const {isDarkMode} = useContext(AppThemeContext);
 
@@ -76,9 +87,7 @@ const FreePopup = ({ visible, onClose, setVisible }) => {
         <Text style={styles.graySecondaryText}>
           No need to do anything-it's already set up for you!
         </Text>
-        <TouchableOpacity
-          style={{width: '100%'}}
-          onPress={handleClose}>
+        <TouchableOpacity style={{width: '100%'}} onPress={handleClose}>
           <LinearGradient
             useAngle
             angle={90}
@@ -102,10 +111,16 @@ const Home = ({route}) => {
   const {rawUserId} = useRawUserId();
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
   const [modalVisible, setModalVisible] = useState(false);
-  const [subscriptionPopUpsVisible, setSubscriptionPopUpsVisible] = useState(false);
-
+  const [subscriptionPopUpsVisible, setSubscriptionPopUpsVisible] =
+    useState(false);
 
   const ref = useRef(null);
+
+  useEffect(() => {
+    showHeader('TopMenu');
+    showHeader('SubMenu');
+    showHeader('FundNewsChartsMenu');
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -125,7 +140,7 @@ const Home = ({route}) => {
     };
     fetchUserData();
   }, []);
-  
+
   // This triggers a function to show a modal-popup
   useEffect(() => {
     const showReminderModal = async () => {
@@ -137,7 +152,7 @@ const Home = ({route}) => {
 
     showReminderModal();
   }, []);
-  
+
   useScrollToTop(ref);
 
   const handleAboutPress = (description = null, title = null) => {
@@ -155,24 +170,26 @@ const Home = ({route}) => {
   const checkForModalDisplay = async () => {
     const signupDateStr = await AsyncStorage.getItem('signupDate');
     //console.log('SIGNUP DATE FROM ASYNC STORAGE', signupDateStr);
-    const signupDateValidator = await AsyncStorage.getItem('signupDateValidator');
+    const signupDateValidator = await AsyncStorage.getItem(
+      'signupDateValidator',
+    );
     console.log('SIGNUP DATE VALIDATOR', signupDateValidator);
 
     if (!signupDateStr) return false; // If signup date is not found, this does nothing
-  
+
     const signupDate = new Date(signupDateStr);
     const currentDate = new Date();
-    
+
     const diffTime = Math.abs(currentDate - signupDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // This converts milliseconds to days
 
     console.log('Diff days: ', diffDays);
-    console.log("Validator: ", signupDateValidator);
+    console.log('Validator: ', signupDateValidator);
 
     if (diffDays < 3) {
       console.log('Less than 3 days');
       return false;
-    } else if(diffDays >= 3 && signupDateValidator == 'false') {
+    } else if (diffDays >= 3 && signupDateValidator == 'false') {
       console.log('Equal or greater than 3 days');
       return true;
     } else {
@@ -180,11 +197,34 @@ const Home = ({route}) => {
       return false;
     }
   };
-  
+
+  // Functions to handle the scrolling interaction that hides the menu
+
+  const {showHeader, hideHeader} = useContext(HeaderVisibilityContext);
+  const scrollOffset = useRef(0);
+  const scrollViewRef = useRef(null);
+
+  const handleScroll = throttle(event => {
+    const currentOffset = event.nativeEvent.contentOffset.y;
+    const diff = currentOffset - scrollOffset.current;
+
+    if (diff > 5 && currentOffset > 100) {
+      hideHeader('TopMenu');
+    } else if (diff < -5) {
+      showHeader('TopMenu');
+    }
+
+    scrollOffset.current = currentOffset;
+  }, 350);
+
+  const onScroll = event => {
+    event.persist();
+    handleScroll(event);
+  };
 
   return (
     <View style={styles.flex}>
-    <BackgroundGradient />
+      <BackgroundGradient />
       <SafeAreaView style={styles.container}>
         {aboutVisible && (
           <AboutModal
@@ -199,8 +239,13 @@ const Home = ({route}) => {
           alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
           style={[styles.paddingH, styles.paddingB]}
-          ref={ref}>
-          <FreePopup visible={subscriptionPopUpsVisible} setVisible={setSubscriptionPopUpsVisible} />
+          ref={scrollViewRef}
+          onScroll={onScroll}
+          scrollEventThrottle={16}>
+          <FreePopup
+            visible={subscriptionPopUpsVisible}
+            setVisible={setSubscriptionPopUpsVisible}
+          />
           <TickerTape />
           <TopStories handleAboutPress={handleAboutPress} />
           <Analysis handleAboutPress={handleAboutPress} />
@@ -209,7 +254,7 @@ const Home = ({route}) => {
           <TopTenLosers handleAboutPress={handleAboutPress} />
         </ScrollView>
       </SafeAreaView>
-      </View>
+    </View>
   );
 };
 

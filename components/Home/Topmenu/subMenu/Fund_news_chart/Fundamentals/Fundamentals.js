@@ -29,6 +29,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useScrollToTop} from '@react-navigation/native';
 import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 import BackgroundGradient from '../../../../../BackgroundGradient/BackgroundGradient';
+import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
+import {throttle} from 'lodash';
 
 const initialContentState = {
   introduction: false,
@@ -164,73 +166,101 @@ const Fundamentals = ({route}) => {
     fetchTokenomicsData();
   }, [coin]);
 
+  // Functions to handle the scrolling interaction that hides the menu
+
+  const {showHeader, hideHeader} = useContext(HeaderVisibilityContext);
+  const scrollOffset = useRef(0);
+  const scrollViewRef = useRef(null);
+
+  const handleScroll = throttle(event => {
+    const currentOffset = event.nativeEvent.contentOffset.y;
+    const diff = currentOffset - scrollOffset.current;
+
+    if (diff > 40 && currentOffset > 180) {
+      hideHeader('TopMenu');
+      hideHeader('SubMenu');
+    } else if (diff < -40) {
+      showHeader('TopMenu');
+      showHeader('SubMenu');
+    }
+
+    scrollOffset.current = currentOffset;
+  }, 350);
+
+  const onScroll = event => {
+    event.persist();
+    handleScroll(event);
+  };
+
   return (
-      <ScrollView
-        nestedScrollEnabled={true}
-        style={styles.backgroundColor}
-        ref={ref}>
-          <BackgroundGradient />
-        <SafeAreaView style={styles.container}>
-          {aboutVisible && (
-            <AboutModal
-              title={aboutTitle}
-              description={aboutDescription}
-              onClose={handleAboutPress}
-              visible={aboutVisible}
+    <ScrollView
+      nestedScrollEnabled={true}
+      style={styles.backgroundColor}
+      ref={scrollViewRef}
+      onScroll={onScroll}
+      scrollEventThrottle={16}>
+      <BackgroundGradient />
+      <SafeAreaView style={styles.container}>
+        {aboutVisible && (
+          <AboutModal
+            title={aboutTitle}
+            description={aboutDescription}
+            onClose={handleAboutPress}
+            visible={aboutVisible}
+          />
+        )}
+        <Text style={styles.title}>Fundamentals</Text>
+        <SubSection
+          subtitle={'Introduction'}
+          content={
+            <Introduction
+              coin={coin}
+              getSectionData={getSectionData}
+              handleSectionContent={handleSectionContent}
+              loading={globalLoading}
+              globalData={fundamentalsData}
             />
-          )}
-          <Text style={styles.title}>Fundamentals</Text>
-          <SubSection
-            subtitle={'Introduction'}
-            content={
-              <Introduction
-                coin={coin}
-                getSectionData={getSectionData}
-                handleSectionContent={handleSectionContent}
-                loading={globalLoading}
-                globalData={fundamentalsData}
-              />
-            }
-            handleAboutPress={handleAboutPress}
-            hasEmptyContent={hasContent.introduction}
-          />
-          <SubSection
-            handleAboutPress={handleAboutPress}
-            subtitle={'Tokenomics'}
-            content={
-              <Tokenomics
-                getSectionData={getSectionData}
-                coin={coin}
-                handleSectionContent={handleSectionContent}
-                globalData={fundamentalsData}
-                loading={globalLoading}
-              />
-            }
-            hasAbout={true}
-            description={
-              fundamentals_static_content.tokenomics.sectionDescription
-            }
-            hasEmptyContent={hasContent.tokenomics}
-          />
-          <SubSection
-            subtitle={'Token Distribution'}
-            content={
-              <GeneralTokenAllocation
-                getSectionData={getSectionData}
-                coin={coin}
-                handleSectionContent={handleSectionContent}
-                loading={globalLoading}
-                globalData={fundamentalsData}
-              />
-            }
-            hasEmptyContent={hasContent.generalTokenAllocation}
-            hasAbout
-            handleAboutPress={handleAboutPress}
-            description={
-              fundamentals_static_content.tokenDistribution.sectionDescription
-            }
-          />
-          {/* <SubSection
+          }
+          handleAboutPress={handleAboutPress}
+          hasEmptyContent={hasContent.introduction}
+        />
+        <SubSection
+          handleAboutPress={handleAboutPress}
+          subtitle={'Tokenomics'}
+          content={
+            <Tokenomics
+              getSectionData={getSectionData}
+              coin={coin}
+              handleSectionContent={handleSectionContent}
+              globalData={fundamentalsData}
+              loading={globalLoading}
+            />
+          }
+          hasAbout={true}
+          description={
+            fundamentals_static_content.tokenomics.sectionDescription
+          }
+          hasEmptyContent={hasContent.tokenomics}
+        />
+        <SubSection
+          subtitle={'Token Distribution'}
+          content={
+            <GeneralTokenAllocation
+              getSectionData={getSectionData}
+              coin={coin}
+              handleSectionContent={handleSectionContent}
+              loading={globalLoading}
+              globalData={fundamentalsData}
+            />
+          }
+          hasEmptyContent={hasContent.generalTokenAllocation}
+          hasAbout
+          handleAboutPress={handleAboutPress}
+          description={
+            fundamentals_static_content.tokenDistribution.sectionDescription
+          }
+        />
+        {/* <SubSection
             subtitle={'Vesting Schedule'}
             content={
               <VestingSchedule
@@ -244,142 +274,140 @@ const Fundamentals = ({route}) => {
               fundamentals_static_content.vestingSchedule.sectionDescription
             }
           /> */}
-          <SubSection
-            subtitle={'Token Utility'}
-            hasEmptyContent={hasContent.tokenUtility}
-            content={
-              <TokenUtility
-                getSectionData={getSectionData}
-                coin={coin}
-                handleSectionContent={handleSectionContent}
-                loading={globalLoading}
-                globalData={fundamentalsData}
-              />
-            }
-            hasAbout
-            handleAboutPress={handleAboutPress}
-            description={
-              fundamentals_static_content.tokenUtility.sectionDescription
-            }
-          />
-          <SubSection
-            subtitle={'Value Accrual Mechanisms'}
-            hasEmptyContent={hasContent.valueAccrualMechanisms}
-            content={
-              <ValueAccrualMechanisms
-                handleSectionContent={handleSectionContent}
-                getSectionData={getSectionData}
-                coin={coin}
-                loading={globalLoading}
-                globalData={fundamentalsData}
-              />
-            }
-            hasAbout
-            handleAboutPress={handleAboutPress}
-            description={
-              fundamentals_static_content.valueAccrualMechanisms
-                .sectionDescription
-            }
-          />
-          <SubSection
-            hasEmptyContent={hasContent.competitors}
-            subtitle={'Competitors'}
-            content={
-              <Competitors
-                coin={coin}
-                getSectionData={getSectionData}
-                handleSectionContent={handleSectionContent}
-                tokenomicsData={
-                  fundamentalsData
-                    ? fundamentalsData.tokenomics.status !== 200
-                      ? []
-                      : fundamentalsData.tokenomics.message.tokenomics_data
-                    : []
-                }
-                subsectionsData={
-                  fundamentals_static_content.competitors.subsections
-                }
-                handleAboutPress={handleAboutPress}
-                loading={globalLoading}
-                globalData={fundamentalsData}
-              />
-            }
-            hasAbout
-            handleAboutPress={handleAboutPress}
-            description={
-              fundamentals_static_content.competitors.sectionDescription
-            }
-          />
-          <SubSection
-            hasEmptyContent={hasContent.revenueModel}
-            subtitle={'Revenue Model'}
-            hasAbout
-            handleAboutPress={handleAboutPress}
-            content={
-              <UpdatedRevenueModel
-                handleSectionContent={handleSectionContent}
-                getSectionData={getSectionData}
-                coin={coin}
-                globalData={fundamentalsData}
-                loading={globalLoading}
-              />
-            }
-            description={
-              fundamentals_static_content.revenueModel.sectionDescription
-            }
-          />
-          <SubSection
-            hasEmptyContent={hasContent.hacks}
-            hasAbout
-            handleAboutPress={handleAboutPress}
-            subtitle={'Hacks'}
-            content={
-              <Hacks
-                getSectionData={getSectionData}
-                coin={coin}
-                handleSectionContent={handleSectionContent}
-                globalData={fundamentalsData}
-                loading={globalLoading}
-              />
-            }
-            description={fundamentalsMock.eth.hacks.sectionDescription}
-          />
-          <SubSection
-            hasAbout
-            hasEmptyContent={hasContent.upgrades}
-            handleAboutPress={handleAboutPress}
-            subtitle={'Upgrades'}
-            description={
-              fundamentals_static_content.upgrades.sectionDescription
-            }
-            content={
-              <Upgrades
-                getSectionData={getSectionData}
-                coin={coin}
-                handleSectionContent={handleSectionContent}
-                globalData={fundamentalsData}
-                loading={globalLoading}
-              />
-            }
-          />
-          <SubSection
-            hasAbout
-            hasEmptyContent={hasContent.dapps}
-            handleAboutPress={handleAboutPress}
-            subtitle={'DApps'}
-            content={
-              <DApps
-                getSectionData={getSectionData}
-                coin={coin}
-                handleSectionContent={handleSectionContent}
-                globalData={fundamentalsData}
-                loading={globalLoading}
-              />
-            }
-            description={fundamentals_static_content.dApps.sectionDescription}
-          />
-        </SafeAreaView>
-      </ScrollView>
+        <SubSection
+          subtitle={'Token Utility'}
+          hasEmptyContent={hasContent.tokenUtility}
+          content={
+            <TokenUtility
+              getSectionData={getSectionData}
+              coin={coin}
+              handleSectionContent={handleSectionContent}
+              loading={globalLoading}
+              globalData={fundamentalsData}
+            />
+          }
+          hasAbout
+          handleAboutPress={handleAboutPress}
+          description={
+            fundamentals_static_content.tokenUtility.sectionDescription
+          }
+        />
+        <SubSection
+          subtitle={'Value Accrual Mechanisms'}
+          hasEmptyContent={hasContent.valueAccrualMechanisms}
+          content={
+            <ValueAccrualMechanisms
+              handleSectionContent={handleSectionContent}
+              getSectionData={getSectionData}
+              coin={coin}
+              loading={globalLoading}
+              globalData={fundamentalsData}
+            />
+          }
+          hasAbout
+          handleAboutPress={handleAboutPress}
+          description={
+            fundamentals_static_content.valueAccrualMechanisms
+              .sectionDescription
+          }
+        />
+        <SubSection
+          hasEmptyContent={hasContent.competitors}
+          subtitle={'Competitors'}
+          content={
+            <Competitors
+              coin={coin}
+              getSectionData={getSectionData}
+              handleSectionContent={handleSectionContent}
+              tokenomicsData={
+                fundamentalsData
+                  ? fundamentalsData.tokenomics.status !== 200
+                    ? []
+                    : fundamentalsData.tokenomics.message.tokenomics_data
+                  : []
+              }
+              subsectionsData={
+                fundamentals_static_content.competitors.subsections
+              }
+              handleAboutPress={handleAboutPress}
+              loading={globalLoading}
+              globalData={fundamentalsData}
+            />
+          }
+          hasAbout
+          handleAboutPress={handleAboutPress}
+          description={
+            fundamentals_static_content.competitors.sectionDescription
+          }
+        />
+        <SubSection
+          hasEmptyContent={hasContent.revenueModel}
+          subtitle={'Revenue Model'}
+          hasAbout
+          handleAboutPress={handleAboutPress}
+          content={
+            <UpdatedRevenueModel
+              handleSectionContent={handleSectionContent}
+              getSectionData={getSectionData}
+              coin={coin}
+              globalData={fundamentalsData}
+              loading={globalLoading}
+            />
+          }
+          description={
+            fundamentals_static_content.revenueModel.sectionDescription
+          }
+        />
+        <SubSection
+          hasEmptyContent={hasContent.hacks}
+          hasAbout
+          handleAboutPress={handleAboutPress}
+          subtitle={'Hacks'}
+          content={
+            <Hacks
+              getSectionData={getSectionData}
+              coin={coin}
+              handleSectionContent={handleSectionContent}
+              globalData={fundamentalsData}
+              loading={globalLoading}
+            />
+          }
+          description={fundamentalsMock.eth.hacks.sectionDescription}
+        />
+        <SubSection
+          hasAbout
+          hasEmptyContent={hasContent.upgrades}
+          handleAboutPress={handleAboutPress}
+          subtitle={'Upgrades'}
+          description={fundamentals_static_content.upgrades.sectionDescription}
+          content={
+            <Upgrades
+              getSectionData={getSectionData}
+              coin={coin}
+              handleSectionContent={handleSectionContent}
+              globalData={fundamentalsData}
+              loading={globalLoading}
+            />
+          }
+        />
+        <SubSection
+          hasAbout
+          hasEmptyContent={hasContent.dapps}
+          handleAboutPress={handleAboutPress}
+          subtitle={'DApps'}
+          content={
+            <DApps
+              getSectionData={getSectionData}
+              coin={coin}
+              handleSectionContent={handleSectionContent}
+              globalData={fundamentalsData}
+              loading={globalLoading}
+            />
+          }
+          description={fundamentals_static_content.dApps.sectionDescription}
+        />
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 

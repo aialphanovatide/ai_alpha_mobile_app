@@ -4,7 +4,6 @@ import useIntroductionStyles from './IntroductionStyles';
 import Loader from '../../../../../../../Loader/Loader';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import RenderHTML, {defaultSystemFonts} from 'react-native-render-html';
-import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 

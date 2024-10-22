@@ -399,7 +399,7 @@ const useChartsStyles = () => {
       width: 20,
       height: 20,
       marginLeft: 10,
-      tintColor: isDarkMode ? '' : '#4D4D4D',
+      tintColor: isDarkMode ? '#FFFFFF' : '#4D4D4D',
     },
   });
   return styles;

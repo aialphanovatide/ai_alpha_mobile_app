@@ -5,7 +5,6 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
-  Image,
 } from 'react-native';
 import moment from 'moment';
 import CandlestickDetails from './candleDetails';
@@ -26,9 +25,9 @@ import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation
 import {useNavigation} from '@react-navigation/core';
 import useChartsSource from '../../../../../../hooks/useChartsSource';
 import {getService} from '../../../../../../services/aiAlphaApi';
-import {io} from 'socket.io-client';
-import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
 import CWChart from './NewCharts/CWChart';
+import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
+import {throttle} from 'lodash';
 
 const IntervalSelector = ({
   selectedPairing,
@@ -271,6 +270,35 @@ const CandlestickChart = ({route}) => {
 
   // Show the height and width of the phone
   const {height, width} = Dimensions.get('window');
+
+  // Functions to handle the scrolling interaction that hides the menu
+
+  const {showHeader, hideHeader} = useContext(HeaderVisibilityContext);
+  const scrollOffset = useRef(0);
+  const scrollViewRef = useRef(null);
+
+  const handleScroll = throttle(event => {
+    const currentOffset = event.nativeEvent.contentOffset.y;
+    const diff = currentOffset - scrollOffset.current;
+
+    if (diff > 10 && currentOffset > 50) {
+      hideHeader('TopMenu');
+      hideHeader('SubMenu');
+      hideHeader('FundNewsChartsMenu');
+    } else if (diff < -10) {
+      showHeader('TopMenu');
+      showHeader('SubMenu');
+      showHeader('FundNewsChartsMenu');
+    }
+
+    scrollOffset.current = currentOffset;
+  }, 350);
+
+  const onScroll = event => {
+    event.persist();
+    handleScroll(event);
+  };
+
   return (
     <LinearGradient
       useAngle={true}
@@ -286,7 +314,9 @@ const CandlestickChart = ({route}) => {
           !subscribed ? {height: 300} : {},
         ]}
         showsVerticalScrollIndicator={true}
-        ref={ref}>
+        ref={scrollViewRef}
+        onScroll={onScroll}
+        scrollEventThrottle={16}>
         {aboutVisible && (
           <AboutModal
             description={aboutDescription}

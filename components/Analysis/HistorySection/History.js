@@ -14,11 +14,11 @@ import CryptoFilter from '../Calendar/CryptoCalendar/CryptoFilter';
 import {useNavigation} from '@react-navigation/core';
 import historyFilterData from './HistoryFilterData';
 import FastImage from 'react-native-fast-image';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
+import {AnalysisContext} from '../../../context/AnalysisContext';
 
 const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -125,10 +125,13 @@ const HistoryTimeMenu = ({
 };
 
 const History = () => {
-  const options = ['today', 'this week'];
-  const [cryptoOptions, setCryptoOptions] = useState([]);
+  const options = ['today', 'last week'];
+  const {analysisItems} = useContext(AnalysisContext);
+  const [cryptoOptions, setCryptoOptions] = useState(historyFilterData);
   const [activeOption, setActiveOption] = useState(options[0]);
-  const [activeCryptoOption, setActiveCryptoOption] = useState(null);
+  const [activeCryptoOption, setActiveCryptoOption] = useState(
+    historyFilterData[0],
+  );
   const [historyItems, setHistoryItems] = useState([]);
   const [loadedHistoryItems, setLoadedHistoryItems] = useState([]);
   const styles = useHistoryStyles();
@@ -136,57 +139,52 @@ const History = () => {
   const {subscribed} = useContext(RevenueCatContext);
 
   // Hook to load the data from the previous analysis that the user has seen
+  // useEffect(() => {
+  //   const interval = activeOption === 'today' ? 1 : 7;
+  //   const fetchData = async interval => {
+  //     try {
+  //       const keys = await AsyncStorage.getAllKeys();
+  //       const analysisKeys = keys.filter(key => key.startsWith('analysis_'));
+  //       const analysisItems = await AsyncStorage.multiGet(analysisKeys);
+  //       const parsedItems = analysisItems.map(item => JSON.parse(item[1]));
+  //       const currentDate = new Date();
+
+  //       const filteredItems = parsedItems.filter(item => {
+  //         const clickedAt = new Date(item.clickedAt);
+  //         const timeDifference = Math.abs(currentDate - clickedAt);
+  //         const daysDifference = timeDifference / (1000 * 3600 * 24);
+
+  //         return daysDifference <= interval;
+  //       });
+
+  //       console.log(
+  //         `Loaded analysis items within ${interval} days: `,
+  //         filteredItems,
+  //       );
+  //       setLoadedHistoryItems(filteredItems);
+  //     } catch (e) {
+  //       console.error('Failed to load the data from storage', e);
+  //     }
+  //   };
+  //   if (loadedHistoryItems.length === 0) {
+  //     fetchData(interval);
+  //   }
+  // }, [activeOption]);
+
   useEffect(() => {
-    const interval = activeOption === 'today' ? 1 : 7;
-    const fetchData = async interval => {
-      try {
-        const keys = await AsyncStorage.getAllKeys();
-        const analysisKeys = keys.filter(key => key.startsWith('analysis_'));
-        const analysisItems = await AsyncStorage.multiGet(analysisKeys);
-        const parsedItems = analysisItems.map(item => JSON.parse(item[1]));
-        const currentDate = new Date();
-
-        const filteredItems = parsedItems.filter(item => {
-          const clickedAt = new Date(item.clickedAt);
-          const timeDifference = Math.abs(currentDate - clickedAt);
-          const daysDifference = timeDifference / (1000 * 3600 * 24);
-
-          return daysDifference <= interval;
-        });
-
-        console.log(
-          `Loaded analysis items within ${interval} days: `,
-          filteredItems,
-        );
-        setLoadedHistoryItems(filteredItems);
-      } catch (e) {
-        console.error('Failed to load the data from storage', e);
-      }
-    };
-    if (loadedHistoryItems.length === 0) {
-      fetchData(interval);
-    }
-  }, [activeOption]);
-
-  useEffect(() => {
-    if (loadedHistoryItems.length !== 0) {
-      const filtered_by_time = filterItemsByTime(
-        activeOption,
-        loadedHistoryItems,
-      );
+    if (analysisItems.length !== 0) {
+      const filtered_by_time = filterItemsByTime(activeOption, analysisItems);
       const filtered_history_items = filterItemsByCategory(
         activeCryptoOption,
         filtered_by_time,
       );
       setHistoryItems(filtered_history_items.reverse());
     }
-  }, [loadedHistoryItems]);
+  }, [analysisItems]);
 
   useEffect(() => {
-    setCryptoOptions(historyFilterData);
     setActiveOption(options[0]);
-    setActiveCryptoOption(historyFilterData[0]);
-    handleCryptoTouch(historyFilterData[0]);
+    handleCryptoTouch(activeCryptoOption);
   }, []);
 
   const filterItemsByCategory = (category, items) => {
@@ -218,7 +216,7 @@ const History = () => {
     const currentDate = new Date();
 
     const filteredArray = analysisArray.filter(item => {
-      const createdAtDate = new Date(item.clickedAt);
+      const createdAtDate = new Date(item.created_at);
       if (interval === 'today') {
         return createdAtDate.toDateString() === currentDate.toDateString();
       }
@@ -236,15 +234,12 @@ const History = () => {
 
   const handleCryptoTouch = option => {
     setActiveCryptoOption(option);
-    const filtered_by_time = filterItemsByTime(
-      activeOption,
-      loadedHistoryItems,
-    );
+    const filtered_by_time = filterItemsByTime(activeOption, analysisItems);
     const filtered_history_items = filterItemsByCategory(
       option,
       filtered_by_time,
     );
-    setHistoryItems(filtered_history_items.reverse());
+    setHistoryItems(filtered_history_items);
   };
 
   const handleHistoryNavigation = analysis => {
@@ -265,10 +260,10 @@ const History = () => {
     setActiveCryptoOption(historyFilterData[0]);
     const filtered_by_crypto = filterItemsByCategory(
       historyFilterData[0],
-      loadedHistoryItems,
+      analysisItems,
     );
     const filtered_items = filterItemsByTime(interval, filtered_by_crypto);
-    setHistoryItems(filtered_items.reverse());
+    setHistoryItems(filtered_items);
   };
 
   return (

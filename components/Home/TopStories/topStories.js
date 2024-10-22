@@ -17,6 +17,7 @@ import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIc
 import {home_static_data} from '../homeStaticData';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
+import {newsbotGetService} from '../../../services/aiAlphaApi';
 
 if (
   Platform.OS === 'android' &&
@@ -79,13 +80,15 @@ const TopStories = ({handleAboutPress}) => {
     setLoading(true);
     const fetchTopStories = async () => {
       try {
-        const response = await fetch('https://newsbotv2.ngrok.io/top-stories', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
+        const topStoriesData = await newsbotGetService(
+          '/top-stories?per_page=10',
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        });
-        const topStoriesData = await response.json();
+        );
         if (!topStoriesData.success || !topStoriesData.data) {
           setStories([]);
         } else {
@@ -114,10 +117,10 @@ const TopStories = ({handleAboutPress}) => {
         <SkeletonLoader />
       ) : stories.length === 0 ? (
         <NoContentDisclaimer
-        title={'Oops, something went wrong.'}
-        description={''}
-        additionalStyles={{disclaimer: {marginVertical: '5%'}}}
-      />
+          title={'Oops, something went wrong.'}
+          description={''}
+          additionalStyles={{disclaimer: {marginVertical: '5%'}}}
+        />
       ) : (
         <View style={[styles.storiesContainer]}>
           {stories?.slice(0, 10).map((story, i) => (

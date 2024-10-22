@@ -76,11 +76,45 @@ const AnalysisContextProvider = ({children}) => {
     };
   };
 
+  const getAnalysisByCoin = async coinName => {
+    try {
+      const data = await getService(
+        `/get_analysis_by_coin?coin_bot_name=${coinName}`,
+      );
+      if (data.success) {
+        const parsed_data = data.data.map(item => {
+          return {
+            analysis: parseAnalysisContent(item.analysis)[0],
+            raw_analysis: item.analysis,
+            id: item.analysis_id,
+            coin_bot_id: item.coin_bot_id,
+            coin_bot_name:
+              findCoinByCategoriesAndBotId(categories, item.coin_bot_id) ||
+              'btc',
+            created_at: item.created_at,
+            category: item.category_name,
+          };
+        });
+        console.log(
+          `- Successfully retrieved ${parsed_data.length} analysis from the server...`,
+        );
+        return parsed_data;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      console.log(
+        `Error trying to get analysis data from ${coinName}: `,
+        error,
+      );
+    }
+  };
+
   useEffect(() => {
     const getAnalysisData = async () => {
       setLoading(true);
       try {
-        const data = await getService(`/get_analysis`);
+        const data = await getService(`/get_analysis?limit=99`);
         if (data.success) {
           const parsed_data = data.data.map(item => {
             return {
@@ -111,7 +145,8 @@ const AnalysisContextProvider = ({children}) => {
   }, [categories]);
 
   return (
-    <AnalysisContext.Provider value={{analysisItems, loading}}>
+    <AnalysisContext.Provider
+      value={{analysisItems, loading, getAnalysisByCoin}}>
       {children}
     </AnalysisContext.Provider>
   );

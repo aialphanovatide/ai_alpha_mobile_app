@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   FlatList,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import useAlertsStyles from './styles';
 import {TopMenuContext} from '../../context/topMenuContext';
@@ -20,15 +21,8 @@ import {useScrollToTop} from '@react-navigation/native';
 import SkeletonLoader from '../Loader/SkeletonLoader';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../NoContentDisclaimer/NoContentDisclaimer';
-
-// Component that renders when there are no alerts on the server's response
-const NoAlertsView = ({styles}) => (
-  <View style={styles.noAlertsContainer}>
-    <Text style={styles.noAlerts}>
-      There are no Alerts yet. Stay tuned for important updates.
-    </Text>
-  </View>
-);
+import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
+import {throttle} from 'lodash';
 
 // Component that renders the menu to switch between 'today' and 'this week' alert intervals.
 const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
@@ -197,13 +191,44 @@ const Alerts = ({route, navigation}) => {
     setActiveAlertOption(option);
   };
 
+  // Functions to handle the scrolling interaction that hides the menu
+
+  const {showHeader, hideHeader} = useContext(HeaderVisibilityContext);
+  const scrollOffset = useRef(0);
+  const scrollViewRef = useRef(null);
+
+  const handleScroll = throttle(event => {
+    const currentOffset = event.nativeEvent.contentOffset.y;
+    const diff = currentOffset - scrollOffset.current;
+
+    if (diff > 20 && currentOffset > 20) {
+      hideHeader('TopMenu');
+      hideHeader('SubMenu');
+    } else if (diff < -40) {
+      showHeader('TopMenu');
+      showHeader('SubMenu');
+    }
+
+    scrollOffset.current = currentOffset;
+  }, 350);
+
+  const onScroll = event => {
+    event.persist();
+    handleScroll(event);
+  };
+
   return (
     <SafeAreaView style={styles.mainContainer} ref={ref}>
       <BackgroundGradient />
       <TopMenu isAlertsMenu={true} />
       <SubMenu isAlertsMenu={true} />
       <Text style={styles.title}>Alerts</Text>
-      <View style={styles.background}>
+      <ScrollView
+        style={styles.background}
+        nestedScrollEnabled={true}
+        ref={scrollViewRef}
+        onScroll={onScroll}
+        scrollEventThrottle={16}>
         <AlertMenu
           options={options}
           setActiveOption={handleOptionChange}
@@ -213,32 +238,53 @@ const Alerts = ({route, navigation}) => {
         {isLoading ? (
           // Display the loader if the data requests didn't finish
           <SkeletonLoader quantity={5} type="alerts" />
-        ) : (
-          <FlatList
-            ref={ref}
-            data={alerts}
-            renderItem={({item}) => (
-              <AlertDetails
-                key={item.alert_id}
-                message={item.alert_message}
-                timeframe={item.alert_name}
-                price={item.price}
-                styles={styles}
-                created_at={item.created_at}
-              />
-            )}
-            keyExtractor={item => item.alert_id.toString()}
-            ListEmptyComponent={
-              <NoContentDisclaimer
-                title={'Whoops, no matches.'}
-                description={
-                  "We couldn't find any search results.\nGive it another go."
-                }
-              />
+        ) : !isLoading && alerts.length === 0 ? (
+          <NoContentDisclaimer
+            title={'Whoops, no matches.'}
+            description={
+              "We couldn't find any search results.\nGive it another go."
             }
           />
+        ) : (
+          <View>
+            {alerts.map(item => {
+              return (
+                <AlertDetails
+                  key={item.alert_id}
+                  message={item.alert_message}
+                  timeframe={item.alert_name}
+                  price={item.price}
+                  styles={styles}
+                  created_at={item.created_at}
+                />
+              );
+            })}
+          </View>
+          // <FlatList
+          //   ref={ref}
+          //   data={alerts}
+          //   renderItem={({item}) => (
+          //     <AlertDetails
+          //       key={item.alert_id}
+          //       message={item.alert_message}
+          //       timeframe={item.alert_name}
+          //       price={item.price}
+          //       styles={styles}
+          //       created_at={item.created_at}
+          //     />
+          //   )}
+          //   keyExtractor={item => item.alert_id.toString()}
+          //   ListEmptyComponent={
+          //     <NoContentDisclaimer
+          //       title={'Whoops, no matches.'}
+          //       description={
+          //         "We couldn't find any search results.\nGive it another go."
+          //       }
+          //     />
+          //   }
+          // />
         )}
-      </View>
+      </ScrollView>
       {hasSubscription ? (
         <></>
       ) : (

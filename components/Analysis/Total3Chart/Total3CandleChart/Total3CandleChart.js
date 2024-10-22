@@ -20,7 +20,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/core';
 import {useScreenOrientation} from '../../../../hooks/useScreenOrientation';
 import {RevenueCatContext} from '../../../../context/RevenueCatContext';
-import {getTestService} from '../../../../services/aiAlphaApi';
+import {getServiceV2, getTestService} from '../../../../services/aiAlphaApi';
 import BackButton from '../../BackButton/BackButton';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import UpgradeOverlay from '../../../UpgradeOverlay/UpgradeOverlay';
@@ -62,7 +62,7 @@ const Total3CandleChart = ({candlesToShow = 25}) => {
   };
   async function fetchChartData() {
     try {
-      const response = await getTestService(`/chart/total3?days=${100}`);
+      const response = await getServiceV2(`/chart/total3?days=${100}`);
       if (response.data) {
         const mappedData = response?.data?.map(datum => {
           const hour_to_seconds = new Date(datum.date);
@@ -298,7 +298,7 @@ const Total3CandleChart = ({candlesToShow = 25}) => {
               />
             )}
             <VictoryChart
-              width={isLandscape && isHorizontal ? 700 : 375}
+              width={isLandscape && isHorizontal ? 700 : 380}
               domain={{x: zoomDomain.x, y: domainY()}}
               events={[
                 {
@@ -311,7 +311,7 @@ const Total3CandleChart = ({candlesToShow = 25}) => {
                   },
                 },
               ]}
-              padding={{top: 10, bottom: 40, left: 40, right: 70}}
+              padding={{top: 10, bottom: 40, left: 20, right: 70}}
               domainPadding={{x: 5, y: 3}}
               scale={{x: 'time', y: 'linear'}}
               height={300}
@@ -435,7 +435,7 @@ const Total3CandleChart = ({candlesToShow = 25}) => {
                     },
                   },
                 ]}
-                candleRatio={1}
+                candleRatio={1.8}
                 candleColors={{positive: '#09C283', negative: '#E93334'}}
                 style={{
                   data: {
