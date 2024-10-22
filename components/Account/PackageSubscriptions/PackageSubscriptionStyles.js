@@ -19,7 +19,7 @@ const usePackageSubscriptionStyles = () => {
       flex: 1,
     },
     scrollViewContent: {
-      paddingBottom: 10, // Add some bottom padding to avoid content being hidden behind the fixed footer
+      paddingBottom: 0,
     },
     innerContainer: {
       flex: 1,
@@ -56,7 +56,7 @@ const usePackageSubscriptionStyles = () => {
     description: {
       marginVertical: theme.boxesVerticalMargin,
       marginTop: 4,
-      marginHorizontal: 35,
+      marginHorizontal: 23.5,
     },
     secondaryText: {
       color: theme.textColor,
@@ -99,8 +99,11 @@ const usePackageSubscriptionStyles = () => {
     },
     packagesContainer: {
       width: '104%',
-      marginVertical: 16,
-      padding: 10,
+      marginBottom: 16,
+      paddingTop: 2,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingBottom: 10,
     },
     itemContainer: {
       flex: 1,
@@ -380,7 +383,7 @@ const usePackageSubscriptionStyles = () => {
       fontSize: 18,
       marginLeft: 25,
       marginRight: 25,
-      marginBottom: 50,
+      marginBottom: 35,
     },
     textWithIconTitlePushedv2: {
       color: '#FF6C0D',
@@ -389,7 +392,16 @@ const usePackageSubscriptionStyles = () => {
       fontSize: 18,
       marginLeft: 25,
       marginRight: 25,
-      marginBottom: 30,
+      marginBottom: 15,
+    },
+    textWithIconTitlePushedv3: {
+      color: '#FF6C0D',
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
+      fontSize: 18,
+      marginLeft: 15,
+      marginRight: 15,
+      marginBottom: -10,
     },
 
     itemContainerCurrent: {

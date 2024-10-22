@@ -373,7 +373,7 @@ const PackageSubscriptions = () => {
       case 'Founder':
         return (
           <>
-            <Text style={styles.textWithIconTitle}>
+            <Text style={styles.textWithIconTitlePushedv3}>
               Community Building & Early Access
             </Text>
             <TextWithIcon text="Full access to all categories for precise, up-to-date info." />
