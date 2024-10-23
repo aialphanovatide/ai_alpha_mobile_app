@@ -1,9 +1,10 @@
-import React, {useContext} from 'react';
-import {View} from 'react-native';
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {Animated, View} from 'react-native';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import CoinMenu from './coinMenu/coinMenu';
 import {useNavigation} from '@react-navigation/native';
 import useSubMenuStyles from './SubMenuStyles';
+import {HeaderVisibilityContext} from '../../../../context/HeadersVisibilityContext';
 
 const SubMenu = ({isAlertsMenu}) => {
   const {activeCoin, activeSubCoin, updateActiveSubCoin} =
@@ -25,18 +26,46 @@ const SubMenu = ({isAlertsMenu}) => {
     }
   };
 
+  // Scroll and hide the top menu variables and functions
+  const {headersVisibility} = useContext(HeaderVisibilityContext);
+  const animatedValue = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(animatedValue, {
+        toValue: headersVisibility.SubMenu ? 0 : -100,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {});
+  }, [headersVisibility.SubMenu, animatedValue]);
+
   return (
-    <View style={styles.container}>
-      {activeCoin &&
-        activeCoin.category !== 'bitcoin' &&
-        activeCoin.coin_bots &&
-        activeCoin.coin_bots.length >= 1 && (
-          <CoinMenu
-            activeSubCoin={activeSubCoin}
-            handleCoinPress={handleCoinPress}
-            subCoins={activeCoin.coin_bots}
-          />
-        )}
+    <View
+      style={[
+        styles.background,
+        {width: '100%'},
+        !headersVisibility.TopMenu && {height: 1},
+      ]}>
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            transform: [{translateY: animatedValue}],
+            overflow: 'hidden',
+          },
+        ]}>
+        {activeCoin &&
+          activeCoin.category !== 'bitcoin' &&
+          activeCoin.coin_bots &&
+          activeCoin.coin_bots.length >= 1 && (
+            <CoinMenu
+              activeSubCoin={activeSubCoin}
+              handleCoinPress={handleCoinPress}
+              subCoins={activeCoin.coin_bots}
+            />
+          )}
+      </Animated.View>
     </View>
   );
 };

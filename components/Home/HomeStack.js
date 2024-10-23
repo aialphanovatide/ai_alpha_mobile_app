@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './Home';
 import Fundamentals from './Topmenu/subMenu/Fund_news_chart/Fundamentals/Fundamentals';
@@ -20,6 +20,9 @@ import Search from '../Search/Search';
 import HomeNotifications from './HomeNotifications/HomeNotifications';
 import ChartsSection from './Topmenu/subMenu/Fund_news_chart/Charts/NewCharts/ChartsSection';
 import StoryArticle from './TopStories/StoryArticle';
+import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
+import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
+import {useHeaderHeight} from '@react-navigation/elements';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -229,12 +232,18 @@ const TopmenuScreen = () => {
 const HomeStackScreen = () => {
   const {updateActiveCoin} = useContext(TopMenuContext);
   const {isLandscape, isHorizontal} = useScreenOrientation();
+  const {theme} = useContext(AppThemeContext);
+
   return (
     <HomeStack.Navigator
       initialRouteName="InitialHome"
       gestureEnabled="false"
       screenOptions={{
         animationDuration: 250,
+        headerShadowVisible: false,
+        headerStyle: {
+          backgroundColor: 'transparent',
+        },
         header: () =>
           isLandscape && isHorizontal ? null : <TopMenu isAlertsMenu={false} />,
       }}>

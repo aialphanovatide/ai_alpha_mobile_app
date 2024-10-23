@@ -19,6 +19,7 @@ import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
+import {NarrativeTradingContext} from '../../../context/NarrativeTradingContext';
 
 const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -119,65 +120,61 @@ const TimeMenu = ({
   );
 };
 const NarrativeTrading = () => {
-  const {isDarkMode} = useContext(AppThemeContext);
-  const options = ['today', 'this week'];
-  const [cryptoOptions, setCryptoOptions] = useState([]);
-  const [activeOption, setActiveOption] = useState('today');
-  const [activeCryptoOption, setActiveCryptoOption] = useState(null);
+  const {narrativeTradingData} = useContext(NarrativeTradingContext);
+  const options = ['today', 'last week'];
+  const [cryptoOptions, setCryptoOptions] = useState(filterData);
+  const [activeOption, setActiveOption] = useState(options[0]);
+  const [activeCryptoOption, setActiveCryptoOption] = useState(filterData[0]);
   const [narrativeTradingItems, setNarrativeTradingItems] = useState([]);
-  const [loadedNarrativeTradingItems, setLoadedNarrativeTradingItems] =
-    useState([]);
   const styles = useNarrativeTradingStyles();
   const navigation = useNavigation();
   const {subscribed} = useContext(RevenueCatContext);
 
   // Hook to load the data from the previous narrative tradings that the user has seen
+  // useEffect(() => {
+  //   const interval = activeOption === 'today' ? 1 : 7;
+  //   const fetchData = async interval => {
+  //     try {
+  //       const keys = await AsyncStorage.getAllKeys();
+  //       const narrativeTradingKeys = keys.filter(key =>
+  //         key.startsWith('narrative_trading_'),
+  //       );
+  //       const narrativeItems = await AsyncStorage.multiGet(
+  //         narrativeTradingKeys,
+  //       );
+  //       const parsedItems = narrativeItems.map(item => JSON.parse(item[1]));
+
+  //       const currentDate = new Date();
+
+  //       const filteredItems = parsedItems.filter(item => {
+  //         const clickedAt = new Date(item.clickedAt);
+  //         const timeDifference = Math.abs(currentDate - clickedAt);
+  //         const daysDifference = timeDifference / (1000 * 3600 * 24);
+
+  //         return daysDifference <= interval;
+  //       });
+
+  //       console.log(
+  //         `Loaded narrative trading items within ${interval} days: `,
+  //         filteredItems,
+  //       );
+
+  //       setLoadedNarrativeTradingItems(filteredItems);
+  //     } catch (e) {
+  //       console.error('Failed to load the data from storage', e);
+  //     }
+  //   };
+  //   if (loadedNarrativeTradingItems.length === 0) {
+  //     fetchData(interval);
+  //   }
+  // }, [activeOption]);
+
   useEffect(() => {
-    const interval = activeOption === 'today' ? 1 : 7;
-    const fetchData = async interval => {
-      try {
-        const keys = await AsyncStorage.getAllKeys();
-        const narrativeTradingKeys = keys.filter(key =>
-          key.startsWith('narrative_trading_'),
-        );
-        const narrativeItems = await AsyncStorage.multiGet(
-          narrativeTradingKeys,
-        );
-        const parsedItems = narrativeItems.map(item => JSON.parse(item[1]));
-
-        const currentDate = new Date();
-
-        const filteredItems = parsedItems.filter(item => {
-          const clickedAt = new Date(item.clickedAt);
-          const timeDifference = Math.abs(currentDate - clickedAt);
-          const daysDifference = timeDifference / (1000 * 3600 * 24);
-
-          return daysDifference <= interval;
-        });
-
-        console.log(
-          `Loaded narrative trading items within ${interval} days: `,
-          filteredItems,
-        );
-
-        setLoadedNarrativeTradingItems(filteredItems);
-      } catch (e) {
-        console.error('Failed to load the data from storage', e);
-      }
-    };
-    if (loadedNarrativeTradingItems.length === 0) {
-      fetchData(interval);
-    }
-  }, [activeOption]);
-
-  useEffect(() => {
-    setCryptoOptions(filterData);
-    setActiveCryptoOption(filterData[0]);
-    if (loadedNarrativeTradingItems.length > 0) {
+    if (narrativeTradingData.length > 0) {
       handleCryptoTouch(filterData[0]);
       handleTimeIntervalChange(options[0]);
     }
-  }, [loadedNarrativeTradingItems]);
+  }, [narrativeTradingData]);
 
   const filterItemsByCategory = (category, items) => {
     const filtered_items = [];
@@ -206,7 +203,7 @@ const NarrativeTrading = () => {
   const filterItemsByTime = (interval, items) => {
     const currentDate = new Date();
     const filteredArray = items.filter(item => {
-      const createdAtDate = new Date(item.clickedAt);
+      const createdAtDate = new Date(item.created_at);
       if (interval === 'today') {
         return createdAtDate.toDateString() === currentDate.toDateString();
       }
@@ -225,13 +222,13 @@ const NarrativeTrading = () => {
     setActiveCryptoOption(option);
     const filtered_by_time = filterItemsByTime(
       activeOption,
-      loadedNarrativeTradingItems,
+      narrativeTradingData,
     );
     const filtered_narrative_tradings = filterItemsByCategory(
       option,
       filtered_by_time,
     );
-    setNarrativeTradingItems(filtered_narrative_tradings.reverse());
+    setNarrativeTradingItems(filtered_narrative_tradings);
   };
 
   const handleNarrativeTradingNavigation = item => {
@@ -251,10 +248,10 @@ const NarrativeTrading = () => {
     setActiveCryptoOption(filterData[0]);
     const filtered_by_crypto = filterItemsByCategory(
       filterData[0],
-      loadedNarrativeTradingItems,
+      narrativeTradingData,
     );
     const filtered_items = filterItemsByTime(interval, filtered_by_crypto);
-    setNarrativeTradingItems(filtered_items.reverse());
+    setNarrativeTradingItems(filtered_items);
   };
 
   const handleNavigationToAnalysis = () => {

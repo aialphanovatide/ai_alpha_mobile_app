@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {getService} from '../services/aiAlphaApi';
+import {getService, getServiceV2} from '../services/aiAlphaApi';
 import {CategoriesContext} from './categoriesContext';
 
 const NarrativeTradingContext = createContext();
@@ -51,7 +51,7 @@ const NarrativeTradingContextProvider = ({children}) => {
     const getNarrativeTradings = async () => {
       setLoading(true);
       try {
-        const data = await getService(`/get_narrative_trading`);
+        const data = await getService(`/get_narrative_trading?limit=99`);
         if (data.success) {
           const parsed_data = data.data.map(item => {
             return {
@@ -70,6 +70,9 @@ const NarrativeTradingContextProvider = ({children}) => {
               image: extractFirstTitleAndImage(item.narrative_trading).imageSrc,
             };
           });
+          console.log(
+            `Successfully loaded ${parsed_data.length} narrative trading items`,
+          );
           setNarrativeTradingData(parsed_data);
         } else {
           setNarrativeTradingData([]);
@@ -80,7 +83,38 @@ const NarrativeTradingContextProvider = ({children}) => {
         setLoading(false);
       }
     };
-    getNarrativeTradings();
+    const getNTfromNewServer = async () => {
+      setLoading(true);
+      try {
+        const data = await getServiceV2(`/narrative-tradings?limit=99`);
+        if (data.success) {
+          const parsed_data = data.data.map(item => {
+            return {
+              content: item.narrative_trading,
+              id: item.narrative_trading_id,
+              coin_bot_id: item.coin_bot_id,
+              coin_bot_name: item.coin_name.toLowerCase(),
+              created_at: item.created_at,
+              category:
+                item.category_name !== '' ? item.category_name : 'Bitcoin',
+              title: extractFirstTitleAndImage(item.narrative_trading).title,
+              image: extractFirstTitleAndImage(item.narrative_trading).imageSrc,
+            };
+          });
+          console.log(
+            `Successfully loaded ${parsed_data.length} narrative trading items`,
+          );
+          setNarrativeTradingData(parsed_data);
+        } else {
+          setNarrativeTradingData([]);
+        }
+      } catch (error) {
+        console.log('Error trying to get narrative tradings data: ', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getNTfromNewServer();
   }, [categories]);
 
   return (

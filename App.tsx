@@ -43,6 +43,7 @@ import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomSplashScreen from './components/SplashScreen/SplashScreen';
 import SubscriptionPopUp from './components/SubscriptionPopUps/SubscriptionPopUp';
+import {HeaderVisibilityProvider} from './context/HeadersVisibilityContext';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 const {width, height} = Dimensions.get('window');
@@ -63,7 +64,8 @@ const App = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [serverWentDown, setServerWentDown] = useState(0);
   const [userSignedUp, setUserSignedUp] = useState(false);
-  const [initialAnimationFinished, setInitialAnimationFinished] = useState(false);
+  const [initialAnimationFinished, setInitialAnimationFinished] =
+    useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -291,71 +293,73 @@ const App = () => {
             <UserProvider>
               <UserIdProvider>
                 <RawUserIdProvider>
-                  <AppThemeProvider>
-                    <SafeAreaView
-                      style={{
-                        flex: 0,
-                        backgroundColor:
-                          upperBackgroundColor === '#FC5404'
-                            ? '#FFB76E'
-                            : upperBackgroundColor,
-                      }}></SafeAreaView>
-                    <SafeAreaView
-                      style={[
-                        styles.container,
-                        {
-                          flex: 1,
+                  <HeaderVisibilityProvider>
+                    <AppThemeProvider>
+                      <SafeAreaView
+                        style={{
+                          flex: 0,
                           backgroundColor:
-                            backgroundColor === '#FFB76E'
-                              ? '#FC5404'
-                              : backgroundColor,
-                        },
-                      ]}>
-                      <StatusBar
-                        barStyle={
-                          isDarkMode
-                            ? 'light-content'
-                            : 'dark-content' /*This changes the font color for SafeAreaView*/
-                        }
-                      />
-                      <SingletonHooksContainer />
-                      <Top10MoversContextProvider>
-                        <NarrativeTradingContextProvider>
-                          <AnalysisContextProvider>
-                            <GestureHandlerRootView style={{flex: 1}}>
-                              <AboutModalProvider>
-                                {!initialAnimationFinished ? (
-                                  <CustomSplashScreen />
-                                ) : (
-                                  <Navigation />
-                                )}
-                                <ConnectivityModal
-                                  serverError={serverError}
-                                  setModalVisible={setModalVisible}
-                                  modalVisible={modalVisible}
-                                  setServerError={setServerError}
-                                  checkConnectivityAndCloseModal={
-                                    checkConnectivityAndCloseModal
-                                  }
-                                  type="connection"
-                                />
-                                <ConnectivityModal
-                                  serverError={serverError}
-                                  setModalVisible={setModalVisible}
-                                  modalVisible={modalVisible}
-                                  setServerError={setServerError}
-                                  checkConnectivityAndCloseModal={
-                                    checkConnectivityAndCloseModal
-                                  }
-                                  type="serverDown"
-                                />
-                              </AboutModalProvider>
-                            </GestureHandlerRootView>
-                          </AnalysisContextProvider>
-                        </NarrativeTradingContextProvider>
-                      </Top10MoversContextProvider>
-                    </SafeAreaView>
-                  </AppThemeProvider>
+                            upperBackgroundColor === '#FC5404'
+                              ? '#FFB76E'
+                              : upperBackgroundColor,
+                        }}></SafeAreaView>
+                      <SafeAreaView
+                        style={[
+                          styles.container,
+                          {
+                            flex: 1,
+                            backgroundColor:
+                              backgroundColor === '#FFB76E'
+                                ? '#FC5404'
+                                : backgroundColor,
+                          },
+                        ]}>
+                        <StatusBar
+                          barStyle={
+                            isDarkMode
+                              ? 'light-content'
+                              : 'dark-content' /*This changes the font color for SafeAreaView*/
+                          }
+                        />
+                        <SingletonHooksContainer />
+                        <Top10MoversContextProvider>
+                          <NarrativeTradingContextProvider>
+                            <AnalysisContextProvider>
+                              <GestureHandlerRootView style={{flex: 1}}>
+                                <AboutModalProvider>
+                                  {!initialAnimationFinished ? (
+                                    <CustomSplashScreen />
+                                  ) : (
+                                    <Navigation />
+                                  )}
+                                  <ConnectivityModal
+                                    serverError={serverError}
+                                    setModalVisible={setModalVisible}
+                                    modalVisible={modalVisible}
+                                    setServerError={setServerError}
+                                    checkConnectivityAndCloseModal={
+                                      checkConnectivityAndCloseModal
+                                    }
+                                    type="connection"
+                                  />
+                                  <ConnectivityModal
+                                    serverError={serverError}
+                                    setModalVisible={setModalVisible}
+                                    modalVisible={modalVisible}
+                                    setServerError={setServerError}
+                                    checkConnectivityAndCloseModal={
+                                      checkConnectivityAndCloseModal
+                                    }
+                                    type="serverDown"
+                                  />
+                                </AboutModalProvider>
+                              </GestureHandlerRootView>
+                            </AnalysisContextProvider>
+                          </NarrativeTradingContextProvider>
+                        </Top10MoversContextProvider>
+                      </SafeAreaView>
+                    </AppThemeProvider>
+                  </HeaderVisibilityProvider>
                 </RawUserIdProvider>
               </UserIdProvider>
             </UserProvider>

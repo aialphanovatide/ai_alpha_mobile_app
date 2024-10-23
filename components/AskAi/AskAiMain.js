@@ -199,6 +199,7 @@ const Input = ({
             onChangeText={text => textHandler(text)}
             value={textValue}
             underlineColorAndroid={'transparent'}
+            autoCapitalize={'words'}
           />
           <Text
             style={[

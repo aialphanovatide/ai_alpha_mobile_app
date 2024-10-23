@@ -52,8 +52,7 @@ const AnalysisScreen = () => {
             'The strength of ETH against BTC helps us understand how strong Ethereum and its ecosystem projects are while also telling us how strong the entire altcoin market is too.',
         }}
       />
-      {/* <AnalysisStack.Screen name="EthBtc" component={EthBtcChart} /> */}
-      <AnalysisStack.Screen name="Total3" component={Total3Chart} />
+      <AnalysisStack.Screen name="Total3" component={Total3CandleChart} />
       <AnalysisStack.Screen
         name="DXYChart"
         component={ChartSection}

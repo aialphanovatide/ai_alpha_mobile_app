@@ -1,10 +1,11 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import {
   Text,
   FlatList,
   SafeAreaView,
   View,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
@@ -15,6 +16,9 @@ import {AboutIcon} from '../Fundamentals/AboutIcon';
 import {home_static_data} from '../../../../homeStaticData';
 import AboutModal from '../Fundamentals/AboutModal';
 import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
+import NoContentDisclaimer from '../../../../../NoContentDisclaimer/NoContentDisclaimer';
+import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
+import {throttle} from 'lodash';
 
 const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
@@ -106,6 +110,7 @@ const NewsComponent = ({route}) => {
       activeCoin !== undefined
     ) {
       setBotname(activeSubCoin || activeCoin.coin_bots[0].bot_name);
+      setActiveFilter(options[0]);
     }
   }, [activeCoin, activeSubCoin]);
 
@@ -146,59 +151,97 @@ const NewsComponent = ({route}) => {
     fetchNews();
   }, [botname, activeFilter]);
 
+  // Functions to handle the scrolling interaction that hides the menu
+
+  const {showHeader, hideHeader} = useContext(HeaderVisibilityContext);
+  const scrollOffset = useRef(0);
+  const scrollViewRef = useRef(null);
+
+  const handleScroll = throttle(event => {
+    const currentOffset = event.nativeEvent.contentOffset.y;
+    const diff = currentOffset - scrollOffset.current;
+
+    if (diff > 10 && currentOffset > 50) {
+      hideHeader('TopMenu');
+      hideHeader('SubMenu');
+    } else if (diff < -40) {
+      showHeader('TopMenu');
+      showHeader('SubMenu');
+    }
+
+    scrollOffset.current = currentOffset;
+  }, 350);
+
+  const onScroll = event => {
+    event.persist();
+    handleScroll(event);
+  };
+
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
-      {aboutVisible && (
-        <AboutModal
-          description={aboutDescription}
-          onClose={handleAboutPress}
-          visible={aboutVisible}
-        />
-      )}
-      <View style={styles.titleRow}>
-        <Text style={styles.title}>News</Text>
-        <AboutIcon
-          handleAboutPress={handleAboutPress}
-          description={home_static_data.news.sectionDescription}
-        />
-      </View>
-      <View style={styles.filterContainer}>
-        {options.map(option => (
-          <TouchableOpacity
-            key={option}
-            onPress={() => handleFilterPress(option)}
-            style={[
-              styles.filterButton,
-              activeFilter === option ? styles.activeOption : null,
-            ]}>
-            <Text
+      <ScrollView
+        style={{flex: 1}}
+        nestedScrollEnabled={true}
+        ref={scrollViewRef}
+        onScroll={onScroll}
+        scrollEventThrottle={16}>
+        {aboutVisible && (
+          <AboutModal
+            description={aboutDescription}
+            onClose={handleAboutPress}
+            visible={aboutVisible}
+          />
+        )}
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>News</Text>
+          <AboutIcon
+            handleAboutPress={handleAboutPress}
+            description={home_static_data.news.sectionDescription}
+          />
+        </View>
+        <View style={styles.filterContainer}>
+          {options.map(option => (
+            <TouchableOpacity
+              key={option}
+              onPress={() => handleFilterPress(option)}
               style={[
-                styles.filterText,
-                activeFilter === option ? styles.activeButtonText : null,
+                styles.filterButton,
+                activeFilter === option ? styles.activeOption : null,
               ]}>
-              {option}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      {loading ? (
-        <SkeletonLoader type="news" quantity={3} />
-      ) : (
-        <FlatList
-          data={news}
-          ListEmptyComponent={
-            <View style={styles.emptyMessageContainer}>
-              <Text style={styles.emptyMessage}>
-                There aren't news to show.
+              <Text
+                style={[
+                  styles.filterText,
+                  activeFilter === option ? styles.activeButtonText : null,
+                ]}>
+                {option}
               </Text>
-            </View>
-          }
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <NewsItem item={item} onPress={onPress} filterText={filterText} />
-          )}
-        />
-      )}
+            </TouchableOpacity>
+          ))}
+        </View>
+        {loading ? (
+          <SkeletonLoader type="news" quantity={3} />
+        ) : !loading && news.length === 0 ? (
+          <NoContentDisclaimer
+            title={'Whoops, no matches.'}
+            description={
+              "We couldn't find any search results.\nGive it another go."
+            }
+          />
+        ) : (
+          <View>
+            {news.map(item => {
+              return (
+                <NewsItem
+                  key={item.id}
+                  item={item}
+                  onPress={onPress}
+                  filterText={filterText}
+                />
+              );
+            })}
+          </View>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };
