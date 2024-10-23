@@ -1,0 +1,13 @@
+app_identifier("com.aialphamobileapp") # The bundle identifier of your app
+apple_id("aialphadevs@novatidelabs.com") # Your Apple Developer Portal username
+
+team_id "2P64YWP8TT"    # Developer Portal Team ID (NEXAVISTA STRATEGIES LTD)
+itc_team_id "2P64YWP8TT"  # App Store Connect Team ID (if needed, usually same as team_id)
+
+# Optional: Xcode developer info if needed for signing
+apple_dev_portal_id "4P623VCUY5"
+
+
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
