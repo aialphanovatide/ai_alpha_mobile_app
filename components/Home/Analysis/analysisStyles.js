@@ -218,7 +218,8 @@ const useHomeAnalysisStyles = () => {
       textAlign: 'left',
     },
     zoomImageBackground: {
-      backgroundColor: 'transparent',
+      position: 'relative',
+      backgroundColor: 'rgba(0,0,0,0.8)',
       width: '100%',
       height: '100%',
       alignItems: 'center',
@@ -250,13 +251,16 @@ const useHomeAnalysisStyles = () => {
       zIndex: 1000,
     },
     zoomedImage: {
-      width: 380,
-      height: '50%',
+      width: 400,
+      height: 400,
       alignSelf: 'center',
     },
     zoomImageDismissOverlay: {
-      width: '100%',
-      height: Platform.OS === 'ios' ? '30%' : '25%',
+      flex: 1,
+      backgroundColor: 'transparent',
+    },
+    zoomImageBg: {
+      ...StyleSheet.absoluteFillObject,
       backgroundColor: '#00000050',
       opacity: 0.8,
     },

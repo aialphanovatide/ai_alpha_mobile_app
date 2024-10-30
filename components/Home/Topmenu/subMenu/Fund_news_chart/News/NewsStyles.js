@@ -159,12 +159,17 @@ const useNewsStyles = () => {
       flexDirection: 'row',
     },
     zoomImageBackground: {
-      backgroundColor: 'transparent',
+      position: 'relative',
+      backgroundColor: 'rgba(0,0,0,0.8)',
       width: '100%',
       height: '100%',
       alignItems: 'center',
-      justifyContent: 'center',
       alignSelf: 'center',
+    },
+    zoomImageBg: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: '#00000050',
+      opacity: 0.8,
     },
     zoomIndicator: {
       position: 'absolute',
@@ -181,9 +186,8 @@ const useNewsStyles = () => {
       alignSelf: 'center',
     },
     zoomImageDismissOverlay: {
-      width: '100%',
-      height: '25%',
-      backgroundColor: '#00000050',
+      flex: 1,
+      backgroundColor: 'transparent',
       opacity: 0.8,
     },
   });

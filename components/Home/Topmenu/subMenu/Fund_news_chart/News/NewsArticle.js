@@ -125,6 +125,7 @@ const NewsArticle = ({route, navigation}) => {
         transparent={true}
         style={styles.zoomImageBackground}
         onRequestClose={() => handleBackButtonImageClose()}>
+        <View style={[styles.zoomImageBg]} />
         <TouchableOpacity
           onPress={() => handleBackButtonImageClose()}
           style={styles.zoomImageDismissOverlay}

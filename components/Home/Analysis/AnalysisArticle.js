@@ -34,6 +34,16 @@ const CustomImageRenderer = props => {
     uri: uri,
   };
 
+  const [imageDimensions, setImageDimensions] = useState({
+    width: 380,
+    height: 380,
+  });
+
+  const onImageLayout = event => {
+    const {width, height} = event.nativeEvent.layout;
+    setImageDimensions({width, height});
+  };
+
   const handleBackButtonImageClose = () => {
     setImageZoomVisible(false);
   };
@@ -42,33 +52,24 @@ const CustomImageRenderer = props => {
   return (
     <View style={{alignItems: 'center'}}>
       <Renderer {...rendererProps} onPress={() => setImageZoomVisible(true)} />
-      {/* <Modal
-        visible={isImageZoomVisible}
-        transparent={true}
-        style={styles.zoomImageBackground}
-        onRequestClose={() => handleBackButtonImageClose()}>
-        <ImageViewer
-          imageUrls={images}
-          enableSwipeDown={true}
-          enableImageZoom={true}
-          onSwipeDown={() => setImageZoomVisible(false)}
-          index={0}
-          renderIndicator={() => null}
-          backgroundColor={'rgba(0,0,0,0.45)'}
-        />
-      </Modal> */}
       <Modal
         visible={isImageZoomVisible}
         animationType="fade"
+        transparent={true}
         style={styles.zoomImageBackground}
         onRequestClose={() => handleBackButtonImageClose()}>
+        <View style={[styles.zoomImageBg]} />
         <TouchableOpacity
           onPress={() => handleBackButtonImageClose()}
-          style={[styles.zoomImageDismissOverlay, {height: '38%'}]}
+          style={[styles.zoomImageDismissOverlay]}
         />
         <ResumableZoom maxScale={1.5} minScale={1}>
           <FastImage
-            style={styles.zoomedImage}
+            onLayout={onImageLayout}
+            style={[
+              styles.zoomedImage,
+              {width: imageDimensions.width, height: imageDimensions.height},
+            ]}
             resizeMode={'contain'}
             source={{
               uri: thumbnailSource.uri,
@@ -79,7 +80,7 @@ const CustomImageRenderer = props => {
         </ResumableZoom>
         <TouchableOpacity
           onPress={() => handleBackButtonImageClose()}
-          style={[styles.zoomImageDismissOverlay, {height: '34%'}]}
+          style={[styles.zoomImageDismissOverlay]}
         />
       </Modal>
     </View>
@@ -253,6 +254,7 @@ const AnalysisArticle = ({route}) => {
         animationType="fade"
         style={styles.zoomImageBackground}
         onRequestClose={() => handleBackButtonImageClose()}>
+        <View style={[styles.zoomImageBg]} />
         <TouchableOpacity
           onPress={() => handleBackButtonImageClose()}
           style={styles.zoomImageDismissOverlay}
