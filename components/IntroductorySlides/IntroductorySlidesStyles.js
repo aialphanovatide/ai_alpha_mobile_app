@@ -274,6 +274,32 @@ const useIntroductorySlidesStyles = () => {
       marginTop: -32,
       marginBottom: 24,
     },
+    askAiButton: {
+      width: 65,
+      height: 65,
+      borderRadius: 32.5,
+      alignSelf: 'center',
+      justifyContent: 'center',
+    },
+    buttonWrapper: {
+      width: 78,
+      height: 78,
+      marginTop: 6.5,
+      borderRadius: 39,
+      backgroundColor: theme.navbarBgColor,
+      justifyContent: 'center',
+    },
+    focusedButton: {
+      borderWidth: 2,
+      borderColor: '#FF6C0D',
+    },
+    buttonImage: {
+      width: 38,
+      height: 38,
+      marginBottom: 4,
+      alignSelf: 'center',
+      tintColor: theme.askAiButtonColor,
+    },
   });
   return styles;
 };

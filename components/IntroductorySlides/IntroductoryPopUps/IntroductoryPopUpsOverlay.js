@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import useIntroductorySlidesStyles from '../IntroductorySlidesStyles';
 import {useNavigation} from '@react-navigation/core';
+import LinearGradient from 'react-native-linear-gradient';
+import {Image} from 'react-native';
 
 const IntroductoryPopUp = ({
   title,
@@ -97,6 +99,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           left: 5,
           width: '17.5%',
         },
+        askButton: null,
       },
       sectionName: 'Home',
     },
@@ -106,7 +109,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Set up custom alerts to stay notified about crucial market movements.',
       popUpStyles: {
         overlay: {
-          height: '86%',
+          height: '90%',
           justifyContent: 'flex-end',
         },
         modal: {
@@ -120,6 +123,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         navbar: {
           left: 80,
         },
+        askButton: null,
       },
       sectionName: 'Alerts',
     },
@@ -129,20 +133,23 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Need quick insights? Use the Ask AI to get real-time information from our curated database.',
       popUpStyles: {
         overlay: {
-          height: '86%',
+          height: '90%',
           justifyContent: 'flex-end',
+          paddingBottom: '12.5%',
         },
         modal: {
           marginBottom: 20,
         },
         triangle: {
           left: '50%',
+          bottom: '8%',
           transform: [{scaleY: -1}],
         },
         navbar: {
           left: 160,
           height: 140,
         },
+        askButton: true,
       },
       sectionName: 'AskAi',
     },
@@ -152,7 +159,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Access curated and unbiased analyses and charts by category.',
       popUpStyles: {
         overlay: {
-          height: '86%',
+          height: '90%',
           justifyContent: 'flex-end',
         },
         modal: {
@@ -166,6 +173,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         navbar: {
           left: 240,
         },
+        askButton: null,
       },
       sectionName: 'Analysis',
     },
@@ -175,7 +183,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Manage your account settings, subscription options, and custom-tailored notifications here.',
       popUpStyles: {
         overlay: {
-          height: '86%',
+          height: '90%',
           justifyContent: 'flex-end',
         },
         modal: {
@@ -189,6 +197,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         navbar: {
           left: 325,
         },
+        askButton: null,
       },
       sectionName: 'Account',
     },
@@ -258,36 +267,42 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
       presentationStyle="overFullScreen">
       {activeDotIndex === 0 ? (
         <>
-          <TouchableOpacity
-            style={[
-              styles.invisiblePressable,
-              {
-                height: Platform.OS === 'android' ? 80 : 120,
-                backgroundColor: 'rgba(10,10,10,0.6)',
-              },
-            ]}
-            onPress={() => handleNextPress(activeDotIndex)}
-          />
-          <TouchableOpacity
-            style={[
-              styles.invisiblePressable,
-              {height: Platform.OS === 'android' ? 100 : 120},
-            ]}
-            onPress={() => handleNextPress(activeDotIndex)}
-          />
+          <Animated.View style={[{opacity: opacity}]}>
+            <TouchableOpacity
+              style={[
+                styles.invisiblePressable,
+                {
+                  height: Platform.OS === 'android' ? 80 : 120,
+                  backgroundColor: 'rgba(10,10,10,0.6)',
+                },
+              ]}
+              onPress={() => handleNextPress(activeDotIndex)}
+            />
+          </Animated.View>
+          <Animated.View style={[{opacity: opacity}]}>
+            <TouchableOpacity
+              style={[
+                styles.invisiblePressable,
+                {height: Platform.OS === 'android' ? 100 : 120},
+              ]}
+              onPress={() => handleNextPress(activeDotIndex)}
+            />
+          </Animated.View>
         </>
       ) : (
         <></>
       )}
-      <View
+      <Animated.View
         style={[
           styles.popUpsOverlay,
           POP_UPS_DATA[activeDotIndex].popUpStyles.overlay,
+          {opacity: opacity},
         ]}>
         <TouchableOpacity
           style={[styles.popUpPressableOverlay]}
           onPress={() => handleNextPress(activeDotIndex)}
         />
+
         <Animated.Image
           style={[
             styles.triangle,
@@ -308,15 +323,43 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           handleSubscriptionButton={handleSubscriptionButton}
           opacity={opacity}
         />
-        {POP_UPS_DATA.map((item, index) => (
-          <TouchableOpacity
-            key={item.title}
-            style={[styles.bottomTransparentButton, item.popUpStyles.navbar]}
-            delayPressIn={2000}
-            onPress={() => handleNavbarPress(index, item.sectionName)}
-          />
-        ))}
-      </View>
+        {POP_UPS_DATA.map((item, index) => {
+          return (
+            <TouchableOpacity
+              key={item.title}
+              style={[styles.bottomTransparentButton, item.popUpStyles.navbar]}
+              delayPressIn={2000}
+              onPress={() => handleNavbarPress(index, item.sectionName)}
+            />
+          );
+        })}
+        <TouchableOpacity
+          style={[
+            styles.bottomTransparentButton,
+            POP_UPS_DATA[2].popUpStyles.navbar,
+            activeDotIndex !== 2 ? {zIndex: -1} : {},
+          ]}
+          delayPressIn={2000}
+          onPress={() => handleNavbarPress(2, POP_UPS_DATA[2].sectionName)}>
+          <View
+            style={[
+              styles.buttonWrapper,
+              activeDotIndex === 2 ? styles.focusedButton : {},
+              // isLandscape && isHorizontal && {display: 'none'},
+            ]}>
+            <LinearGradient
+              useAngle={false}
+              colors={['#F9B208', '#FC5404']}
+              style={styles.askAiButton}>
+              <Image
+                style={styles.buttonImage}
+                source={require('../../../assets/images/askAi/askai-icon.png')}
+                resizeMode="contain"
+              />
+            </LinearGradient>
+          </View>
+        </TouchableOpacity>
+      </Animated.View>
     </Modal>
   );
 };

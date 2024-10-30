@@ -48,7 +48,7 @@ const SocialMedia = () => {
         light: require('../../../assets/images/account/socialMedia/discord.png'),
         dark: require('../../../assets/images/account/socialMedia/discord-dark.png'),
       },
-      url: 'https://discord.gg/nJbmuB3F',
+      url: 'https://discord.gg/2nX2HcHS',
       customSize: {width: 50, height: 32},
     },
     {

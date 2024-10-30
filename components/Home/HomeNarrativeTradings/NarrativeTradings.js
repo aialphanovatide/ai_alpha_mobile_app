@@ -137,8 +137,9 @@ const NarrativeTradings = ({handleAboutPress}) => {
           additionalStyles={aboutIconStyles}
         />
         <NoContentDisclaimer
-          title={'Oops, something went wrong.'}
-          description={''}
+          title={'Whoops, something went wrong.'}
+          description={'Please try again in a little while.'}
+          type="error"
           additionalStyles={{disclaimer: {marginVertical: '5%'}}}
         />
       </View>

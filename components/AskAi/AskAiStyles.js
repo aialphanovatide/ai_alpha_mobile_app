@@ -217,7 +217,6 @@ const useAskAiStyles = () => {
     },
     historySection: {
       width: '100%',
-      marginVertical: 16,
     },
     cleanButton: {
       flexDirection: 'row',

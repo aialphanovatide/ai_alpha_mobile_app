@@ -59,7 +59,8 @@ const HomeScreen = () => {
     const checkShowIntroductoryPopUp = async () => {
       const popUpsData = await AsyncStorage.getItem('hasIntroduced');
       let shouldShowPopUp = popUpsData === 'false' ? true : false;
-      setActivePopUps(shouldShowPopUp);
+      // setActivePopUps(shouldShowPopUp);
+      setActivePopUps(true);
       await AsyncStorage.setItem('hasIntroduced', 'true');
     };
     checkShowIntroductoryPopUp();

@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Animated,
+  Linking,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
@@ -77,6 +78,8 @@ const Slide = ({
   handleSkip,
   activeSlide,
   video,
+  hasRedirect,
+  handleDiscordNavigation
 }) => {
   const styles = useIntroductorySlidesStyles();
   const buttonOpacity = useRef(new Animated.Value(0)).current;
@@ -89,7 +92,7 @@ const Slide = ({
           duration: 1000,
           useNativeDriver: true,
         }).start();
-      }, 2000);
+      }, 1250);
     }
   }, [activeSlide]);
 
@@ -106,7 +109,10 @@ const Slide = ({
           ]}>
           <Video
             source={{uri: video.source}}
-            style={[styles.mainImage, {width: '100%', height: '100%', marginHorizontal: 0}]}
+            style={[
+              styles.mainImage,
+              {width: '100%', height: '100%', marginHorizontal: 0},
+            ]}
             muted={true}
             repeat={true}
             shutterColor="transparent"
@@ -119,12 +125,23 @@ const Slide = ({
           />
         </View>
       ) : images.length === 1 ? (
-        <FastImage
-          style={[styles.mainImage, images[0].style]}
-          source={images[0].source}
-          resizeMode={FastImage.resizeMode.contain}
-          loop={true}
-        />
+        hasRedirect ? (
+          <TouchableOpacity onPress={handleDiscordNavigation}>
+            <FastImage
+              style={[styles.mainImage, images[0].style]}
+              source={images[0].source}
+              resizeMode={FastImage.resizeMode.contain}
+              loop={true}
+            />
+          </TouchableOpacity>
+        ) : (
+          <FastImage
+            style={[styles.mainImage, images[0].style]}
+            source={images[0].source}
+            resizeMode={FastImage.resizeMode.contain}
+            loop={true}
+          />
+        )
       ) : (
         <View style={styles.imagesContainer}>
           <FastImage
@@ -216,7 +233,7 @@ const IntroductorySlides = ({route}) => {
         },
       ],
       video: {
-        source: require('../../assets/images/introductorySection/Slide1b.mp4'),
+        source: require('../../assets/images/introductorySection/Slide1HighBR.mp4'),
         style: {width: 380, height: 330},
       },
       content: [
@@ -232,6 +249,7 @@ const IntroductorySlides = ({route}) => {
         },
       ],
       hasButton: false,
+      hasRedirect: false,
     },
     {
       id: 2,
@@ -248,16 +266,17 @@ const IntroductorySlides = ({route}) => {
             position: 'absolute',
             top: 0,
             left: 0,
-            width: 420,
+            width: 400,
             height: 330,
           },
         },
       ],
-      video: null,
-      // {
-      //   source: require('../../assets/images/introductorySection/Slide2-v2.mp4'),
-      //   style: {width: 350, height: 330},
-      // },
+      video:
+        // null,
+        {
+          source: require('../../assets/images/introductorySection/Slide2HighBR.mp4'),
+          style: {width: 350, height: 330},
+        },
       content: [
         {
           information:
@@ -271,6 +290,7 @@ const IntroductorySlides = ({route}) => {
         },
       ],
       hasButton: false,
+      hasRedirect: false,
     },
     {
       id: 3,
@@ -285,6 +305,7 @@ const IntroductorySlides = ({route}) => {
       video: null,
       content: [],
       hasButton: true,
+      hasRedirect: true,
     },
   ];
   const {theme} = useContext(AppThemeContext);
@@ -297,6 +318,13 @@ const IntroductorySlides = ({route}) => {
 
   const handleSkip = () => {
     navigation.navigate(chosenScreen, {shouldShowPopUps: true});
+  };
+
+  const handleDiscordNavigation = () => {
+    const discordInviteUri = 'https://discord.gg/2nX2HcHS';
+    Linking.openURL(discordInviteUri).catch(error =>
+      console.error(`Error redirecting to discord: ${error}`),
+    );
   };
 
   return (
@@ -316,6 +344,8 @@ const IntroductorySlides = ({route}) => {
               handleSkip={handleSkip}
               activeSlide={activeSlide}
               video={item.video}
+              hasRedirect={item.hasRedirect}
+              handleDiscordNavigation={handleDiscordNavigation}
             />
           ))}
         </IntroductoryCarousel>

@@ -69,9 +69,9 @@ const LoginForm = ({route}) => {
       const userEmail = await AsyncStorage.getItem('userEmail');
       const rawUserId = await AsyncStorage.getItem('rawUserId');
 
+      // navigation.navigate('IntroductoryScreen');
       if (shouldGoToIntroduction === null) {
-        navigation.navigate('IntroductoryScreen');
-        await AsyncStorage.setItem('hasIntroduced', 'false');
+        // await AsyncStorage.setItem('hasIntroduced', 'false');
       } else {
         if (accessToken && refreshToken) {
           navigation.navigate(

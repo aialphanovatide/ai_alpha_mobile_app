@@ -117,8 +117,9 @@ const TopStories = ({handleAboutPress}) => {
         <SkeletonLoader />
       ) : stories.length === 0 ? (
         <NoContentDisclaimer
-          title={'Oops, something went wrong.'}
-          description={''}
+          title={'Whoops, something went wrong.'}
+          description={'Please try again in a little while.'}
+          type="error"
           additionalStyles={{disclaimer: {marginVertical: '5%'}}}
         />
       ) : (

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import useAskAiStyles from '../AskAiStyles';
-import {Platform, SafeAreaView, ScrollView, Text, View} from 'react-native';
+import {SafeAreaView, Text, View} from 'react-native';
 import {Image, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {AboutIcon} from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
@@ -215,14 +215,14 @@ const AskAiHistory = ({route, navigation}) => {
         <BackButton />
       </View>
       <View style={styles.titleRow}>
-        <Text style={styles.title}>History</Text>
+        <Text style={[styles.title, {marginTop: 16}]}>History</Text>
         <AboutIcon
           title={'History'}
           description={
             'In this section you can see the previously ASK AI searched coins.'
           }
           handleAboutPress={handleAboutPress}
-          additionalStyles={{top: '52.5%', right: '3%'}}
+          additionalStyles={{top: '35%', right: '3%'}}
         />
       </View>
       <HistoryContent
