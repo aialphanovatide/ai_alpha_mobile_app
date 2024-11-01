@@ -1,17 +1,24 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Image, ScrollView, Text, TouchableOpacity} from 'react-native';
 import CustomButton from '../../CustomButton/CustomButton';
 import CustomInput from '../../CustomInput/CustomInput';
 import {useNavigation} from '@react-navigation/core';
 import GreenTick from '../../../../assets/images/greenTick.png';
+import EmailSent from '../../../../assets/images/login/emailSent.png';
 import auth0 from '../../auth0.js';
 import useForgotPasswordStyles from './ForgotPasswordStyles';
+import BackButton from '../../../Analysis/BackButton/BackButton';
+import LinearGradient from 'react-native-linear-gradient';
+import {AppThemeContext} from '../../../../context/themeContext';
+import eventEmitter from '../../../../eventEmitter';
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState();
   const navigation = useNavigation();
   const [resetPasswordSuccesful, setresetPasswordSuccesful] = useState(false);
   const styles = useForgotPasswordStyles();
+  const {isDarkMode} = useContext(AppThemeContext);
+  const {theme} = useContext(AppThemeContext);
 
   const onSignInPressed = () => {
     navigation.navigate('SignIn');
@@ -35,32 +42,59 @@ const ForgotPasswordForm = () => {
     } else {
       console.error('Email is required');
     }
+
+    const originalColor = isDarkMode ? '#0b0b0a' : '#fbfbfa';
+
+    // Update the SafeAreaView for SignUp animation should go here
+    eventEmitter.emit('backgroundColorChange', '#FFB76E');
+    console.log('ISDARKMODE: ', isDarkMode);
+
+    setTimeout(() => {
+      eventEmitter.emit('backgroundColorChange', originalColor);
+      navigation.navigate('SignIn');
+    }, 2000);
   };
+
   if (resetPasswordSuccesful) {
     return (
-      <View style={styles.successContainer}>
-        <Image source={GreenTick} style={styles.tickImage} />
-        <Text style={styles.successText}>Reset Password Link Sent</Text>
-      </View>
+      <LinearGradient
+        colors={['#FFB76E', '#FC5404']}
+        start={{x: 0.8, y: -0.19}}
+        end={{x: 0.88, y: 0.99}}
+        style={styles.successContainer}>
+        <Image source={EmailSent} style={styles.tickImage} />
+        <Text style={styles.successText}>Email Sent</Text>
+        <Text style={styles.successSubTextBold}>
+          Please redirect to your email inbox
+        </Text>
+        <Text style={styles.successSubText}>
+          to complete the password update.
+        </Text>
+      </LinearGradient>
     );
   }
 
   return (
-    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+    <View style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <BackButton />
       <View style={styles.root}>
-        <Text style={styles.mainTitle}>Reset your Password</Text>
+        <Text style={styles.mainTitle}>Reset Password</Text>
         <View style={styles.inputContainer}>
-          <Text style={styles.title}>Email Address</Text>
-          <CustomInput placeholder="" value={email} setValue={setEmail} />
+          <CustomInput placeholder="Email" value={email} setValue={setEmail} />
         </View>
-        <CustomButton text="Send" onPress={onForgotPasswordPressed} />
-        <View style={styles.loginContainer}>
-          <TouchableOpacity onPress={onSignInPressed}>
-            <Text style={styles.loginButton}>Back to Log In</Text>
-          </TouchableOpacity>
+        <CustomButton text="Send Email" onPress={onForgotPasswordPressed} />
+        <View style={styles.smallTextContainer}>
+          <Text style={styles.greyText}>
+            Click the link sent to your email, and you will be directed to a new
+            page to reset your password.
+          </Text>
+          <Text style={styles.greyText}>
+            You will then need to reopen the app to log in with your new
+            password.
+          </Text>
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

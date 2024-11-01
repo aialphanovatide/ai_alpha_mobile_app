@@ -321,6 +321,7 @@ const App = () => {
                               : 'dark-content' /*This changes the font color for SafeAreaView*/
                           }
                         />
+
                         <SingletonHooksContainer />
                         <Top10MoversContextProvider>
                           <NarrativeTradingContextProvider>

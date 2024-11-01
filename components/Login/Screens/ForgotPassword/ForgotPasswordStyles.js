@@ -6,23 +6,26 @@ const useForgotPasswordStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     scrollView: {
-      flex: 1,
+      flexGrow: 1,
       backgroundColor: theme.mainBackgroundColor,
     },
     root: {
-      flex: 1,
-      alignItems: 'center',
       backgroundColor: theme.mainBackgroundColor,
       padding: 20,
+      flexGrow: 1,
+      backgroundColor: theme.mainBackgroundColor,
+      justifyContent: 'center', // Centers vertically
+      marginBottom: 100,
     },
     mainTitle: {
-      fontSize: theme.titleFontSize,
-      fontFamily: theme.fontSemibold,
+      fontSize: 25,
+      fontFamily: theme.fontMedium,
       color: theme.titleColor,
-      margin: 40,
+      marginBottom: 30,
     },
     inputContainer: {
       alignSelf: 'stretch',
+      marginBottom: 10,
     },
     title: {
       color: theme.textColor,
@@ -49,14 +52,41 @@ const useForgotPasswordStyles = () => {
       backgroundColor: theme.mainBackgroundColor,
     },
     successText: {
-      fontSize: theme.titleFontSize,
+      fontSize: 25,
       fontFamily: theme.fontMedium,
       color: theme.titleColor,
+      marginTop: 20,
+      marginBottom: 20,
     },
     tickImage: {
-      width: 120,
-      height: 88,
+      width: 111,
+      height: 92,
       marginBottom: 10,
+    },
+    greyText: {
+      color: theme.discordGreyColor,
+      fontSize: 13,
+      fontFamily: theme.font,
+      textAlign: 'center',
+      marginTop: 10,
+      marginLeft: 15,
+      marginRight: 15,
+    },
+    successContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    successSubText: {
+      fontSize: 15,
+      fontFamily: theme.fontMedium,
+      color: theme.signUpTitlesColor,
+    },
+    successSubTextBold: {
+      fontSize: 15,
+      fontFamily: theme.fontSemibold,
+      color: theme.signUpTitlesColor,
+      marginTop: 10,
     },
   });
 

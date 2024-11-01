@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginForm from '../components/Login/Screens/LoginForm/LoginForm';
@@ -35,27 +35,27 @@ const Navigation = () => {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <Stack.Navigator
         initialRouteName={chosenScreen}
         screenOptions={{
           headerShown: false,
           animation: 'fade',
         }}>
-<Stack.Screen
-  name="IntroductoryScreen"
-  component={IntroductorySlides}
-  options={{
-    ...Platform.select({
-      android: {
-        statusBarHidden: true,  // This will only apply to Android
-      },
-    }),
-    gestureEnabled: false,
-    animation: 'slide_from_right',
-  }}
-  initialParams={{ chosenScreen: chosenScreen }}
-/>
+        <Stack.Screen
+          name="IntroductoryScreen"
+          component={IntroductorySlides}
+          options={{
+            ...Platform.select({
+              android: {
+                statusBarHidden: true, // This will only apply to Android
+              },
+            }),
+            gestureEnabled: false,
+            animation: 'slide_from_right',
+          }}
+          initialParams={{chosenScreen: chosenScreen}}
+        />
         <Stack.Screen
           name="SignIn"
           component={LoginForm}
@@ -72,11 +72,11 @@ const Navigation = () => {
             headerShown: false,
             animation: 'fade',
           }}
-          listeners={({ navigation }) => ({
+          listeners={({navigation}) => ({
             focus: () => {
               navigation.reset({
                 index: 0,
-                routes: [{ name: 'HomeScreen' }],
+                routes: [{name: 'HomeScreen'}],
               });
             },
           })}
