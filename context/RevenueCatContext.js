@@ -197,7 +197,8 @@ const RevenueCatProvider = ({children}) => {
       //console.log('All packages from offerings: ', orderedPackages);
       setPackages(orderedPackages);
     } catch (error) {
-      console.error('Error trying to get offerings: ', error);
+      return;
+      // console.error('Error trying to get offerings: ', error);
     }
   };
 
@@ -226,7 +227,6 @@ const RevenueCatProvider = ({children}) => {
         await AsyncStorage.setItem('signupDateValidator', 'false');
       }
       console.log('SIGNUP DATE in RevenueCatContext', signupDate);
-
 
       console.log(`User Auth0 ID: ${rawUserId}`);
       console.log(`Package Identifier: ${packageIdentifier}`);

@@ -24,6 +24,10 @@ const AccountScreen = () => {
       <AccountStack.Screen
         name="Membership"
         component={PackageSubscriptions}
+        options={{
+          animation: 'fade',
+          animationDuration: 250,
+        }}
       />
       <AccountStack.Screen name="Legal" component={LegalAndInformation} />
       <AccountStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />

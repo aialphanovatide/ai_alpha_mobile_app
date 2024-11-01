@@ -32,7 +32,7 @@ const NewsComponent = ({route}) => {
   const options = ['btc', 'eth'].includes(botname)
     ? ['Today', 'This Week']
     : ['Today', 'This Month'];
-  const [activeFilter, setActiveFilter] = useState(options[0]);
+  const [activeFilter, setActiveFilter] = useState(options[1]);
   const {handleAboutPress, aboutDescription, aboutVisible} =
     useContext(AboutModalContext);
 
@@ -110,7 +110,7 @@ const NewsComponent = ({route}) => {
       activeCoin !== undefined
     ) {
       setBotname(activeSubCoin || activeCoin.coin_bots[0].bot_name);
-      setActiveFilter(options[0]);
+      setActiveFilter(options[1]);
     }
   }, [activeCoin, activeSubCoin]);
 

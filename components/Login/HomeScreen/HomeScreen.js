@@ -52,7 +52,6 @@ const HomeScreen = () => {
   const styles = useNavbarStyles();
   const [activePopUps, setActivePopUps] = useState(false);
 
-
   // Hook to load the variable to know if it is the first time that the user opens the app, or not, to show the introductory pop-ups at the Home section
 
   useEffect(() => {

@@ -17,23 +17,6 @@ export const HeaderVisibilityProvider = ({children}) => {
     setHeadersVisibility(prev => ({...prev, [headerName]: false}));
   };
 
-  const handleScroll = (event, scrollOffset) => {
-    const currentOffset = event.nativeEvent.contentOffset.y;
-    const diff = currentOffset - scrollOffset.current;
-
-    if (diff > 5 && currentOffset > 100) {
-      hideHeader('TopMenu');
-      hideHeader('SubMenu');
-      hideHeader('FundNewsChartsMenu');
-    } else if (diff < -5) {
-      showHeader('TopMenu');
-      showHeader('SubMenu');
-      showHeader('FundNewsChartsMenu');
-    }
-
-    scrollOffset.current = currentOffset;
-  };
-
   return (
     <HeaderVisibilityContext.Provider
       value={{

@@ -59,7 +59,7 @@ const Navigation = () => {
         <Stack.Screen
           name="SignIn"
           component={LoginForm}
-          options={{unmountOnBlur: true}}
+          options={{unmountOnBlur: true, animation: 'slide_from_right'}}
         />
         <Stack.Screen name="SignUp" component={SignupForm} />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordForm} />

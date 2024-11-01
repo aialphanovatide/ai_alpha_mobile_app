@@ -32,6 +32,16 @@ const CustomImageRenderer = props => {
     uri: uri,
   };
 
+  const [imageDimensions, setImageDimensions] = useState({
+    width: 380,
+    height: 380,
+  });
+
+  const onImageLayout = event => {
+    const {width, height} = event.nativeEvent.layout;
+    setImageDimensions({width, height});
+  };
+
   const handleBackButtonImageClose = () => {
     setImageZoomVisible(false);
   };
@@ -46,13 +56,21 @@ const CustomImageRenderer = props => {
         animationType="fade"
         style={styles.zoomImageBackground}
         onRequestClose={() => handleBackButtonImageClose()}>
+        <View style={[styles.zoomImageBg]} />
         <TouchableOpacity
           onPress={() => handleBackButtonImageClose()}
-          style={[styles.zoomImageDismissOverlay, {height: '38%'}]}
+          style={[
+            styles.zoomImageDismissOverlay,
+            //  {height: '38%'}
+          ]}
         />
         <ResumableZoom maxScale={1.5} minScale={1}>
           <FastImage
-            style={styles.zoomedImage}
+            onLayout={onImageLayout}
+            style={[
+              styles.zoomedImage,
+              {width: imageDimensions.width, height: imageDimensions.height},
+            ]}
             resizeMode={'contain'}
             source={{
               uri: thumbnailSource.uri,
@@ -63,7 +81,10 @@ const CustomImageRenderer = props => {
         </ResumableZoom>
         <TouchableOpacity
           onPress={() => handleBackButtonImageClose()}
-          style={[styles.zoomImageDismissOverlay, {height: '34%'}]}
+          style={[
+            styles.zoomImageDismissOverlay,
+            // {height: '34%'}
+          ]}
         />
       </Modal>
     </View>
@@ -217,6 +238,7 @@ const NarrativeTradingArticle = ({route}) => {
         transparent={true}
         style={styles.zoomImageBackground}
         onRequestClose={() => handleBackButtonImageClose()}>
+        <View style={[styles.zoomImageBg]} />
         <TouchableOpacity
           onPress={() => handleBackButtonImageClose()}
           style={styles.zoomImageDismissOverlay}

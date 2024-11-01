@@ -91,9 +91,9 @@ const Analysis = ({handleAboutPress}) => {
         additionalStyles={aboutIconStyles}
       />
       <NoContentDisclaimer
-        title={'Oops, something went wrong.'}
-        description={''}
-        // additionalStyles={{disclaimer: {marginVertical: '5%'}}}
+        title={'Whoops, something went wrong.'}
+        description={'Please try again in a little while.'}
+        type="error"
       />
     </View>;
   }
