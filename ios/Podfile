@@ -39,6 +39,7 @@ target 'ai_alpha_mobile_app' do
   flags = get_default_flags()
   # Pods for React Native
   pod 'Auth0'
+  pod 'GoogleSignIn'
   pod 'react-native-config/Extension', :path => '../node_modules/react-native-config'
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
