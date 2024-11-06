@@ -711,6 +711,7 @@ DEPENDENCIES:
   - GoogleSignIn
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
+  - PurchasesHybridCommon
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -1072,6 +1073,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   Yoga: 4c3aa327e4a6a23eeacd71f61c81df1bcdf677d5
 
-PODFILE CHECKSUM: 673f06fc212af6e860e16f25ecf97fdec3b37b82
+PODFILE CHECKSUM: 27d995e4eef8ff714763850d07a3790c236db0cd
 
 COCOAPODS: 1.15.2
