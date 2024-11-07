@@ -10,6 +10,7 @@ platform :ios do
       scheme: "ai_alpha_mobile_app",
       workspace: "ai_alpha_mobile_app.xcworkspace",
       include_bitcode: true,
+      export_method: "app-store",
       export_options: {
         provisioningProfiles: { "com.aialphamobileapp" => "match AppStore com.aialphamobileapp" }
       },
