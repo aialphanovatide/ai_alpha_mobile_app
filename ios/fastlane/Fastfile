@@ -21,7 +21,11 @@ platform :ios do
     increment_build_number
     build_app(scheme: "ai_alpha_mobile_app",
     workspace: "ai_alpha_mobile_app.xcworkspace",
-    include_bitcode: true)
+    include_bitcode: true
+    export_options: {
+      provisioningProfiles: { "com.aialphamobileapp" => "match AppStore com.aialphamobileapp" }
+    },
+    xcargs: "-allowProvisioningUpdates")
     upload_to_testflight
   end
 end
