@@ -2,7 +2,7 @@
 
 default_platform(:ios)
 
-xcodes(version: "16.0")
+#xcodes(version: "16.0")
 
 platform :ios do
   desc "This is the lane I'll be using to generate new versions of the app on TestFlight"
