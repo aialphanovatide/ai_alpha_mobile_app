@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
-import CryptoSection from './CryptoSection';
-import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
-import styles from '../../../../../../../../../Login/HomeScreen/HomeScreenStyles';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
+import DailyActiveUsersItem from './DailyActiveUsersItem';
 
 const DailyActiveUsers = ({competitorsData, isSectionWithoutData}) => {
   const [cryptos, setCryptos] = useState([]);
@@ -81,7 +79,7 @@ const DailyActiveUsers = ({competitorsData, isSectionWithoutData}) => {
   const max_value = findMaxUsersValue(cryptos);
 
   return (
-    <View style={styles.container}>
+    <View>
       {loading ? (
         <SkeletonLoader quantity={4} style={{height: 120}} />
       ) : cryptos?.length === 0 ||
@@ -89,7 +87,7 @@ const DailyActiveUsers = ({competitorsData, isSectionWithoutData}) => {
         <NoContentMessage />
       ) : (
         cryptos.map((crypto, index) => (
-          <CryptoSection
+          <DailyActiveUsersItem
             key={index}
             crypto={crypto}
             maxValue={max_value}

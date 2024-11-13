@@ -24,7 +24,6 @@ import {AnalysisContextProvider} from './context/AnalysisContext';
 import NetInfo from '@react-native-community/netinfo';
 import RNRestart from 'react-native-restart';
 import {getService} from './services/aiAlphaApi';
-import {SocketProvider} from './components/Alerts/Socket';
 import io from 'socket.io-client';
 import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext';
 import {SingletonHooksContainer} from 'react-singleton-hook';

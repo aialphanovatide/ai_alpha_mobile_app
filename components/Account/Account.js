@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAccountStyles from './styles';
 import {API_KEY} from '../../src/constants';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
-import {NOTIFICATIONS_MOCK} from './NotificationsPanel/notificationsMock';
+import {NOTIFICATIONS_MOCK} from '../../assets/static_data/notificationsMock';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import RNRestart from 'react-native-restart';

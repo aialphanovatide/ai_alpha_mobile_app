@@ -3,7 +3,6 @@ import {View, StyleSheet} from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import {AppThemeContext} from '../../../context/themeContext';
 /* Every coin to add to the TickerTape should be obtained from https://www.tradingview.com/widget/ticker-tape/
-- - - TODO - - -
   The 'coins' prop should be an array with all the coins to show, and should replace the large array on symbols, down in the component definition. These will be obtained from the ones that the user has suscribed and should have a json structure like this:
     {
       title: 'Coin name',
@@ -97,7 +96,7 @@ const TickerTape = ({coins}) => {
                 title: "RPL / USD",
               },
               {
-                proName: "BINANCE:FXSUSD",
+                proName: "KRAKEN:FXSUSD",
                 title: "FXS / USD",
               },
               {
@@ -129,7 +128,7 @@ const TickerTape = ({coins}) => {
                 title: "DYDX / USD",
               },
               {
-                proName: "BINANCE:GMXUSD",
+                proName: "OKX:GMXUSDT",
                 title: "GMX / USD",
               },
               {

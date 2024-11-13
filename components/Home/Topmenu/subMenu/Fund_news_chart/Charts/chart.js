@@ -22,6 +22,7 @@ import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation
 import {useNavigation} from '@react-navigation/core';
 import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
 import LinearGradient from 'react-native-linear-gradient';
+import {throttle} from 'lodash';
 
 // Format any number, including 0.0000
 const formatNumber = num => {
@@ -202,6 +203,10 @@ const Chart = ({
     });
   }, [chartData, candlesToShow]);
 
+  const handleZoomDomainChange = throttle(newZoomDomain => {
+    setZoomDomain(newZoomDomain);
+  }, 100);
+
   const domainY = useMemo(() => {
     const priceRange = chartData.slice(-candlesToShow).reduce(
       (acc, dataPoint) => {
@@ -307,18 +312,18 @@ const Chart = ({
     const isFirstCandleVisible = zoomDomain.x[0] <= chartDataTimeStamp;
 
     if (domainChange.x[0] < chartDataTimeStamp) {
-      setZoomDomain({
+      handleZoomDomainChange({
         x: [chartDataTimeStamp, domainChange.x[1]],
         y: domainChange.y,
       });
     } else {
       if (domainChange.x[1] > chartDataMaxTimeStamp) {
-        setZoomDomain({
+        handleZoomDomainChange({
           x: [domainChange.x[0], chartDataMaxTimeStamp],
           y: domainChange.y,
         });
       } else {
-        setZoomDomain(domainChange);
+        handleZoomDomainChange(domainChange);
       }
     }
     setShowGradient(!isFirstCandleVisible);

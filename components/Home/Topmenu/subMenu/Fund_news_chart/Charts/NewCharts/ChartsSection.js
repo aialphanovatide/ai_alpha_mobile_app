@@ -4,7 +4,7 @@ import {AppThemeContext} from '../../../../../../../context/themeContext';
 import useNewChartsStyles from './NewChartsStyles';
 import {ScrollView, Text, View} from 'react-native';
 import {AboutIcon} from '../../Fundamentals/AboutIcon';
-import {home_static_data} from '../../../../../homeStaticData';
+import {home_static_data} from '../../../../../../../assets/static_data/homeStaticData';
 import {AboutModalContext} from '../../../../../../../context/AboutModalContext';
 import AboutModal from '../../Fundamentals/AboutModal';
 import Chart from './NewChart';

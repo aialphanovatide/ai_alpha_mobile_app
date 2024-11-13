@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {AboutIcon} from '../Fundamentals/AboutIcon';
-import {home_static_data} from '../../../../homeStaticData';
+import {home_static_data} from '../../../../../../assets/static_data/homeStaticData';
 import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 
 const CandlestickDetails = ({

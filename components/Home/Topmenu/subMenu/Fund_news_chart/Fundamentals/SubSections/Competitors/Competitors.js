@@ -27,6 +27,7 @@ import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 import ActiveTriangle from '../../../../../../../../assets/images/fundamentals/competitors/active-triangle.svg';
+import LightActiveTriangle from '../../../../../../../../assets/images/fundamentals/competitors/active-triangle-light.svg';
 
 if (
   Platform.OS === 'android' &&
@@ -36,7 +37,7 @@ if (
 }
 
 const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
-  const {theme} = useContext(AppThemeContext);
+  const {isDarkMode, theme} = useContext(AppThemeContext);
   return (
     <View style={styles.relativeContainer}>
       <TouchableOpacity
@@ -69,8 +70,14 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
         </Text>
         {/* </ImageBackground> */}
       </TouchableOpacity>
-      {activeOption.name === item.name && (
-        <ActiveTriangle style={styles.activeTriangle} />
+      {activeOption.name === item.name ? (
+        isDarkMode ? (
+          <ActiveTriangle style={styles.activeTriangle} />
+        ) : (
+          <LightActiveTriangle style={styles.activeTriangle} />
+        )
+      ) : (
+        <></>
       )}
     </View>
   );

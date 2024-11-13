@@ -5,21 +5,20 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
 import Alerts from '../../Alerts/alerts';
-import {Image, View, Text} from 'react-native';
-import HomeStackScreen from '../../Home/HomeStack';
+import {Image, View} from 'react-native';
+import HomeStackScreen from '../../../navigation/HomeStack';
 import {AppThemeContext} from '../../../context/themeContext';
-import AnalysisScreen from '../../Analysis/AnalysisStack';
-import AccountScreen from '../../Account/AccountStack';
+import AnalysisScreen from '../../../navigation/AnalysisStack';
+import AccountScreen from '../../../navigation/AccountStack';
 import {useNavigation} from '@react-navigation/core';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import {useUserId} from '../../../context/UserIdContext';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
-import AskAiScreen from '../../AskAi/AskAiStack';
+import AskAiScreen from '../../../navigation/AskAiStack';
 import LinearGradient from 'react-native-linear-gradient';
 import useNavbarStyles from './HomeScreenStyles';
 import IntroductoryPopUpsOverlay from '../../IntroductorySlides/IntroductoryPopUps/IntroductoryPopUpsOverlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SubscriptionPopUp from '../../SubscriptionPopUps/SubscriptionPopUp';
 
 const Tab = createBottomTabNavigator();
 
@@ -94,8 +93,6 @@ const HomeScreen = () => {
         <></>
       )}
 
-      {/* <Text >This is my 'Founders' Identifier:</Text>
-      <Text selectable>{userId}</Text> */}
       <Tab.Navigator
         initialRouteName={Home}
         backBehavior={isLandscape && isHorizontal ? 'none' : 'initialRoute'}
@@ -208,24 +205,6 @@ const HomeScreen = () => {
             },
           }}
         />
-        {/*<Tab.Screen
-          name="Chatbot"
-          component={Chatbot}
-          options={{
-            tabBarLabel: 'Chatbot',
-            tabBarIcon: ({focused, color, size}) => (
-              <MenuIcon
-                color={color}
-                iconSource={
-                  focused
-                    ? require('../../../assets/images/bottomMenu/chatbot-active.png')
-                    : require('../../../assets/images/bottomMenu/chatbot.png')
-                }
-              />
-            ),
-          }}
-        />*/}
-
         <Tab.Screen
           name="Analysis"
           component={AnalysisScreen}
@@ -273,28 +252,6 @@ const HomeScreen = () => {
             },
           }}
         />
-        {/* <Tab.Screen
-          name="Search"
-          component={SearchScreen}
-          listeners={{
-            tabPress: e => {
-              navigation.navigate('Search', {updatedSection: true});
-            },
-          }}
-          options={{
-            tabBarLabel: 'Search',
-            tabBarIcon: ({focused, color, size}) => (
-              <MenuIcon
-                color={color}
-                iconSource={
-                  focused
-                    ? require('../../../assets/images/bottomMenu/search-active.png')
-                    : require('../../../assets/images/bottomMenu/search.png')
-                }
-              />
-            ),
-          }}
-        /> */}
       </Tab.Navigator>
     </GestureHandlerRootView>
   );

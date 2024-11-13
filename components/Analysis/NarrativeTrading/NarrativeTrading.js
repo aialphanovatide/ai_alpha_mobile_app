@@ -233,7 +233,7 @@ const NarrativeTrading = () => {
 
   const handleNarrativeTradingNavigation = item => {
     navigation.navigate('Home', {
-      screen: 'NarrativeTradingArticleScreen',
+      screen: 'MarketNarrativeArticleScreen',
       params: {
         item_content: item.content,
         id: item.id,

@@ -7,27 +7,25 @@ import {
   Text,
   ImageBackground,
   TouchableOpacity,
-  Button,
 } from 'react-native';
 import TickerTape from './Tickertape/TickerTape';
-import TopStories from './TopStories/topStories';
-import Analysis from './Analysis/analysis';
+import WhatsHappeningToday from './TopStories/WhatsHappeningToday.js';
 import TopTenGainers from './TopTenGainers/TopTenGainers';
 import useHomeStyles from './HomeStyles';
 import AboutModal from './Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import {useScrollToTop} from '@react-navigation/native';
-import NarrativeTradings from './HomeNarrativeTradings/NarrativeTradings';
+import NarrativeTradings from './HomeNarrativeTradings/MarketNarratives';
 import TopTenLosers from './Top10Losers/TopTenLosers';
 import {useRawUserId} from '../../context/RawUserIdContext';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
-import SubscriptionPopUp from '../SubscriptionPopUps/SubscriptionPopUp';
 import useSubscriptionPopUpStyles from '../SubscriptionPopUps/SubscriptionPopUpStyles';
 import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
+import DailyDeepDives from './Analysis/DailyDeepDives.js';
 
 const FreePopup = ({visible, onClose, setVisible}) => {
   const styles = useSubscriptionPopUpStyles();
@@ -247,8 +245,8 @@ const Home = ({route}) => {
             setVisible={setSubscriptionPopUpsVisible}
           />
           <TickerTape />
-          <TopStories handleAboutPress={handleAboutPress} />
-          <Analysis handleAboutPress={handleAboutPress} />
+          <WhatsHappeningToday handleAboutPress={handleAboutPress} />
+          <DailyDeepDives handleAboutPress={handleAboutPress} />
           <NarrativeTradings handleAboutPress={handleAboutPress} />
           <TopTenGainers handleAboutPress={handleAboutPress} />
           <TopTenLosers handleAboutPress={handleAboutPress} />

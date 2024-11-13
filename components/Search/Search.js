@@ -334,7 +334,7 @@ const Search = ({currentTextValue, contentVisible}) => {
     updateActiveCoin({});
     updateActiveSubCoin(null);
     navigation.navigate('Home', {
-      screen: 'NarrativeTradingArticleScreen',
+      screen: 'MarketNarrativeArticleScreen',
       params: {
         item_content: narrativeTrading.content,
         id: narrativeTrading.id,

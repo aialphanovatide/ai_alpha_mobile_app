@@ -21,7 +21,7 @@ import AboutModal from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/Abo
 import {AboutModalContext} from '../../context/AboutModalContext';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 import SearchButtonSvg from '../../assets/images/askAi/search-button.svg';
-import {RESULTS_MOCK} from './mockedAskAiData';
+import {RESULTS_MOCK} from '../../assets/static_data/mockedAskAiData';
 
 if (
   Platform.OS === 'android' &&

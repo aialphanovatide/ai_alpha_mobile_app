@@ -13,7 +13,7 @@ import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
 import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 import {AboutIcon} from '../Fundamentals/AboutIcon';
-import {home_static_data} from '../../../../homeStaticData';
+import {home_static_data} from '../../../../../../assets/static_data/homeStaticData';
 import AboutModal from '../Fundamentals/AboutModal';
 import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../../../../NoContentDisclaimer/NoContentDisclaimer';

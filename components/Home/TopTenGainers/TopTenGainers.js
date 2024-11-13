@@ -11,7 +11,7 @@ import {
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenGainersStyles from './TopTenGainersStyle.js';
 import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
-import {home_static_data} from '../homeStaticData.js';
+import {home_static_data} from '../../../assets/static_data/homeStaticData.js';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
 import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
