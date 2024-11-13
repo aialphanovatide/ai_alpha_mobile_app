@@ -35,7 +35,7 @@ const Navigation = () => {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <Stack.Navigator
         initialRouteName={chosenScreen}
         screenOptions={{

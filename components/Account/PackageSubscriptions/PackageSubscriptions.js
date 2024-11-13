@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect, useRef} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -8,6 +8,7 @@ import {
   View,
   Modal,
   Alert,
+  Animated,
 } from 'react-native';
 import usePackageSubscriptionStyles from './PackageSubscriptionStyles';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
@@ -94,6 +95,30 @@ const PackageSubscriptions = () => {
   const {isDarkMode} = useContext(AppThemeContext);
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
   const {rawUserId, setRawUserId} = useRawUserId();
+
+  const scrollIndicator = useRef(new Animated.Value(0)).current;
+  const [completeScrollBarHeight, setCompleteScrollBarHeight] = useState(1);
+  const [visibleScrollBarHeight, setVisibleScrollBarHeight] = useState(0);
+
+  const scrollIndicatorSize =
+    completeScrollBarHeight > visibleScrollBarHeight
+      ? ((visibleScrollBarHeight * 100) / completeScrollBarHeight) * 0.5 // Adjust this multiplier
+      : visibleScrollBarHeight * 0.9;
+
+  const difference =
+    visibleScrollBarHeight > scrollIndicatorSize
+      ? visibleScrollBarHeight - scrollIndicatorSize
+      : 1;
+
+  const scrollIndicatorPosition = Animated.multiply(
+    scrollIndicator,
+    visibleScrollBarHeight / completeScrollBarHeight - 0.2,
+  ).interpolate({
+    inputRange: [0, difference],
+    outputRange: [0, difference],
+    extrapolate: 'clamp',
+  });
+  console.log('Scroll Indicator Position:', scrollIndicatorPosition);
 
   // Modal visibility state
   const [aboutVisible, setAboutVisible] = useState(false);
@@ -492,6 +517,22 @@ const PackageSubscriptions = () => {
     <View style={styles.container}>
       <ScrollView
         style={styles.backgroundContainer}
+        showsVerticalScrollIndicator={false}
+        onContentSizeChange={height => {
+          setCompleteScrollBarHeight(height);
+        }}
+        onLayout={({
+          nativeEvent: {
+            layout: {height},
+          },
+        }) => {
+          setVisibleScrollBarHeight(height);
+        }}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollIndicator}}}],
+          {useNativeDriver: false},
+        )}
+        scrollEventThrottle={16}
         contentContainerStyle={styles.scrollViewContent}>
         <BackgroundGradient />
         <SafeAreaView style={styles.innerContainer}>
@@ -771,6 +812,7 @@ const PackageSubscriptions = () => {
           )}
         </SafeAreaView>
       </ScrollView>
+
       {/* AboutModal */}
       <AboutModal
         description={aboutDescription}
@@ -816,6 +858,17 @@ const PackageSubscriptions = () => {
           </View>
         </View>
       </Modal>
+      <View style={styles.scrollBarContainer}>
+        <Animated.View
+          style={[
+            styles.scrollBar,
+            {
+              height: scrollIndicatorSize,
+              transform: [{translateY: scrollIndicatorPosition}],
+            },
+          ]}
+        />
+      </View>
     </View>
   );
 };

@@ -3,7 +3,7 @@ import {useContext} from 'react';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const usePackageSubscriptionStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     gradient: {
       position: 'absolute',
@@ -17,6 +17,9 @@ const usePackageSubscriptionStyles = () => {
     },
     container: {
       flex: 1,
+      flexDirection: 'row',
+      paddingRight: Platform.OS === 'ios' ? 1 : 14,
+      backgroundColor: theme.boxesBackgroundColor,
     },
     scrollViewContent: {
       paddingBottom: 0,
@@ -553,6 +556,19 @@ const usePackageSubscriptionStyles = () => {
       textAlign: 'center',
       flexDirection: 'row',
       alignSelf: 'flex-start',
+    },
+    scrollBarContainer: {
+      backgroundColor: theme.boxesBackgroundColor,
+      height: '30%',
+      width: 5,
+      marginBottom: 4,
+      marginRight: Platform.OS === 'ios' ? 0 : 10,
+      borderRadius: 2,
+    },
+    scrollBar: {
+      backgroundColor: theme.scrollbarColor,
+      width: 5,
+      borderRadius: 4,
     },
   });
   return styles;

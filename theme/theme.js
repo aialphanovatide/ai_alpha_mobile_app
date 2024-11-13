@@ -129,6 +129,7 @@ export const lightThemeStyles = {
   personalizeProfileSaveButtonBackground: '#FFECD3',
   personalizeProfileSaveButtonText: '#FF8D34',
   discordGreyColor: '#737373',
+  scrollbarColor: '#A3A3A3',
 };
 
 export const darkThemeStyles = {
@@ -258,4 +259,5 @@ export const darkThemeStyles = {
   personalizeProfileSaveButtonText: '#a0a3a1',
   notificationsHorizontalLineColor: '#737373',
   discordGreyColor: '#737373',
+  scrollbarColor: '#A3A3A3',
 };
