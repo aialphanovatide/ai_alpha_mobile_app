@@ -21,6 +21,7 @@ platform :ios do
       export_options: {
         provisioningProfiles: { "com.aialphamobileapp" => "MartinProvisioningProfileDistribution2" }
       },
+      xcargs: "-allowProvisioningUpdates"
     )
     
     upload_to_testflight
