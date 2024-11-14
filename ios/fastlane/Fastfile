@@ -2,22 +2,25 @@
 
 default_platform(:ios)
 
-#xcodes(version: "16.0")
+# xcodes(version: "16.0")
 
 platform :ios do
   desc "This is the lane I'll be using to generate new versions of the app on TestFlight"
   lane :beta do
-    #sync_code_signing(
-    #  type: "appstore",
-    #  force_for_new_devices: true,
-    #  git_url: "https://github.com/aialphanovatide/codesigning",
-    #)
+    # sync_code_signing(
+    #   type: "appstore",
+    #   force_for_new_devices: true,
+    #   git_url: "https://github.com/aialphanovatide/codesigning",
+    # )
     increment_build_number
     build_app(
       scheme: "ai_alpha_mobile_app",
       workspace: "ai_alpha_mobile_app.xcworkspace",
       include_bitcode: true,
       export_method: "app-store",
+      export_options: {
+        provisioningProfiles: { "com.aialphamobileapp" => "MartinProvisioningProfileDistribution2" }
+      },
       xcargs: "-allowProvisioningUpdates"
     )
     
