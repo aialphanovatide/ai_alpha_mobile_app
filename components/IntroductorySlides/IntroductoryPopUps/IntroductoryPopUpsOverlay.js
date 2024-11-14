@@ -109,7 +109,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Set up custom alerts to stay notified about crucial market movements.',
       popUpStyles: {
         overlay: {
-          height: '90%',
+          height: Platform.OS === 'ios' ? '85%' : '90%',
           justifyContent: 'flex-end',
         },
         modal: {
@@ -117,7 +117,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         },
         triangle: {
           bottom: 0,
-          left: 105,
+          left: 103,
           transform: [{scaleY: -1}],
         },
         navbar: {
@@ -133,7 +133,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Need quick insights? Use the Ask AI to get real-time information from our curated database.',
       popUpStyles: {
         overlay: {
-          height: '90%',
+          height: Platform.OS === 'ios' ? '86.5%' : '90%',
           justifyContent: 'flex-end',
           paddingBottom: '12.5%',
         },
@@ -159,7 +159,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Access curated and unbiased analyses and charts by category.',
       popUpStyles: {
         overlay: {
-          height: '90%',
+          height: Platform.OS === 'ios' ? '85%' : '90%',
           justifyContent: 'flex-end',
         },
         modal: {
@@ -183,7 +183,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         'Manage your account settings, subscription options, and custom-tailored notifications here.',
       popUpStyles: {
         overlay: {
-          height: '90%',
+          height: Platform.OS === 'ios' ? '85%' : '90%',
           justifyContent: 'flex-end',
         },
         modal: {

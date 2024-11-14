@@ -79,7 +79,7 @@ const Slide = ({
   activeSlide,
   video,
   hasRedirect,
-  handleDiscordNavigation
+  handleDiscordNavigation,
 }) => {
   const styles = useIntroductorySlidesStyles();
   const buttonOpacity = useRef(new Animated.Value(0)).current;
@@ -266,7 +266,7 @@ const IntroductorySlides = ({route}) => {
             position: 'absolute',
             top: 0,
             left: 0,
-            width: 400,
+            width: 350,
             height: 330,
           },
         },
