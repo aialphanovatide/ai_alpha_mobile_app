@@ -1,5 +1,5 @@
 # AI Alpha Mobile App Fastfile
-
+=begin
 default_platform(:ios)
 
 # xcodes(version: "16.0")
@@ -27,3 +27,4 @@ platform :ios do
     upload_to_testflight
   end
 end
+=end
