@@ -31,8 +31,8 @@
 		9D5B26A72BAA133A008599E7 /* unbounded_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B269F2BAA133A008599E7 /* unbounded_regular.ttf */; };
 		9D5B26A82BAA133A008599E7 /* unbounded_black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B26A02BAA133A008599E7 /* unbounded_black.ttf */; };
 		9D5B26B02BACD2FB008599E7 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B26AF2BACD2FB008599E7 /* Config.xcconfig */; };
+		9D94F92E2CE859DA00403C32 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D94F92D2CE859DA00403C32 /* GoogleService-Info.plist */; };
 		9D96EE922BA384CB0096A71A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9D96EE912BA384CB0096A71A /* PrivacyInfo.xcprivacy */; };
-		9DC43E582BE2A696005CE186 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9DC43E572BE2A696005CE186 /* GoogleService-Info.plist */; };
 		9DCEDF3A2B1808A500A2A8DA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DCEDF392B1808A500A2A8DA /* StoreKit.framework */; };
 		A7474D1B90264C5D83276A63 /* prompt_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FA896AC600745D0B9590D52 /* prompt_medium.ttf */; };
 		ACA68005C75D441699C948F7 /* prompt_light_italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC37ED54556E443BBEC94472 /* prompt_light_italic.ttf */; };
@@ -93,9 +93,9 @@
 		9D5B269F2BAA133A008599E7 /* unbounded_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = unbounded_regular.ttf; path = ../assets/fonts/unbounded_regular.ttf; sourceTree = "<group>"; };
 		9D5B26A02BAA133A008599E7 /* unbounded_black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = unbounded_black.ttf; path = ../assets/fonts/unbounded_black.ttf; sourceTree = "<group>"; };
 		9D5B26AF2BACD2FB008599E7 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		9D94F92D2CE859DA00403C32 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "ai_alpha_mobile_app/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9D96EE912BA384CB0096A71A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		9D9C75792B55DBA600C06EF8 /* ai_alpha_mobile_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ai_alpha_mobile_app.entitlements; path = ai_alpha_mobile_app/ai_alpha_mobile_app.entitlements; sourceTree = "<group>"; };
-		9DC43E572BE2A696005CE186 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9DC43E622BE2C186005CE186 /* FirebaseAnalytics.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FirebaseAnalytics.xcframework; path = Pods/FirebaseAnalytics/Frameworks/FirebaseAnalytics.xcframework; sourceTree = "<group>"; };
 		9DC43E632BE2C186005CE186 /* libFirebaseAppCheck.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseAppCheck.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DC43E642BE2C186005CE186 /* libFirebaseAppCheckInterop.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseAppCheckInterop.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,13 +155,13 @@
 		13B07FAE1A68108700A75B9A /* ai_alpha_mobile_app */ = {
 			isa = PBXGroup;
 			children = (
+				9D94F92D2CE859DA00403C32 /* GoogleService-Info.plist */,
 				9D9C75792B55DBA600C06EF8 /* ai_alpha_mobile_app.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
-				9DC43E572BE2A696005CE186 /* GoogleService-Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				9D96EE912BA384CB0096A71A /* PrivacyInfo.xcprivacy */,
 			);
@@ -377,7 +377,7 @@
 				9D5B26A22BAA133A008599E7 /* unbounded_medium.ttf in Resources */,
 				BBBD53ED48F64181821B122F /* prompt_italic.ttf in Resources */,
 				40E30348EB1A424090E677DB /* prompt_light.ttf in Resources */,
-				9DC43E582BE2A696005CE186 /* GoogleService-Info.plist in Resources */,
+				9D94F92E2CE859DA00403C32 /* GoogleService-Info.plist in Resources */,
 				9D5B26A72BAA133A008599E7 /* unbounded_regular.ttf in Resources */,
 				9D5B26B02BACD2FB008599E7 /* Config.xcconfig in Resources */,
 				ACA68005C75D441699C948F7 /* prompt_light_italic.ttf in Resources */,
@@ -791,10 +791,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_CFLAGS = "$(inherited)  ";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -877,10 +874,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_CFLAGS = "$(inherited)  ";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
