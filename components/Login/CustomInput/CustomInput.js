@@ -1,7 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, TextInput } from 'react-native';
 import useCustomInputStyles from './CustomInputStyles';
 import { AppThemeContext } from '../../../context/themeContext';
+
+// Component to render a custom input with different styles based on the theme. It can be a date input or a regular input. The date input has a specific validation logic. The input can also be a secure text input. It uses an error handler to show an error message when the input is invalid.
 
 const CustomInput = ({
   value,
@@ -75,7 +77,6 @@ const CustomInput = ({
 
       const isDeleting = text.length < value.length;
 
-      console.log('filteredText length', filteredText.length);
       if (filteredText.length >= 2 && !isDeleting ) {
         newText = `${filteredText.slice(0, 2)}/${filteredText.slice(2, 4)}${filteredText.length > 3 ? '/' + filteredText.slice(4) : ''}`;
       }

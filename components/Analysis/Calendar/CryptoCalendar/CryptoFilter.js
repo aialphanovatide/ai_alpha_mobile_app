@@ -1,8 +1,10 @@
 import React, {useContext} from 'react';
-import {Image, Text, View, TouchableOpacity, ScrollView, TouchableWithoutFeedback} from 'react-native';
+import {Text, View, ScrollView, TouchableWithoutFeedback} from 'react-native';
 import useCryptoCalendarStyles from './CryptoCalendarStyles';
 import {AppThemeContext} from '../../../../context/themeContext';
 import FastImage from 'react-native-fast-image';
+
+// Component that renders the crypto item to be displayed in the cryptos menu. It displays the icon and name of the crypto.
 
 const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -31,6 +33,8 @@ const CryptoItem = ({option, active, handleOptionTouch, styles}) => {
     </TouchableWithoutFeedback>
   );
 };
+
+// Component that renders the crypto filter. It displays the cryptos menu and allows the user to select a crypto to view its events. It receives the options, currentFilter, handleOptionTouch, and style as props. 
 
 const CryptoFilter = ({
   options,

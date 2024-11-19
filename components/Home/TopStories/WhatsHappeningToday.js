@@ -12,7 +12,7 @@ import {
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext';
 import {CategoriesContext} from '../../../context/categoriesContext';
-import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import {AboutIcon} from '../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../assets/static_data/homeStaticData';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
@@ -25,6 +25,8 @@ if (
 ) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
+
+// Component that renders the top stories section, with the top stories list and the about icon. It receives the handleAboutPress function as a prop, which is the function that handles the about icon press, showing the modal with the information about the section. This component fetches the top stories from the API and renders them in the StoryItem component, which is a card with the story information. The component also has a button that expands or hides the top stories list, depending on the case.
 
 const WhatsHappeningToday = ({handleAboutPress}) => {
   const styles = useWhatsHappeningTodayStyles();
@@ -75,6 +77,8 @@ const WhatsHappeningToday = ({handleAboutPress}) => {
       isStory: true,
     });
   };
+
+// This useEffect fetches the top stories from the API, setting the stories state with the data received. If there is an error, it sets the stories state to an empty array. It also sets the loading state to false when the fetch is done.
 
   useEffect(() => {
     setLoading(true);

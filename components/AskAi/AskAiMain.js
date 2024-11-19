@@ -11,17 +11,15 @@ import {
   UIManager,
   View,
 } from 'react-native';
-import {AppThemeContext} from '../../context/themeContext';
 import useAskAiStyles from './AskAiStyles';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SkeletonLoader from '../Loader/SkeletonLoader';
-import {AboutIcon} from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
-import AboutModal from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
+import {AboutIcon} from '../AboutModal/AboutIcon';
+import AboutModal from '../AboutModal/AboutModal';
 import {AboutModalContext} from '../../context/AboutModalContext';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 import SearchButtonSvg from '../../assets/images/askAi/search-button.svg';
-import {RESULTS_MOCK} from '../../assets/static_data/mockedAskAiData';
 
 if (
   Platform.OS === 'android' &&
@@ -165,7 +163,7 @@ const ValueBox = ({title, content, valueType}) => {
   );
 };
 
-// Component of the input that the user will use to pass the text values of the search
+// Component of the input that the user will use to pass the text values of the search to the ASK AI Alpha endpoint.
 
 const Input = ({
   textHandler,
@@ -220,14 +218,13 @@ const Input = ({
   );
 };
 
-// Main component for all the section's features
+// Main component for all the section's features and functionalities, including the search input, the results pop-up, the history section and the about modal. It also includes the logic to save the results data in the AsyncStorage API, to persist them between app executions.
 
 const AskAiMain = ({route, navigation}) => {
   const selectedResult =
     route.params && route.params.selectedResult !== undefined
       ? route.params.selectedResult
       : null;
-  const {isDarkMode} = useContext(AppThemeContext);
   const styles = useAskAiStyles();
   const [searchText, setSearchText] = useState('');
   const [resultData, setResultData] = useState(selectedResult);

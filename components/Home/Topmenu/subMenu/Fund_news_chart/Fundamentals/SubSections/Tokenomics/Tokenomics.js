@@ -3,11 +3,13 @@ import React, {useContext, useEffect, useState} from 'react';
 import useTokenomicsStyles from './TokenomicsStyles';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SupplyModal from '../SupplyModal/SupplyModal';
-import {fundamentals_static_content} from '../../fundamentalsStaticData';
+import {fundamentals_static_content} from '../../../../../../../../assets/static_data/fundamentalsStaticData';
 import {findCoinNameBySymbol} from '../Competitors/coinsNames';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
+
+// Component that renders the token item of each coin in the tokenomics section. It receives the following props: item, styles, handleSupplyDataPress, and activeSupply. It displays the icon, name, inflationary or deflationary model, and the circulating supply of the coin.
 
 const TokenItem = ({item, styles, handleSupplyDataPress, activeSupply}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -98,6 +100,8 @@ const TokenItem = ({item, styles, handleSupplyDataPress, activeSupply}) => {
   );
 };
 
+// Component that renders a horizontal progress bar. It receives the following props: maxValue, value, styles, and activeSupply. It displays the progress bar with the value and the max value of the coin.
+
 const HorizontalProgressBar = ({maxValue, value, styles, activeSupply}) => {
   const percentage = maxValue === Infinity ? 65 : (value / maxValue) * 100;
   function formatNumber(value) {
@@ -153,8 +157,9 @@ const HorizontalProgressBar = ({maxValue, value, styles, activeSupply}) => {
   );
 };
 
+// Component that renders the Tokenomics section. It receives the following props: coin, handleSectionContent, globalData, and loading. It displays the circulating supply, total supply, max supply, and the inflationary or deflationary model of the coin.
+
 const Tokenomics = ({
-  getSectionData,
   coin,
   handleSectionContent,
   globalData,

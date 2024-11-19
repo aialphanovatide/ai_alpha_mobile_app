@@ -7,22 +7,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import BackButton from '../BackButton/BackButton';
-import {AppThemeContext} from '../../../context/themeContext';
+import BackButton from '../../BackButton/BackButton';
 import CryptoFilter from '../Calendar/CryptoCalendar/CryptoFilter';
 import {useNavigation} from '@react-navigation/core';
 import FastImage from 'react-native-fast-image';
 import useNarrativeTradingStyles from './NarrativeTradingStyles';
-import filterData from './FilterData';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import filterData from '../../../assets/static_data/FilterData';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import {NarrativeTradingContext} from '../../../context/NarrativeTradingContext';
 
+// Component to render the narrative trading item, it renders the item's image, date, hour, title and a right arrow icon to indicate that the item can be clicked to navigate to the full article.
+
 const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
-  const {isDarkMode} = useContext(AppThemeContext);
   const formatItemDate = dateTimeString => {
     const dateTime = new Date(dateTimeString);
     const year = dateTime.getFullYear();
@@ -90,6 +89,9 @@ const NarrativeTradingItem = ({item, styles, handleHistoryNavigation}) => {
     </TouchableOpacity>
   );
 };
+
+// Component to render the time menu, it includes a list of time options which can be selected to filter the narrative trading items by time.
+
 const TimeMenu = ({
   options,
   activeOption,
@@ -119,6 +121,9 @@ const TimeMenu = ({
     </View>
   );
 };
+
+// Component to render the Narrative Trading screen, it includes the TimeMenu, CryptoFilter, NarrativeTradingItem and NoContentDisclaimer components, and it renders a list of narrative trading items which can be filtered by time and category. Finally, it renders an UpgradeOverlay component if the user is not subscribed.
+
 const NarrativeTrading = () => {
   const {narrativeTradingData} = useContext(NarrativeTradingContext);
   const options = ['today', 'last week'];
@@ -130,51 +135,14 @@ const NarrativeTrading = () => {
   const navigation = useNavigation();
   const {subscribed} = useContext(RevenueCatContext);
 
-  // Hook to load the data from the previous narrative tradings that the user has seen
-  // useEffect(() => {
-  //   const interval = activeOption === 'today' ? 1 : 7;
-  //   const fetchData = async interval => {
-  //     try {
-  //       const keys = await AsyncStorage.getAllKeys();
-  //       const narrativeTradingKeys = keys.filter(key =>
-  //         key.startsWith('narrative_trading_'),
-  //       );
-  //       const narrativeItems = await AsyncStorage.multiGet(
-  //         narrativeTradingKeys,
-  //       );
-  //       const parsedItems = narrativeItems.map(item => JSON.parse(item[1]));
-
-  //       const currentDate = new Date();
-
-  //       const filteredItems = parsedItems.filter(item => {
-  //         const clickedAt = new Date(item.clickedAt);
-  //         const timeDifference = Math.abs(currentDate - clickedAt);
-  //         const daysDifference = timeDifference / (1000 * 3600 * 24);
-
-  //         return daysDifference <= interval;
-  //       });
-
-  //       console.log(
-  //         `Loaded narrative trading items within ${interval} days: `,
-  //         filteredItems,
-  //       );
-
-  //       setLoadedNarrativeTradingItems(filteredItems);
-  //     } catch (e) {
-  //       console.error('Failed to load the data from storage', e);
-  //     }
-  //   };
-  //   if (loadedNarrativeTradingItems.length === 0) {
-  //     fetchData(interval);
-  //   }
-  // }, [activeOption]);
-
   useEffect(() => {
     if (narrativeTradingData.length > 0) {
       handleCryptoTouch(filterData[0]);
       handleTimeIntervalChange(options[0]);
     }
   }, [narrativeTradingData]);
+
+  // Function to filter the narrative trading items by category, it returns an array of items that match the selected category.
 
   const filterItemsByCategory = (category, items) => {
     const filtered_items = [];
@@ -200,6 +168,8 @@ const NarrativeTrading = () => {
     return filtered_items;
   };
 
+  // Function to filter the narrative trading items by time, it returns an array of items that match the selected time interval.
+
   const filterItemsByTime = (interval, items) => {
     const currentDate = new Date();
     const filteredArray = items.filter(item => {
@@ -218,6 +188,8 @@ const NarrativeTrading = () => {
     return filteredArray;
   };
 
+  // Function to handle the crypto filter touch, it filters the narrative trading items by category and updates the narrative trading items state.
+
   const handleCryptoTouch = option => {
     setActiveCryptoOption(option);
     const filtered_by_time = filterItemsByTime(
@@ -231,6 +203,8 @@ const NarrativeTrading = () => {
     setNarrativeTradingItems(filtered_narrative_tradings);
   };
 
+  // Function to handle the navigation to the full article, it navigates to the MarketNarrativeArticleScreen and passes the item's content, id and date as params.
+
   const handleNarrativeTradingNavigation = item => {
     navigation.navigate('Home', {
       screen: 'MarketNarrativeArticleScreen',
@@ -243,6 +217,8 @@ const NarrativeTrading = () => {
     });
   };
 
+  // Function to handle the time interval change, it filters the narrative trading items by time and updates the narrative trading items state.
+
   const handleTimeIntervalChange = interval => {
     setActiveOption(interval);
     setActiveCryptoOption(filterData[0]);
@@ -254,9 +230,11 @@ const NarrativeTrading = () => {
     setNarrativeTradingItems(filtered_items);
   };
 
+  // Function to handle the navigation to the Analysis screen when clicking the back button, it navigates to the DashboardMain screen.
+
   const handleNavigationToAnalysis = () => {
     navigation.navigate('Analysis', {
-      screen: 'AnalysisMain',
+      screen: 'DashboardMain',
       params: {},
     });
   };

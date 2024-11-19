@@ -3,6 +3,8 @@ import {getService, getServiceV2} from '../services/aiAlphaApi';
 
 const Top10MoversContext = createContext();
 
+// This context is used to store the top 10 movers and top 10 losers data. It fetches the data from the server and provides it to the components that need it. It returns a context provider with the top 10 movers and top 10 losers data and a loading state.
+
 const Top10MoversContextProvider = ({children}) => {
   const [topTenMoversData, setTopTenMoversData] = useState([]);
   const [topTenLosersData, setTopTenLosersData] = useState([]);
@@ -20,7 +22,7 @@ const Top10MoversContextProvider = ({children}) => {
           `https://aialpha2-dev.ngrok.io/chart/top-movers`,
           {
             headers: {
-              'X-API-KEY': 'alpha_auxQDT_5rIy7unRVveat6Nb6pwqhXPW4_e9e5',
+              'X-API-KEY': 'alpha_3N2dAITKwbxJPyKts48e2KI6RVhvMZ0m_f04d',
             },
           },
         );

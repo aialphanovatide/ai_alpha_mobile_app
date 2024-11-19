@@ -4,12 +4,9 @@ import useCoinMenuStyles from './coinMenuStyles';
 import {findColorByCoinName} from './coinMenuColors';
 import {AppThemeContext} from '../../../../../context/themeContext';
 
+// This component is used in the TopMenu component to show the subcoins of the selected coin. It receives the subcoins, the active subcoin, and a function to handle the press of a subcoin. It returns a view with the subcoins as buttons.
+
 const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
-  const activeButtonColors = [
-    'firstActiveButton',
-    'secondActiveButton',
-    'thirdActiveButton',
-  ];
   const styles = useCoinMenuStyles();
   const {theme} = useContext(AppThemeContext);
   return subCoins?.length > 1 ? (
@@ -21,6 +18,10 @@ const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
       />
       <View style={styles.subMenu}>
         {subCoins.map((coin, index) => {
+          // TEMPORARY FIX FOR TAO COIN
+          if (coin.bot_name.toLowerCase() === 'tao') {
+            return null;
+          }
           const coinColor = findColorByCoinName(coin.bot_name.toLowerCase());
           return (
             <TouchableOpacity

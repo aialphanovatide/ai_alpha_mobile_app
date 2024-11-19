@@ -5,7 +5,7 @@ import Fundamentals from '../components/Home/Topmenu/subMenu/Fund_news_chart/Fun
 import TopMenu from '../components/Home/Topmenu/mainMenu/topmenu';
 import SubMenu from '../components/Home/Topmenu/subMenu/SubMenu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import CandlestickChart from '../components/Home/Topmenu/subMenu/Fund_news_chart/Charts';
+import CandlestickChart from '../components/Home/Topmenu/subMenu/Fund_news_chart/Charts/CandlestickChart';
 import NewsComponent from '../components/Home/Topmenu/subMenu/Fund_news_chart/News/NewsComponent.js';
 import {TopMenuContext} from '../context/topMenuContext';
 import NewsArticle from '../components/Home/Topmenu/subMenu/Fund_news_chart/News/NewsArticle';
@@ -139,7 +139,7 @@ const SubMenuScreen = () => {
 
   useEffect(() => {
     const handleBackInteraction = e => {
-      if (isLandscape || isHorizontal) {
+      if (isLandscape && isHorizontal) {
         e.preventDefault();
         handleScreenOrientationChange('PORTRAIT');
         navigation.canGoBack(false);

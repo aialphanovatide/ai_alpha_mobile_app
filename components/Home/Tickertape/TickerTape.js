@@ -2,7 +2,9 @@ import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import {AppThemeContext} from '../../../context/themeContext';
-/* Every coin to add to the TickerTape should be obtained from https://www.tradingview.com/widget/ticker-tape/
+/* 
+TickerTape component to render a TradingView TickerTape widget. It uses the AppThemeContext to get the current theme and render the widget accordingly.
+Every coin to add to the TickerTape should be obtained from https://www.tradingview.com/widget/ticker-tape/
   The 'coins' prop should be an array with all the coins to show, and should replace the large array on symbols, down in the component definition. These will be obtained from the ones that the user has suscribed and should have a json structure like this:
     {
       title: 'Coin name',

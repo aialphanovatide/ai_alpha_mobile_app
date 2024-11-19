@@ -6,15 +6,15 @@ import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
+// General Token Data component used in the General Token Distribution section. It is used to display the percentage of each token in the portfolio. It also allows the user to select a token to view its percentage. The selected token is highlighted with a different color.
+
 const GeneralTokenData = ({
   currentToken,
   data,
   handleTokenChange,
   styles,
   colors,
-  theme,
 }) => {
-  const {isDarkMode} = useContext(AppThemeContext);
   return (
     <View style={styles.circleDataContainer}>
       {data.map((sector, index) => {
@@ -33,7 +33,6 @@ const GeneralTokenData = ({
               style={[
                 styles.strong,
                 currentToken.title === sector.title ? styles.activeText : {},
-                // currentToken.title === sector.title && isDarkMode && index > 4,
               ]}
               ellipsizeMode="clip">
               {sector.title.length > 21
@@ -47,8 +46,9 @@ const GeneralTokenData = ({
   );
 };
 
+// General Token Allocation component used in the General Token Distribution section. It is used to display the percentage of each token in the portfolio.
+
 const GeneralTokenAllocation = ({
-  getSectionData,
   coin,
   handleSectionContent,
   globalData,
@@ -100,7 +100,6 @@ const GeneralTokenAllocation = ({
               ),
             };
           });
-        // console.log('Parsed data:', parsed_data);
         setPercentagesData(parsed_data.slice(0, 8));
         setCurrentToken(parsed_data[0]);
       }
@@ -164,7 +163,6 @@ const GeneralTokenAllocation = ({
             handleTokenChange={handleTokenChange}
             styles={styles}
             colors={sortedColors}
-            theme={theme}
           />
         </>
       )}

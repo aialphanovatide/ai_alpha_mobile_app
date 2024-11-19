@@ -1,7 +1,9 @@
 import React from 'react';
-import {Text, TouchableOpacity, View, Image} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import useMenuItemStyles from './menuItemStyles';
 import FastImage from 'react-native-fast-image';
+
+// Component for the menu items rendered in the top menu, each item is a category that can be selected by the user and can display a set of coins that belong to that category in a subsequent menu. It receives the following props: onPress, category, isActive, isDarkMode.
 
 const MenuItem = ({onPress, category, isActive, isDarkMode}) => {
   const styles = useMenuItemStyles();

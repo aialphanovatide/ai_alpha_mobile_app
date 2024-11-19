@@ -1,12 +1,11 @@
 import React from 'react';
-import {useContext} from 'react';
-import {AppThemeContext} from '../../../../context/themeContext';
 import FastImage from 'react-native-fast-image';
 import {TouchableOpacity} from 'react-native';
 import {Text} from 'react-native';
 import {View} from 'react-native';
 import useDailyDeepsStyles from '../dailyDeepsStyles';
 
+// Component that renders the items in the daily deep section. It receives the title of the item, the item data, the function to handle the navigation to the analysis screen, the index of the item in the list, and the expanded state of the item as props.
 const DailyDeepItem = ({
   title,
   item,
@@ -15,7 +14,6 @@ const DailyDeepItem = ({
   expanded,
 }) => {
   const styles = useDailyDeepsStyles();
-  const {isDarkMode} = useContext(AppThemeContext);
   return (
     <TouchableOpacity
       onPress={() => handleAnalysisNavigation(item)}

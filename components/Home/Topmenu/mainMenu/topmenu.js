@@ -11,6 +11,7 @@ import NotificationsButton from '../../HomeNotifications/NotificationsButton';
 import SearchWithBar from '../../../Search/SearchWithBar';
 import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
 import {HeaderVisibilityContext} from '../../../../context/HeadersVisibilityContext';
+import {useScreenOrientation} from '../../../../hooks/useScreenOrientation';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
@@ -25,6 +26,7 @@ const TopMenu = ({isAlertsMenu}) => {
   const {theme, isDarkMode} = useContext(AppThemeContext);
   const topMenuScrollRef = useRef(null);
   const [scrollX, setScrollX] = useState(0);
+  const {isLandscape, isHorizontal} = useScreenOrientation();
 
   // Function to handle the button pressing of a category, setting it as active and navigating to the corresponding section. In case the category has more coins, set the first coin as active. Also, the top menu scrolls the category to the middle of the view.
   const handleButtonPress = (category, index) => {
@@ -174,12 +176,12 @@ const TopMenu = ({isAlertsMenu}) => {
           : {
               // height: 700
             },
-
         !headersVisibility.TopMenu
           ? isAlertsMenu
             ? {height: 115}
             : {height: 1}
           : {},
+          isLandscape && isHorizontal ? {height: 0} : {},
       ]}>
       <BackgroundGradient />
       <Animated.View

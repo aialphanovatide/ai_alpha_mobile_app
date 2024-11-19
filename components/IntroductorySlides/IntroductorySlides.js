@@ -16,11 +16,15 @@ import {useNavigation} from '@react-navigation/core';
 import FastImage from 'react-native-fast-image';
 import Video from 'react-native-video';
 
+// IntroductoryCarousel component that renders the carousel that contains the introductory slides. The component receives the children components that represent the slides, and it also receives a function to handle the change of the active slide when the user scrolls through the slides.
+
 const IntroductoryCarousel = ({children, toggleActiveSlide}) => {
   const {theme} = useContext(AppThemeContext);
   const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(0);
   const styles = useIntroductorySlidesStyles();
+
+  // Function to handle the scroll event when the user scrolls through the slides. It calculates the current page based on the scroll offset and the width of the screen, and it calls the function to change the active slide.
 
   const handleScroll = event => {
     const offsetX = event.nativeEvent.contentOffset.x;
@@ -54,6 +58,8 @@ const IntroductoryCarousel = ({children, toggleActiveSlide}) => {
   );
 };
 
+// Component that renders the information of each introductory slide. The component receives the image and the information to be displayed in each slide as props.
+
 const IntroductoryItem = ({imageSource, information}) => {
   const styles = useIntroductorySlidesStyles();
   return (
@@ -67,6 +73,8 @@ const IntroductoryItem = ({imageSource, information}) => {
     </View>
   );
 };
+
+// Slide component that renders the content of each introductory slide. The component receives the information to be displayed in each slide as props, and it also receives a function to handle the navigation to the next screen when the user decides to skip the slides.
 
 const Slide = ({
   id,
@@ -83,6 +91,8 @@ const Slide = ({
 }) => {
   const styles = useIntroductorySlidesStyles();
   const buttonOpacity = useRef(new Animated.Value(0)).current;
+
+  // This useEffect is used to animate the button that redirects the user to the Discord server when the user reaches the last slide.
 
   useEffect(() => {
     if (activeSlide === 3) {
@@ -218,9 +228,14 @@ const Slide = ({
   );
 };
 
+// Component that renders the introductory slides and handles the navigation to the chosen screen after the slides are finished, or the user decides to skip them. The slides are defined by an array of objects that contain the information to be displayed in each slide. The component also handles the navigation to the Discord server when the user clicks on the button to join the community.
+
 const IntroductorySlides = ({route}) => {
   const chosenScreen = route.params.chosenScreen;
   const styles = useIntroductorySlidesStyles();
+
+  // Slides static data
+
   const SLIDES_DATA = [
     {
       id: 1,
@@ -312,13 +327,19 @@ const IntroductorySlides = ({route}) => {
   const navigation = useNavigation();
   const [activeSlide, setActiveSlide] = useState(1);
 
+  // Function to handle the change of the active slide when the user scrolls through the slides.
+
   const toggleActiveSlide = value => {
     setActiveSlide(value);
   };
 
+  // Function to handle the navigation to the chosen screen after the slides are finished, or the user decides to skip them.
+
   const handleSkip = () => {
     navigation.navigate(chosenScreen, {shouldShowPopUps: true});
   };
+
+  // Function to handle the navigation to the Discord server when the user clicks on the button to join the community. Redirects the user to the Discord server invite link, opening the Discord app if it is installed, or the browser if it is not.
 
   const handleDiscordNavigation = () => {
     const discordInviteUri = 'https://discord.gg/2nX2HcHS';

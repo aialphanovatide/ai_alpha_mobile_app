@@ -1,33 +1,25 @@
 import React, {useState, useEffect, useContext} from 'react';
-//var rnSecureStorage = require("rn-secure-storage");
-//import secureLocalStorage from "react-secure-storage";
-import rnSecureStorage from 'rn-secure-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import {
   View,
   Image,
   ScrollView,
   Text,
   TouchableOpacity,
-  Appearance,
   SafeAreaView,
 } from 'react-native';
 import Logo from '../../../../assets/images/account/logoWithText.png';
 import CustomInput from '../../CustomInput/CustomInput';
 import CustomPasswordInput from '../../CustomInput/CustomPasswordInput';
 import CustomButton from '../../CustomButton/CustomButton';
-import Separator from '../../CustomButton/Separator';
 import SocialSignInButton from '../../SocialButtons/SocialSignInButton';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import auth0 from '../../auth0';
-import Purchases from 'react-native-purchases';
 import {useUser} from '../../../../context/UserContext';
 import {useUserId} from '../../../../context/UserIdContext';
 import {useRawUserId} from '../../../../context/RawUserIdContext';
 import jwtDecode from 'jwt-decode';
 import {decode as base64decode} from 'base-64';
-import {AppThemeContext} from '../../../../context/themeContext';
 import useLoginFormStyles from './LoginFormStyles';
 import {RevenueCatContext} from '../../../../context/RevenueCatContext';
 import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
@@ -40,7 +32,6 @@ const LoginForm = ({route}) => {
   const {setUserId} = useUserId();
   const {setRawUserId} = useRawUserId();
   const [error, setError] = useState('');
-  const {isDarkMode} = useContext(AppThemeContext);
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
   const styles = useLoginFormStyles();
 
@@ -75,14 +66,12 @@ const LoginForm = ({route}) => {
       } else {
         if (accessToken && refreshToken) {
           navigation.navigate(
-            'HomeScreen',
+            'TabsMenu',
             route.params && route.params !== undefined
               ? route.params.shouldShowPopUps
               : null,
           );
           const user_id = formatUserId(userId);
-          //console.log("LoginForm NEWuserEmail ->", userEmail);
-          //console.log("LoginForm NEWuserID ->", user_id);
           setUserEmail(userEmail);
           setUserId(user_id);
           setRawUserId(rawUserId);
@@ -99,13 +88,6 @@ const LoginForm = ({route}) => {
         if (userEmail) {
           updateUserEmail(userEmail);
         }
-        /*
-        console.log("LoginForm Checking persistence...");
-        console.log("LoginForm accestoken ->", accessToken);
-        console.log("LoginForm refreshtoken ->", refreshToken);
-        console.log("LoginForm userEmail ->", userEmail);
-        console.log("LoginForm userID ->", userId);
-  */
       }
     };
 
@@ -126,7 +108,7 @@ const LoginForm = ({route}) => {
 
   const onSignInPressed = async () => {
     try {
-      console.log('jwtDecode:', jwtDecode);
+      // console.log('jwtDecode:', jwtDecode);
 
       const credentials = await auth0.auth.passwordRealm({
         username: username,
@@ -135,14 +117,14 @@ const LoginForm = ({route}) => {
         scope: 'openid profile email offline_access',
       });
 
-      console.log('Logged in with Auth0:', credentials);
+      console.log('- Logged in successfully with Auth0:', credentials);
 
       if (credentials.idToken) {
         const decodedToken = decodeJwt(credentials.idToken);
         console.log('Decoded token: ', decodedToken);
         if (decodedToken) {
           const userId = decodedToken.sub;
-          console.log('User ID:', userId);
+          // console.log('User ID:', userId);
           const formatted_id = formatUserId(userId);
 
           await AsyncStorage.setItem('accessToken', credentials.accessToken);
@@ -157,11 +139,11 @@ const LoginForm = ({route}) => {
           setRawUserId(userId);
           updateUserEmail(username);
 
-          navigation.navigate('HomeScreen');
+          navigation.navigate('TabsMenu');
         }
       }
     } catch (error) {
-      console.log('Failed to log in with Auth0:', error);
+      console.error('Failed to log in with Auth0:', error);
       setError('Email or Password are incorrect');
     }
   };
@@ -194,7 +176,6 @@ const LoginForm = ({route}) => {
           <Image source={Logo} style={styles.logo} resizeMode="contain" />
           <View style={styles.inputContainer}>
             <View style={styles.labelContainer}>
-              {/* <Text style={styles.title}>Email</Text> */}
               {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
             </View>
             <CustomInput
@@ -206,7 +187,6 @@ const LoginForm = ({route}) => {
 
           <View style={styles.inputContainer}>
             <View style={styles.labelContainer}>
-              {/* <Text style={styles.title}>Password</Text> */}
               {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
             </View>
             <CustomPasswordInput

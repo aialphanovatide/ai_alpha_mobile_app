@@ -1,20 +1,24 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, Image, ScrollView} from 'react-native';
-import BackButton from '../BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import FundingRatesServices from '../../../services/FundingRatesServices';
 import useFundingRatesStyles from './FundingRatesStyles';
-import exchangesData from '../BTCFundingRates/ExchangesMetaData';
+import exchangesData from '../../../assets/static_data/ExchangesMetaData';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 
+// Static data for testing purposes
+
 const FUNDING_RATES_MOCK = {
   BTC: {Binance: '0.0221', Bybit: '0.0394', OKX: '0.0057', dYdX: '0.0022'},
   ETH: {Binance: '0.0302', Bybit: '0.0116', OKX: '0.0067', dYdX: '0.0029'},
   SOL: {Binance: '0.0261', OKX: '0.0253', dYdX: '0.0037'},
 };
+
+// Component to render the table header cell in the funding rates table. It displays the exchange name and logo.
 
 const TableHeaderCell = ({title, styles, logoSource, index, itemsLength}) => {
   return (
@@ -37,6 +41,8 @@ const TableHeaderCell = ({title, styles, logoSource, index, itemsLength}) => {
   );
 };
 
+// Component to render the table cell in the funding rates table. It displays the funding rate value for a coin in a specific exchange.
+
 const TableCell = ({value, styles}) => {
   return (
     <Text
@@ -50,12 +56,16 @@ const TableCell = ({value, styles}) => {
   );
 };
 
+// FundingRates component that renders the funding rates screen. It displays the current funding rates for BTC, ETH, and SOL on various exchanges. The user can view the funding rates for the three coins on different exchanges to understand the market outlook in terms of long or short positions. The component also includes a brief description of the funding rates and a return button to navigate back to the previous screen.
+
 const FundingRates = ({handleReturn}) => {
   const styles = useFundingRatesStyles();
   const [fundingRates, setFundingRates] = useState(null);
   const [loading, setLoading] = useState(true);
   const {isDarkMode} = useContext(AppThemeContext);
   const {subscribed} = useContext(RevenueCatContext);
+
+  // Static data for the coins and their respective logos
 
   const COINS_STATIC_DATA = [
     {
@@ -116,9 +126,9 @@ const FundingRates = ({handleReturn}) => {
         console.error(`Error trying to fetch Bitcoin funding rates: ${error}`);
       }
     };
-    // fetchBtcFundingRates();
-    setFundingRates(FUNDING_RATES_MOCK);
-    setLoading(false);
+    fetchBtcFundingRates();
+    // setFundingRates(FUNDING_RATES_MOCK);
+    // setLoading(false);
   }, []);
 
   return (

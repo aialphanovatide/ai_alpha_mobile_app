@@ -17,20 +17,18 @@ import Hacks from './SubSections/Hacks/Hacks';
 import Upgrades from './SubSections/UpgradesSection/Upgrades';
 import DApps from './SubSections/DApps/DApps';
 import useFundamentalsStyles from './FundamentalsStyles';
-import {AppThemeContext} from '../../../../../../context/themeContext';
 import UpdatedRevenueModel from './SubSections/RevenueModel/UpdatedRevenueModel';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import {getService} from '../../../../../../services/aiAlphaApi';
-import {fundamentalsMock} from './fundamentalsMock';
+import {fundamentalsMock} from '../../../../../../assets/static_data/fundamentalsMock';
 import TokenUtility from './SubSections/TokenUtility/TokenUtility';
-import AboutModal from './AboutModal';
-import {fundamentals_static_content} from './fundamentalsStaticData';
-import LinearGradient from 'react-native-linear-gradient';
-import {useScrollToTop} from '@react-navigation/native';
-import {AboutModalContext} from '../../../../../../context/AboutModalContext';
+import AboutModal from '../../../../../AboutModal/AboutModal';
+import {fundamentals_static_content} from '../../../../../../assets/static_data/fundamentalsStaticData';
+import {useFocusEffect, useScrollToTop} from '@react-navigation/native';
 import BackgroundGradient from '../../../../../BackgroundGradient/BackgroundGradient';
 import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
+import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
 
 const initialContentState = {
   introduction: false,
@@ -52,12 +50,12 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const Fundamentals = ({route}) => {
+// Main component that renders all the sections of the Fundamentals page and handles the requests to the API to get the data of each section. It also handles the state of the content of each section and the state of the about modal, and the state of the loading of the page.
+
+const Fundamentals = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
   const [coin, setCoin] = useState(activeSubCoin);
-  const {isDarkMode} = useContext(AppThemeContext);
   const styles = useFundamentalsStyles();
-  const [currentContent, setCurrentContent] = useState(fundamentalsMock[coin]);
   const [sharedData, setSharedData] = useState([]);
   const [fundamentalsData, setFundamentalsData] = useState(null);
   const [globalLoading, setGlobalLoading] = useState(true);
@@ -65,6 +63,8 @@ const Fundamentals = ({route}) => {
   const [aboutVisible, setAboutVisible] = useState(false);
   const [aboutDescription, setAboutDescription] = useState('');
   const [aboutTitle, setAboutTitle] = useState('About');
+  const {isLandscape, isHorizontal, handleScreenOrientationChange} =
+    useScreenOrientation();
   const ref = useRef(null);
 
   const handleAboutPress = (description = null, title = null) => {
@@ -117,7 +117,9 @@ const Fundamentals = ({route}) => {
         dapps: results[6],
       };
 
-      console.log('Fundamentals all data: ', data);
+      console.log(
+        `- Successfully requested fundamentals data for ${coin}. Status: ${results[0].status}`,
+      );
       setFundamentalsData(data);
     } catch (error) {
       console.error(`Error fetching crypto data: ${error.message}`);
@@ -128,6 +130,8 @@ const Fundamentals = ({route}) => {
     }
   };
 
+  // Function to handle the requests to the API to get the data of a specific section. It receives the endpoint of the section as a parameter.
+
   const getSectionData = async endpoint => {
     const data = await getService(endpoint);
     return data;
@@ -137,10 +141,8 @@ const Fundamentals = ({route}) => {
     setGlobalLoading(true);
     getAllFundamentalsData(coin && coin !== undefined ? coin : activeSubCoin);
     const handleCoinUpdate = newCoin => {
-      setCurrentContent(fundamentalsMock[newCoin]);
       setCoin(newCoin);
       setHasContent(initialContentState);
-      // console.log(`Updating content from coin ${coin} to ${newCoin}`);
     };
 
     handleCoinUpdate(activeSubCoin);
@@ -165,6 +167,12 @@ const Fundamentals = ({route}) => {
     };
     fetchTokenomicsData();
   }, [coin]);
+
+  useFocusEffect(() => {
+    if (isLandscape && isHorizontal) {
+      handleScreenOrientationChange('PORTRAIT');
+    }
+  });
 
   // Functions to handle the scrolling interaction that hides the menu
 
@@ -260,20 +268,6 @@ const Fundamentals = ({route}) => {
             fundamentals_static_content.tokenDistribution.sectionDescription
           }
         />
-        {/* <SubSection
-            subtitle={'Vesting Schedule'}
-            content={
-              <VestingSchedule
-                crypto={currentContent.vestingSchedules?.displayName}
-                schedules={currentContent.vestingSchedules?.schedules}
-              />
-            }
-            hasAbout
-            handleAboutPress={handleAboutPress}
-            description={
-              fundamentals_static_content.vestingSchedule.sectionDescription
-            }
-          /> */}
         <SubSection
           subtitle={'Token Utility'}
           hasEmptyContent={hasContent.tokenUtility}

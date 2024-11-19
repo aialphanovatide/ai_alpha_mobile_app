@@ -1,11 +1,12 @@
 import {Text, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import Loader from '../../../../../../../Loader/Loader';
 import useVAMStyles from './VAMStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
+
+// ContentItem component that renders the ValueAccrualMechanisms item, which displays the value accrual mechanisms content for a coin. The content itself is displayed as an item with title, image and a description.
 
 const ContentItem = ({data, styles}) => {
   return (
@@ -36,8 +37,9 @@ const ContentItem = ({data, styles}) => {
   );
 };
 
+// Component that renders the ValueAccrualMechanisms section, which displays the value accrual mechanisms content for a coin. It shows a loader when requesting the data and a message in case there is no content to display. The content itself is displayed as a list of items, each containing an image and a description, similar to the TokenUtilities section.
+
 const ValueAccrualMechanisms = ({
-  getSectionData,
   coin,
   handleSectionContent,
   loading,
@@ -72,47 +74,6 @@ const ValueAccrualMechanisms = ({
   };
 
   useEffect(() => {
-    // setLoading(true);
-    // setDataItems([]);
-
-    // const fetchValueAccrualMechanisms = async coin => {
-    //   try {
-    //     const response = await getSectionData(
-    //       `/api/get_tokenomics?coin_name=${coin}`,
-    //     );
-    //     if (response.status !== 200) {
-    //       setDataItems([]);
-    //     } else {
-    //       const parsed_data = response.message.value_accrual_mechanisms.map(
-    //         item => {
-    //           return {
-    //             id: item.value_accrual_mechanisms.id,
-    //             title: item.value_accrual_mechanisms.mechanism,
-    //             text: item.value_accrual_mechanisms.description,
-    //             image: getItemImageUri(
-    //               coin,
-    //               item.value_accrual_mechanisms.mechanism.replace(/'/g, ''),
-    //               item.value_accrual_mechanisms.description,
-    //               isDarkMode,
-    //             ),
-    //             imageSize: calculateImageSize(
-    //               item.value_accrual_mechanisms.description,
-    //             ),
-    //           };
-    //         },
-    //       );
-    //       setDataItems(parsed_data);
-    //     }
-    //   } catch (error) {
-    //     console.error(
-    //       'Error trying to get Value Accrual Mechanisms data: ',
-    //       error,
-    //     );
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
     const fetchValueAccrualMechanisms = coin => {
       if (!globalData || globalData.tokenomics.status !== 200) {
         setDataItems([]);

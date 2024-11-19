@@ -5,7 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginForm from '../components/Login/Screens/LoginForm/LoginForm';
 import SignupForm from '../components/Login/Screens/SignUp/SignupForm';
 import ForgotPasswordForm from '../components/Login/Screens/ForgotPassword/ForgotPasswordForm';
-import HomeScreen from '../components/Login/HomeScreen/HomeScreen';
+import TabsMenu from '../components/Login/TabsMenu/TabsMenu';
 import TermsAndConditions from '../components/Login/Screens/TermsAndConditions/TermsAndConditions';
 import {AppThemeContext} from '../context/themeContext';
 import {Appearance} from 'react-native';
@@ -14,9 +14,9 @@ import IntroductorySlides from '../components/IntroductorySlides/IntroductorySli
 
 const Stack = createNativeStackNavigator();
 
+// Navigation component to handle the navigation between the different screens of the app. It uses the NavigationContainer and StackNavigator from the @react-navigation/native library to create the navigation stack.
+
 const Navigation = () => {
-  const colorScheme = Appearance.getColorScheme();
-  const {isDarkMode, toggleDarkMode} = useContext(AppThemeContext);
   const [chosenScreen, setChosenScreen] = useState('SignIn');
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Navigation = () => {
       const refreshToken = await AsyncStorage.getItem('refreshToken');
 
       if (accessToken && refreshToken) {
-        setChosenScreen('HomeScreen');
+        setChosenScreen('TabsMenu');
       } else {
         setChosenScreen('SignIn');
       }
@@ -65,8 +65,8 @@ const Navigation = () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordForm} />
 
         <Stack.Screen
-          name="HomeScreen"
-          component={HomeScreen}
+          name="TabsMenu"
+          component={TabsMenu}
           options={{
             gestureEnabled: false,
             headerShown: false,
@@ -76,7 +76,7 @@ const Navigation = () => {
             focus: () => {
               navigation.reset({
                 index: 0,
-                routes: [{name: 'HomeScreen'}],
+                routes: [{name: 'TabsMenu'}],
               });
             },
           })}

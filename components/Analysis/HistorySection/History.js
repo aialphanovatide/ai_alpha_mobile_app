@@ -7,8 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import BackButton from '../BackButton/BackButton';
-import {AppThemeContext} from '../../../context/themeContext';
+import BackButton from '../../BackButton/BackButton';
 import useHistoryStyles from './HistoryStyles';
 import CryptoFilter from '../Calendar/CryptoCalendar/CryptoFilter';
 import {useNavigation} from '@react-navigation/core';
@@ -20,8 +19,9 @@ import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import {AnalysisContext} from '../../../context/AnalysisContext';
 
+// HistoryItem component that renders the history item in the history section. It displays the item's image, title, date, and time. The user can click on the item to navigate to the daily deep dives article screen.
+
 const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
-  const {isDarkMode} = useContext(AppThemeContext);
 
   const formatItemDate = dateTimeString => {
     const dateTime = new Date(dateTimeString);
@@ -94,6 +94,8 @@ const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
   );
 };
 
+// Component to display the time interval filter in the history section. It allows users to filter the history items by today or the last week.
+
 const HistoryTimeMenu = ({
   options,
   activeOption,
@@ -124,6 +126,8 @@ const HistoryTimeMenu = ({
   );
 };
 
+// Component to display the history section of the app. It displays the daily deep dives conducted on a specific coin, allowing users to access today's and the week's insights conveniently categorized in one place. It also includes a filter to allow users to filter the history items by time and coin.
+
 const History = () => {
   const options = ['today', 'last week'];
   const {analysisItems} = useContext(AnalysisContext);
@@ -133,43 +137,11 @@ const History = () => {
     historyFilterData[0],
   );
   const [historyItems, setHistoryItems] = useState([]);
-  const [loadedHistoryItems, setLoadedHistoryItems] = useState([]);
   const styles = useHistoryStyles();
   const navigation = useNavigation();
   const {subscribed} = useContext(RevenueCatContext);
 
-  // Hook to load the data from the previous analysis that the user has seen
-  // useEffect(() => {
-  //   const interval = activeOption === 'today' ? 1 : 7;
-  //   const fetchData = async interval => {
-  //     try {
-  //       const keys = await AsyncStorage.getAllKeys();
-  //       const analysisKeys = keys.filter(key => key.startsWith('analysis_'));
-  //       const analysisItems = await AsyncStorage.multiGet(analysisKeys);
-  //       const parsedItems = analysisItems.map(item => JSON.parse(item[1]));
-  //       const currentDate = new Date();
-
-  //       const filteredItems = parsedItems.filter(item => {
-  //         const clickedAt = new Date(item.clickedAt);
-  //         const timeDifference = Math.abs(currentDate - clickedAt);
-  //         const daysDifference = timeDifference / (1000 * 3600 * 24);
-
-  //         return daysDifference <= interval;
-  //       });
-
-  //       console.log(
-  //         `Loaded analysis items within ${interval} days: `,
-  //         filteredItems,
-  //       );
-  //       setLoadedHistoryItems(filteredItems);
-  //     } catch (e) {
-  //       console.error('Failed to load the data from storage', e);
-  //     }
-  //   };
-  //   if (loadedHistoryItems.length === 0) {
-  //     fetchData(interval);
-  //   }
-  // }, [activeOption]);
+  // Filter the history items by time and category when the data changes
 
   useEffect(() => {
     if (analysisItems.length !== 0) {
@@ -186,6 +158,8 @@ const History = () => {
     setActiveOption(options[0]);
     handleCryptoTouch(activeCryptoOption);
   }, []);
+
+  // Function to filter the history items by category
 
   const filterItemsByCategory = (category, items) => {
     const filtered_items = [];
@@ -211,6 +185,8 @@ const History = () => {
 
     return filtered_items;
   };
+
+  // Function to filter the history items by time
 
   const filterItemsByTime = (interval, analysisArray) => {
     const currentDate = new Date();

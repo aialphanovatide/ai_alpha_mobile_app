@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import BackButton from '../../Analysis/BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import {AppThemeContext} from '../../../context/themeContext';
 import useNewNotificationsStyles from './NewNotificationsStyles';
 import {NOTIFICATIONS_MOCK} from '../../../assets/static_data/notificationsMock';

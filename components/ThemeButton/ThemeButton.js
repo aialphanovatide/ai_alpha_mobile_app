@@ -1,21 +1,14 @@
-import {Image, Text, View, Switch} from 'react-native';
+import {View, Switch} from 'react-native';
 import React, {useContext} from 'react';
 import {AppThemeContext} from '../../context/themeContext';
 import useThemeButtonStyles from './ThemeButtonStyles';
+
+// Component to render a switch button to toggle the dark mode on and off. It uses the AppThemeContext to get the current theme and the toggleDarkMode function to change the theme.
 
 const ThemeButton = () => {
   const {toggleDarkMode, isDarkMode} = useContext(AppThemeContext);
   const styles = useThemeButtonStyles();
   return (
-    // <View style={styles.buttonContainer}>
-    //   <View style={styles.buttonLogoContainer}>
-    //     <Image
-    //       source={require('../../assets/images/account/darkmode.png')}
-    //       resizeMode="contain"
-    //       style={styles.buttonLogo}
-    //     />
-    //   </View>
-    //   <Text style={styles.name}>Dark Mode</Text>
     <View style={styles.switchContainer}>
       <Switch
         value={isDarkMode}
@@ -25,7 +18,6 @@ const ThemeButton = () => {
         ios_backgroundColor={'#D9D9D9'}
       />
     </View>
-    // </View>
   );
 };
 

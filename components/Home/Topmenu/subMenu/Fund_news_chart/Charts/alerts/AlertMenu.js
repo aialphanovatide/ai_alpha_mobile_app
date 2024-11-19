@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import useChartsStyles from '../ChartsStyles';
-import {AboutIcon} from '../../Fundamentals/AboutIcon';
+import {AboutIcon} from '../../../../../../AboutModal/AboutIcon';
 import {AboutModalContext} from '../../../../../../../context/AboutModalContext';
 import {home_static_data} from '../../../../../../../assets/static_data/homeStaticData';
 

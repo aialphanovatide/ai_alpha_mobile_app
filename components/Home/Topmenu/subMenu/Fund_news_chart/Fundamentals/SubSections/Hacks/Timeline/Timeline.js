@@ -2,9 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import useTimelineStyles from './TimelineStyles';
 
+// Component to render a timeline with the most relevant events in the history of a coin. It displays the events in a timeline format, showing the date and the event name. When an event is clicked, it shows the details of the event.
+
 const Timeline = ({events, textPoints}) => {
   const styles = useTimelineStyles();
   const [activeEvent, setActiveEvent] = useState(null);
+
+  // Function to format the date string to show only the month and year, or the full string if it contains special words.
 
   const formatDate = dateString => {
     const words = dateString.split(/\s|-|\//g);
@@ -19,6 +23,8 @@ const Timeline = ({events, textPoints}) => {
     return has_words ? dateString : formatted_date;
   };
 
+  // Function to generate the information of the event, showing the title and the content of the event. It receives the event object and the topics to show.
+  
   const generateEventInformation = (event, topics) => {
     const eventInformation = [];
 

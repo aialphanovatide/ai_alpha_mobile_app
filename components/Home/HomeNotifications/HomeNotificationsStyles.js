@@ -1,9 +1,11 @@
 import {useContext} from 'react';
-import {StyleSheet, Dimensions, Platform} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
+import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 
 const useHomeNotificationsStyles = () => {
   const {theme} = useContext(AppThemeContext);
+  const {isLandscape} = useScreenOrientation();
   const styles = StyleSheet.create({
     mainSection: {
       flex: 1,
@@ -60,7 +62,7 @@ const useHomeNotificationsStyles = () => {
     },
     notificationsButton: {
       position: 'absolute',
-      top: '15%',
+      top: isLandscape ? -12.5 : '15%',
       right: Platform.OS === 'android' ? '4%' : '4.5%',
       width: 60,
       height: 60,

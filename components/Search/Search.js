@@ -23,7 +23,7 @@ import {TopMenuContext} from '../../context/topMenuContext';
 import {AnalysisContext} from '../../context/AnalysisContext';
 import {CategoriesContext} from '../../context/categoriesContext';
 import {useIsFocused} from '@react-navigation/native';
-import AlertDetails from '../Alerts/AlertsDetails';
+import AlertDetails from '../Alerts/AlertItem';
 import {getService} from '../../services/aiAlphaApi';
 import useAlertsStyles from '../Alerts/styles';
 import {NarrativeTradingContext} from '../../context/NarrativeTradingContext';

@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import BackButton from '../../Analysis/BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import RenderHTML, {
   defaultSystemFonts,
   useInternalRenderer,
@@ -20,10 +20,11 @@ import {useNavigation} from '@react-navigation/core';
 import useHomeNarrativeTradingStyles from './MarketNarrativesStyles';
 import {ResumableZoom} from 'react-native-zoom-toolkit';
 
+// Component that renders the image in the market narratives article. It receives the image data as props and renders the image with a zoom functionality. It is used within the article's images or in the main image of the article.
+
 const CustomImageRenderer = props => {
   const {Renderer, rendererProps} = useInternalRenderer('img', props);
   const styles = useHomeNarrativeTradingStyles();
-  const {theme} = useContext(AppThemeContext);
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
   const uri = rendererProps.source.uri;
   const thumbnailSource = {
@@ -36,16 +37,17 @@ const CustomImageRenderer = props => {
     height: 380,
   });
 
+  // Function that sets the image dimensions when the image layout is calculated.
   const onImageLayout = event => {
     const {width, height} = event.nativeEvent.layout;
     setImageDimensions({width, height});
   };
 
+  // Function that handles the closing of the image zoom modal when the back button is pressed.
   const handleBackButtonImageClose = () => {
     setImageZoomVisible(false);
   };
 
-  const images = [{url: thumbnailSource.uri, width: 700, height: '50%'}];
   return (
     <View style={{alignItems: 'center'}}>
       <Renderer {...rendererProps} onPress={() => setImageZoomVisible(true)} />
@@ -87,6 +89,8 @@ const CustomImageRenderer = props => {
     </View>
   );
 };
+
+// Component that renders the article of a market narrative. It receives the article data as props and renders the article's image, date, and content. It also renders the zoom functionality for the images in the article, and uses the RenderHTML component to render the article's content.
 
 const MarketNarrativesArticle = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
@@ -149,6 +153,7 @@ const MarketNarrativesArticle = ({route}) => {
     return bullet_lists_updated_content;
   };
 
+  // Function that handles the navigation back to the previous screen. If the screen is the InitialHome screen, it navigates to the InitialHome screen. Otherwise, it navigates to the Home screen with the InitialHome and Analysis screens as parameters.
   const handleBackNavigation = () => {
     navigation.goBack();
     if (
@@ -169,6 +174,7 @@ const MarketNarrativesArticle = ({route}) => {
     }
   };
 
+  // Styles for the HTML content of the article.
   const html_styles = {
     p: {
       color: theme.titleColor,
@@ -219,6 +225,7 @@ const MarketNarrativesArticle = ({route}) => {
 
   const images = [{url: imageUri, width: theme.width, height: 400}];
 
+  // Function that handles the closing of the image zoom modal when the back button is pressed.
   const handleBackButtonImageClose = () => {
     setImageZoomVisible(false);
   };

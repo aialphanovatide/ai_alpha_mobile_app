@@ -23,7 +23,7 @@ import {useUserId} from '../../../context/UserIdContext';
 import {useRawUserId} from '../../../context/RawUserIdContext';
 import useSettingsScreenStyles from './SettingsScreenStyles';
 import ThemeButton from '../../ThemeButton/ThemeButton';
-import BackButton from '../../Analysis/BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';

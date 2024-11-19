@@ -1,7 +1,7 @@
 import {React, useContext, useState} from 'react';
 import {View, Text, ScrollView, SafeAreaView} from 'react-native';
 import CryptoCalendar from './CryptoCalendar/CryptoCalendar.js';
-import BackButton from '../BackButton/BackButton.js';
+import BackButton from '../../BackButton/BackButton.js';
 import SubMenu from './SubMenu/SubMenu.js';
 import useCalendarStyles from './CalendarStyles.js';
 import {AppThemeContext} from '../../../context/themeContext.js';
@@ -9,6 +9,8 @@ import MacroEconomicCalendar from './MacroEconomicsCalendar/MacroEconomicCalenda
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay.js';
 import {RevenueCatContext} from '../../../context/RevenueCatContext.js';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient.js';
+
+// Intervals object that contains the intervals "Today" and "This Week" that the user can select to view the events for the selected interval.
 
 const Intervals = {
   today: {
@@ -21,6 +23,8 @@ const Intervals = {
   },
 };
 
+// Calendar component that renders the calendar screen. It displays the crypto and macroeconomic events for the selected interval. The user can select the interval "Today" or "This Week" to view the events for the selected interval, in both the crypto and macroeconomic sections.
+
 const Calendar = ({handleReturn}) => {
   // Selected interval: today = 1 (1 day), this week = 7 (7 days).
   const [cryptoSelectedInterval, setCryptoSelectedInterval] = useState(
@@ -30,7 +34,6 @@ const Calendar = ({handleReturn}) => {
     Intervals.today,
   );
   const styles = useCalendarStyles();
-  const {isDarkMode} = useContext(AppThemeContext);
   const handleCryptoPress = interval => {
     setCryptoSelectedInterval(interval);
   };

@@ -1,5 +1,7 @@
 import {COINGECKO_PRO_KEY} from '../src/constants';
 
+// This hook is used to retrieve the data for the charts in the Home page. It takes in the coin, pairing and interval as arguments and returns the appropriate url and options for executing the requests to the APIs.
+
 const useChartsSource = (coin, pairing, interval) => {
   const DAYS_INTERVALS = {
     '1W': 180,

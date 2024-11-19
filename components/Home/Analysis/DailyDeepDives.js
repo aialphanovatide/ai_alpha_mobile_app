@@ -9,7 +9,7 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import {AboutIcon} from '../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../assets/static_data/homeStaticData';
 import {AnalysisContext} from '../../../context/AnalysisContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
@@ -24,6 +24,8 @@ if (
 ) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
+
+// Component that renders the Daily Deep Dives section in the home screen. It receives the function to handle the press on the about icon as a prop. It uses the AnalysisContext to fetch the analysis data and renders the items in the list. It also renders the see all button that navigates to the History section.
 
 const DailyDeepDives = ({handleAboutPress}) => {
   const styles = useDailyDeepsStyles();

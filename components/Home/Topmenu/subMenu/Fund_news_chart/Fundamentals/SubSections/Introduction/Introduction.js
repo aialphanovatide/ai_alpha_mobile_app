@@ -1,11 +1,12 @@
 import {Image, Linking, Platform, Text, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import useIntroductionStyles from './IntroductionStyles';
-import Loader from '../../../../../../../Loader/Loader';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import RenderHTML, {defaultSystemFonts} from 'react-native-render-html';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
+
+// Component to render an external link in the Introduction section of the Fundamentals tab. It displays a link to the website or whitepaper of the coin.
 
 const ExternalLink = ({url, text}) => {
   const styles = useIntroductionStyles();
@@ -21,8 +22,9 @@ const ExternalLink = ({url, text}) => {
   );
 };
 
+// Component to render the Introduction section in the Fundamentals tab. It displays the description of the coin and links to the website and whitepaper.
+
 const Introduction = ({
-  getSectionData,
   coin,
   handleSectionContent,
   loading,

@@ -4,8 +4,9 @@ import useUpdatedRevenueModelStyles from './UpdatedRevenueModelStyles';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
+// Component to render the Revenue Model section in the Fundamentals tab. It displays the annualised revenue and fees of the coin. It also shows a loader when requesting the data and a message in case there is no content to display.
+
 const UpdatedRevenueModel = ({
-  getSectionData,
   coin,
   handleSectionContent,
   globalData,
@@ -30,48 +31,6 @@ const UpdatedRevenueModel = ({
   };
 
   useEffect(() => {
-    // setLoading(true);
-    // setRevenues([]);
-
-    // const fetchRevenueModelData = async coin => {
-    //   try {
-    //     const response = await getSectionData(
-    //       `/api/get_revenue_models?coin_name=${coin}`,
-    //     );
-    //     if (response.status !== 200) {
-    //       setRevenues([]);
-    //     } else {
-    //       const revenue_model = response.revenue_model;
-    //       const mapped_data = [];
-    //       for (const key in revenue_model) {
-    //         switch (key) {
-    //           case 'analized_revenue':
-    //             mapped_data.push({
-    //               title: 'Annualised Revenue',
-    //               subtitle: '*Cumulative last 1yr revenue',
-    //               value: revenue_model[key],
-    //             });
-    //             break;
-    //           case 'fees_1ys':
-    //             mapped_data.push({
-    //               title: 'Fees (1Y)',
-    //               subtitle: '*Cumulative last 1yr fees',
-    //               value: revenue_model[key],
-    //             });
-    //             break;
-    //           default:
-    //             break;
-    //         }
-    //       }
-    //       setRevenues(mapped_data);
-    //     }
-    //   } catch (error) {
-    //     console.log('Error trying to get revenue model data: ', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
     const fetchRevenueModelData = coin => {
       if (!globalData || globalData.revenueModels.status !== 200) {
         setRevenues([]);

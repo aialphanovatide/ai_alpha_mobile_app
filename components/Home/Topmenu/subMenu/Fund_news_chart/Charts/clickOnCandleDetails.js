@@ -25,7 +25,7 @@ function formatLabelNumber(number, decimalPlaces = 2) {
   }
 }
 
-const DataRenderer = ({
+const ClickOnCandleDetails = ({
   data,
   domainX,
   domainY,
@@ -34,12 +34,6 @@ const DataRenderer = ({
   chartHeight,
   screenWidth,
 }) => {
-  const yDomain = domainY;
-  const maxTop = yDomain[1];
-  const minTop = yDomain[0];
-  const minLeft = domainX[0];
-  const maxLeft = domainX[1];
-
   const isCandleClosestToMinDate = (data, domainX) => {
     if (data && data.x) {
       // Calculate the absolute differences between xPoint and each value in domainX
@@ -92,14 +86,13 @@ const styles = StyleSheet.create({
     width: 150,
     borderRadius: 8,
     backgroundColor: '#fff',
-    zIndex: 50
+    zIndex: 50,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
     marginHorizontal: 10,
-    // paddingVertical: 2
   },
   icon: {
     marginRight: 10,
@@ -109,44 +102,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'left',
     textTransform: 'capitalize',
-    flex: 1, // To make keys align to the left
+    flex: 1,
   },
   value: {
     color: '#282828',
     textAlign: 'right',
-    flex: 1, // To make values align to the right
+    flex: 1,
   },
 });
 
-export default DataRenderer;
-
-//   // Function to convert date string to CSS position
-//   const calculatePosition = (dateString, minXDomain, maxXDomain) => {
-//     const date = new Date(dateString);
-//     const minDate = new Date(minXDomain);
-//     const maxDate = new Date(maxXDomain);
-
-//     // Calculate the distance of the date from minDate and maxDate
-//     const totalDomain = maxDate - minDate;
-//     const distanceFromMin = date - minDate;
-//     const distanceFromMax = maxDate - date;
-
-//     // Calculate the percentage of distance from minDate and maxDate
-//     const percentageFromMin = (distanceFromMin / totalDomain);
-//     const percentageFromMax = (distanceFromMax / totalDomain);
-
-//     // Determine the CSS position based on the relative position of the date
-//     let position;
-//     if (percentageFromMin < percentageFromMax) {
-//         // Date is closer to minDate, render to the right
-//         position = percentageFromMin;
-//     } else {
-//         // Date is closer to maxDate, render to the left
-//         position = Number('-' + percentageFromMax);
-//     }
-
-//     return position;
-// };
-
-// const maxXDomain = domainX && domainX.length>0 && domainX[1]
-// const minXDomain = domainX && domainX.length>0 && domainX[0]
+export default ClickOnCandleDetails;

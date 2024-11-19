@@ -4,6 +4,8 @@ import {VictoryPie} from 'victory-native';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import useGTAStyles from '../GeneralTokenAllocation/GTAStyles';
 
+// Circle chart component used in the General Token Distribution section. It is used to display the percentage of each token in the portfolio.
+
 const CircleChart = ({
   data,
   dividerSize,

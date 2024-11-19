@@ -1,10 +1,9 @@
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import useCirculatingSupplyStyles from './CirculatingSupplyStyles';
-import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
-import {fundamentals_static_content} from '../../../../fundamentalsStaticData';
+import {fundamentals_static_content} from '../../../../../../../../../../assets/static_data/fundamentalsStaticData';
 import SupplyModal from '../../../SupplyModal/SupplyModal';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';

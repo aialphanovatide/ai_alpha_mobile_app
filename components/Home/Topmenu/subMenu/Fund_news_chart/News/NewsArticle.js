@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   Text,
@@ -10,19 +10,18 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import BackButton from '../../../../../Analysis/BackButton/BackButton';
+import BackButton from '../../../../../BackButton/BackButton';
 import useNewsStyles from './NewsStyles';
 import FastImage from 'react-native-fast-image';
-import {AppThemeContext} from '../../../../../../context/themeContext';
 import {ResumableZoom} from 'react-native-zoom-toolkit';
 
 const {Value, timing} = Animated;
 
+// Component that renders the article of the news. It receives the article as a prop and displays the image, title, date and content of the article. It also has a zoom feature for the image.
+
 const NewsArticle = ({route, navigation}) => {
   const styles = useNewsStyles();
   const item = route.params.item;
-  const isStory = route.params.isStory;
-  const {theme} = useContext(AppThemeContext);
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
 
   // Animation for the whole article component's first rendering, swiping from the right side of the screen
@@ -55,63 +54,7 @@ const NewsArticle = ({route, navigation}) => {
     return `${day}-${month}-${year} ${hours}:${minutes}`;
   };
 
-  const filterArticleTitle = summary => {
-    const match = summary.match(/"([^"]+)"/);
-
-    if (match && match[1]) {
-      const title = match[1];
-      const content = summary.replace(`"${match}"`, '').trim();
-
-      return {
-        title,
-        content,
-      };
-    } else {
-      const first_line_swap = summary.indexOf('\n');
-
-      return first_line_swap !== -1
-        ? {
-            title: filterText(summary.slice(0, first_line_swap)),
-            content: summary,
-          }
-        : {title: filterText(summary.slice(0, 100)), content: summary};
-    }
-  };
-
-  const filterText = summary => {
-    const keywords_to_remove = [
-      'Headline:',
-      'Summary:',
-      'Step One:',
-      'Step Two:',
-      'Step Three:',
-      'Secondary Summary:',
-      'Secondary ',
-      'Points:',
-    ];
-
-    const filteredText = summary
-      .split('\n')
-      .map(line => {
-        if (line.trim() === '') {
-          return '';
-        }
-        for (const keyword of keywords_to_remove) {
-          if (line.includes(keyword)) {
-            line = line.replace(keyword, '');
-          }
-        }
-        return line.trim();
-      })
-      .filter(line => line !== '')
-      .join('\n');
-
-    return filteredText;
-  };
-
   const imageUri = `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`;
-
-  const images = [{url: imageUri, width: theme.width, height: 400}];
 
   const handleBackButtonImageClose = () => {
     setImageZoomVisible(false);

@@ -10,11 +10,10 @@ import {
   Platform,
   UIManager,
 } from 'react-native';
-import BackButton from '../../Analysis/BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import {AppThemeContext} from '../../../context/themeContext';
 import {useNavigation} from '@react-navigation/core';
 import useFAQsStyles from './FAQsStyles';
-import LinearGradient from 'react-native-linear-gradient';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 
 if (
@@ -24,11 +23,10 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+// Component used in the Account screen to show the FAQs. It returns a view with the questions and answers. The user can click on a question to see the answer. The component uses LayoutAnimation to animate the opening and closing of the answers.
+
 const FAQs = () => {
   const styles = useFAQsStyles();
-  const {theme} = useContext(AppThemeContext);
-  const navigation = useNavigation();
-  const {isDarkMode} = useContext(AppThemeContext);
 
   const [openedFAQ, setOpenedFAQ] = useState(null);
 
@@ -53,13 +51,6 @@ const FAQs = () => {
       answer:
         "If there is a newer version available than the one you have downloaded, you can view it by heading to your app store. Next to the name of AI Alpha, you'll see the 'Update' option. If you don't see this option, it means your app is up to date.",
     },
-    /*
-    {
-      question: 'How do I report a problem or bug?',
-      answer:
-        "If you've experienced a problem or bug while using AI Alpha, you can reach out to our team of specialists in the Contact section within your Account. We'll be happy to receive your feedback.",
-    },
-    */
     {
       question: 'How does the free trial period work?',
       answer:

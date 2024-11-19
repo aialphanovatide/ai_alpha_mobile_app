@@ -10,13 +10,15 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import BackButton from '../../Analysis/BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import useNewsStyles from '../Topmenu/subMenu/Fund_news_chart/News/NewsStyles';
 import FastImage from 'react-native-fast-image';
 import {AppThemeContext} from '../../../context/themeContext';
 import {ResumableZoom} from 'react-native-zoom-toolkit';
 
 const {Value, timing} = Animated;
+
+// StoryArticle component is used to display the full article of a news story, redirected from the TopStories component. It displays the article's title, date, content, and image. The image can be zoomed in by clicking on it. The article's content is displayed in a ScrollView, so the user can scroll through the article if it is too long.
 
 const StoryArticle = ({route, navigation}) => {
   const styles = useNewsStyles();
@@ -41,6 +43,8 @@ const StoryArticle = ({route, navigation}) => {
     animation.start();
   }, []);
 
+  // UseEffect hook to check if the image URL is valid and if the image exists. If the image exists, the image is displayed in the article. If the image does not exist, the article is displayed without an image.
+  
   useEffect(() => {
     const checkImageURL = async url => {
       try {
@@ -61,10 +65,12 @@ const StoryArticle = ({route, navigation}) => {
     );
   }, []);
 
+  // Function to handle the return button, which navigates the user back to the TopStories component
   const handleReturn = () => {
     navigation.goBack();
   };
 
+  // Function to simplify the date and time format of the article to a more readable format
   const simplifyDateTime = dateTimeString => {
     const dateTime = new Date(dateTimeString);
     const year = dateTime.getFullYear();
@@ -78,8 +84,7 @@ const StoryArticle = ({route, navigation}) => {
 
   const imageUri = `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`;
 
-  const images = [{url: imageUri, width: theme.width, height: 400}];
-
+  // Function to handle the closing of the image zoom view when the user clicks on the back button or the overlay
   const handleBackButtonImageClose = () => {
     setImageZoomVisible(false);
   };

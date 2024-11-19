@@ -12,6 +12,8 @@ import {useNavigation} from '@react-navigation/core';
 import LinearGradient from 'react-native-linear-gradient';
 import {Image} from 'react-native';
 
+// Component that renders the pop-up of the introductory slides, with a title, description, and a button that allows the user to render the next pop-up or to start the 7-day free trial. It displays a set of dots that indicate the current pop-up and the total number of pop-ups, and renders a 'Skip' button that allows the user to skip the pop-ups and start using the app. The data for the pop-ups is passed as props, and the component is used in the IntroductoryPopUpsOverlay component.
+
 const IntroductoryPopUp = ({
   title,
   description,
@@ -45,22 +47,6 @@ const IntroductoryPopUp = ({
         <Text style={styles.popUpSkip} onPress={() => handleActivePopUps()}>
           Skip
         </Text>
-        {/* {dotIndex === dots.length - 1 ? (
-          <></>
-        ) : (
-          <>
-            <Text
-              style={styles.popUpNext}
-              onPress={() => handleNextPress(dotIndex)}>
-              Next
-            </Text>
-            <Image
-              source={require('../../../assets/images/arrow-right.png')}
-              resizeMode="contain"
-              style={styles.nextRightArrow}
-            />
-          </>
-        )} */}
       </View>
       <Text style={styles.popUpTitle}>{title}</Text>
       <Text style={styles.popUpText}>{description}</Text>
@@ -81,9 +67,14 @@ const IntroductoryPopUp = ({
   );
 };
 
+// IntroductoryPopUpsOverlay component is used to display the pop-ups that explain the features of the app at the beginning of the user's journey, rendering only one time per user. 
+
 const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
   const styles = useIntroductorySlidesStyles();
   const navigation = useNavigation();
+
+  // Static data for the pop-ups
+
   const POP_UPS_DATA = [
     {
       title: 'Coins and layers',
@@ -215,6 +206,8 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
 
   const opacity = useRef(new Animated.Value(0)).current;
 
+  // Function that handles the press of the 'Next' button, changing the current pop-up to the next one in the array of pop-ups, or to the first one if the current pop-up is the last one.
+
   const handleNextPress = current => {
     Animated.timing(opacity, {
       toValue: 0,
@@ -236,10 +229,14 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
     });
   };
 
+  // Function that handles the press of the 'Start the 7-day free trial' button, navigating the user to the 'Membership' section of the 'Account' screen.
+
   const handleSubscriptionButton = () => {
     handleActivePopUps();
     navigation.navigate('Account', {screen: 'Membership'});
   };
+
+  // Function that handles the press of the navbar buttons, changing the current pop-up to the one that corresponds to the pressed button.
 
   const handleNavbarPress = (current, sectionName) => {
     Animated.timing(opacity, {
@@ -345,7 +342,6 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
             style={[
               styles.buttonWrapper,
               activeDotIndex === 2 ? styles.focusedButton : {},
-              // isLandscape && isHorizontal && {display: 'none'},
             ]}>
             <LinearGradient
               useAngle={false}

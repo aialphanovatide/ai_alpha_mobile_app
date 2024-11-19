@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useBinanceChartStyles = () => {
@@ -68,23 +68,23 @@ const useBinanceChartStyles = () => {
       height: 24,
       position: 'absolute',
       bottom: 50,
-      left: -160,
+      left: '10%',
       tintColor: theme.textColor,
     },
     chartBackButton: {
       width: 35,
       height: 35,
       position: 'absolute',
-      bottom: 280,
-      right: 30,
+      bottom: 260,
+      right: '15%',
       tintColor: theme.textColor,
     },
     chartsZoomIndicator: {
       width: 20,
       height: 24,
       position: 'absolute',
-      bottom: 50,
-      right: 80,
+      bottom: Platform.OS === 'android' ? 75 : 85,
+      right: '25%',
       tintColor: isDarkMode ? '#737373' : '#A3A3A3',
     },
   });

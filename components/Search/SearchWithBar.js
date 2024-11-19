@@ -12,12 +12,12 @@ import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../context/topMenuContext';
 import {AnalysisContext} from '../../context/AnalysisContext';
 import {CategoriesContext} from '../../context/categoriesContext';
-import AlertDetails from '../Alerts/AlertsDetails';
+import AlertDetails from '../Alerts/AlertItem';
 import {getService} from '../../services/aiAlphaApi';
 import useAlertsStyles from '../Alerts/styles';
 import {NarrativeTradingContext} from '../../context/NarrativeTradingContext';
 import SkeletonLoader from '../Loader/SkeletonLoader';
-import SearchBar from '../Home/SearchBar/SearchBar';
+import SearchBar from './SearchBar/SearchBar';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const SearchCryptoItem = ({

@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import BackButton from '../../Analysis/BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import RenderHTML, {
   defaultSystemFonts,
   useInternalRenderer,
@@ -22,10 +22,10 @@ import UnsubscribedMessage from './UnsubscribedMessage/UnsubscribedMessage';
 import {ResumableZoom} from 'react-native-zoom-toolkit';
 import useDailyDeepsStyles from './dailyDeepsStyles.js';
 
+// Component used to render the images in the Daily Deep Dives articles. It receives the props from the RenderHTML component and renders the image with a zoom functionality when pressed.
 const CustomImageRenderer = props => {
   const {Renderer, rendererProps} = useInternalRenderer('img', props);
   const styles = useDailyDeepsStyles();
-  const {theme} = useContext(AppThemeContext);
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
   const uri = rendererProps.source.uri;
   const thumbnailSource = {
@@ -86,6 +86,8 @@ const CustomImageRenderer = props => {
   );
 };
 
+// Component that renders the Daily Deep Dives articles. It receives the route as a prop and renders the article with the corresponding content and image.
+
 const DailyDeepArticle = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   const {analysis_content, analysis_id, date, isHistoryArticle} = route?.params;
@@ -102,6 +104,7 @@ const DailyDeepArticle = ({route}) => {
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
   const [hasImage, setHasImage] = useState(false);
 
+  // useeffect to check if the image exists in the server
   useEffect(() => {
     const checkImageURL = async url => {
       try {
@@ -122,6 +125,7 @@ const DailyDeepArticle = ({route}) => {
     );
   }, []);
 
+  // Function to simplify the date and time of the article
   const simplifyDateTime = dateTimeString => {
     const dateTime = new Date(dateTimeString);
     const year = dateTime.getFullYear();
@@ -133,6 +137,7 @@ const DailyDeepArticle = ({route}) => {
     return `${day}-${month}-${year} ${hours}:${minutes}`;
   };
 
+  // Function to find the html content and apply the styles, formatting correctly the bold and bullet list elements, the font color, family and size.
   const findHtmlContent = content => {
     const replacedContent = content.replace(/\\/g, '');
     const strong_changed_content = replacedContent
@@ -169,12 +174,14 @@ const DailyDeepArticle = ({route}) => {
     return bullet_lists_updated_content;
   };
 
+  // Function to handle the navigation to the subscription screen
   const handleSuscriptionNavigation = () => {
     navigation.navigate('Account', {
       screen: 'Subscriptions',
     });
   };
 
+  // Function to handle the navigation back to the History section
   const handleBackNavigation = () => {
     navigation.goBack();
     navigation.navigate('Home', {

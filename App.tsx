@@ -10,7 +10,6 @@ import {
   Dimensions,
 } from 'react-native';
 import {useAuth0, Auth0Provider} from 'react-native-auth0';
-import Keys from 'react-native-keys';
 import {TopMenuContextProvider} from './context/topMenuContext';
 import {UserProvider} from './context/UserContext';
 import {UserIdProvider} from './context/UserIdContext';
@@ -19,12 +18,10 @@ import {CategoriesContextProvider} from './context/categoriesContext';
 import {AppThemeProvider, AppThemeContext} from './context/themeContext';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 import {AboutModalProvider} from './context/AboutModalContext';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {AnalysisContextProvider} from './context/AnalysisContext';
 import NetInfo from '@react-native-community/netinfo';
 import RNRestart from 'react-native-restart';
 import {getService} from './services/aiAlphaApi';
-import io from 'socket.io-client';
 import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext';
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
@@ -41,7 +38,6 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomSplashScreen from './components/SplashScreen/SplashScreen';
-import SubscriptionPopUp from './components/SubscriptionPopUps/SubscriptionPopUp';
 import {HeaderVisibilityProvider} from './context/HeadersVisibilityContext';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
@@ -62,7 +58,6 @@ const App = () => {
   const [serverError, setServerError] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [serverWentDown, setServerWentDown] = useState(0);
-  const [userSignedUp, setUserSignedUp] = useState(false);
   const [initialAnimationFinished, setInitialAnimationFinished] =
     useState(false);
 
@@ -168,23 +163,6 @@ const App = () => {
       console.error('Error saving notifications:', error);
     }
   };
-
-  // useEffect(() => {
-  //   const socket = io('https://aialpha.ngrok.io/');
-  //   socket.on('new_alert', messageData => {
-  //     const data =
-  //       typeof messageData === 'string' ? JSON.parse(messageData) : messageData;
-  //     const {alert_name, message} = data;
-
-  //     let {last_price} = data;
-  //     last_price = last_price.replace(/\.$/, '');
-
-  //     if (Platform.OS === 'android') {
-  //       Alert.alert(alert_name, `${message}\nPrice: ${last_price}`);
-  //     }
-  //     saveNotification(data);
-  //   });
-  // }, []);
 
   useEffect(() => {
     const bar_theme = colorScheme === 'dark' ? 'light-content' : 'dark-content';

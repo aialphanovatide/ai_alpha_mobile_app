@@ -8,7 +8,7 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import {AboutIcon} from '../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../assets/static_data/homeStaticData';
 import React, {useContext, useEffect, useState} from 'react';
 import {AppThemeContext} from '../../../context/themeContext';
@@ -26,6 +26,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+// Component that renders the items in the market narratives section. It receives the item data and the position of the item in the list as props. It also receives the function to handle the click on an item, and renders the item's title and image.
 const MarketNarrativeItem = ({
   title,
   image,
@@ -35,14 +36,12 @@ const MarketNarrativeItem = ({
   expanded,
 }) => {
   const styles = useMarketNarrativeStyles();
-  const {isDarkMode} = useContext(AppThemeContext);
 
   return (
     <TouchableOpacity
       onPress={() => handleNavigation(item)}
       style={[
         styles.item,
-        // index === 0 && !expanded ? {borderBottomWidth: 0} : {},
         index === 0 && !expanded && {marginBottom: 0},
         index !== 0 && expanded && {paddingVertical: 0, paddingBottom: 14},
       ]}>
@@ -74,6 +73,7 @@ const MarketNarrativeItem = ({
   );
 };
 
+// Component to render the list of market narratives in the home screen. It receives the function to handle the press on the about icon as props. It uses the NarrativeTradingContext to get the data of the market narratives and renders the items in the list. It also renders the about icon and a "see all" button which navigates to the Dashboard screen.
 const NarrativeTradings = ({handleAboutPress}) => {
   const {narrativeTradingData, loading} = useContext(NarrativeTradingContext);
   const [narrativeTradingItems, setNarrativeTradingItems] = useState([]);
@@ -84,15 +84,18 @@ const NarrativeTradings = ({handleAboutPress}) => {
     top: 24,
   };
 
+  // useEffect to set the narrativeTradingItems state with the data from the context.
   useEffect(() => {
     setNarrativeTradingItems(narrativeTradingData);
   }, [narrativeTradingData]);
 
+  // Function to handle the expand on the list, by clicking the first item.
   const handlePress = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(!expanded);
   };
 
+  // Function to handle the press on an item. It navigates to the MarketNarrativeArticleScreen with the item data as a parameter. It also saves the clicked item in the AsyncStorage.
   const handleNavigation = async item => {
     navigation.navigate('MarketNarrativeArticleScreen', {
       item_content: item.content,
@@ -119,6 +122,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
     }
   };
 
+  // Function to handle the navigation to the Analysis screen with the NarrativeTrading tab.
   const handleSeeAllNavigation = () => {
     navigation.navigate('Analysis', {
       screen: 'NarrativeTrading',

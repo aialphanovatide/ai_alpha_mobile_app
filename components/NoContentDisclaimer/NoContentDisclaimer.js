@@ -9,6 +9,8 @@ import DarkErrorDisclaimer from '../../assets/images/noContentDisclaimer/noconte
 import useNoContentDisclaimerStyles from './NoContentDisclaimerStyles';
 import {AppThemeContext} from '../../context/themeContext';
 
+// Component to render a disclaimer when there is no content to show. It receives a title and a description to show to the user, and an additionalStyles prop to add custom styles to the disclaimer container. It has three types of disclaimer: search, notifications and error. The default type is search.
+
 const NoContentDisclaimer = ({
   title,
   description,

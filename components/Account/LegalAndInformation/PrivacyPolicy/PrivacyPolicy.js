@@ -1,9 +1,11 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, ScrollView, Text, Image} from 'react-native';
 import usePrivacyPolicyStyles from './PrivacyPolicyStyles';
-import BackButton from '../../../Analysis/BackButton/BackButton';
+import BackButton from '../../../BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
+
+// Component used in the Account section to show the Privacy Policy. It returns a view with the Privacy Policy text. The user can scroll through the text.
 
 const PrivacyPolicy = () => {
   const styles = usePrivacyPolicyStyles();

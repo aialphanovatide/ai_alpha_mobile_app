@@ -7,7 +7,7 @@ import Loader from '../../Loader/Loader';
 import usePriceActionStyles from './PriceActionStyles';
 import {CategoriesContext} from '../../../context/categoriesContext';
 import {API_BASE_URL} from '../../../services/aiAlphaApi';
-import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
+import {AboutIcon} from '../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../assets/static_data/homeStaticData';
 import FastImage from 'react-native-fast-image';
 

@@ -1,16 +1,14 @@
-/* eslint-disable prettier/prettier */
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   Platform,
   View,
   Text,
-  Image,
   Animated,
   TouchableOpacity,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenGainersStyles from './TopTenGainersStyle.js';
-import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
+import {AboutIcon} from '../../AboutModal/AboutIcon.js';
 import {home_static_data} from '../../../assets/static_data/homeStaticData.js';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
@@ -39,7 +37,6 @@ const Item = ({position, coin, index, handleItemClick, findCategoryOfItem}) => {
             style={styles.coinLogo}
             source={{
               uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${coin.symbol.toLowerCase()}.png`,
-              // coin.image,
               priority: FastImage.priority.high,
             }}
             resizeMode="contain"
@@ -69,6 +66,8 @@ const Item = ({position, coin, index, handleItemClick, findCategoryOfItem}) => {
   );
 };
 
+// Top ten gainers component that renders the top ten gainer coins in a table. It requires fetching this data from an API, retrieved from the top ten movers context. It uses the Item component to render each row of the table. 
+
 const TopTenGainers = ({handleAboutPress}) => {
   const navigation = useNavigation();
   const styles = useTopTenGainersStyles();
@@ -83,6 +82,8 @@ const TopTenGainers = ({handleAboutPress}) => {
     top: 24,
   };
 
+  // Variables and states to handle the scroll bar in the table
+  
   const scrollIndicator = useRef(new Animated.Value(0)).current;
   const [completeScrollBarHeight, setCompleteScrollBarHeight] = useState(1);
   const [visibleScrollBarHeight, setVisibleScrollBarHeight] = useState(0);
@@ -142,7 +143,6 @@ const TopTenGainers = ({handleAboutPress}) => {
         <ScrollView
           persistentScrollbar={true}
           indicatorStyle={isDarkMode ? 'white' : 'dark'}
-          // contentContainerStyle={{paddingRight: 14}}
         >
           <View style={styles.table}>
             <SkeletonLoader quantity={10} />

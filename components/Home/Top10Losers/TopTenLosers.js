@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Platform, View, Text, Animated, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenLosersStyles from './TopTenLosersStyle.js';
-import {AboutIcon} from '../Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon.js';
+import {AboutIcon} from '../../AboutModal/AboutIcon.js';
 import {home_static_data} from '../../../assets/static_data/homeStaticData.js';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
@@ -13,7 +13,7 @@ import {useNavigation} from '@react-navigation/core';
 import {CategoriesContext} from '../../../context/categoriesContext.js';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer.js';
 
-// Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
+// Component that renders the items in the top 10 losers section. It receives the coin data and the position of the coin in the list as props. It also receives the function to handle the click on an item and the function to find the category of an item.
 
 const Item = ({position, coin, handleItemClick, findCategoryOfItem}) => {
   const styles = useTopTenLosersStyles();
@@ -60,6 +60,8 @@ const Item = ({position, coin, handleItemClick, findCategoryOfItem}) => {
   );
 };
 
+// Component that renders the top 10 losers section. It receives the function to handle the click on the about icon as a prop. It fetches the top 10 losers data from the context and renders the items in the list. It also renders the scroll bar that indicates the position of the scroll in the list.
+
 const TopTenLosers = ({handleAboutPress}) => {
   const styles = useTopTenLosersStyles();
   const [topTenCoins, setTopTenCoins] = useState([]);
@@ -73,6 +75,7 @@ const TopTenLosers = ({handleAboutPress}) => {
     top: 24,
   };
 
+  // Variables and states to handle the scroll bar in the list
   const scrollIndicator = useRef(new Animated.Value(0)).current;
   const [completeScrollBarHeight, setCompleteScrollBarHeight] = useState(1);
   const [visibleScrollBarHeight, setVisibleScrollBarHeight] = useState(0);

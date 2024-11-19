@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ScrollView, Text, Image} from 'react-native';
 import useTermsAndConditionsStyles from './styles';
-import BackButton from '../../../Analysis/BackButton/BackButton';
+import BackButton from '../../../BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const TermsAndConditions = () => {
