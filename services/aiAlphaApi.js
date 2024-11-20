@@ -1,6 +1,6 @@
 export const API_BASE_URL = 'https://aialpha.ngrok.io/';
 export const API_BASE_URL_ALT = 'https://ntf1vmdf-9000.use.devtunnels.ms';
-export const TEST_API_URL = 'https://ai-alpha-api.onrender.com';
+export const TEST_API_URL = 'https://aialpha2-dev.ngrok.io/';
 export const AIALPHASERVER_2_BASE_URL = 'https://aialpha2.ngrok.io/';
 export const NEWSBOTV2_BASE_URL = 'https://newsbots2.ngrok.io/';
 
@@ -49,7 +49,7 @@ export const getTestService = async endpoint => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': 'alpha_U-06Jgo3vbkcUmD2pVGONhYeb9iNFN-C_7086',
+        'X-API-Key': 'alpha_3N2dAITKwbxJPyKts48e2KI6RVhvMZ0m_f04d',
       },
     });
 

@@ -29,6 +29,7 @@ import BackgroundGradient from '../../../../../BackgroundGradient/BackgroundGrad
 import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
 import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialContentState = {
   introduction: false,
@@ -54,7 +55,6 @@ if (
 
 const Fundamentals = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
-  const [coin, setCoin] = useState(activeSubCoin);
   const styles = useFundamentalsStyles();
   const [sharedData, setSharedData] = useState([]);
   const [fundamentalsData, setFundamentalsData] = useState(null);
@@ -66,6 +66,13 @@ const Fundamentals = () => {
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const ref = useRef(null);
+
+  useEffect(() => {
+    setFundamentalsData(null);
+    setGlobalLoading(true);
+  }, [activeSubCoin]);
+
+  // Function to handle the visibility of the about modal and set the description and title of the modal.
 
   const handleAboutPress = (description = null, title = null) => {
     if (description) {
@@ -81,6 +88,8 @@ const Fundamentals = () => {
 
   useScrollToTop(ref);
 
+  // Function to handle the state of the content of each section. It receives the section and the value of the content as parameters.
+
   const handleSectionContent = (section, value) => {
     setHasContent(prevState => ({
       ...prevState,
@@ -90,37 +99,84 @@ const Fundamentals = () => {
 
   // Function to handle the requests to all the endpoints related to the coin
 
-  const getAllFundamentalsData = async () => {
-    setGlobalLoading(true);
+  const getAllFundamentalsData = async coin => {
     const endpoints = [
-      `/api/get_competitors_by_coin_name?coin_name=${coin}`,
-      `/api/get_tokenomics?coin_name=${coin}`,
-      `/api/get_introduction?coin_name=${coin}`,
-      `/api/get_revenue_models?coin_name=${coin}`,
-      `/api/hacks?coin_bot_name=${coin}`,
-      `/api/get_upgrades?coin_name=${coin}`,
-      `/api/dapps?coin_bot_name=${coin}`,
+      {
+        name: 'competitors',
+        url: `/api/get_competitors_by_coin_name?coin_name=${activeSubCoin}`,
+      },
+      {
+        name: 'tokenomics',
+        url: `/api/get_tokenomics?coin_name=${activeSubCoin}`,
+      },
+      {
+        name: 'introduction',
+        url: `/api/get_introduction?coin_name=${activeSubCoin}`,
+      },
+      {
+        name: 'revenueModels',
+        url: `/api/get_revenue_models?coin_name=${activeSubCoin}`,
+      },
+      {
+        name: 'hacks',
+        url: `/api/hacks?coin_bot_name=${activeSubCoin}`,
+      },
+      {
+        name: 'upgrades',
+        url: `/api/get_upgrades?coin_name=${activeSubCoin}`,
+      },
+      {
+        name: 'dapps',
+        url: `/api/dapps?coin_bot_name=${activeSubCoin}`,
+      },
     ];
 
     try {
-      const results = await Promise.all(
-        endpoints.map(endpoint => getService(endpoint)),
+      const storedFundamentalsData = await AsyncStorage.getItem(
+        'fundamentalsData',
       );
+      const storedFundamentalsParsedData = JSON.parse(storedFundamentalsData);
+      if (
+        storedFundamentalsParsedData !== null &&
+        storedFundamentalsParsedData.find(item => item.coin === coin) !==
+          undefined
+      ) {
+        const coinFundamentalsData = storedFundamentalsParsedData.find(
+          item => item.coin === coin,
+        );
+        setFundamentalsData(coinFundamentalsData.data);
+        setGlobalLoading(false);
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        console.log(
+          '- Successfully loaded fundamentals data from AsyncStorage',
+        );
+      } else {
+        const results = await Promise.all(
+          endpoints.map(endpoint => getService(endpoint.url)),
+        );
 
-      const data = {
-        competitors: results[0],
-        tokenomics: results[1],
-        introduction: results[2],
-        revenueModels: results[3],
-        hacks: results[4],
-        upgrades: results[5],
-        dapps: results[6],
-      };
+        const data = {
+          competitors: results[0],
+          tokenomics: results[1],
+          introduction: results[2],
+          revenueModels: results[3],
+          hacks: results[4],
+          upgrades: results[5],
+          dapps: results[6],
+        };
 
-      console.log(
-        `- Successfully requested fundamentals data for ${coin}. Status: ${results[0].status}`,
-      );
-      setFundamentalsData(data);
+        console.log(
+          `- Successfully requested fundamentals data for ${activeSubCoin}. Status: ${results[0].status}`,
+        );
+        setFundamentalsData(data);
+        const prevData = await AsyncStorage.getItem('fundamentalsData');
+        const parsedPrevData = JSON.parse(prevData);
+        const mappedData = [...parsedPrevData, {coin: coin, data: data}];
+        await AsyncStorage.setItem(
+          'fundamentalsData',
+          JSON.stringify(mappedData),
+        );
+      }
     } catch (error) {
       console.error(`Error fetching crypto data: ${error.message}`);
       setFundamentalsData(null);
@@ -137,22 +193,18 @@ const Fundamentals = () => {
     return data;
   };
 
-  useEffect(() => {
-    setGlobalLoading(true);
-    getAllFundamentalsData(coin && coin !== undefined ? coin : activeSubCoin);
-    const handleCoinUpdate = newCoin => {
-      setCoin(newCoin);
-      setHasContent(initialContentState);
-    };
+  // Initial request to get the data of the first section when the component mounts and when the activeSubCoin changes.
 
-    handleCoinUpdate(activeSubCoin);
-  }, [coin, activeSubCoin]);
+  useEffect(() => {
+    getAllFundamentalsData(activeSubCoin);
+    setHasContent(initialContentState);
+  }, [activeSubCoin]);
 
   useEffect(() => {
     const fetchTokenomicsData = async () => {
       try {
         const response = await getSectionData(
-          `/api/get_tokenomics?coin_name=${coin}`,
+          `/api/get_tokenomics?coin_name=${activeSubCoin}`,
         );
 
         if (response?.status !== 200 || !response?.message) {
@@ -162,11 +214,11 @@ const Fundamentals = () => {
           setSharedData(parsed_cryptos);
         }
       } catch (error) {
-        console.log('Error trying to get tokenomics data: ', error);
+        console.error('Error trying to get tokenomics data: ', error);
       }
     };
     fetchTokenomicsData();
-  }, [coin]);
+  }, [activeSubCoin]);
 
   useFocusEffect(() => {
     if (isLandscape && isHorizontal) {
@@ -222,7 +274,7 @@ const Fundamentals = () => {
           subtitle={'Introduction'}
           content={
             <Introduction
-              coin={coin}
+              coin={activeSubCoin}
               getSectionData={getSectionData}
               handleSectionContent={handleSectionContent}
               loading={globalLoading}
@@ -238,7 +290,7 @@ const Fundamentals = () => {
           content={
             <Tokenomics
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={globalLoading}
@@ -255,7 +307,7 @@ const Fundamentals = () => {
           content={
             <GeneralTokenAllocation
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               loading={globalLoading}
               globalData={fundamentalsData}
@@ -274,7 +326,7 @@ const Fundamentals = () => {
           content={
             <TokenUtility
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               loading={globalLoading}
               globalData={fundamentalsData}
@@ -293,7 +345,7 @@ const Fundamentals = () => {
             <ValueAccrualMechanisms
               handleSectionContent={handleSectionContent}
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               loading={globalLoading}
               globalData={fundamentalsData}
             />
@@ -310,7 +362,7 @@ const Fundamentals = () => {
           subtitle={'Competitors'}
           content={
             <Competitors
-              coin={coin}
+              coin={activeSubCoin}
               getSectionData={getSectionData}
               handleSectionContent={handleSectionContent}
               tokenomicsData={
@@ -343,7 +395,7 @@ const Fundamentals = () => {
             <UpdatedRevenueModel
               handleSectionContent={handleSectionContent}
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               globalData={fundamentalsData}
               loading={globalLoading}
             />
@@ -360,7 +412,7 @@ const Fundamentals = () => {
           content={
             <Hacks
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={globalLoading}
@@ -377,7 +429,7 @@ const Fundamentals = () => {
           content={
             <Upgrades
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={globalLoading}
@@ -392,7 +444,7 @@ const Fundamentals = () => {
           content={
             <DApps
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={globalLoading}

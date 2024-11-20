@@ -18,11 +18,9 @@ const SubMenu = ({isAlertsMenu}) => {
     updateActiveSubCoin(coin);
     if (!isAlertsMenu) {
       navigation.navigate('SubMenuScreen', {
-        screen: 'Charts',
+        screen: 'Fundamentals',
         params: {
-          interval: '1h',
-          symbol: `${coin}USDT`,
-          coinBot: coin,
+          coin: coin,
         },
       });
     }

@@ -26,7 +26,7 @@ import useSubscriptionPopUpStyles from '../SubscriptionPopUps/SubscriptionPopUpS
 import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
 import DailyDeepDives from './Analysis/DailyDeepDives.js';
-import { useScreenOrientation } from '../../hooks/useScreenOrientation';
+import {useScreenOrientation} from '../../hooks/useScreenOrientation';
 
 // FreePopup component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 

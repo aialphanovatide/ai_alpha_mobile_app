@@ -205,7 +205,7 @@ const App = () => {
     };
     const pushNotificationsSubscriber = messaging().onMessage(
       async remoteMessage => {
-        console.log(remoteMessage);
+        console.log('Received notification: ', remoteMessage);
         Alert.alert(
           `${remoteMessage.notification?.title}`,
           `${remoteMessage.notification?.body}`,
