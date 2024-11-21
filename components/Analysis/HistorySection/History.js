@@ -220,7 +220,7 @@ const History = () => {
 
   const handleHistoryNavigation = analysis => {
     navigation.navigate('Home', {
-      screen: 'AnalysisArticleScreen',
+      screen: 'DailyDeepScreen',
       params: {
         analysis_content: analysis.raw_analysis,
         analysis_id: analysis.id,

@@ -51,7 +51,7 @@ const DailyDeepDives = ({handleAboutPress}) => {
   // Function to handle the navigation to the full Analysis article when pressing it, saving the item with the current date for filtering the articles on the History section later
 
   const handleAnalysisNavigation = async analysis => {
-    navigation.navigate('AnalysisArticleScreen', {
+    navigation.navigate('DailyDeepScreen', {
       analysis_content: analysis.raw_analysis,
       analysis_id: analysis.id,
       category: analysis.category,

@@ -320,7 +320,7 @@ const Search = ({currentTextValue, contentVisible}) => {
     updateActiveCoin({});
     updateActiveSubCoin(null);
     navigation.navigate('Home', {
-      screen: 'AnalysisArticleScreen',
+      screen: 'DailyDeepScreen',
       params: {
         analysis_content: analysisItem.raw_analysis,
         analysis_id: analysisItem.id,
