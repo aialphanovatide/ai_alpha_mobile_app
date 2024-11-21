@@ -17,7 +17,6 @@
     "@react-native-community/art": "github:react-native-community/art",
     "@react-native-community/blur": "^4.4.0",
     "@react-native-community/clipboard": "^1.5.1",
-    "@react-native-community/datetimepicker": "^8.1.0",
     "@react-native-community/netinfo": "^11.3.1",
     "@react-native-community/push-notification-ios": "^1.11.0",
     "@react-native-firebase/app": "^19.2.2",

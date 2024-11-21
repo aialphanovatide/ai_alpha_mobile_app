@@ -2,7 +2,7 @@ use_frameworks! :linkage => :static
 
 source 'https://github.com/invertase/react-native-firebase.git'
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '15.0'
+platform :ios, '17.0'
 
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
@@ -38,6 +38,9 @@ target 'ai_alpha_mobile_app' do
   # Flags change depending on the env values.
   flags = get_default_flags()
   # Pods for React Native
+  pod 'Auth0'
+  pod 'GoogleSignIn'
+  pod 'PurchasesHybridCommon'
   pod 'react-native-config/Extension', :path => '../node_modules/react-native-config'
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
@@ -74,7 +77,7 @@ target 'ai_alpha_mobile_app' do
   end
 
   post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    # Existing React Native post-install configuration
     react_native_post_install(
       installer,
       config[:reactNativePath],
@@ -84,14 +87,14 @@ target 'ai_alpha_mobile_app' do
     
     # Adding bitcode stripping for specific frameworks
     bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
-    
+  
     def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
       framework_path = File.join(Dir.pwd, framework_relative_path)
       command = "#{bitcode_strip_path} #{framework_path} -r -o #{framework_path}"
       puts "Stripping bitcode: #{command}"
       system(command)
     end
-
+  
     framework_paths = [
       "Pods/LogRocket/LogRocket.xcframework/ios-arm64/LogRocket.framework/LogRocket",
       "Pods/hermes-engine/destroot/Library/Frameworks/macosx/hermes.framework/hermes",
@@ -99,9 +102,16 @@ target 'ai_alpha_mobile_app' do
       "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework/ios-arm64/hermes.framework/hermes",
       "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework/ios-arm64_x86_64-maccatalyst/hermes.framework/hermes"
     ]
-
+  
     framework_paths.each do |framework_relative_path|
       strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
+    end
+  
+    # New addition to delete IPHONEOS_DEPLOYMENT_TARGET for each pod
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+      end
     end
   end
 end
