@@ -1,8 +1,5 @@
-export const API_BASE_URL = 'https://aialpha.ngrok.io/';
-export const API_BASE_URL_ALT = 'https://ntf1vmdf-9000.use.devtunnels.ms';
-export const TEST_API_URL = 'https://aialpha2-dev.ngrok.io/';
-export const AIALPHASERVER_2_BASE_URL = 'https://aialpha2.ngrok.io/';
-export const NEWSBOTV2_BASE_URL = 'https://newsbots2.ngrok.io/';
+import { AIALPHASERVER_2_BASE_URL, API_BASE_URL, API_BASE_URL_ALT, NEWSBOTV2_BASE_URL, TEST_API_URL } from "../src/constants";
+
 
 // Function to handle HTTP errors
 const handleErrors = response => {

@@ -45,3 +45,10 @@ export const auth0ClonedDomain = 'dev-kqugsqvoounaylft.us.auth0.com';
 
 export const aialpha2keydev = 'alpha_auxQDT_5rIy7unRVveat6Nb6pwqhXPW4_e9e5';
 export const aialpha2key = 'alpha_zx24ws3-2zXv2sy6JrRWs-4ob3HhWKNL_5290';
+
+/* URLs for the server's requests */
+export const API_BASE_URL = 'https://aialpha.ngrok.io/';
+export const API_BASE_URL_ALT = 'https://ntf1vmdf-9000.use.devtunnels.ms';
+export const TEST_API_URL = 'https://aialpha2-dev.ngrok.io/';
+export const AIALPHASERVER_2_BASE_URL = 'https://aialpha2.ngrok.io/';
+export const NEWSBOTV2_BASE_URL = 'https://newsbots2.ngrok.io/';
