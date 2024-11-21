@@ -1,11 +1,13 @@
 import {useEffect, useState} from 'react';
-import {Dimensions, ScaledSize} from 'react-native';
+import {Dimensions} from 'react-native';
 import Orientation, {
   LANDSCAPE,
   OrientationType,
 } from 'react-native-orientation-locker';
 import {singletonHook} from 'react-singleton-hook';
 import {Platform} from 'react-native';
+
+// Hook to get the screen orientation and lock it to portrait or landscape mode. It uses the react-native-orientation-locker library to get the screen orientation and lock it to the desired mode.
 
 export const isAndroid = () => Platform.OS === 'android';
 export const useScreenOrientation = singletonHook(
@@ -48,12 +50,12 @@ export const useScreenOrientation = singletonHook(
     }, []);
 
     const handleScreenOrientationChange = orientation => {
-      if (orientation === 'PORTRAIT') {
-        Orientation.unlockAllOrientations();
+      if (orientation === 'PORTRAIT' || isManuallyHorizontal) {
+        Orientation.lockToPortrait();
         setIsManuallyHorizontal(false);
       } else {
-        setIsManuallyHorizontal(true);
         Orientation.lockToLandscape();
+        setIsManuallyHorizontal(true);
       }
     };
 

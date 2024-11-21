@@ -3,6 +3,8 @@ import {View, TouchableOpacity, Text} from 'react-native';
 import useChartsStyles from './ChartsStyles';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 
+// Component to render the support and resistance buttons for the charts, it receives the active buttons and the function to set the active buttons as props, also receives a disabled prop to disable the buttons when the chart is loading. The buttons are hard-coded and the functionality for the fibonacci and trend lines buttons isn't working yet, so they are disabled.
+
 const RsButton = ({activeButtons, setActiveButtons, disabled}) => {
   const styles = useChartsStyles();
   const {isDarkMode} = useContext(AppThemeContext);

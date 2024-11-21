@@ -19,7 +19,7 @@ import {
 import SkeletonLoader from '../../../../../../Loader/SkeletonLoader';
 import {getService} from '../../../../../../../services/aiAlphaApi';
 import moment from 'moment';
-import DataRenderer from '../clickOnCandleDetails';
+import ClickOnCandleDetails from '../clickOnCandleDetails';
 import useChartsSource from '../../../../../../../hooks/useChartsSource';
 import {io} from 'socket.io-client';
 import RsButton from '../S&RButtons';
@@ -499,7 +499,7 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
               />
             )}
 
-            <DataRenderer
+            <ClickOnCandleDetails
               domainX={zoomDomain.x}
               yPoint={selectedCandle && calculateCandleMiddle(selectedCandle)}
               domainY={domainY}

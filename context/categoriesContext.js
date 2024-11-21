@@ -3,6 +3,8 @@ import {getService, getServiceV2} from '../services/aiAlphaApi';
 
 const CategoriesContext = createContext();
 
+// This context is used to store the categories data. It fetches the data from the server and provides it to the components that need it. It returns a context provider with the categories data and a loading state. It also provides a function to update the categories data and a function to find the category of a coin.
+
 const CategoriesContextProvider = ({children}) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -60,17 +62,6 @@ const CategoriesContextProvider = ({children}) => {
     setCategories(newValue);
   };
 
-  // Function to set by default ETH category, locking all the others
-  const setDefaultCoin = (coin, categories) => {
-    let newCategories = categories.map(category => {
-      if (category.category !== coin) {
-        category.is_active = false;
-      }
-      return category;
-    });
-    return newCategories;
-  };
-
   // Function to find the category that the top 10 gainers item's coin belongs to
 
   const findCategoryOfItem = (coin, fullName) => {
@@ -92,6 +83,16 @@ const CategoriesContextProvider = ({children}) => {
       );
     });
     return found !== undefined ? found : null;
+  };
+
+  // Function to find a coin by bot name into a category's coin bots
+  const findCoinBotByBotName = (category, name) => {
+    if (!category || !category.coin_bots || category.coin_bots.length === 0) {
+      return null;
+    }
+    return category.coin_bots.find(coinBot => {
+      return coinBot.bot_name.toLowerCase() === name.toLowerCase();
+    });
   };
 
   return (

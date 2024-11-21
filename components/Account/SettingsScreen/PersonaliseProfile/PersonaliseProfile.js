@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import CustomInput from '../../../Login/CustomInput/CustomInput';
 import SaveButton from './SaveButton';
-import BackButton from '../../../Analysis/BackButton/BackButton';
+import BackButton from '../../../BackButton/BackButton';
 import usePersonaliseProfileStyles from './PersonaliseProfileStyles';
 import { useRawUserId } from '../../../../context/RawUserIdContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';

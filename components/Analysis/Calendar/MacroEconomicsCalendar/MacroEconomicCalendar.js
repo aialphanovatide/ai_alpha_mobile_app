@@ -4,10 +4,12 @@ import useMacroEconomicCalendarStyles from './MacroEconomicCalendarStyles';
 import {
   countries_mock,
   macroeconomic_events,
-} from './macroEconomicCalendarMock';
+} from '../../../../assets/static_data/macroEconomicCalendarMock';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import calendarService from '../../../../services/CalendarService';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
+
+// Component that renders a country item in the countries filter section of the macroeconomic calendar. It displays the country's flag and name. The user can select a country to filter the events by.
 
 const CountryItem = ({option, activeOption, handleCountryTouch, styles}) => {
   return (
@@ -36,6 +38,8 @@ const CountryItem = ({option, activeOption, handleCountryTouch, styles}) => {
   );
 };
 
+// Component that renders the countries filter section of the macroeconomic calendar. It displays the countries that the user can filter the events by.
+
 const CountriesFilter = ({countries, selectedCountry, handleCountryTouch}) => {
   const styles = useMacroEconomicCalendarStyles();
 
@@ -53,6 +57,8 @@ const CountriesFilter = ({countries, selectedCountry, handleCountryTouch}) => {
     </View>
   );
 };
+
+// Component that renders the macroeconomic calendar item. It displays the event's country, date, hour, title, actual, forecast, and previous data.
 
 const CalendarItem = ({event, styles}) => {
   return (
@@ -94,6 +100,8 @@ const CalendarItem = ({event, styles}) => {
     </View>
   );
 };
+
+// Component that renders the macroeconomic calendar section of the Dashboard screen. It displays the economic events for the selected country and time interval. The user can filter the events by country and time interval. The data is fetched from the calendarService and displayed in a list format.
 
 const MacroEconomicCalendar = ({selectedInterval}) => {
   const [originalEvents, setOriginalEvents] = useState(macroeconomic_events);

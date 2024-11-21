@@ -73,7 +73,6 @@ const useDappsStyles = () => {
       width: 40,
       height: 40,
       marginTop: 16,
-      alignSelf: 'center',
       zIndex: 20,
     },
     defaultProtocol: {
@@ -81,7 +80,7 @@ const useDappsStyles = () => {
     },
     line: {
       position: 'absolute',
-      top: '60%',
+      top: '30%',
       left: '10%',
       width: '10%',
       borderTopWidth: 6,

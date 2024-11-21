@@ -1,10 +1,12 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity, ImageBackground} from 'react-native';
 import useUpgradeOverlayStyles from './UpgradeOverlayStyles';
 import {useNavigation} from '@react-navigation/core';
 import {AppThemeContext} from '../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import {BlurView} from '@react-native-community/blur';
+
+// Component to render the upgrade overlay that is shown to the user when they are not subscribed to the premium features. The overlay contains a title, description, and a button to upgrade to the premium features.
 
 const UpgradeOverlay = ({isCharts = null, subscribed = false}) => {
   const navigation = useNavigation();

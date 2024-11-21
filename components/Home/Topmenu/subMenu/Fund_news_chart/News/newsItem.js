@@ -1,37 +1,12 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import useNewsStyles from './NewsStyles';
 import FastImage from 'react-native-fast-image';
 
-const NewsItem = ({item, onPress, filterText}) => {
+// Component that renders the news item. It receives the news item as a prop and displays the title and the image of the news. It also has a touchable opacity that navigates to the article of the news.
+
+const NewsItem = ({item, onPress}) => {
   const styles = useNewsStyles();
-
-  // console.log(
-  //   'New image:',
-  //   `https://appnewsposters.s3.us-east-2.amazonaws.com/${item.image}`,
-    
-  // );
-
-  // Function to extract the title from the summaries, that detects the first sentences within "", using regular expressions, and returns it. It only returns the first because it can happen that is inside the summary text another sentences within "".
-
-  const filterArticleTitle = summary => {
-    const match = summary.match(/"([^"]+)"/);
-
-    if (match && match[1]) {
-      const title = match[1];
-      const content = summary.replace(`"${title}"`, '').trim();
-
-      return {
-        title,
-        content,
-      };
-    } else {
-      return {
-        title: null,
-        content: null,
-      };
-    }
-  };
 
   return (
     <TouchableOpacity

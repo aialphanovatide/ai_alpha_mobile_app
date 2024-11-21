@@ -4,8 +4,9 @@ import Timeline from '../Hacks/Timeline/Timeline';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
+// Component that renders the Upgrades section in the Fundamentals tab. It displays a timeline with the most relevant upgrades in the history of the coin. It also shows a loader when requesting the data and a message in case there is no content to display.
+
 const Upgrades = ({
-  getSectionData,
   coin,
   handleSectionContent,
   globalData,
@@ -14,37 +15,6 @@ const Upgrades = ({
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    // setLoading(true);
-    // setEvents([]);
-
-    // const fetchUpgradesData = async () => {
-    //   try {
-    //     const response = await getSectionData(
-    //       `/api/get_upgrades?coin_name=${coin}`,
-    //     );
-
-    //     if (response.status !== 200) {
-    //       setEvents([]);
-    //     } else {
-    //       // console.log('Upgrade response: ', response.message);
-    //       const mapped_events = response.message.map(event => {
-    //         return {
-    //           id: event.upgrade.id,
-    //           upgrade_name: event.upgrade.event,
-    //           upgrade_overview: event.upgrade.event_overview,
-    //           upgrade_impact: event.upgrade.impact,
-    //           date: event.upgrade.date,
-    //         };
-    //       });
-    //       setEvents(mapped_events.sort((a, b) => compareDates(a.date, b.date)));
-    //     }
-    //   } catch (error) {
-    //     console.error('Error trying to get upgrades data: ', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
     const fetchUpgradesData = () => {
         if (!globalData || globalData.upgrades.status !== 200) {
           setEvents([]);

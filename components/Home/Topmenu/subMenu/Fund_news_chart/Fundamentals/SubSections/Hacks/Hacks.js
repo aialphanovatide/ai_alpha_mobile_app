@@ -4,8 +4,9 @@ import Timeline from './Timeline/Timeline';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 
+// Component to render the Hacks section in the Fundamentals tab. It displays a timeline with the most relevant hacks in the history of the coin. It also shows a loader when requesting the data and a message in case there is no content to display.
+
 const Hacks = ({
-  getSectionData,
   coin,
   handleSectionContent,
   globalData,
@@ -13,30 +14,6 @@ const Hacks = ({
 }) => {
   const [events, setEvents] = useState([]);
   useEffect(() => {
-    // setLoading(true);
-    // setEvents([]);
-
-    // const fetchHacksData = async () => {
-    //   try {
-    //     const response = await getSectionData(
-    //       `/api/hacks?coin_bot_name=${coin}`,
-    //     );
-
-    //     if (response.status !== 200) {
-    //       setEvents([]);
-    //     } else {
-    //       const ordered_events = response.message.sort((a, b) =>
-    //         compareDates(a.date, b.date),
-    //       );
-    //       setEvents(ordered_events);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error trying to get hacks data: ', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-
     const fetchHacksData = () => {
       if (!globalData || globalData.hacks.status !== 200) {
         setEvents([]);
@@ -49,6 +26,8 @@ const Hacks = ({
     };
     fetchHacksData();
   }, [globalData, coin]);
+
+  // Function to compare two dates in the format "Month-Year" or "Early-Mid-Late Year", used to order the events within the timeline.
 
   const compareDates = (dateA, dateB) => {
     const monthOrder = {

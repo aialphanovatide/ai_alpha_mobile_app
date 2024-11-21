@@ -2,11 +2,13 @@ import {React, useState, useEffect, useContext} from 'react';
 import {View, Text, ScrollView, Image} from 'react-native';
 import calendarService from '../../../../services/CalendarService';
 import CryptoFilter from './CryptoFilter';
-import calendarCryptos from './calendarCryptos';
+import calendarCryptos from '../../../../assets/static_data/calendarCryptos';
 import useCryptoCalendarStyles from './CryptoCalendarStyles';
 import {CategoriesContext} from '../../../../context/categoriesContext';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../../NoContentDisclaimer/NoContentDisclaimer';
+
+// Static data for the event tags
 
 const eventTags = [
   {
@@ -46,6 +48,8 @@ const eventTags = [
     name: 'Update',
   },
 ];
+
+// Component that renders the calendar item. It displays the event's coin, tags, date, caption, and the coin's icon. 
 
 const CalendarItem = ({event, coin, styles}) => {
   const findTagStringById = (ids, tags) => {
@@ -90,6 +94,8 @@ const CalendarItem = ({event, coin, styles}) => {
   );
 };
 
+// Component that renders the Crypto Calendar section. It displays the events for the selected interval and allows the user to filter them by coin. It also displays a loading spinner while the data is being fetched.
+
 const CryptoCalendar = ({selectedInterval}) => {
   const {categories} = useContext(CategoriesContext);
   const [originalEvents, setOriginalEvents] = useState([]);
@@ -102,6 +108,8 @@ const CryptoCalendar = ({selectedInterval}) => {
   useEffect(() => {
     setOptions(categories);
   }, [categories]);
+
+  // Function to fetch the events data for the selected interval and set the original and filtered events. The original events are used to filter the events by coin.
 
   const fetchEventsData = async () => {
     try {
@@ -121,6 +129,8 @@ const CryptoCalendar = ({selectedInterval}) => {
     setCurrentFilter(null);
   }, [selectedInterval]);
 
+  // Function to handle the touch event on the filter options. It sets the current filter and filters the events by the time interval.
+
   const handleOptionTouch = option => {
     setCurrentFilter(option);
     const filtered = filterEventsByCoins(option, originalEvents);
@@ -136,6 +146,8 @@ const CryptoCalendar = ({selectedInterval}) => {
       }
     });
   };
+
+  // Function to filter the events by the selected coin, using the current time filter and the events to filter.
 
   const filterEventsByCoins = (currentFilter, eventsToFilter) => {
     const findCoinInSubMenuOptions = (subMenuOptions, coin) => {

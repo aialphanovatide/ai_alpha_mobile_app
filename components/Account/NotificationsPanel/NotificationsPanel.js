@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useNotificationsStyles from './NotificationsStyles';
-import BackButton from '../../Analysis/BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import {AppThemeContext} from '../../../context/themeContext';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import messaging from '@react-native-firebase/messaging';

@@ -1,9 +1,10 @@
-import {BlurView} from '@react-native-community/blur';
 import React, {useContext} from 'react';
 import {ImageBackground, Modal, Text, TouchableOpacity} from 'react-native';
 import useSubscriptionPopUpStyles from './SubscriptionPopUpStyles';
 import {AppThemeContext} from '../../context/themeContext';
 import LinearGradient from 'react-native-linear-gradient';
+
+// SubscriptionPopUp component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 
 const SubscriptionPopUp = ({visible, setVisible}) => {
   const styles = useSubscriptionPopUpStyles();
@@ -15,12 +16,6 @@ const SubscriptionPopUp = ({visible, setVisible}) => {
       transparent={true}
       visible={visible}
       onRequestClose={() => setVisible(false)}>
-      {/* <BlurView
-        style={styles.absolute}
-        blurType={isDarkMode ? 'dark' : 'light'}
-        blurAmount={1.75}
-        blurRadius={1}
-      /> */}
       <LinearGradient
         style={styles.absolute}
         colors={

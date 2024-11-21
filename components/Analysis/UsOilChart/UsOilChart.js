@@ -10,10 +10,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import BackButton from '../BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
-import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes';
+import ChartTimeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/ChartTimeSelector';
 import {
   getCapitalComPrices,
   postCCSession,
@@ -28,7 +28,7 @@ import {
 import useChartSectionStyles from '../ChartSection/ChartSectionStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
-import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
+import ClickOnCandleDetails from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
@@ -37,6 +37,8 @@ const initialSessionData = {
   security_token: null,
   security_cst: null,
 };
+
+// Component to render the US Oil chart, which is a candlestick chart that shows the price of the US Oil in a specific time interval. The chart has a refresh button, a zoom interaction and a horizontal view button.
 
 const UsOilChart = ({route, navigation}) => {
   const {title, symbol, description} = route.params;
@@ -116,7 +118,7 @@ const UsOilChart = ({route, navigation}) => {
   // Function to handle the X button interaction on the horizontal chart
 
   const handleBackInteraction = () => {
-    if (isLandscape || isHorizontal) {
+    if (isLandscape && isHorizontal) {
       handleScreenOrientationChange('PORTRAIT');
       navigation.canGoBack(false);
     }
@@ -303,7 +305,7 @@ const UsOilChart = ({route, navigation}) => {
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.sectionDescription}>{description}</Text>
         <View style={styles.timeframeContainer}>
-          <TimeframeSelector
+          <ChartTimeSelector
             selectedPairing={'null'}
             selectedInterval={selectedInterval}
             changeInterval={changeInterval}
@@ -445,7 +447,7 @@ const UsOilChart = ({route, navigation}) => {
                 />
               )}
               {/* Click on candle data component */}
-              <DataRenderer
+              <ClickOnCandleDetails
                 domainX={zoomDomain.x}
                 yPoint={selectedCandle && calculateCandleMiddle(selectedCandle)}
                 domainY={domainY}
@@ -499,43 +501,43 @@ const UsOilChart = ({route, navigation}) => {
               />
             </VictoryChart>
           </View>
-          {/* Horizontal view button [DEACTIVATED UNTIL SOLVING ISSUES] */}
-          {/* <TouchableOpacity
-              onPress={
-                isLandscape
-                  ? () => {
-                      handleBackInteraction();
-                    }
-                  : () => {
-                      navigation.canGoBack(false);
-                      handleScreenOrientationChange('LANDSCAPE');
-                    }
-              }>
-              <Image
-                style={[
-                  styles.chartsHorizontalButton,
-                  {bottom: Platform.OS === 'android' ? 75 : 90},
-                ]}
-                resizeMode="contain"
-                source={
-                  isLandscape && isHorizontal
-                    ? require('../../../assets/images/home/charts/deactivate-horizontal.png')
-                    : require('../../../assets/images/home/charts/activate-horizontal.png')
-                }
-              />
-            </TouchableOpacity> */}
+          {/* Horizontal view button */}
+          <TouchableOpacity
+            onPress={
+              isLandscape
+                ? () => {
+                    handleBackInteraction();
+                  }
+                : () => {
+                    navigation.canGoBack(false);
+                    handleScreenOrientationChange('LANDSCAPE');
+                  }
+            }>
+            <Image
+              style={[
+                styles.chartsHorizontalButton,
+                {bottom: Platform.OS === 'android' ? 75 : 90},
+              ]}
+              resizeMode="contain"
+              source={
+                isLandscape && isHorizontal
+                  ? require('../../../assets/images/home/charts/deactivate-horizontal.png')
+                  : require('../../../assets/images/home/charts/activate-horizontal.png')
+              }
+            />
+          </TouchableOpacity>
           {/* Horizontal view close button */}
-          {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
-              <Image
-                style={
-                  isLandscape && isHorizontal
-                    ? styles.chartBackButton
-                    : {display: 'none'}
-                }
-                resizeMode="contain"
-                source={require('../../../assets/images/home/charts/back.png')}
-              />
-            </TouchableOpacity> */}
+          <TouchableOpacity onPress={() => handleBackInteraction()}>
+            <Image
+              style={
+                isLandscape && isHorizontal
+                  ? styles.chartBackButton
+                  : {display: 'none'}
+              }
+              resizeMode="contain"
+              source={require('../../../assets/images/home/charts/back.png')}
+            />
+          </TouchableOpacity>
           {/* Zoom interaction indicator */}
           <Image
             style={[styles.chartsZoomIndicator, selectedCandle && {zIndex: -1}]}

@@ -1,15 +1,15 @@
 import {React, useContext, useEffect, useState} from 'react';
 import {View, Text, SafeAreaView, ScrollView, Image} from 'react-native';
-import BackButton from '../BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import FearAndGreedIndex from './FearAndGreedIndex';
 import fearAndGreedService from '../../../services/FearAndGreedServices';
 import useFearAndGreedStyles from './FearAndGreedStyles';
-import LinearGradient from 'react-native-linear-gradient';
-import {AppThemeContext} from '../../../context/themeContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
+
+// ReferenceItem component that renders the reference item in the references section of the Fear and Greed Index screen. It displays the reference image, title, and description.
 
 const ReferenceItem = ({item, styles}) => {
   return (
@@ -28,6 +28,8 @@ const ReferenceItem = ({item, styles}) => {
   );
 };
 
+// Component that renders the references section of the Fear and Greed Index screen. It displays the different levels of fear and greed in the market with images and descriptions.
+
 const References = ({references, activeReference}) => {
   const styles = useFearAndGreedStyles();
   return (
@@ -38,6 +40,8 @@ const References = ({references, activeReference}) => {
     </ScrollView>
   );
 };
+
+// FearAndGreed component that renders the Fear and Greed Index screen. It displays the current Fear and Greed Index value and a reference section that explains the different levels of fear and greed in the market with images.
 
 const FearAndGreed = ({handleReturn}) => {
   const styles = useFearAndGreedStyles();
@@ -81,7 +85,6 @@ const FearAndGreed = ({handleReturn}) => {
 
   const [indexValue, setIndexValue] = useState(null);
   const [loading, setLoading] = useState(true);
-  const {isDarkMode} = useContext(AppThemeContext);
   const [activeOption, setActiveOption] = useState(null);
   const {subscribed} = useContext(RevenueCatContext);
 

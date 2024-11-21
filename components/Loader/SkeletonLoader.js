@@ -3,6 +3,8 @@ import {View, Animated} from 'react-native';
 import {AppThemeContext} from '../../context/themeContext';
 import useLoaderStyles from './LoaderStyles';
 
+// Component that renders a skeleton item for the skeleton loader. It uses an Animated.View to create a pulse effect, and it receives a style prop to customize the skeleton item.
+
 const SkeletonItem = ({style}) => {
   const {theme, isDarkMode} = useContext(AppThemeContext);
   const pulseAnim = useRef(new Animated.Value(0)).current;
@@ -39,6 +41,8 @@ const SkeletonItem = ({style}) => {
     />
   );
 };
+
+// Component that renders a skeleton loader. It receives a style prop to customize the loader, a type prop to define the type of skeleton loader to render, and a quantity prop to define the number of skeleton items to render. The component uses the SkeletonItem component to render the skeleton items, and there are different types of skeleton loaders available: item, news, circle, alerts, chart, text, bigItem, circleChart, timeline, dapps, competitors, selector, menu, calendar, search, fundingRates, timeframe, speedometer, and askAi, depending on the section where the skeleton loader is used.
 
 const SkeletonLoader = ({style, type = 'item', quantity = 1}) => {
   const styles = useLoaderStyles();

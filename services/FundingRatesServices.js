@@ -111,7 +111,7 @@ async function getBtcFundingRates(coin) {
     // const btcFundRate = data.data.find(obj => obj.symbol === 'BTC');
     return filterByExchanges(data, exchanges);
   } catch (error) {
-    console.error('Error: ', error);
+    console.error(' trying to get funding rates data: ', error);
     return [];
   }
 }

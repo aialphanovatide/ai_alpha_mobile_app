@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import {
   Text,
-  FlatList,
   SafeAreaView,
   View,
   TouchableOpacity,
@@ -12,13 +11,15 @@ import {useNavigation} from '@react-navigation/native';
 import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
 import {AboutModalContext} from '../../../../../../context/AboutModalContext';
-import {AboutIcon} from '../Fundamentals/AboutIcon';
-import {home_static_data} from '../../../../homeStaticData';
-import AboutModal from '../Fundamentals/AboutModal';
+import {AboutIcon} from '../../../../../AboutModal/AboutIcon';
+import {home_static_data} from '../../../../../../assets/static_data/homeStaticData';
+import AboutModal from '../../../../../AboutModal/AboutModal';
 import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../../../../NoContentDisclaimer/NoContentDisclaimer';
 import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
+
+// Component that renders the news section of the app. It fetches the news from the API and displays them in a list. It also has a filter to show the news of the day, the week or the month. 
 
 const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
@@ -62,7 +63,7 @@ const NewsComponent = ({route}) => {
     return filteredText;
   };
 
-  // Function to filter the news depending on the selected time filter
+  // Function to filter the news depending on the selected time filter (Today, This Week, This Month) and the current date. It returns the articles that match the filter.
 
   const filterNewsByDate = (news, filter) => {
     const now = new Date();

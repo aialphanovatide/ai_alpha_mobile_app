@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-  ImageBackground,
   LayoutAnimation,
   Platform,
   UIManager,
@@ -27,6 +26,7 @@ import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
 import ActiveTriangle from '../../../../../../../../assets/images/fundamentals/competitors/active-triangle.svg';
+import LightActiveTriangle from '../../../../../../../../assets/images/fundamentals/competitors/active-triangle-light.svg';
 
 if (
   Platform.OS === 'android' &&
@@ -35,22 +35,15 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+// Competitors menu item component, used to display the menu items in the Competitors section's menu. It is used to switch between the different sections of the Competitors section. It displays the icon and the name of the section.
+
 const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
-  const {theme} = useContext(AppThemeContext);
+  const {isDarkMode, theme} = useContext(AppThemeContext);
   return (
     <View style={styles.relativeContainer}>
       <TouchableOpacity
         onPress={() => handleOptionChange(item)}
         style={styles.menuItemContainer}>
-        {/* <ImageBackground
-        source={
-          activeOption.name === item.name
-            ? require('../../../../../../../../assets/images/fundamentals/competitors/competitors-active-item.png')
-            : require('../../../../../../../../assets/images/fundamentals/competitors/competitors-inactive-item.png')
-        }
-        style={styles.menuItemContainer}
-        resizeMode="contain"
-        tintColor={theme.fundamentalsCompetitorsItemBg}> */}
         <Image
           style={[
             styles.itemIcon,
@@ -67,14 +60,21 @@ const MenuItem = ({item, activeOption, handleOptionChange, styles}) => {
           numberOfLines={2}>
           {item.menuTitle}
         </Text>
-        {/* </ImageBackground> */}
       </TouchableOpacity>
-      {activeOption.name === item.name && (
-        <ActiveTriangle style={styles.activeTriangle} />
+      {activeOption.name === item.name ? (
+        isDarkMode ? (
+          <ActiveTriangle style={styles.activeTriangle} />
+        ) : (
+          <LightActiveTriangle style={styles.activeTriangle} />
+        )
+      ) : (
+        <></>
       )}
     </View>
   );
 };
+
+// Competitors menu component, used to display the Competitors section's menu. It is used to switch between the different sections of the Competitors section. It displays the different sections of the Competitors section.
 
 const CompetitorsMenu = ({
   options,
@@ -107,6 +107,8 @@ const CompetitorsMenu = ({
     </ScrollView>
   );
 };
+
+// Competitors component, used to display the Competitors section. It is used to display the different sections of the Competitors section. It displays the different sections of the Competitors section.
 
 const Competitors = ({
   getSectionData,

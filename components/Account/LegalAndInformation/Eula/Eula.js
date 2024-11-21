@@ -1,9 +1,11 @@
-import React, {useContext} from 'react';
-import {View, ScrollView, Text, Image} from 'react-native';
+import React from 'react';
+import {View, ScrollView, Text} from 'react-native';
 import useEulaStyles from './EulaStyles';
-import BackButton from '../../../Analysis/BackButton/BackButton';
+import BackButton from '../../../BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
+
+// Component used in the Account screen to show the End User Licence Agreement. It returns a view with the EULA text. The user can scroll through the text.
 
 const Eula = () => {
   const styles = useEulaStyles();

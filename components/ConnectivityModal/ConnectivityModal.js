@@ -2,8 +2,9 @@ import React, {useContext} from 'react';
 import {ImageBackground, Modal, Text, TouchableOpacity} from 'react-native';
 import useConnectivityModalStyles from './ConnectivityModalStyles';
 import {AppThemeContext} from '../../context/themeContext';
-import {BlurView} from '@react-native-community/blur';
 import LinearGradient from 'react-native-linear-gradient';
+
+// Component to display a modal when the user is offline or the server is down. It renders a background image and a message to inform the user about the connectivity issue. It receives the serverError, setServerError, modalVisible, setModalVisible, checkConnectivityAndCloseModal, and type as props.
 
 const ConnectivityModal = ({
   serverError,
@@ -24,12 +25,6 @@ const ConnectivityModal = ({
       onRequestClose={() => {
         type === 'serverDown' ? setServerError(false) : setModalVisible(false);
       }}>
-      {/* <BlurView
-        style={styles.absolute}
-        blurType={isDarkMode ? 'dark' : 'light'}
-        blurAmount={1.75}
-        blurRadius={1}
-      /> */}
       <LinearGradient
         style={styles.absolute}
         colors={

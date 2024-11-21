@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import useRevenueStyles from './RevenueStyles';
 import {revenueImagesUrls} from './revenueImagesUrl';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
-import Loader from '../../../../../../../../../Loader/Loader';
 import {findCoinNameBySymbol} from '../../coinsNames';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';
 

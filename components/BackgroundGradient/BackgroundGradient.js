@@ -3,6 +3,8 @@ import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 
+// Component to render a linear gradient background. It uses the AppThemeContext to get the current theme and render the gradient colors accordingly.
+
 const BackgroundGradient = () => {
   const {isDarkMode} = useContext(AppThemeContext);
   return (

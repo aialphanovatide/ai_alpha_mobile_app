@@ -1,8 +1,9 @@
-import {Image, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import React from 'react';
 import useFundamentalsStyles from '../FundamentalsStyles';
-import {AboutIcon} from '../AboutIcon';
-import NoContentMessage from '../NoContentMessage/NoContentMessage';
+import {AboutIcon} from '../../../../../../AboutModal/AboutIcon';
+
+// Component to render the content of the Competitors subsections in the Fundamentals tab.
 
 const SubSection = ({
   subtitle,

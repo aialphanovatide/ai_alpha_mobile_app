@@ -7,36 +7,37 @@ import {
   Text,
   ImageBackground,
   TouchableOpacity,
-  Button,
 } from 'react-native';
 import TickerTape from './Tickertape/TickerTape';
-import TopStories from './TopStories/topStories';
-import Analysis from './Analysis/analysis';
+import WhatsHappeningToday from './TopStories/WhatsHappeningToday.js';
 import TopTenGainers from './TopTenGainers/TopTenGainers';
 import useHomeStyles from './HomeStyles';
-import AboutModal from './Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
+import AboutModal from '../AboutModal/AboutModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
-import {useScrollToTop} from '@react-navigation/native';
-import NarrativeTradings from './HomeNarrativeTradings/NarrativeTradings';
+import {useFocusEffect, useScrollToTop} from '@react-navigation/native';
+import NarrativeTradings from './HomeNarrativeTradings/MarketNarratives';
 import TopTenLosers from './Top10Losers/TopTenLosers';
 import {useRawUserId} from '../../context/RawUserIdContext';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
-import SubscriptionPopUp from '../SubscriptionPopUps/SubscriptionPopUp';
 import useSubscriptionPopUpStyles from '../SubscriptionPopUps/SubscriptionPopUpStyles';
 import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
+import DailyDeepDives from './Analysis/DailyDeepDives.js';
+import {useScreenOrientation} from '../../hooks/useScreenOrientation';
+
+// FreePopup component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 
 const FreePopup = ({visible, onClose, setVisible}) => {
   const styles = useSubscriptionPopUpStyles();
   const {isDarkMode} = useContext(AppThemeContext);
 
+  // Function to update the signupDateValidator in AsyncStorage to ensure that the user does not see the pop-up again after they have closed it.
+
   const updateValidator = async () => {
-    console.log('Updating validator...');
     try {
-      console.log('Validator updated to TRUE');
       await AsyncStorage.setItem('signupDateValidator', 'true');
     } catch (error) {
       console.error('Error updating validator');
@@ -45,7 +46,6 @@ const FreePopup = ({visible, onClose, setVisible}) => {
 
   const handleClose = async () => {
     setVisible(false);
-    console.log('Closing modal');
     await updateValidator(); // Ensure that updateValidator is called asynchronously
   };
 
@@ -56,12 +56,6 @@ const FreePopup = ({visible, onClose, setVisible}) => {
       transparent={true}
       visible={visible}
       onRequestClose={handleClose}>
-      {/* <BlurView
-        style={styles.absolute}
-        blurType={isDarkMode ? 'dark' : 'light'}
-        blurAmount={1.75}
-        blurRadius={1}
-      /> */}
       <LinearGradient
         style={styles.absolute}
         colors={
@@ -102,17 +96,19 @@ const FreePopup = ({visible, onClose, setVisible}) => {
   );
 };
 
+// Home component to render the main screen of the app, which includes the ticker tape, top stories, top gainers and top losers sections. It also includes the about modal that can be triggered by the user by clicking on the about button in the top right corner of some of the sections.
+
 const Home = ({route}) => {
   const styles = useHomeStyles();
   const [aboutVisible, setAboutVisible] = useState(false);
   const [aboutDescription, setAboutDescription] = useState('');
   const [aboutTitle, setAboutTitle] = useState('About');
-  const {isDarkMode} = useContext(AppThemeContext);
   const {rawUserId} = useRawUserId();
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
-  const [modalVisible, setModalVisible] = useState(false);
   const [subscriptionPopUpsVisible, setSubscriptionPopUpsVisible] =
     useState(false);
+  const {isLandscape, isHorizontal, handleScreenOrientationChange} =
+    useScreenOrientation();
 
   const ref = useRef(null);
 
@@ -121,6 +117,14 @@ const Home = ({route}) => {
     showHeader('SubMenu');
     showHeader('FundNewsChartsMenu');
   }, []);
+
+  useFocusEffect(() => {
+    if (isLandscape && isHorizontal) {
+      handleScreenOrientationChange('PORTRAIT');
+    }
+  });
+
+  // This useEffect fetches the user's data from the backend using the rawUserId. This is used to check if the user has already seen the subscription pop-up.
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -133,7 +137,7 @@ const Home = ({route}) => {
           },
         });
         const userData = await userFetch.json();
-        console.log('USER DATA IN HOME', userData);
+        console.log("- Successfully retrieved the user's data: ", userData);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -155,6 +159,8 @@ const Home = ({route}) => {
 
   useScrollToTop(ref);
 
+  // Function to handle the about modal visibility and content based on the section that the user clicked on
+
   const handleAboutPress = (description = null, title = null) => {
     if (description) {
       setAboutDescription(description);
@@ -167,14 +173,13 @@ const Home = ({route}) => {
     setAboutVisible(!aboutVisible);
   };
 
+  // Function to check if the user has been using the app for more than 3 days and has not seen the subscription pop-up yet. If the user has not seen the pop-up, it will return true, otherwise it will return false.
+
   const checkForModalDisplay = async () => {
     const signupDateStr = await AsyncStorage.getItem('signupDate');
-    //console.log('SIGNUP DATE FROM ASYNC STORAGE', signupDateStr);
     const signupDateValidator = await AsyncStorage.getItem(
       'signupDateValidator',
     );
-    console.log('SIGNUP DATE VALIDATOR', signupDateValidator);
-
     if (!signupDateStr) return false; // If signup date is not found, this does nothing
 
     const signupDate = new Date(signupDateStr);
@@ -183,27 +188,22 @@ const Home = ({route}) => {
     const diffTime = Math.abs(currentDate - signupDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // This converts milliseconds to days
 
-    console.log('Diff days: ', diffDays);
-    console.log('Validator: ', signupDateValidator);
-
     if (diffDays < 3) {
-      console.log('Less than 3 days');
       return false;
     } else if (diffDays >= 3 && signupDateValidator == 'false') {
-      console.log('Equal or greater than 3 days');
       return true;
     } else {
-      console.log('None of the above');
       return false;
     }
   };
 
-  // Functions to handle the scrolling interaction that hides the menu
+  // Variables and functions to handle the header visibility based on the user's scroll position. The header will be hidden when the user scrolls down and shown when the user scrolls up.
 
   const {showHeader, hideHeader} = useContext(HeaderVisibilityContext);
   const scrollOffset = useRef(0);
   const scrollViewRef = useRef(null);
 
+  // Function to throttle the scroll event to improve performance and reduce the number of times the function is called.
   const handleScroll = throttle(event => {
     const currentOffset = event.nativeEvent.contentOffset.y;
     const diff = currentOffset - scrollOffset.current;
@@ -217,6 +217,7 @@ const Home = ({route}) => {
     scrollOffset.current = currentOffset;
   }, 350);
 
+  // Function to handle the scroll event and call the handleScroll function
   const onScroll = event => {
     event.persist();
     handleScroll(event);
@@ -247,8 +248,8 @@ const Home = ({route}) => {
             setVisible={setSubscriptionPopUpsVisible}
           />
           <TickerTape />
-          <TopStories handleAboutPress={handleAboutPress} />
-          <Analysis handleAboutPress={handleAboutPress} />
+          <WhatsHappeningToday handleAboutPress={handleAboutPress} />
+          <DailyDeepDives handleAboutPress={handleAboutPress} />
           <NarrativeTradings handleAboutPress={handleAboutPress} />
           <TopTenGainers handleAboutPress={handleAboutPress} />
           <TopTenLosers handleAboutPress={handleAboutPress} />

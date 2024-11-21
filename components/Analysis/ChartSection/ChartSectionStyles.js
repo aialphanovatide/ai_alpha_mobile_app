@@ -103,8 +103,9 @@ const useChartSectionStyles = () => {
       height: 24,
       position: 'absolute',
       bottom: 75,
-      left: 25,
+      left: '10%',
       tintColor: theme.textColor,
+      zIndex: 10,
     },
     chartBackButton: {
       width: 35,

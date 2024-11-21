@@ -2,10 +2,11 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import useTokenUtilityStyles from './TokenUtilityStyles';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
-import Loader from '../../../../../../../Loader/Loader';
 import NoContentMessage from '../../NoContentMessage/NoContentMessage';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
+
+// TokenUtilityItem component that renders the TokenUtility item, which displays the token utilites content for a coin. The content itself is displayed as an item with title, image and a description.
 
 const TokenUtilityItem = ({styles, data}) => {
   return (
@@ -32,8 +33,9 @@ const TokenUtilityItem = ({styles, data}) => {
   );
 };
 
+// Component that renders the TokenUtility item, which displays the token utilites content for a coin. It shows a loader when requesting the data and a message in case there is no content to display. The content itself is displayed as a list of items, each containing an image and a description.
+
 const TokenUtility = ({
-  getSectionData,
   coin,
   handleSectionContent,
   loading,
@@ -69,39 +71,6 @@ const TokenUtility = ({
   };
 
   useEffect(() => {
-    // setLoading(true);
-    // setDataItems([]);
-
-    // const fetchTokenUtilities = async coin => {
-    //   try {
-    //     const response = await getSectionData(
-    //       `/api/get_tokenomics?coin_name=${coin}`,
-    //     );
-    //     if (response.status !== 200) {
-    //       setDataItems([]);
-    //     } else {
-    //       const parsed_data = response.message.token_utility.map(item => {
-    //         return {
-    //           id: item.token_utilities.id,
-    //           title: item.token_utilities.token_application,
-    //           text: item.token_utilities.description,
-    //           image: getItemImageUri(
-    //             coin,
-    //             item.token_utilities.token_application.replace(/'/g, ''),
-    //             item.token_utilities.description,
-    //             isDarkMode,
-    //           ),
-    //           imageSize: calculateImageSize(item.token_utilities.description),
-    //         };
-    //       });
-    //       setDataItems(parsed_data);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error trying to get Token Utilities data: ', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
     const fetchTokenUtilities = coin => {
       if (!globalData || globalData.tokenomics.status !== 200) {
         setDataItems([]);

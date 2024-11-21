@@ -102,7 +102,7 @@ const CWChart = ({
   // Function to handle the X button interaction on the horizontal chart
 
   const handleBackInteraction = () => {
-    if (isLandscape || isHorizontal) {
+    if (isLandscape && isHorizontal) {
       handleScreenOrientationChange('PORTRAIT');
       navigation.canGoBack(false);
     }

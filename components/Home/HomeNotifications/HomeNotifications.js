@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -7,17 +7,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import BackButton from '../../Analysis/BackButton/BackButton';
-import {AppThemeContext} from '../../../context/themeContext';
+import BackButton from '../../BackButton/BackButton';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import useHomeNotificationsStyles from './HomeNotificationsStyles';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
-import {useRoute} from '@react-navigation/native';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 
-// Function to handle the sorting of the notifications items by the date
+// Function to handle the sorting of the notifications items by the date. It groups the items by date and returns them sorted in descending order.
 
 const groupAndSortByDate = items => {
   const groupedByDate = {};
@@ -41,6 +39,8 @@ const groupAndSortByDate = items => {
     return dateB - dateA;
   });
 };
+
+// NotificationItem component to display the notification item. It receives the imageSource, item and isNew props. The imageSource is the source of the image to be displayed in the notification item. The item prop contains the information of the notification item. The isNew prop is a boolean that indicates if the notification is new. The component returns a View with the notification item content.
 
 const NotificationItem = ({imageSource, item, isNew}) => {
   const styles = useHomeNotificationsStyles();
@@ -89,6 +89,8 @@ const NotificationItem = ({imageSource, item, isNew}) => {
   );
 };
 
+// Component to display the notifications menu. It receives the options, selectedOption and changeOption props. The options prop is an array with the options to be displayed in the menu. The selectedOption prop is the selected option. The changeOption prop is a function to change the selected option. The component returns a View with the notifications menu content.
+
 const NotificationsMenu = ({options, selectedOption, changeOption}) => {
   const styles = useHomeNotificationsStyles();
   return (
@@ -117,14 +119,14 @@ const NotificationsMenu = ({options, selectedOption, changeOption}) => {
   );
 };
 
+// Component to display the notifications section. It receives the route and navigation props. The route prop contains the route information. The navigation prop is used to navigate between screens. The component returns a SafeAreaView with the notifications section content. It displays the notifications menu and the notifications items.
+
 const HomeNotifications = ({route, navigation}) => {
-  const {isDarkMode, theme} = useContext(AppThemeContext);
   const [loading, setLoading] = useState(false);
   const options = ['All', 'App', 'Analysis', 'Alerts'];
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const [notificationsData, setNotificationsData] = useState([]);
   const styles = useHomeNotificationsStyles();
-  const routeName = useRoute().name;
 
   const saveNotifications = async newNotifications => {
     try {

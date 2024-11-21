@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useRef} from 'react';
-import {Image, SafeAreaView, Animated, Easing} from 'react-native';
+import React, { useEffect, useRef} from 'react';
+import {SafeAreaView, Animated, Easing} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {AppThemeContext} from '../../context/themeContext';
 import useSplashScreenStyles from './SplashScreenStyles';
 
+// Custom splash screen component to show the app logo when the app starts for the first time. It uses the useSplashScreenStyles hook to get the styles for the component.
+
 const CustomSplashScreen = () => {
-  const {isDarkMode} = useContext(AppThemeContext);
   const styles = useSplashScreenStyles();
 
   const scaleAnim = useRef(new Animated.Value(0)).current;

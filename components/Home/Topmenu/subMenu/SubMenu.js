@@ -1,10 +1,12 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import {Animated, View} from 'react-native';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import CoinMenu from './coinMenu/coinMenu';
 import {useNavigation} from '@react-navigation/native';
 import useSubMenuStyles from './SubMenuStyles';
 import {HeaderVisibilityContext} from '../../../../context/HeadersVisibilityContext';
+
+// This component is used in the TopMenu component to show the subcoins of the selected coin. It receives a boolean to determine if it is the alerts menu or not. It returns a view with the subcoins as buttons.
 
 const SubMenu = ({isAlertsMenu}) => {
   const {activeCoin, activeSubCoin, updateActiveSubCoin} =
@@ -16,11 +18,9 @@ const SubMenu = ({isAlertsMenu}) => {
     updateActiveSubCoin(coin);
     if (!isAlertsMenu) {
       navigation.navigate('SubMenuScreen', {
-        screen: 'Charts',
+        screen: 'Fundamentals',
         params: {
-          interval: '1h',
-          symbol: `${coin}USDT`,
-          coinBot: coin,
+          coin: coin,
         },
       });
     }

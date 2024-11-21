@@ -81,7 +81,7 @@ const SocialSignInButton = () => {
         setUserEmail(userEmail);
         setRawUserId(rawUserId);
         setUserId(user_id);
-        navigation.navigate('HomeScreen');
+        navigation.navigate('TabsMenu');
       } else {
         navigation.navigate('SignIn');
       }
@@ -155,7 +155,7 @@ const SocialSignInButton = () => {
         setRawUserId(user.id);
         updateUserEmail(user.email);
 
-        navigation.navigate('HomeScreen');
+        navigation.navigate('TabsMenu');
 
 
         const response = await fetch(`https://aialpha.ngrok.io/register`, {
@@ -202,7 +202,7 @@ const SocialSignInButton = () => {
         setRawUserId(userId);
         updateUserEmail(userProfile.email);
 
-        navigation.navigate('HomeScreen');
+        navigation.navigate('TabsMenu');
 
         const response = await fetch(`https://aialpha.ngrok.io/register`, {
           method: 'POST',
@@ -281,7 +281,7 @@ const SocialSignInButton = () => {
         await AsyncStorage.setItem('rawUserId', newUser);
         await AsyncStorage.setItem('userId', user);
 
-        navigation.navigate('HomeScreen');
+        navigation.navigate('TabsMenu');
         setUserId(user);
         setRawUserId(newUser);
         //setUserEmail(email);

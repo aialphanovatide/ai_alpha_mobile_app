@@ -23,7 +23,7 @@ import {TopMenuContext} from '../../context/topMenuContext';
 import {AnalysisContext} from '../../context/AnalysisContext';
 import {CategoriesContext} from '../../context/categoriesContext';
 import {useIsFocused} from '@react-navigation/native';
-import AlertDetails from '../Alerts/AlertsDetails';
+import AlertDetails from '../Alerts/AlertItem';
 import {getService} from '../../services/aiAlphaApi';
 import useAlertsStyles from '../Alerts/styles';
 import {NarrativeTradingContext} from '../../context/NarrativeTradingContext';
@@ -320,7 +320,7 @@ const Search = ({currentTextValue, contentVisible}) => {
     updateActiveCoin({});
     updateActiveSubCoin(null);
     navigation.navigate('Home', {
-      screen: 'AnalysisArticleScreen',
+      screen: 'DailyDeepScreen',
       params: {
         analysis_content: analysisItem.raw_analysis,
         analysis_id: analysisItem.id,
@@ -334,7 +334,7 @@ const Search = ({currentTextValue, contentVisible}) => {
     updateActiveCoin({});
     updateActiveSubCoin(null);
     navigation.navigate('Home', {
-      screen: 'NarrativeTradingArticleScreen',
+      screen: 'MarketNarrativeArticleScreen',
       params: {
         item_content: narrativeTrading.content,
         id: narrativeTrading.id,

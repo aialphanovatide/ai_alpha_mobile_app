@@ -2,6 +2,8 @@ import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import useCalendarSubMenuStyles from './SubMenuStyles';
 
+// SubMenuItem component that renders the sub-menu item for the calendar screen. It displays the interval name that the user can select to view the events for the selected interval.
+
 const SubMenuItem = ({selectedInterval, intervalData, handlePress, styles}) => {
   return (
     <TouchableOpacity
@@ -20,6 +22,8 @@ const SubMenuItem = ({selectedInterval, intervalData, handlePress, styles}) => {
     </TouchableOpacity>
   );
 };
+
+// SubMenu component that renders the sub-menu for the calendar screen. It displays the intervals "Today" and "This Week" that the user can select to view the events for the selected interval.
 
 const SubMenu = ({Intervals, handlePress, selectedInterval}) => {
   const styles = useCalendarSubMenuStyles();

@@ -62,7 +62,7 @@ async function getCapitalComPrices(
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error:', error.message);
+    console.error('Error getting the capital com charts data:', error.message);
     return [];
   }
 }

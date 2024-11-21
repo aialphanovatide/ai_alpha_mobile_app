@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -9,8 +9,10 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import useLegalStyles from './LegalAndInformationStyles';
-import BackButton from '../../Analysis/BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
+
+// Component to display the Legal Item in the Legal and Information screen. It receives the styles, the option to display, a function to handle the touch of the item, and an optional component to display in the item. It returns a view with the logo, name, and an optional component or right arrow that executes the function.
 
 const LegalItem = ({styles, option, handleItemTouch, itemComponent = null}) => {
   return (
@@ -39,6 +41,8 @@ const LegalItem = ({styles, option, handleItemTouch, itemComponent = null}) => {
     </TouchableOpacity>
   );
 };
+
+// Component to display the Legal and Information screen in the Account section. It displays the options for the user to access the Privacy Policy, Terms and Conditions, and End User License Agreement.
 
 const LegalAndInformation = ({route}) => {
   const styles = useLegalStyles();

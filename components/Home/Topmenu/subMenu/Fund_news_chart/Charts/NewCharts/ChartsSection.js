@@ -3,10 +3,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../../../../../context/themeContext';
 import useNewChartsStyles from './NewChartsStyles';
 import {ScrollView, Text, View} from 'react-native';
-import {AboutIcon} from '../../Fundamentals/AboutIcon';
-import {home_static_data} from '../../../../../homeStaticData';
+import {AboutIcon} from '../../../../../../AboutModal/AboutIcon';
+import {home_static_data} from '../../../../../../../assets/static_data/homeStaticData';
 import {AboutModalContext} from '../../../../../../../context/AboutModalContext';
-import AboutModal from '../../Fundamentals/AboutModal';
+import AboutModal from '../../../../../../AboutModal/AboutModal';
 import Chart from './NewChart';
 import BackgroundGradient from '../../../../../../BackgroundGradient/BackgroundGradient';
 

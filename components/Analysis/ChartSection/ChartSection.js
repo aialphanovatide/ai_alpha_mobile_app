@@ -9,11 +9,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import BackButton from '../BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import useChartSectionStyles from './ChartSectionStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
-import TimeframeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/chartTimeframes';
+import ChartTimeSelector from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/ChartTimeSelector';
 import {
   getCapitalComPrices,
   postCCSession,
@@ -30,7 +30,7 @@ import {getService} from '../../../services/aiAlphaApi';
 import ChartButtons from './ChartButtons';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
-import DataRenderer from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
+import ClickOnCandleDetails from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
@@ -39,6 +39,8 @@ const initialSessionData = {
   security_token: null,
   security_cst: null,
 };
+
+// ChartSection component that renders the chart section of the Dashboard screen. It displays the chart of the selected coin, the time interval selector, and the support and resistance levels. The user can interact with the chart by selecting the time interval, zooming in and out, and viewing the support and resistance levels. It is used to display charts that used data from the CapitalCom API.
 
 const ChartSection = ({route, navigation}) => {
   const {title, symbol, description} = route.params;
@@ -275,7 +277,7 @@ const ChartSection = ({route, navigation}) => {
   // Function to handle the X button interaction on the horizontal chart
 
   const handleBackInteraction = () => {
-    if (isLandscape || isHorizontal) {
+    if (isLandscape && isHorizontal) {
       handleScreenOrientationChange('PORTRAIT');
       navigation.canGoBack(false);
     }
@@ -390,7 +392,7 @@ const ChartSection = ({route, navigation}) => {
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.sectionDescription}>{description}</Text>
         <View style={styles.timeframeContainer}>
-          <TimeframeSelector
+          <ChartTimeSelector
             selectedInterval={selectedInterval}
             changeInterval={changeInterval}
             selectedPairing={'usdt'}
@@ -502,35 +504,35 @@ const ChartSection = ({route, navigation}) => {
               <VictoryAxis
                 dependentAxis
                 // Events configuration for preventing the scroll issue with the Y-axis values
-            events={[
-              {
-                childName: 'all',
-                target: 'tickLabels',
-                eventHandlers: {
-                  onClick: () => {
-                    return;
+                events={[
+                  {
+                    childName: 'all',
+                    target: 'tickLabels',
+                    eventHandlers: {
+                      onClick: () => {
+                        return;
+                      },
+                    },
                   },
-                },
-              },
-              {
-                childName: 'all',
-                target: 'axis',
-                eventHandlers: {
-                  onClick: () => {
-                    return;
+                  {
+                    childName: 'all',
+                    target: 'axis',
+                    eventHandlers: {
+                      onClick: () => {
+                        return;
+                      },
+                    },
                   },
-                },
-              },
-              {
-                childName: 'all',
-                target: 'axisLabel',
-                eventHandlers: {
-                  onClick: () => {
-                    return;
+                  {
+                    childName: 'all',
+                    target: 'axisLabel',
+                    eventHandlers: {
+                      onClick: () => {
+                        return;
+                      },
+                    },
                   },
-                },
-              },
-            ]}
+                ]}
                 style={{
                   axis: {stroke: theme.chartsAxisColor},
                   tickLabels: {
@@ -570,7 +572,7 @@ const ChartSection = ({route, navigation}) => {
                 />
               )}
               {/* Component that renders when clicking a candle */}
-              <DataRenderer
+              <ClickOnCandleDetails
                 domainX={zoomDomain.x}
                 yPoint={selectedCandle && calculateCandleMiddle(selectedCandle)}
                 domainY={domainY}
@@ -701,42 +703,42 @@ const ChartSection = ({route, navigation}) => {
                 ))}
             </VictoryChart>
           </View>
-          {/* Horizontal view button [DEACTIVATED UNTIL SOLVING ISSUES] */}
-          {/* <TouchableOpacity
-              onPress={
-                isLandscape
-                  ? () => {
-                      handleBackInteraction();
-                    }
-                  : () => {
-                      navigation.canGoBack(false);
-                      handleScreenOrientationChange('LANDSCAPE');
-                    }
-              }>
-              <Image
-                style={styles.chartsHorizontalButton}
-                source={
-                  isLandscape && isHorizontal
-                    ? require('../../../assets/images/home/charts/deactivate-horizontal.png')
-                    : require('../../../assets/images/home/charts/activate-horizontal.png')
-                }
-              />
-            </TouchableOpacity> */}
+          {/* Horizontal view button */}
+          <TouchableOpacity
+            onPress={
+              isLandscape
+                ? () => {
+                    handleBackInteraction();
+                  }
+                : () => {
+                    navigation.canGoBack(false);
+                    handleScreenOrientationChange('LANDSCAPE');
+                  }
+            }>
+            <Image
+              style={styles.chartsHorizontalButton}
+              source={
+                isLandscape && isHorizontal
+                  ? require('../../../assets/images/home/charts/deactivate-horizontal.png')
+                  : require('../../../assets/images/home/charts/activate-horizontal.png')
+              }
+            />
+          </TouchableOpacity>
           {/* Horizontal view close button */}
-          {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
-              <Image
-                style={
-                  isLandscape && isHorizontal
-                    ? styles.chartBackButton
-                    : {display: 'none'}
-                }
-                resizeMode="contain"
-                source={require('../../../assets/images/home/charts/back.png')}
-              />
-            </TouchableOpacity> */}
+          <TouchableOpacity onPress={() => handleBackInteraction()}>
+            <Image
+              style={
+                isLandscape && isHorizontal
+                  ? [styles.chartBackButton, {right: '15%'}]
+                  : {display: 'none'}
+              }
+              resizeMode="contain"
+              source={require('../../../assets/images/home/charts/back.png')}
+            />
+          </TouchableOpacity>
           {/* Zoom interaction indicator */}
           <Image
-            style={[styles.chartsZoomIndicator, selectedCandle && {zIndex: -1}]}
+            style={[styles.chartsZoomIndicator, selectedCandle && {zIndex: -1}, isLandscape && isHorizontal && {right: '16.5%'}]}
             resizeMode="contain"
             source={require('../../../assets/images/home/charts/zoom-expand.png')}
           />

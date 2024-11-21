@@ -19,12 +19,15 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+// Component to render each DApp item in the DApps section of the Fundamentals tab. It displays the image, name, TVL, and description of the DApp.
+
 const ProtocolItem = ({
   protocol,
   styles,
   handleActiveProtocol,
   activeProtocol,
   maxLength,
+  protocolsNumber = 6,
 }) => {
   const [hasImage, setHasImage] = useState(false);
 
@@ -80,7 +83,10 @@ const ProtocolItem = ({
             uri: protocol.image,
             priority: FastImage.priority.normal,
           }}
-          style={styles.protocolImage}
+          style={[
+            styles.protocolImage,
+            protocolsNumber > 6 && {alignSelf: 'center'},
+          ]}
           resizeMode="contain"
           fallback={true}
         />
@@ -92,7 +98,7 @@ const ProtocolItem = ({
         />
       )}
 
-      <View style={styles.line} />
+      <View style={[styles.line, protocolsNumber > 6 && {top: '60%'}]} />
       <View style={styles.protocolDataContainer}>
         <View style={styles.row}>
           <Text style={styles.protocolName}>{protocol.name}</Text>
@@ -126,13 +132,9 @@ const ProtocolItem = ({
   );
 };
 
-const DApps = ({
-  getSectionData,
-  coin,
-  handleSectionContent,
-  globalData,
-  loading,
-}) => {
+// DApps component used in the Fundamentals section. It is used to display the decentralized applications of the selected crypto. It is used to display the image, name, TVL, and description of each DApp.
+
+const DApps = ({coin, handleSectionContent, globalData, loading}) => {
   const styles = useDappsStyles();
   const [activeProtocol, setActiveProtocol] = useState(null);
   const [mappedData, setMappedData] = useState([]);
@@ -217,6 +219,7 @@ const DApps = ({
                 handleActiveProtocol={handleActiveProtocol}
                 activeProtocol={activeProtocol}
                 maxLength={maxLength}
+                protocolsNumber={mappedData.length}
               />
             ))}
           </View>

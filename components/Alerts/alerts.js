@@ -3,19 +3,17 @@ import {
   View,
   Text,
   SafeAreaView,
-  FlatList,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
 import useAlertsStyles from './styles';
 import {TopMenuContext} from '../../context/topMenuContext';
 import {getService, postService} from '../../services/aiAlphaApi';
-import AlertDetails from './AlertsDetails';
+import AlertDetails from './AlertItem';
 import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
 import SubMenu from '../Home/Topmenu/subMenu/SubMenu';
 import UpgradeOverlay from '../UpgradeOverlay/UpgradeOverlay';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
-import {AppThemeContext} from '../../context/themeContext';
 import {CategoriesContext} from '../../context/categoriesContext';
 import {useScrollToTop} from '@react-navigation/native';
 import SkeletonLoader from '../Loader/SkeletonLoader';
@@ -50,7 +48,7 @@ const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
   );
 };
 
-// Component to display all the content, with the menu and the alerts fetched for each coin or for all the categories that the user has subscribed
+// Component to display all the content, with the menu and the alerts fetched for each coin or for all the categories that the user has subscribed. It receives the route and navigation props. It returns a view with the alerts and the menu to switch between the time intervals. It also displays a loader while the data is being fetched. If there are no alerts, it displays a Disclaimer component to the user.
 
 const Alerts = ({route, navigation}) => {
   const options = ['1H', '4H', '1D', '1W'];
@@ -64,7 +62,6 @@ const Alerts = ({route, navigation}) => {
   const styles = useAlertsStyles();
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const {theme, isDarkMode} = useContext(AppThemeContext);
   const {categories} = useContext(CategoriesContext);
   const ref = useRef(null);
 

@@ -3,14 +3,15 @@ import useAskAiStyles from '../AskAiStyles';
 import {SafeAreaView, Text, View} from 'react-native';
 import {Image, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {AboutIcon} from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutIcon';
-import {AppThemeContext} from '../../../context/themeContext';
-import AboutModal from '../../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/AboutModal';
+import {AboutIcon} from '../../AboutModal/AboutIcon';
+import AboutModal from '../../AboutModal/AboutModal';
 import {AboutModalContext} from '../../../context/AboutModalContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import BackButton from '../../Analysis/BackButton/BackButton';
+import BackButton from '../../BackButton/BackButton';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
+
+// Component to display the History section's content on the ASK AI History section. It renders the items that are saved on the user device's cache (Async Storage) and displays them as clickable items. The user can filter the items by category and clean the history data. It receives the activeHistoryOption, historyOptions, handleHistoryOption, handleActiveResultData, savedResults, and handleHistoryClean functions as props.
 
 const HistoryContent = ({
   activeHistoryOption,
@@ -95,9 +96,10 @@ const HistoryContent = ({
   );
 };
 
+// Component to display the ASK AI History section, where the user can see the previously searched coins on the main ASK AI section. The user can also filter the items by category and clean the history data. It renders the HistoryContent component to display the items and the AboutModal component to display the information about the section.
+
 const AskAiHistory = ({route, navigation}) => {
   const styles = useAskAiStyles();
-  const {isDarkMode} = useContext(AppThemeContext);
   const {
     aboutVisible,
     aboutTitle,

@@ -4,7 +4,6 @@ import Speedometer from './Speedometer/Speedometer';
 import CryptosSelector from '../../CryptoSelector/CryptosSelector';
 import useTransactionSpeedStyles from './TransactionSpeedStyles';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
-import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
 import SkeletonLoader from '../../../../../../../../../Loader/SkeletonLoader';

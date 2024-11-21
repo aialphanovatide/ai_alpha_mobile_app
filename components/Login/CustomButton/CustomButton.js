@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {View, Text, Pressable, Appearance} from 'react-native';
+import React from 'react';
+import {View, Text, Pressable} from 'react-native';
 import GoogleLogo from './GoogleLogo';
 import AppleLogo from './AppleLogo';
 import useCustomButtonStyles from './CustomButtonStyles';
 
+// Component to render a custom button with different styles based on the type, which can be 'PRIMARY', 'GOOGLE' or 'APPLE'.
 const CustomButton = ({onPress, text, type = 'PRIMARY', disabled}) => {
   const styles = useCustomButtonStyles();
   let logo = null;
-  const colorScheme = Appearance.getColorScheme();
 
   if (type === 'GOOGLE') {
     logo = <GoogleLogo style={styles.logo} />;

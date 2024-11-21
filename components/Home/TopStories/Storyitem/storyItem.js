@@ -1,7 +1,7 @@
-import useTopStoriesStyles from '../topStoriesStyles';
 import FastImage from 'react-native-fast-image';
 import {Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
+import useWhatsHappeningTodayStyles from '../whatsHappeningTodayStyles';
 
 const StoryItem = ({
   item,
@@ -12,7 +12,7 @@ const StoryItem = ({
   index,
   expanded,
 }) => {
-  const styles = useTopStoriesStyles();
+  const styles = useWhatsHappeningTodayStyles();
   return (
     <TouchableOpacity
       onPress={() => handleStoryRedirect(item, coinBotId)}

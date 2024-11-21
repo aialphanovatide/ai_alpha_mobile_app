@@ -1,6 +1,6 @@
 import {Text, View} from 'react-native';
 import React from 'react';
-import {AboutIcon} from '../../../AboutIcon';
+import {AboutIcon} from '../../../../../../../../AboutModal/AboutIcon';
 
 const CompetitorSection = ({
   title,

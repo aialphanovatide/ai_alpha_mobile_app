@@ -2,7 +2,6 @@ import {Image, Text, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import useActiveDevelopersStyles from './ActiveDevelopersStyle';
 import {AppThemeContext} from '../../../../../../../../../../context/themeContext';
-import Loader from '../../../../../../../../../Loader/Loader';
 import NoContentMessage from '../../../../NoContentMessage/NoContentMessage';
 import {findCoinNameBySymbol} from '../../coinsNames';
 import FastImage from 'react-native-fast-image';
@@ -21,7 +20,7 @@ const generateActiveDevs = (
     images.push(
       <View key={`activeDevs_${i}`} style={styles.devImageContainer}>
         <Image
-          source={require('../../../../../../../../../../assets/dailydevelopers.png')}
+          source={require('../../../../../../../../../../assets/images/fundamentals/competitors/dailydevelopers.png')}
           style={[
             styles.image,
             {
