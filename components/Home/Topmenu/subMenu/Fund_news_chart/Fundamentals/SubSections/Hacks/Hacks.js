@@ -18,10 +18,7 @@ const Hacks = ({
       if (!globalData || globalData.hacks.status !== 200) {
         setEvents([]);
       } else {
-        const ordered_events = globalData.hacks.message.sort((a, b) =>
-          compareDates(a.date, b.date),
-        );
-        setEvents(ordered_events);
+        setEvents(globalData.hacks.message);
       }
     };
     fetchHacksData();

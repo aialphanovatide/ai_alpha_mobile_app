@@ -1,16 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Platform,
-  Modal,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {AppThemeContext} from '../../context/themeContext';
 import useSearchStyles from './SearchStyles';
 import FastImage from 'react-native-fast-image';
@@ -20,14 +9,14 @@ import {
 } from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/SubSections/Competitors/coinsNames';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../context/topMenuContext';
-import {AnalysisContext} from '../../context/AnalysisContext';
-import {CategoriesContext} from '../../context/categoriesContext';
-import {useIsFocused} from '@react-navigation/native';
 import AlertDetails from '../Alerts/AlertItem';
 import {getService} from '../../services/aiAlphaApi';
 import useAlertsStyles from '../Alerts/styles';
-import {NarrativeTradingContext} from '../../context/NarrativeTradingContext';
 import SkeletonLoader from '../Loader/SkeletonLoader';
+import {selectCategories} from '../../store/categoriesSlice';
+import {useSelector} from 'react-redux';
+import {selectDailyDeepDives} from '../../actions/dailyDeepDivesActions';
+import {selectMarketNarratives} from '../../actions/marketNarrativesActions';
 
 const SearchCryptoItem = ({
   crypto,
@@ -203,25 +192,15 @@ const SearchNTItem = ({
 const Search = ({currentTextValue, contentVisible}) => {
   const {isDarkMode} = useContext(AppThemeContext);
   const styles = useSearchStyles();
-  const {narrativeTradingData} = useContext(NarrativeTradingContext);
-  const {categories} = useContext(CategoriesContext);
-  const {analysisItems} = useContext(AnalysisContext);
+  const {categories} = useSelector(selectCategories);
+  const narrativeTradingData = useSelector(selectMarketNarratives);
+  const analysisItems = useSelector(selectDailyDeepDives);
   const [cryptoSearchResult, setCryptoSearchResult] = useState([]);
   const [analysisSearchResult, setAnalysisSearchResult] = useState([]);
   const [ntSearchResult, setNtSearchResult] = useState([]);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-  const isFocused = useIsFocused();
-
-  // Unused hook for resetting the content when leaving the section
-  // useEffect(() => {
-  //   if (!isFocused) {
-  //     setAnalysisSearchResult([]);
-  //     setCryptoSearchResult([]);
-  //     setNtSearchResult([]);
-  //   }
-  // }, [isFocused]);
 
   // Hook to change the results content based on the text change
   useEffect(() => {

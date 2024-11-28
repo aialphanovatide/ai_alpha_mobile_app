@@ -1,11 +1,10 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
   ScrollView,
   Image,
   TouchableOpacity,
-  Button,
   SafeAreaView,
   Alert,
 } from 'react-native';
@@ -18,16 +17,23 @@ import {
 } from '../../../src/constants';
 import auth0 from '../../Login/auth0';
 import {useNavigation} from '@react-navigation/core';
-import {useUser} from '../../../context/UserContext';
-import {useUserId} from '../../../context/UserIdContext';
-import {useRawUserId} from '../../../context/RawUserIdContext';
 import useSettingsScreenStyles from './SettingsScreenStyles';
 import ThemeButton from '../../ThemeButton/ThemeButton';
 import BackButton from '../../BackButton/BackButton';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import RNRestart from 'react-native-restart';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  selectRawUserId,
+  selectUserEmail,
+  selectUserId,
+} from '../../../actions/userActions';
+import {
+  updateEmail,
+  updateRawUserId,
+  updateUserId,
+} from '../../../store/userDataSlice';
 
 const SettingsItem = ({
   styles,
@@ -67,10 +73,11 @@ const SettingsScreen = ({route}) => {
   const navigation = useNavigation();
   // Below are the state variables that come from the previous DeleteUserForm
   const [isProcessing, setIsProcessing] = useState(false);
-  const {userId, setUserId} = useUserId();
-  const {userEmail} = useUser();
-  const {rawUserId, setRawUserId} = useRawUserId();
+  const userId = useSelector(selectUserId);
+  const userEmail = useSelector(selectUserEmail);
+  const rawUserId = useSelector(selectRawUserId);
   const {restorePurchases} = useContext(RevenueCatContext);
+  const dispatch = useDispatch();
 
   const options = [
     {
@@ -98,6 +105,11 @@ const SettingsScreen = ({route}) => {
       component: null,
     },
   ];
+
+  useEffect(() => {
+    console.log('user id: ', userId);
+    console.log('user email: ', userEmail);
+  }, []);
 
   // Elements from previous 'DeleteUserForm'
 
@@ -136,13 +148,12 @@ const SettingsScreen = ({route}) => {
       resetForm: () => {
         setUsername('');
         setPassword('');
-        setUserId('');
-        setRawUserId('');
-        setUserEmail(null);
         setFullName('');
-        setUsername('');
         setBirthDate('');
         setIsEditing(null);
+        dispatch(updateRawUserId(''));
+        dispatch(updateUserId(''));
+        dispatch(updateEmail(null));
       },
     });
   };
@@ -248,10 +259,6 @@ const SettingsScreen = ({route}) => {
         if (rawUserId && rawUserId.startsWith('auth0|')) {
           isUsernamePasswordAuthenticationUser = true;
         }
-        console.log(
-          'isUsernamePasswordAuthenticationUser ->',
-          isUsernamePasswordAuthenticationUser,
-        );
 
         if (isUsernamePasswordAuthenticationUser) {
           Alert.prompt(
@@ -274,8 +281,6 @@ const SettingsScreen = ({route}) => {
                       scope: 'openid profile email offline_access',
                     });
 
-                    console.log('Got credentials');
-
                     if (credentials.idToken) {
                       Alert.alert(
                         'Delete Account',
@@ -291,7 +296,7 @@ const SettingsScreen = ({route}) => {
                       'Wrong Password',
                       'Please enter the correct password.',
                     );
-                    console.log('Failed to authenticate:', error);
+                    console.error('- Failed to authenticate:', error);
                   }
                 },
               },

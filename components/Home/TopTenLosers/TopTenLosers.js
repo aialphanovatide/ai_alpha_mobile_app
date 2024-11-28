@@ -7,15 +7,19 @@ import {AboutIcon} from '../../AboutModal/AboutIcon.js';
 import {home_static_data} from '../../../assets/static_data/homeStaticData.js';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
-import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
 import {TopMenuContext} from '../../../context/topMenuContext.js';
 import {useNavigation} from '@react-navigation/core';
-import {CategoriesContext} from '../../../context/categoriesContext.js';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer.js';
+import {findCategoryOfItem} from '../../../store/categoriesSlice.js';
+import {
+  selectTopTenLosers,
+  selectTopTenMoversLoading,
+} from '../../../actions/topTenMoversActions.js';
+import {useSelector} from 'react-redux';
 
 // Component that renders the items in the top 10 losers section. It receives the coin data and the position of the coin in the list as props. It also receives the function to handle the click on an item and the function to find the category of an item.
 
-const Item = ({position, coin, handleItemClick, findCategoryOfItem}) => {
+const Item = ({position, coin, handleItemClick}) => {
   const styles = useTopTenLosersStyles();
   const itemCategory = findCategoryOfItem(coin.symbol, coin.name);
 
@@ -64,9 +68,9 @@ const Item = ({position, coin, handleItemClick, findCategoryOfItem}) => {
 
 const TopTenLosers = ({handleAboutPress}) => {
   const styles = useTopTenLosersStyles();
+  const topTenLosers = useSelector(selectTopTenLosers);
+  const loading = useSelector(selectTopTenMoversLoading);
   const [topTenCoins, setTopTenCoins] = useState([]);
-  const {findCategoryOfItem} = useContext(CategoriesContext);
-  const {topTenLosersData, loading} = useContext(Top10MoversContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const navigation = useNavigation();
 
@@ -74,6 +78,14 @@ const TopTenLosers = ({handleAboutPress}) => {
     marginRight: Platform.OS === 'android' ? 20 : 0,
     top: 24,
   };
+
+  // Set the top ten losers data in the state when it is fetched from the store
+
+  useEffect(() => {
+    if (topTenLosers.length > 0) {
+      setTopTenCoins(topTenLosers);
+    }
+  }, [topTenLosers]);
 
   // Variables and states to handle the scroll bar in the list
   const scrollIndicator = useRef(new Animated.Value(0)).current;
@@ -117,9 +129,6 @@ const TopTenLosers = ({handleAboutPress}) => {
     }
   };
 
-  useEffect(() => {
-    setTopTenCoins(topTenLosersData);
-  }, [topTenLosersData]);
   return (
     <View style={styles.topTenGainersContainer}>
       <View style={styles.titleRow}>
@@ -131,13 +140,13 @@ const TopTenLosers = ({handleAboutPress}) => {
           additionalStyles={additionalAboutStyles}
         />
       </View>
-      {loading ? (
+      {loading === 'idle' ? (
         <ScrollView>
           <View style={styles.table} showsVerticalScrollIndicator={false}>
             <SkeletonLoader quantity={10} />
           </View>
         </ScrollView>
-      ) : !loading && topTenCoins.length === 0 ? (
+      ) : loading !== 'idle' && topTenCoins.length === 0 ? (
         <NoContentDisclaimer
           title={'Whoops, something went wrong.'}
           description={'Please try again in a little while.'}
@@ -170,7 +179,6 @@ const TopTenLosers = ({handleAboutPress}) => {
                   coin={coin}
                   position={index + 1}
                   handleItemClick={handleItemClick}
-                  findCategoryOfItem={findCategoryOfItem}
                 />
               ))}
           </ScrollView>

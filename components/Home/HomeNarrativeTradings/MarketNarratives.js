@@ -11,13 +11,13 @@ import {useNavigation} from '@react-navigation/core';
 import {AboutIcon} from '../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../assets/static_data/homeStaticData';
 import React, {useContext, useEffect, useState} from 'react';
-import {AppThemeContext} from '../../../context/themeContext';
 import FastImage from 'react-native-fast-image';
-import {NarrativeTradingContext} from '../../../context/NarrativeTradingContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import useMarketNarrativeStyles from './MarketNarrativesStyles';
+import { useSelector } from 'react-redux';
+import { selectMarketNarratives, selectMarketNarrativesLoading } from '../../../actions/marketNarrativesActions';
 
 if (
   Platform.OS === 'android' &&
@@ -75,7 +75,8 @@ const MarketNarrativeItem = ({
 
 // Component to render the list of market narratives in the home screen. It receives the function to handle the press on the about icon as props. It uses the NarrativeTradingContext to get the data of the market narratives and renders the items in the list. It also renders the about icon and a "see all" button which navigates to the Dashboard screen.
 const NarrativeTradings = ({handleAboutPress}) => {
-  const {narrativeTradingData, loading} = useContext(NarrativeTradingContext);
+  const marketNarrativesData = useSelector(selectMarketNarratives);
+  const loading = useSelector(selectMarketNarrativesLoading);
   const [narrativeTradingItems, setNarrativeTradingItems] = useState([]);
   const styles = useMarketNarrativeStyles();
   const [expanded, setExpanded] = useState(false);
@@ -86,8 +87,8 @@ const NarrativeTradings = ({handleAboutPress}) => {
 
   // useEffect to set the narrativeTradingItems state with the data from the context.
   useEffect(() => {
-    setNarrativeTradingItems(narrativeTradingData);
-  }, [narrativeTradingData]);
+    setNarrativeTradingItems(marketNarrativesData);
+  }, [marketNarrativesData]);
 
   // Function to handle the expand on the list, by clicking the first item.
   const handlePress = () => {
@@ -130,7 +131,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
     });
   };
 
-  if (!loading && narrativeTradingItems?.length === 0) {
+  if (loading !== 'idle' && narrativeTradingItems?.length === 0) {
     return (
       <View style={styles.container}>
         <Text style={styles.mainTitle}>Market Narratives</Text>
@@ -159,7 +160,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
         description={home_static_data.narrativeTradings.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
-      {loading ? (
+      {loading === 'idle' ? (
         <SkeletonLoader />
       ) : (
         <View style={styles.itemsContainer}>

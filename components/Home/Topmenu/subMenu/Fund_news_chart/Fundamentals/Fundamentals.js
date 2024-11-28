@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   Platform,
   UIManager,
-  LayoutAnimation,
 } from 'react-native';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import SubSection from './SubSections/SubSection';
@@ -24,12 +23,13 @@ import {fundamentalsMock} from '../../../../../../assets/static_data/fundamental
 import TokenUtility from './SubSections/TokenUtility/TokenUtility';
 import AboutModal from '../../../../../AboutModal/AboutModal';
 import {fundamentals_static_content} from '../../../../../../assets/static_data/fundamentalsStaticData';
-import {useFocusEffect, useScrollToTop} from '@react-navigation/native';
+import {useScrollToTop} from '@react-navigation/native';
 import BackgroundGradient from '../../../../../BackgroundGradient/BackgroundGradient';
 import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
 import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchFundamentalsData, selectFundamentalsData, selectGlobalLoading} from '../../../../../../actions/fundamentalsActions';
 
 const initialContentState = {
   introduction: false,
@@ -56,9 +56,9 @@ if (
 const Fundamentals = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
   const styles = useFundamentalsStyles();
-  const [sharedData, setSharedData] = useState([]);
-  const [fundamentalsData, setFundamentalsData] = useState(null);
-  const [globalLoading, setGlobalLoading] = useState(true);
+  const fundamentalsData = useSelector(selectFundamentalsData);
+  const globalLoading = useSelector(selectGlobalLoading);
+  const [loadingState, setLoadingState] = useState(true);
   const [hasContent, setHasContent] = useState(initialContentState);
   const [aboutVisible, setAboutVisible] = useState(false);
   const [aboutDescription, setAboutDescription] = useState('');
@@ -66,11 +66,19 @@ const Fundamentals = () => {
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const ref = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setFundamentalsData(null);
-    setGlobalLoading(true);
-  }, [activeSubCoin]);
+    if (globalLoading === 'idle') {
+      setLoadingState(true);
+    } else {
+      setLoadingState(false);
+    }
+  }, [globalLoading, activeSubCoin]);
+
+  useEffect(() => {
+    dispatch(fetchFundamentalsData(activeSubCoin));
+  }, [dispatch, activeSubCoin]);
 
   // Function to handle the visibility of the about modal and set the description and title of the modal.
 
@@ -97,134 +105,12 @@ const Fundamentals = () => {
     }));
   };
 
-  // Function to handle the requests to all the endpoints related to the coin
-
-  const getAllFundamentalsData = async coin => {
-    const endpoints = [
-      {
-        name: 'competitors',
-        url: `/api/get_competitors_by_coin_name?coin_name=${activeSubCoin}`,
-      },
-      {
-        name: 'tokenomics',
-        url: `/api/get_tokenomics?coin_name=${activeSubCoin}`,
-      },
-      {
-        name: 'introduction',
-        url: `/api/get_introduction?coin_name=${activeSubCoin}`,
-      },
-      {
-        name: 'revenueModels',
-        url: `/api/get_revenue_models?coin_name=${activeSubCoin}`,
-      },
-      {
-        name: 'hacks',
-        url: `/api/hacks?coin_bot_name=${activeSubCoin}`,
-      },
-      {
-        name: 'upgrades',
-        url: `/api/get_upgrades?coin_name=${activeSubCoin}`,
-      },
-      {
-        name: 'dapps',
-        url: `/api/dapps?coin_bot_name=${activeSubCoin}`,
-      },
-    ];
-
-    try {
-      const storedFundamentalsData = await AsyncStorage.getItem(
-        'fundamentalsData',
-      );
-      const storedFundamentalsParsedData = JSON.parse(storedFundamentalsData);
-      if (
-        storedFundamentalsParsedData !== null &&
-        storedFundamentalsParsedData.find(item => item.coin === coin) !==
-          undefined
-      ) {
-        const coinFundamentalsData = storedFundamentalsParsedData.find(
-          item => item.coin === coin,
-        );
-        setFundamentalsData(coinFundamentalsData.data);
-        setGlobalLoading(false);
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        console.log(
-          '- Successfully loaded fundamentals data from AsyncStorage',
-        );
-      } else {
-        const results = await Promise.all(
-          endpoints.map(endpoint => getService(endpoint.url)),
-        );
-
-        const data = {
-          competitors: results[0],
-          tokenomics: results[1],
-          introduction: results[2],
-          revenueModels: results[3],
-          hacks: results[4],
-          upgrades: results[5],
-          dapps: results[6],
-        };
-
-        console.log(
-          `- Successfully requested fundamentals data for ${activeSubCoin}. Status: ${results[0].status}`,
-        );
-        setFundamentalsData(data);
-        const prevData = await AsyncStorage.getItem('fundamentalsData');
-        const parsedPrevData = JSON.parse(prevData);
-        const mappedData = [...parsedPrevData, {coin: coin, data: data}];
-        await AsyncStorage.setItem(
-          'fundamentalsData',
-          JSON.stringify(mappedData),
-        );
-      }
-    } catch (error) {
-      console.error(`Error fetching crypto data: ${error.message}`);
-      setFundamentalsData(null);
-    } finally {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setGlobalLoading(false);
-    }
-  };
-
   // Function to handle the requests to the API to get the data of a specific section. It receives the endpoint of the section as a parameter.
 
   const getSectionData = async endpoint => {
     const data = await getService(endpoint);
     return data;
   };
-
-  // Initial request to get the data of the first section when the component mounts and when the activeSubCoin changes.
-
-  useEffect(() => {
-    getAllFundamentalsData(activeSubCoin);
-    setHasContent(initialContentState);
-  }, [activeSubCoin]);
-
-  useEffect(() => {
-    const fetchTokenomicsData = async () => {
-      try {
-        const response = await getSectionData(
-          `/api/get_tokenomics?coin_name=${activeSubCoin}`,
-        );
-
-        if (response?.status !== 200 || !response?.message) {
-          setSharedData([]);
-        } else {
-          const parsed_cryptos = response.message.tokenomics_data;
-          setSharedData(parsed_cryptos);
-        }
-      } catch (error) {
-        console.error('Error trying to get tokenomics data: ', error);
-      }
-    };
-    fetchTokenomicsData();
-  }, [activeSubCoin]);
-
-  useFocusEffect(() => {
-    if (isLandscape && isHorizontal) {
-      handleScreenOrientationChange('PORTRAIT');
-    }
-  });
 
   // Functions to handle the scrolling interaction that hides the menu
 
@@ -277,7 +163,7 @@ const Fundamentals = () => {
               coin={activeSubCoin}
               getSectionData={getSectionData}
               handleSectionContent={handleSectionContent}
-              loading={globalLoading}
+              loading={loadingState}
               globalData={fundamentalsData}
             />
           }
@@ -293,7 +179,7 @@ const Fundamentals = () => {
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
-              loading={globalLoading}
+              loading={loadingState}
             />
           }
           hasAbout={true}
@@ -309,7 +195,7 @@ const Fundamentals = () => {
               getSectionData={getSectionData}
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
-              loading={globalLoading}
+              loading={loadingState}
               globalData={fundamentalsData}
             />
           }
@@ -328,7 +214,7 @@ const Fundamentals = () => {
               getSectionData={getSectionData}
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
-              loading={globalLoading}
+              loading={loadingState}
               globalData={fundamentalsData}
             />
           }
@@ -346,7 +232,7 @@ const Fundamentals = () => {
               handleSectionContent={handleSectionContent}
               getSectionData={getSectionData}
               coin={activeSubCoin}
-              loading={globalLoading}
+              loading={loadingState}
               globalData={fundamentalsData}
             />
           }
@@ -376,7 +262,7 @@ const Fundamentals = () => {
                 fundamentals_static_content.competitors.subsections
               }
               handleAboutPress={handleAboutPress}
-              loading={globalLoading}
+              loading={loadingState}
               globalData={fundamentalsData}
             />
           }
@@ -397,7 +283,7 @@ const Fundamentals = () => {
               getSectionData={getSectionData}
               coin={activeSubCoin}
               globalData={fundamentalsData}
-              loading={globalLoading}
+              loading={loadingState}
             />
           }
           description={
@@ -415,7 +301,7 @@ const Fundamentals = () => {
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
-              loading={globalLoading}
+              loading={loadingState}
             />
           }
           description={fundamentalsMock.eth.hacks.sectionDescription}
@@ -432,7 +318,7 @@ const Fundamentals = () => {
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
-              loading={globalLoading}
+              loading={loadingState}
             />
           }
         />
@@ -447,7 +333,7 @@ const Fundamentals = () => {
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
-              loading={globalLoading}
+              loading={loadingState}
             />
           }
           description={fundamentals_static_content.dApps.sectionDescription}

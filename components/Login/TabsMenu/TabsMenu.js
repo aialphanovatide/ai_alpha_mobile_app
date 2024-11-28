@@ -12,13 +12,14 @@ import DashboardScreen from '../../../navigation/DashboardStack';
 import AccountScreen from '../../../navigation/AccountStack';
 import {useNavigation} from '@react-navigation/core';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
-import {useUserId} from '../../../context/UserIdContext';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import AskAiScreen from '../../../navigation/AskAiStack';
 import LinearGradient from 'react-native-linear-gradient';
 import useNavbarStyles from './NavbarStyles';
 import IntroductoryPopUpsOverlay from '../../IntroductorySlides/IntroductoryPopUps/IntroductoryPopUpsOverlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {selectUserId} from '../../../actions/userActions';
+import {useSelector} from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +47,7 @@ const TabsMenu = () => {
     useContext(TopMenuContext);
   const navigation = useNavigation();
   const {theme, isDarkMode} = useContext(AppThemeContext);
-  const {userId} = useUserId();
+  const userId = useSelector(selectUserId);
   const {init} = useContext(RevenueCatContext);
   const {isLandscape, isHorizontal} = useScreenOrientation();
   const styles = useNavbarStyles();

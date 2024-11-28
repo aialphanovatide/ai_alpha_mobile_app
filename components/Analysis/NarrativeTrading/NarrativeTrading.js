@@ -17,7 +17,8 @@ import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
-import {NarrativeTradingContext} from '../../../context/NarrativeTradingContext';
+import {useSelector} from 'react-redux';
+import {selectMarketNarratives} from '../../../actions/marketNarrativesActions';
 
 // Component to render the narrative trading item, it renders the item's image, date, hour, title and a right arrow icon to indicate that the item can be clicked to navigate to the full article.
 
@@ -125,7 +126,7 @@ const TimeMenu = ({
 // Component to render the Narrative Trading screen, it includes the TimeMenu, CryptoFilter, NarrativeTradingItem and NoContentDisclaimer components, and it renders a list of narrative trading items which can be filtered by time and category. Finally, it renders an UpgradeOverlay component if the user is not subscribed.
 
 const NarrativeTrading = () => {
-  const {narrativeTradingData} = useContext(NarrativeTradingContext);
+  const marketNarrativesData = useSelector(selectMarketNarratives);
   const options = ['today', 'last week'];
   const [cryptoOptions, setCryptoOptions] = useState(filterData);
   const [activeOption, setActiveOption] = useState(options[0]);
@@ -136,11 +137,11 @@ const NarrativeTrading = () => {
   const {subscribed} = useContext(RevenueCatContext);
 
   useEffect(() => {
-    if (narrativeTradingData.length > 0) {
+    if (marketNarrativesData.length > 0) {
       handleCryptoTouch(filterData[0]);
       handleTimeIntervalChange(options[0]);
     }
-  }, [narrativeTradingData]);
+  }, [marketNarrativesData]);
 
   // Function to filter the narrative trading items by category, it returns an array of items that match the selected category.
 
@@ -194,7 +195,7 @@ const NarrativeTrading = () => {
     setActiveCryptoOption(option);
     const filtered_by_time = filterItemsByTime(
       activeOption,
-      narrativeTradingData,
+      marketNarrativesData,
     );
     const filtered_narrative_tradings = filterItemsByCategory(
       option,
@@ -224,7 +225,7 @@ const NarrativeTrading = () => {
     setActiveCryptoOption(filterData[0]);
     const filtered_by_crypto = filterItemsByCategory(
       filterData[0],
-      narrativeTradingData,
+      marketNarrativesData,
     );
     const filtered_items = filterItemsByTime(interval, filtered_by_crypto);
     setNarrativeTradingItems(filtered_items);

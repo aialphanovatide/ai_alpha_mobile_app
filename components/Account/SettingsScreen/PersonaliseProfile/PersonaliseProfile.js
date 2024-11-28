@@ -11,7 +11,6 @@ import CustomInput from '../../../Login/CustomInput/CustomInput';
 import SaveButton from './SaveButton';
 import BackButton from '../../../BackButton/BackButton';
 import usePersonaliseProfileStyles from './PersonaliseProfileStyles';
-import { useRawUserId } from '../../../../context/RawUserIdContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   auth0Domain,
@@ -23,6 +22,8 @@ import { useNavigation } from '@react-navigation/core';
 import auth0 from '../../../Login/auth0';
 import { AppThemeContext } from '../../../../context/themeContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'; // Import the package
+import { useSelector } from 'react-redux';
+import { selectRawUserId } from '../../../../actions/userActions';
 
 
 const PersonaliseProfile = () => {
@@ -35,7 +36,7 @@ const PersonaliseProfile = () => {
   const [error, setError] = useState('');
   const [saveDisabled, setSaveDisabled] = useState(true);
   const [resetPasswordSuccesful, setResetPasswordSuccessful] = useState(false);
-  const { rawUserId } = useRawUserId();
+  const rawUserId = useSelector(selectRawUserId);
   const navigation = useNavigation();
   const [userEmail, setUserEmail] = useState('');
   const { theme } = useContext(AppThemeContext);

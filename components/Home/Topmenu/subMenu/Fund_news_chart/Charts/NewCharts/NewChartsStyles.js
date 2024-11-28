@@ -52,6 +52,7 @@ const useNewChartsStyles = () => {
     chartContainer: {
       width: '100%',
       marginVertical: 8,
+      padding: 10,
       alignItems: 'center',
     },
     chartBackgroundImage: {

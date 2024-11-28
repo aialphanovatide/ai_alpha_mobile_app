@@ -17,14 +17,13 @@ import {useNavigation} from '@react-navigation/core';
 import SubscriptionsLoader from '../../Loader/SubscriptionsLoader';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../context/themeContext';
-import {useRawUserId} from '../../../context/RawUserIdContext';
 import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import AboutModal from '../../AboutModal/AboutModal';
-import {AboutIcon} from '../../AboutModal/AboutIcon';
 import Clipboard from '@react-native-community/clipboard';
-import {aialpha2keydev} from '../../../src/constants';
 import {aialpha2key} from '../../../src/constants';
+import {useSelector} from 'react-redux';
+import {selectRawUserId} from '../../../actions/userActions';
 
 const TextWithIcon = ({text}) => {
   const styles = usePackageSubscriptionStyles();
@@ -94,7 +93,7 @@ const PackageSubscriptions = () => {
   const navigation = useNavigation();
   const {isDarkMode} = useContext(AppThemeContext);
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
-  const {rawUserId, setRawUserId} = useRawUserId();
+  const rawUserId = useSelector(selectRawUserId);
 
   const scrollIndicator = useRef(new Animated.Value(0)).current;
   const [completeScrollBarHeight, setCompleteScrollBarHeight] = useState(1);
@@ -102,7 +101,7 @@ const PackageSubscriptions = () => {
 
   const scrollIndicatorSize =
     completeScrollBarHeight > visibleScrollBarHeight
-      ? ((visibleScrollBarHeight * 100) / completeScrollBarHeight) * 0.5 // Adjust this multiplier
+      ? ((visibleScrollBarHeight * 100) / completeScrollBarHeight) * 0.5
       : visibleScrollBarHeight * 0.9;
 
   const difference =
@@ -118,7 +117,6 @@ const PackageSubscriptions = () => {
     outputRange: [0, difference],
     extrapolate: 'clamp',
   });
-  console.log('Scroll Indicator Position:', scrollIndicatorPosition);
 
   // Modal visibility state
   const [aboutVisible, setAboutVisible] = useState(false);

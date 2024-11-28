@@ -10,13 +10,10 @@ import {
   Linking,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import {useUser} from '../../context/UserContext';
-import {useRawUserId} from '../../context/RawUserIdContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAccountStyles from './styles';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
 import {NOTIFICATIONS_MOCK} from '../../assets/static_data/notificationsMock';
-import {AppThemeContext} from '../../context/themeContext';
 import RNRestart from 'react-native-restart';
 import SocialMedia from './SocialMediaButtons/SocialMedia';
 import {
@@ -25,6 +22,13 @@ import {
   auth0ManagementAPI_Secret,
 } from '../../src/constants';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  updateEmail,
+  updateUserId,
+  updateRawUserId,
+} from '../../store/userDataSlice';
+import {selectRawUserId} from '../../actions/userActions';
 
 // Component to display an item in the Account screen. It receives the styles, the option to display, a function to handle the touch of the item, and an optional component to display in the item. It returns a view with the logo, name, and an optional component or right arrow that executes the function.
 
@@ -68,13 +72,12 @@ const AccountItem = ({
 
 const Account = ({route}) => {
   const styles = useAccountStyles();
-  const [userId, setUserId] = useState(null);
-  const {userEmail, setUserEmail} = useUser();
   const navigation = useNavigation();
   const {userInfo} = useContext(RevenueCatContext);
-  const {rawUserId, setRawUserId} = useRawUserId();
+  const rawUserId = useSelector(selectRawUserId);
   const [userImage, setUserImage] = useState(null);
   const [username, setUsername] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadStoredData = async () => {
@@ -218,13 +221,13 @@ const Account = ({route}) => {
       resetForm: () => {
         setUsername('');
         setPassword('');
-        setUserId('');
-        setRawUserId('');
-        setUserEmail(null);
         setFullName('');
         setUsername('');
         setBirthDate('');
         setIsEditing(null);
+        dispatch(updateEmail(null));
+        dispatch(updateUserId(''));
+        dispatch(updateRawUserId(''));
       },
     });
   };

@@ -7,6 +7,8 @@ import {
   Text,
   TouchableOpacity,
   SafeAreaView,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import Logo from '../../../../assets/images/account/logoWithText.png';
 import CustomInput from '../../CustomInput/CustomInput';
@@ -15,25 +17,32 @@ import CustomButton from '../../CustomButton/CustomButton';
 import SocialSignInButton from '../../SocialButtons/SocialSignInButton';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import auth0 from '../../auth0';
-import {useUser} from '../../../../context/UserContext';
-import {useUserId} from '../../../../context/UserIdContext';
-import {useRawUserId} from '../../../../context/RawUserIdContext';
-import jwtDecode from 'jwt-decode';
 import {decode as base64decode} from 'base-64';
 import useLoginFormStyles from './LoginFormStyles';
 import {RevenueCatContext} from '../../../../context/RevenueCatContext';
 import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
+import {useDispatch} from 'react-redux';
+import {
+  updateEmail,
+  updateRawUserId,
+  updateUserId,
+} from '../../../../store/userDataSlice';
+import {AppThemeContext} from '../../../../context/themeContext';
 
 const LoginForm = ({route}) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const navigation = useNavigation();
-  const {setUserEmail} = useUser();
-  const {setUserId} = useUserId();
-  const {setRawUserId} = useRawUserId();
   const [error, setError] = useState('');
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
+  const [loading, setLoading] = useState(false);
   const styles = useLoginFormStyles();
+  const dispatch = useDispatch();
+  const {theme} = useContext(AppThemeContext);
+
+  const handleLoadingChange = value => {
+    setLoading(value);
+  };
 
   const formatUserId = user_id => {
     let separator = user_id.indexOf('|');
@@ -72,9 +81,9 @@ const LoginForm = ({route}) => {
               : null,
           );
           const user_id = formatUserId(userId);
-          setUserEmail(userEmail);
-          setUserId(user_id);
-          setRawUserId(rawUserId);
+          dispatch(updateRawUserId(rawUserId));
+          dispatch(updateEmail(userEmail));
+          dispatch(updateUserId(user_id));
         } else {
           navigation.navigate('SignIn');
         }
@@ -134,10 +143,10 @@ const LoginForm = ({route}) => {
           await AsyncStorage.setItem('rawUserId', userId);
           await AsyncStorage.setItem('loginMethod', 'username-password');
 
-          setUserEmail(username);
-          setUserId(formatted_id);
-          setRawUserId(userId);
           updateUserEmail(username);
+          dispatch(updateRawUserId(userId));
+          dispatch(updateEmail(username));
+          dispatch(updateUserId(formatted_id));
 
           navigation.navigate('TabsMenu');
         }
@@ -184,7 +193,6 @@ const LoginForm = ({route}) => {
               setValue={setUsername}
             />
           </View>
-
           <View style={styles.inputContainer}>
             <View style={styles.labelContainer}>
               {error ? <Text style={styles.errorLabel}>{error}</Text> : null}
@@ -201,7 +209,7 @@ const LoginForm = ({route}) => {
             onPress={onSignInPressed}
             type="PRIMARY"
           />
-          <SocialSignInButton />
+          <SocialSignInButton handleLoadingChange={handleLoadingChange} />
           <CustomButton
             text="Forgot Password"
             onPress={onForgotPasswordPressed}
@@ -223,6 +231,15 @@ const LoginForm = ({route}) => {
           </View>
         </View>
       </ScrollView>
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={loading}
+        onRequestClose={() => {}}>
+        <View style={styles.modalBackground}>
+          <ActivityIndicator size="large" color={theme.loaderColor} />
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };

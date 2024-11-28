@@ -8,41 +8,32 @@ import {
   auth0Client,
   auth0Domain,
   auth0Audience,
-  auth0GoogleAudience,
-  auth0ClonedGoogleAudience,
-  auth0ClonedGoogleClient,
-  auth0ClonedDomain,
   auth0ManagementAPI_Client,
   auth0ManagementAPI_Secret,
 } from '../../../src/constants';
 import {useNavigation} from '@react-navigation/native';
 import Auth0, {useAuth0, Auth0Provider} from 'react-native-auth0';
-import {authorize, refresh} from 'react-native-app-auth';
 import {
   GOOGLE_CLIENT_IOS_ID,
   GOOGLE_CLIENT_WEB_ID,
   GOOGLE_CLIENT_ANDROID_ID,
 } from '../../../src/constants';
 
-import {useUser} from '../../../context/UserContext';
-import {useUserId} from '../../../context/UserIdContext';
-import {useRawUserId} from '../../../context/RawUserIdContext';
-
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useDispatch} from 'react-redux';
 import {
-  GoogleSignin,
-  statusCodes,
-  GoogleSigninButton,
-} from '@react-native-google-signin/google-signin';
+  updateEmail,
+  updateRawUserId,
+  updateUserId,
+} from '../../../store/userDataSlice';
 
-const SocialSignInButton = () => {
+const SocialSignInButton = ({handleLoadingChange}) => {
   const [loggedInUser, setloggedInUser] = useState(null);
   const navigation = useNavigation();
   const {authorize} = useAuth0(); // Using useAuth0 hook
-  const {userEmail, setUserEmail} = useUser();
-  const {userId, setUserId} = useUserId();
-  const {rawUserId, setRawUserId} = useRawUserId();
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -78,9 +69,9 @@ const SocialSignInButton = () => {
 
       if (accessToken) {
         const user_id = formatUserId(userId);
-        setUserEmail(userEmail);
-        setRawUserId(rawUserId);
-        setUserId(user_id);
+        dispatch(updateRawUserId(rawUserId));
+        dispatch(updateEmail(userEmail));
+        dispatch(updateUserId(user_id));
         navigation.navigate('TabsMenu');
       } else {
         navigation.navigate('SignIn');
@@ -90,11 +81,10 @@ const SocialSignInButton = () => {
     checkToken();
   }, []);
 
-
   const getManagementApiToken = async () => {
     const response = await fetch(`https://${auth0Domain}/oauth/token`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         client_id: auth0ManagementAPI_Client,
         client_secret: auth0ManagementAPI_Secret,
@@ -109,19 +99,20 @@ const SocialSignInButton = () => {
 
   const signInWithGoogle = async () => {
     if (Platform.OS === 'android') {
+      handleLoadingChange(true);
       // Handle Google Sign-In for Android using the Google Sign-In library
       try {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
         console.log('User Info: ', userInfo);
         const userEmail = userInfo.user.email;
-        console.log("User Email: ", userEmail);
+        console.log('User Email: ', userEmail);
         const userName = userInfo.user.name;
-        console.log("User Name: ", userName);
+        console.log('User Name: ', userName);
         const userPhoto = userInfo.user.photo;
-        console.log("User Photo: ", userPhoto);
+        console.log('User Photo: ', userPhoto);
         const userId = userInfo.user.id;
-        console.log("User Id: ", userId);
+        console.log('User Id: ', userId);
 
         /*
         const token = await getManagementApiToken();
@@ -150,13 +141,12 @@ const SocialSignInButton = () => {
         await AsyncStorage.setItem('rawUserId', user.id);
         await AsyncStorage.setItem('userId', user.id);
 
-        setUserEmail(user.email);
-        setUserId(user.id);
-        setRawUserId(user.id);
         updateUserEmail(user.email);
+        dispatch(updateRawUserId(user.id));
+        dispatch(updateEmail(user.email));
+        dispatch(updateUserId(user.id));
 
         navigation.navigate('TabsMenu');
-
 
         const response = await fetch(`https://aialpha.ngrok.io/register`, {
           method: 'POST',
@@ -166,7 +156,7 @@ const SocialSignInButton = () => {
             email: userEmail,
             email_verified: 'false',
             full_name: userName,
-            nickname: "undefined",
+            nickname: 'undefined',
             picture: userPhoto,
             provider: 'google-oauth2-android',
           }),
@@ -174,21 +164,27 @@ const SocialSignInButton = () => {
         const data = await response.json();
 
         console.log('DATA SENT TO BACKEND', data);
-
       } catch (error) {
-        console.error('Error during Google sign-in with GoogleSignin library:', error);
+        console.error(
+          'Error during Google sign-in with GoogleSignin library:',
+          error,
+        );
+      } finally {
+        handleLoadingChange(false);
       }
     } else {
       // Handle Google Sign-In for iOS
       try {
         const authResult = await auth0.webAuth.authorize({
           connection: 'google-oauth2',
-          ephemeralSession: true
+          ephemeralSession: true,
         });
 
-        console.log("Auth Result: ", authResult);
+        console.log('Auth Result: ', authResult);
 
-        const userProfile = await auth0.auth.userInfo({token: authResult.accessToken});
+        const userProfile = await auth0.auth.userInfo({
+          token: authResult.accessToken,
+        });
         const userId = userProfile.sub;
         const formatted_id = formatUserId(userId);
 
@@ -197,10 +193,10 @@ const SocialSignInButton = () => {
         await AsyncStorage.setItem('rawUserId', userId);
         await AsyncStorage.setItem('userId', formatted_id);
 
-        setUserEmail(userProfile.email);
-        setUserId(formatted_id);
-        setRawUserId(userId);
         updateUserEmail(userProfile.email);
+        dispatch(updateRawUserId(userId));
+        dispatch(updateEmail(userProfile.email));
+        dispatch(updateUserId(formatted_id));
 
         navigation.navigate('TabsMenu');
 
@@ -242,10 +238,6 @@ const SocialSignInButton = () => {
         const {fullName, email, authorizationCode, user} =
           appleAuthRequestResponse;
         const {familyName, givenName} = fullName || {};
-        //console.log('User Data:', user);
-        //console.log('Full Name:', fullName);
-        //console.log('User Email:', user?.email);
-        //console.log('User2 Email:', email);
         const payload = {
           grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
           subject_token_type:
@@ -262,7 +254,6 @@ const SocialSignInButton = () => {
             email,
           }),
         };
-        console.log('Auth0 Request Payload:', payload);
         const auth0Response = await axios.post(
           `https://${auth0Domain}/oauth/token`,
           payload,
@@ -282,9 +273,10 @@ const SocialSignInButton = () => {
         await AsyncStorage.setItem('userId', user);
 
         navigation.navigate('TabsMenu');
-        setUserId(user);
-        setRawUserId(newUser);
-        //setUserEmail(email);
+        dispatch(updateRawUserId(newUser));
+        dispatch(updateUserId(user));
+        dispatch(updateEmail(email));
+
         //console.log('auth0Response.data._id', auth0Response.data._id);
 
         const response = await fetch(`https://aialpha.ngrok.io/register`, {

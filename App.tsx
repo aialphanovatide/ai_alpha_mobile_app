@@ -13,16 +13,13 @@ import {useAuth0, Auth0Provider} from 'react-native-auth0';
 import {TopMenuContextProvider} from './context/topMenuContext';
 import {UserProvider} from './context/UserContext';
 import {UserIdProvider} from './context/UserIdContext';
-import {RawUserIdProvider, useRawUserId} from './context/RawUserIdContext';
-import {CategoriesContextProvider} from './context/categoriesContext';
+import {RawUserIdProvider} from './context/RawUserIdContext';
 import {AppThemeProvider, AppThemeContext} from './context/themeContext';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 import {AboutModalProvider} from './context/AboutModalContext';
-import {AnalysisContextProvider} from './context/AnalysisContext';
 import NetInfo from '@react-native-community/netinfo';
 import RNRestart from 'react-native-restart';
 import {getService} from './services/aiAlphaApi';
-import {NarrativeTradingContextProvider} from './context/NarrativeTradingContext';
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
@@ -33,12 +30,17 @@ import {
   auth0ManagementAPI_Secret,
 } from './src/constants/index';
 import eventEmitter from './eventEmitter';
-import {Top10MoversContextProvider} from './context/TopTenMoversContext';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomSplashScreen from './components/SplashScreen/SplashScreen';
 import {HeaderVisibilityProvider} from './context/HeadersVisibilityContext';
+import {Provider} from 'react-redux';
+import {store} from './store/store';
+import {
+  findCoinNameBySymbol,
+  findCoinSymbolByName,
+} from './components/Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/SubSections/Competitors/coinsNames';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 const {width, height} = Dimensions.get('window');
@@ -92,22 +94,10 @@ const App = () => {
   }, []);
 
   const saveNotification = async alertData => {
-    const extractCryptoName = symbol => {
-      const suffix = 'USDT';
-      const index = symbol.indexOf(suffix);
-      if (index !== -1) {
-        console.log(
-          'Found the coin name',
-          symbol.substring(0, index).toLowerCase(),
-        );
-        return symbol.substring(0, index).toLowerCase();
-      }
-      return symbol;
-    };
-
     const MAX_NOTIFICATIONS = 50;
-
     try {
+      const symbol =
+        findCoinSymbolByName(alertData.data.coin) || alertData.data.coin;
       const storedNotifications = await AsyncStorage.getItem('notifications');
       const currentNotifications = storedNotifications
         ? JSON.parse(storedNotifications)
@@ -119,19 +109,20 @@ const App = () => {
       const year = today.getFullYear();
       const notificationDate = `${day}/${month}/${year}`;
 
-      const notificationCoin = extractCryptoName(alertData.title);
+      const notificationCoin = symbol;
       const notificationType =
-        alertData.type !== undefined
-          ? alertData.type
-          : alertData.title.toLowerCase().includes('chart')
+        alertData.data.type !== undefined
+          ? alertData.data.type
+          : alertData.notification.title.toLowerCase().includes('chart')
           ? 'alerts'
           : 'analysis';
 
       const newNotification = {
-        title: alertData.title,
-        description: alertData.title.toLowerCase().includes('chart')
-          ? alertData.body
-          : 'New analysis posted!',
+        title: alertData.notification.title,
+        description:
+          alertData.data.type !== 'analysis'
+            ? alertData.notification.body
+            : 'New analysis posted!',
         coin: notificationCoin,
         date: notificationDate,
         category: null,
@@ -213,7 +204,7 @@ const App = () => {
             {
               text: 'Got it!',
               onPress: () => {
-                saveNotification(remoteMessage.notification);
+                saveNotification(remoteMessage);
               },
               style: 'destructive',
             },
@@ -264,7 +255,7 @@ const App = () => {
 
   return (
     <Auth0Provider domain={auth0Domain} clientId={auth0Client}>
-      <CategoriesContextProvider>
+      <Provider store={store}>
         <TopMenuContextProvider>
           <RevenueCatProvider>
             <UserProvider>
@@ -298,43 +289,36 @@ const App = () => {
                               : 'dark-content' /*This changes the font color for SafeAreaView*/
                           }
                         />
-
                         <SingletonHooksContainer />
-                        <Top10MoversContextProvider>
-                          <NarrativeTradingContextProvider>
-                            <AnalysisContextProvider>
-                              <GestureHandlerRootView style={{flex: 1}}>
-                                <AboutModalProvider>
-                                  {!initialAnimationFinished ? (
-                                    <CustomSplashScreen />
-                                  ) : (
-                                    <Navigation />
-                                  )}
-                                  <ConnectivityModal
-                                    serverError={serverError}
-                                    setModalVisible={setModalVisible}
-                                    modalVisible={modalVisible}
-                                    setServerError={setServerError}
-                                    checkConnectivityAndCloseModal={
-                                      checkConnectivityAndCloseModal
-                                    }
-                                    type="connection"
-                                  />
-                                  <ConnectivityModal
-                                    serverError={serverError}
-                                    setModalVisible={setModalVisible}
-                                    modalVisible={modalVisible}
-                                    setServerError={setServerError}
-                                    checkConnectivityAndCloseModal={
-                                      checkConnectivityAndCloseModal
-                                    }
-                                    type="serverDown"
-                                  />
-                                </AboutModalProvider>
-                              </GestureHandlerRootView>
-                            </AnalysisContextProvider>
-                          </NarrativeTradingContextProvider>
-                        </Top10MoversContextProvider>
+                        <GestureHandlerRootView style={{flex: 1}}>
+                          <AboutModalProvider>
+                            {!initialAnimationFinished ? (
+                              <CustomSplashScreen />
+                            ) : (
+                              <Navigation />
+                            )}
+                            <ConnectivityModal
+                              serverError={serverError}
+                              setModalVisible={setModalVisible}
+                              modalVisible={modalVisible}
+                              setServerError={setServerError}
+                              checkConnectivityAndCloseModal={
+                                checkConnectivityAndCloseModal
+                              }
+                              type="connection"
+                            />
+                            <ConnectivityModal
+                              serverError={serverError}
+                              setModalVisible={setModalVisible}
+                              modalVisible={modalVisible}
+                              setServerError={setServerError}
+                              checkConnectivityAndCloseModal={
+                                checkConnectivityAndCloseModal
+                              }
+                              type="serverDown"
+                            />
+                          </AboutModalProvider>
+                        </GestureHandlerRootView>
                       </SafeAreaView>
                     </AppThemeProvider>
                   </HeaderVisibilityProvider>
@@ -343,7 +327,7 @@ const App = () => {
             </UserProvider>
           </RevenueCatProvider>
         </TopMenuContextProvider>
-      </CategoriesContextProvider>
+      </Provider>
     </Auth0Provider>
   );
 };

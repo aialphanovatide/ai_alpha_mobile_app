@@ -12,7 +12,6 @@ import {
   VictoryAxis,
   VictoryCandlestick,
   VictoryChart,
-  VictoryLabel,
   VictoryLine,
   VictoryZoomContainer,
 } from 'victory-native';
@@ -23,6 +22,7 @@ import ClickOnCandleDetails from '../clickOnCandleDetails';
 import useChartsSource from '../../../../../../../hooks/useChartsSource';
 import {io} from 'socket.io-client';
 import RsButton from '../S&RButtons';
+import {throttle} from 'lodash';
 
 const PairingsSelector = ({
   selectedPairing,
@@ -200,12 +200,6 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
   // }, [coinBot, selectedInterval, selectedPairing]);
 
   useEffect(() => {
-    console.log(
-      'Active coin: ',
-      coinBot,
-      ', selected pairing: ',
-      selectedPairing,
-    );
     fetchChartDataFromServer(selectedInterval, selectedPairing);
     if (
       activeButtons.length > 0 &&
@@ -263,17 +257,24 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
 
   // X-Axis domain for the chart
   const [zoomDomain, setZoomDomain] = useState({
-    x: [chartData[0]?.x, chartData[chartData.length - 1]?.x],
+    x: [
+      chartData[chartData.length - candlesToShow]?.x,
+      chartData[chartData.length - 1]?.x,
+    ],
   });
 
   useEffect(() => {
     setZoomDomain({
       x: [
-        chartData[chartData?.length - candlesToShow]?.x,
-        chartData[chartData?.length - 1]?.x,
+        chartData[chartData.length - candlesToShow]?.x,
+        chartData[chartData.length - 1]?.x,
       ],
     });
   }, [chartData, candlesToShow]);
+
+  const handleZoomDomainChange = throttle(newZoomDomain => {
+    setZoomDomain(newZoomDomain);
+  }, 100);
 
   // Y-Axis domain for the chart
 
@@ -381,11 +382,11 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
         handlePairingChange={handlePairingChange}
         coinBot={coinBot}
       />
-      <RsButton
+      {/* <RsButton
         activeButtons={activeButtons}
         setActiveButtons={setActiveButtons}
         disabled={loading || supportResistanceLoading}
-      />
+      /> */}
       {!loading && (
         <TouchableOpacity onPress={() => handleRefresh()} disabled={loading}>
           <Image
@@ -413,7 +414,15 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
           {/* CHART WRAPPER COMPONENT */}
           <VictoryChart
             width={400}
-            containerComponent={<VictoryZoomContainer />}
+            containerComponent={
+              <VictoryZoomContainer
+                responsive={true}
+                allowPan={true}
+                allowZoom={true}
+                zoomDomain={zoomDomain.x}
+                onZoomDomainChange={domain => setZoomDomain(domain)}
+              />
+            }
             domain={{x: zoomDomain.x, y: domainY}}
             events={[
               {
@@ -553,7 +562,7 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
               }}
             />
 
-            {/* RESISTANCE LEVELS */}
+            {/* RESISTANCE LEVELS
             {resistanceLevels &&
               activeButtons.includes('Resistance') &&
               resistanceLevels?.map((level, index) => (
@@ -589,10 +598,10 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
                     />
                   }
                 />
-              ))}
+              ))} */}
 
             {/* SUPPORT LEVELS */}
-            {supportLevels &&
+            {/* {supportLevels &&
               activeButtons.includes('Support') &&
               supportLevels?.map((level, index) => (
                 <VictoryLine
@@ -630,7 +639,7 @@ const Chart = ({coinBot, candlesToShow = 30, handlePriceChange}) => {
                     />
                   }
                 />
-              ))}
+              ))} */}
           </VictoryChart>
           <Image
             style={styles.chartsZoomIndicator}

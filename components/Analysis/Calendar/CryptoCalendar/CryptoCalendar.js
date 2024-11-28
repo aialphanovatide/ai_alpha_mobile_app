@@ -1,12 +1,13 @@
-import {React, useState, useEffect, useContext} from 'react';
+import {React, useState, useEffect} from 'react';
 import {View, Text, ScrollView, Image} from 'react-native';
 import calendarService from '../../../../services/CalendarService';
 import CryptoFilter from './CryptoFilter';
 import calendarCryptos from '../../../../assets/static_data/calendarCryptos';
 import useCryptoCalendarStyles from './CryptoCalendarStyles';
-import {CategoriesContext} from '../../../../context/categoriesContext';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../../NoContentDisclaimer/NoContentDisclaimer';
+import { useSelector } from 'react-redux';
+import { selectCategories } from '../../../../store/categoriesSlice';
 
 // Static data for the event tags
 
@@ -97,17 +98,13 @@ const CalendarItem = ({event, coin, styles}) => {
 // Component that renders the Crypto Calendar section. It displays the events for the selected interval and allows the user to filter them by coin. It also displays a loading spinner while the data is being fetched.
 
 const CryptoCalendar = ({selectedInterval}) => {
-  const {categories} = useContext(CategoriesContext);
+  const categories = useSelector(selectCategories);
   const [originalEvents, setOriginalEvents] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(categories);
   const [currentFilter, setCurrentFilter] = useState(null);
   const styles = useCryptoCalendarStyles();
-
-  useEffect(() => {
-    setOptions(categories);
-  }, [categories]);
 
   // Function to fetch the events data for the selected interval and set the original and filtered events. The original events are used to filter the events by coin.
 

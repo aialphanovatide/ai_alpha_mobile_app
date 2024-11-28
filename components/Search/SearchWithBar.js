@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import useSearchStyles from './SearchStyles';
 import FastImage from 'react-native-fast-image';
@@ -10,15 +9,16 @@ import {
 } from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/SubSections/Competitors/coinsNames';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../context/topMenuContext';
-import {AnalysisContext} from '../../context/AnalysisContext';
-import {CategoriesContext} from '../../context/categoriesContext';
 import AlertDetails from '../Alerts/AlertItem';
 import {getService} from '../../services/aiAlphaApi';
 import useAlertsStyles from '../Alerts/styles';
-import {NarrativeTradingContext} from '../../context/NarrativeTradingContext';
 import SkeletonLoader from '../Loader/SkeletonLoader';
 import SearchBar from './SearchBar/SearchBar';
 import {ScrollView} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
+import {selectCategories} from '../../store/categoriesSlice';
+import {selectDailyDeepDives} from '../../actions/dailyDeepDivesActions';
+import {selectMarketNarratives} from '../../actions/marketNarrativesActions';
 
 const SearchCryptoItem = ({
   crypto,
@@ -200,9 +200,9 @@ const SearchWithBar = ({
 }) => {
   const {isDarkMode} = useContext(AppThemeContext);
   const styles = useSearchStyles();
-  const {narrativeTradingData} = useContext(NarrativeTradingContext);
-  const {categories} = useContext(CategoriesContext);
-  const {analysisItems} = useContext(AnalysisContext);
+  const categories = useSelector(selectCategories);
+  const narrativeTradingData = useSelector(selectMarketNarratives);
+  const analysisItems = useSelector(selectDailyDeepDives);
   const [cryptoSearchResult, setCryptoSearchResult] = useState([]);
   const [analysisSearchResult, setAnalysisSearchResult] = useState([]);
   const [ntSearchResult, setNtSearchResult] = useState([]);
@@ -380,10 +380,7 @@ const SearchWithBar = ({
       />
       {activeSearchBar && searchText.length > 0 ? (
         <ScrollView
-          style={[
-            styles.container,
-            {height: '100%',}
-          ]}
+          style={[styles.container, {height: '100%'}]}
           nestedScrollEnabled={true}>
           <View style={styles.titleContainer}>
             <Text style={[styles.searchSubTitle, styles.inactiveSubtitle]}>

@@ -19,9 +19,6 @@ const SubMenu = ({isAlertsMenu}) => {
     if (!isAlertsMenu) {
       navigation.navigate('SubMenuScreen', {
         screen: 'Fundamentals',
-        params: {
-          coin: coin,
-        },
       });
     }
   };

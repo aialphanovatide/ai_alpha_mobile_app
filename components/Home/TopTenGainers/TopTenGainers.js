@@ -1,27 +1,25 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {
-  Platform,
-  View,
-  Text,
-  Animated,
-  TouchableOpacity,
-} from 'react-native';
+import {Platform, View, Text, Animated, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenGainersStyles from './TopTenGainersStyle.js';
 import {AboutIcon} from '../../AboutModal/AboutIcon.js';
 import {home_static_data} from '../../../assets/static_data/homeStaticData.js';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
-import {Top10MoversContext} from '../../../context/TopTenMoversContext.js';
 import {AppThemeContext} from '../../../context/themeContext.js';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext.js';
-import {CategoriesContext} from '../../../context/categoriesContext.js';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer.js';
+import {findCategoryOfItem} from '../../../store/categoriesSlice.js';
+import {useSelector} from 'react-redux';
+import {
+  selectTopTenGainers,
+  selectTopTenMoversLoading,
+} from '../../../actions/topTenMoversActions.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
-const Item = ({position, coin, index, handleItemClick, findCategoryOfItem}) => {
+const Item = ({position, coin, index, handleItemClick}) => {
   const styles = useTopTenGainersStyles();
   const itemCategory = findCategoryOfItem(coin.symbol, coin.name);
 
@@ -66,14 +64,14 @@ const Item = ({position, coin, index, handleItemClick, findCategoryOfItem}) => {
   );
 };
 
-// Top ten gainers component that renders the top ten gainer coins in a table. It requires fetching this data from an API, retrieved from the top ten movers context. It uses the Item component to render each row of the table. 
+// Top ten gainers component that renders the top ten gainer coins in a table. It requires fetching this data from an API, retrieved from the top ten movers context. It uses the Item component to render each row of the table.
 
 const TopTenGainers = ({handleAboutPress}) => {
   const navigation = useNavigation();
   const styles = useTopTenGainersStyles();
+  const topTenGainers = useSelector(selectTopTenGainers);
+  const loading = useSelector(selectTopTenMoversLoading);
   const [topTenCoins, setTopTenCoins] = useState([]);
-  const {findCategoryOfItem} = useContext(CategoriesContext);
-  const {topTenMoversData, loading} = useContext(Top10MoversContext);
   const {isDarkMode} = useContext(AppThemeContext);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
 
@@ -82,8 +80,16 @@ const TopTenGainers = ({handleAboutPress}) => {
     top: 24,
   };
 
+  // Hook effect to load the top ten gainer coins from the store
+
+  useEffect(() => {
+    if (topTenGainers.length > 0) {
+      setTopTenCoins(topTenGainers);
+    }
+  }, [topTenGainers]);
+
   // Variables and states to handle the scroll bar in the table
-  
+
   const scrollIndicator = useRef(new Animated.Value(0)).current;
   const [completeScrollBarHeight, setCompleteScrollBarHeight] = useState(1);
   const [visibleScrollBarHeight, setVisibleScrollBarHeight] = useState(0);
@@ -125,9 +131,6 @@ const TopTenGainers = ({handleAboutPress}) => {
     }
   };
 
-  useEffect(() => {
-    setTopTenCoins(topTenMoversData);
-  }, [topTenMoversData]);
   return (
     <View style={styles.topTenGainersContainer}>
       <View style={styles.titleRow}>
@@ -139,21 +142,20 @@ const TopTenGainers = ({handleAboutPress}) => {
           additionalStyles={additionalAboutStyles}
         />
       </View>
-      {loading ? (
+      {loading === 'idle' ? (
         <ScrollView
           persistentScrollbar={true}
-          indicatorStyle={isDarkMode ? 'white' : 'dark'}
-        >
+          indicatorStyle={isDarkMode ? 'white' : 'dark'}>
           <View style={styles.table}>
             <SkeletonLoader quantity={10} />
           </View>
         </ScrollView>
-      ) : !loading && topTenCoins.length === 0 ? (
+      ) : loading !== 'idle' && topTenCoins.length === 0 ? (
         <NoContentDisclaimer
-        title={'Whoops, something went wrong.'}
-        description={'Please try again in a little while.'}
-        type="error"
-      />
+          title={'Whoops, something went wrong.'}
+          description={'Please try again in a little while.'}
+          type="error"
+        />
       ) : (
         <View style={styles.itemsContainer}>
           <ScrollView
@@ -181,7 +183,6 @@ const TopTenGainers = ({handleAboutPress}) => {
                   coin={coin}
                   position={index + 1}
                   handleItemClick={handleItemClick}
-                  findCategoryOfItem={findCategoryOfItem}
                 />
               ))}
           </ScrollView>

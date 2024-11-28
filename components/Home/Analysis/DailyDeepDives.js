@@ -11,12 +11,13 @@ import {
 import {useNavigation} from '@react-navigation/core';
 import {AboutIcon} from '../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../assets/static_data/homeStaticData';
-import {AnalysisContext} from '../../../context/AnalysisContext';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import DailyDeepItem from './DailyDeepItem/DailyDeepItem';
 import useDailyDeepsStyles from './dailyDeepsStyles';
+import { useSelector } from 'react-redux';
+import { selectDailyDeepDives, selectDailyDeepDivesLoading } from '../../../actions/dailyDeepDivesActions';
 
 if (
   Platform.OS === 'android' &&
@@ -29,7 +30,8 @@ if (
 
 const DailyDeepDives = ({handleAboutPress}) => {
   const styles = useDailyDeepsStyles();
-  const {analysisItems, loading} = React.useContext(AnalysisContext);
+  const dailyDeepDives = useSelector(selectDailyDeepDives);
+  const loading = useSelector(selectDailyDeepDivesLoading);
   const [analysisData, setAnalysisData] = React.useState([]);
   const [expanded, setExpanded] = React.useState(false);
   const navigation = useNavigation();
@@ -37,9 +39,11 @@ const DailyDeepDives = ({handleAboutPress}) => {
     top: 24,
   };
 
+  // useEffect to set the analysis data when it is fetched from the API
+
   React.useEffect(() => {
-    setAnalysisData(analysisItems);
-  }, [analysisItems]);
+    setAnalysisData(dailyDeepDives);
+  }, [dailyDeepDives]);
 
   //  Function to expand and close the Home Analysis component
 
@@ -83,7 +87,7 @@ const DailyDeepDives = ({handleAboutPress}) => {
     });
   };
 
-  if (!loading && analysisData?.length === 0) {
+  if (loading !== 'idle' && dailyDeepDives?.length === 0) {
     <View style={styles.analysisItemsContainer}>
       <Text style={styles.mainTitle}>Daily Deep Dives</Text>
       <AboutIcon
@@ -108,7 +112,7 @@ const DailyDeepDives = ({handleAboutPress}) => {
         description={home_static_data.analysis.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
-      {loading ? (
+      {loading === 'idle' ? (
         <SkeletonLoader />
       ) : (
         <View style={styles.itemsContainer}>

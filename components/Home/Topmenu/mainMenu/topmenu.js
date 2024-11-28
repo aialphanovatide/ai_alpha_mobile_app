@@ -1,10 +1,9 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {View, ScrollView, Platform, Animated} from 'react-native';
+import {View, ScrollView, Animated} from 'react-native';
 import MenuItem from './menuItem/menuItem';
 import useTopMenuStyles from './topmenuStyles';
 import {TopMenuContext} from '../../../../context/topMenuContext';
 import {useNavigation, useRoute} from '@react-navigation/core';
-import {CategoriesContext} from '../../../../context/categoriesContext';
 import {AppThemeContext} from '../../../../context/themeContext';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import NotificationsButton from '../../HomeNotifications/NotificationsButton';
@@ -12,6 +11,12 @@ import SearchWithBar from '../../../Search/SearchWithBar';
 import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
 import {HeaderVisibilityContext} from '../../../../context/HeadersVisibilityContext';
 import {useScreenOrientation} from '../../../../hooks/useScreenOrientation';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  fetchCategories,
+  selectCategories,
+  selectCategoriesLoading,
+} from '../../../../store/categoriesSlice';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
@@ -21,12 +26,19 @@ const TopMenu = ({isAlertsMenu}) => {
   const [menuVisible, setMenuVisible] = useState(true);
   const {updateActiveCoin, updateActiveSubCoin, activeCoin} =
     useContext(TopMenuContext);
-  const {categories, loading} = useContext(CategoriesContext);
+  const categories = useSelector(selectCategories);
+  const loading = useSelector(selectCategoriesLoading);
   const navigation = useNavigation();
-  const {theme, isDarkMode} = useContext(AppThemeContext);
+  const {isDarkMode} = useContext(AppThemeContext);
   const topMenuScrollRef = useRef(null);
   const [scrollX, setScrollX] = useState(0);
   const {isLandscape, isHorizontal} = useScreenOrientation();
+  const dispatch = useDispatch();
+
+  // Fetch the categories data from the store
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   // Function to handle the button pressing of a category, setting it as active and navigating to the corresponding section. In case the category has more coins, set the first coin as active. Also, the top menu scrolls the category to the middle of the view.
   const handleButtonPress = (category, index) => {
@@ -49,11 +61,6 @@ const TopMenu = ({isAlertsMenu}) => {
           screen: 'SubMenuScreen',
           params: {
             screen: 'Fundamentals',
-            // params: {
-            //   interval: '1h',
-            //   symbol: `${category.coin_bots[0].bot_name}USDT`,
-            //   coinBot: category.coin_bots[0].bot_name,
-            // },
           },
         });
       }
@@ -75,9 +82,6 @@ const TopMenu = ({isAlertsMenu}) => {
             : scrollOffset > scrollX
             ? scrollOffset + 10
             : scrollOffset - 30;
-        // console.log('Scroll view width: ', scrollViewWidth);
-        // console.log('Scroll view scroll x: ', scrollX);
-        // console.log('Scroll view new position: ', scrollPosition);
         topMenuScrollRef.current.scrollTo({
           x: scrollX >= 700 ? 700 : scrollPosition,
           animated: true,
@@ -150,11 +154,6 @@ const TopMenu = ({isAlertsMenu}) => {
 
   useEffect(() => {
     Animated.parallel([
-      // Animated.timing(opacity, {
-      //   toValue: headersVisibility.TopMenu ? 1 : 0,
-      //   duration: 300,
-      //   useNativeDriver: true,
-      // }),
       Animated.timing(animatedValue, {
         toValue: headersVisibility.TopMenu ? 0 : isAlertsMenu ? -75 : -100,
         duration: 150,
@@ -181,7 +180,7 @@ const TopMenu = ({isAlertsMenu}) => {
             ? {height: 115}
             : {height: 1}
           : {},
-          isLandscape && isHorizontal ? {height: 0} : {},
+        isLandscape && isHorizontal ? {height: 0} : {},
       ]}>
       <BackgroundGradient />
       <Animated.View
@@ -222,7 +221,7 @@ const TopMenu = ({isAlertsMenu}) => {
               scrollEventThrottle={16}
               showsHorizontalScrollIndicator={false}
               bounces={false}>
-              {loading ? (
+              {loading === 'idle' ? (
                 <SkeletonLoader type={'circle'} quantity={14} />
               ) : categories ? (
                 categories.map((category, index) => (

@@ -68,8 +68,14 @@ const useLoginFormStyles = () => {
     termsButton: {
       fontFamily: theme.fontMedium,
       color: theme.secondaryTextColor,
-      fontSize: theme.responsiveFontSize * 0.80,
+      fontSize: theme.responsiveFontSize * 0.8,
       textDecorationLine: 'underline',
+    },
+    modalBackground: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
   });
   return styles;

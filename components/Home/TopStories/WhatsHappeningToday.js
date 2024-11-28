@@ -11,13 +11,17 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {TopMenuContext} from '../../../context/topMenuContext';
-import {CategoriesContext} from '../../../context/categoriesContext';
 import {AboutIcon} from '../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../assets/static_data/homeStaticData';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
-import {newsbotGetService} from '../../../services/aiAlphaApi';
 import useWhatsHappeningTodayStyles from './whatsHappeningTodayStyles';
+import {useSelector} from 'react-redux';
+import {selectCategories} from '../../../store/categoriesSlice';
+import {
+  selectWhatsHappeningTodayLoading,
+  selectWhatsHappeningTodayStories,
+} from '../../../actions/whatsHappeningTodayActions';
 
 if (
   Platform.OS === 'android' &&
@@ -31,14 +35,21 @@ if (
 const WhatsHappeningToday = ({handleAboutPress}) => {
   const styles = useWhatsHappeningTodayStyles();
   const [expanded, setExpanded] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const whatsHappeningTodayStories = useSelector(
+    selectWhatsHappeningTodayStories,
+  );
+  const loading = useSelector(selectWhatsHappeningTodayLoading);
   const [stories, setStories] = useState([]);
   const navigation = useNavigation();
-  const {categories} = useContext(CategoriesContext);
+  const categories = useSelector(selectCategories);
   const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const aboutIconStyles = {
     top: 24,
   };
+
+  useEffect(() => {
+    setStories(whatsHappeningTodayStories);
+  }, [whatsHappeningTodayStories]);
 
   // Function to handle the pressing of the arrow, expanding or hiding the top stories list, depending on the case
 
@@ -78,35 +89,35 @@ const WhatsHappeningToday = ({handleAboutPress}) => {
     });
   };
 
-// This useEffect fetches the top stories from the API, setting the stories state with the data received. If there is an error, it sets the stories state to an empty array. It also sets the loading state to false when the fetch is done.
+  // This useEffect fetches the top stories from the API, setting the stories state with the data received. If there is an error, it sets the stories state to an empty array. It also sets the loading state to false when the fetch is done.
 
-  useEffect(() => {
-    setLoading(true);
-    const fetchTopStories = async () => {
-      try {
-        const topStoriesData = await newsbotGetService(
-          '/top-stories?per_page=10',
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        );
-        if (!topStoriesData.success || !topStoriesData.data) {
-          setStories([]);
-        } else {
-          setStories(topStoriesData.data);
-        }
-      } catch (error) {
-        console.error('Error fetching top stories:', error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   setLoading(true);
+  //   const fetchTopStories = async () => {
+  //     try {
+  //       const topStoriesData = await newsbotGetService(
+  //         '/top-stories?per_page=10',
+  //         {
+  //           method: 'GET',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //         },
+  //       );
+  //       if (!topStoriesData.success || !topStoriesData.data) {
+  //         setStories([]);
+  //       } else {
+  //         setStories(topStoriesData.data);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching top stories:', error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchTopStories();
-  }, []);
+  //   fetchTopStories();
+  // }, []);
 
   return (
     <View style={styles.StoriesItemsContainer}>
@@ -117,9 +128,9 @@ const WhatsHappeningToday = ({handleAboutPress}) => {
         description={home_static_data.topStories.sectionDescription}
         additionalStyles={aboutIconStyles}
       />
-      {loading ? (
+      {loading === 'idle' ? (
         <SkeletonLoader />
-      ) : stories.length === 0 ? (
+      ) : loading !== 'idle' && stories.length === 0 ? (
         <NoContentDisclaimer
           title={'Whoops, something went wrong.'}
           description={'Please try again in a little while.'}

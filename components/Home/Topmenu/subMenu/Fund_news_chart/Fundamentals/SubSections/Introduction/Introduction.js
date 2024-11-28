@@ -5,6 +5,9 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import RenderHTML, {defaultSystemFonts} from 'react-native-render-html';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
+import {useSelector} from 'react-redux';
+import {fundamentalsState} from '../../../../../../../../store/fundamentalsSlice';
+import NoContentDisclaimer from '../../../../../../../NoContentDisclaimer/NoContentDisclaimer';
 
 // Component to render an external link in the Introduction section of the Fundamentals tab. It displays a link to the website or whitepaper of the coin.
 
@@ -24,16 +27,11 @@ const ExternalLink = ({url, text}) => {
 
 // Component to render the Introduction section in the Fundamentals tab. It displays the description of the coin and links to the website and whitepaper.
 
-const Introduction = ({
-  coin,
-  handleSectionContent,
-  loading,
-  globalData,
-}) => {
+const Introduction = ({coin, handleSectionContent, loading, globalData}) => {
   const styles = useIntroductionStyles();
-  const [content, setContent] = useState(null);
   const {theme, isDarkMode} = useContext(AppThemeContext);
   const isAndroid = Platform.OS === 'android' ? true : false;
+
   const systemFonts = [
     ...defaultSystemFonts,
     isAndroid ? 'prompt_regular' : 'Prompt-Regular',
@@ -126,24 +124,13 @@ const Introduction = ({
   };
 
   useEffect(() => {
-    const fetchIntroductionContent = () => {
-      if (!globalData || globalData.introduction.status !== 200) {
-        setContent([]);
-      } else {
-        const parsedContent = {
-          description: globalData.introduction.message.content,
-          website: globalData.introduction.message.website,
-          whitepaper: globalData.introduction.message.whitepaper,
-        };
-        setContent(parsedContent);
-      }
-    };
-    fetchIntroductionContent();
-  }, [coin, globalData]);
-
-  if (!loading && !content) {
-    handleSectionContent('introduction', true);
-  }
+    if (
+      !loading &&
+      (!globalData || globalData.introduction.message.content === undefined)
+    ) {
+      handleSectionContent('introduction', true);
+    }
+  }, [loading, globalData, handleSectionContent]);
 
   return (
     <View style={styles.container}>
@@ -153,7 +140,7 @@ const Introduction = ({
         <>
           <RenderHTML
             source={{
-              html: parseHtmlTags(content?.description),
+              html: parseHtmlTags(globalData?.introduction?.message.content),
             }}
             contentWidth={theme.width - 50}
             systemFonts={systemFonts}
@@ -167,7 +154,10 @@ const Introduction = ({
                 resizeMode="contain"
                 source={require('../../../../../../../../assets/images/fundamentals/star-icon.png')}
               />
-              <ExternalLink url={content.website} text={'Website'} />
+              <ExternalLink
+                url={globalData?.introduction.message.website}
+                text={'Website'}
+              />
             </View>
             <View style={styles.textContainer}>
               <Image
@@ -175,7 +165,10 @@ const Introduction = ({
                 resizeMode="contain"
                 source={require('../../../../../../../../assets/images/fundamentals/star-icon.png')}
               />
-              <ExternalLink url={content.whitepaper} text={'Whitepaper'} />
+              <ExternalLink
+                url={globalData?.introduction.message.whitepaper}
+                text={'Whitepaper'}
+              />
             </View>
           </View>
         </>

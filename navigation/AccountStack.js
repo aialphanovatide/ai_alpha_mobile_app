@@ -41,7 +41,7 @@ const AccountScreen = () => {
 
       <AccountStack.Screen
         name="Notifications"
-        component={NotificationsPanel}
+        component={NewNotificationsPanel}
         options={{
           animation: 'slide_from_right',
           animationDuration: 250,

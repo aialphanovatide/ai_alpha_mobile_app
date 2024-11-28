@@ -17,12 +17,12 @@ import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
-import {AnalysisContext} from '../../../context/AnalysisContext';
+import {useSelector} from 'react-redux';
+import {selectDailyDeepDives} from '../../../actions/dailyDeepDivesActions';
 
 // HistoryItem component that renders the history item in the history section. It displays the item's image, title, date, and time. The user can click on the item to navigate to the daily deep dives article screen.
 
 const HistoryItem = ({item, styles, handleHistoryNavigation}) => {
-
   const formatItemDate = dateTimeString => {
     const dateTime = new Date(dateTimeString);
     const year = dateTime.getFullYear();
@@ -130,7 +130,8 @@ const HistoryTimeMenu = ({
 
 const History = () => {
   const options = ['today', 'last week'];
-  const {analysisItems} = useContext(AnalysisContext);
+  // Since the daily deep dives fetching action is dispatched in the Home section, that renders firstly, the data that we get from the store is going to have items in all the cases.
+  const analysisItems = useSelector(selectDailyDeepDives);
   const [cryptoOptions, setCryptoOptions] = useState(historyFilterData);
   const [activeOption, setActiveOption] = useState(options[0]);
   const [activeCryptoOption, setActiveCryptoOption] = useState(

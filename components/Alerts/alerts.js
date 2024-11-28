@@ -14,13 +14,14 @@ import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
 import SubMenu from '../Home/Topmenu/subMenu/SubMenu';
 import UpgradeOverlay from '../UpgradeOverlay/UpgradeOverlay';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
-import {CategoriesContext} from '../../context/categoriesContext';
 import {useScrollToTop} from '@react-navigation/native';
 import SkeletonLoader from '../Loader/SkeletonLoader';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../NoContentDisclaimer/NoContentDisclaimer';
 import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
+import {useSelector} from 'react-redux';
+import {selectCategories} from '../../store/categoriesSlice';
 
 // Component that renders the menu to switch between 'today' and 'this week' alert intervals.
 const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
@@ -62,7 +63,7 @@ const Alerts = ({route, navigation}) => {
   const styles = useAlertsStyles();
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const {categories} = useContext(CategoriesContext);
+  const categories = useSelector(selectCategories);
   const ref = useRef(null);
 
   useScrollToTop(ref);

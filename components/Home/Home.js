@@ -17,8 +17,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import {useFocusEffect, useScrollToTop} from '@react-navigation/native';
 import NarrativeTradings from './HomeNarrativeTradings/MarketNarratives';
-import TopTenLosers from './Top10Losers/TopTenLosers';
-import {useRawUserId} from '../../context/RawUserIdContext';
+import TopTenLosers from './TopTenLosers/TopTenLosers';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
@@ -27,6 +26,12 @@ import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
 import DailyDeepDives from './Analysis/DailyDeepDives.js';
 import {useScreenOrientation} from '../../hooks/useScreenOrientation';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchTopStories} from '../../actions/whatsHappeningTodayActions';
+import {fetchTop10Movers} from '../../actions/topTenMoversActions';
+import {fetchDailyDeepDivesData} from '../../actions/dailyDeepDivesActions';
+import {fetchMarketNarratives} from '../../actions/marketNarrativesActions';
+import {selectRawUserId} from '../../actions/userActions';
 
 // FreePopup component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 
@@ -103,13 +108,13 @@ const Home = ({route}) => {
   const [aboutVisible, setAboutVisible] = useState(false);
   const [aboutDescription, setAboutDescription] = useState('');
   const [aboutTitle, setAboutTitle] = useState('About');
-  const {rawUserId} = useRawUserId();
+  const rawUserId = useSelector(selectRawUserId);
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
   const [subscriptionPopUpsVisible, setSubscriptionPopUpsVisible] =
     useState(false);
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
-
+  const dispatch = useDispatch();
   const ref = useRef(null);
 
   useEffect(() => {
@@ -117,6 +122,13 @@ const Home = ({route}) => {
     showHeader('SubMenu');
     showHeader('FundNewsChartsMenu');
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchTop10Movers());
+    dispatch(fetchTopStories());
+    dispatch(fetchDailyDeepDivesData());
+    dispatch(fetchMarketNarratives());
+  }, [dispatch]);
 
   useFocusEffect(() => {
     if (isLandscape && isHorizontal) {
