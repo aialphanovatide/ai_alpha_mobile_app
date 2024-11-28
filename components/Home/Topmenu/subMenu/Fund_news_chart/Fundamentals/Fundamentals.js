@@ -55,6 +55,7 @@ if (
 
 const Fundamentals = () => {
   const {activeSubCoin} = useContext(TopMenuContext);
+  const [coin, setCoin] = useState(activeSubCoin);
   const styles = useFundamentalsStyles();
   const fundamentalsData = useSelector(selectFundamentalsData);
   const globalLoading = useSelector(selectGlobalLoading);
@@ -95,8 +96,6 @@ const Fundamentals = () => {
   };
 
   useScrollToTop(ref);
-
-  // Function to handle the state of the content of each section. It receives the section and the value of the content as parameters.
 
   const handleSectionContent = (section, value) => {
     setHasContent(prevState => ({
@@ -160,7 +159,7 @@ const Fundamentals = () => {
           subtitle={'Introduction'}
           content={
             <Introduction
-              coin={activeSubCoin}
+              coin={coin}
               getSectionData={getSectionData}
               handleSectionContent={handleSectionContent}
               loading={loadingState}
@@ -176,7 +175,7 @@ const Fundamentals = () => {
           content={
             <Tokenomics
               getSectionData={getSectionData}
-              coin={activeSubCoin}
+              coin={coin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={loadingState}
@@ -193,7 +192,7 @@ const Fundamentals = () => {
           content={
             <GeneralTokenAllocation
               getSectionData={getSectionData}
-              coin={activeSubCoin}
+              coin={coin}
               handleSectionContent={handleSectionContent}
               loading={loadingState}
               globalData={fundamentalsData}
@@ -212,7 +211,7 @@ const Fundamentals = () => {
           content={
             <TokenUtility
               getSectionData={getSectionData}
-              coin={activeSubCoin}
+              coin={coin}
               handleSectionContent={handleSectionContent}
               loading={loadingState}
               globalData={fundamentalsData}
@@ -248,7 +247,7 @@ const Fundamentals = () => {
           subtitle={'Competitors'}
           content={
             <Competitors
-              coin={activeSubCoin}
+              coin={coin}
               getSectionData={getSectionData}
               handleSectionContent={handleSectionContent}
               tokenomicsData={
@@ -281,7 +280,7 @@ const Fundamentals = () => {
             <UpdatedRevenueModel
               handleSectionContent={handleSectionContent}
               getSectionData={getSectionData}
-              coin={activeSubCoin}
+              coin={coin}
               globalData={fundamentalsData}
               loading={loadingState}
             />
@@ -298,7 +297,7 @@ const Fundamentals = () => {
           content={
             <Hacks
               getSectionData={getSectionData}
-              coin={activeSubCoin}
+              coin={coin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={loadingState}
@@ -315,7 +314,7 @@ const Fundamentals = () => {
           content={
             <Upgrades
               getSectionData={getSectionData}
-              coin={activeSubCoin}
+              coin={coin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={loadingState}
@@ -330,7 +329,7 @@ const Fundamentals = () => {
           content={
             <DApps
               getSectionData={getSectionData}
-              coin={activeSubCoin}
+              coin={coin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={loadingState}
