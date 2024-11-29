@@ -278,7 +278,7 @@ const ChartSection = ({route, navigation}) => {
 
   const handleBackInteraction = () => {
     if (isLandscape && isHorizontal) {
-      handleScreenOrientationChange('PORTRAIT');
+      handleScreenOrientationChange(false);
       navigation.canGoBack(false);
     }
   };
@@ -712,7 +712,7 @@ const ChartSection = ({route, navigation}) => {
                   }
                 : () => {
                     navigation.canGoBack(false);
-                    handleScreenOrientationChange('LANDSCAPE');
+                    handleScreenOrientationChange(true);
                   }
             }>
             <Image
@@ -738,7 +738,11 @@ const ChartSection = ({route, navigation}) => {
           </TouchableOpacity>
           {/* Zoom interaction indicator */}
           <Image
-            style={[styles.chartsZoomIndicator, selectedCandle && {zIndex: -1}, isLandscape && isHorizontal && {right: '16.5%'}]}
+            style={[
+              styles.chartsZoomIndicator,
+              selectedCandle && {zIndex: -1},
+              isLandscape && isHorizontal && {right: '16.5%'},
+            ]}
             resizeMode="contain"
             source={require('../../../assets/images/home/charts/zoom-expand.png')}
           />

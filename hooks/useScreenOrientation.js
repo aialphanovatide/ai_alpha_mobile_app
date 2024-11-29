@@ -1,18 +1,19 @@
 import {useEffect, useState} from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import Orientation, {
   LANDSCAPE,
   OrientationType,
 } from 'react-native-orientation-locker';
 import {singletonHook} from 'react-singleton-hook';
-import {Platform} from 'react-native';
 
-// Hook to get the screen orientation and lock it to portrait or landscape mode. It uses the react-native-orientation-locker library to get the screen orientation and lock it to the desired mode.
-
+// Utility to check platform
 export const isAndroid = () => Platform.OS === 'android';
+
+// Hook to manage screen orientation
 export const useScreenOrientation = singletonHook(
   {
     isLandscape: false,
+    isHorizontal: false,
     screenOrientation: Orientation.getInitialOrientation(),
   },
   () => {
@@ -21,49 +22,96 @@ export const useScreenOrientation = singletonHook(
     );
     const [isManuallyHorizontal, setIsManuallyHorizontal] = useState(false);
 
-    useEffect(() => {
-      const onChange = result => {
-        setScreenOrientation(result);
-      };
+    const forcePortraitMode = () => {
+      // Unlock orientation and force portrait for iOS
+      Orientation.unlockAllOrientations();
+      setTimeout(() => {
+        Orientation.lockToPortrait();
+        console.log('Forcefully locked to Portrait');
+      }, 100);
+    };
 
-      const onChangeAndroid = result => {
-        return onChange(
-          result.screen.height > result.screen.width
-            ? OrientationType.PORTRAIT
-            : OrientationType['LANDSCAPE-LEFT'],
+    useEffect(() => {
+      const updateOrientation = () => {
+        const {width, height} = Dimensions.get('window');
+        const isLandscape = width > height;
+        setScreenOrientation(
+          isLandscape ? OrientationType.LANDSCAPE : OrientationType.PORTRAIT,
         );
       };
 
       if (isAndroid()) {
-        Dimensions.addEventListener('change', onChangeAndroid);
+        // Android: Listen for dimension changes
+        Dimensions.addEventListener('change', updateOrientation);
       } else {
-        Orientation.addOrientationListener(onChange);
+        // iOS: Use orientation listeners
+        Orientation.addOrientationListener(setScreenOrientation);
       }
 
+      // Cleanup listeners
       return () => {
         if (isAndroid()) {
-          Dimensions.removeEventListener('change', onChangeAndroid);
+          Dimensions.removeEventListener('change', updateOrientation);
         } else {
-          Orientation.removeOrientationListener(onChange);
+          Orientation.removeOrientationListener(setScreenOrientation);
         }
       };
     }, []);
 
-    const handleScreenOrientationChange = orientation => {
-      if (orientation === 'PORTRAIT' || isManuallyHorizontal) {
-        Orientation.lockToPortrait();
-        setIsManuallyHorizontal(false);
-      } else {
+    useEffect(() => {
+      console.log('isManuallyHorizontal before if:', isManuallyHorizontal);
+
+      // Lock orientation based on isManuallyHorizontal
+      if (isManuallyHorizontal === true) {
+        // NOTE: true means 'landscape'
+        console.log(
+          'isManuallyHorizontal inside true branch of the if',
+          isManuallyHorizontal,
+        );
         Orientation.lockToLandscape();
-        setIsManuallyHorizontal(true);
+        console.log('Orientation locked to Landscape');
+      } else if (isManuallyHorizontal === false) {
+        // NOTE: false means 'portrait'
+        console.log(
+          'isManuallyHorizontal inside false branch of the if',
+          isManuallyHorizontal,
+        );
+        if (Platform.OS === 'ios') {
+          forcePortraitMode(); // Handle portrait mode specifically for iOS
+        } else {
+          Orientation.lockToPortrait();
+          console.log('Orientation locked to Portrait');
+        }
+      } else {
+        console.error(
+          'Unexpected value for isManuallyHorizontal:',
+          isManuallyHorizontal,
+        );
       }
+    }, [isManuallyHorizontal]);
+
+    const handleScreenOrientationChange = shouldBeHorizontal => {
+      console.log(
+        'handleScreenOrientationChange called with:',
+        shouldBeHorizontal,
+      );
+
+      if (typeof shouldBeHorizontal !== 'boolean') {
+        console.error(
+          'Invalid value passed to handleScreenOrientationChange:',
+          shouldBeHorizontal,
+        );
+        return; // Prevent further execution if the value is invalid
+      }
+
+      setIsManuallyHorizontal(shouldBeHorizontal);
     };
 
     return {
-      isLandscape: screenOrientation.includes(LANDSCAPE),
-      isHorizontal: isManuallyHorizontal,
+      isLandscape: screenOrientation.includes(LANDSCAPE), // Tracks actual landscape/portrait state
+      isHorizontal: isManuallyHorizontal, // Boolean reflecting manual toggle state
       screenOrientation,
-      handleScreenOrientationChange: handleScreenOrientationChange,
+      handleScreenOrientationChange,
     };
   },
 );

@@ -105,7 +105,7 @@ const Total3CandleChart = ({candlesToShow = 25}) => {
 
   const handleBackInteraction = () => {
     if (isLandscape && isHorizontal) {
-      handleScreenOrientationChange('PORTRAIT');
+      handleScreenOrientationChange(false);
       navigation.canGoBack(false);
     }
   };
@@ -457,7 +457,7 @@ const Total3CandleChart = ({candlesToShow = 25}) => {
                     }
                   : () => {
                       navigation.canGoBack(false);
-                      handleScreenOrientationChange('LANDSCAPE');
+                      handleScreenOrientationChange(true);
                     }
               }>
               <Image

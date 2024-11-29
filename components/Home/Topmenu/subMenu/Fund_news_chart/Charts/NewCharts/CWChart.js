@@ -103,7 +103,7 @@ const CWChart = ({
 
   const handleBackInteraction = () => {
     if (isLandscape && isHorizontal) {
-      handleScreenOrientationChange('PORTRAIT');
+      handleScreenOrientationChange(false);
       navigation.canGoBack(false);
     }
   };
@@ -327,12 +327,12 @@ const CWChart = ({
         onPress={
           isLandscape
             ? () => {
-                handleScreenOrientationChange('PORTRAIT');
+                handleScreenOrientationChange(false);
                 navigation.canGoBack(false);
               }
             : () => {
                 navigation.canGoBack(false);
-                handleScreenOrientationChange('LANDSCAPE');
+                handleScreenOrientationChange(true);
               }
         }>
         <Image

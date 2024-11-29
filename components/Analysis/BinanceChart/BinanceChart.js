@@ -129,7 +129,7 @@ const BinanceChart = ({route, navigation}) => {
 
   const handleBackInteraction = () => {
     if (isLandscape && isHorizontal) {
-      handleScreenOrientationChange('PORTRAIT');
+      handleScreenOrientationChange(false);
       navigation.canGoBack(false);
     }
   };
@@ -629,7 +629,7 @@ const BinanceChart = ({route, navigation}) => {
                       }
                     : () => {
                         navigation.canGoBack(false);
-                        handleScreenOrientationChange('LANDSCAPE');
+                        handleScreenOrientationChange(true);
                       }
                 }>
                 <Image
@@ -659,7 +659,7 @@ const BinanceChart = ({route, navigation}) => {
                 style={[
                   styles.chartsZoomIndicator,
                   selectedCandle && {zIndex: -1},
-                  isLandscape && isHorizontal && {right: '17.5%'}
+                  isLandscape && isHorizontal && {right: '17.5%'},
                 ]}
                 resizeMode="contain"
                 source={require('../../../assets/images/home/charts/zoom-expand.png')}

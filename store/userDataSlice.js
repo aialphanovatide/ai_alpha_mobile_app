@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {fetchUserData} from '../actions/userActions';
-import {toggleSubscription} from '../actions/notificationActions';
+//import {toggleSubscription} from '../actions/notificationActions';
 
 const userDataSlice = createSlice({
   name: 'user',
@@ -44,13 +44,6 @@ const userDataSlice = createSlice({
       .addCase(fetchUserData.rejected, (state, action) => {
         state.loading = 'failed';
         state.error = action.payload || 'An error occurred';
-      })
-      .addCase(toggleSubscription.fulfilled, (state, action) => {
-        const {topic, newStatus} = action.payload;
-        state.notifications[topic] = newStatus;
-      })
-      .addCase(toggleSubscription.rejected, (state, action) => {
-        state.error = action.payload || 'An error occurred';
       });
   },
 });
@@ -58,3 +51,15 @@ const userDataSlice = createSlice({
 export const {resetUserData, updateEmail, updateUserId, updateRawUserId} =
   userDataSlice.actions;
 export default userDataSlice.reducer;
+
+{
+  /*
+      .addCase(toggleSubscription.fulfilled, (state, action) => {
+        const {topic, newStatus} = action.payload;
+        state.notifications[topic] = newStatus;
+      })
+      .addCase(toggleSubscription.rejected, (state, action) => {
+        state.error = action.payload || 'An error occurred';
+      });
+*/
+}

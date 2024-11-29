@@ -132,7 +132,7 @@ const Home = ({route}) => {
 
   useFocusEffect(() => {
     if (isLandscape && isHorizontal) {
-      handleScreenOrientationChange('PORTRAIT');
+      handleScreenOrientationChange(false);
     }
   });
 

@@ -15,7 +15,7 @@ const useChartSectionStyles = () => {
     background: {
       flex: 1,
       backgroundColor: 'transparent',
-      width: theme.width,
+      width: Platform.OS === 'ios' ? '100%' : theme.width,
       paddingTop: 24,
     },
     container: {

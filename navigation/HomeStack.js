@@ -141,7 +141,7 @@ const SubMenuScreen = () => {
     const handleBackInteraction = e => {
       if (isLandscape && isHorizontal) {
         e.preventDefault();
-        handleScreenOrientationChange('PORTRAIT');
+        handleScreenOrientationChange(false);
         navigation.canGoBack(false);
       }
     };
