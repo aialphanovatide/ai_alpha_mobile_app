@@ -1,15 +1,16 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useAskAiStyles from '../AskAiStyles';
 import {SafeAreaView, Text, View} from 'react-native';
 import {Image, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {AboutIcon} from '../../AboutModal/AboutIcon';
 import AboutModal from '../../AboutModal/AboutModal';
-import {AboutModalContext} from '../../../context/AboutModalContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from '../../BackButton/BackButton';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleAboutPress, handleClose, selectAboutDescription, selectAboutTitle, selectAboutVisible } from '../../../store/aboutSlice';
 
 // Component to display the History section's content on the ASK AI History section. It renders the items that are saved on the user device's cache (Async Storage) and displays them as clickable items. The user can filter the items by category and clean the history data. It receives the activeHistoryOption, historyOptions, handleHistoryOption, handleActiveResultData, savedResults, and handleHistoryClean functions as props.
 
@@ -100,13 +101,9 @@ const HistoryContent = ({
 
 const AskAiHistory = ({route, navigation}) => {
   const styles = useAskAiStyles();
-  const {
-    aboutVisible,
-    aboutTitle,
-    aboutDescription,
-    handleAboutPress,
-    handleClose,
-  } = useContext(AboutModalContext);
+  const aboutVisible = useSelector(selectAboutVisible);
+  const aboutDescription = useSelector(selectAboutDescription);
+  const aboutTitle = useSelector(selectAboutTitle);
   const historyOptions = [
     {
       name: 'All',
@@ -129,6 +126,7 @@ const AskAiHistory = ({route, navigation}) => {
   );
   const [savedResults, setSavedResults] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
+  const dispatch = useDispatch();
 
   //  Hook to reset the search value state on every rendering
   useEffect(() => {
@@ -210,6 +208,16 @@ const AskAiHistory = ({route, navigation}) => {
     navigation.navigate('AskAiMain', {selectedResult: data});
   };
 
+  // Function to handle the about modal visibility and content based on the section that the user clicked on
+
+  const toggleAbout = (description = null, title = null) => {
+    dispatch(handleAboutPress({description, title}));
+  };
+
+  const closeAbout = () => {
+    dispatch(handleClose());
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundGradient />
@@ -223,7 +231,7 @@ const AskAiHistory = ({route, navigation}) => {
           description={
             'In this section you can see the previously ASK AI searched coins.'
           }
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           additionalStyles={{top: '35%', right: '3%'}}
         />
       </View>
@@ -235,12 +243,12 @@ const AskAiHistory = ({route, navigation}) => {
         handleHistoryClean={handleHistoryClean}
         handleActiveResultData={handleActiveResultData}
       />
-      <AboutModal
+      {/* <AboutModal
         visible={aboutVisible}
         description={aboutDescription}
         title={aboutTitle}
-        onClose={handleClose}
-      />
+        onClose={closeAbout}
+      /> */}
     </SafeAreaView>
   );
 };

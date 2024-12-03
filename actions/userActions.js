@@ -32,5 +32,3 @@ export const selectUserEmail = state => state.user.email;
 export const selectUserId = state => state.user.userId;
 
 export const selectRawUserId = state => state.user.rawUserId;
-
-export const selectNotifications = state => state.user.notifications;

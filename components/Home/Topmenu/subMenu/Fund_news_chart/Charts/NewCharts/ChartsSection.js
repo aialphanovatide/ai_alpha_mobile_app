@@ -1,14 +1,19 @@
-import React, {useContext, useEffect, useState} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
-import {AppThemeContext} from '../../../../../../../context/themeContext';
+import React, {useState} from 'react';
 import useNewChartsStyles from './NewChartsStyles';
 import {ScrollView, Text, View} from 'react-native';
 import {AboutIcon} from '../../../../../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../../../../../assets/static_data/homeStaticData';
-import {AboutModalContext} from '../../../../../../../context/AboutModalContext';
 import AboutModal from '../../../../../../AboutModal/AboutModal';
 import Chart from './NewChart';
 import BackgroundGradient from '../../../../../../BackgroundGradient/BackgroundGradient';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  handleAboutPress,
+  handleClose,
+  selectAboutDescription,
+  selectAboutTitle,
+  selectAboutVisible,
+} from '../../../../../../../store/aboutSlice';
 
 const initialCoinPriceData = {
   price: null,
@@ -19,12 +24,10 @@ const initialCoinPriceData = {
 const ChartsSection = ({route}) => {
   const {interval, symbol, coinBot} =
     route.params.screen === 'Charts' ? route.params.params : route.params;
-  const {isDarkMode} = useContext(AppThemeContext);
   const styles = useNewChartsStyles();
-  const {aboutDescription, aboutVisible, handleAboutPress} =
-    useContext(AboutModalContext);
   // Coin price data
   const [currentPrice, setCurrentPrice] = useState(initialCoinPriceData);
+  const dispatch = useDispatch();
 
   // Function to handle the price change depending on the charts data change
   const handlePriceChange = (price, isPriceUp, currentPairing) => {
@@ -56,9 +59,19 @@ const ChartsSection = ({route}) => {
     });
   };
 
+  // Function to handle the about modal visibility and content based on the section that the user clicked on
+
+  const toggleAbout = (description = null, title = null) => {
+    dispatch(handleAboutPress({description, title}));
+  };
+
+  const closeAbout = () => {
+    dispatch(handleClose());
+  };
+
   return (
     <ScrollView
-      style={[styles.flex, {padding: 10}]}
+      style={[styles.flex]}
       bounces={false}
       bouncesZoom={false}
       showsHorizontalScrollIndicator={false}
@@ -82,17 +95,19 @@ const ChartsSection = ({route}) => {
           }`}
         </Text>
         <AboutIcon
+          title={home_static_data.charts.sectionTitle}
           description={home_static_data.charts.sectionDescription}
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
         />
       </View>
-      {aboutVisible && (
+      {/* {aboutVisible && (
         <AboutModal
+          title={aboutTitle}
           description={aboutDescription}
-          onClose={handleAboutPress}
+          onClose={closeAbout}
           visible={aboutVisible}
         />
-      )}
+      )} */}
       <Chart coinBot={coinBot} handlePriceChange={handlePriceChange} />
     </ScrollView>
   );

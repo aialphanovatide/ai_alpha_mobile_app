@@ -1,4 +1,3 @@
-import {TopMenuContext} from '../../../context/topMenuContext';
 import React, {useContext, useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -19,7 +18,12 @@ import useNavbarStyles from './NavbarStyles';
 import IntroductoryPopUpsOverlay from '../../IntroductorySlides/IntroductoryPopUps/IntroductoryPopUpsOverlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {selectUserId} from '../../../actions/userActions';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  selectActiveCoin,
+  selectActiveSubCoin,
+} from '../../../actions/categoriesActions';
+import { updateActiveSubCoin } from '../../../store/categoriesSlice';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,8 +47,10 @@ const MenuIcon = ({color, iconSource}) => {
 };
 
 const TabsMenu = () => {
-  const {updateActiveCoin, updateActiveSubCoin, activeCoin, activeSubCoin} =
-    useContext(TopMenuContext);
+  // const {updateActiveCoin, updateActiveSubCoin, activeCoin, activeSubCoin} =
+  //   useContext(TopMenuContext);
+  const activeCoin = useSelector(selectActiveCoin);
+  const activeSubCoin = useSelector(selectActiveSubCoin);
   const navigation = useNavigation();
   const {theme, isDarkMode} = useContext(AppThemeContext);
   const userId = useSelector(selectUserId);
@@ -52,6 +58,7 @@ const TabsMenu = () => {
   const {isLandscape, isHorizontal} = useScreenOrientation();
   const styles = useNavbarStyles();
   const [activePopUps, setActivePopUps] = useState(false);
+  const dispatch = useDispatch();
 
   // Hook to load the variable to know if it is the first time that the user opens the app, or not, to show the introductory pop-ups at the Home section
 
@@ -167,7 +174,7 @@ const TabsMenu = () => {
           listeners={{
             focus: e => {
               if (activeSubCoin && (!activeCoin || activeCoin === undefined)) {
-                updateActiveSubCoin(null);
+                dispatch(updateActiveSubCoin(null));
               }
             },
           }}
@@ -203,7 +210,7 @@ const TabsMenu = () => {
           listeners={{
             focus: e => {
               if (activeSubCoin && (!activeCoin || activeCoin === undefined)) {
-                updateActiveSubCoin(null);
+                dispatch(updateActiveSubCoin(null));
               }
             },
           }}

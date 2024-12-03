@@ -17,9 +17,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SkeletonLoader from '../Loader/SkeletonLoader';
 import {AboutIcon} from '../AboutModal/AboutIcon';
 import AboutModal from '../AboutModal/AboutModal';
-import {AboutModalContext} from '../../context/AboutModalContext';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 import SearchButtonSvg from '../../assets/images/askAi/search-button.svg';
+import {getServiceV2} from '../../services/aiAlphaApi';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  handleAboutPress,
+  handleClose,
+  selectAboutDescription,
+  selectAboutTitle,
+  selectAboutVisible,
+} from '../../store/aboutSlice';
 
 if (
   Platform.OS === 'android' &&
@@ -28,50 +36,53 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+// Static data for mapping the server's response keys to the display titles and value types to format the data correctly in the results component.
+const KEY_DISPLAY_TITLES = [
+  {key: 'ath', displayName: 'ATH', valueType: 'price'},
+  {
+    key: 'ath_change_percentage',
+    displayName: 'ATH % Change',
+    valueType: 'percentage',
+  },
+  {key: 'categories', displayName: 'Categories', valueType: 'array'},
+  {key: 'chains', displayName: 'Chains', valueType: 'array'},
+  {
+    key: 'percentage_circulating_supply',
+    displayName: 'Circulating Supply %',
+    valueType: 'percentage',
+  },
+  {
+    key: 'current_price',
+    displayName: 'Current Price (USD)',
+    valueType: 'price',
+  },
+  {
+    key: 'fully_diluted_valuation',
+    displayName: 'Fully Diluted Valuation',
+    valueType: 'price',
+  },
+  {key: 'market_cap_usd', displayName: 'Market Cap USD', valueType: 'price'},
+  {key: 'website', displayName: 'Website', valueType: ''},
+  {key: 'whitepaper', displayName: 'Whitepaper', valueType: ''},
+  {key: 'name', displayName: 'Token Name', valueType: ''},
+];
+
+const FILTER_KEYS = [
+  'name',
+  'website',
+  'whitepaper',
+  'categories',
+  'chains',
+  'current_price',
+  'market_cap_usd',
+  'ath',
+  'ath_change_percentage',
+  'percentage_circulating_supply',
+  'fully_diluted_valuation',
+];
+
 // Function to combine the multiple responses coming from the ASK AI Alpha endpoint, to handle them more easily in one object.
 const combineResponses = (response, searchedValue) => {
-  const FILTER_KEYS = [
-    'name',
-    'website',
-    'whitepaper',
-    'categories',
-    'chains',
-    'current_price',
-    'market_cap_usd',
-    'ath',
-    'ath_change_percentage',
-    'percentage_circulating_supply',
-    'fully_diluted_valuation',
-  ];
-  const KEY_DISPLAY_TITLES = [
-    {key: 'ath', displayName: 'ATH', valueType: 'price'},
-    {
-      key: 'ath_change_percentage',
-      displayName: 'ATH % Change',
-      valueType: 'percentage',
-    },
-    {key: 'categories', displayName: 'Categories', valueType: ''},
-    {key: 'chains', displayName: 'Chains', valueType: ''},
-    {
-      key: 'percentage_circulating_supply',
-      displayName: 'Circulating Supply %',
-      valueType: 'percentage',
-    },
-    {
-      key: 'current_price',
-      displayName: 'Current Price (USD)',
-      valueType: 'price',
-    },
-    {
-      key: 'fully_diluted_valuation',
-      displayName: 'Fully Diluted Valuation',
-      valueType: 'price',
-    },
-    {key: 'market_cap_usd', displayName: 'Market Cap USD', valueType: 'price'},
-    {key: 'website', displayName: 'Website', valueType: ''},
-    {key: 'whitepaper', displayName: 'Whitepaper', valueType: ''},
-    {key: 'name', displayName: 'Token Name', valueType: ''},
-  ];
   const combinedResult = {};
   let name = '';
 
@@ -148,6 +159,9 @@ const ValueBox = ({title, content, valueType}) => {
         return `${
           content.slice(0, 1).toUpperCase() + content.slice(1, content.length)
         }`;
+      case 'array':
+        const arrayContent = content.replace(/[\[\]"]+/g, '');
+        return arrayContent;
       default:
         return content;
     }
@@ -230,14 +244,11 @@ const AskAiMain = ({route, navigation}) => {
   const [resultData, setResultData] = useState(selectedResult);
   const [savedResults, setSavedResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {
-    aboutVisible,
-    aboutTitle,
-    aboutDescription,
-    handleAboutPress,
-    handleClose,
-  } = useContext(AboutModalContext);
+  const aboutVisible = useSelector(selectAboutVisible);
+  const aboutDescription = useSelector(selectAboutDescription);
+  const aboutTitle = useSelector(selectAboutTitle);
   const [logoSize, setLogoSize] = useState({width: 50, height: 50});
+  const dispatch = useDispatch();
 
   //  Hook to reset the search value state on every rendering
 
@@ -252,6 +263,34 @@ const AskAiMain = ({route, navigation}) => {
       getImageMetadata(resultData.logo);
     }
   }, []);
+
+  // Function to format the data coming from the updated ASK AI Alpha endpoint
+
+  const formatData = (data, searchValue) => {
+    const formattedData = [];
+    Object.entries(data).forEach(([key, value]) => {
+      const configurationMappedKey =
+        KEY_DISPLAY_TITLES.find(item => item.key === key) || null;
+      formattedData.push({
+        title: key,
+        data: value,
+        displayName: configurationMappedKey?.displayName || '',
+        valueType: configurationMappedKey?.valueType,
+      });
+    });
+    const filteredResultArray = formattedData.filter(datum =>
+      FILTER_KEYS.includes(datum.title),
+    );
+
+    const sortedResultArray = filteredResultArray.sort((a, b) => {
+      return FILTER_KEYS.indexOf(a.title) - FILTER_KEYS.indexOf(b.title);
+    });
+    return {
+      name: searchValue,
+      content: sortedResultArray,
+      logo: data.logo ? data.logo : '',
+    };
+  };
 
   // Function to save the results data in the AsyncStorage API to persist them between app executions
 
@@ -289,9 +328,10 @@ const AskAiMain = ({route, navigation}) => {
     setLoading(true);
     const fetchAskAiData = async searchValue => {
       try {
+        // Use this line for reset the ask ai data when testing in development
+        // await AsyncStorage.setItem('askAiData', JSON.stringify([]));
         const loadedData = await AsyncStorage.getItem('askAiData');
         let parsedData = [];
-
         if (loadedData) {
           parsedData = JSON.parse(loadedData);
         }
@@ -299,24 +339,15 @@ const AskAiMain = ({route, navigation}) => {
         const existingResult = parsedData.find(
           item => item.name.toLowerCase() === searchValue.toLowerCase(),
         );
-
         if (existingResult) {
           LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
           setResultData(existingResult);
           return;
         } else {
-          const response = await fetch(
-            `https://fsxbdb84-5000.uks1.devtunnels.ms/ask/ai?token_name=${searchValue.replace(
-              /\s/g,
-              '-',
-            )}`,
-            {method: 'POST'},
+          const data = await getServiceV2(
+            `ask-ai?coin_id=${searchValue.replace(/\s/g, '-')}`,
           );
-          const data = await response.json();
-          const formattedData = combineResponses(
-            data.response.response,
-            searchValue,
-          );
+          const formattedData = formatData(data.data, searchValue);
           LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
           setResultData(formattedData);
           saveAskAiData(formattedData, savedResults);
@@ -356,6 +387,16 @@ const AskAiMain = ({route, navigation}) => {
     );
   };
 
+  // Function to handle the about modal visibility and content based on the section that the user clicked on
+
+  const toggleAbout = (description = null, title = null) => {
+    dispatch(handleAboutPress({description, title}));
+  };
+
+  const closeAbout = () => {
+    dispatch(handleClose());
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundGradient />
@@ -369,9 +410,9 @@ const AskAiMain = ({route, navigation}) => {
         <View style={styles.titleRow}>
           <Text style={styles.title}>ASK AI Alpha</Text>
           <AboutIcon
-            title={'ASK AI Alpha'}
+            title={'About ASK AI Alpha'}
             description={'This is the ASK AI Alpha section description.'}
-            handleAboutPress={handleAboutPress}
+            handleAboutPress={toggleAbout}
             additionalStyles={{top: '52.5%', right: '3.5%'}}
           />
         </View>
@@ -443,7 +484,7 @@ const AskAiMain = ({route, navigation}) => {
         visible={aboutVisible}
         description={aboutDescription}
         title={aboutTitle}
-        onClose={handleClose}
+        onClose={closeAbout}
       />
     </SafeAreaView>
   );

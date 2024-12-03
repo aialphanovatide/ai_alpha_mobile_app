@@ -17,6 +17,7 @@ const CompetitorSection = ({
       <View style={styles.row}>
         <Text style={styles.title}>{title}</Text>
         <AboutIcon
+          title={title}
           description={description}
           handleAboutPress={handleAboutPress}
         />

@@ -2,12 +2,21 @@ import React, {useEffect, useRef} from 'react';
 import {Image, Modal, Text, TouchableOpacity, View} from 'react-native';
 import useAboutModalDialogStyles from './AboutModalDialogStyles';
 import {Animated} from 'react-native';
+import {useSelector} from 'react-redux';
+import {
+  selectAboutDescription,
+  selectAboutTitle,
+  selectAboutVisible,
+} from '../../store/aboutSlice';
 
 // Component that displays the About Modal. It receives the following props: onClose, visible, description, title.
 
-const AboutModal = ({onClose, visible, description, title}) => {
+const AboutModal = ({onClose}) => {
   const styles = useAboutModalDialogStyles();
   const opacity = useRef(new Animated.Value(0)).current;
+  const visible = useSelector(selectAboutVisible);
+  const title = useSelector(selectAboutTitle);
+  const description = useSelector(selectAboutDescription);
 
   const animatedOnClose = () => {
     Animated.timing(opacity, {
@@ -31,7 +40,7 @@ const AboutModal = ({onClose, visible, description, title}) => {
         useNativeDriver: true,
       }).start();
     }
-  }, [visible, opacity]);
+  }, [visible]);
 
   return (
     <Modal

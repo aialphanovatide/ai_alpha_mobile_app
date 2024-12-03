@@ -9,6 +9,7 @@ import {
   Modal,
   Alert,
   Animated,
+  Platform,
 } from 'react-native';
 import usePackageSubscriptionStyles from './PackageSubscriptionStyles';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
@@ -22,8 +23,15 @@ import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import AboutModal from '../../AboutModal/AboutModal';
 import Clipboard from '@react-native-community/clipboard';
 import {aialpha2key} from '../../../src/constants';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {selectRawUserId} from '../../../actions/userActions';
+import {
+  handleAboutPress,
+  handleClose,
+  selectAboutDescription,
+  selectAboutTitle,
+  selectAboutVisible,
+} from '../../../store/aboutSlice';
 
 const TextWithIcon = ({text}) => {
   const styles = usePackageSubscriptionStyles();
@@ -119,14 +127,12 @@ const PackageSubscriptions = () => {
   });
 
   // Modal visibility state
-  const [aboutVisible, setAboutVisible] = useState(false);
-  const [aboutDescription, setAboutDescription] = useState(
-    'This is information about the package.',
-  );
-  const [aboutTitle, setAboutTitle] = useState('About Package Subscription');
-
+  const aboutVisible = useSelector(selectAboutVisible);
+  const aboutDescription = useSelector(selectAboutDescription);
+  const aboutTitle = useSelector(selectAboutTitle);
   const [copiedText, setCopiedText] = useState('');
   const [discordToken, setDiscordToken] = useState(''); // To store the token
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -138,14 +144,12 @@ const PackageSubscriptions = () => {
   }, [rawUserId]);
 
   // Function to handle About button press
-  const handleAboutPress = (description = null, title = null) => {
-    if (description) {
-      setAboutDescription(description);
-    }
-    if (title) {
-      setAboutTitle(title);
-    }
-    setAboutVisible(!aboutVisible);
+  const toggleAbout = (description = null, title = null) => {
+    dispatch(handleAboutPress({description, title}));
+  };
+
+  const closeAbout = () => {
+    dispatch(handleClose());
   };
 
   const subscriptionOptions = [
@@ -541,8 +545,8 @@ const PackageSubscriptions = () => {
           <TouchableOpacity
             style={styles.aboutButtonContainer}
             onPress={() =>
-              handleAboutPress(
-                "If you wish to upgrade your subscription, you must first cancel your current subscription.\n\nTo cancel your membership, go to the App Store or Play Store:\n\n1. Settings.\n2. Subscriptions.\n3. Find the subscription and select 'Cancel'.",
+              toggleAbout(
+                'This is information about the packages.',
                 'About Membership',
               )
             }>
@@ -814,7 +818,7 @@ const PackageSubscriptions = () => {
       {/* AboutModal */}
       <AboutModal
         description={aboutDescription}
-        onClose={handleAboutPress}
+        onClose={closeAbout}
         visible={aboutVisible}
         title={aboutTitle}
       />
@@ -856,17 +860,21 @@ const PackageSubscriptions = () => {
           </View>
         </View>
       </Modal>
-      <View style={styles.scrollBarContainer}>
-        <Animated.View
-          style={[
-            styles.scrollBar,
-            {
-              height: scrollIndicatorSize,
-              transform: [{translateY: scrollIndicatorPosition}],
-            },
-          ]}
-        />
-      </View>
+      {Platform.OS === 'ios' ? (
+        <View style={styles.scrollBarContainer}>
+          <Animated.View
+            style={[
+              styles.scrollBar,
+              {
+                height: scrollIndicatorSize,
+                transform: [{translateY: scrollIndicatorPosition}],
+              },
+            ]}
+          />
+        </View>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };

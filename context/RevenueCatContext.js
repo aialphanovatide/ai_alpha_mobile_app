@@ -1,19 +1,21 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   REVENUECAT_IOS_API_KEY,
   REVENUECAT_ANDROID_API_KEY,
 } from '../src/constants';
 import {createContext, useEffect, useState} from 'react';
 import {Platform} from 'react-native';
-import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
+import Purchases, {LOG_LEVEL} from 'react-native-purchases';
 import messaging from '@react-native-firebase/messaging';
-import {TopMenuContext} from './topMenuContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector} from 'react-redux';
+import {selectActiveCoin} from '../actions/categoriesActions';
 
 const RevenueCatContext = createContext();
 
 const RevenueCatProvider = ({children}) => {
-  const {activeCoin} = useContext(TopMenuContext);
+  // const {activeCoin} = useContext(TopMenuContext);
+  const activeCoin = useSelector(selectActiveCoin);
   const [subscribed, setSubscribed] = useState(false);
   const [packages, setPackages] = useState([]);
   const [userInfo, setUserInfo] = useState({

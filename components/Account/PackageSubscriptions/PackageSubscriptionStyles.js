@@ -18,7 +18,6 @@ const usePackageSubscriptionStyles = () => {
     container: {
       flex: 1,
       flexDirection: 'row',
-      paddingRight: Platform.OS === 'ios' ? 1 : 14,
       backgroundColor: theme.boxesBackgroundColor,
     },
     scrollViewContent: {

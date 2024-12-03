@@ -11,12 +11,8 @@ import {
 } from 'react-native';
 import {useAuth0, Auth0Provider} from 'react-native-auth0';
 import {TopMenuContextProvider} from './context/topMenuContext';
-import {UserProvider} from './context/UserContext';
-import {UserIdProvider} from './context/UserIdContext';
-import {RawUserIdProvider} from './context/RawUserIdContext';
-import {AppThemeProvider, AppThemeContext} from './context/themeContext';
+import {AppThemeProvider} from './context/themeContext';
 import {RevenueCatProvider} from './context/RevenueCatContext';
-import {AboutModalProvider} from './context/AboutModalContext';
 import NetInfo from '@react-native-community/netinfo';
 import RNRestart from 'react-native-restart';
 import {getService} from './services/aiAlphaApi';
@@ -258,73 +254,65 @@ const App = () => {
       <Provider store={store}>
         <TopMenuContextProvider>
           <RevenueCatProvider>
-            <UserProvider>
-              <UserIdProvider>
-                <RawUserIdProvider>
-                  <HeaderVisibilityProvider>
-                    <AppThemeProvider>
-                      <SafeAreaView
-                        style={{
-                          flex: 0,
-                          backgroundColor:
-                            upperBackgroundColor === '#FC5404'
-                              ? '#FFB76E'
-                              : upperBackgroundColor,
-                        }}></SafeAreaView>
-                      <SafeAreaView
-                        style={[
-                          styles.container,
-                          {
-                            flex: 1,
-                            backgroundColor:
-                              backgroundColor === '#FFB76E'
-                                ? '#FC5404'
-                                : backgroundColor,
-                          },
-                        ]}>
-                        <StatusBar
-                          barStyle={
-                            isDarkMode
-                              ? 'light-content'
-                              : 'dark-content' /*This changes the font color for SafeAreaView*/
-                          }
-                        />
-                        <SingletonHooksContainer />
-                        <GestureHandlerRootView style={{flex: 1}}>
-                          <AboutModalProvider>
-                            {!initialAnimationFinished ? (
-                              <CustomSplashScreen />
-                            ) : (
-                              <Navigation />
-                            )}
-                            <ConnectivityModal
-                              serverError={serverError}
-                              setModalVisible={setModalVisible}
-                              modalVisible={modalVisible}
-                              setServerError={setServerError}
-                              checkConnectivityAndCloseModal={
-                                checkConnectivityAndCloseModal
-                              }
-                              type="connection"
-                            />
-                            <ConnectivityModal
-                              serverError={serverError}
-                              setModalVisible={setModalVisible}
-                              modalVisible={modalVisible}
-                              setServerError={setServerError}
-                              checkConnectivityAndCloseModal={
-                                checkConnectivityAndCloseModal
-                              }
-                              type="serverDown"
-                            />
-                          </AboutModalProvider>
-                        </GestureHandlerRootView>
-                      </SafeAreaView>
-                    </AppThemeProvider>
-                  </HeaderVisibilityProvider>
-                </RawUserIdProvider>
-              </UserIdProvider>
-            </UserProvider>
+            <HeaderVisibilityProvider>
+              <AppThemeProvider>
+                <SafeAreaView
+                  style={{
+                    flex: 0,
+                    backgroundColor:
+                      upperBackgroundColor === '#FC5404'
+                        ? '#FFB76E'
+                        : upperBackgroundColor,
+                  }}></SafeAreaView>
+                <SafeAreaView
+                  style={[
+                    styles.container,
+                    {
+                      flex: 1,
+                      backgroundColor:
+                        backgroundColor === '#FFB76E'
+                          ? '#FC5404'
+                          : backgroundColor,
+                    },
+                  ]}>
+                  <StatusBar
+                    barStyle={
+                      isDarkMode
+                        ? 'light-content'
+                        : 'dark-content' /*This changes the font color for SafeAreaView*/
+                    }
+                  />
+                  <SingletonHooksContainer />
+                  <GestureHandlerRootView style={{flex: 1}}>
+                    {!initialAnimationFinished ? (
+                      <CustomSplashScreen />
+                    ) : (
+                      <Navigation />
+                    )}
+                    <ConnectivityModal
+                      serverError={serverError}
+                      setModalVisible={setModalVisible}
+                      modalVisible={modalVisible}
+                      setServerError={setServerError}
+                      checkConnectivityAndCloseModal={
+                        checkConnectivityAndCloseModal
+                      }
+                      type="connection"
+                    />
+                    <ConnectivityModal
+                      serverError={serverError}
+                      setModalVisible={setModalVisible}
+                      modalVisible={modalVisible}
+                      setServerError={setServerError}
+                      checkConnectivityAndCloseModal={
+                        checkConnectivityAndCloseModal
+                      }
+                      type="serverDown"
+                    />
+                  </GestureHandlerRootView>
+                </SafeAreaView>
+              </AppThemeProvider>
+            </HeaderVisibilityProvider>
           </RevenueCatProvider>
         </TopMenuContextProvider>
       </Provider>

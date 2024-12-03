@@ -8,9 +8,7 @@ import {
 } from 'react-native';
 import NewsItem from './newsItem';
 import {useNavigation} from '@react-navigation/native';
-import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import useNewsStyles from './NewsStyles';
-import {AboutModalContext} from '../../../../../../context/AboutModalContext';
 import {AboutIcon} from '../../../../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../../../../assets/static_data/homeStaticData';
 import AboutModal from '../../../../../AboutModal/AboutModal';
@@ -18,15 +16,28 @@ import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../../../../NoContentDisclaimer/NoContentDisclaimer';
 import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  selectActiveCoin,
+  selectActiveSubCoin,
+} from '../../../../../../actions/categoriesActions';
+import {
+  handleAboutPress,
+  handleClose,
+  selectAboutDescription,
+  selectAboutTitle,
+  selectAboutVisible,
+} from '../../../../../../store/aboutSlice';
 
-// Component that renders the news section of the app. It fetches the news from the API and displays them in a list. It also has a filter to show the news of the day, the week or the month. 
+// Component that renders the news section of the app. It fetches the news from the API and displays them in a list. It also has a filter to show the news of the day, the week or the month.
 
 const NewsComponent = ({route}) => {
+  const activeCoin = useSelector(selectActiveCoin);
+  const activeSubCoin = useSelector(selectActiveSubCoin);
   const styles = useNewsStyles();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [news, setNews] = useState([]);
-  const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
   const [botname, setBotname] = useState(
     route.params ? route.params.botname : activeSubCoin,
   );
@@ -34,8 +45,10 @@ const NewsComponent = ({route}) => {
     ? ['Today', 'This Week']
     : ['Today', 'This Month'];
   const [activeFilter, setActiveFilter] = useState(options[1]);
-  const {handleAboutPress, aboutDescription, aboutVisible} =
-    useContext(AboutModalContext);
+  const aboutVisible = useSelector(selectAboutVisible);
+  const aboutDescription = useSelector(selectAboutDescription);
+  const aboutTitle = useSelector(selectAboutTitle);
+  const dispatch = useDispatch();
 
   // Function to filter the summary or texts of the article, removing the words that are put by the prompt generated, and aren't necessary in the summary or the title.
   const filterText = summary => {
@@ -178,6 +191,16 @@ const NewsComponent = ({route}) => {
     handleScroll(event);
   };
 
+  // Function to handle the about modal visibility and content based on the section that the user clicked on
+
+  const toggleAbout = (description = null, title = null) => {
+    dispatch(handleAboutPress({description, title}));
+  };
+
+  const closeAbout = () => {
+    dispatch(handleClose());
+  };
+
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
       <ScrollView
@@ -186,18 +209,20 @@ const NewsComponent = ({route}) => {
         ref={scrollViewRef}
         onScroll={onScroll}
         scrollEventThrottle={16}>
-        {aboutVisible && (
+        {/* {aboutVisible && (
           <AboutModal
             description={aboutDescription}
-            onClose={handleAboutPress}
+            title={aboutTitle}
+            onClose={closeAbout}
             visible={aboutVisible}
           />
-        )}
+        )} */}
         <View style={styles.titleRow}>
           <Text style={styles.title}>News</Text>
           <AboutIcon
-            handleAboutPress={handleAboutPress}
+            handleAboutPress={toggleAbout}
             description={home_static_data.news.sectionDescription}
+            title={home_static_data.news.sectionTitle}
           />
         </View>
         <View style={styles.filterContainer}>

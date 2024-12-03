@@ -17,7 +17,6 @@ import Upgrades from './SubSections/UpgradesSection/Upgrades';
 import DApps from './SubSections/DApps/DApps';
 import useFundamentalsStyles from './FundamentalsStyles';
 import UpdatedRevenueModel from './SubSections/RevenueModel/UpdatedRevenueModel';
-import {TopMenuContext} from '../../../../../../context/topMenuContext';
 import {getService} from '../../../../../../services/aiAlphaApi';
 import {fundamentalsMock} from '../../../../../../assets/static_data/fundamentalsMock';
 import TokenUtility from './SubSections/TokenUtility/TokenUtility';
@@ -29,7 +28,19 @@ import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibili
 import {throttle} from 'lodash';
 import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchFundamentalsData, selectFundamentalsData, selectGlobalLoading} from '../../../../../../actions/fundamentalsActions';
+import {
+  fetchFundamentalsData,
+  selectFundamentalsData,
+  selectGlobalLoading,
+} from '../../../../../../actions/fundamentalsActions';
+import {selectActiveSubCoin} from '../../../../../../actions/categoriesActions';
+import {
+  handleAboutPress,
+  handleClose,
+  selectAboutDescription,
+  selectAboutTitle,
+  selectAboutVisible,
+} from '../../../../../../store/aboutSlice';
 
 const initialContentState = {
   introduction: false,
@@ -54,16 +65,17 @@ if (
 // Main component that renders all the sections of the Fundamentals page and handles the requests to the API to get the data of each section. It also handles the state of the content of each section and the state of the about modal, and the state of the loading of the page.
 
 const Fundamentals = () => {
-  const {activeSubCoin} = useContext(TopMenuContext);
+  // const {activeSubCoin} = useContext(TopMenuContext);
+  const activeSubCoin = useSelector(selectActiveSubCoin);
   const [coin, setCoin] = useState(activeSubCoin);
   const styles = useFundamentalsStyles();
   const fundamentalsData = useSelector(selectFundamentalsData);
   const globalLoading = useSelector(selectGlobalLoading);
   const [loadingState, setLoadingState] = useState(true);
   const [hasContent, setHasContent] = useState(initialContentState);
-  const [aboutVisible, setAboutVisible] = useState(false);
-  const [aboutDescription, setAboutDescription] = useState('');
-  const [aboutTitle, setAboutTitle] = useState('About');
+  const aboutVisible = useSelector(selectAboutVisible);
+  const aboutDescription = useSelector(selectAboutDescription);
+  const aboutTitle = useSelector(selectAboutTitle);
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const ref = useRef(null);
@@ -81,18 +93,14 @@ const Fundamentals = () => {
     dispatch(fetchFundamentalsData(activeSubCoin));
   }, [dispatch, activeSubCoin]);
 
-  // Function to handle the visibility of the about modal and set the description and title of the modal.
+  // Function to handle the about modal visibility and content based on the section that the user clicked on
 
-  const handleAboutPress = (description = null, title = null) => {
-    if (description) {
-      setAboutDescription(description);
-    }
+  const toggleAbout = (description = null, title = null) => {
+    dispatch(handleAboutPress({description, title}));
+  };
 
-    if (title) {
-      setAboutTitle(title);
-    }
-
-    setAboutVisible(!aboutVisible);
+  const closeAbout = () => {
+    dispatch(handleClose());
   };
 
   useScrollToTop(ref);
@@ -150,7 +158,7 @@ const Fundamentals = () => {
           <AboutModal
             title={aboutTitle}
             description={aboutDescription}
-            onClose={handleAboutPress}
+            onClose={closeAbout}
             visible={aboutVisible}
           />
         )}
@@ -159,23 +167,23 @@ const Fundamentals = () => {
           subtitle={'Introduction'}
           content={
             <Introduction
-              coin={coin}
+              coin={activeSubCoin}
               getSectionData={getSectionData}
               handleSectionContent={handleSectionContent}
               loading={loadingState}
               globalData={fundamentalsData}
             />
           }
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           hasEmptyContent={hasContent.introduction}
         />
         <SubSection
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           subtitle={'Tokenomics'}
           content={
             <Tokenomics
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={loadingState}
@@ -192,7 +200,7 @@ const Fundamentals = () => {
           content={
             <GeneralTokenAllocation
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               loading={loadingState}
               globalData={fundamentalsData}
@@ -200,7 +208,7 @@ const Fundamentals = () => {
           }
           hasEmptyContent={hasContent.generalTokenAllocation}
           hasAbout
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           description={
             fundamentals_static_content.tokenDistribution.sectionDescription
           }
@@ -211,14 +219,14 @@ const Fundamentals = () => {
           content={
             <TokenUtility
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               loading={loadingState}
               globalData={fundamentalsData}
             />
           }
           hasAbout
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           description={
             fundamentals_static_content.tokenUtility.sectionDescription
           }
@@ -236,7 +244,7 @@ const Fundamentals = () => {
             />
           }
           hasAbout
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           description={
             fundamentals_static_content.valueAccrualMechanisms
               .sectionDescription
@@ -247,7 +255,7 @@ const Fundamentals = () => {
           subtitle={'Competitors'}
           content={
             <Competitors
-              coin={coin}
+              coin={activeSubCoin}
               getSectionData={getSectionData}
               handleSectionContent={handleSectionContent}
               tokenomicsData={
@@ -260,13 +268,13 @@ const Fundamentals = () => {
               subsectionsData={
                 fundamentals_static_content.competitors.subsections
               }
-              handleAboutPress={handleAboutPress}
+              handleAboutPress={toggleAbout}
               loading={loadingState}
               globalData={fundamentalsData}
             />
           }
           hasAbout
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           description={
             fundamentals_static_content.competitors.sectionDescription
           }
@@ -275,12 +283,12 @@ const Fundamentals = () => {
           hasEmptyContent={hasContent.revenueModel}
           subtitle={'Revenue Model'}
           hasAbout
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           content={
             <UpdatedRevenueModel
               handleSectionContent={handleSectionContent}
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               globalData={fundamentalsData}
               loading={loadingState}
             />
@@ -292,29 +300,29 @@ const Fundamentals = () => {
         <SubSection
           hasEmptyContent={hasContent.hacks}
           hasAbout
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           subtitle={'Hacks'}
           content={
             <Hacks
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={loadingState}
             />
           }
-          description={fundamentalsMock.eth.hacks.sectionDescription}
+          description={fundamentals_static_content.hacks.sectionDescription}
         />
         <SubSection
           hasAbout
           hasEmptyContent={hasContent.upgrades}
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           subtitle={'Upgrades'}
           description={fundamentals_static_content.upgrades.sectionDescription}
           content={
             <Upgrades
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={loadingState}
@@ -324,12 +332,12 @@ const Fundamentals = () => {
         <SubSection
           hasAbout
           hasEmptyContent={hasContent.dapps}
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
           subtitle={'DApps'}
           content={
             <DApps
               getSectionData={getSectionData}
-              coin={coin}
+              coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
               loading={loadingState}

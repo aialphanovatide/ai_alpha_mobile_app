@@ -14,6 +14,7 @@ import {AppThemeContext} from '../../../context/themeContext';
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import messaging from '@react-native-firebase/messaging';
 
+
 const founders_static_identifiers = [
   'baseblock_4999_m1',
   'bitcoin_4999_m1',
@@ -29,6 +30,8 @@ const founders_static_identifiers = [
   'truthnodes_4999_m1',
   'xpayments_4999_m1',
 ];
+
+// Component for each notification item, with a switch to toggle the state of the alerts and analysis notifications. The switch is disabled if the user doesn't have a subscription. 
 
 const NotificationItem = ({
   item,

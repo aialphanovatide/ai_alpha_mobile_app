@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import {View, ScrollView, Animated} from 'react-native';
 import MenuItem from './menuItem/menuItem';
 import useTopMenuStyles from './topmenuStyles';
-import {TopMenuContext} from '../../../../context/topMenuContext';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import {AppThemeContext} from '../../../../context/themeContext';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
@@ -14,9 +13,11 @@ import {useScreenOrientation} from '../../../../hooks/useScreenOrientation';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchCategories,
+  selectActiveCoin,
   selectCategories,
   selectCategoriesLoading,
-} from '../../../../store/categoriesSlice';
+} from '../../../../actions/categoriesActions';
+import { updateActiveCoin, updateActiveSubCoin } from '../../../../store/categoriesSlice';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
@@ -24,8 +25,9 @@ const TopMenu = ({isAlertsMenu}) => {
   const [searchText, setSearchText] = useState('');
   const [activeSearchBar, setActiveSearchBar] = useState(false);
   const [menuVisible, setMenuVisible] = useState(true);
-  const {updateActiveCoin, updateActiveSubCoin, activeCoin} =
-    useContext(TopMenuContext);
+  // const {updateActiveCoin, updateActiveSubCoin, activeCoin} =
+  //   useContext(TopMenuContext);
+  const activeCoin = useSelector(selectActiveCoin);
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectCategoriesLoading);
   const navigation = useNavigation();
@@ -54,8 +56,8 @@ const TopMenu = ({isAlertsMenu}) => {
       }, 20);
       navigation.navigate('Home', {screen: 'InitialHome'});
     } else {
-      updateActiveCoin(category);
-      updateActiveSubCoin(category.coin_bots[0].bot_name);
+      dispatch(updateActiveCoin(category));
+      dispatch(updateActiveSubCoin(category.coin_bots[0].bot_name));
       if (!isAlertsMenu) {
         navigation.navigate('TopMenuScreen', {
           screen: 'SubMenuScreen',
@@ -113,6 +115,8 @@ const TopMenu = ({isAlertsMenu}) => {
   }, [activeCoin]);
 
   const findIndexByCategory = category => {
+    console.log('Category received: ', category);
+    console.log('Categories: ', categories);
     const found = categories.findIndex(
       cat =>
         category.category_name.toLowerCase() ===

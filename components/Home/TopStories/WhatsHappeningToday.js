@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import StoryItem from './Storyitem/storyItem';
 import {
   Image,
@@ -10,18 +10,18 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import {TopMenuContext} from '../../../context/topMenuContext';
 import {AboutIcon} from '../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../assets/static_data/homeStaticData';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import useWhatsHappeningTodayStyles from './whatsHappeningTodayStyles';
-import {useSelector} from 'react-redux';
-import {selectCategories} from '../../../store/categoriesSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectCategories} from '../../../actions/categoriesActions';
 import {
   selectWhatsHappeningTodayLoading,
   selectWhatsHappeningTodayStories,
 } from '../../../actions/whatsHappeningTodayActions';
+import { updateActiveCoin, updateActiveSubCoin } from '../../../store/categoriesSlice';
 
 if (
   Platform.OS === 'android' &&
@@ -33,6 +33,7 @@ if (
 // Component that renders the top stories section, with the top stories list and the about icon. It receives the handleAboutPress function as a prop, which is the function that handles the about icon press, showing the modal with the information about the section. This component fetches the top stories from the API and renders them in the StoryItem component, which is a card with the story information. The component also has a button that expands or hides the top stories list, depending on the case.
 
 const WhatsHappeningToday = ({handleAboutPress}) => {
+  const dispatch = useDispatch();
   const styles = useWhatsHappeningTodayStyles();
   const [expanded, setExpanded] = useState(false);
   const whatsHappeningTodayStories = useSelector(
@@ -42,7 +43,7 @@ const WhatsHappeningToday = ({handleAboutPress}) => {
   const [stories, setStories] = useState([]);
   const navigation = useNavigation();
   const categories = useSelector(selectCategories);
-  const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
+  // const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const aboutIconStyles = {
     top: 24,
   };
@@ -75,8 +76,8 @@ const WhatsHappeningToday = ({handleAboutPress}) => {
   // This function handles the story redirect when clicking over one, first, finds the category/coin and the subCoin coin bot that belongs to it, after that, updates the active coin and subcoin with its values and after that navigates to the new section. If any param is needed, just include it in the second params object below, which are the params passed to the news screen. This handler is passed to every story item, and it is called on the onPress event.
   const handleStoryRedirect = (story, coinBotId) => {
     let {category, coinBot} = findCoinById(categories, coinBotId);
-    updateActiveCoin(category);
-    updateActiveSubCoin(coinBot.bot_name);
+    dispatch(updateActiveCoin(category));
+    dispatch(updateActiveSubCoin(coinBot.bot_name));
     navigation.navigate('TopStoriesArticle', {
       item: {
         title: story.title,

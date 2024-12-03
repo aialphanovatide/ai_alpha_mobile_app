@@ -1,6 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {fetchUserData} from '../actions/userActions';
-import {toggleSubscription} from '../actions/notificationActions';
+import {
+  loadSubscriptions,
+  toggleSubscription,
+} from '../actions/notificationActions';
 
 const userDataSlice = createSlice({
   name: 'user',
@@ -50,6 +53,12 @@ const userDataSlice = createSlice({
         state.notifications[topic] = newStatus;
       })
       .addCase(toggleSubscription.rejected, (state, action) => {
+        state.error = action.payload || 'An error occurred';
+      })
+      .addCase(loadSubscriptions.fulfilled, (state, action) => {
+        state.notifications = action.payload;
+      })
+      .addCase(loadSubscriptions.rejected, (state, action) => {
         state.error = action.payload || 'An error occurred';
       });
   },

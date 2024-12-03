@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Platform, View, Text, Animated, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import useTopTenLosersStyles from './TopTenLosersStyle.js';
@@ -7,20 +7,43 @@ import {AboutIcon} from '../../AboutModal/AboutIcon.js';
 import {home_static_data} from '../../../assets/static_data/homeStaticData.js';
 import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
-import {TopMenuContext} from '../../../context/topMenuContext.js';
 import {useNavigation} from '@react-navigation/core';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer.js';
-import {findCategoryOfItem} from '../../../store/categoriesSlice.js';
+import {
+  updateActiveCoin,
+  updateActiveSubCoin,
+} from '../../../store/categoriesSlice.js';
 import {
   selectTopTenLosers,
   selectTopTenMoversLoading,
 } from '../../../actions/topTenMoversActions.js';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectCategories} from '../../../actions/categoriesActions.js';
 
 // Component that renders the items in the top 10 losers section. It receives the coin data and the position of the coin in the list as props. It also receives the function to handle the click on an item and the function to find the category of an item.
 
-const Item = ({position, coin, handleItemClick}) => {
+const Item = ({position, coin, handleItemClick, categories}) => {
   const styles = useTopTenLosersStyles();
+  const findCategoryOfItem = (coin, fullName) => {
+    if (!categories || categories.length === 0) {
+      return null;
+    }
+    if (coin.toLowerCase() === 'matic') {
+      coin = 'pol';
+    }
+    const found = categories.find(category => {
+      return (
+        category.coin_bots.length > 0 &&
+        category.coin_bots.some(categoryCoin => {
+          return (
+            categoryCoin.bot_name.toLowerCase() === coin.toLowerCase() ||
+            categoryCoin.bot_name.toLowerCase() === fullName.toLowerCase()
+          );
+        })
+      );
+    });
+    return found !== undefined ? found : null;
+  };
   const itemCategory = findCategoryOfItem(coin.symbol, coin.name);
 
   return (
@@ -67,11 +90,13 @@ const Item = ({position, coin, handleItemClick}) => {
 // Component that renders the top 10 losers section. It receives the function to handle the click on the about icon as a prop. It fetches the top 10 losers data from the context and renders the items in the list. It also renders the scroll bar that indicates the position of the scroll in the list.
 
 const TopTenLosers = ({handleAboutPress}) => {
+  const dispatch = useDispatch();
+  const categories = useSelector(selectCategories);
   const styles = useTopTenLosersStyles();
   const topTenLosers = useSelector(selectTopTenLosers);
   const loading = useSelector(selectTopTenMoversLoading);
   const [topTenCoins, setTopTenCoins] = useState([]);
-  const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
+  // const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const navigation = useNavigation();
 
   const additionalAboutStyles = {
@@ -117,8 +142,8 @@ const TopTenLosers = ({handleAboutPress}) => {
     if (category === null || category === undefined) {
       return;
     } else {
-      updateActiveCoin(category);
-      updateActiveSubCoin(coin);
+      dispatch(updateActiveCoin(category));
+      dispatch(updateActiveSubCoin(coin));
       navigation.navigate('TopMenuScreen', {
         screen: 'SubMenuScreen',
         params: {
@@ -179,6 +204,7 @@ const TopTenLosers = ({handleAboutPress}) => {
                   coin={coin}
                   position={index + 1}
                   handleItemClick={handleItemClick}
+                  categories={categories}
                 />
               ))}
           </ScrollView>

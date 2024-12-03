@@ -8,15 +8,18 @@ import {
   findCoinNameBySymbol,
 } from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/SubSections/Competitors/coinsNames';
 import {useNavigation} from '@react-navigation/core';
-import {TopMenuContext} from '../../context/topMenuContext';
 import AlertDetails from '../Alerts/AlertItem';
 import {getService} from '../../services/aiAlphaApi';
 import useAlertsStyles from '../Alerts/styles';
 import SkeletonLoader from '../Loader/SkeletonLoader';
-import {selectCategories} from '../../store/categoriesSlice';
-import {useSelector} from 'react-redux';
+import {selectCategories} from '../../actions/categoriesActions';
+import {useDispatch, useSelector} from 'react-redux';
 import {selectDailyDeepDives} from '../../actions/dailyDeepDivesActions';
 import {selectMarketNarratives} from '../../actions/marketNarrativesActions';
+import {
+  updateActiveCoin,
+  updateActiveSubCoin,
+} from '../../store/categoriesSlice';
 
 const SearchCryptoItem = ({
   crypto,
@@ -198,9 +201,9 @@ const Search = ({currentTextValue, contentVisible}) => {
   const [cryptoSearchResult, setCryptoSearchResult] = useState([]);
   const [analysisSearchResult, setAnalysisSearchResult] = useState([]);
   const [ntSearchResult, setNtSearchResult] = useState([]);
-  const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   // Hook to change the results content based on the text change
   useEffect(() => {
@@ -274,30 +277,27 @@ const Search = ({currentTextValue, contentVisible}) => {
   };
 
   const handleCryptoItemNavigation = (category, coin) => {
+    const coinBotName = coin.bot_name;
+    console.log('Coin:', coin);
     setCryptoSearchResult([]);
     setAnalysisSearchResult([]);
     setNtSearchResult([]);
-    updateActiveCoin(category);
-    updateActiveSubCoin(coin.coin_bot_name);
+    dispatch(updateActiveCoin(category));
+    dispatch(updateActiveSubCoin(coinBotName));
     navigation.navigate('Home', {
       screen: 'TopMenuScreen',
       params: {
         screen: 'SubMenuScreen',
         params: {
-          screen: 'Charts',
-          params: {
-            interval: '1h',
-            symbol: `${category.coin_bots[0].bot_name}USDT`,
-            coinBot: category.coin_bots[0].bot_name,
-          },
+          screen: 'Fundamentals',
         },
       },
     });
   };
 
   const handleAnalysisNavigation = analysisItem => {
-    updateActiveCoin({});
-    updateActiveSubCoin(null);
+    dispatch(updateActiveCoin({}));
+    dispatch(updateActiveSubCoin(null));
     navigation.navigate('Home', {
       screen: 'DailyDeepScreen',
       params: {
@@ -310,8 +310,8 @@ const Search = ({currentTextValue, contentVisible}) => {
   };
 
   const handleNarrativeTradingsNavigation = narrativeTrading => {
-    updateActiveCoin({});
-    updateActiveSubCoin(null);
+    dispatch(updateActiveCoin({}));
+    dispatch(updateActiveSubCoin(null));
     navigation.navigate('Home', {
       screen: 'MarketNarrativeArticleScreen',
       params: {

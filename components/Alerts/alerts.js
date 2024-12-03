@@ -7,7 +7,6 @@ import {
   ScrollView,
 } from 'react-native';
 import useAlertsStyles from './styles';
-import {TopMenuContext} from '../../context/topMenuContext';
 import {getService, postService} from '../../services/aiAlphaApi';
 import AlertDetails from './AlertItem';
 import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
@@ -21,7 +20,11 @@ import NoContentDisclaimer from '../NoContentDisclaimer/NoContentDisclaimer';
 import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
 import {useSelector} from 'react-redux';
-import {selectCategories} from '../../store/categoriesSlice';
+import {
+  selectActiveCoin,
+  selectActiveSubCoin,
+  selectCategories,
+} from '../../actions/categoriesActions';
 
 // Component that renders the menu to switch between 'today' and 'this week' alert intervals.
 const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
@@ -53,13 +56,15 @@ const AlertMenu = ({options, activeOption, setActiveOption, styles}) => {
 
 const Alerts = ({route, navigation}) => {
   const options = ['1H', '4H', '1D', '1W'];
+  const activeCoin = useSelector(selectActiveCoin);
+  const activeSubCoin = useSelector(selectActiveSubCoin);
   const [activeAlertOption, setActiveAlertOption] = useState(options[1]);
   const [botName, setBotName] = useState(null);
   const [hasSubscription, setHasSubscription] = useState(null);
   const [subscribedCategories, setSubscribedCategories] = useState([]);
   const {findCategoryInIdentifiers, userInfo, subscribed} =
     useContext(RevenueCatContext);
-  const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
+  // const {activeCoin, activeSubCoin} = useContext(TopMenuContext);
   const styles = useAlertsStyles();
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

@@ -32,6 +32,13 @@ import {fetchTop10Movers} from '../../actions/topTenMoversActions';
 import {fetchDailyDeepDivesData} from '../../actions/dailyDeepDivesActions';
 import {fetchMarketNarratives} from '../../actions/marketNarrativesActions';
 import {selectRawUserId} from '../../actions/userActions';
+import {
+  handleAboutPress,
+  handleClose,
+  selectAboutDescription,
+  selectAboutTitle,
+  selectAboutVisible,
+} from '../../store/aboutSlice';
 
 // FreePopup component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 
@@ -105,9 +112,9 @@ const FreePopup = ({visible, onClose, setVisible}) => {
 
 const Home = ({route}) => {
   const styles = useHomeStyles();
-  const [aboutVisible, setAboutVisible] = useState(false);
-  const [aboutDescription, setAboutDescription] = useState('');
-  const [aboutTitle, setAboutTitle] = useState('About');
+  const aboutVisible = useSelector(selectAboutVisible);
+  const aboutDescription = useSelector(selectAboutDescription);
+  const aboutTitle = useSelector(selectAboutTitle);
   const rawUserId = useSelector(selectRawUserId);
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
   const [subscriptionPopUpsVisible, setSubscriptionPopUpsVisible] =
@@ -173,16 +180,12 @@ const Home = ({route}) => {
 
   // Function to handle the about modal visibility and content based on the section that the user clicked on
 
-  const handleAboutPress = (description = null, title = null) => {
-    if (description) {
-      setAboutDescription(description);
-    }
+  const toggleAbout = (description = null, title = null) => {
+    dispatch(handleAboutPress({description, title}));
+  };
 
-    if (title) {
-      setAboutTitle(title);
-    }
-
-    setAboutVisible(!aboutVisible);
+  const closeAbout = () => {
+    dispatch(handleClose());
   };
 
   // Function to check if the user has been using the app for more than 3 days and has not seen the subscription pop-up yet. If the user has not seen the pop-up, it will return true, otherwise it will return false.
@@ -239,14 +242,12 @@ const Home = ({route}) => {
     <View style={styles.flex}>
       <BackgroundGradient />
       <SafeAreaView style={styles.container}>
-        {aboutVisible && (
-          <AboutModal
-            description={aboutDescription}
-            onClose={handleAboutPress}
-            visible={aboutVisible}
-            title={aboutTitle}
-          />
-        )}
+        <AboutModal
+          description={aboutDescription}
+          onClose={closeAbout}
+          visible={aboutVisible}
+          title={aboutTitle}
+        />
         <ScrollView
           bounces={false}
           alwaysBounceVertical={false}
@@ -260,11 +261,11 @@ const Home = ({route}) => {
             setVisible={setSubscriptionPopUpsVisible}
           />
           <TickerTape />
-          <WhatsHappeningToday handleAboutPress={handleAboutPress} />
-          <DailyDeepDives handleAboutPress={handleAboutPress} />
-          <NarrativeTradings handleAboutPress={handleAboutPress} />
-          <TopTenGainers handleAboutPress={handleAboutPress} />
-          <TopTenLosers handleAboutPress={handleAboutPress} />
+          <WhatsHappeningToday handleAboutPress={toggleAbout} />
+          <DailyDeepDives handleAboutPress={toggleAbout} />
+          <NarrativeTradings handleAboutPress={toggleAbout} />
+          <TopTenGainers handleAboutPress={toggleAbout} />
+          <TopTenLosers handleAboutPress={toggleAbout} />
         </ScrollView>
       </SafeAreaView>
     </View>

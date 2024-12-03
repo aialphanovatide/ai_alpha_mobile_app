@@ -7,10 +7,9 @@ import SubMenu from '../components/Home/Topmenu/subMenu/SubMenu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import CandlestickChart from '../components/Home/Topmenu/subMenu/Fund_news_chart/Charts/CandlestickChart';
 import NewsComponent from '../components/Home/Topmenu/subMenu/Fund_news_chart/News/NewsComponent.js';
-import {TopMenuContext} from '../context/topMenuContext';
 import NewsArticle from '../components/Home/Topmenu/subMenu/Fund_news_chart/News/NewsArticle';
 import {AppThemeContext} from '../context/themeContext';
-import {Animated, Platform, TouchableOpacity, View} from 'react-native';
+import {Animated, TouchableOpacity, View} from 'react-native';
 import useHomeStyles from '../components/Home/HomeStyles';
 import MarketNarrativesArticle from '../components/Home/HomeNarrativeTradings/MarketNarrativesArticle';
 import {useScreenOrientation} from '../hooks/useScreenOrientation';
@@ -20,6 +19,9 @@ import HomeNotifications from '../components/Home/HomeNotifications/HomeNotifica
 import ChartsSection from '../components/Home/Topmenu/subMenu/Fund_news_chart/Charts/NewCharts/ChartsSection';
 import StoryArticle from '../components/Home/TopStories/StoryArticle';
 import DailyDeepArticle from '../components/Home/Analysis/DailyDeepArticle';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectActiveCoin, selectActiveSubCoin} from '../actions/categoriesActions';
+import { resetActiveCoin } from '../store/categoriesSlice';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -48,7 +50,7 @@ const SearchScreen = () => {
 };
 
 const NewsScreen = () => {
-  const {activeSubCoin} = useContext(TopMenuContext);
+  const activeSubCoin = useSelector(selectActiveSubCoin);
 
   return (
     <NewsStack.Navigator
@@ -132,7 +134,7 @@ const FundNewsChartsMenu = ({state, descriptors, navigation, position}) => {
 };
 
 const SubMenuScreen = () => {
-  const {activeSubCoin} = useContext(TopMenuContext);
+  const activeSubCoin = useSelector(selectActiveSubCoin);
   const navigation = useNavigation();
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
@@ -196,7 +198,8 @@ const SubMenuScreen = () => {
 };
 
 const TopmenuScreen = () => {
-  const {activeSubCoin, activeCoin} = useContext(TopMenuContext);
+  const activeSubCoin = useSelector(selectActiveSubCoin);
+  const activeCoin = useSelector(selectActiveCoin);
   const [forceUpdate, setForceUpdate] = useState(false);
   const {theme} = useContext(AppThemeContext);
 
@@ -227,9 +230,9 @@ const TopmenuScreen = () => {
 };
 
 const HomeStackScreen = () => {
-  const {updateActiveCoin} = useContext(TopMenuContext);
   const {isLandscape, isHorizontal} = useScreenOrientation();
   const {theme} = useContext(AppThemeContext);
+  const dispatch = useDispatch();
 
   return (
     <HomeStack.Navigator
@@ -250,7 +253,7 @@ const HomeStackScreen = () => {
         gestureEnabled="false"
         listeners={{
           focus: e => {
-            updateActiveCoin({});
+            dispatch(resetActiveCoin());
           },
         }}
         options={{

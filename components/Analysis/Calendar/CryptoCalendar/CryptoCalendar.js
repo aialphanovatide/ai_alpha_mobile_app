@@ -7,8 +7,7 @@ import useCryptoCalendarStyles from './CryptoCalendarStyles';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../../NoContentDisclaimer/NoContentDisclaimer';
 import { useSelector } from 'react-redux';
-import { selectCategories } from '../../../../store/categoriesSlice';
-
+import { selectCategories } from '../../../../actions/categoriesActions';
 // Static data for the event tags
 
 const eventTags = [

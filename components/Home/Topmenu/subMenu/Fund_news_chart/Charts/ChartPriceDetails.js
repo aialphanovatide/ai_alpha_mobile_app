@@ -2,7 +2,8 @@ import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {AboutIcon} from '../../../../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../../../../assets/static_data/homeStaticData';
-import {AboutModalContext} from '../../../../../../context/AboutModalContext';
+import {useDispatch} from 'react-redux';
+import {handleAboutPress} from '../../../../../../store/aboutSlice';
 
 const ChartPriceDetails = ({
   coin,
@@ -17,7 +18,13 @@ const ChartPriceDetails = ({
   handlePairingChange,
   handleDataUpdate,
 }) => {
-  const {handleAboutPress} = useContext(AboutModalContext);
+  const dispatch = useDispatch();
+
+  // Function to handle the about modal visibility and content based on the section that the user clicked on
+
+  const toggleAbout = (description = null, title = null) => {
+    dispatch(handleAboutPress({description, title}));
+  };
 
   // Format the prices
   const formatNumber = price => {
@@ -74,8 +81,9 @@ const ChartPriceDetails = ({
           />
         </TouchableOpacity>
         <AboutIcon
+          title={home_static_data.charts.sectionTitle}
           description={home_static_data.charts.sectionDescription}
-          handleAboutPress={handleAboutPress}
+          handleAboutPress={toggleAbout}
         />
       </View>
       <View style={styles.pairingsMenuContainer}>

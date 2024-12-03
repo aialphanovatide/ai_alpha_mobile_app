@@ -8,19 +8,42 @@ import FastImage from 'react-native-fast-image';
 import SkeletonLoader from '../../Loader/SkeletonLoader.js';
 import {AppThemeContext} from '../../../context/themeContext.js';
 import {useNavigation} from '@react-navigation/core';
-import {TopMenuContext} from '../../../context/topMenuContext.js';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer.js';
-import {findCategoryOfItem} from '../../../store/categoriesSlice.js';
-import {useSelector} from 'react-redux';
+import {
+  updateActiveCoin,
+  updateActiveSubCoin,
+} from '../../../store/categoriesSlice.js';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   selectTopTenGainers,
   selectTopTenMoversLoading,
 } from '../../../actions/topTenMoversActions.js';
+import {selectCategories} from '../../../actions/categoriesActions.js';
 
 // Component that renders the table of the top 10 gainer coins. It requires fetching this data from an API.
 
-const Item = ({position, coin, index, handleItemClick}) => {
+const Item = ({position, coin, index, handleItemClick, categories}) => {
   const styles = useTopTenGainersStyles();
+  const findCategoryOfItem = (coin, fullName) => {
+    if (!categories || categories.length === 0) {
+      return null;
+    }
+    if (coin.toLowerCase() === 'matic') {
+      coin = 'pol';
+    }
+    const found = categories.find(category => {
+      return (
+        category.coin_bots.length > 0 &&
+        category.coin_bots.some(categoryCoin => {
+          return (
+            categoryCoin.bot_name.toLowerCase() === coin.toLowerCase() ||
+            categoryCoin.bot_name.toLowerCase() === fullName.toLowerCase()
+          );
+        })
+      );
+    });
+    return found !== undefined ? found : null;
+  };
   const itemCategory = findCategoryOfItem(coin.symbol, coin.name);
 
   return (
@@ -67,13 +90,15 @@ const Item = ({position, coin, index, handleItemClick}) => {
 // Top ten gainers component that renders the top ten gainer coins in a table. It requires fetching this data from an API, retrieved from the top ten movers context. It uses the Item component to render each row of the table.
 
 const TopTenGainers = ({handleAboutPress}) => {
+  const dispatch = useDispatch();
+  const categories = useSelector(selectCategories);
   const navigation = useNavigation();
   const styles = useTopTenGainersStyles();
   const topTenGainers = useSelector(selectTopTenGainers);
   const loading = useSelector(selectTopTenMoversLoading);
   const [topTenCoins, setTopTenCoins] = useState([]);
   const {isDarkMode} = useContext(AppThemeContext);
-  const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
+  // const {updateActiveCoin, updateActiveSubCoin} = useContext(TopMenuContext);
 
   const additionalAboutStyles = {
     marginRight: Platform.OS === 'android' ? 20 : 0,
@@ -119,8 +144,8 @@ const TopTenGainers = ({handleAboutPress}) => {
     if (category === null || category === undefined) {
       return;
     } else {
-      updateActiveCoin(category);
-      updateActiveSubCoin(coin);
+      dispatch(updateActiveCoin(category));
+      dispatch(updateActiveSubCoin(coin));
       navigation.navigate('TopMenuScreen', {
         screen: 'SubMenuScreen',
         params: {
@@ -183,6 +208,7 @@ const TopTenGainers = ({handleAboutPress}) => {
                   coin={coin}
                   position={index + 1}
                   handleItemClick={handleItemClick}
+                  categories={categories}
                 />
               ))}
           </ScrollView>
