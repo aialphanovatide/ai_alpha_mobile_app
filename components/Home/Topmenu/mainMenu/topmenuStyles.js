@@ -24,7 +24,7 @@ const useTopMenuStyles = () => {
       textAlign: 'center',
     },
     topContentWrapper: {
-      width: theme.width,
+      width: Platform.OS === 'ios' ? '100%' : theme.width,
       position: 'relative',
     },
     marginWrapper: {

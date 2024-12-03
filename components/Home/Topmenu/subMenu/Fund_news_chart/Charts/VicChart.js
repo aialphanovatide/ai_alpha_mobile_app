@@ -117,7 +117,7 @@ const VicChart = ({
   // Function to handle the X button interaction on the horizontal chart
 
   const handleBackInteraction = () => {
-    handleScreenOrientationChange('PORTRAIT');
+    handleScreenOrientationChange(false);
     navigation.canGoBack(false);
   };
 
@@ -616,7 +616,7 @@ const VicChart = ({
               }
             : () => {
                 navigation.canGoBack(false);
-                handleScreenOrientationChange('LANDSCAPE');
+                handleScreenOrientationChange(true);
               }
         }>
         <Image

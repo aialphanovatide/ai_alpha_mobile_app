@@ -25,6 +25,10 @@ import {
 } from '../../../actions/categoriesActions';
 import { updateActiveSubCoin } from '../../../store/categoriesSlice';
 
+// Note:
+// isLandscape -> The device is rotated horizontally
+// isHorizontal -> The 'rotate button' is pressed
+
 const Tab = createBottomTabNavigator();
 
 const MenuIcon = ({color, iconSource}) => {
@@ -90,6 +94,7 @@ const TabsMenu = () => {
   const handleActivePopUps = () => {
     setActivePopUps(false);
   };
+  console.log('isLandscape', isLandscape, 'isHorizontal', isHorizontal);
 
   return (
     <GestureHandlerRootView style={[{flex: 1}]}>
@@ -111,7 +116,7 @@ const TabsMenu = () => {
           tabBarStyle: Platform.select({
             ios: {
               borderBlockColor: 'transparent',
-              height: isLandscape && isHorizontal ? 0 : 90,
+              height: isLandscape || isHorizontal ? 0 : 90,
               paddingTop: 8,
               justifyContent: 'center',
               alignItems: 'center',
@@ -143,16 +148,17 @@ const TabsMenu = () => {
           component={HomeStackScreen}
           options={{
             tabBarLabel: 'Home',
-            tabBarIcon: ({focused, color, size}) => (
-              <MenuIcon
-                color={color}
-                iconSource={
-                  focused
-                    ? require('../../../assets/images/bottomMenu/home-active.png')
-                    : require('../../../assets/images/bottomMenu/home.png')
-                }
-              />
-            ),
+            tabBarIcon: ({focused, color}) =>
+              isHorizontal ? null : (
+                <MenuIcon
+                  color={color}
+                  iconSource={
+                    focused
+                      ? require('../../../assets/images/bottomMenu/home-active.png')
+                      : require('../../../assets/images/bottomMenu/home.png')
+                  }
+                />
+              ),
           }}
         />
         <Tab.Screen
@@ -160,16 +166,17 @@ const TabsMenu = () => {
           component={Alerts}
           options={{
             tabBarLabel: 'Alerts',
-            tabBarIcon: ({focused, color, size}) => (
-              <MenuIcon
-                color={color}
-                iconSource={
-                  focused
-                    ? require('../../../assets/images/bottomMenu/alerts-active.png')
-                    : require('../../../assets/images/bottomMenu/alerts.png')
-                }
-              />
-            ),
+            tabBarIcon: ({focused, color}) =>
+              isHorizontal ? null : (
+                <MenuIcon
+                  color={color}
+                  iconSource={
+                    focused
+                      ? require('../../../assets/images/bottomMenu/alerts-active.png')
+                      : require('../../../assets/images/bottomMenu/alerts.png')
+                  }
+                />
+              ),
           }}
           listeners={{
             focus: e => {
@@ -184,10 +191,8 @@ const TabsMenu = () => {
           component={AskAiScreen}
           options={{
             tabBarLabel: 'ASK AI',
-            tabBarIcon: ({focused}) => {
-              return isLandscape && isHorizontal ? (
-                <></>
-              ) : (
+            tabBarIcon: ({focused}) =>
+              isHorizontal ? null : (
                 <View
                   style={[
                     styles.buttonWrapper,
@@ -204,8 +209,7 @@ const TabsMenu = () => {
                     />
                   </LinearGradient>
                 </View>
-              );
-            },
+              ),
           }}
           listeners={{
             focus: e => {
@@ -220,16 +224,17 @@ const TabsMenu = () => {
           component={DashboardScreen}
           options={{
             tabBarLabel: 'Dashboard',
-            tabBarIcon: ({focused, color, size}) => (
-              <MenuIcon
-                color={color}
-                iconSource={
-                  focused
-                    ? require('../../../assets/images/bottomMenu/analysis-active.png')
-                    : require('../../../assets/images/bottomMenu/analysis.png')
-                }
-              />
-            ),
+            tabBarIcon: ({focused, color}) =>
+              isHorizontal ? null : (
+                <MenuIcon
+                  color={color}
+                  iconSource={
+                    focused
+                      ? require('../../../assets/images/bottomMenu/analysis-active.png')
+                      : require('../../../assets/images/bottomMenu/analysis.png')
+                  }
+                />
+              ),
           }}
           listeners={{
             tabPress: e => {
@@ -242,16 +247,17 @@ const TabsMenu = () => {
           component={AccountScreen}
           options={{
             tabBarLabel: 'Account',
-            tabBarIcon: ({focused, color, size}) => (
-              <MenuIcon
-                color={color}
-                iconSource={
-                  focused
-                    ? require('../../../assets/images/bottomMenu/account-active.png')
-                    : require('../../../assets/images/bottomMenu/account.png')
-                }
-              />
-            ),
+            tabBarIcon: ({focused, color}) =>
+              isHorizontal ? null : (
+                <MenuIcon
+                  color={color}
+                  iconSource={
+                    focused
+                      ? require('../../../assets/images/bottomMenu/account-active.png')
+                      : require('../../../assets/images/bottomMenu/account.png')
+                  }
+                />
+              ),
           }}
           initialParams={{
             screen: 'AccountMain',

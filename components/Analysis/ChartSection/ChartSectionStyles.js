@@ -7,14 +7,14 @@ const useChartSectionStyles = () => {
   const styles = StyleSheet.create({
     mainSection: {
       flex: 1,
-      width: theme.width,
+      width: Platform.OS === 'ios' ? '100%' : theme.width,
       backgroundColor: 'transparent',
       paddingHorizontal: 10,
     },
     background: {
       flex: 1,
       backgroundColor: 'transparent',
-      width: theme.width,
+      width: Platform.OS === 'ios' ? '100%' : theme.width,
       paddingHorizontal: 10,
     },
     container: {
@@ -131,7 +131,7 @@ const useChartSectionStyles = () => {
       height: 18,
       tintColor: theme.titleColor,
       alignSelf: 'center',
-      zIndex: 10
+      zIndex: 10,
     },
   });
   return styles;
