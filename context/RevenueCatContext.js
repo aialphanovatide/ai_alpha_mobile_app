@@ -71,7 +71,8 @@ const RevenueCatProvider = ({children}) => {
     data.sort(compare);
     return data;
   };
-
+  /*
+  // INIT Function prior to 2025 Free Founders Period
   const init = async userId => {
     if (Platform.OS === 'ios') {
       Purchases.configure({
@@ -93,6 +94,48 @@ const RevenueCatProvider = ({children}) => {
     Purchases.addCustomerInfoUpdateListener(async info => {
       updateCustomerInformation(info);
     });
+  };
+*/
+  //New INIT Function for 2025 Free Founders Period
+  const init = async userId => {
+    if (Platform.OS === 'ios') {
+      Purchases.configure({
+        apiKey: REVENUECAT_IOS_API_KEY,
+        appUserID: userId,
+        usesStoreKit2IfAvailable: false,
+      });
+    } else if (Platform.OS === 'android') {
+      Purchases.configure({
+        apiKey: REVENUECAT_ANDROID_API_KEY,
+        appUserID: userId,
+      });
+    }
+    Purchases.setLogLevel(LOG_LEVEL.DEBUG);
+
+    await loadOfferings();
+
+    // Automatically assign "Founders_14999_m1" subscription to the user
+    const customerInfo = await Purchases.getCustomerInfo();
+    await assignDefaultSubscription(customerInfo);
+
+    Purchases.addCustomerInfoUpdateListener(async info => {
+      await assignDefaultSubscription(info);
+    });
+  };
+
+  // New assignDefaultSubscription Function for 2025 Free Founders Period
+  const assignDefaultSubscription = async customerInfo => {
+    // Clone current user info and add the default subscription
+    const updatedUser = {
+      id: userInfo.id ? userInfo.id : customerInfo.originalAppUserId,
+      email: userInfo.email,
+      subscribed: true, // Force subscribed status
+      entitlements: ['Founders_14999_m1'], // Assign the "Founders" subscription
+    };
+
+    console.log(`Assigned default subscription to user: ${updatedUser.id}`);
+
+    setUserInfo(updatedUser);
   };
 
   const updateUserEmail = newEmail => {

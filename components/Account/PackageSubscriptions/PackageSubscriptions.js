@@ -365,6 +365,7 @@ const PackageSubscriptions = () => {
   };
 
   const discordTokenFetcher = async () => {
+    console.log('RAW USER ID', rawUserId);
     const url = `https://aialpha2.ngrok.io/user?auth0id=${rawUserId}`;
     try {
       const userFetch = await fetch(url, {
@@ -611,7 +612,7 @@ const PackageSubscriptions = () => {
 
                     <View style={styles.tokenRow}>
                       <Text style={styles.tokenText}>
-                        {discordToken || 'Coming Soon!'}{' '}
+                        {discordToken}{' '}
                         {/* Show token when available or a loading message */}
                       </Text>
                       <TouchableOpacity onPress={copyToClipboard}>

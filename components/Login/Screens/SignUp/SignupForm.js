@@ -17,8 +17,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import eventEmitter from '../../../../eventEmitter';
 import {AppThemeContext} from '../../../../context/themeContext';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import { useDispatch } from 'react-redux';
-import { updateEmail, updateUserId } from '../../../../store/userDataSlice';
+import {useDispatch} from 'react-redux';
+import {updateEmail, updateUserId} from '../../../../store/userDataSlice';
+import {aialpha2key} from '../../../../src/constants';
 
 // Component to render the sign up form. It contains the fields for the user to input their full name, email, password and repeat password. It also contains the buttons to sign up, go back to the login screen and see the terms and conditions. The logic to validate the form and send the data to the backend is also implemented here.
 
@@ -221,9 +222,12 @@ const SignupForm = () => {
         secondEmailCheckResponse.data[0].user_id,
       );
 
-      const response = await fetch(`https://aialpha.ngrok.io/register`, {
+      const response = await fetch(`https://aialpha2.ngrok.io/user`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': aialpha2key,
+        },
         body: JSON.stringify({
           auth0id: secondEmailCheckResponse.data[0].user_id,
           email: email,
@@ -235,7 +239,6 @@ const SignupForm = () => {
         }),
       });
       const data = await response.json();
-
     } catch (error) {
       console.error('Signup error: ', error);
     }
