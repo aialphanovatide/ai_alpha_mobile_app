@@ -50,4 +50,4 @@ This project is licensed under the Novatide Labs company policy.
 
 ## Contact
 
-For any inquiries, please reach out to us at: support@aialpha.ai - enquiries@novatidelabs.com
+For any inquiries, please reach out to us at: support@aialpha.ai - enquiries@novatidelabs.com.
