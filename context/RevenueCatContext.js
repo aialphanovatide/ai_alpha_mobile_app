@@ -71,7 +71,7 @@ const RevenueCatProvider = ({children}) => {
     data.sort(compare);
     return data;
   };
-  /*
+
   // INIT Function prior to 2025 Free Founders Period
   const init = async userId => {
     if (Platform.OS === 'ios') {
@@ -95,7 +95,7 @@ const RevenueCatProvider = ({children}) => {
       updateCustomerInformation(info);
     });
   };
-*/
+  /*
   //New INIT Function for 2025 Free Founders Period
   const init = async userId => {
     if (Platform.OS === 'ios') {
@@ -137,7 +137,7 @@ const RevenueCatProvider = ({children}) => {
 
     setUserInfo(updatedUser);
   };
-
+*/
   const updateUserEmail = newEmail => {
     let new_user = {
       id: userInfo.id,
