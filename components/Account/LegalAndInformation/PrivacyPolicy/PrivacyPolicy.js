@@ -4,6 +4,7 @@ import usePrivacyPolicyStyles from './PrivacyPolicyStyles';
 import BackButton from '../../../BackButton/BackButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
+import Config from 'react-native-config';
 
 // Component used in the Account section to show the Privacy Policy. It returns a view with the Privacy Policy text. The user can scroll through the text.
 
@@ -18,6 +19,9 @@ const PrivacyPolicy = () => {
         <BackButton />
         <Text style={styles.title}>AI ALPHA'S PRIVACY POLICY</Text>
         <View style={styles.container}>
+          <Text style={styles.privacyPolicyText}>
+            before- {Config.MYFIRSTENV_TEST} -after
+          </Text>
           <Text style={styles.privacyPolicyText}>
             {'\n\n'}
             Last updated January 21, 2024
