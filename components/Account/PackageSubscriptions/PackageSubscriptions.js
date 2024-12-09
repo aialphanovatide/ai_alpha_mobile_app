@@ -131,17 +131,7 @@ const PackageSubscriptions = () => {
   const aboutDescription = useSelector(selectAboutDescription);
   const aboutTitle = useSelector(selectAboutTitle);
   const [copiedText, setCopiedText] = useState('');
-  const [discordToken, setDiscordToken] = useState(''); // To store the token
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const fetchToken = async () => {
-      const token = await discordTokenFetcher(); // Fetch the token asynchronously
-      setDiscordToken(token);
-    };
-
-    fetchToken();
-  }, [rawUserId]);
 
   // Function to handle About button press
   const toggleAbout = (description = null, title = null) => {
@@ -364,29 +354,7 @@ const PackageSubscriptions = () => {
     navigation.navigate('AccountMain');
   };
 
-  const discordTokenFetcher = async () => {
-    console.log('RAW USER ID', rawUserId);
-    const url = `https://aialpha2.ngrok.io/user?auth0id=${rawUserId}`;
-    try {
-      const userFetch = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': aialpha2key,
-        },
-      });
-      const userData = await userFetch.json();
-      console.log('USER FROM DISCORD FETCHER', userData);
-
-      return userData.data.auth_token;
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      return 'No Token'; // Fallback token in case of error
-    }
-  };
-
   const copyToClipboard = async () => {
-    const token = await discordTokenFetcher();
     Clipboard.setString(token);
 
     // Fetch the copied text to confirm
@@ -584,46 +552,6 @@ const PackageSubscriptions = () => {
                     </View>
                   </TouchableOpacity>
                 ))}
-                <View style={styles.discordContainer}>
-                  <Image
-                    source={require('../../../assets/images/account/socialMedia/discord.png')}
-                    style={styles.discordIcon}
-                  />
-                  <Text style={styles.discordOrangeText}>
-                    We're waiting for you on Discord!{' '}
-                  </Text>
-                  <Text style={styles.discordGreyText}>
-                    Use your token to unlock the Founder role, get personalised
-                    support, and participate in community discussions.
-                  </Text>
-
-                  <View style={styles.discordSubcontainer}>
-                    <View style={styles.titleRow}>
-                      <Image
-                        source={
-                          isDarkMode
-                            ? require('../../../assets/images/account/socialMedia/discordSmallDark.png')
-                            : require('../../../assets/images/account/socialMedia/discordSmallLight.png')
-                        }
-                        style={styles.discordSmallIcon}
-                      />
-                      <Text style={styles.discordTitle}>Discord Token</Text>
-                    </View>
-
-                    <View style={styles.tokenRow}>
-                      <Text style={styles.tokenText}>
-                        {discordToken}{' '}
-                        {/* Show token when available or a loading message */}
-                      </Text>
-                      <TouchableOpacity onPress={copyToClipboard}>
-                        <Image
-                          source={require('../../../assets/images/account/socialMedia/copyToClipboard.png')} // Replace with your copy icon
-                          style={styles.copyIcon}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
               </View>
             </>
           ) : (

@@ -43,15 +43,6 @@ const SocialMedia = () => {
       customSize: null,
     },
     {
-      name: 'Discord',
-      logo: {
-        light: require('../../../assets/images/account/socialMedia/discord.png'),
-        dark: require('../../../assets/images/account/socialMedia/discord-dark.png'),
-      },
-      url: 'https://discord.gg/2nX2HcHS',
-      customSize: {width: 50, height: 32},
-    },
-    {
       name: 'TikTok',
       logo: {
         light: require('../../../assets/images/account/socialMedia/tiktok.png'),
