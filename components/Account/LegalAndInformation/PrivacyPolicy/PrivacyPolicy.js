@@ -20,7 +20,7 @@ const PrivacyPolicy = () => {
         <Text style={styles.title}>AI ALPHA'S PRIVACY POLICY</Text>
         <View style={styles.container}>
           <Text style={styles.privacyPolicyText}>
-            before- {Config.MYFIRSTENV_TEST} -after
+            before- {$MYFIRSTENV_TEST} -after
           </Text>
           <Text style={styles.privacyPolicyText}>
             {'\n\n'}
