@@ -1,4 +1,4 @@
-import {PROFIT_COM_API_KEY} from '../src/constants';
+import {PROFIT_COM_API_KEY_ENVVAR} from '@env';
 
 const COINDAR_API_KEY = '78201:QAGjCPV2ddtwztI0U1x';
 /*
@@ -137,7 +137,7 @@ async function getEconomicEvents(days = 1) {
   const forexPromises = interestingCountries.map(async item => {
     try {
       const response = await fetch(
-        `https://api.profit.com/data-api/economic_calendar/forex?token=${PROFIT_COM_API_KEY}&country_iso=${item.country}&currency=${item.currency}&start_date=${date}&impact=high&impact=medium&end_date=${end_date}`,
+        `https://api.profit.com/data-api/economic_calendar/forex?token=${PROFIT_COM_API_KEY_ENVVAR}&country_iso=${item.country}&currency=${item.currency}&start_date=${date}&impact=high&impact=medium&end_date=${end_date}`,
       );
       return response.json();
     } catch (error) {
@@ -149,7 +149,7 @@ async function getEconomicEvents(days = 1) {
   const commoditiesPromises = interestingCountries.map(async item => {
     try {
       const response = await fetch(
-        `https://api.profit.com/data-api/economic_calendar/commodities?token=${PROFIT_COM_API_KEY}&country_iso=${item.country}&start_date=${date}&end_date=${end_date}`,
+        `https://api.profit.com/data-api/economic_calendar/commodities?token=${PROFIT_COM_API_KEY_ENVVAR}&country_iso=${item.country}&start_date=${date}&end_date=${end_date}`,
       );
       return response.json();
     } catch (error) {

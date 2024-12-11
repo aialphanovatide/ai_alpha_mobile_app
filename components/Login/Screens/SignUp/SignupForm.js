@@ -9,17 +9,17 @@ import {useNavigation} from '@react-navigation/core';
 import axios from 'axios';
 import useSignUpStyles from './SignUpStyles';
 import {
-  auth0Domain,
-  auth0ManagementAPI_Client,
-  auth0ManagementAPI_Secret,
-} from '../../../../src/constants';
+  AUTH0_DOMAIN_ENVVAR,
+  AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
+  AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
+  AIALPHA2KEY,
+} from '@env';
 import LinearGradient from 'react-native-linear-gradient';
 import eventEmitter from '../../../../eventEmitter';
 import {AppThemeContext} from '../../../../context/themeContext';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch} from 'react-redux';
 import {updateEmail, updateUserId} from '../../../../store/userDataSlice';
-import {aialpha2key} from '../../../../src/constants';
 
 // Component to render the sign up form. It contains the fields for the user to input their full name, email, password and repeat password. It also contains the buttons to sign up, go back to the login screen and see the terms and conditions. The logic to validate the form and send the data to the backend is also implemented here.
 
@@ -104,13 +104,13 @@ const SignupForm = () => {
   // Function to get the data from the Auth0 Management API. It is used to get the token to send the user data to the Auth0 database.
 
   const getManagementApiToken = async () => {
-    const response = await fetch(`https://${auth0Domain}/oauth/token`, {
+    const response = await fetch(`https://${AUTH0_DOMAIN_ENVVAR}/oauth/token`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        client_id: auth0ManagementAPI_Client,
-        client_secret: auth0ManagementAPI_Secret,
-        audience: `https://${auth0Domain}/api/v2/`,
+        client_id: AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
+        client_secret: AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
+        audience: `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/`,
         grant_type: 'client_credentials',
       }),
     });
@@ -127,7 +127,9 @@ const SignupForm = () => {
     };
 
     const response = await fetch(
-      `https://${auth0Domain}/api/v2/users/${encodeURIComponent(newRawUserId)}`,
+      `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/users/${encodeURIComponent(
+        newRawUserId,
+      )}`,
       {
         method: 'PATCH',
         headers: {
@@ -156,7 +158,7 @@ const SignupForm = () => {
       const token = await getManagementApiToken();
 
       const emailCheckResponse = await axios.get(
-        `https://${auth0Domain}/api/v2/users-by-email`,
+        `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/users-by-email`,
         {
           params: {
             email: email,
@@ -206,7 +208,7 @@ const SignupForm = () => {
       }
 
       const secondEmailCheckResponse = await axios.get(
-        `https://${auth0Domain}/api/v2/users-by-email`,
+        `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/users-by-email`,
         {
           params: {
             email: email,
@@ -226,7 +228,7 @@ const SignupForm = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': aialpha2key,
+          'x-api-key': AIALPHA2KEY,
         },
         body: JSON.stringify({
           auth0id: secondEmailCheckResponse.data[0].user_id,

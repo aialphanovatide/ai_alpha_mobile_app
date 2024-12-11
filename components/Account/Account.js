@@ -17,10 +17,10 @@ import {NOTIFICATIONS_MOCK} from '../../assets/static_data/notificationsMock';
 import RNRestart from 'react-native-restart';
 import SocialMedia from './SocialMediaButtons/SocialMedia';
 import {
-  auth0Domain,
-  auth0ManagementAPI_Client,
-  auth0ManagementAPI_Secret,
-} from '../../src/constants';
+  AUTH0_DOMAIN_ENVVAR,
+  AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
+  AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
+} from '@env';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -266,13 +266,13 @@ const Account = ({route}) => {
   };
 
   const getManagementApiToken = async () => {
-    const response = await fetch(`https://${auth0Domain}/oauth/token`, {
+    const response = await fetch(`https://${AUTH0_DOMAIN_ENVVAR}/oauth/token`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        client_id: auth0ManagementAPI_Client,
-        client_secret: auth0ManagementAPI_Secret,
-        audience: `https://${auth0Domain}/api/v2/`,
+        client_id: AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
+        client_secret: AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
+        audience: `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/`,
         grant_type: 'client_credentials',
       }),
     });
@@ -284,7 +284,9 @@ const Account = ({route}) => {
     console.log('Fetching user image...');
     const token = await getManagementApiToken();
     const userFetch = await fetch(
-      `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+      `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/users/${encodeURIComponent(
+        rawUserId,
+      )}`,
       {
         method: 'GET',
         headers: {

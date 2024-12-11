@@ -1,4 +1,4 @@
-import {revenueCat_secret} from '../src/constants/index.js';
+import {REVENUECAT_SECRET_ENVVAR} from '@env';
 
 async function loadSubscriberData(revenueCatUserId) {
   try {
@@ -6,7 +6,7 @@ async function loadSubscriberData(revenueCatUserId) {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        authorization: `Bearer ${revenueCat_secret}`,
+        authorization: `Bearer ${REVENUECAT_SECRET_ENVVAR}`,
       },
     };
 

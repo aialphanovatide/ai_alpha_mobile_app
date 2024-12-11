@@ -22,7 +22,7 @@ import Purchases, {LOG_LEVEL, PurchasesPackage} from 'react-native-purchases';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import AboutModal from '../../AboutModal/AboutModal';
 import Clipboard from '@react-native-community/clipboard';
-import {aialpha2key} from '../../../src/constants';
+import {AIALPHA2KEY_ENVVAR} from '@env';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectRawUserId} from '../../../actions/userActions';
 import {
@@ -372,7 +372,7 @@ const PackageSubscriptions = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': aialpha2key,
+          'x-api-key': AIALPHA2KEY_ENVVAR,
         },
       });
       const userData = await userFetch.json();

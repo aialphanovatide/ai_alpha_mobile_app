@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  REVENUECAT_IOS_API_KEY,
-  REVENUECAT_ANDROID_API_KEY,
-} from '../src/constants';
+  REVENUECAT_IOS_API_KEY_ENVVAR,
+  REVENUECAT_ANDROID_API_KEY_ENVVAR,
+} from '@env';
 import {createContext, useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import Purchases, {LOG_LEVEL} from 'react-native-purchases';
@@ -76,13 +76,13 @@ const RevenueCatProvider = ({children}) => {
   const init = async userId => {
     if (Platform.OS === 'ios') {
       Purchases.configure({
-        apiKey: REVENUECAT_IOS_API_KEY,
+        apiKey: REVENUECAT_IOS_API_KEY_ENVVAR,
         appUserID: userId,
         usesStoreKit2IfAvailable: false,
       });
     } else if (Platform.OS === 'android') {
       Purchases.configure({
-        apiKey: REVENUECAT_ANDROID_API_KEY,
+        apiKey: REVENUECAT_ANDROID_API_KEY_ENVVAR,
         appUserID: userId,
       });
     }
@@ -100,13 +100,13 @@ const RevenueCatProvider = ({children}) => {
   const init = async userId => {
     if (Platform.OS === 'ios') {
       Purchases.configure({
-        apiKey: REVENUECAT_IOS_API_KEY,
+        apiKey: REVENUECAT_IOS_API_KEY_ENVVAR,
         appUserID: userId,
         usesStoreKit2IfAvailable: false,
       });
     } else if (Platform.OS === 'android') {
       Purchases.configure({
-        apiKey: REVENUECAT_ANDROID_API_KEY,
+        apiKey: REVENUECAT_ANDROID_API_KEY_ENVVAR,
         appUserID: userId,
       });
     }
