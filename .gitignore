@@ -92,5 +92,3 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 
-# Constants 
-/src/constants/index.js
