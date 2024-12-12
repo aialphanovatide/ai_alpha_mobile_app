@@ -1,4 +1,4 @@
-import { COINALYZE_API_KEY } from "../src/constants";;
+import {COINALYZE_API_KEY_ENVVAR} from '@env';
 const exchanges = [
   {
     name: 'Kraken',
@@ -91,7 +91,7 @@ function filterByExchanges(data, exchanges) {
 }
 
 async function getBtcFundingRates(coin) {
-  const url = `https://api.coinalyze.net/v1/funding-rate?api_key=${COINALYZE_API_KEY}&symbols=BTCUSD_PERP.3,BTCUSD_PERP.A,BTCUSD.6,BTC-USD.8,ETHUSD_PERP.3,ETHUSD_PERP.A,ETHUSD.6,ETH-USD.8,SOLUSD_PERP.3,SOLUSD_PERP.A,SOLUSD.6,SOL-USD.8`;
+  const url = `https://api.coinalyze.net/v1/funding-rate?api_key=${COINALYZE_API_KEY_ENVVAR}&symbols=BTCUSD_PERP.3,BTCUSD_PERP.A,BTCUSD.6,BTC-USD.8,ETHUSD_PERP.3,ETHUSD_PERP.A,ETHUSD.6,ETH-USD.8,SOLUSD_PERP.3,SOLUSD_PERP.A,SOLUSD.6,SOL-USD.8`;
   const options = {
     method: 'GET',
     headers: {

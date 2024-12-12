@@ -19,12 +19,7 @@ import {getService} from './services/aiAlphaApi';
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
-import {
-  auth0Client,
-  auth0Domain,
-  auth0ManagementAPI_Client,
-  auth0ManagementAPI_Secret,
-} from './src/constants/index';
+import {AUTH0_CLIENT_ENVVAR, AUTH0_DOMAIN_ENVVAR} from '@env';
 import eventEmitter from './eventEmitter';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ConnectivityModal from './components/ConnectivityModal/ConnectivityModal';
@@ -250,7 +245,7 @@ const App = () => {
   };
 
   return (
-    <Auth0Provider domain={auth0Domain} clientId={auth0Client}>
+    <Auth0Provider domain={AUTH0_DOMAIN_ENVVAR} clientId={AUTH0_CLIENT_ENVVAR}>
       <Provider store={store}>
         <TopMenuContextProvider>
           <RevenueCatProvider>

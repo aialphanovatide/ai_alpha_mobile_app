@@ -9,12 +9,12 @@ import {
   Alert,
 } from 'react-native';
 import {
-  auth0Domain,
-  auth0DeleteAccount_Client,
-  auth0DeleteAccount_Secret,
-  auth0ManagementAPI_Client,
-  auth0ManagementAPI_Secret,
-} from '../../../src/constants';
+  AUTH0_DOMAIN_ENVVAR,
+  AUTH0_DELETE_ACCOUNT_CLIENT_ENVVAR,
+  AUTH0_DELETE_ACCOUNT_SECRET_ENVVAR,
+  AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
+  AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
+} from '@env';
 import auth0 from '../../Login/auth0';
 import {useNavigation} from '@react-navigation/core';
 import useSettingsScreenStyles from './SettingsScreenStyles';
@@ -114,13 +114,13 @@ const SettingsScreen = ({route}) => {
   // Elements from previous 'DeleteUserForm'
 
   const getDeleteApiToken = async () => {
-    const response = await fetch(`https://${auth0Domain}/oauth/token`, {
+    const response = await fetch(`https://${AUTH0_DOMAIN_ENVVAR}/oauth/token`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        client_id: auth0DeleteAccount_Client,
-        client_secret: auth0DeleteAccount_Secret,
-        audience: `https://${auth0Domain}/api/v2/`,
+        client_id: AUTH0_DELETE_ACCOUNT_CLIENT_ENVVAR,
+        client_secret: AUTH0_DELETE_ACCOUNT_SECRET_ENVVAR,
+        audience: `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/`,
         grant_type: 'client_credentials',
       }),
     });
@@ -129,13 +129,13 @@ const SettingsScreen = ({route}) => {
   };
 
   const getManagementApiToken = async () => {
-    const response = await fetch(`https://${auth0Domain}/oauth/token`, {
+    const response = await fetch(`https://${AUTH0_DOMAIN_ENVVAR}/oauth/token`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        client_id: auth0ManagementAPI_Client,
-        client_secret: auth0ManagementAPI_Secret,
-        audience: `https://${auth0Domain}/api/v2/`,
+        client_id: AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
+        client_secret: AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
+        audience: `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/`,
         grant_type: 'client_credentials',
       }),
     });
@@ -166,7 +166,7 @@ const SettingsScreen = ({route}) => {
 
       console.log(
         'url: ',
-        `https://${auth0Domain}/api/v2/users/auth0|${encodeURIComponent(
+        `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/users/auth0|${encodeURIComponent(
           userId,
         )}`,
       );
@@ -181,11 +181,15 @@ const SettingsScreen = ({route}) => {
 
       console.log(
         'url: ',
-        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+        `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/users/${encodeURIComponent(
+          rawUserId,
+        )}`,
       );
 
       const userFetch = await fetch(
-        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+        `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/users/${encodeURIComponent(
+          rawUserId,
+        )}`,
         {
           method: 'GET',
           headers: {
@@ -200,7 +204,9 @@ const SettingsScreen = ({route}) => {
       //console.log('User Data:', userData);
 
       const response = await fetch(
-        `https://${auth0Domain}/api/v2/users/${encodeURIComponent(rawUserId)}`,
+        `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/users/${encodeURIComponent(
+          rawUserId,
+        )}`,
         {
           method: 'DELETE',
           headers: {

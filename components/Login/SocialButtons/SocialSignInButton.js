@@ -5,19 +5,17 @@ import CustomButton from '../CustomButton/CustomButton';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import axios from 'axios';
 import {
-  auth0Client,
-  auth0Domain,
-  auth0Audience,
-  auth0ManagementAPI_Client,
-  auth0ManagementAPI_Secret,
-} from '../../../src/constants';
+  AUTH0_CLIENT_ENVVAR,
+  AUTH0_DOMAIN_ENVVAR,
+  AUTH0_AUDIENCE_ENVVAR,
+  AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
+  AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
+  GOOGLE_CLIENT_IOS_ID_ENVVAR,
+  GOOGLE_CLIENT_WEB_ID_ENVVAR,
+  GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
+} from '@env';
 import {useNavigation} from '@react-navigation/native';
 import Auth0, {useAuth0, Auth0Provider} from 'react-native-auth0';
-import {
-  GOOGLE_CLIENT_IOS_ID,
-  GOOGLE_CLIENT_WEB_ID,
-  GOOGLE_CLIENT_ANDROID_ID,
-} from '../../../src/constants';
 
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -37,16 +35,16 @@ const SocialSignInButton = ({handleLoadingChange}) => {
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: GOOGLE_CLIENT_WEB_ID,
-      iosClientId: GOOGLE_CLIENT_IOS_ID,
-      androidClientId: GOOGLE_CLIENT_ANDROID_ID,
+      webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
+      iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
+      androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
       offlineAccess: true,
     });
   }, []);
 
   const auth0 = new Auth0({
-    domain: auth0Domain,
-    clientId: auth0Client,
+    domain: AUTH0_DOMAIN_ENVVAR,
+    clientId: AUTH0_CLIENT_ENVVAR,
   });
 
   const formatUserId = user_id => {
@@ -82,13 +80,13 @@ const SocialSignInButton = ({handleLoadingChange}) => {
   }, []);
 
   const getManagementApiToken = async () => {
-    const response = await fetch(`https://${auth0Domain}/oauth/token`, {
+    const response = await fetch(`https://${AUTH0_DOMAIN_ENVVAR}/oauth/token`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        client_id: auth0ManagementAPI_Client,
-        client_secret: auth0ManagementAPI_Secret,
-        audience: `https://${auth0Domain}/api/v2/`,
+        client_id: AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
+        client_secret: AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
+        audience: `https://${AUTH0_DOMAIN_ENVVAR}/api/v2/`,
         grant_type: 'client_credentials',
       }),
     });
@@ -117,7 +115,7 @@ const SocialSignInButton = ({handleLoadingChange}) => {
         /*
         const token = await getManagementApiToken();
 
-        const responseFromAuth0 = await fetch(`https://${auth0Domain}/api/v2/users`, {
+        const responseFromAuth0 = await fetch(`https://${AUTH0_DOMAIN_ENVVAR}/api/v2/users`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -243,9 +241,9 @@ const SocialSignInButton = ({handleLoadingChange}) => {
           subject_token_type:
             'http://auth0.com/oauth/token-type/apple-authz-code',
           scope: 'read:appointments openid profile email email_verified',
-          audience: auth0Audience,
+          audience: AUTH0_AUDIENCE_ENVVAR,
           subject_token: authorizationCode,
-          client_id: auth0Client,
+          client_id: AUTH0_CLIENT_ENVVAR,
           user_profile: JSON.stringify({
             name: {
               firstName: givenName,
@@ -255,7 +253,7 @@ const SocialSignInButton = ({handleLoadingChange}) => {
           }),
         };
         const auth0Response = await axios.post(
-          `https://${auth0Domain}/oauth/token`,
+          `https://${AUTH0_DOMAIN_ENVVAR}/oauth/token`,
           payload,
         );
         console.log('Auth0 Response:', auth0Response.data);

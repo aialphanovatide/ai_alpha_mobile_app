@@ -470,55 +470,10 @@ const usePackageSubscriptionStyles = () => {
       width: 21,
       height: 21,
     },
-    discordContainer: {
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    discordIcon: {
-      marginTop: 50,
-      width: 78,
-      height: 55,
-    },
-    discordOrangeText: {
-      fontSize: 20,
-      fontFamily: theme.fontMedium,
-      color: theme.orange,
-      textAlign: 'center',
-      marginTop: 15,
-      marginBottom: 15,
-    },
-    discordGreyText: {
-      color: theme.discordGreyColor,
-      fontFamily: theme.fontMedium,
-      textAlign: 'center',
-      marginTop: 5,
-    },
-    discordSubcontainer: {
-      backgroundColor: 'transparent',
-      width: '104%',
-      padding: 10,
-      borderRadius: 3,
-      borderColor: '#444',
-      borderWidth: 1,
-      marginTop: 20,
-      marginBottom: 50,
-    },
     titleRow: {
       flexDirection: 'row',
       alignItems: 'center',
       marginBottom: 15, // Add some space between the title and the token text
-    },
-    discordSmallIcon: {
-      width: 35,
-      height: 24,
-      marginRight: 15,
-      marginLeft: 3,
-    },
-    discordTitle: {
-      color: theme.textColor,
-      fontFamily: theme.fontMedium,
-      fontSize: 16,
-      marginTop: -7,
     },
     tokenRow: {
       flexDirection: 'row',

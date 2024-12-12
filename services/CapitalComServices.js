@@ -1,20 +1,20 @@
 import {
-  CAPITAL_COM_API_KEY,
-  CAPITAL_COM_PASSWORD,
-  CAPITAL_COM_ID,
-} from '../src/constants';
+  CAPITAL_COM_API_KEY_ENVVAR,
+  CAPITAL_COM_PASSWORD_ENVVAR,
+  CAPITAL_COM_ID_ENVVAR,
+} from '@env';
 
 async function postCCSession() {
   try {
     const options = {
       method: 'POST',
       headers: {
-        'X-CAP-API-KEY': CAPITAL_COM_API_KEY,
+        'X-CAP-API-KEY': CAPITAL_COM_API_KEY_ENVVAR,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        identifier: CAPITAL_COM_ID,
-        password: CAPITAL_COM_PASSWORD,
+        identifier: CAPITAL_COM_ID_ENVVAR,
+        password: CAPITAL_COM_PASSWORD_ENVVAR,
       }),
       redirect: 'follow',
     };

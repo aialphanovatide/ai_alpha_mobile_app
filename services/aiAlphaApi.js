@@ -1,5 +1,10 @@
-import { AIALPHASERVER_2_BASE_URL, API_BASE_URL, API_BASE_URL_ALT, NEWSBOTV2_BASE_URL, TEST_API_URL } from "../src/constants";
-
+import {
+  AIALPHASERVER_2_BASE_URL_ENVVAR,
+  API_BASE_URL_ENVVAR,
+  API_BASE_URL_ALT_ENVVAR,
+  NEWSBOTV2_BASE_URL_ENVVAR,
+  TEST_API_URL_ENVVAR,
+} from '@env';
 
 // Function to handle HTTP errors
 const handleErrors = response => {
@@ -12,7 +17,7 @@ const handleErrors = response => {
 // Function to make a GET request
 export const getService = async endpoint => {
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const response = await fetch(`${API_BASE_URL_ENVVAR}${endpoint}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +47,7 @@ export const getService = async endpoint => {
 // Function to make a GET request to the testing server's API
 export const getTestService = async endpoint => {
   try {
-    const response = await fetch(`${TEST_API_URL}${endpoint}`, {
+    const response = await fetch(`${TEST_API_URL_ENVVAR}${endpoint}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -73,7 +78,7 @@ export const getTestService = async endpoint => {
 // Function to make a GET request
 export const altGetService = async endpoint => {
   try {
-    const response = await fetch(`${API_BASE_URL_ALT}${endpoint}`, {
+    const response = await fetch(`${API_BASE_URL_ALT_ENVVAR}${endpoint}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -99,7 +104,7 @@ export const altGetService = async endpoint => {
 // Function to make a POST request
 export const postService = async (endpoint, data) => {
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const response = await fetch(`${API_BASE_URL_ENVVAR}${endpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -119,13 +124,16 @@ export const postService = async (endpoint, data) => {
 
 export const getServiceV2 = async endpoint => {
   try {
-    const response = await fetch(`${AIALPHASERVER_2_BASE_URL}${endpoint}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-KEY': 'alpha_zx24ws3-2zXv2sy6JrRWs-4ob3HhWKNL_5290',
+    const response = await fetch(
+      `${AIALPHASERVER_2_BASE_URL_ENVVAR}${endpoint}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': 'alpha_zx24ws3-2zXv2sy6JrRWs-4ob3HhWKNL_5290',
+        },
       },
-    });
+    );
 
     if (response.status === 204) {
       return [];
@@ -151,7 +159,7 @@ export const getServiceV2 = async endpoint => {
 
 export const newsbotGetService = async endpoint => {
   try {
-    const response = await fetch(`${NEWSBOTV2_BASE_URL}${endpoint}`, {
+    const response = await fetch(`${NEWSBOTV2_BASE_URL_ENVVAR}${endpoint}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

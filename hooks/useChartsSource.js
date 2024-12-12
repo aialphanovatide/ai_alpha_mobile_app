@@ -1,4 +1,4 @@
-import {COINGECKO_PRO_KEY} from '../src/constants';
+import {COINGECKO_PRO_KEY_ENVVAR} from '@env';
 
 // This hook is used to retrieve the data for the charts in the Home page. It takes in the coin, pairing and interval as arguments and returns the appropriate url and options for executing the requests to the APIs.
 
@@ -19,7 +19,7 @@ const useChartsSource = (coin, pairing, interval) => {
 
   const options = {
     method: 'GET',
-    headers: {'x-cg-pro-api-key': COINGECKO_PRO_KEY},
+    headers: {'x-cg-pro-api-key': COINGECKO_PRO_KEY_ENVVAR},
   };
 
   const COIN_SOURCES = [
