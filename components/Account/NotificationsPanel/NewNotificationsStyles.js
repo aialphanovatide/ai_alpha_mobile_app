@@ -51,6 +51,12 @@ const useNewNotificationsStyles = () => {
       alignSelf: 'center',
       fontFamily: theme.font,
     },
+    allNotificationsRow: {
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      position: 'relative',
+    },
     allNotificationsItemName: {
       marginLeft: 5,
       fontSize: 16,
@@ -78,6 +84,8 @@ const useNewNotificationsStyles = () => {
         : theme.notificationsSwitchColor,
     },
     allNotificationsSwitchContainer: {
+      position: 'absolute',
+      right: -16,
       width: 45,
       height: 40,
       borderRadius: 10,
@@ -183,7 +191,20 @@ const useNewNotificationsStyles = () => {
       fontFamily: theme.font,
       color: theme.textColor,
       fontSize: 14,
-    }
+    },
+    timeFilterContainer: {
+      position: 'absolute',
+      right: '15%',
+      bottom: 8,
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    insideRow: {
+      flexDirection: 'row',
+      position: 'relative',
+      paddingVertical: 6,
+    },
   });
 };
 

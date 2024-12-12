@@ -268,7 +268,13 @@ const HomeNotifications = ({route, navigation}) => {
                     {isLastItem && (
                       <View
                         key={`divider_${item.title}_${item.category}_${index}`}
-                        style={styles.divider}
+                        style={[
+                          styles.divider,
+                          {
+                            marginBottom: 8,
+                            marginTop: item.title.length > 50 ? 24 : 8,
+                          },
+                        ]}
                       />
                     )}
                   </React.Fragment>

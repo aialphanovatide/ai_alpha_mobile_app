@@ -115,8 +115,8 @@ const TopMenu = ({isAlertsMenu}) => {
   }, [activeCoin]);
 
   const findIndexByCategory = category => {
-    console.log('Category received: ', category);
-    console.log('Categories: ', categories);
+    // console.log('Category received: ', category);
+    // console.log('Categories: ', categories);
     const found = categories.findIndex(
       cat =>
         category.category_name.toLowerCase() ===

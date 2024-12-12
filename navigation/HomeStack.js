@@ -20,8 +20,11 @@ import ChartsSection from '../components/Home/Topmenu/subMenu/Fund_news_chart/Ch
 import StoryArticle from '../components/Home/TopStories/StoryArticle';
 import DailyDeepArticle from '../components/Home/Analysis/DailyDeepArticle';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectActiveCoin, selectActiveSubCoin} from '../actions/categoriesActions';
-import { resetActiveCoin } from '../store/categoriesSlice';
+import {
+  selectActiveCoin,
+  selectActiveSubCoin,
+} from '../actions/categoriesActions';
+import {resetActiveCoin} from '../store/categoriesSlice';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -163,9 +166,9 @@ const SubMenuScreen = () => {
       }
       initialRouteName="Fundamentals"
       screenOptions={{
-        lazy: true,
         swipeEnabled: false,
         gestureEnabled: isLandscape && isHorizontal ? false : true,
+        freezeOnBlur: true,
       }}
       tabBar={props =>
         isLandscape && isHorizontal ? null : <FundNewsChartsMenu {...props} />
@@ -192,7 +195,13 @@ const SubMenuScreen = () => {
           animation: 'fade',
         }}
       />
-      <SubMenuStack.Screen name="News" component={NewsScreen} />
+      <SubMenuStack.Screen
+        name="News"
+        component={NewsScreen}
+        options={{
+          animation: 'fade',
+        }}
+      />
     </SubMenuStack.Navigator>
   );
 };

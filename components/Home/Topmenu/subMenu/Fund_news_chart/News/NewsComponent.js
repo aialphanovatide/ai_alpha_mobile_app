@@ -11,7 +11,6 @@ import {useNavigation} from '@react-navigation/native';
 import useNewsStyles from './NewsStyles';
 import {AboutIcon} from '../../../../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../../../../assets/static_data/homeStaticData';
-import AboutModal from '../../../../../AboutModal/AboutModal';
 import SkeletonLoader from '../../../../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../../../../NoContentDisclaimer/NoContentDisclaimer';
 import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
@@ -21,13 +20,11 @@ import {
   selectActiveCoin,
   selectActiveSubCoin,
 } from '../../../../../../actions/categoriesActions';
+import {handleAboutPress} from '../../../../../../store/aboutSlice';
 import {
-  handleAboutPress,
-  handleClose,
-  selectAboutDescription,
-  selectAboutTitle,
-  selectAboutVisible,
-} from '../../../../../../store/aboutSlice';
+  selectNews,
+  selectNewsLoading,
+} from '../../../../../../actions/newsActions';
 
 // Component that renders the news section of the app. It fetches the news from the API and displays them in a list. It also has a filter to show the news of the day, the week or the month.
 
@@ -36,19 +33,28 @@ const NewsComponent = ({route}) => {
   const activeSubCoin = useSelector(selectActiveSubCoin);
   const styles = useNewsStyles();
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(true);
-  const [news, setNews] = useState([]);
-  const [botname, setBotname] = useState(
+  const [botName, setBotName] = useState(
     route.params ? route.params.botname : activeSubCoin,
   );
-  const options = ['btc', 'eth'].includes(botname)
+  const options = ['btc', 'eth'].includes(botName)
     ? ['Today', 'This Week']
     : ['Today', 'This Month'];
   const [activeFilter, setActiveFilter] = useState(options[1]);
-  const aboutVisible = useSelector(selectAboutVisible);
-  const aboutDescription = useSelector(selectAboutDescription);
-  const aboutTitle = useSelector(selectAboutTitle);
+  const allNews = useSelector(selectNews);
+  const loading = useSelector(selectNewsLoading);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (
+      activeSubCoin &&
+      activeSubCoin !== undefined &&
+      activeCoin &&
+      activeCoin !== undefined
+    ) {
+      setBotName(activeSubCoin || activeCoin.coin_bots[0].bot_name);
+    }
+    setActiveFilter(options[1]);
+  }, [activeCoin, activeSubCoin]);
 
   // Function to filter the summary or texts of the article, removing the words that are put by the prompt generated, and aren't necessary in the summary or the title.
   const filterText = summary => {
@@ -76,34 +82,7 @@ const NewsComponent = ({route}) => {
     return filteredText;
   };
 
-  // Function to filter the news depending on the selected time filter (Today, This Week, This Month) and the current date. It returns the articles that match the filter.
-
-  const filterNewsByDate = (news, filter) => {
-    const now = new Date();
-
-    return news.filter(article => {
-      const articleDate = new Date(article.date);
-
-      if (filter === 'Today') {
-        return (
-          articleDate.getDate() === now.getDate() &&
-          articleDate.getMonth() === now.getMonth() &&
-          articleDate.getFullYear() === now.getFullYear()
-        );
-      } else if (filter === 'This Week') {
-        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
-        startOfWeek.setHours(0, 0, 0, 0);
-        return articleDate >= startOfWeek;
-      } else if (filter === 'This Month') {
-        return (
-          articleDate.getMonth() === now.getMonth() &&
-          articleDate.getFullYear() === now.getFullYear()
-        );
-      }
-
-      return false;
-    });
-  };
+  // Function to redirect the user to the full article of a pressed NewsItem
 
   const onPress = item => {
     navigation.navigate('NewsArticle', {
@@ -112,58 +91,11 @@ const NewsComponent = ({route}) => {
     });
   };
 
+  // Function to handle the time filter press and change the active filter
+
   const handleFilterPress = option => {
     setActiveFilter(option);
   };
-
-  useEffect(() => {
-    if (
-      activeSubCoin &&
-      activeSubCoin !== undefined &&
-      activeCoin &&
-      activeCoin !== undefined
-    ) {
-      setBotname(activeSubCoin || activeCoin.coin_bots[0].bot_name);
-      setActiveFilter(options[1]);
-    }
-  }, [activeCoin, activeSubCoin]);
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchNews = async () => {
-      try {
-        const newsLimit = activeFilter && activeFilter === 'Today' ? 10 : 20;
-        const endpoint = `bot_name=${botname}&limit=${newsLimit}`;
-        const response = await fetch(
-          `https://newsbotv2.ngrok.io/get_articles?${endpoint}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        );
-        if (
-          response.length === 0 ||
-          (response.message &&
-            response.message.startsWith('No articles found')) ||
-          response.error
-        ) {
-          setNews([]);
-        } else {
-          const data = await response.json();
-          const articles = filterNewsByDate(data.data, activeFilter);
-          setNews(articles);
-        }
-      } catch (error) {
-        console.error('Error fetching news:', error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNews();
-  }, [botname, activeFilter]);
 
   // Functions to handle the scrolling interaction that hides the menu
 
@@ -197,10 +129,6 @@ const NewsComponent = ({route}) => {
     dispatch(handleAboutPress({description, title}));
   };
 
-  const closeAbout = () => {
-    dispatch(handleClose());
-  };
-
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
       <ScrollView
@@ -209,14 +137,6 @@ const NewsComponent = ({route}) => {
         ref={scrollViewRef}
         onScroll={onScroll}
         scrollEventThrottle={16}>
-        {/* {aboutVisible && (
-          <AboutModal
-            description={aboutDescription}
-            title={aboutTitle}
-            onClose={closeAbout}
-            visible={aboutVisible}
-          />
-        )} */}
         <View style={styles.titleRow}>
           <Text style={styles.title}>News</Text>
           <AboutIcon
@@ -244,9 +164,14 @@ const NewsComponent = ({route}) => {
             </TouchableOpacity>
           ))}
         </View>
-        {loading ? (
+        {loading === 'idle' ? (
           <SkeletonLoader type="news" quantity={3} />
-        ) : !loading && news.length === 0 ? (
+        ) : loading !== 'idle' &&
+          (!allNews ||
+            allNews === undefined ||
+            allNews[botName][activeFilter] === undefined ||
+            allNews[botName][activeFilter].length === 0) ? (
+              // If there's no content to show for the current time interval, show the NoContentDisclaimer component
           <NoContentDisclaimer
             title={'Whoops, no matches.'}
             description={
@@ -255,7 +180,7 @@ const NewsComponent = ({route}) => {
           />
         ) : (
           <View>
-            {news.map(item => {
+            {allNews[botName][activeFilter].map(item => {
               return (
                 <NewsItem
                   key={item.id}

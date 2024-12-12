@@ -9,120 +9,42 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from '../../BackButton/BackButton';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
-import { useDispatch, useSelector } from 'react-redux';
-import { handleAboutPress, handleClose, selectAboutDescription, selectAboutTitle, selectAboutVisible } from '../../../store/aboutSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  handleAboutPress,
+  handleClose,
+  selectAboutDescription,
+  selectAboutTitle,
+  selectAboutVisible,
+} from '../../../store/aboutSlice';
+import AskAiItem from '../AskAiItem/AskAiItem';
+import HistoryContent from './HistoryContent';
 
-// Component to display the History section's content on the ASK AI History section. It renders the items that are saved on the user device's cache (Async Storage) and displays them as clickable items. The user can filter the items by category and clean the history data. It receives the activeHistoryOption, historyOptions, handleHistoryOption, handleActiveResultData, savedResults, and handleHistoryClean functions as props.
-
-const HistoryContent = ({
-  activeHistoryOption,
-  historyOptions,
-  handleHistoryOption,
-  handleActiveResultData,
-  savedResults,
-  handleHistoryClean,
-}) => {
-  const styles = useAskAiStyles();
-  const menuButtonWidth = 100 / historyOptions.length;
-  return (
-    <View style={styles.historySection}>
-      <TouchableOpacity
-        style={styles.cleanButton}
-        onPress={() => handleHistoryClean()}>
-        <Image
-          style={styles.trashIcon}
-          source={require('../../../assets/images/askAi/clean_history.png')}
-          resizeMode="contain"
-        />
-        <Text style={styles.cleanText}>Clean History</Text>
-      </TouchableOpacity>
-      <View style={styles.historyMenuContainer}>
-        {historyOptions.map(option => (
-          <TouchableOpacity
-            key={option.name}
-            onPress={() => handleHistoryOption(option)}
-            style={[
-              styles.historyMenuButton,
-              {width: `${menuButtonWidth}%`},
-              activeHistoryOption.name === option.name
-                ? styles.activeButton
-                : {},
-            ]}>
-            <Text
-              style={[
-                styles.menuText,
-                activeHistoryOption.name === option.name
-                  ? styles.activeText
-                  : {},
-              ]}>
-              {option.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <View style={styles.historyItemsContainer}>
-        <View>
-          {savedResults && savedResults.length > 0 ? (
-            savedResults.map((coin, index) => {
-              if (!coin || !coin.content) return null;
-              return (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.historyItem}
-                  onPress={() => handleActiveResultData(coin)}>
-                  <View style={styles.historyItemImageBackground}>
-                    <FastImage
-                      style={styles.historyItemLogo}
-                      source={{
-                        uri: coin?.logo ? coin.logo : undefined,
-                      }}
-                      resizeMode="contain"
-                    />
-                  </View>
-                  <Text style={styles.historyItemName}>{coin.name}</Text>
-                </TouchableOpacity>
-              );
-            })
-          ) : (
-            <NoContentDisclaimer
-              title={'Whoops, no matches.'}
-              description={
-                "We couldn't find any search results.\nGive it another go."
-              }
-            />
-          )}
-        </View>
-      </View>
-    </View>
-  );
-};
+const HISTORY_OPTIONS = [
+  {
+    name: 'All',
+  },
+  {
+    name: 'Gaming',
+  },
+  {
+    name: 'Defi',
+  },
+  {
+    name: 'LSDs',
+  },
+  {
+    name: 'Standard',
+  },
+];
 
 // Component to display the ASK AI History section, where the user can see the previously searched coins on the main ASK AI section. The user can also filter the items by category and clean the history data. It renders the HistoryContent component to display the items and the AboutModal component to display the information about the section.
 
 const AskAiHistory = ({route, navigation}) => {
   const styles = useAskAiStyles();
-  const aboutVisible = useSelector(selectAboutVisible);
-  const aboutDescription = useSelector(selectAboutDescription);
-  const aboutTitle = useSelector(selectAboutTitle);
-  const historyOptions = [
-    {
-      name: 'All',
-    },
-    {
-      name: 'Gaming',
-    },
-    {
-      name: 'Defi',
-    },
-    {
-      name: 'LSDs',
-    },
-    {
-      name: 'Standard',
-    },
-  ];
+
   const [activeHistoryOption, setActiveHistoryOption] = useState(
-    historyOptions[0],
+    HISTORY_OPTIONS[0],
   );
   const [savedResults, setSavedResults] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
@@ -130,7 +52,7 @@ const AskAiHistory = ({route, navigation}) => {
 
   //  Hook to reset the search value state on every rendering
   useEffect(() => {
-    setActiveHistoryOption(historyOptions[0]);
+    setActiveHistoryOption(HISTORY_OPTIONS[0]);
   }, []);
 
   // Function to filter the items on the ASK AI History section by the selected category.
@@ -170,15 +92,14 @@ const AskAiHistory = ({route, navigation}) => {
 
   // Function to clean the saved ASK AI section History data, removing all the items storaged on the user device's cache (Async Storage)
 
-  const handleHistoryClean = () => {
-    const cleanAsyncStorageData = async () => {
-      try {
-        await AsyncStorage.removeItem('askAiData');
-        setSavedResults([]);
-        setFilteredResults([]);
-      } catch (error) {}
-    };
-    cleanAsyncStorageData();
+  const handleHistoryClean = async () => {
+    try {
+      await AsyncStorage.removeItem('askAiData');
+      setSavedResults([]);
+      setFilteredResults([]);
+    } catch (error) {
+      console.error('Failed to clean the ASK AI History data: ', error);
+    }
   };
 
   // Hook to load the saved data on every rendering of the section
@@ -236,19 +157,19 @@ const AskAiHistory = ({route, navigation}) => {
         />
       </View>
       <HistoryContent
-        historyOptions={historyOptions}
+        historyOptions={HISTORY_OPTIONS}
         activeHistoryOption={activeHistoryOption}
         handleHistoryOption={handleHistoryOption}
         savedResults={filteredResults}
         handleHistoryClean={handleHistoryClean}
         handleActiveResultData={handleActiveResultData}
       />
-      {/* <AboutModal
-        visible={aboutVisible}
-        description={aboutDescription}
-        title={aboutTitle}
+      <AboutModal
+        visible={useSelector(selectAboutVisible)}
+        description={useSelector(selectAboutDescription)}
+        title={useSelector(selectAboutTitle)}
         onClose={closeAbout}
-      /> */}
+      />
     </SafeAreaView>
   );
 };

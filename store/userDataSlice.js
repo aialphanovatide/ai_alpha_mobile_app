@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {fetchUserData} from '../actions/userActions';
 import {
   loadSubscriptions,
+  toggleAllSubscriptions,
   toggleSubscription,
 } from '../actions/notificationActions';
 
@@ -48,11 +49,20 @@ const userDataSlice = createSlice({
         state.loading = 'failed';
         state.error = action.payload || 'An error occurred';
       })
+      // Loading states for toggling individual notifications subscriptions
       .addCase(toggleSubscription.fulfilled, (state, action) => {
         const {topic, newStatus} = action.payload;
         state.notifications[topic] = newStatus;
       })
       .addCase(toggleSubscription.rejected, (state, action) => {
+        state.error = action.payload || 'An error occurred';
+      })
+      // Loading states for toggling all the notifications subscriptions
+      .addCase(toggleAllSubscriptions.fulfilled, (state, action) => {
+        const updatedSubscriptions = action.payload;
+        state.notifications = updatedSubscriptions;
+      })
+      .addCase(toggleAllSubscriptions.rejected, (state, action) => {
         state.error = action.payload || 'An error occurred';
       })
       .addCase(loadSubscriptions.fulfilled, (state, action) => {

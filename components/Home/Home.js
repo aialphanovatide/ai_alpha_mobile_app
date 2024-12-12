@@ -223,14 +223,14 @@ const Home = ({route}) => {
     const currentOffset = event.nativeEvent.contentOffset.y;
     const diff = currentOffset - scrollOffset.current;
 
-    if (diff > 5 && currentOffset > 100) {
+    if (currentOffset > 100) {
       hideHeader('TopMenu');
-    } else if (diff < -5) {
+    } else if (currentOffset < 120) {
       showHeader('TopMenu');
     }
 
     scrollOffset.current = currentOffset;
-  }, 350);
+  }, 175);
 
   // Function to handle the scroll event and call the handleScroll function
   const onScroll = event => {

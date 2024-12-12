@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   LayoutAnimation,
@@ -6,20 +6,16 @@ import {
   SafeAreaView,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   UIManager,
   View,
 } from 'react-native';
 import useAskAiStyles from './AskAiStyles';
 import FastImage from 'react-native-fast-image';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import SkeletonLoader from '../Loader/SkeletonLoader';
 import {AboutIcon} from '../AboutModal/AboutIcon';
 import AboutModal from '../AboutModal/AboutModal';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
-import SearchButtonSvg from '../../assets/images/askAi/search-button.svg';
-import {getServiceV2} from '../../services/aiAlphaApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   handleAboutPress,
@@ -28,6 +24,17 @@ import {
   selectAboutTitle,
   selectAboutVisible,
 } from '../../store/aboutSlice';
+import {
+  fetchAskAiData,
+  loadAskAiData,
+  selectAskAiLoading,
+  selectCurrentResult,
+  selectSavedResults,
+} from '../../actions/askAiActions';
+import {RESULTS_MOCK} from '../../assets/static_data/askAiMockedData';
+import SearchInput from './SearchInput';
+import MainResults from './MainResults';
+import ValueBox from './ValueBox';
 
 if (
   Platform.OS === 'android' &&
@@ -36,283 +43,63 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-// Static data for mapping the server's response keys to the display titles and value types to format the data correctly in the results component.
-const KEY_DISPLAY_TITLES = [
-  {key: 'ath', displayName: 'ATH', valueType: 'price'},
-  {
-    key: 'ath_change_percentage',
-    displayName: 'ATH % Change',
-    valueType: 'percentage',
-  },
-  {key: 'categories', displayName: 'Categories', valueType: 'array'},
-  {key: 'chains', displayName: 'Chains', valueType: 'array'},
-  {
-    key: 'percentage_circulating_supply',
-    displayName: 'Circulating Supply %',
-    valueType: 'percentage',
-  },
-  {
-    key: 'current_price',
-    displayName: 'Current Price (USD)',
-    valueType: 'price',
-  },
-  {
-    key: 'fully_diluted_valuation',
-    displayName: 'Fully Diluted Valuation',
-    valueType: 'price',
-  },
-  {key: 'market_cap_usd', displayName: 'Market Cap USD', valueType: 'price'},
-  {key: 'website', displayName: 'Website', valueType: ''},
-  {key: 'whitepaper', displayName: 'Whitepaper', valueType: ''},
-  {key: 'name', displayName: 'Token Name', valueType: ''},
-];
-
-const FILTER_KEYS = [
-  'name',
-  'website',
-  'whitepaper',
-  'categories',
-  'chains',
-  'current_price',
-  'market_cap_usd',
-  'ath',
-  'ath_change_percentage',
-  'percentage_circulating_supply',
-  'fully_diluted_valuation',
-];
-
-// Function to combine the multiple responses coming from the ASK AI Alpha endpoint, to handle them more easily in one object.
-const combineResponses = (response, searchedValue) => {
-  const combinedResult = {};
-  let name = '';
-
-  Object.values(response).forEach(res => {
-    if (Array.isArray(res)) {
-      res.forEach((item, index) => {
-        combinedResult[`dextool_${index}`] = item;
-      });
-    } else if (res.success === true) {
-      Object.assign(combinedResult, res);
-    }
-  });
-
-  const resultArray = Object.keys(combinedResult).map(key => {
-    if (key === 'name' || key === 'symbol') {
-      name = combinedResult[key];
-    }
-
-    const configurationMappedKey =
-      KEY_DISPLAY_TITLES.find(item => item.key === key) || null;
-
-    return {
-      title: key,
-      data: combinedResult[key],
-      displayName: configurationMappedKey?.displayName || '',
-      valueType: configurationMappedKey?.valueType,
-    };
-  });
-
-  const filteredResultArray = resultArray.filter(datum =>
-    FILTER_KEYS.includes(datum.title),
-  );
-
-  const sortedResultArray = filteredResultArray.sort((a, b) => {
-    return FILTER_KEYS.indexOf(a.title) - FILTER_KEYS.indexOf(b.title);
-  });
-
-  return {
-    name: name || searchedValue,
-    content: sortedResultArray,
-    logo: combinedResult.logo ? combinedResult.logo : '',
-  };
-};
-
-// Component that renders each item of the content and data fetched, displaying a title with the box including the data itself.
-
-const ValueBox = ({title, content, valueType}) => {
-  const styles = useAskAiStyles();
-
-  const formatContentByValueType = content => {
-    switch (valueType) {
-      case 'price':
-        let numStr = content.toString();
-
-        if (numStr.includes('e')) {
-          numStr = parseFloat(content).toFixed(
-            Math.max(
-              0,
-              (numStr.split('e')[0].split('.')[1] || '').length -
-                (parseInt(numStr.split('e')[1]) || 0),
-            ),
-          );
-        }
-
-        let [integerPart, decimalPart] = numStr.split('.');
-        integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        return decimalPart
-          ? `${integerPart}.${decimalPart} USD`
-          : `${integerPart} USD`;
-      case 'percentage':
-        const numericContent = parseFloat(content);
-        return `${numericContent.toFixed(2)}%`;
-      case 'symbol':
-        return `${
-          content.slice(0, 1).toUpperCase() + content.slice(1, content.length)
-        }`;
-      case 'array':
-        const arrayContent = content.replace(/[\[\]"]+/g, '');
-        return arrayContent;
-      default:
-        return content;
-    }
-  };
-
-  return (
-    <View style={styles.valueBoxContainer}>
-      <Text style={styles.boxTitle}>{title}</Text>
-      <Text style={styles.content}>
-        {formatContentByValueType(content.replace(/"/g, ''))}
-      </Text>
-    </View>
-  );
-};
-
-// Component of the input that the user will use to pass the text values of the search to the ASK AI Alpha endpoint.
-
-const Input = ({
-  textHandler,
-  textValue,
-  loading,
-  handleButtonSearch,
-  handleSectionNavigation,
-}) => {
-  const styles = useAskAiStyles();
-  return (
-    <View style={{width: '100%'}}>
-      <View style={[styles.row, {position: 'relative', width: '100%'}]}>
-        <Text style={styles.inputText}>Token Name</Text>
-        <TouchableOpacity
-          style={styles.historyButtonWrapper}
-          onPress={() => handleSectionNavigation()}>
-          <Image
-            style={styles.historyButton}
-            source={require('../../assets/images/askAi/history.png')}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.row}>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={[
-              styles.searchInput,
-              textValue !== '' ? {paddingLeft: 18} : {},
-            ]}
-            onChangeText={text => textHandler(text)}
-            value={textValue}
-            underlineColorAndroid={'transparent'}
-            autoCapitalize={'words'}
-          />
-          <Text
-            style={[
-              styles.placeholderText,
-              textValue !== '' ? {opacity: 0} : {},
-            ]}>
-            Type here
-          </Text>
-        </View>
-        <TouchableOpacity
-          disabled={loading}
-          style={[styles.searchButton, loading ? styles.disabledButton : {}]}
-          onPress={() => handleButtonSearch(textValue)}>
-          <SearchButtonSvg width={18} height={18} />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
-
 // Main component for all the section's features and functionalities, including the search input, the results pop-up, the history section and the about modal. It also includes the logic to save the results data in the AsyncStorage API, to persist them between app executions.
 
 const AskAiMain = ({route, navigation}) => {
-  const selectedResult =
+  const currentResult = useSelector(selectCurrentResult);
+  const styles = useAskAiStyles();
+  const dispatch = useDispatch();
+  const [searchText, setSearchText] = useState('');
+  const [resultData, setResultData] = useState(
     route.params && route.params.selectedResult !== undefined
       ? route.params.selectedResult
-      : null;
-  const styles = useAskAiStyles();
-  const [searchText, setSearchText] = useState('');
-  const [resultData, setResultData] = useState(selectedResult);
-  const [savedResults, setSavedResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+      : currentResult,
+  );
+  const [logoSize, setLogoSize] = useState({width: 50, height: 50});
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const savedResults = useSelector(selectSavedResults);
+  const loading = useSelector(selectAskAiLoading);
   const aboutVisible = useSelector(selectAboutVisible);
   const aboutDescription = useSelector(selectAboutDescription);
   const aboutTitle = useSelector(selectAboutTitle);
-  const [logoSize, setLogoSize] = useState({width: 50, height: 50});
-  const dispatch = useDispatch();
+
+  // Dispatch loading the ASK AI data from the AsyncStorage API to get the previously saved results
+
+  useEffect(() => {
+    dispatch(loadAskAiData());
+  }, [dispatch]);
+
+  // Hook to update the current data when the selected results changes, being received by the route parameters (from the History section)
+
+  useEffect(() => {
+    if (route.params?.selectedResult) {
+      setResultData(route.params.selectedResult);
+    }
+  }, [route.params]);
 
   //  Hook to reset the search value state on every rendering
 
   useEffect(() => {
-    setSearchText('');
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setResultData(selectedResult);
-  }, [selectedResult]);
+    setSearchText('');
+    console.log('Selected result: ', currentResult);
+    setResultData(currentResult);
+  }, [currentResult]);
+
+  // Hook to get the image metadata when the result data changes
 
   useEffect(() => {
     if (resultData) {
       getImageMetadata(resultData.logo);
     }
-  }, []);
+  }, [resultData]);
 
-  // Function to format the data coming from the updated ASK AI Alpha endpoint
-
-  const formatData = (data, searchValue) => {
-    const formattedData = [];
-    Object.entries(data).forEach(([key, value]) => {
-      const configurationMappedKey =
-        KEY_DISPLAY_TITLES.find(item => item.key === key) || null;
-      formattedData.push({
-        title: key,
-        data: value,
-        displayName: configurationMappedKey?.displayName || '',
-        valueType: configurationMappedKey?.valueType,
-      });
-    });
-    const filteredResultArray = formattedData.filter(datum =>
-      FILTER_KEYS.includes(datum.title),
-    );
-
-    const sortedResultArray = filteredResultArray.sort((a, b) => {
-      return FILTER_KEYS.indexOf(a.title) - FILTER_KEYS.indexOf(b.title);
-    });
-    return {
-      name: searchValue,
-      content: sortedResultArray,
-      logo: data.logo ? data.logo : '',
-    };
-  };
-
-  // Function to save the results data in the AsyncStorage API to persist them between app executions
-
-  const saveAskAiData = async (newData, currentResults) => {
-    try {
-      let newSavedResults = [];
-      const repeatedDataIndex = currentResults.findIndex(
-        saved => saved.name === newData.name,
-      );
-      if (repeatedDataIndex !== -1) {
-        currentResults.splice(repeatedDataIndex, 1);
-      }
-      newSavedResults = [...currentResults, newData];
-      setSavedResults(newSavedResults);
-      await AsyncStorage.setItem('askAiData', JSON.stringify(newSavedResults));
-    } catch (error) {
-      console.error('Error trying to persist the ask ai data: ', error);
-    }
-  };
-  // Function to save the text within the input
+  // Function to update the text within the input field, resetting the focused state when the user types
 
   const handleTextChange = text => {
+    if (isInputFocused) {
+      setIsInputFocused(false);
+    }
     setSearchText(text);
   };
 
@@ -320,45 +107,6 @@ const AskAiMain = ({route, navigation}) => {
 
   const handleSectionNavigation = () => {
     navigation.navigate('AskAiHistory');
-  };
-
-  // Function to make the request to the endpoint by triggering the search button, passing the values of the text input as parameter to get the corresponding data from the server
-
-  const handleButtonSearch = searchValue => {
-    setLoading(true);
-    const fetchAskAiData = async searchValue => {
-      try {
-        // Use this line for reset the ask ai data when testing in development
-        // await AsyncStorage.setItem('askAiData', JSON.stringify([]));
-        const loadedData = await AsyncStorage.getItem('askAiData');
-        let parsedData = [];
-        if (loadedData) {
-          parsedData = JSON.parse(loadedData);
-        }
-
-        const existingResult = parsedData.find(
-          item => item.name.toLowerCase() === searchValue.toLowerCase(),
-        );
-        if (existingResult) {
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-          setResultData(existingResult);
-          return;
-        } else {
-          const data = await getServiceV2(
-            `ask-ai?coin_id=${searchValue.replace(/\s/g, '-')}`,
-          );
-          const formattedData = formatData(data.data, searchValue);
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-          setResultData(formattedData);
-          saveAskAiData(formattedData, savedResults);
-        }
-      } catch (error) {
-        console.error('Error trying to get ASK AI Alpha data: ', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAskAiData(searchValue);
   };
 
   // Function to close the results pop-up, resetting the results data and hiding the content.
@@ -397,6 +145,13 @@ const AskAiMain = ({route, navigation}) => {
     dispatch(handleClose());
   };
 
+  // Function to handle the pressing of the text input, detecting when it is focused to render the 5 suggested coins to search
+
+  const handleInputFocus = () => {
+    setIsInputFocused(true);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <BackgroundGradient />
@@ -416,67 +171,62 @@ const AskAiMain = ({route, navigation}) => {
             additionalStyles={{top: '52.5%', right: '3.5%'}}
           />
         </View>
-        <Input
+        <SearchInput
           textHandler={handleTextChange}
           textValue={searchText}
-          handleButtonSearch={handleButtonSearch}
           handleSectionNavigation={handleSectionNavigation}
+          handleInputFocus={handleInputFocus}
         />
-        {loading ? (
+        {(isInputFocused && !resultData) || (searchText && !resultData) ? (
+          <MainResults
+            data={savedResults}
+            isInputFocused={isInputFocused}
+            searchText={searchText}
+            setResultData={setResultData}
+          />
+        ) : !resultData ? (
+          <></>
+        ) : loading === 'idle' ? (
           <SkeletonLoader type="askAi" quantity={8} />
         ) : (
           <View
             style={[styles.resultsContainer, !resultData ? styles.hidden : {}]}>
-            {!loading && resultData && resultData !== undefined ? (
-              <>
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={() => handleResultsClose()}>
-                  <Image
-                    source={require('../../assets/images/askAi/close_button.png')}
-                    style={styles.closeButtonImage}
-                    resizeMode="contain"
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={handleResultsClose}>
+              <Image
+                source={require('../../assets/images/askAi/close_button.png')}
+                style={styles.closeButtonImage}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <View style={styles.row}>
+              <View
+                style={[
+                  styles.imageBackground,
+                  {width: logoSize.width, height: logoSize.height},
+                ]}>
+                <FastImage
+                  source={{uri: resultData?.logo || ''}}
+                  resizeMode={'contain'}
+                  style={styles.iconImage}
+                />
+              </View>
+              <Text style={styles.coinName}>{resultData?.name}</Text>
+            </View>
+            <View>
+              {resultData?.content.map((datum, index) => {
+                if (!datum.data || datum.title === 'success') return null;
+                return (
+                  <ValueBox
+                    key={index}
+                    title={datum.displayName}
+                    content={JSON.stringify(datum.data)}
+                    valueType={datum.valueType}
                   />
-                </TouchableOpacity>
-                <View style={styles.row}>
-                  <View
-                    style={[
-                      styles.imageBackground,
-                      {width: logoSize.width, height: logoSize.height},
-                    ]}>
-                    <FastImage
-                      source={{
-                        uri:
-                          resultData && resultData !== undefined
-                            ? resultData.logo
-                            : '',
-                      }}
-                      resizeMode={'contain'}
-                      style={styles.iconImage}
-                    />
-                  </View>
-                  <Text style={styles.coinName}>{resultData.name}</Text>
-                </View>
-                <View>
-                  {resultData.content.map((datum, index) => {
-                    if (datum.data === null || datum.title === 'success') {
-                      return;
-                    } else {
-                      return (
-                        <ValueBox
-                          key={index}
-                          title={datum.displayName}
-                          content={JSON.stringify(datum.data)}
-                          valueType={datum.valueType}
-                        />
-                      );
-                    }
-                  })}
-                </View>
-              </>
-            ) : (
-              <></>
-            )}
+                );
+              })}
+            </View>
           </View>
         )}
       </ScrollView>

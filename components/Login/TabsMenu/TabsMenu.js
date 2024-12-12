@@ -23,7 +23,11 @@ import {
   selectActiveCoin,
   selectActiveSubCoin,
 } from '../../../actions/categoriesActions';
-import { updateActiveSubCoin } from '../../../store/categoriesSlice';
+import {updateActiveSubCoin} from '../../../store/categoriesSlice';
+import {
+  fetchAskAiData,
+  fetchAvailableCoins,
+} from '../../../actions/askAiActions';
 
 // Note:
 // isLandscape -> The device is rotated horizontally
@@ -91,10 +95,15 @@ const TabsMenu = () => {
     };
   }, []);
 
+  // Hook to dispatch the ask ai available coins, for having them to make the initial searchs
+
+  useEffect(() => {
+    dispatch(fetchAvailableCoins());
+  }, [dispatch]);
+
   const handleActivePopUps = () => {
     setActivePopUps(false);
   };
-  console.log('isLandscape', isLandscape, 'isHorizontal', isHorizontal);
 
   return (
     <GestureHandlerRootView style={[{flex: 1}]}>

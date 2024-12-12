@@ -1,11 +1,11 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getTestService} from '../services/aiAlphaApi';
+import {getServiceV2, getTestService} from '../services/aiAlphaApi';
 
 export const fetchTop10Movers = createAsyncThunk(
   'home/fetchTop10Movers',
   async (_, {rejectWithValue}) => {
     try {
-      const data = await getTestService(`chart/top-movers`);
+      const data = await getServiceV2(`chart/top-movers`);
       if (data.success) {
         const top10CoinsInfo = data.data.top_10_gainers.map(coin => ({
           name:

@@ -35,7 +35,6 @@ const fundamentalsSlice = createSlice({
       return {...initialState};
     },
     setLastRequestedCoin(state, action) {
-      console.log('Setting coin to: ', action.payload);
       state.lastCoin = action.payload;
     },
   },

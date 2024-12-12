@@ -12,7 +12,6 @@ const aboutModalSlice = createSlice({
   reducers: {
     handleAboutPress: (state, action) => {
       const {description = null, title = null} = action.payload || {};
-      console.log('Dispatched the about modal: ', description, title);
       if (description) {
         state.aboutDescription = description;
       }

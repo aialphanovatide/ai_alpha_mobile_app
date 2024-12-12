@@ -41,6 +41,7 @@ import {
   selectAboutTitle,
   selectAboutVisible,
 } from '../../../../../../store/aboutSlice';
+import {fetchNews} from '../../../../../../actions/newsActions';
 
 const initialContentState = {
   introduction: false,
@@ -91,6 +92,11 @@ const Fundamentals = () => {
 
   useEffect(() => {
     dispatch(fetchFundamentalsData(activeSubCoin));
+    dispatch(
+      fetchNews({
+        botName: activeSubCoin,
+      }),
+    );
   }, [dispatch, activeSubCoin]);
 
   // Function to handle the about modal visibility and content based on the section that the user clicked on
@@ -129,16 +135,16 @@ const Fundamentals = () => {
     const currentOffset = event.nativeEvent.contentOffset.y;
     const diff = currentOffset - scrollOffset.current;
 
-    if (diff > 40 && currentOffset > 180) {
+    if (currentOffset > 200) {
       hideHeader('TopMenu');
       hideHeader('SubMenu');
-    } else if (diff < -40) {
+    } else if (currentOffset <= 200) {
       showHeader('TopMenu');
       showHeader('SubMenu');
     }
 
     scrollOffset.current = currentOffset;
-  }, 350);
+  }, 250);
 
   const onScroll = event => {
     event.persist();

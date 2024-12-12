@@ -3,7 +3,7 @@ import {useContext} from 'react';
 import {AppThemeContext} from '../../context/themeContext';
 
 const useAskAiStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     flex: {
       flex: 1,
@@ -32,7 +32,7 @@ const useAskAiStyles = () => {
       alignItems: 'center',
     },
     searchInput: {
-      width: 305,
+      width: '100%',
       paddingHorizontal: 12,
       marginVertical: 8,
       backgroundColor: theme.loginInputBgColor,
@@ -313,6 +313,34 @@ const useAskAiStyles = () => {
       marginLeft: 12,
       tintColor: theme.secondaryGrayColor,
     },
+    mainResultsContainer: {
+      width: '100%',
+      padding: 10,
+      backgroundColor: theme.boxesBackgroundColor,
+      borderRadius: 3,
+    },
+    resultsTitle: {
+      marginRight: 12,
+      fontSize: 12,
+      fontFamily: theme.font,
+      color: isDarkMode ? '#A3A3A3' : '#808080',
+      alignSelf: 'center',
+    },
+    titleLine: {
+      width: '75%',
+      alignSelf: 'center',
+      borderBottomColor: theme.secondaryGrayColor,
+      borderBottomWidth: 1,
+      marginVertical: 8,
+    },
+    loadMoreText: {
+      width: '25%',
+      fontSize: 12,
+      fontFamily: theme.fontMedium,
+      color: theme.secondaryTextColor,
+      alignSelf: 'center',
+    },
+    
   });
   return styles;
 };

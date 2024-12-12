@@ -1,22 +1,38 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {
-  Image,
+  Platform,
   SafeAreaView,
   ScrollView,
   Switch,
   Text,
-  TouchableOpacity,
+  UIManager,
   View,
 } from 'react-native';
 import BackButton from '../../BackButton/BackButton';
 import {AppThemeContext} from '../../../context/themeContext';
 import useNewNotificationsStyles from './NewNotificationsStyles';
 import {NOTIFICATIONS_MOCK} from '../../../assets/static_data/notificationsMock';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  loadSubscriptions,
+  selectNotifications,
+  toggleAllSubscriptions,
+  toggleSubscription,
+} from '../../../actions/notificationActions';
+import NotificationItem from './NotificationItem/NotificationItem';
 
-const INITIAL_OPTIONS = [
+// Configure the animations for the layout
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+export const INITIAL_NOTIFICATION_OPTIONS = [
   {
     name: 'News',
-    topic_tag: 'news',
+    topic_tag: 'analysis',
     isActive: true,
   },
   {
@@ -26,225 +42,89 @@ const INITIAL_OPTIONS = [
   },
   {
     name: 'S&R Lines',
-    topic_tag: 'sr_lines',
+    topic_tag: 's_and_r',
     isActive: true,
   },
   {
-    name: 'Fundamentals',
-    topic_tag: 'fundamentals',
+    name: 'Narrative Tradings',
+    topic_tag: 'narrative_trading',
     isActive: true,
   },
 ];
 
-const founders_static_identifiers = [
-  'baseblock_4999_m1',
-  'bitcoin_4999_m1',
-  'boostlayer_4999_m1',
-  'corechain_4999_m1',
-  'cycleswap_4999_m1',
-  'diversefi_4999_m1',
-  'ethereum_4999_m1',
-  'intellichain_4999_m1',
-  'lsds_4999_m1',
-  'nextrade_4999_m1',
-  'rootlink_4999_m1',
-  'truthnodes_4999_m1',
-  'xpayments_4999_m1',
-];
+const INTERVALS = ['1H', '4H'];
 
-const SwitchOption = ({
-  styles,
-  name,
-  handleToggle,
-  isActive,
-  isLastOption = false,
-}) => {
-  const {theme} = useContext(AppThemeContext);
-  return (
-    <View style={styles.switchRow}>
-      <View
-        style={{
-          flexDirection: 'row',
-          position: 'relative',
-          paddingVertical: 6,
-        }}>
-        <Text style={styles.optionTitle}>{name}</Text>
-        <View
-          style={[styles.switchContainer, {position: 'absolute', right: 0}]}>
-          <Switch
-            style={styles.switch}
-            trackColor={{true: '#52DD8D', false: '#D9D9D9'}}
-            ios_backgroundColor={theme.notificationsSwitchColor}
-            thumbColor={'#F6F7FB'}
-            value={isActive}
-            onValueChange={handleToggle}
-          />
-        </View>
-      </View>
-      {isLastOption ? <></> : <View style={styles.horizontalLine} />}
-    </View>
-  );
-};
-
-const NotificationsTimeFilter = ({
-  intervals,
-  handleIntervalChange,
-  activeIntervals,
-}) => {
-  const styles = useNewNotificationsStyles();
-
-  return (
-    <View style={styles.timeIntervalContainer}>
-      {intervals.map((interval, index) => {
-        return (
-          <TouchableOpacity
-            key={index}
-            onPress={() => handleIntervalChange(interval)}
-            style={[
-              styles.timeIntervalItem,
-              activeIntervals.some(item => item === interval) &&
-                styles.activeTimeIntervalItem,
-            ]}>
-            <Text
-              style={[
-                styles.timeIntervalNumber,
-                activeIntervals.some(item => item === interval) &&
-                  styles.activeTimeIntervalNumber,
-              ]}>
-              {interval}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
-};
-
-const NotificationItem = ({
-  item,
-  styles,
-  isActive,
-  hasImage,
-  optionsPerCoin = INITIAL_OPTIONS,
-}) => {
-  const [expanded, setExpanded] = useState(false);
-  const {isDarkMode} = useContext(AppThemeContext);
-  return expanded ? (
-    <View style={styles.expandedItem}>
-      <View
-        style={[
-          styles.row,
-          {
-            marginVertical: 0,
-            marginBottom: 0,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-          },
-        ]}>
-        {hasImage && (
-          <Image
-            style={styles.iconImage}
-            resizeMode="contain"
-            source={
-              isDarkMode
-                ? item.iconImage.dark.active
-                : item.iconImage.light.active
-            }
-          />
-        )}
-        <Text style={styles.itemName}>{item.name}</Text>
-        <TouchableOpacity
-          onPress={() => setExpanded(!expanded)}
-          style={styles.arrowContainer}>
-          <Image
-            source={
-              expanded
-                ? require('../../../assets/images/arrow-up.png')
-                : require('../../../assets/images/arrow-down.png')
-            }
-            style={styles.arrow}
-            resizeMode="contain"
-            fadeDuration={0}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.optionsContainer}>
-        {optionsPerCoin.map((option, index) => {
-          return (
-            <SwitchOption
-              styles={styles}
-              key={option.name}
-              name={option.name}
-              handleToggle={() => console.log('Status: ', option.isActive)}
-              isActive={option.isActive}
-              isLastOption={index === optionsPerCoin.length - 1}
-            />
-          );
-        })}
-      </View>
-    </View>
-  ) : (
-    <View style={styles.itemContainer}>
-      {hasImage && (
-        <Image
-          style={styles.iconImage}
-          resizeMode="contain"
-          source={
-            isDarkMode
-              ? item.iconImage.dark.active
-              : item.iconImage.light.active
-            // isDarkMode
-            //   ? require('assets/images/account/notificationsLogos/bitcoinDark.png')
-            //   : require('assets/images/account/notificationsLogos/bitcoinLight.png')
-          }
-        />
-      )}
-      <Text style={styles.itemName}>{item.name}</Text>
-      <TouchableOpacity
-        onPress={() => setExpanded(!expanded)}
-        style={styles.arrowContainer}>
-        <Image
-          source={
-            expanded
-              ? require('../../../assets/images/arrow-up.png')
-              : require('../../../assets/images/arrow-down.png')
-          }
-          style={styles.arrow}
-          resizeMode="contain"
-          fadeDuration={0}
-        />
-      </TouchableOpacity>
-    </View>
-  );
-};
+// Notifications panel component, it is used to display the notifications settings for the user.
 
 const NewNotificationsPanel = ({route}) => {
-  const options = NOTIFICATIONS_MOCK;
-  const {isDarkMode, theme} = useContext(AppThemeContext);
+  const {theme} = useContext(AppThemeContext);
   const styles = useNewNotificationsStyles();
-  const intervals = ['1H', '4H'];
   const [allToggled, setAllToggled] = useState(false);
-  const [activeIntervals, setActiveIntervals] = useState(['1H']);
+  const notificationsSubscriptions = useSelector(selectNotifications);
+  const dispatch = useDispatch();
 
-  const handleIntervalChange = interval => {
-    if (activeIntervals.some(item => item === interval)) {
-      const prevIntervals = activeIntervals.map(item => item !== interval);
-      setActiveIntervals(prevIntervals);
+  useEffect(() => {
+    // Load the state of the notifications, for the usage in the Notifications panel of the Account section
+    dispatch(loadSubscriptions());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Load the state of the notifications, for the usage in the Notifications panel of the Account section
+    const loadedAllToggled = Object.values(notificationsSubscriptions).every(
+      value => value === true,
+    );
+    setAllToggled(loadedAllToggled);
+  }, [notificationsSubscriptions]);
+
+  const handleToggleAll = () => {
+    dispatch(toggleAllSubscriptions(!allToggled));
+    setAllToggled(!allToggled);
+  };
+
+  // Function to handle the activation or deactivation the notifications subscription when the time interval is toggled
+
+  const handleToggleByIntervalsChange = (interval, category) => {
+    const notificationsStateKeys = Object.entries(notificationsSubscriptions);
+    const topicToDeactivate = notificationsStateKeys.find(
+      key =>
+        key[0].includes(interval) &&
+        key[0].includes(category) &&
+        key[1] === true,
+    );
+    console.log('Topic found to toggle:', topicToDeactivate);
+    if (
+      topicToDeactivate !== undefined &&
+      topicToDeactivate !== null &&
+      topicToDeactivate.length > 0
+    ) {
+      dispatch(toggleSubscription({topic: topicToDeactivate[0]}));
     } else {
-      const newIntervals = [...activeIntervals, interval];
-      setActiveIntervals(newIntervals);
+      console.log('Created topic: ', `${category}_alerts_${interval}`);
+      dispatch(toggleSubscription({topic: `${category}_alerts_${interval}`}));
+      return;
     }
   };
 
+  const options = useMemo(
+    () => route.params?.options || NOTIFICATIONS_MOCK,
+    [route.params],
+  );
   return (
     <SafeAreaView style={styles.container}>
       <BackButton />
       <Text style={styles.title}>Notifications</Text>
       <ScrollView style={styles.mainContainer}>
         <View
-          style={[styles.row, {justifyContent: 'space-between', padding: 8, paddingHorizontal: 24,}]}>
+          style={[
+            styles.row,
+            {
+              justifyContent: 'space-between',
+              padding: 8,
+              paddingHorizontal: 24,
+            },
+          ]}>
           {/* All Notifications switch */}
-          <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+          <View style={styles.allNotificationsRow}>
             <Text style={styles.subtitle}>All Notifications</Text>
             <View style={styles.allNotificationsSwitchContainer}>
               <Switch
@@ -254,28 +134,26 @@ const NewNotificationsPanel = ({route}) => {
                 ios_backgroundColor={theme.notificationsSwitchColor}
                 thumbColor={'#F6F7FB'}
                 value={allToggled}
-                onValueChange={setAllToggled}
+                onValueChange={() => handleToggleAll()}
               />
             </View>
           </View>
-          {/* Time intervals */}
-          <NotificationsTimeFilter
-            intervals={intervals}
-            handleIntervalChange={handleIntervalChange}
-            activeIntervals={activeIntervals}
-          />
         </View>
         <ScrollView
           style={styles.itemsContainer}
           showsVerticalScrollIndicator={false}
           bounces={false}>
-          {(options || route.params.options).map(item => (
+          {options.map(item => (
             <NotificationItem
               styles={styles}
               item={item}
               key={item.identifier}
               hasImage={true}
               isActive={true}
+              notificationsSubscriptions={notificationsSubscriptions}
+              timeframes={INTERVALS}
+              handleToggleByIntervalsChange={handleToggleByIntervalsChange}
+              allToggled={allToggled}
             />
           ))}
         </ScrollView>

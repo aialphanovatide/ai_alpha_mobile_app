@@ -285,11 +285,11 @@ const CandlestickChart = ({route}) => {
   const handleScroll = throttle(event => {
     const currentOffset = event.nativeEvent.contentOffset.y;
     const diff = currentOffset - scrollOffset.current;
-    if (diff > 20 && currentOffset > 160) {
+    if (currentOffset > 200) {
       hideHeader('TopMenu');
       hideHeader('SubMenu');
       hideHeader('FundNewsChartsMenu');
-    } else if (diff < -20) {
+    } else if (currentOffset <= 200) {
       showHeader('TopMenu');
       showHeader('SubMenu');
       showHeader('FundNewsChartsMenu');

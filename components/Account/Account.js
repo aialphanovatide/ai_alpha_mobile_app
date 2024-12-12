@@ -29,6 +29,7 @@ import {
   updateRawUserId,
 } from '../../store/userDataSlice';
 import {selectRawUserId} from '../../actions/userActions';
+import {loadSubscriptions} from '../../actions/notificationActions';
 
 // Component to display an item in the Account screen. It receives the styles, the option to display, a function to handle the touch of the item, and an optional component to display in the item. It returns a view with the logo, name, and an optional component or right arrow that executes the function.
 
@@ -77,7 +78,12 @@ const Account = ({route}) => {
   const rawUserId = useSelector(selectRawUserId);
   const [userImage, setUserImage] = useState(null);
   const [username, setUsername] = useState('');
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   // Load the state of the notifications, for the usage in the Notifications panel of the Account section
+  //   dispatch(loadSubscriptions());
+  // }, [dispatch]);
 
   useEffect(() => {
     const loadStoredData = async () => {

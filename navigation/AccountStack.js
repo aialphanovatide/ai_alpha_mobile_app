@@ -3,7 +3,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Account from '../components/Account/Account';
 import PackageSubscriptions from '../components/Account/PackageSubscriptions/PackageSubscriptions';
 import PrivacyPolicy from '../components/Account/LegalAndInformation/PrivacyPolicy/PrivacyPolicy';
-import NotificationsPanel from '../components/Account/NotificationsPanel/NotificationsPanel';
 import LegalAndInformation from '../components/Account/LegalAndInformation/LegalAndInformation';
 import Eula from '../components/Account/LegalAndInformation/Eula/Eula';
 import SettingsScreen from '../components/Account/SettingsScreen/SettingsScreen';
@@ -41,7 +40,7 @@ const AccountScreen = () => {
 
       <AccountStack.Screen
         name="Notifications"
-        component={NotificationsPanel}
+        component={NewNotificationsPanel}
         options={{
           animation: 'slide_from_right',
           animationDuration: 250,
