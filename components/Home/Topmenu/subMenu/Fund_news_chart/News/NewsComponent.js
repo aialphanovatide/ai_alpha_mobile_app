@@ -168,6 +168,7 @@ const NewsComponent = ({route}) => {
           <SkeletonLoader type="news" quantity={3} />
         ) : loading !== 'idle' &&
           (!allNews ||
+            Object.keys(allNews).length === 0 ||
             allNews === undefined ||
             allNews[botName][activeFilter] === undefined ||
             allNews[botName][activeFilter].length === 0) ? (

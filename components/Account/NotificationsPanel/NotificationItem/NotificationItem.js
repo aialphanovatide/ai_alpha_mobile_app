@@ -9,7 +9,7 @@ import {
   UIManager,
 } from 'react-native';
 import {AppThemeContext} from '../../../../context/themeContext';
-import {SwitchOption} from '../SwitchOption/SwitchOption';
+import SwitchOption from '../SwitchOption/SwitchOption.js';
 import {INITIAL_NOTIFICATION_OPTIONS} from '../NewNotificationsPanel';
 
 // Configure the animations for the layout
@@ -27,7 +27,6 @@ const NotificationItem = ({
   styles,
   hasImage,
   timeframes,
-  optionsPerCoin = INITIAL_NOTIFICATION_OPTIONS,
   handleToggleByIntervalsChange,
   notificationsSubscriptions,
   allToggled,
@@ -142,7 +141,7 @@ const NotificationItem = ({
         </TouchableOpacity>
       </View>
       <View style={styles.optionsContainer}>
-        {optionsPerCoin.map((option, index) => {
+        {INITIAL_NOTIFICATION_OPTIONS.map((option, index) => {
           return (
             <SwitchOption
               styles={styles}
@@ -151,7 +150,7 @@ const NotificationItem = ({
               optionTopic={option.topic_tag}
               categoryTopic={item.identifier}
               isActive={option.isActive}
-              isLastOption={index === optionsPerCoin.length - 1}
+              isLastOption={index === INITIAL_NOTIFICATION_OPTIONS.length - 1}
               timeframes={timeframes}
               activeIntervals={activeIntervals}
               handleIntervalChange={handleIntervalChange}

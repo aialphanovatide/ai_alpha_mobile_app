@@ -19,7 +19,7 @@ import {
   toggleAllSubscriptions,
   toggleSubscription,
 } from '../../../actions/notificationActions';
-import NotificationItem from './NotificationItem/NotificationItem';
+import NotificationItem from './NotificationItem/NotificationItem.js';
 
 // Configure the animations for the layout
 if (
@@ -105,10 +105,8 @@ const NewNotificationsPanel = ({route}) => {
     }
   };
 
-  const options = useMemo(
-    () => route.params?.options || NOTIFICATIONS_MOCK,
-    [route.params],
-  );
+  const options = NOTIFICATIONS_MOCK;
+
   return (
     <SafeAreaView style={styles.container}>
       <BackButton />

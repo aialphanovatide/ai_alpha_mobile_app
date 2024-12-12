@@ -4,6 +4,7 @@ import {
   API_BASE_URL_ALT_ENVVAR,
   NEWSBOTV2_BASE_URL_ENVVAR,
   TEST_API_URL_ENVVAR,
+  OLD_NEWSBOT_BASE_URL_ENVVAR,
 } from '@env';
 
 // Function to handle HTTP errors
@@ -160,6 +161,37 @@ export const getServiceV2 = async endpoint => {
 export const newsbotGetService = async endpoint => {
   try {
     const response = await fetch(`${NEWSBOTV2_BASE_URL_ENVVAR}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    if (response.status === 404) {
+      return [];
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error in GET request: ${error.message} for ${endpoint}`);
+    throw error;
+  }
+};
+
+// Function to make a get request to the old news Server, for retrieving Top Stories and News
+
+export const oldNewsbotGetService = async endpoint => {
+  try {
+    const response = await fetch(`${OLD_NEWSBOT_BASE_URL_ENVVAR}${endpoint}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
