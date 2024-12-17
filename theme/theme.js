@@ -269,4 +269,13 @@ export const darkThemeStyles = {
   notificationsHorizontalLineColor: '#737373',
   discordGreyColor: '#737373',
   scrollbarColor: '#A3A3A3',
+  fontFigtree: 'Figtree-Regular',
+  fontFigtreeBold: 'Figtree-Bold',
+  fontFigtreeMedium: 'Figtree-Medium',
+  fontFigtreeLight: 'Figtree-Light',
+  fontFigtreeBoldItalic: 'Figtree-BoldItalic',
+  fontFigtreeExtraBold: 'Figtree-ExtraBold',
+  fontFigtreeMediumItalic: 'Figtree-MediumItalic',
+  fontFigtreeSemibold: 'Figtree-SemiBold',
+  fontFigtreeSemiboldItalic: 'Figtree-SemiBoldItalic',
 };

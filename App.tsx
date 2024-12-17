@@ -15,7 +15,7 @@ import {AppThemeProvider} from './context/themeContext';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 import NetInfo from '@react-native-community/netinfo';
 import RNRestart from 'react-native-restart';
-import {getService} from './services/aiAlphaApi';
+import {getService, getServiceV2} from './services/aiAlphaApi';
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
@@ -158,7 +158,7 @@ const App = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const data = await getService('/get_categories');
+        const data = await getServiceV2('categories');
         setServerError(false);
         if (data.length === 0) {
           throw new Error(

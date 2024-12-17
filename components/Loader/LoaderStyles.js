@@ -5,7 +5,7 @@ import {AppThemeContext} from '../../context/themeContext';
 const {StyleSheet} = require('react-native');
 
 const useLoaderStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+  const {isDarkMode, theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     loaderContainer: {
       flex: 1,
@@ -242,17 +242,17 @@ const useLoaderStyles = () => {
       width: '100%',
       height: 135,
       borderRadius: 3,
-      backgroundColor: '#D9D9D9',
+      backgroundColor: isDarkMode ? '#52525B' : '#D9D9D9',
     },
     cardTitle: {
       height: 18,
       marginTop: 10,
-      backgroundColor: '#D9D9D9',
+      backgroundColor: isDarkMode ? '#52525B' : '#D9D9D9',
     },
     date: {
       height: 14,
       marginTop: 4,
-      backgroundColor: '#D9D9D9',
+      backgroundColor: isDarkMode ? '#52525B' : '#D9D9D9',
     },
     headerContainer: {
       width: '100%',
@@ -266,7 +266,7 @@ const useLoaderStyles = () => {
       height: '70%',
       marginTop: 8,
       borderRadius: 6,
-      backgroundColor: '#D9D9D9',
+      backgroundColor: isDarkMode ? '#52525B' : '#D9D9D9',
     },
     headerContent: {
       padding: 10,
@@ -274,7 +274,7 @@ const useLoaderStyles = () => {
     headerTitle: {
       height: 22,
       marginBottom: 4,
-      backgroundColor: '#D9D9D9',
+      backgroundColor: isDarkMode ? '#52525B' : '#D9D9D9',
     },
     newsItem: {
       flexDirection: 'row',
@@ -286,7 +286,7 @@ const useLoaderStyles = () => {
       height: 60,
       borderRadius: 6,
       marginRight: 12,
-      backgroundColor: '#D9D9D9',
+      backgroundColor: isDarkMode ? '#52525B' : '#D9D9D9',
     },
     newsContent: {
       flex: 1,
@@ -295,11 +295,11 @@ const useLoaderStyles = () => {
     newsTitle: {
       height: 14,
       marginBottom: 4,
-      backgroundColor: '#D9D9D9',
+      backgroundColor: isDarkMode ? '#52525B' : '#D9D9D9',
     },
     newsDate: {
       height: 12,
-      backgroundColor: '#D9D9D9',
+      backgroundColor: isDarkMode ? '#52525B' : '#D9D9D9',
     },
   });
   return styles;
