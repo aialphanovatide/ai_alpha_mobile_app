@@ -5,6 +5,8 @@ import {
   NEWSBOTV2_BASE_URL_ENVVAR,
   TEST_API_URL_ENVVAR,
   OLD_NEWSBOT_BASE_URL_ENVVAR,
+  AIALPHA2KEY_ENVVAR,
+  AIALPHA2KEYDEV_ENVVAR,
 } from '@env';
 
 // Function to handle HTTP errors
@@ -52,7 +54,7 @@ export const getTestService = async endpoint => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': 'alpha_3N2dAITKwbxJPyKts48e2KI6RVhvMZ0m_f04d',
+        'X-API-Key': AIALPHA2KEYDEV_ENVVAR,
       },
     });
 
@@ -121,6 +123,29 @@ export const postService = async (endpoint, data) => {
   }
 };
 
+// Function to make a POST request to the updated (21-10-2024) AI Alpha Server
+export const postServiceV2 = async (endpoint, data) => {
+  try {
+    const response = await fetch(
+      `${AIALPHASERVER_2_BASE_URL_ENVVAR}${endpoint}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': AIALPHA2KEY_ENVVAR,
+        },
+        body: JSON.stringify(data),
+      },
+    );
+
+    const res = await response.json();
+    return res;
+  } catch (error) {
+    console.error(`Error in POST request: ${error.message}`);
+    throw error;
+  }
+};
+
 // Function to make a get request using the updated (21-10-2024) AI Alpha Server
 
 export const getServiceV2 = async endpoint => {
@@ -131,7 +156,7 @@ export const getServiceV2 = async endpoint => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': 'alpha_zx24ws3-2zXv2sy6JrRWs-4ob3HhWKNL_5290',
+          'X-API-KEY': AIALPHA2KEY_ENVVAR,
         },
       },
     );

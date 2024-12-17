@@ -42,6 +42,46 @@ const SkeletonItem = ({style}) => {
   );
 };
 
+// Component to render a Skeleton container, which allows to contain another SkeletonItem components on it and also be animated
+
+const SkeletonContainer = ({style, children}) => {
+  const {theme} = useContext(AppThemeContext);
+  const pulseAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 0,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+  }, [pulseAnim]);
+
+  return (
+    <Animated.View
+      style={[
+        {
+          backgroundColor: theme.thirdBoxesBgColor,
+          opacity: pulseAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [1, 0.5],
+          }),
+        },
+        style,
+      ]}>
+      {children}
+    </Animated.View>
+  );
+};
+
 // Component that renders a skeleton loader. It receives a style prop to customize the loader, a type prop to define the type of skeleton loader to render, and a quantity prop to define the number of skeleton items to render. The component uses the SkeletonItem component to render the skeleton items, and there are different types of skeleton loaders available: item, news, circle, alerts, chart, text, bigItem, circleChart, timeline, dapps, competitors, selector, menu, calendar, search, fundingRates, timeframe, speedometer, and askAi, depending on the section where the skeleton loader is used.
 
 const SkeletonLoader = ({style, type = 'item', quantity = 1}) => {
@@ -462,6 +502,37 @@ const SkeletonLoader = ({style, type = 'item', quantity = 1}) => {
               ]}
             />
           </View>
+        </View>
+      ))}
+    </View>
+  ) : type === 'cards' ? (
+    Array.from({length: quantity}).map((_, index) => (
+      <SkeletonContainer key={index} style={[styles.deepDiveCard, style]}>
+        <SkeletonItem style={styles.cardImage} />
+        <View style={styles.cardContent}>
+          <SkeletonItem style={styles.cardTitle} />
+          <SkeletonItem style={styles.date} />
+        </View>
+      </SkeletonContainer>
+    ))
+  ) : type === 'stories' ? (
+    <View style={[style, {padding: 10}]}>
+      <SkeletonContainer style={styles.headerContainer}>
+        <SkeletonItem style={styles.headerImage} />
+        <View style={styles.headerContent}>
+          <SkeletonItem style={styles.headerTitle} />
+          <SkeletonItem style={styles.newsDate} />
+        </View>
+      </SkeletonContainer>
+      {Array.from({length: quantity}).map((_, index) => (
+        <View key={index}>
+          <SkeletonContainer style={[styles.newsItem]}>
+            <SkeletonItem style={styles.thumbnail} />
+            <View style={styles.newsContent}>
+              <SkeletonItem style={styles.newsTitle} />
+              <SkeletonItem style={styles.newsDate} />
+            </View>
+          </SkeletonContainer>
         </View>
       ))}
     </View>

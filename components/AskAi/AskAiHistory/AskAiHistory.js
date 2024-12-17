@@ -1,14 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import useAskAiStyles from '../AskAiStyles';
 import {SafeAreaView, Text, View} from 'react-native';
-import {Image, TouchableOpacity} from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {AboutIcon} from '../../AboutModal/AboutIcon';
 import AboutModal from '../../AboutModal/AboutModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from '../../BackButton/BackButton';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
-import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   handleAboutPress,
@@ -17,8 +13,8 @@ import {
   selectAboutTitle,
   selectAboutVisible,
 } from '../../../store/aboutSlice';
-import AskAiItem from '../AskAiItem/AskAiItem';
 import HistoryContent from './HistoryContent';
+import {loadAskAiData} from '../../../actions/askAiActions';
 
 const HISTORY_OPTIONS = [
   {
@@ -42,86 +38,13 @@ const HISTORY_OPTIONS = [
 
 const AskAiHistory = ({route, navigation}) => {
   const styles = useAskAiStyles();
-
-  const [activeHistoryOption, setActiveHistoryOption] = useState(
-    HISTORY_OPTIONS[0],
-  );
-  const [savedResults, setSavedResults] = useState([]);
-  const [filteredResults, setFilteredResults] = useState([]);
   const dispatch = useDispatch();
-
-  //  Hook to reset the search value state on every rendering
-  useEffect(() => {
-    setActiveHistoryOption(HISTORY_OPTIONS[0]);
-  }, []);
-
-  // Function to filter the items on the ASK AI History section by the selected category.
-
-  const filterHistoryItems = (option, items) => {
-    const filtered_items = [];
-
-    if (option.toLowerCase() === 'all') {
-      setFilteredResults(items);
-      return;
-    }
-
-    items.forEach(item => {
-      const itemCategories = item?.content?.find(
-        datum => datum.title.toLowerCase() === 'categories',
-      );
-      if (
-        itemCategories &&
-        itemCategories !== undefined &&
-        itemCategories?.data &&
-        itemCategories?.data?.length > 0 &&
-        itemCategories?.data?.toLowerCase().match(option.toLowerCase())
-      ) {
-        filtered_items.push(item);
-      }
-    });
-    setFilteredResults(filtered_items);
-    return;
-  };
-
-  // Function to handle the history section's active option change, filtering the coin searchs that are saved and loaded from the AsyncStorage to display them as items.
-
-  const handleHistoryOption = option => {
-    setActiveHistoryOption(option);
-    filterHistoryItems(option.name, savedResults);
-  };
-
-  // Function to clean the saved ASK AI section History data, removing all the items storaged on the user device's cache (Async Storage)
-
-  const handleHistoryClean = async () => {
-    try {
-      await AsyncStorage.removeItem('askAiData');
-      setSavedResults([]);
-      setFilteredResults([]);
-    } catch (error) {
-      console.error('Failed to clean the ASK AI History data: ', error);
-    }
-  };
 
   // Hook to load the saved data on every rendering of the section
 
   useEffect(() => {
-    const loadAskAiData = async () => {
-      try {
-        const loadedData = await AsyncStorage.getItem('askAiData');
-        if (loadedData) {
-          const parsedData = JSON.parse(loadedData);
-          setSavedResults(parsedData.reverse());
-          if (filteredResults.length === 0) {
-            setFilteredResults(parsedData);
-          }
-        }
-      } catch (error) {
-        console.error("There's no saved data for ASK AI Alpha section.");
-      }
-    };
-
-    loadAskAiData();
-  }, []);
+    dispatch(loadAskAiData());
+  }, [dispatch]);
 
   // Function to handle the pressing of the History section items, passing the data of the selected item to the main ASK AI section.
 
@@ -158,10 +81,6 @@ const AskAiHistory = ({route, navigation}) => {
       </View>
       <HistoryContent
         historyOptions={HISTORY_OPTIONS}
-        activeHistoryOption={activeHistoryOption}
-        handleHistoryOption={handleHistoryOption}
-        savedResults={filteredResults}
-        handleHistoryClean={handleHistoryClean}
         handleActiveResultData={handleActiveResultData}
       />
       <AboutModal

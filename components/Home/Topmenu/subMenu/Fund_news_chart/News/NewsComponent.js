@@ -22,6 +22,7 @@ import {
 } from '../../../../../../actions/categoriesActions';
 import {handleAboutPress} from '../../../../../../store/aboutSlice';
 import {
+  fetchNews,
   selectNews,
   selectNewsLoading,
 } from '../../../../../../actions/newsActions';
@@ -52,6 +53,11 @@ const NewsComponent = ({route}) => {
       activeCoin !== undefined
     ) {
       setBotName(activeSubCoin || activeCoin.coin_bots[0].bot_name);
+      dispatch(
+        fetchNews({
+          botName: activeSubCoin,
+        }),
+      );
     }
     setActiveFilter(options[1]);
   }, [activeCoin, activeSubCoin]);
@@ -129,6 +135,8 @@ const NewsComponent = ({route}) => {
     dispatch(handleAboutPress({description, title}));
   };
 
+  console.log('All news: ', allNews);
+
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>
       <ScrollView
@@ -172,7 +180,7 @@ const NewsComponent = ({route}) => {
             allNews === undefined ||
             allNews[botName][activeFilter] === undefined ||
             allNews[botName][activeFilter].length === 0) ? (
-              // If there's no content to show for the current time interval, show the NoContentDisclaimer component
+          // If there's no content to show for the current time interval, show the NoContentDisclaimer component
           <NoContentDisclaimer
             title={'Whoops, no matches.'}
             description={

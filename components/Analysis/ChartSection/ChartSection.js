@@ -26,8 +26,7 @@ import {
   VictoryLine,
   VictoryZoomContainer,
 } from 'victory-native';
-import {getService} from '../../../services/aiAlphaApi';
-import ChartButtons from './ChartButtons';
+import {getServiceV2} from '../../../services/aiAlphaApi';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import ClickOnCandleDetails from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/clickOnCandleDetails';
@@ -105,8 +104,8 @@ const ChartSection = ({route, navigation}) => {
 
   const getSupportAndResistanceData = async (coinBot, time_interval) => {
     try {
-      const response = await getService(
-        `/api/coin-support-resistance?coin_name=${coinBot}&temporality=${time_interval.toLowerCase()}&pair=usdt`,
+      const response = await getServiceV2(
+        `chart?coin_name=${coinBot}&temporality=${time_interval.toLowerCase()}&pair=usdt`,
       );
 
       const supportValues = [];

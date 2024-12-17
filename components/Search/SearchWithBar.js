@@ -9,16 +9,23 @@ import {
 } from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/SubSections/Competitors/coinsNames';
 import {useNavigation} from '@react-navigation/core';
 import AlertDetails from '../Alerts/AlertItem';
-import {getService} from '../../services/aiAlphaApi';
 import useAlertsStyles from '../Alerts/styles';
 import SkeletonLoader from '../Loader/SkeletonLoader';
 import SearchBar from './SearchBar/SearchBar';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
-import { selectCategories } from '../../actions/categoriesActions';
+import {selectCategories} from '../../actions/categoriesActions';
 import {selectDailyDeepDives} from '../../actions/dailyDeepDivesActions';
 import {selectMarketNarratives} from '../../actions/marketNarrativesActions';
-import { updateActiveCoin, updateActiveSubCoin } from '../../store/categoriesSlice';
+import {
+  updateActiveCoin,
+  updateActiveSubCoin,
+} from '../../store/categoriesSlice';
+import {
+  fetchAlertsByCoin,
+  selectAlertsByCoin,
+  selectMatchingAlerts,
+} from '../../actions/alertsActions';
 
 const SearchCryptoItem = ({
   crypto,
@@ -98,38 +105,17 @@ const SearchAnalysisItem = ({
 };
 
 const SearchAlertSection = ({currentText, loading}) => {
-  const [foundAlerts, setFoundAlerts] = useState([]);
+  const foundAlerts =
+    useSelector(selectMatchingAlerts({search: currentText})) || [];
   const styles = useSearchStyles();
   const alertsStyles = useAlertsStyles();
 
-  useEffect(() => {
-    const match = findCoinMatch(currentText.toUpperCase());
-    if (match && match !== undefined) {
-      fetchAlertsByCoin(match);
-    } else {
-      setFoundAlerts([]);
-    }
-  }, [currentText]);
-
-  const fetchAlertsByCoin = async match => {
-    try {
-      const response = await getService(
-        `/api/filter/alerts?coin=${match.symbol.toLowerCase()}&date=1w&limit=5`,
-      );
-
-      if (
-        response.length === 0 ||
-        response.message ||
-        response.alerts.length === 0
-      ) {
-        setFoundAlerts([]);
-      } else {
-        setFoundAlerts(response.alerts);
-      }
-    } catch (error) {
-      console.error('Error searching alerts:', error.message);
-    }
-  };
+  // useEffect(() => {
+  //   const match = findCoinMatch(currentText.toUpperCase());
+  //   if (match && match !== undefined) {
+  //     console.log('Finding alerts for:', match);
+  //   }
+  // }, [currentText, dispatch]);
 
   return (
     <View style={styles.cryptoSearch}>

@@ -1,6 +1,6 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getService } from "../services/aiAlphaApi";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {getServiceV2} from '../services/aiAlphaApi';
 
 // Asynchronous thunk to fetch fundamentals data for a specific coin, and store it in AsyncStorage
 export const fetchFundamentalsData = createAsyncThunk(
@@ -29,24 +29,24 @@ export const fetchFundamentalsData = createAsyncThunk(
         const endpoints = [
           {
             name: 'competitors',
-            url: `/api/get_competitors_by_coin_name?coin_name=${coin}`,
+            url: `api/get_competitors_by_coin_name?coin_name=${coin}`,
           },
-          {name: 'tokenomics', url: `/api/get_tokenomics?coin_name=${coin}`},
+          {name: 'tokenomics', url: `api/get_tokenomics?coin_name=${coin}`},
           {
             name: 'introduction',
-            url: `/api/get_introduction?coin_name=${coin}`,
+            url: `api/get_introduction?coin_name=${coin}`,
           },
           {
             name: 'revenueModels',
-            url: `/api/get_revenue_models?coin_name=${coin}`,
+            url: `api/get_revenue_models?coin_name=${coin}`,
           },
-          {name: 'hacks', url: `/api/hacks?coin_bot_name=${coin}`},
-          {name: 'upgrades', url: `/api/get_upgrades?coin_name=${coin}`},
-          {name: 'dapps', url: `/api/dapps?coin_bot_name=${coin}`},
+          {name: 'hacks', url: `api/hacks?coin_bot_name=${coin}`},
+          {name: 'upgrades', url: `api/get_upgrades?coin_name=${coin}`},
+          {name: 'dapps', url: `api/dapps?coin_bot_name=${coin}`},
         ];
 
         const results = await Promise.all(
-          endpoints.map(endpoint => getService(endpoint.url)),
+          endpoints.map(endpoint => getServiceV2(endpoint.url)),
         );
 
         const data = {

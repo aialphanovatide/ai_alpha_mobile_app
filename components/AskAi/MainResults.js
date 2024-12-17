@@ -7,21 +7,37 @@ import AskAiItem from './AskAiItem/AskAiItem';
 import NoContentDisclaimer from '../NoContentDisclaimer/NoContentDisclaimer';
 import {fetchAskAiData, selectAvailableCoins} from '../../actions/askAiActions';
 
+// Constant for the suggested coins
+
+const SUGGESTED_COINS = [
+  'bitcoin',
+  'ethereum',
+  'cardano',
+  'solana',
+  'litecoin',
+];
+
 const MainResults = ({data, isInputFocused, searchText, setResultData}) => {
   const availableCoins = useSelector(selectAvailableCoins);
   const styles = useAskAiStyles();
   const navigation = useNavigation();
   const PAGE_SIZE = 5;
   const filteredData = useMemo(() => {
-    return searchText
-      ? availableCoins
-          .filter(
-            coin =>
-              coin.name.toLowerCase().includes(searchText.toLowerCase()) ||
-              coin.symbol.toLowerCase().includes(searchText.toLowerCase()),
-          )
-          .slice(0, PAGE_SIZE)
+    const filteredCoins = searchText
+      ? availableCoins.filter(
+          coin =>
+            coin.name.toLowerCase().includes(searchText.toLowerCase()) ||
+            coin.symbol.toLowerCase().includes(searchText.toLowerCase()),
+        )
       : availableCoins.slice(0, PAGE_SIZE);
+    // search the suggested coins that matches the current texts and include it in the first results, for displaying them before the rest of the results
+    const suggestedCoins = SUGGESTED_COINS.map(coinName =>
+      availableCoins.find(
+        coin =>
+          coin.name.toLowerCase() === coinName && coinName.includes(searchText),
+      ),
+    ).filter(coin => coin);
+    return [...suggestedCoins, ...filteredCoins].slice(0, PAGE_SIZE);
   }, [availableCoins, searchText]);
 
   const dispatch = useDispatch();
@@ -31,9 +47,7 @@ const MainResults = ({data, isInputFocused, searchText, setResultData}) => {
   const suggestedData = useMemo(() => {
     return (
       availableCoins?.filter(result =>
-        ['bitcoin', 'ethereum', 'cardano', 'solana', 'litecoin'].includes(
-          result.name.toLowerCase(),
-        ),
+        SUGGESTED_COINS.includes(result.name.toLowerCase()),
       ) || []
     );
   }, [availableCoins]);

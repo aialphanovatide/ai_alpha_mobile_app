@@ -11,8 +11,6 @@ import {
 } from '../../../../../../../actions/alertsActions';
 
 const AlertListComponent = ({botName, timeframe, styles}) => {
-  // const [alerts, setAlerts] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
   const alerts = useSelector(selectAlertsByCoin);
   const loading = useSelector(selectAlertsLoading);
   const dispatch = useDispatch();

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import useAskAiStyles from './AskAiStyles';
 import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
+import { AppThemeContext } from '../../context/themeContext';
 
 // Component of the input that the user will use to pass the text values of the search to the ASK AI Alpha endpoint.
 
@@ -12,6 +13,7 @@ const SearchInput = ({
   handleInputFocus,
 }) => {
   const styles = useAskAiStyles();
+  const {theme} = useContext(AppThemeContext);
   return (
     <View style={{width: '100%'}}>
       <View style={[styles.row, {position: 'relative', width: '100%'}]}>
@@ -39,14 +41,16 @@ const SearchInput = ({
             underlineColorAndroid={'transparent'}
             autoCapitalize={'words'}
             editable={loading !== 'idle'}
+            placeholder="Type here"
+            placeholderTextColor={theme.searchPlaceHolderColor}
           />
-          <Text
+          {/* <Text
             style={[
               styles.placeholderText,
               textValue !== '' ? {opacity: 0} : {},
             ]}>
             Type here
-          </Text>
+          </Text> */}
         </View>
         {/* <TouchableOpacity
             disabled={loading}

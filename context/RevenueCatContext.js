@@ -16,7 +16,9 @@ const RevenueCatContext = createContext();
 const RevenueCatProvider = ({children}) => {
   // const {activeCoin} = useContext(TopMenuContext);
   const activeCoin = useSelector(selectActiveCoin);
-  const [subscribed, setSubscribed] = useState(false);
+  // ONLY FOR FREE SUBSCRIPTIONS PERIOD - TURN THE DEFAULT VALUE TO false WHEN 2025 FREE SUBSCRIPTIONS PERIOD ENDS
+  // const [subscribed, setSubscribed] = useState(false);
+  const [subscribed, setSubscribed] = useState(true);
   const [packages, setPackages] = useState([]);
   const [userInfo, setUserInfo] = useState({
     id: '',

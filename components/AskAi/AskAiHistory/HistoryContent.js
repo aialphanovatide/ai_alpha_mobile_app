@@ -1,20 +1,75 @@
 // Component to display the History section's content on the ASK AI History section. It renders the items that are saved on the user device's cache (Async Storage) and displays them as clickable items. The user can filter the items by category and clean the history data. It receives the activeHistoryOption, historyOptions, handleHistoryOption, handleActiveResultData, savedResults, and handleHistoryClean functions as props.
 
-import React from 'react';
+import React, {useState} from 'react';
 import {View, TouchableOpacity, Text, Image} from 'react-native';
 import AskAiItem from '../AskAiItem/AskAiItem';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import useAskAiStyles from '../AskAiStyles';
+import {selectSavedResults} from '../../../actions/askAiActions';
+import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {resetSavedResults} from '../../../store/askAiSlice';
 
-const HistoryContent = ({
-  activeHistoryOption,
-  historyOptions,
-  handleHistoryOption,
-  handleActiveResultData,
-  savedResults,
-  handleHistoryClean,
-}) => {
+const HistoryContent = ({historyOptions, handleActiveResultData}) => {
+  const dispatch = useDispatch();
+  const savedResults = useSelector(selectSavedResults);
+
   const styles = useAskAiStyles();
+
+  const [activeHistoryOption, setActiveHistoryOption] = useState(
+    historyOptions[0],
+  );
+  const [filteredResults, setFilteredResults] = useState(savedResults);
+
+  // Function to filter the items on the ASK AI History section by the selected category.
+
+  const filterHistoryItems = (option, items) => {
+    const filtered_items = [];
+
+    if (option.toLowerCase() === 'all') {
+      setFilteredResults(items);
+      return;
+    }
+
+    items.forEach(item => {
+      const itemCategories = item?.content?.find(
+        datum => datum.title.toLowerCase() === 'categories',
+      );
+      if (
+        itemCategories &&
+        itemCategories !== undefined &&
+        itemCategories?.data?.length > 0
+      ) {
+        itemCategories.data.forEach(category => {
+          if (category.toLowerCase().includes(option.toLowerCase())) {
+            filtered_items.push(item);
+          }
+        });
+      }
+    });
+    setFilteredResults(filtered_items);
+    return;
+  };
+
+  // Function to handle the history section's active option change, filtering the coin searchs that are saved and loaded from the AsyncStorage to display them as items.
+
+  const handleHistoryOption = option => {
+    setActiveHistoryOption(option);
+    filterHistoryItems(option.name, savedResults);
+  };
+
+  // Function to clean the saved ASK AI section History data, removing all the items storaged on the user device's cache (Async Storage)
+
+  const handleHistoryClean = async () => {
+    try {
+      await AsyncStorage.removeItem('askAiData');
+      setFilteredResults([]);
+      dispatch(resetSavedResults());
+    } catch (error) {
+      console.error('Failed to clean the ASK AI History data: ', error);
+    }
+  };
+
   const menuButtonWidth = 100 / historyOptions.length;
 
   return (
@@ -55,8 +110,8 @@ const HistoryContent = ({
       </View>
       <View style={styles.historyItemsContainer}>
         <View>
-          {savedResults && savedResults.length > 0 ? (
-            savedResults.map((coin, index) => {
+          {filteredResults && filteredResults.length > 0 ? (
+            filteredResults.map((coin, index) => {
               if (!coin || !coin.content) {
                 return null;
               }

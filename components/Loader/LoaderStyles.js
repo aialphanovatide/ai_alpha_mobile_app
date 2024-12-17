@@ -15,7 +15,6 @@ const useLoaderStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
-      // backgroundColor: theme.mainBackgroundColor,
     },
     loadingText: {
       marginTop: 10,
@@ -229,6 +228,78 @@ const useLoaderStyles = () => {
       left: 100,
       backgroundColor: theme.chartsAxisColor,
       borderRadius: 1,
+    },
+    deepDiveCard: {
+      width: 220,
+      height: 270,
+      padding: 10,
+      margin: 8,
+      justifyContent: 'center',
+      backgroundColor: theme.thirdBoxesBgColor,
+      borderRadius: 6,
+    },
+    cardImage: {
+      width: '100%',
+      height: 135,
+      borderRadius: 3,
+      backgroundColor: '#D9D9D9',
+    },
+    cardTitle: {
+      height: 18,
+      marginTop: 10,
+      backgroundColor: '#D9D9D9',
+    },
+    date: {
+      height: 14,
+      marginTop: 4,
+      backgroundColor: '#D9D9D9',
+    },
+    headerContainer: {
+      width: '100%',
+      height: theme.width * 0.6,
+      padding: 10,
+      paddingTop: 0,
+      marginBottom: 16,
+    },
+    headerImage: {
+      width: '100%',
+      height: '70%',
+      marginTop: 8,
+      borderRadius: 6,
+      backgroundColor: '#D9D9D9',
+    },
+    headerContent: {
+      padding: 10,
+    },
+    headerTitle: {
+      height: 22,
+      marginBottom: 4,
+      backgroundColor: '#D9D9D9',
+    },
+    newsItem: {
+      flexDirection: 'row',
+      padding: 10,
+      marginVertical: 4,
+    },
+    thumbnail: {
+      width: 60,
+      height: 60,
+      borderRadius: 6,
+      marginRight: 12,
+      backgroundColor: '#D9D9D9',
+    },
+    newsContent: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+    newsTitle: {
+      height: 14,
+      marginBottom: 4,
+      backgroundColor: '#D9D9D9',
+    },
+    newsDate: {
+      height: 12,
+      backgroundColor: '#D9D9D9',
     },
   });
   return styles;

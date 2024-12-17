@@ -2,8 +2,6 @@ import {PROFIT_COM_API_KEY_ENVVAR} from '@env';
 
 const COINDAR_API_KEY = '78201:QAGjCPV2ddtwztI0U1x';
 /*
-const PROFIT_COM_API_KEY = 'f5b148c5fa2e4b228731a9a2becd50fe';
-
 Helpers
 Function to get the date range for using it on CoinDar
 */

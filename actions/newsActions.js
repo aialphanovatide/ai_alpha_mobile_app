@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {newsbotGetService, oldNewsBotGetService} from '../services/aiAlphaApi';
+import {oldNewsbotGetService} from '../services/aiAlphaApi';
 
 // Function to filter the news by the date
 const filterNewsByDate = (news, filter) => {
@@ -49,17 +49,18 @@ export const fetchNews = createAsyncThunk(
         ? 'This Week'
         : 'This Month';
       const [firstResponse, secondResponse] = await Promise.all([
-        oldNewsBotGetService(endpoints.Today),
-        oldNewsBotGetService(endpoints[secondFilter]),
+        oldNewsbotGetService(endpoints.Today),
+        oldNewsbotGetService(endpoints[secondFilter]),
       ]);
+
       if (!firstResponse.success || !secondResponse.success) {
-        const errorMessage =
-          firstResponse.error?.message ||
-          secondResponse.error?.message ||
-          'Failed to fetch news';
-        return rejectWithValue(errorMessage);
+        throw new Error(
+          `Error fetching news:
+          ${firstResponse.error}
+          ${secondResponse.error}`,
+        );
       }
-      // console.log('Responses: ', firstResponse, secondResponse);
+
       const filteredTodayArticles = filterNewsByDate(
         firstResponse.data,
         'Today',
@@ -68,11 +69,6 @@ export const fetchNews = createAsyncThunk(
         secondResponse.data,
         secondFilter,
       );
-      // console.log(
-      //   'Filtered articles: ',
-      //   filteredTodayArticles,
-      //   filteredSecondFilterArticles,
-      // );
       return {
         articles: {
           Today: filteredTodayArticles,
@@ -81,6 +77,7 @@ export const fetchNews = createAsyncThunk(
         botName,
       };
     } catch (error) {
+      console.error('Error: ', error);
       return rejectWithValue(error.message || 'Something went wrong');
     }
   },
@@ -94,11 +91,7 @@ export const fetchNews = createAsyncThunk(
       const hasSecondFilterData =
         articlesByBotName[botName]?.[secondFilter]?.length > 0;
       // console.log('Has news data result:', hasTodayData, hasSecondFilterData);
-      if (
-        (loading === 'succeeded' || loading === 'failed') &&
-        hasTodayData &&
-        hasSecondFilterData
-      ) {
+      if (loading === 'succeeded' && hasTodayData && hasSecondFilterData) {
         return false;
       }
     },

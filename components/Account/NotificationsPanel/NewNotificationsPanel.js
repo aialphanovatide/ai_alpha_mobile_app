@@ -47,7 +47,7 @@ export const INITIAL_NOTIFICATION_OPTIONS = [
   },
   {
     name: 'Narrative Tradings',
-    topic_tag: 'narrative_trading',
+    topic_tag: 'narratives',
     isActive: true,
   },
 ];

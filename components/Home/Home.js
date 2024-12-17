@@ -39,6 +39,8 @@ import {
   selectAboutTitle,
   selectAboutVisible,
 } from '../../store/aboutSlice';
+import NewDailyDeepDives from './Analysis/NewDailyDeepDives/NewDailyDeepDives';
+import NewTopStories from './TopStories/NewTopStories';
 
 // FreePopup component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 
@@ -261,8 +263,10 @@ const Home = ({route}) => {
             setVisible={setSubscriptionPopUpsVisible}
           />
           <TickerTape />
-          <WhatsHappeningToday handleAboutPress={toggleAbout} />
-          <DailyDeepDives handleAboutPress={toggleAbout} />
+          <NewTopStories />
+          {/* <WhatsHappeningToday handleAboutPress={toggleAbout} /> */}
+          <NewDailyDeepDives />
+          {/* <DailyDeepDives handleAboutPress={toggleAbout} /> */}
           <NarrativeTradings handleAboutPress={toggleAbout} />
           <TopTenGainers handleAboutPress={toggleAbout} />
           <TopTenLosers handleAboutPress={toggleAbout} />

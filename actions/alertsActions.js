@@ -13,6 +13,7 @@ export const fetchAlertsByCoin = createAsyncThunk(
         timeframe: timeInterval,
       };
       const response = await postServiceV2(`alerts/coins`, body);
+      // console.log(`Response for the value ${coins}:`, response);
       if (!response || !response?.coins) {
         return [];
       }
@@ -83,7 +84,6 @@ export const fetchAlertsByAllCategories = createAsyncThunk(
       if (!response || Object.keys(response).length === 0) {
         return [];
       }
-
       const mappedAlerts = Object.values(response.categories).flatMap(
         category => category.data,
       );
@@ -113,3 +113,8 @@ export const selectAlerts = state => state.alerts.alerts;
 export const selectAlertsByCoin = state => state.alerts.alertsByCoin;
 
 export const selectAlertsLoading = state => state.alerts.loading;
+
+export const selectMatchingAlerts = (state, {search}) => {
+  const alerts = state.alerts.alerts;
+  return alerts.filter(alert => alert.symbol.includes(search));
+};

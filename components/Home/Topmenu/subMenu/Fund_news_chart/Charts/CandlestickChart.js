@@ -30,6 +30,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/core';
 import useChartsSource from '../../../../../../hooks/useChartsSource';
 import {
   getService,
+  getServiceV2,
   getTestService,
 } from '../../../../../../services/aiAlphaApi';
 import CWChart from './NewCharts/CWChart';
@@ -186,7 +187,7 @@ const CandlestickChart = ({route}) => {
       //     pairing === 'USDT' ? 'usd' : pairing.toLowerCase()
       //   }&interval=${interval.toLowerCase()}&precision=8`,
       // );
-      const response = await getTestService(
+      const response = await getServiceV2(
         `chart/ohlc?gecko_id=${
           coinName.toLowerCase() === 'pol' ? 'polygon' : coinName.toLowerCase()
         }&symbol=${
@@ -393,7 +394,7 @@ const CandlestickChart = ({route}) => {
           botName={activeSubCoin ? activeSubCoin : coinBot}
           styles={styles}
         />
-        {!subscribed && <UpgradeOverlay isCharts={true} />}
+        {/* {!subscribed && <UpgradeOverlay isCharts={true} />} */}
       </ScrollView>
     </LinearGradient>
   );

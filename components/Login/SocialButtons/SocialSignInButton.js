@@ -43,8 +43,8 @@ const SocialSignInButton = ({handleLoadingChange}) => {
   }, []);
 
   const auth0 = new Auth0({
-    domain: AUTH0_DOMAIN_ENVVAR,
-    clientId: AUTH0_CLIENT_ENVVAR,
+    domain: 'dev-zoejuo0jssw5jiid.us.auth0.com',
+    clientId: 'K5bEigOfEtz4Devpc7kiZSYzzemPLIlg',
   });
 
   const formatUserId = user_id => {
