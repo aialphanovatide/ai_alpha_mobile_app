@@ -25,13 +25,11 @@ import {
   selectAboutVisible,
 } from '../../store/aboutSlice';
 import {
-  fetchAskAiData,
   loadAskAiData,
   selectAskAiLoading,
   selectCurrentResult,
   selectSavedResults,
 } from '../../actions/askAiActions';
-import {RESULTS_MOCK} from '../../assets/static_data/askAiMockedData';
 import SearchInput from './SearchInput';
 import MainResults from './MainResults';
 import ValueBox from './ValueBox';
@@ -167,7 +165,7 @@ const AskAiMain = ({route, navigation}) => {
             style={[styles.resultsContainer, !resultData ? styles.hidden : {}]}>
             <TouchableOpacity
               style={styles.closeButton}
-              onPress={handleResultsClose}>
+              onPress={() => handleResultsClose()}>
               <Image
                 source={require('../../assets/images/askAi/close_button.png')}
                 style={styles.closeButtonImage}

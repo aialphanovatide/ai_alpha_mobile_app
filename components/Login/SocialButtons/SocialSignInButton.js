@@ -18,7 +18,9 @@ import {useNavigation} from '@react-navigation/native';
 import Auth0, {useAuth0, Auth0Provider} from 'react-native-auth0';
 
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+} from '@react-native-google-signin/google-signin';
 import {useDispatch} from 'react-redux';
 import {
   updateEmail,
@@ -33,14 +35,15 @@ const SocialSignInButton = ({handleLoadingChange}) => {
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
-      iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
-      androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
-      offlineAccess: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   console.log('Rendering the SocialSignInButton component');
+  //   GoogleSignin.configure({
+  //     webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
+  //     iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
+  //     androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
+  //     offlineAccess: true,
+  //   });
+  // }, []);
 
   const auth0 = new Auth0({
     domain: 'dev-zoejuo0jssw5jiid.us.auth0.com',
@@ -96,21 +99,61 @@ const SocialSignInButton = ({handleLoadingChange}) => {
   };
 
   const signInWithGoogle = async () => {
+    GoogleSignin.configure({
+      webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
+      iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
+      androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
+      offlineAccess: true,
+    });
+
     if (Platform.OS === 'android') {
       handleLoadingChange(true);
       // Handle Google Sign-In for Android using the Google Sign-In library
       try {
-        await GoogleSignin.hasPlayServices();
-        const userInfo = await GoogleSignin.signIn();
-        console.log('User Info: ', userInfo);
-        const userEmail = userInfo.user.email;
-        console.log('User Email: ', userEmail);
-        const userName = userInfo.user.name;
-        console.log('User Name: ', userName);
-        const userPhoto = userInfo.user.photo;
-        console.log('User Photo: ', userPhoto);
-        const userId = userInfo.user.id;
-        console.log('User Id: ', userId);
+        const loginResult = await GoogleSignin.hasPlayServices({
+          showPlayServicesUpdateDialog: true,
+        });
+
+        if (loginResult) {
+          const userInfo = await GoogleSignin.signIn();
+          const userEmail = userInfo.user.email;
+          const userName = userInfo.user.name;
+          const userPhoto = userInfo.user.photo;
+          const userId = userInfo.user.id;
+          const {idToken, user} = userInfo;
+          
+          await AsyncStorage.setItem('accessToken', idToken);
+          await AsyncStorage.setItem('userEmail', user.email);
+          await AsyncStorage.setItem('rawUserId', user.id);
+          await AsyncStorage.setItem('userId', user.id);
+
+          updateUserEmail(user.email);
+          dispatch(updateRawUserId(user.id));
+          dispatch(updateEmail(user.email));
+          dispatch(updateUserId(user.id));
+
+          navigation.navigate('TabsMenu');
+
+          const response = await fetch(`https://aialpha.ngrok.io/register`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              auth0id: userId,
+              email: userEmail,
+              email_verified: 'false',
+              full_name: userName,
+              nickname: 'undefined',
+              picture: userPhoto,
+              provider: 'google-oauth2-android',
+            }),
+          });
+          const data = await response.json();
+
+          console.log(
+            '- Successfully registered/logged in the user with the following data: ',
+            data,
+          );
+        }
 
         /*
         const token = await getManagementApiToken();
@@ -133,39 +176,10 @@ const SocialSignInButton = ({handleLoadingChange}) => {
         });
         const dataFromAuth0 = await responseFromAuth0.json();
         */
-        const {idToken, user} = userInfo;
-        await AsyncStorage.setItem('accessToken', idToken);
-        await AsyncStorage.setItem('userEmail', user.email);
-        await AsyncStorage.setItem('rawUserId', user.id);
-        await AsyncStorage.setItem('userId', user.id);
-
-        updateUserEmail(user.email);
-        dispatch(updateRawUserId(user.id));
-        dispatch(updateEmail(user.email));
-        dispatch(updateUserId(user.id));
-
-        navigation.navigate('TabsMenu');
-
-        const response = await fetch(`https://aialpha.ngrok.io/register`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            auth0id: userId,
-            email: userEmail,
-            email_verified: 'false',
-            full_name: userName,
-            nickname: 'undefined',
-            picture: userPhoto,
-            provider: 'google-oauth2-android',
-          }),
-        });
-        const data = await response.json();
-
-        console.log('DATA SENT TO BACKEND', data);
       } catch (error) {
         console.error(
           'Error during Google sign-in with GoogleSignin library:',
-          error,
+          JSON.stringify(error),
         );
       } finally {
         handleLoadingChange(false);
