@@ -41,7 +41,7 @@ const useCustomButtonStyles = () => {
       width: 300,
     },
     container_GOOGLE: {
-      width: 220,
+      width: '65%',
       backgroundColor: 'transparent',
       borderWidth: 1,
       borderColor: theme.orange,

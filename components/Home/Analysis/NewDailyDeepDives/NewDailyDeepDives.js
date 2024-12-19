@@ -11,6 +11,7 @@ import {
 } from '../../../../actions/dailyDeepDivesActions';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import DeepDiveCard from './DeepDiveCard';
+import NoContentDisclaimer from '../../../NoContentDisclaimer/NoContentDisclaimer';
 
 // Component to render the Daily Deep Dives section in the home screen. It receives the function to handle the navigation to the History section as a prop. It uses the Deep dives slice from the Redux store to fetch the articles' data and renders the items in the list.
 
@@ -80,32 +81,42 @@ const NewDailyDeepDives = () => {
           <Text style={styles.seeAllText}>See All →</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView
-        ref={scrollViewRef}
-        horizontal
-        nestedScrollEnabled
-        showsHorizontalScrollIndicator={false}
-        onScrollEndDrag={handleScroll}
-        scrollEventThrottle={50}
-        pagingEnabled
-        style={styles.deepDivesContainer}>
-        {loading === 'idle' ? (
-          <SkeletonLoader quantity={totalPages} type="cards" />
-        ) : (
-          deepDives
-            ?.slice(0, totalPages)
-            .map((item, index) => (
-              <DeepDiveCard
-                key={item.id}
-                item={item}
-                handleCardPress={handleCardPress}
-                itemNumber={index}
-                itemsAmount={totalPages}
-              />
-            ))
-        )}
-      </ScrollView>
-      <PaginationDots totalPages={totalPages} currentPage={currentPage} />
+      {loading !== 'idle' && deepDives.length === 0 ? (
+        <NoContentDisclaimer
+          title={'Whoops, something went wrong.'}
+          description={'Please try again in a little while.'}
+          type="error"
+        />
+      ) : (
+        <>
+          <ScrollView
+            ref={scrollViewRef}
+            horizontal
+            nestedScrollEnabled
+            showsHorizontalScrollIndicator={false}
+            onScrollEndDrag={handleScroll}
+            scrollEventThrottle={50}
+            pagingEnabled
+            style={styles.deepDivesContainer}>
+            {loading === 'idle' ? (
+              <SkeletonLoader quantity={totalPages} type="cards" />
+            ) : (
+              deepDives
+                ?.slice(0, totalPages)
+                .map((item, index) => (
+                  <DeepDiveCard
+                    key={item.id}
+                    item={item}
+                    handleCardPress={handleCardPress}
+                    itemNumber={index}
+                    itemsAmount={totalPages}
+                  />
+                ))
+            )}
+          </ScrollView>
+          <PaginationDots totalPages={totalPages} currentPage={currentPage} />
+        </>
+      )}
     </View>
   );
 };

@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "396673673378",
     "project_id": "ai-alpha-app",
-    "storage_bucket": "ai-alpha-app.appspot.com"
+    "storage_bucket": "ai-alpha-app.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +12,20 @@
           "package_name": "com.ai_alpha_mobile_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "396673673378-5ockddddltcfjss7js960mmo118hicid.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ai_alpha_mobile_app",
+            "certificate_hash": "97562a335f3265b2d5c9375c8ab8c285a0471071"
+          }
+        },
+        {
+          "client_id": "396673673378-pkvf1ui7u0gsgsf2ksr4qah8cjgt5qjp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDUYfkBYNHlSkVw_r1S6ZT60HEDRaLS77E"
@@ -20,7 +33,20 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "396673673378-pkvf1ui7u0gsgsf2ksr4qah8cjgt5qjp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "396673673378-7b3ba7oa62fp5c0edesqifp3hi9f1deh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aialphamobileapp",
+                "app_store_id": "6473463625"
+              }
+            }
+          ]
         }
       }
     }

@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {useContext} from 'react';
 import {AppThemeContext} from '../../context/themeContext';
 
@@ -252,6 +252,7 @@ const useAskAiStyles = () => {
     historyItemsContainer: {
       width: '100%',
       marginVertical: 8,
+      padding: Platform.OS === 'ios' ? 10 : 0,
     },
     historyItem: {
       position: 'relative',
@@ -303,8 +304,8 @@ const useAskAiStyles = () => {
       position: 'absolute',
       top: 8,
       right: 24,
-      width: '12.5%',
-      height: '3.5%',
+      width: 40,
+      height: 40,
     },
     closeButtonImage: {
       width: 24,
@@ -312,6 +313,7 @@ const useAskAiStyles = () => {
       marginTop: 6,
       marginLeft: 12,
       tintColor: theme.secondaryGrayColor,
+      alignSelf: 'center',
     },
     mainResultsContainer: {
       width: '100%',
@@ -340,7 +342,6 @@ const useAskAiStyles = () => {
       color: theme.secondaryTextColor,
       alignSelf: 'center',
     },
-    
   });
   return styles;
 };

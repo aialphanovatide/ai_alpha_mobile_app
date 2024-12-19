@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import TickerTape from './Tickertape/TickerTape';
-import WhatsHappeningToday from './TopStories/WhatsHappeningToday.js';
 import TopTenGainers from './TopTenGainers/TopTenGainers';
 import useHomeStyles from './HomeStyles';
 import AboutModal from '../AboutModal/AboutModal';
@@ -24,7 +23,6 @@ import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 import useSubscriptionPopUpStyles from '../SubscriptionPopUps/SubscriptionPopUpStyles';
 import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
-import DailyDeepDives from './Analysis/DailyDeepDives.js';
 import {useScreenOrientation} from '../../hooks/useScreenOrientation';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchTopStories} from '../../actions/whatsHappeningTodayActions';

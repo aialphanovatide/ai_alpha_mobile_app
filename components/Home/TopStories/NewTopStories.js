@@ -18,6 +18,7 @@ import {
 import TopStoryItem from './TopStoryItem/TopStoryItem';
 import StoryHeader from './StoryHeader';
 import StoriesFilter from './StoriesFilter';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 
 const INTERVALS = ['1D', '1W', '1M'];
 
@@ -92,6 +93,15 @@ const NewTopStories = () => {
       </View>
       {loading === 'idle' ? (
         <SkeletonLoader quantity={4} type="stories" />
+      ) : loading !== 'idle' && stories.length === 0 ? (
+        <NoContentDisclaimer
+          title={'Whoops, something went wrong.'}
+          description={'Please try again in a little while.'}
+          type="error"
+          additionalStyles={{
+            disclaimer: {marginVertical: '5%', paddingVertical: 16},
+          }}
+        />
       ) : (
         <>
           <StoryHeader
