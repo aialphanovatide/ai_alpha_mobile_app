@@ -18,15 +18,15 @@ import {useNavigation} from '@react-navigation/native';
 import Auth0, {useAuth0, Auth0Provider} from 'react-native-auth0';
 
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
-import {
-  GoogleSignin,
-} from '@react-native-google-signin/google-signin';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useDispatch} from 'react-redux';
 import {
   updateEmail,
   updateRawUserId,
   updateUserId,
 } from '../../../store/userDataSlice';
+
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 const SocialSignInButton = ({handleLoadingChange}) => {
   const [loggedInUser, setloggedInUser] = useState(null);
@@ -35,15 +35,14 @@ const SocialSignInButton = ({handleLoadingChange}) => {
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   console.log('Rendering the SocialSignInButton component');
-  //   GoogleSignin.configure({
-  //     webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
-  //     iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
-  //     androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
-  //     offlineAccess: true,
-  //   });
-  // }, []);
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
+      // iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
+      // androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
+      offlineAccess: true,
+    });
+  }, []);
 
   const auth0 = new Auth0({
     domain: 'dev-zoejuo0jssw5jiid.us.auth0.com',
@@ -98,6 +97,73 @@ const SocialSignInButton = ({handleLoadingChange}) => {
     return data.access_token;
   };
 
+  // Function to sign in with Google using Firebase, aiming to solve the issues with the Android authentication
+
+  const signInWithGoogleFirebase = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+      const {type, data} = await GoogleSignin.signIn();
+      if (type === 'success') {
+        console.log('Succeeded login with Firebase!')
+        const idToken = data.idToken;
+        const {id, name, email, photo, familyName, givenName} = data.user;
+
+        // Create a Google credential with the token
+        const googleCredential = auth.GoogleAuthProvider.credential(
+          data.idToken,
+        );
+
+        await AsyncStorage.setItem('accessToken', idToken);
+        await AsyncStorage.setItem('userEmail', email);
+        await AsyncStorage.setItem('rawUserId', id);
+        await AsyncStorage.setItem('userId', id);
+        
+        console.log('Data: ', data);
+        updateUserEmail(email);
+        dispatch(updateRawUserId(id));
+        dispatch(updateEmail(email));
+        dispatch(updateUserId(id));
+
+        navigation.navigate('TabsMenu');
+
+        const response = await fetch(`https://aialpha.ngrok.io/register`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            auth0id: id,
+            email: email,
+            email_verified: 'false',
+            full_name: name,
+            nickname: 'undefined',
+            picture: photo,
+            provider: 'google-oauth2-android',
+          }),
+        });
+        const serverResponse = await response.json();
+
+        console.log(
+          '- Successfully registered/logged in the user with the following data: ',
+          serverResponse,
+        );
+
+        // Sign-in the user with the credential
+        return auth().signInWithCredential(googleCredential);
+      } else if (type === 'cancelled') {
+        // When the user cancels the flow for any operation that requires user interaction, do nothing
+        return;
+      }
+    } catch (error) {
+      console.error(
+        'Error during Google sign-in with Firebase:',
+        JSON.stringify(error),
+      );
+    }
+  };
+
+  // Function to sign in with Google withouth using Firebase, with the native configuration of Google Sign-In
+
   const signInWithGoogle = async () => {
     GoogleSignin.configure({
       webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
@@ -121,7 +187,7 @@ const SocialSignInButton = ({handleLoadingChange}) => {
           const userPhoto = userInfo.user.photo;
           const userId = userInfo.user.id;
           const {idToken, user} = userInfo;
-          
+
           await AsyncStorage.setItem('accessToken', idToken);
           await AsyncStorage.setItem('userEmail', user.email);
           await AsyncStorage.setItem('rawUserId', user.id);
@@ -339,7 +405,7 @@ const SocialSignInButton = ({handleLoadingChange}) => {
 
         <CustomButton
           text="Continue with Google"
-          onPress={() => signInWithGoogle()}
+          onPress={() => signInWithGoogleFirebase()}
           type="GOOGLE"
           disabled={loggedInUser !== null}
         />

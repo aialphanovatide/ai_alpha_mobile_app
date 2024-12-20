@@ -45,7 +45,7 @@ export const toggleAllSubscriptions = createAsyncThunk(
         for (const option of INITIAL_NOTIFICATION_OPTIONS) {
           let topic = `${item.identifier}_${option.topic_tag}`;
           if (option.topic_tag === 'alerts') {
-            ['1H', '4H'].forEach(interval => {
+            ['1D', '1W'].forEach(interval => {
               topic = `${item.identifier}_${option.topic_tag}_${interval}`;
               topicsToSubscribe.push(topic);
             });

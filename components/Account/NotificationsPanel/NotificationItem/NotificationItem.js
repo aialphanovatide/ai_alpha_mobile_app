@@ -33,7 +33,7 @@ const NotificationItem = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const {isDarkMode} = useContext(AppThemeContext);
-  const [activeIntervals, setActiveIntervals] = useState(['1H']);
+  const [activeIntervals, setActiveIntervals] = useState(['1D']);
 
   // Function to handle the expansion of the item when clicking on it to show the options, it triggers the LayoutAnimation to animate the expansion
 
@@ -73,7 +73,7 @@ const NotificationItem = ({
   useEffect(() => {
     loadActiveIntervals();
     if (allToggled) {
-      setActiveIntervals(['1H', '4H']);
+      setActiveIntervals(['1D', '1W']);
     }
   }, [allToggled]);
 

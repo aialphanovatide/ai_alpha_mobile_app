@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "396673673378-hmd8ng6chgldph8g7co8sc7h9o6vtift.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ai_alpha_mobile_app",
+            "certificate_hash": "ea2b368ffe286cfe49334554afffabce5db003e8"
+          }
+        },
+        {
           "client_id": "396673673378-pkvf1ui7u0gsgsf2ksr4qah8cjgt5qjp.apps.googleusercontent.com",
           "client_type": 3
         }

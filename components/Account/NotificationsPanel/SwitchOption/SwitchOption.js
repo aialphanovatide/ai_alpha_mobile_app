@@ -40,9 +40,9 @@ const SwitchOption = ({
         });
       } else {
         dispatch(
-          toggleSubscription({topic: `${categoryTopic}_${optionTopic}_1H`}),
+          toggleSubscription({topic: `${categoryTopic}_${optionTopic}_1D`}),
         );
-        handleActiveIntervalByAlertSwitch('1H');
+        handleActiveIntervalByAlertSwitch('1D');
       }
     } else {
       dispatch(toggleSubscription({topic: `${categoryTopic}_${optionTopic}`}));

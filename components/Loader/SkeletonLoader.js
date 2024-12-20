@@ -536,6 +536,31 @@ const SkeletonLoader = ({style, type = 'item', quantity = 1}) => {
         </View>
       ))}
     </View>
+  ) : type === 'macro' ? (
+    <View>
+      <View style={styles.row}>
+        {Array.from({length: quantity / 2}).map((_, index) => (
+          <SkeletonContainer key={index} style={[styles.macroCard, style]}>
+            <SkeletonItem style={styles.macroCardImage} />
+            <View style={styles.cardContent}>
+              <SkeletonItem style={[styles.cardTitle, {height: 14}]} />
+              <SkeletonItem style={[styles.date, {height: 10}]} />
+            </View>
+          </SkeletonContainer>
+        ))}
+      </View>
+      <View style={styles.row}>
+        {Array.from({length: quantity / 2}).map((_, index) => (
+          <SkeletonContainer key={index} style={[styles.macroCard, style]}>
+            <SkeletonItem style={styles.macroCardImage} />
+            <View style={styles.cardContent}>
+              <SkeletonItem style={[styles.cardTitle, {height: 14}]} />
+              <SkeletonItem style={[styles.date, {height: 10}]} />
+            </View>
+          </SkeletonContainer>
+        ))}
+      </View>
+    </View>
   ) : (
     <></>
   );

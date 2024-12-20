@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
 const useCustomButtonStyles = () => {
@@ -41,7 +41,7 @@ const useCustomButtonStyles = () => {
       width: 300,
     },
     container_GOOGLE: {
-      width: '65%',
+      width: Platform.OS === 'android' ? '65%' : 220,
       backgroundColor: 'transparent',
       borderWidth: 1,
       borderColor: theme.orange,
