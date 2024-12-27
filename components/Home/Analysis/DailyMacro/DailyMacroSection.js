@@ -2,14 +2,13 @@ import React from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import useDailyMacroStyles from './DailyMacroStyles';
-import {DAILY_MACRO_DATA} from '../../../../assets/static_data/dailyDeepDivesMock';
 import {useNavigation} from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoContentDisclaimer from '../../../NoContentDisclaimer/NoContentDisclaimer';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import {
-  selectDailyDeepDives,
-  selectDailyDeepDivesLoading,
+  selectDailyMacros,
+  selectDailyMacrosLoading,
 } from '../../../../actions/dailyDeepDivesActions';
 import {useSelector} from 'react-redux';
 
@@ -29,12 +28,10 @@ const MacroNewsCard = ({item, handleCardPress}) => {
     <TouchableOpacity style={styles.flex} onPress={() => handleCardPress(item)}>
       <View style={styles.card}>
         <FastImage
-          source={
-                {
-                uri: `https://appanalysisimages.s3.us-east-2.amazonaws.com/${item.id}.jpg`,
-                priority: FastImage.priority.normal,
-              }
-          }
+          source={{
+            uri: `https://appanalysisimages.s3.us-east-2.amazonaws.com/${item.id}.jpg`,
+            priority: FastImage.priority.normal,
+          }}
           resizeMode="cover"
           style={styles.cardImage}
         />
@@ -54,8 +51,8 @@ const MacroNewsCard = ({item, handleCardPress}) => {
 const DailyMacroSection = () => {
   const styles = useDailyMacroStyles();
   const navigation = useNavigation();
-  const loading = useSelector(selectDailyDeepDivesLoading);
-  const macroData = useSelector(selectDailyDeepDives).slice(6, 10);
+  const loading = useSelector(selectDailyMacrosLoading);
+  const macroData = useSelector(selectDailyMacros).slice(0, 4);
 
   // Function to handle the navigation to the full Analysis article when pressing it, saving the item with the current date for filtering the articles on the History section later
 
@@ -109,7 +106,12 @@ const DailyMacroSection = () => {
       </View>
       {loading === 'idle' ? (
         <SkeletonLoader type="macro" quantity={4} />
-      ) : loading !== 'idle' && macroData.length === 0 ? (
+      ) : loading === 'succeeded' && macroData.length === 0 ? (
+        <NoContentDisclaimer
+          title={'Whoops, no results.'}
+          description={`We couldn’t find any results.\nGive it another go.`}
+        />
+      ) : loading !== 'succeeded' && macroData.length === 0 ? (
         <NoContentDisclaimer
           title={'Whoops, something went wrong.'}
           description={'Please try again in a little while.'}

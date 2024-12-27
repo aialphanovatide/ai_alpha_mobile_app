@@ -27,7 +27,7 @@ import {useScreenOrientation} from '../../hooks/useScreenOrientation';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchTopStories} from '../../actions/whatsHappeningTodayActions';
 import {fetchTop10Movers} from '../../actions/topTenMoversActions';
-import {fetchDailyDeepDivesData} from '../../actions/dailyDeepDivesActions';
+import {fetchDailyDeepDivesData, fetchDailyMacros} from '../../actions/dailyDeepDivesActions';
 import {fetchMarketNarratives} from '../../actions/marketNarrativesActions';
 import {selectRawUserId} from '../../actions/userActions';
 import {
@@ -133,8 +133,9 @@ const Home = ({route}) => {
 
   useEffect(() => {
     dispatch(fetchTop10Movers());
-    dispatch(fetchTopStories());
+    dispatch(fetchTopStories({timeframe: '1D'}));
     dispatch(fetchDailyDeepDivesData());
+    dispatch(fetchDailyMacros());
     dispatch(fetchMarketNarratives());
   }, [dispatch]);
 
@@ -266,10 +267,10 @@ const Home = ({route}) => {
           {/* <WhatsHappeningToday handleAboutPress={toggleAbout} /> */}
           <NewDailyDeepDives />
           {/* <DailyDeepDives handleAboutPress={toggleAbout} /> */}
+          <DailyMacroSection />
           <NarrativeTradings handleAboutPress={toggleAbout} />
           <TopTenGainers handleAboutPress={toggleAbout} />
           <TopTenLosers handleAboutPress={toggleAbout} />
-          <DailyMacroSection />
         </ScrollView>
       </SafeAreaView>
     </View>

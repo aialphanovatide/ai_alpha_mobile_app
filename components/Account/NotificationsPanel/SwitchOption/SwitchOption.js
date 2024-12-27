@@ -28,7 +28,7 @@ const SwitchOption = ({
   const dispatch = useDispatch();
 
   // Function to handle the toggle of the notifications subscription for the specific option, adding the case of handling the alerts switch that has the time intervals
-  const handleToggle = () => {
+  const handleToggle = async () => {
     if (optionTopic === 'alerts') {
       if (activeIntervals.length > 0) {
         activeIntervals.forEach(timeframe => {
@@ -37,6 +37,7 @@ const SwitchOption = ({
               topic: `${categoryTopic}_${optionTopic}_${timeframe}`,
             }),
           );
+          handleIntervalChange(timeframe, categoryTopic);
         });
       } else {
         dispatch(
@@ -44,6 +45,7 @@ const SwitchOption = ({
         );
         handleActiveIntervalByAlertSwitch('1D');
       }
+      return;
     } else {
       dispatch(toggleSubscription({topic: `${categoryTopic}_${optionTopic}`}));
     }

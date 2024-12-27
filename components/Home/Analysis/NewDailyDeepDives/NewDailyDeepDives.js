@@ -81,11 +81,22 @@ const NewDailyDeepDives = () => {
           <Text style={styles.seeAllText}>See All →</Text>
         </TouchableOpacity>
       </View>
-      {loading !== 'idle' && deepDives.length === 0 ? (
+      {loading === 'succeeded' && deepDives.length === 0 ? (
+        <NoContentDisclaimer
+          title={'Whoops, no results.'}
+          description={`We couldn’t find any results.\nGive it another go.`}
+          additionalStyles={{
+            disclaimer: {marginVertical: '5%', paddingVertical: 16},
+          }}
+        />
+      ) : loading !== 'succeeded' && deepDives.length === 0 ? (
         <NoContentDisclaimer
           title={'Whoops, something went wrong.'}
           description={'Please try again in a little while.'}
           type="error"
+          additionalStyles={{
+            disclaimer: {marginVertical: '5%', paddingVertical: 16},
+          }}
         />
       ) : (
         <>

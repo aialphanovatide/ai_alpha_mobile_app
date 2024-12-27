@@ -14,8 +14,6 @@ import {updateActiveSubCoin} from '../../../../store/categoriesSlice';
 // This component is used in the TopMenu component to show the subcoins of the selected coin. It receives a boolean to determine if it is the alerts menu or not. It returns a view with the subcoins as buttons.
 
 const SubMenu = ({isAlertsMenu}) => {
-  // const {activeCoin, activeSubCoin, updateActiveSubCoin} =
-  //   useContext(TopMenuContext);
   const activeCoin = useSelector(selectActiveCoin);
   const activeSubCoin = useSelector(selectActiveSubCoin);
   const navigation = useNavigation();

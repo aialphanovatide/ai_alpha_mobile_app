@@ -85,12 +85,13 @@ const NewNotificationsPanel = ({route}) => {
 
   const handleToggleByIntervalsChange = (interval, category) => {
     const notificationsStateKeys = Object.entries(notificationsSubscriptions);
-    const topicToDeactivate = notificationsStateKeys.find(
-      key =>
+    const topicToDeactivate = notificationsStateKeys.find(key => {
+      return (
         key[0].includes(interval) &&
         key[0].includes(category) &&
-        key[1] === true,
-    );
+        key[1] === true
+      );
+    });
     console.log('Topic found to toggle:', topicToDeactivate);
     if (
       topicToDeactivate !== undefined &&

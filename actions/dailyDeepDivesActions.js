@@ -1,28 +1,14 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getService} from '../services/aiAlphaApi';
+import {getService, getServiceV2, getTestService} from '../services/aiAlphaApi';
 
 export const fetchDailyDeepDivesData = createAsyncThunk(
   'home/fetchDailyDeepDivesData',
   async (_, {getState, rejectWithValue}) => {
     try {
-      const {categories} = getState().categories; // Use the categories slice for getting the categories data
-      const data = await getService(`/get_analysis?limit=99`);
-
+      const data = await getServiceV2(`analyses?per_page=99&section_id=19`);
       if (!data.success) {
         return [];
       }
-
-      const findCoinByCategoriesAndBotId = (categories, coin_id) => {
-        let found;
-        categories.forEach(category => {
-          category.coin_bots.forEach(coin => {
-            if (coin.bot_id === coin_id) {
-              found = coin.bot_name;
-            }
-          });
-        });
-        return found || null;
-      };
 
       const extractFirstTitleAndImage = content => {
         let firstTitle = '';
@@ -47,15 +33,15 @@ export const fetchDailyDeepDivesData = createAsyncThunk(
       };
 
       return data.data.map(item => ({
-        id: item.analysis_id,
-        raw_analysis: item.analysis,
-        coin_bot_id: item.coin_bot_id,
+        id: item.id,
+        raw_analysis: item.content,
+        coin_bot_id: item.coin_id,
         coin_bot_name:
-          findCoinByCategoriesAndBotId(categories, item.coin_bot_id) || 'btc',
+          item.coin_name,
         created_at: item.created_at,
         category: item.category_name,
-        title: extractFirstTitleAndImage(item.analysis).title,
-        image: extractFirstTitleAndImage(item.analysis).imageSrc,
+        title: extractFirstTitleAndImage(item.content).title,
+        image: item.image_url,
       }));
     } catch (error) {
       return rejectWithValue(error.message);
@@ -73,7 +59,65 @@ export const fetchDailyDeepDivesData = createAsyncThunk(
   },
 );
 
+export const fetchDailyMacros = createAsyncThunk(
+  'home/fetchDailyMacros',
+  async (_, {getState, rejectWithValue}) => {
+    try {
+      const {categories} = getState().categories; // Use the categories slice for getting the categories data
+      const data = await getServiceV2(`analyses?per_page=50&section_id=20`);
+
+      if (!data.success) {
+        return [];
+      }
+
+      const findCoinByCategoriesAndBotId = (categories, coin_id) => {
+        let found;
+        categories.forEach(category => {
+          category.coin_bots.forEach(coin => {
+            if (coin.bot_id === coin_id) {
+              found = coin.bot_name;
+            }
+          });
+        });
+        return found || null;
+      };
+
+
+      return data.data.map(item => ({
+        id: item.id,
+        raw_analysis: item.content,
+        coin_bot_id: item.coin_id,
+        coin_bot_name:
+          findCoinByCategoriesAndBotId(categories, item.coin_id) || 'btc',
+        created_at: item.created_at,
+        category: item.category_name,
+        title: item.title,
+        image: item.image_url,
+      }));
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+  {
+    condition: (_, thunkApi) => {
+      const loading = thunkApi.getState().home.dailyMacros.loading;
+      if (loading === 'idle') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+);
+
+
+
 export const selectDailyDeepDives = state =>
   state.home.dailyDeepDives.dailyDeepDives;
 export const selectDailyDeepDivesLoading = state =>
   state.home.dailyDeepDives.loading;
+
+export const selectDailyMacros = state =>
+  state.home.dailyMacros.dailyMacros;
+export const selectDailyMacrosLoading = state =>
+  state.home.dailyMacros.loading;

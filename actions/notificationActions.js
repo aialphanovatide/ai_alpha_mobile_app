@@ -33,47 +33,79 @@ export const toggleSubscription = createAsyncThunk(
 );
 
 // Action for toggling all the notifications for a specific option
+// export const toggleAllSubscriptions = createAsyncThunk(
+//   'user/toggleAllSubscriptions',
+//   async (newStatus, thunkApi) => {
+//     try {
+//       const subscriptions = thunkApi.getState().user.notifications;
+//       const topicsToSubscribe = [];
+//       const updatedSubscriptions = {...subscriptions};
+
+//       for (const item of NOTIFICATIONS_MOCK) {
+//         for (const option of INITIAL_NOTIFICATION_OPTIONS) {
+//           let topic = `${item.identifier}_${option.topic_tag}`;
+//           if (option.topic_tag === 'alerts') {
+//             ['1D', '1W'].forEach(interval => {
+//               topic = `${item.identifier}_${option.topic_tag}_${interval}`;
+//               topicsToSubscribe.push(topic);
+//             });
+//           } else {
+//             topicsToSubscribe.push(topic);
+//           }
+//         }
+//       }
+
+//       // Execute subscriptions in parallel using Promise.all
+//       const subscriptionPromises = topicsToSubscribe.map(async topic => {
+//         if (newStatus) {
+//           await messaging().subscribeToTopic(topic);
+//           console.log('Subscribed to topic:', topic);
+//         } else {
+//           await messaging().unsubscribeFromTopic(topic);
+//           console.log('Unsubscribed from topic:', topic);
+//         }
+//         updatedSubscriptions[topic] = newStatus;
+//       });
+
+//       await Promise.allSettled(subscriptionPromises);
+
+//       // Batch AsyncStorage operations
+//       const storagePromises = topicsToSubscribe.map(topic =>
+//         AsyncStorage.setItem(`subscription_${topic}`, newStatus.toString()),
+//       );
+//       await Promise.all(storagePromises);
+
+//       return updatedSubscriptions;
+//     } catch (error) {
+//       console.error('Failed to toggle all subscriptions:', error);
+//       throw error;
+//     }
+//   },
+// );
 export const toggleAllSubscriptions = createAsyncThunk(
   'user/toggleAllSubscriptions',
   async (newStatus, thunkApi) => {
     try {
       const subscriptions = thunkApi.getState().user.notifications;
-      const topicsToSubscribe = [];
-      const updatedSubscriptions = {...subscriptions};
+      const updatedSubscriptions = { ...subscriptions };
+
+      const subscriptionPromises = [];
 
       for (const item of NOTIFICATIONS_MOCK) {
         for (const option of INITIAL_NOTIFICATION_OPTIONS) {
-          let topic = `${item.identifier}_${option.topic_tag}`;
           if (option.topic_tag === 'alerts') {
             ['1D', '1W'].forEach(interval => {
-              topic = `${item.identifier}_${option.topic_tag}_${interval}`;
-              topicsToSubscribe.push(topic);
+              const topic = `${item.identifier}_${option.topic_tag}_${interval}`;
+              subscriptionPromises.push(handleSubscription(topic, newStatus, updatedSubscriptions));
             });
           } else {
-            topicsToSubscribe.push(topic);
+            const topic = `${item.identifier}_${option.topic_tag}`;
+            subscriptionPromises.push(handleSubscription(topic, newStatus, updatedSubscriptions));
           }
         }
       }
 
-      // Execute subscriptions in parallel using Promise.all
-      const subscriptionPromises = topicsToSubscribe.map(async topic => {
-        if (newStatus) {
-          await messaging().subscribeToTopic(topic);
-          console.log('Subscribed to topic:', topic);
-        } else {
-          await messaging().unsubscribeFromTopic(topic);
-          console.log('Unsubscribed from topic:', topic);
-        }
-        updatedSubscriptions[topic] = newStatus;
-      });
-
       await Promise.allSettled(subscriptionPromises);
-
-      // Batch AsyncStorage operations
-      const storagePromises = topicsToSubscribe.map(topic =>
-        AsyncStorage.setItem(`subscription_${topic}`, newStatus.toString()),
-      );
-      await Promise.all(storagePromises);
 
       return updatedSubscriptions;
     } catch (error) {
@@ -82,6 +114,25 @@ export const toggleAllSubscriptions = createAsyncThunk(
     }
   },
 );
+
+// Auxiliar function to handle the subscription status of a topic
+const handleSubscription = async (topic, newStatus, updatedSubscriptions) => {
+  try {
+    if (newStatus) {
+      await messaging().subscribeToTopic(topic);
+      console.log('Subscribed to topic:', topic);
+    } else {
+      await messaging().unsubscribeFromTopic(topic);
+      console.log('Unsubscribed from topic:', topic);
+    }
+
+    // Update the Redux store and AsyncStorage states
+    await AsyncStorage.setItem(`subscription_${topic}`, newStatus.toString());
+    updatedSubscriptions[topic] = newStatus;
+  } catch (error) {
+    console.error(`Error handling topic ${topic}:`, error);
+  }
+};
 // Action for loading the state of the notifications subscriptions from AsyncStorage and save it in the userSlice of the Redux store
 
 export const loadSubscriptions = createAsyncThunk(
