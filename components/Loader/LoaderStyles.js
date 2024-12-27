@@ -301,6 +301,21 @@ const useLoaderStyles = () => {
       height: 12,
       backgroundColor: isDarkMode ? '#52525B' : '#D9D9D9',
     },
+    macroCard: {
+      width: 162.5,
+      height: 190,
+      padding: 10,
+      margin: 8,
+      justifyContent: 'center',
+      backgroundColor: theme.thirdBoxesBgColor,
+      borderRadius: 6,
+    },
+    macroCardImage: {
+      width: '100%',
+      height: 80,
+      borderRadius: 3,
+      backgroundColor: isDarkMode ? '#52525B' : '#D9D9D9',
+    },
   });
   return styles;
 };

@@ -27,7 +27,7 @@ import {useScreenOrientation} from '../../hooks/useScreenOrientation';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchTopStories} from '../../actions/whatsHappeningTodayActions';
 import {fetchTop10Movers} from '../../actions/topTenMoversActions';
-import {fetchDailyDeepDivesData} from '../../actions/dailyDeepDivesActions';
+import {fetchDailyDeepDivesData, fetchDailyMacros} from '../../actions/dailyDeepDivesActions';
 import {fetchMarketNarratives} from '../../actions/marketNarrativesActions';
 import {selectRawUserId} from '../../actions/userActions';
 import {
@@ -39,6 +39,7 @@ import {
 } from '../../store/aboutSlice';
 import NewDailyDeepDives from './Analysis/NewDailyDeepDives/NewDailyDeepDives';
 import NewTopStories from './TopStories/NewTopStories';
+import DailyMacroSection from './Analysis/DailyMacro/DailyMacroSection';
 
 // FreePopup component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 
@@ -132,8 +133,9 @@ const Home = ({route}) => {
 
   useEffect(() => {
     dispatch(fetchTop10Movers());
-    dispatch(fetchTopStories());
+    dispatch(fetchTopStories({timeframe: '1D'}));
     dispatch(fetchDailyDeepDivesData());
+    dispatch(fetchDailyMacros());
     dispatch(fetchMarketNarratives());
   }, [dispatch]);
 
@@ -265,6 +267,7 @@ const Home = ({route}) => {
           {/* <WhatsHappeningToday handleAboutPress={toggleAbout} /> */}
           <NewDailyDeepDives />
           {/* <DailyDeepDives handleAboutPress={toggleAbout} /> */}
+          <DailyMacroSection />
           <NarrativeTradings handleAboutPress={toggleAbout} />
           <TopTenGainers handleAboutPress={toggleAbout} />
           <TopTenLosers handleAboutPress={toggleAbout} />

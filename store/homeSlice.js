@@ -1,8 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {fetchTopStories} from '../actions/whatsHappeningTodayActions';
 import {fetchTop10Movers} from '../actions/topTenMoversActions';
-import {fetchDailyDeepDivesData} from '../actions/dailyDeepDivesActions';
-import { fetchMarketNarratives } from '../actions/marketNarrativesActions';
+import {
+  fetchDailyDeepDivesData,
+  fetchDailyMacros,
+} from '../actions/dailyDeepDivesActions';
+import {fetchMarketNarratives} from '../actions/marketNarrativesActions';
 
 // Store slice for the home screen data, including the data related to the home components: top ten movers and whats happening today stories.
 
@@ -18,6 +21,7 @@ const homeSlice = createSlice({
     whatsHappeningToday: {
       stories: [],
       loading: 'idle',
+      lastTimeframe: null,
       error: null,
     },
     dailyDeepDives: {
@@ -27,6 +31,11 @@ const homeSlice = createSlice({
     },
     marketNarratives: {
       marketNarratives: [],
+      loading: 'idle',
+      error: null,
+    },
+    dailyMacros: {
+      dailyMacros: [],
       loading: 'idle',
       error: null,
     },
@@ -47,6 +56,7 @@ const homeSlice = createSlice({
         stories: [],
         loading: 'idle',
         error: null,
+        lastTimeframe: null,
       };
     },
     resetDailyDeepDives: state => {
@@ -62,6 +72,10 @@ const homeSlice = createSlice({
         loading: 'idle',
         error: null,
       };
+    },
+    setLastTimeframe: (state, action) => {
+      console.log('Changing timeframe to: ', action.payload);
+      state.whatsHappeningToday.lastTimeframe = action.payload;
     },
   },
   extraReducers: builder => {
@@ -81,16 +95,18 @@ const homeSlice = createSlice({
         state.topTenMovers.error = action.payload || 'Error fetching data';
       })
       // Reducers for handling the pending, fulfilled, and rejected states of the fetchTopStories actions.
-      .addCase(fetchTopStories.pending, state => {
+      .addCase(fetchTopStories.pending, (state, action) => {
         state.whatsHappeningToday.loading = 'idle';
       })
       .addCase(fetchTopStories.fulfilled, (state, action) => {
         state.whatsHappeningToday.loading = 'succeeded';
         state.whatsHappeningToday.stories = action.payload;
         state.whatsHappeningToday.error = null;
+        state.whatsHappeningToday.lastTimeframe = action.meta.arg.timeframe;
       })
       .addCase(fetchTopStories.rejected, (state, action) => {
         state.whatsHappeningToday.loading = 'failed';
+        state.whatsHappeningToday.lastTimeframe = action.meta.arg.timeframe;
         state.whatsHappeningToday.error = action.payload || 'Error fetching';
       })
       // Reducers for handling the pending, fulfilled, and rejected states of the fetchDailyDeepDives actions.
@@ -118,6 +134,19 @@ const homeSlice = createSlice({
       .addCase(fetchMarketNarratives.rejected, (state, action) => {
         state.marketNarratives.loading = 'failed';
         state.marketNarratives.error = action.payload || 'Error fetching data';
+      })
+      // Reducers for handling the pending, fulfilled, and rejected states of the fetchDailyMacro actions.
+      .addCase(fetchDailyMacros.pending, state => {
+        state.dailyMacros.loading = 'idle';
+      })
+      .addCase(fetchDailyMacros.fulfilled, (state, action) => {
+        state.dailyMacros.loading = 'succeeded';
+        state.dailyMacros.dailyMacros = action.payload;
+        state.dailyMacros.error = null;
+      })
+      .addCase(fetchDailyMacros.rejected, (state, action) => {
+        state.dailyMacros.loading = 'failed';
+        state.dailyMacros.error = action.payload || 'Error fetching data';
       });
   },
 });
@@ -128,6 +157,7 @@ export const {
   resetTopStories,
   resetDailyDeepDives,
   resetMarketNarratives,
+  setLastTimeframe,
 } = homeSlice.actions;
 
 export default homeSlice.reducer;

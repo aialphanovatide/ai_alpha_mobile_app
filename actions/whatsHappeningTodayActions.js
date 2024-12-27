@@ -3,29 +3,29 @@ import {newsbotGetService} from '../services/aiAlphaApi';
 
 export const fetchTopStories = createAsyncThunk(
   'home/fetchTopStories',
-  async (_, {rejectWithValue}) => {
+  async ({timeframe}, {rejectWithValue}) => {
     try {
       const topStoriesData = await newsbotGetService(
-        '/top-stories?per_page=10',
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
+        `/top-stories?per_page=10&timeframe=${timeframe}`,
       );
+
       if (!topStoriesData.success || !topStoriesData.data) {
         return [];
       }
-      return topStoriesData.data;
+
+      const allTopStories = Object.values(topStoriesData.data).flat();
+
+      return allTopStories;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   },
   {
-    condition: (_, thunkApi) => {
+    condition: ({timeframe}, thunkApi) => {
+      const lastTimeframe =
+        thunkApi.getState().home.whatsHappeningToday.lastTimeframe;
       const loading = thunkApi.getState().home.whatsHappeningToday.loading;
-      if (loading === 'idle') {
+      if (loading === 'idle' || lastTimeframe !== timeframe) {
         return true;
       } else {
         return false;

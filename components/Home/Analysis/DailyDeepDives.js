@@ -16,8 +16,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import DailyDeepItem from './DailyDeepItem/DailyDeepItem';
 import useDailyDeepsStyles from './dailyDeepsStyles';
-import { useSelector } from 'react-redux';
-import { selectDailyDeepDives, selectDailyDeepDivesLoading } from '../../../actions/dailyDeepDivesActions';
+import {useSelector} from 'react-redux';
+import {
+  selectDailyDeepDives,
+  selectDailyDeepDivesLoading,
+} from '../../../actions/dailyDeepDivesActions';
 
 if (
   Platform.OS === 'android' &&
