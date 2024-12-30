@@ -73,7 +73,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>prompt_black.ttf</string>
@@ -102,6 +102,20 @@
 		<string>unbounded_medium.ttf</string>
 		<string>unbounded_regular.ttf</string>
 		<string>unbounded_semibold.ttf</string>
+		<string>Figtree-Black.ttf</string>
+		<string>Figtree-BlackItalic.ttf</string>
+		<string>Figtree-Bold.ttf</string>
+		<string>Figtree-BoldItalic.ttf</string>
+		<string>Figtree-ExtraBold.ttf</string>
+		<string>Figtree-ExtraBoldItalic.ttf</string>
+		<string>Figtree-Italic.ttf</string>
+		<string>Figtree-Light.ttf</string>
+		<string>Figtree-LightItalic.ttf</string>
+		<string>Figtree-Medium.ttf</string>
+		<string>Figtree-MediumItalic.ttf</string>
+		<string>Figtree-Regular.ttf</string>
+		<string>Figtree-SemiBold.ttf</string>
+		<string>Figtree-SemiBoldItalic.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -120,7 +134,7 @@
 		<string>armv7</string>
 	</array>
 	<key>UIStatusBarStyle</key>
-	<string></string>
+	<string/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

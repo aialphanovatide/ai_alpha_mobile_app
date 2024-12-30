@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getServiceV2} from '../services/aiAlphaApi';
+import {getServiceV2, getTestService} from '../services/aiAlphaApi';
 
 // Static data for mapping the server's response keys to the display titles and value types to format the data correctly in the results component.
 const KEY_DISPLAY_TITLES = [
@@ -73,7 +73,7 @@ const formatData = (data, searchValue) => {
     id: searchValue.id,
     symbol: searchValue.symbol,
     content: sortedResultArray,
-    logo: data.logo ? data.logo : '',
+    logo: data?.icons ? data?.icons?.png?.large : '',
   };
 };
 
@@ -118,7 +118,8 @@ export const fetchAskAiData = createAsyncThunk(
       if (existingResult) {
         return {result: existingResult};
       } else {
-        const data = await getServiceV2(`ask-ai?coin_id=${searchValue.id}`);
+        // const data = await getServiceV2(`ask-ai?coin_id=${searchValue.id}`);
+        const data = await getTestService(`ask-ai?coin_id=${searchValue.id}`);
 
         if (data.success !== true) {
           throw new Error(data.error);

@@ -14,9 +14,7 @@ import useHomeStyles from '../components/Home/HomeStyles';
 import MarketNarrativesArticle from '../components/Home/HomeNarrativeTradings/MarketNarrativesArticle';
 import {useScreenOrientation} from '../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/native';
-import Search from '../components/Search/Search';
 import HomeNotifications from '../components/Home/HomeNotifications/HomeNotifications';
-import ChartsSection from '../components/Home/Topmenu/subMenu/Fund_news_chart/Charts/NewCharts/ChartsSection';
 import StoryArticle from '../components/Home/TopStories/StoryArticle';
 import DailyDeepArticle from '../components/Home/Analysis/DailyDeepArticle';
 import {useDispatch, useSelector} from 'react-redux';
@@ -30,27 +28,6 @@ const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
 const SubMenuStack = createMaterialTopTabNavigator();
 const NewsStack = createNativeStackNavigator();
-const SearchStack = createNativeStackNavigator();
-
-const SearchScreen = () => {
-  return (
-    <SearchStack.Navigator
-      initialRouteName="SearchMain"
-      screenOptions={{
-        animation: 'fade',
-        animationDuration: 200,
-        lazy: true,
-        swipeEnabled: false,
-        header: () => null,
-      }}>
-      <SearchStack.Screen
-        name={'SearchMain'}
-        component={Search}
-        initialParams={{searchText: ''}}
-      />
-    </SearchStack.Navigator>
-  );
-};
 
 const NewsScreen = () => {
   const activeSubCoin = useSelector(selectActiveSubCoin);
@@ -304,13 +281,6 @@ const HomeStackScreen = () => {
           animationDuration: 250,
           gestureEnabled: 'true',
           gestureDirection: 'horizontal',
-        }}
-      />
-      <HomeStack.Screen
-        name="SearchScreen"
-        component={SearchScreen}
-        options={{
-          animation: 'fade',
         }}
       />
       <HomeStack.Screen

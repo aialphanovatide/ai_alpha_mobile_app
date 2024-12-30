@@ -17,8 +17,6 @@ import Upgrades from './SubSections/UpgradesSection/Upgrades';
 import DApps from './SubSections/DApps/DApps';
 import useFundamentalsStyles from './FundamentalsStyles';
 import UpdatedRevenueModel from './SubSections/RevenueModel/UpdatedRevenueModel';
-import {getService} from '../../../../../../services/aiAlphaApi';
-import {fundamentalsMock} from '../../../../../../assets/static_data/fundamentalsMock';
 import TokenUtility from './SubSections/TokenUtility/TokenUtility';
 import AboutModal from '../../../../../AboutModal/AboutModal';
 import {fundamentals_static_content} from '../../../../../../assets/static_data/fundamentalsStaticData';
@@ -92,11 +90,7 @@ const Fundamentals = () => {
 
   useEffect(() => {
     dispatch(fetchFundamentalsData(activeSubCoin));
-    dispatch(
-      fetchNews({
-        botName: activeSubCoin,
-      }),
-    );
+
   }, [dispatch, activeSubCoin]);
 
   // Function to handle the about modal visibility and content based on the section that the user clicked on
@@ -116,13 +110,6 @@ const Fundamentals = () => {
       ...prevState,
       [section]: value,
     }));
-  };
-
-  // Function to handle the requests to the API to get the data of a specific section. It receives the endpoint of the section as a parameter.
-
-  const getSectionData = async endpoint => {
-    const data = await getService(endpoint);
-    return data;
   };
 
   // Functions to handle the scrolling interaction that hides the menu
@@ -174,7 +161,6 @@ const Fundamentals = () => {
           content={
             <Introduction
               coin={activeSubCoin}
-              getSectionData={getSectionData}
               handleSectionContent={handleSectionContent}
               loading={loadingState}
               globalData={fundamentalsData}
@@ -188,7 +174,6 @@ const Fundamentals = () => {
           subtitle={'Tokenomics'}
           content={
             <Tokenomics
-              getSectionData={getSectionData}
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
@@ -205,7 +190,6 @@ const Fundamentals = () => {
           subtitle={'Token Distribution'}
           content={
             <GeneralTokenAllocation
-              getSectionData={getSectionData}
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               loading={loadingState}
@@ -224,7 +208,6 @@ const Fundamentals = () => {
           hasEmptyContent={hasContent.tokenUtility}
           content={
             <TokenUtility
-              getSectionData={getSectionData}
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               loading={loadingState}
@@ -243,7 +226,6 @@ const Fundamentals = () => {
           content={
             <ValueAccrualMechanisms
               handleSectionContent={handleSectionContent}
-              getSectionData={getSectionData}
               coin={activeSubCoin}
               loading={loadingState}
               globalData={fundamentalsData}
@@ -262,7 +244,6 @@ const Fundamentals = () => {
           content={
             <Competitors
               coin={activeSubCoin}
-              getSectionData={getSectionData}
               handleSectionContent={handleSectionContent}
               tokenomicsData={
                 fundamentalsData
@@ -293,7 +274,6 @@ const Fundamentals = () => {
           content={
             <UpdatedRevenueModel
               handleSectionContent={handleSectionContent}
-              getSectionData={getSectionData}
               coin={activeSubCoin}
               globalData={fundamentalsData}
               loading={loadingState}
@@ -310,7 +290,6 @@ const Fundamentals = () => {
           subtitle={'Hacks'}
           content={
             <Hacks
-              getSectionData={getSectionData}
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
@@ -327,7 +306,6 @@ const Fundamentals = () => {
           description={fundamentals_static_content.upgrades.sectionDescription}
           content={
             <Upgrades
-              getSectionData={getSectionData}
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}
@@ -342,7 +320,6 @@ const Fundamentals = () => {
           subtitle={'DApps'}
           content={
             <DApps
-              getSectionData={getSectionData}
               coin={activeSubCoin}
               handleSectionContent={handleSectionContent}
               globalData={fundamentalsData}

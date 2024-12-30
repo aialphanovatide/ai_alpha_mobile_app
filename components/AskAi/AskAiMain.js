@@ -25,13 +25,11 @@ import {
   selectAboutVisible,
 } from '../../store/aboutSlice';
 import {
-  fetchAskAiData,
   loadAskAiData,
   selectAskAiLoading,
   selectCurrentResult,
   selectSavedResults,
 } from '../../actions/askAiActions';
-import {RESULTS_MOCK} from '../../assets/static_data/askAiMockedData';
 import SearchInput from './SearchInput';
 import MainResults from './MainResults';
 import ValueBox from './ValueBox';
@@ -55,7 +53,6 @@ const AskAiMain = ({route, navigation}) => {
       ? route.params.selectedResult
       : currentResult,
   );
-  const [logoSize, setLogoSize] = useState({width: 50, height: 50});
   const [isInputFocused, setIsInputFocused] = useState(false);
   const savedResults = useSelector(selectSavedResults);
   const loading = useSelector(selectAskAiLoading);
@@ -86,19 +83,14 @@ const AskAiMain = ({route, navigation}) => {
     setResultData(currentResult);
   }, [currentResult]);
 
-  // Hook to get the image metadata when the result data changes
-
-  useEffect(() => {
-    if (resultData) {
-      getImageMetadata(resultData.logo);
-    }
-  }, [resultData]);
-
   // Function to update the text within the input field, resetting the focused state when the user types
 
   const handleTextChange = text => {
     if (isInputFocused) {
       setIsInputFocused(false);
+    }
+    if (resultData){
+      setResultData(null);
     }
     setSearchText(text);
   };
@@ -113,26 +105,6 @@ const AskAiMain = ({route, navigation}) => {
 
   const handleResultsClose = () => {
     setResultData(null);
-  };
-
-  // Function to get the width, height and other metadata from the image or logo that has come with the search data
-
-  const getImageMetadata = imageUrl => {
-    if (!imageUrl || imageUrl === undefined || imageUrl === '') {
-      return null;
-    }
-    Image.getSize(
-      imageUrl,
-      (width, height) => {
-        console.log(`Image width: ${width}, height: ${height}`);
-        const result = {width, height};
-        setLogoSize(result);
-      },
-      error => {
-        console.log(`Error getting the image size: ${error}`);
-        return null;
-      },
-    );
   };
 
   // Function to handle the about modal visibility and content based on the section that the user clicked on
@@ -177,7 +149,7 @@ const AskAiMain = ({route, navigation}) => {
           handleSectionNavigation={handleSectionNavigation}
           handleInputFocus={handleInputFocus}
         />
-        {(isInputFocused && !resultData) || (searchText && !resultData) ? (
+        {(isInputFocused && !resultData) || (searchText) ? (
           <MainResults
             data={savedResults}
             isInputFocused={isInputFocused}
@@ -193,7 +165,7 @@ const AskAiMain = ({route, navigation}) => {
             style={[styles.resultsContainer, !resultData ? styles.hidden : {}]}>
             <TouchableOpacity
               style={styles.closeButton}
-              onPress={handleResultsClose}>
+              onPress={() => handleResultsClose()}>
               <Image
                 source={require('../../assets/images/askAi/close_button.png')}
                 style={styles.closeButtonImage}
@@ -201,11 +173,7 @@ const AskAiMain = ({route, navigation}) => {
               />
             </TouchableOpacity>
             <View style={styles.row}>
-              <View
-                style={[
-                  styles.imageBackground,
-                  {width: logoSize.width, height: logoSize.height},
-                ]}>
+              <View style={[styles.imageBackground]}>
                 <FastImage
                   source={{uri: resultData?.logo || ''}}
                   resizeMode={'contain'}

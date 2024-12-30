@@ -30,6 +30,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/core';
 import useChartsSource from '../../../../../../hooks/useChartsSource';
 import {
   getService,
+  getServiceV2,
   getTestService,
 } from '../../../../../../services/aiAlphaApi';
 import CWChart from './NewCharts/CWChart';
@@ -47,6 +48,7 @@ import {
   selectAboutTitle,
   selectAboutVisible,
 } from '../../../../../../store/aboutSlice';
+import ChartWidget from './ChartWidget/ChartWidget';
 
 // Component to display the charts time interval selector buttons, allowing the user to change the time interval of the chart. It receives the selected pairing, the selected interval, the function to change the interval and a boolean to disable the buttons when the chart is loading. It returns a view with the buttons for the time intervals.
 
@@ -179,14 +181,7 @@ const CandlestickChart = ({route}) => {
     setChartData([]);
     const coinName = activeSubCoin ? activeSubCoin : coinBot;
     try {
-      // const data = await getService(
-      //   `api/chart/ohlc?coin=${
-      //     coinBot.toLowerCase() === 'pol' ? 'polygon' : coinBot.toLowerCase()
-      //   }&vs_currency=${
-      //     pairing === 'USDT' ? 'usd' : pairing.toLowerCase()
-      //   }&interval=${interval.toLowerCase()}&precision=8`,
-      // );
-      const response = await getTestService(
+      const response = await getServiceV2(
         `chart/ohlc?gecko_id=${
           coinName.toLowerCase() === 'pol' ? 'polygon' : coinName.toLowerCase()
         }&symbol=${
@@ -360,6 +355,7 @@ const CandlestickChart = ({route}) => {
               disabled={loading || supportResistanceLoading}
             />
           </View>
+          {/* <ChartWidget /> */}
           <VicChart
             candlesToShow={20}
             symbol={symbol}
@@ -393,7 +389,7 @@ const CandlestickChart = ({route}) => {
           botName={activeSubCoin ? activeSubCoin : coinBot}
           styles={styles}
         />
-        {!subscribed && <UpgradeOverlay isCharts={true} />}
+        {/* {!subscribed && <UpgradeOverlay isCharts={true} />} */}
       </ScrollView>
     </LinearGradient>
   );

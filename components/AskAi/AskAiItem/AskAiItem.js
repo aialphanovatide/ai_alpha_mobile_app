@@ -15,15 +15,17 @@ const AskAiItem = ({
       key={index}
       style={styles.historyItem}
       onPress={() => handleActiveResultData(coin, isHistoryItem)}>
-      <View style={styles.historyItemImageBackground}>
-        <FastImage
-          style={styles.historyItemLogo}
-          source={{
-            uri: coin?.logo ? coin.logo : undefined,
-          }}
-          resizeMode="contain"
-        />
-      </View>
+      {isHistoryItem && (
+        <View style={styles.historyItemImageBackground}>
+          <FastImage
+            style={styles.historyItemLogo}
+            source={{
+              uri: coin?.logo ? coin.logo : undefined,
+            }}
+            resizeMode="contain"
+          />
+        </View>
+      )}
       <Text style={styles.historyItemName}>{coin.symbol}</Text>
     </TouchableOpacity>
   );

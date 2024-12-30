@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {newsbotGetService, oldNewsBotGetService} from '../services/aiAlphaApi';
+import {newsbotGetService, oldNewsbotGetService} from '../services/aiAlphaApi';
 
 // Function to filter the news by the date
 const filterNewsByDate = (news, filter) => {
@@ -34,32 +34,40 @@ export const fetchNews = createAsyncThunk(
   'news/fetchNews',
   async ({botName}, {rejectWithValue}) => {
     try {
-      // const endpoint = `article?bot_name=${botName}&page=1&per_page=${newsLimit}`;
-      // const data = await newsbotGetService(endpoint);
+      // const endpoints = ['eth', 'btc'].includes(botName)
+      //   ? {
+      //       Today: `get_articles?bot_name=${botName}&limit=10`,
+      //       'This Week': `get_articles?bot_name=${botName}&limit=20`,
+      //     }
+      //   : {
+      //       Today: `get_articles?bot_name=${botName}&limit=10`,
+      //       'This Month': `get_articles?bot_name=${botName}&limit=20`,
+      //     };
       const endpoints = ['eth', 'btc'].includes(botName)
         ? {
-            Today: `get_articles?bot_name=${botName}&limit=10`,
-            'This Week': `get_articles?bot_name=${botName}&limit=20`,
+            Today: `articles?bot_name=${botName}&per_page=15`,
+            'This Week': `articles?bot_name=${botName}&per_page=30`,
           }
         : {
-            Today: `get_articles?bot_name=${botName}&limit=10`,
-            'This Month': `get_articles?bot_name=${botName}&limit=20`,
+            Today: `articles?bot_name=${botName}&per_page=15`,
+            'This Month': `articles?bot_name=${botName}&per_page=30`,
           };
       const secondFilter = ['eth', 'btc'].includes(botName)
         ? 'This Week'
         : 'This Month';
       const [firstResponse, secondResponse] = await Promise.all([
-        oldNewsBotGetService(endpoints.Today),
-        oldNewsBotGetService(endpoints[secondFilter]),
+        newsbotGetService(endpoints.Today),
+        newsbotGetService(endpoints[secondFilter]),
       ]);
+
       if (!firstResponse.success || !secondResponse.success) {
-        const errorMessage =
-          firstResponse.error?.message ||
-          secondResponse.error?.message ||
-          'Failed to fetch news';
-        return rejectWithValue(errorMessage);
+        throw new Error(
+          `Error fetching news:
+          ${firstResponse.error}
+          ${secondResponse.error}`,
+        );
       }
-      // console.log('Responses: ', firstResponse, secondResponse);
+
       const filteredTodayArticles = filterNewsByDate(
         firstResponse.data,
         'Today',
@@ -68,11 +76,6 @@ export const fetchNews = createAsyncThunk(
         secondResponse.data,
         secondFilter,
       );
-      // console.log(
-      //   'Filtered articles: ',
-      //   filteredTodayArticles,
-      //   filteredSecondFilterArticles,
-      // );
       return {
         articles: {
           Today: filteredTodayArticles,
@@ -81,6 +84,7 @@ export const fetchNews = createAsyncThunk(
         botName,
       };
     } catch (error) {
+      console.error('Error: ', error);
       return rejectWithValue(error.message || 'Something went wrong');
     }
   },
@@ -94,11 +98,7 @@ export const fetchNews = createAsyncThunk(
       const hasSecondFilterData =
         articlesByBotName[botName]?.[secondFilter]?.length > 0;
       // console.log('Has news data result:', hasTodayData, hasSecondFilterData);
-      if (
-        (loading === 'succeeded' || loading === 'failed') &&
-        hasTodayData &&
-        hasSecondFilterData
-      ) {
+      if (loading === 'succeeded' && hasTodayData && hasSecondFilterData) {
         return false;
       }
     },

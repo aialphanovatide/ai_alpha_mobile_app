@@ -247,7 +247,6 @@ const Account = ({route}) => {
 
   const handleLogout = async () => {
     try {
-      console.log('Logging out and removing login data...');
       await AsyncStorage.removeItem('accessToken');
       await AsyncStorage.removeItem('refreshToken');
       await AsyncStorage.removeItem('userEmail');
@@ -260,12 +259,11 @@ const Account = ({route}) => {
       await AsyncStorage.removeItem('userImage');
       await AsyncStorage.removeItem('signupDate');
       await AsyncStorage.removeItem('signupDateValidator');
-      console.log('Successfully removed login data...');
       resetLoginForm();
       console.log('After loginForm reset');
       navigation.navigate('SignIn', {resetForm: true});
       RNRestart.restart();
-      console.log('After logout navigation');
+      console.log('- Successfully removed login data...');
     } catch (e) {
       console.error('Logout failed', e);
     }

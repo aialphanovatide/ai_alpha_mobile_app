@@ -22,6 +22,7 @@ import {
 } from '../../../../../../actions/categoriesActions';
 import {handleAboutPress} from '../../../../../../store/aboutSlice';
 import {
+  fetchNews,
   selectNews,
   selectNewsLoading,
 } from '../../../../../../actions/newsActions';
@@ -34,7 +35,11 @@ const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
   const navigation = useNavigation();
   const [botName, setBotName] = useState(
-    route.params ? route.params.botname : activeSubCoin,
+    route.params
+      ? route.params.botname
+      : activeCoin.category === 'bitcoin'
+      ? 'btc'
+      : activeSubCoin,
   );
   const options = ['btc', 'eth'].includes(botName)
     ? ['Today', 'This Week']
@@ -52,6 +57,11 @@ const NewsComponent = ({route}) => {
       activeCoin !== undefined
     ) {
       setBotName(activeSubCoin || activeCoin.coin_bots[0].bot_name);
+      dispatch(
+        fetchNews({
+          botName: activeSubCoin,
+        }),
+      );
     }
     setActiveFilter(options[1]);
   }, [activeCoin, activeSubCoin]);
@@ -172,7 +182,7 @@ const NewsComponent = ({route}) => {
             allNews === undefined ||
             allNews[botName][activeFilter] === undefined ||
             allNews[botName][activeFilter].length === 0) ? (
-              // If there's no content to show for the current time interval, show the NoContentDisclaimer component
+          // If there's no content to show for the current time interval, show the NoContentDisclaimer component
           <NoContentDisclaimer
             title={'Whoops, no matches.'}
             description={
