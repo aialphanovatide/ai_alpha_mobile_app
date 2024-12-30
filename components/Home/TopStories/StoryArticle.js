@@ -44,7 +44,7 @@ const StoryArticle = ({route, navigation}) => {
   }, []);
 
   // UseEffect hook to check if the image URL is valid and if the image exists. If the image exists, the image is displayed in the article. If the image does not exist, the article is displayed without an image.
-  
+
   useEffect(() => {
     const checkImageURL = async url => {
       try {
@@ -61,7 +61,8 @@ const StoryArticle = ({route, navigation}) => {
       }
     };
     checkImageURL(
-      `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`,
+      // `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`,
+      item.image,
     );
   }, []);
 
@@ -106,7 +107,8 @@ const StoryArticle = ({route, navigation}) => {
             style={styles.zoomedImage}
             resizeMode={'contain'}
             source={{
-              uri: imageUri,
+              // uri: imageUri,
+              uri: item.image,
               priority: FastImage.priority.normal,
             }}
             fallback={true}
@@ -125,7 +127,8 @@ const StoryArticle = ({route, navigation}) => {
               style={styles.articleImage}
               resizeMode={'cover'}
               source={{
-                uri: imageUri,
+                // uri: imageUri,
+                uri: item.image,
                 priority: FastImage.priority.normal,
               }}
               fallback={true}

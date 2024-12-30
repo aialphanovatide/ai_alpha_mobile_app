@@ -57,7 +57,7 @@ const useNewTopStoriesStyles = () => {
     },
     headerImage: {
       width: '100%',
-      height: '70%',
+      height: '68%',
       borderRadius: 6,
     },
     headerContent: {

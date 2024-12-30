@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getServiceV2} from '../services/aiAlphaApi';
+import {getService, getServiceV2} from '../services/aiAlphaApi';
 
 // Asynchronous thunk to fetch fundamentals data for a specific coin, and store it in AsyncStorage
 export const fetchFundamentalsData = createAsyncThunk(
@@ -46,7 +46,7 @@ export const fetchFundamentalsData = createAsyncThunk(
         ];
 
         const results = await Promise.all(
-          endpoints.map(endpoint => getServiceV2(endpoint.url)),
+          endpoints.map(endpoint => getService(endpoint.url)),
         );
 
         const data = {

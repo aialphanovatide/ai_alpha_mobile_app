@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {oldNewsbotGetService} from '../services/aiAlphaApi';
+import {newsbotGetService, oldNewsbotGetService} from '../services/aiAlphaApi';
 
 // Function to filter the news by the date
 const filterNewsByDate = (news, filter) => {
@@ -34,23 +34,30 @@ export const fetchNews = createAsyncThunk(
   'news/fetchNews',
   async ({botName}, {rejectWithValue}) => {
     try {
-      // const endpoint = `article?bot_name=${botName}&page=1&per_page=${newsLimit}`;
-      // const data = await newsbotGetService(endpoint);
+      // const endpoints = ['eth', 'btc'].includes(botName)
+      //   ? {
+      //       Today: `get_articles?bot_name=${botName}&limit=10`,
+      //       'This Week': `get_articles?bot_name=${botName}&limit=20`,
+      //     }
+      //   : {
+      //       Today: `get_articles?bot_name=${botName}&limit=10`,
+      //       'This Month': `get_articles?bot_name=${botName}&limit=20`,
+      //     };
       const endpoints = ['eth', 'btc'].includes(botName)
         ? {
-            Today: `get_articles?bot_name=${botName}&limit=10`,
-            'This Week': `get_articles?bot_name=${botName}&limit=20`,
+            Today: `articles?bot_name=${botName}&per_page=15`,
+            'This Week': `articles?bot_name=${botName}&per_page=30`,
           }
         : {
-            Today: `get_articles?bot_name=${botName}&limit=10`,
-            'This Month': `get_articles?bot_name=${botName}&limit=20`,
+            Today: `articles?bot_name=${botName}&per_page=15`,
+            'This Month': `articles?bot_name=${botName}&per_page=30`,
           };
       const secondFilter = ['eth', 'btc'].includes(botName)
         ? 'This Week'
         : 'This Month';
       const [firstResponse, secondResponse] = await Promise.all([
-        oldNewsbotGetService(endpoints.Today),
-        oldNewsbotGetService(endpoints[secondFilter]),
+        newsbotGetService(endpoints.Today),
+        newsbotGetService(endpoints[secondFilter]),
       ]);
 
       if (!firstResponse.success || !secondResponse.success) {

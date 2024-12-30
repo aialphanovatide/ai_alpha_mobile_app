@@ -35,7 +35,11 @@ const NewsComponent = ({route}) => {
   const styles = useNewsStyles();
   const navigation = useNavigation();
   const [botName, setBotName] = useState(
-    route.params ? route.params.botname : activeSubCoin,
+    route.params
+      ? route.params.botname
+      : activeCoin.category === 'bitcoin'
+      ? 'btc'
+      : activeSubCoin,
   );
   const options = ['btc', 'eth'].includes(botName)
     ? ['Today', 'This Week']
@@ -134,8 +138,6 @@ const NewsComponent = ({route}) => {
   const toggleAbout = (description = null, title = null) => {
     dispatch(handleAboutPress({description, title}));
   };
-
-  console.log('All news: ', allNews);
 
   return (
     <SafeAreaView style={[styles.container, styles.backgroundColor]}>

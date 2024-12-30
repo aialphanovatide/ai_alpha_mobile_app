@@ -31,11 +31,6 @@ if (
 
 export const INITIAL_NOTIFICATION_OPTIONS = [
   {
-    name: 'News',
-    topic_tag: 'analysis',
-    isActive: true,
-  },
-  {
     name: 'Alerts',
     topic_tag: 'alerts',
     isActive: true,
@@ -45,14 +40,19 @@ export const INITIAL_NOTIFICATION_OPTIONS = [
     topic_tag: 's_and_r',
     isActive: true,
   },
-  {
-    name: 'Narrative Tradings',
-    topic_tag: 'narratives',
-    isActive: true,
-  },
+  // {
+  //   name: 'News',
+  //   topic_tag: 'analysis',
+  //   isActive: true,
+  // },
+  // {
+  //   name: 'Narrative Tradings',
+  //   topic_tag: 'narratives',
+  //   isActive: true,
+  // },
 ];
 
-const INTERVALS = ['1H', '4H'];
+const INTERVALS = ['1D', '1W'];
 
 // Notifications panel component, it is used to display the notifications settings for the user.
 
@@ -81,16 +81,17 @@ const NewNotificationsPanel = ({route}) => {
     setAllToggled(!allToggled);
   };
 
-  // Function to handle the activation or deactivation the notifications subscription when the time interval is toggled
+  // Function to handle the activation or deactivation the notifications subscription when the time interval is . It finds the topic to deactivate by matching the category and the interval that changed his state, and then if it is found, it deactivates it, otherwise, it subscribes to the topic by generating it.
 
   const handleToggleByIntervalsChange = (interval, category) => {
     const notificationsStateKeys = Object.entries(notificationsSubscriptions);
-    const topicToDeactivate = notificationsStateKeys.find(
-      key =>
+    const topicToDeactivate = notificationsStateKeys.find(key => {
+      return (
         key[0].includes(interval) &&
         key[0].includes(category) &&
-        key[1] === true,
-    );
+        key[1] === true
+      );
+    });
     console.log('Topic found to toggle:', topicToDeactivate);
     if (
       topicToDeactivate !== undefined &&

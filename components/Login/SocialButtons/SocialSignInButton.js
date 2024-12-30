@@ -8,6 +8,7 @@ import {
   AUTH0_CLIENT_ENVVAR,
   AUTH0_DOMAIN_ENVVAR,
   AUTH0_AUDIENCE_ENVVAR,
+  AIALPHASERVER_2_BASE_URL_ENVVAR,
   AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
   AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
   GOOGLE_CLIENT_IOS_ID_ENVVAR,
@@ -32,15 +33,6 @@ const SocialSignInButton = ({handleLoadingChange}) => {
   const {authorize} = useAuth0(); // Using useAuth0 hook
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
-      iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
-      androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
-      offlineAccess: true,
-    });
-  }, []);
 
   const auth0 = new Auth0({
     domain: 'dev-zoejuo0jssw5jiid.us.auth0.com',
@@ -96,44 +88,36 @@ const SocialSignInButton = ({handleLoadingChange}) => {
   };
 
   const signInWithGoogle = async () => {
+    GoogleSignin.configure({
+      webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
+      iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
+      androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
+      offlineAccess: true,
+    });
     if (Platform.OS === 'android') {
       handleLoadingChange(true);
       // Handle Google Sign-In for Android using the Google Sign-In library
       try {
-        await GoogleSignin.hasPlayServices();
+        const result = await GoogleSignin.hasPlayServices();
+
+        // if (!result) {
+        //   throw new Error(
+        //     'Error with Google Play Services: ',
+        //     result.toString(),
+        //   );
+        // }
+
         const userInfo = await GoogleSignin.signIn();
-        console.log('User Info: ', userInfo);
+
+        console.log('User Info:', userInfo);
+
         const userEmail = userInfo.user.email;
-        console.log('User Email: ', userEmail);
         const userName = userInfo.user.name;
-        console.log('User Name: ', userName);
         const userPhoto = userInfo.user.photo;
-        console.log('User Photo: ', userPhoto);
         const userId = userInfo.user.id;
-        console.log('User Id: ', userId);
 
-        /*
-        const token = await getManagementApiToken();
-
-        const responseFromAuth0 = await fetch(`https://${AUTH0_DOMAIN_ENVVAR}/api/v2/users`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-              email: userEmail,
-              email_verified: false,
-              name: userName,
-              picture: userPhoto,
-              "user_id": "string",
-              connection: "google-oauth2-android",
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const dataFromAuth0 = await responseFromAuth0.json();
-        */
         const {idToken, user} = userInfo;
+
         await AsyncStorage.setItem('accessToken', idToken);
         await AsyncStorage.setItem('userEmail', user.email);
         await AsyncStorage.setItem('rawUserId', user.id);
@@ -146,22 +130,25 @@ const SocialSignInButton = ({handleLoadingChange}) => {
 
         navigation.navigate('TabsMenu');
 
-        const response = await fetch(`https://aialpha.ngrok.io/register`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            auth0id: userId,
-            email: userEmail,
-            email_verified: 'false',
-            full_name: userName,
-            nickname: 'undefined',
-            picture: userPhoto,
-            provider: 'google-oauth2-android',
-          }),
-        });
+        const response = await fetch(
+          `${AIALPHASERVER_2_BASE_URL_ENVVAR}/user`,
+          {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              auth0id: userId,
+              birth_date: null,
+              email: userEmail,
+              email_verified: 'false',
+              full_name: userName,
+              nickname: 'undefined',
+              picture: userPhoto,
+              provider: 'google-oauth2-android',
+            }),
+          },
+        );
         const data = await response.json();
-
-        console.log('DATA SENT TO BACKEND', data);
+        console.log('- Successfull response from user registering:', data);
       } catch (error) {
         console.error(
           'Error during Google sign-in with GoogleSignin library:',

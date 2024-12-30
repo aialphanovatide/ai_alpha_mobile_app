@@ -33,7 +33,7 @@ const NotificationItem = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const {isDarkMode} = useContext(AppThemeContext);
-  const [activeIntervals, setActiveIntervals] = useState(['1H']);
+  const [activeIntervals, setActiveIntervals] = useState(['1D']);
 
   // Function to handle the expansion of the item when clicking on it to show the options, it triggers the LayoutAnimation to animate the expansion
 
@@ -73,29 +73,32 @@ const NotificationItem = ({
   useEffect(() => {
     loadActiveIntervals();
     if (allToggled) {
-      setActiveIntervals(['1H', '4H']);
+      setActiveIntervals(['1D', '1W']);
     }
-  }, [allToggled]);
+  }, [allToggled, notificationsSubscriptions]);
 
   // Function to handle the change of the time intervals by clicking the interval buttons
 
   const handleIntervalChange = (interval, category) => {
-    if (activeIntervals.includes(interval)) {
-      const previousIntervals = Array.from(activeIntervals);
-      const index = previousIntervals.indexOf(interval);
-      previousIntervals.splice(index, 1);
-      setActiveIntervals(previousIntervals);
-    } else {
-      const newIntervals = Array.from(activeIntervals);
-      newIntervals.push(interval);
-      setActiveIntervals(newIntervals);
-    }
+    setActiveIntervals(prevIntervals => {
+      const intervalsSet = new Set(prevIntervals);
+      if (intervalsSet.has(interval)) {
+        intervalsSet.delete(interval);
+      } else {
+        intervalsSet.add(interval);
+      }
+      return Array.from(intervalsSet);
+    });
     handleToggleByIntervalsChange(interval, category);
   };
 
   // Function to handle the change of the time intervals when the alerts switch is toggled without any active interval
 
   const handleActiveIntervalByAlertSwitch = interval => {
+    if (!interval) {
+      setActiveIntervals([]);
+      return;
+    }
     const newIntervals = [];
     newIntervals.push(interval);
     setActiveIntervals(newIntervals);

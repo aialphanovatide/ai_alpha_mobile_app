@@ -12,12 +12,14 @@ import {
 import {useNavigation} from '@react-navigation/core';
 import {selectCategories} from '../../../actions/categoriesActions';
 import {
+  fetchTopStories,
   selectWhatsHappeningTodayLoading,
   selectWhatsHappeningTodayStories,
 } from '../../../actions/whatsHappeningTodayActions';
 import TopStoryItem from './TopStoryItem/TopStoryItem';
 import StoryHeader from './StoryHeader';
 import StoriesFilter from './StoriesFilter';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 
 const INTERVALS = ['1D', '1W', '1M'];
 
@@ -36,6 +38,7 @@ const NewTopStories = () => {
 
   const handleFilterPress = filter => {
     setActiveFilter(filter);
+    dispatch(fetchTopStories({timeframe: filter}));
   };
 
   // This function finds the category and coin bot that belongs to the story, passing through the parameters the coin bot id and the coins where find it.
@@ -92,6 +95,23 @@ const NewTopStories = () => {
       </View>
       {loading === 'idle' ? (
         <SkeletonLoader quantity={4} type="stories" />
+      ) : loading === 'succeeded' && stories.length === 0 ? (
+        <NoContentDisclaimer
+          title={'Whoops, no results.'}
+          description={`We couldn’t find any results.\nGive it another go.`}
+          additionalStyles={{
+            disclaimer: {marginVertical: '5%', paddingVertical: 16},
+          }}
+        />
+      ) : loading !== 'succeeded' && stories.length === 0 ? (
+        <NoContentDisclaimer
+          title={'Whoops, something went wrong.'}
+          description={'Please try again in a little while.'}
+          type="error"
+          additionalStyles={{
+            disclaimer: {marginVertical: '5%', paddingVertical: 16},
+          }}
+        />
       ) : (
         <>
           <StoryHeader

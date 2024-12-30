@@ -7,6 +7,7 @@ import {
   OLD_NEWSBOT_BASE_URL_ENVVAR,
   AIALPHA2KEY_ENVVAR,
   AIALPHA2KEYDEV_ENVVAR,
+  NEWSBOTV2_TEST_BASE_URL_ENVVAR
 } from '@env';
 
 // Function to handle HTTP errors
@@ -71,6 +72,36 @@ export const getTestService = async endpoint => {
     }
 
     const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error in GET request: ${error.message} for ${endpoint}`);
+    throw error;
+  }
+};
+
+// Function to make a GET request to the testing server's API, receiving HTML data
+export const getHTMLTestService = async endpoint => {
+  try {
+    const response = await fetch(`${TEST_API_URL_ENVVAR}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'text/html',
+        'X-API-Key': AIALPHA2KEYDEV_ENVVAR,
+      },
+    });
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    if (response.status === 404) {
+      return [];
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.text();
     return data;
   } catch (error) {
     console.error(`Error in GET request: ${error.message} for ${endpoint}`);
@@ -236,6 +267,38 @@ export const oldNewsbotGetService = async endpoint => {
     }
 
     const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error in GET request: ${error.message} for ${endpoint}`);
+    throw error;
+  }
+};
+
+// Function to make a get request to the updated (21-10-2024) news Server, for retrieving Top Stories and News
+
+export const newsbotGetTestService = async endpoint => {
+  try {
+    const response = await fetch(`${NEWSBOTV2_TEST_BASE_URL_ENVVAR}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    if (response.status === 404) {
+      return [];
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
     return data;
   } catch (error) {
     console.error(`Error in GET request: ${error.message} for ${endpoint}`);

@@ -1,7 +1,7 @@
 // Component to display the History section's content on the ASK AI History section. It renders the items that are saved on the user device's cache (Async Storage) and displays them as clickable items. The user can filter the items by category and clean the history data. It receives the activeHistoryOption, historyOptions, handleHistoryOption, handleActiveResultData, savedResults, and handleHistoryClean functions as props.
 
 import React, {useState} from 'react';
-import {View, TouchableOpacity, Text, Image} from 'react-native';
+import {View, TouchableOpacity, Text, Image, ScrollView} from 'react-native';
 import AskAiItem from '../AskAiItem/AskAiItem';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import useAskAiStyles from '../AskAiStyles';
@@ -108,32 +108,30 @@ const HistoryContent = ({historyOptions, handleActiveResultData}) => {
           </TouchableOpacity>
         ))}
       </View>
-      <View style={styles.historyItemsContainer}>
-        <View>
-          {filteredResults && filteredResults.length > 0 ? (
-            filteredResults.map((coin, index) => {
-              if (!coin || !coin.content) {
-                return null;
-              }
-              return (
-                <AskAiItem
-                  key={index}
-                  coin={coin}
-                  index={index}
-                  handleActiveResultData={handleActiveResultData}
-                />
-              );
-            })
-          ) : (
-            <NoContentDisclaimer
-              title={'Whoops, no matches.'}
-              description={
-                "We couldn't find any search results.\nGive it another go."
-              }
-            />
-          )}
-        </View>
-      </View>
+      <ScrollView style={styles.historyItemsContainer}>
+        {filteredResults && filteredResults.length > 0 ? (
+          filteredResults.map((coin, index) => {
+            if (!coin || !coin.content) {
+              return null;
+            }
+            return (
+              <AskAiItem
+                key={index}
+                coin={coin}
+                index={index}
+                handleActiveResultData={handleActiveResultData}
+              />
+            );
+          })
+        ) : (
+          <NoContentDisclaimer
+            title={'Whoops, no matches.'}
+            description={
+              "We couldn't find any search results.\nGive it another go."
+            }
+          />
+        )}
+      </ScrollView>
     </View>
   );
 };

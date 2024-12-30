@@ -1,3 +1,36 @@
+export const DAILY_MACRO_DATA = [
+  {
+    id: '1',
+    title: 'Bitcoin&Oil: An Unlikely Tango Amid Market Shifts',
+    date: '17/10/2024',
+    image: require('../images/home/default_news.png'),
+  },
+  {
+    id: '2',
+    title: 'China’s Manufacturing PMI: The Next Market Catalyst?',
+    date: '17/10/2024',
+    image: require('../images/home/default_news.png'),
+  },
+  {
+    id: '3',
+    title: 'Will the U.S. Election Decide Bitcoin’s Fate?',
+    date: '17/10/2024',
+    image: require('../images/home/default_news.png'),
+  },
+  {
+    id: '4',
+    title: 'Base Hosts Franklin’s $410M Tokenized Fund',
+    date: '17/10/2024',
+    image: require('../images/home/default_news.png'),
+  },
+  {
+    id: '5',
+    title: 'Solana Boosts Microtransactions with Ultra-Fast, Low-Cost Tools',
+    date: '17/10/2024',
+    image: require('../images/home/default_news.png'),
+  },
+];
+
 export const analysis_mock = [
   {
     id: 1,
