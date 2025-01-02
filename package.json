@@ -9,8 +9,7 @@
     "ios-dev": "react-native run-ios --scheme \"ai_alpha_mobile_app_dev\"",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest",
-    "postinstall": "patch-package"
+    "test": "jest"
   },
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^2.3.0",
