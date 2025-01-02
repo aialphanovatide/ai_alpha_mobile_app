@@ -58,7 +58,6 @@ export const getTestService = async endpoint => {
         'X-API-Key': AIALPHA2KEYDEV_ENVVAR,
       },
     });
-
     if (response.status === 204) {
       return [];
     }

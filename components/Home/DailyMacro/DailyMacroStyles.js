@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {AppThemeContext} from '../../../../context/themeContext';
+import {AppThemeContext} from '../../../context/themeContext';
 
 const {StyleSheet} = require('react-native');
 

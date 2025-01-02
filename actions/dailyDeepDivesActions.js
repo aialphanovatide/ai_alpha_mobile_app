@@ -5,7 +5,10 @@ export const fetchDailyDeepDivesData = createAsyncThunk(
   'home/fetchDailyDeepDivesData',
   async (_, {getState, rejectWithValue}) => {
     try {
-      const data = await getServiceV2(`analyses?per_page=99&section_id=19`);
+      // [PRODUCTION REQUEST]
+      // const data = await getServiceV2(`analyses?per_page=99&section_id=19`);
+      // [TESTING REQUEST]
+      const data = await getTestService(`analyses?per_page=99&section_id=34`);
       if (!data.success) {
         return [];
       }
@@ -36,8 +39,7 @@ export const fetchDailyDeepDivesData = createAsyncThunk(
         id: item.id,
         raw_analysis: item.content,
         coin_bot_id: item.coin_id,
-        coin_bot_name:
-          item.coin_name,
+        coin_bot_name: item.coin_name,
         created_at: item.created_at,
         category: item.category_name,
         title: extractFirstTitleAndImage(item.content).title,
@@ -64,7 +66,10 @@ export const fetchDailyMacros = createAsyncThunk(
   async (_, {getState, rejectWithValue}) => {
     try {
       const {categories} = getState().categories; // Use the categories slice for getting the categories data
-      const data = await getServiceV2(`analyses?per_page=50&section_id=20`);
+      // [PRODUCTION REQUEST]
+      // const data = await getServiceV2(`analyses?per_page=50&section_id=20`);
+      // [TESTING REQUEST]
+      const data = await getTestService(`analyses?per_page=50&section_id=35`);
 
       if (!data.success) {
         return [];
@@ -81,7 +86,6 @@ export const fetchDailyMacros = createAsyncThunk(
         });
         return found || null;
       };
-
 
       return data.data.map(item => ({
         id: item.id,
@@ -110,14 +114,49 @@ export const fetchDailyMacros = createAsyncThunk(
   },
 );
 
+export const fetchLatestSpotlight = createAsyncThunk(
+  'home/fetchLatestSpotlight',
+  async (_, {getState, rejectWithValue}) => {
+    try {
+      const {categories} = getState().categories; // Use the categories slice for getting the categories data
+      const data = await getTestService(`analyses?per_page=10&section_id=37`);
+      if (!data.success) {
+        return [];
+      }
 
+      return data.data.map(item => ({
+        id: item.id,
+        raw_analysis: item.content,
+        coin_bot_id: item.coin_id,
+        coin_bot_name: item.coin_name,
+        created_at: item.created_at,
+        category: item.category_name,
+        title: item.title,
+        image: item.image_url,
+      }));
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+  {
+    condition: (_, thunkApi) => {
+      const loading = thunkApi.getState().home.spotlight.loading;
+      if (loading === 'idle') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+);
 
 export const selectDailyDeepDives = state =>
   state.home.dailyDeepDives.dailyDeepDives;
 export const selectDailyDeepDivesLoading = state =>
   state.home.dailyDeepDives.loading;
 
-export const selectDailyMacros = state =>
-  state.home.dailyMacros.dailyMacros;
-export const selectDailyMacrosLoading = state =>
-  state.home.dailyMacros.loading;
+export const selectDailyMacros = state => state.home.dailyMacros.dailyMacros;
+export const selectDailyMacrosLoading = state => state.home.dailyMacros.loading;
+
+export const selectSpotlight = state => state.home.spotlight.data;
+export const selectSpotlightLoading = state => state.home.spotlight.loading;

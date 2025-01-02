@@ -963,7 +963,7 @@ SPEC CHECKSUMS:
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   AppCheckCore: cc8fd0a3a230ddd401f326489c99990b013f0c4f
   Auth0: 72f19ad566fdf57f07bf37f828afd0c1570769a5
-  boost: 57d2868c099736d80fcd648bf211b4431e51a558
+  boost: 0a937fbcfdd646fca221c4f1d9750d7ccfdfc2dc
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DGCharts: 6e0cf2644e8f81ad13f04caa8bc18502870a1c54
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54

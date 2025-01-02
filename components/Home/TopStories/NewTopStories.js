@@ -73,7 +73,6 @@ const NewTopStories = () => {
   };
 
   // Function to simplify the date format of the story item to a more readable format
-
   const simplifyDateTime = dateTimeString => {
     const dateTime = new Date(dateTimeString);
     const year = dateTime.getFullYear();

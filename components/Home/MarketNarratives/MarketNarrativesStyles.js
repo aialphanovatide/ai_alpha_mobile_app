@@ -1,9 +1,9 @@
 import {useContext} from 'react';
-import { StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
-const useDailyDeepsStyles = () => {
-  const {theme} = useContext(AppThemeContext);
+const useMarketNarrativeStyles = () => {
+  const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     mainTitle: {
       marginTop: 24,
@@ -17,8 +17,8 @@ const useDailyDeepsStyles = () => {
       maxWidth: '65%',
       marginLeft: 8,
       color: theme.titleColor,
-      fontSize: 14,
-      fontFamily: theme.font,
+      fontSize: 16,
+      fontFamily: theme.fontFigtreeSemibold,
     },
     imageStyle: {
       width: 30,
@@ -28,21 +28,11 @@ const useDailyDeepsStyles = () => {
       alignSelf: 'center',
     },
     item: {
-      // flexDirection: 'row',
       width: '100%',
-      paddingVertical: 14,
+      paddingVertical: 8,
       paddingLeft: 4,
-      backgroundColor: theme.boxesBackgroundColor,
-      // alignItems: 'center',
-      // borderBottomColor: theme.boxesBorderColor,
-      // borderBottomWidth: 0.5,
       borderRadius: 2,
       opacity: 1,
-    },
-    row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 8,
     },
     itemPreview: {
       flex: 1,
@@ -70,16 +60,10 @@ const useDailyDeepsStyles = () => {
     background: {
       flex: 1,
     },
-    analysisItemsContainer: {
-      flex: 1,
-      width: '100%',
-      backgroundColor: theme.mainBackgroundColor,
-    },
     container: {
       flex: 1,
-      width: theme.width,
-      padding: 12,
-      backgroundColor: theme.mainBackgroundColor,
+      padding: 10,
+      backgroundColor: isDarkMode ? '#000000' : '#FFFFFF',
     },
     article: {
       flex: 1,
@@ -87,9 +71,12 @@ const useDailyDeepsStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
+    articleImage: {
+      flex: 1,
+    },
     articleImageContainer: {
       position: 'relative',
-      width: 360,
+      width: 380,
       height: 225,
       margin: 4,
       marginBottom: 0,
@@ -101,7 +88,7 @@ const useDailyDeepsStyles = () => {
       padding: 14,
       paddingBottom: '10%',
     },
-    analysisArticleText: {
+    articleText: {
       fontSize: theme.responsiveFontSize * 0.825,
       color: theme.textColor,
       marginVertical: theme.boxesVerticalMargin,
@@ -133,7 +120,6 @@ const useDailyDeepsStyles = () => {
       opacity: 0,
     },
     itemWrapper: {
-      flex: 1,
       flexDirection: 'row',
       position: 'relative',
     },
@@ -142,7 +128,7 @@ const useDailyDeepsStyles = () => {
       width: 30,
       height: 30,
       position: 'absolute',
-      top: '20%',
+      top: 20,
       right: 20,
       justifyContent: 'center',
       alignItems: 'center',
@@ -163,59 +149,15 @@ const useDailyDeepsStyles = () => {
       alignItems: 'flex-end',
     },
     seeAllText: {
-      color: theme.secondaryTextColor,
-      fontSize: theme.responsiveFontSize * 0.825,
-      textDecorationLine: 'underline',
-      textDecorationColor: theme.secondaryTextColor,
-      fontFamily: theme.fontMedium,
+      fontSize: 12,
+      color: isDarkMode ? '#71717A' : '#A1A1AA',
+      fontFamily: theme.fontFigtreeMedium,
     },
-    articleImage: {
-      flex: 1,
-    },
-    overlayContainer: {
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      width: '100%',
-      height: '75%',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      zIndex: 300,
-    },
-    overlayGradient: {
-      ...StyleSheet.absoluteFillObject,
-    },
-    textContainer: {
-      width: '100%',
-      marginBottom: '45%',
-      padding: 12,
-      backgroundColor: theme.boxesBackgroundColor,
-      alignItems: 'center',
-      justifyContent: 'center',
+    articleFullImage: {
+      width: theme.width,
+      height: 350,
       alignSelf: 'center',
-      borderRadius: 5,
-    },
-    mainOverlayTitle: {
-      marginVertical: 8,
-      color: theme.textColor,
-      fontSize: 16,
-      fontFamily: theme.fontSemibold,
-      textAlign: 'center',
-      lineHeight: 25,
-    },
-    orangeText: {
-      color: theme.orange,
-    },
-    overlayText: {
-      color: theme.textColor,
-      fontSize: 16,
-      fontFamily: theme.font,
-      textAlign: 'center',
-      lineHeight: 25,
-    },
-    offeringText: {
-      fontSize: theme.titleFontSize,
-      textAlign: 'left',
+      overflow: 'hidden',
     },
     zoomImageBackground: {
       position: 'relative',
@@ -224,22 +166,6 @@ const useDailyDeepsStyles = () => {
       height: '100%',
       alignItems: 'center',
       alignSelf: 'center',
-    },
-    unsubscribedButton: {
-      width: 300,
-      height: 35,
-      marginVertical: 16,
-      backgroundColor: theme.orange,
-      borderRadius: 4,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingVertical: 4,
-    },
-    buttonText: {
-      color: theme.activeWhite,
-      fontSize: 14,
-      fontFamily: theme.fontMedium,
-      textAlign: 'center',
     },
     zoomIndicator: {
       position: 'absolute',
@@ -251,8 +177,8 @@ const useDailyDeepsStyles = () => {
       zIndex: 1000,
     },
     zoomedImage: {
-      width: 400,
-      height: 400,
+      width: 380,
+      height: 380,
       alignSelf: 'center',
     },
     zoomImageDismissOverlay: {
@@ -264,14 +190,32 @@ const useDailyDeepsStyles = () => {
       backgroundColor: '#00000050',
       opacity: 0.8,
     },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
     horizontalLine: {
       width: '90%',
       marginLeft: '5%',
+      marginTop: 10,
       borderBottomWidth: 0.75,
       borderBottomColor: theme.secondaryGrayColor,
+    },
+    titleRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 8,
+      marginBottom: 16,
+    },
+    topBarTitle: {
+      marginHorizontal: 8,
+      fontSize: 12,
+      fontFamily: theme.fontFigtreeMedium,
+      color: isDarkMode ? '#52525B' : '#D4D4D8',
+      textTransform: 'uppercase',
     },
   });
   return styles;
 };
 
-export default useDailyDeepsStyles;
+export default useMarketNarrativeStyles;

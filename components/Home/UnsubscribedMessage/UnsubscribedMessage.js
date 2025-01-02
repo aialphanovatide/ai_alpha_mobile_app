@@ -1,8 +1,8 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 import React, {useContext} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {AppThemeContext} from '../../../../context/themeContext';
-import useDailyDeepsStyles from '../dailyDeepsStyles';
+import {AppThemeContext} from '../../../context/themeContext';
+import useDailyDeepsStyles from '../Analysis/DailyDeepDives/dailyDeepsStyles';
 
 const UnsubscribedMessage = ({isSubscribed, handleSubscriptionNavigation}) => {
   const styles = useDailyDeepsStyles();
