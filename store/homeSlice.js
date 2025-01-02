@@ -4,6 +4,7 @@ import {fetchTop10Movers} from '../actions/topTenMoversActions';
 import {
   fetchDailyDeepDivesData,
   fetchDailyMacros,
+  fetchLatestSpotlight,
 } from '../actions/dailyDeepDivesActions';
 import {fetchMarketNarratives} from '../actions/marketNarrativesActions';
 
@@ -36,6 +37,11 @@ const homeSlice = createSlice({
     },
     dailyMacros: {
       dailyMacros: [],
+      loading: 'idle',
+      error: null,
+    },
+    spotlight: {
+      data: [],
       loading: 'idle',
       error: null,
     },
@@ -147,6 +153,19 @@ const homeSlice = createSlice({
       .addCase(fetchDailyMacros.rejected, (state, action) => {
         state.dailyMacros.loading = 'failed';
         state.dailyMacros.error = action.payload || 'Error fetching data';
+      })
+      // Reducers for handling the pending, fulfilled, and rejected states of the fetchLatestSpotlight actions.
+      .addCase(fetchLatestSpotlight.pending, state => {
+        state.spotlight.loading = 'idle';
+      })
+      .addCase(fetchLatestSpotlight.fulfilled, (state, action) => {
+        state.spotlight.loading = 'succeeded';
+        state.spotlight.data = action.payload;
+        state.spotlight.error = null;
+      })
+      .addCase(fetchLatestSpotlight.rejected, (state, action) => {
+        state.spotlight.loading = 'failed';
+        state.spotlight.error = action.payload || 'Error fetching data';
       });
   },
 });

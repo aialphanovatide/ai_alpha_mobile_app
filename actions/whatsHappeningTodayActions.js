@@ -1,13 +1,16 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {newsbotGetService} from '../services/aiAlphaApi';
+import {newsbotGetService, newsbotGetTestService} from '../services/aiAlphaApi';
 
 export const fetchTopStories = createAsyncThunk(
   'home/fetchTopStories',
   async ({timeframe}, {rejectWithValue}) => {
     try {
-      const topStoriesData = await newsbotGetService(
-        `/top-stories?per_page=10&timeframe=${timeframe}`,
-      );
+      // const topStoriesData = await newsbotGetService(
+      //   `/top-stories?per_page=10&timeframe=${timeframe}`,
+      // );
+       const topStoriesData = await newsbotGetTestService(
+         `/top-stories?per_page=10&timeframe=${timeframe}`,
+       );
 
       if (!topStoriesData.success || !topStoriesData.data) {
         return [];

@@ -28,7 +28,7 @@ const StoryHeader = ({item, handleStoryPress, simplifyDate}) => {
           <Text style={styles.newsDate}>{simplifyDate(item.date)}</Text>
         </View>
       </TouchableOpacity>
-      <View style={styles.horizontalLine} />
+      <View style={[styles.horizontalLine, {marginTop: 8, marginBottom: 16  }]} />
     </>
   );
 };

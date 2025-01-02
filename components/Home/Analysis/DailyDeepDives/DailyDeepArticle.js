@@ -9,16 +9,16 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import BackButton from '../../BackButton/BackButton';
+import BackButton from '../../../BackButton/BackButton';
 import RenderHTML, {
   defaultSystemFonts,
   useInternalRenderer,
 } from 'react-native-render-html';
-import {AppThemeContext} from '../../../context/themeContext';
+import {AppThemeContext} from '../../../../context/themeContext';
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/core';
-import {RevenueCatContext} from '../../../context/RevenueCatContext';
-import UnsubscribedMessage from './UnsubscribedMessage/UnsubscribedMessage';
+import {RevenueCatContext} from '../../../../context/RevenueCatContext';
+import UnsubscribedMessage from '../../UnsubscribedMessage/UnsubscribedMessage';
 import {ResumableZoom} from 'react-native-zoom-toolkit';
 import useDailyDeepsStyles from './dailyDeepsStyles.js';
 
@@ -204,7 +204,17 @@ const DailyDeepArticle = ({route}) => {
       fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
       fontSize: theme.responsiveFontSize * 0.85,
     },
+    ol: {
+      color: theme.textColor,
+      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+      fontSize: theme.responsiveFontSize * 0.9,
+    },
     span: {
+      color: theme.textColor,
+      fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
+      fontSize: theme.responsiveFontSize * 0.85,
+    },
+    li: {
       color: theme.textColor,
       fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
       fontSize: theme.responsiveFontSize * 0.85,
@@ -305,7 +315,7 @@ const DailyDeepArticle = ({route}) => {
           {!isImageZoomVisible && (
             <TouchableWithoutFeedback onPress={() => setImageZoomVisible(true)}>
               <Image
-                source={require('../../../assets/images/analysis/magnifier.png')}
+                source={require('../../../../assets/images/analysis/magnifier.png')}
                 resizeMode="contain"
                 style={styles.zoomIndicator}
               />

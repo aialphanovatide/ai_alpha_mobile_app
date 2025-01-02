@@ -34,7 +34,6 @@ const NewDailyDeepDives = () => {
       date: analysis.created_at,
       isHistoryArticle: false,
     });
-
     const clickedAt = new Date().toISOString();
 
     const analysisWithDate = {

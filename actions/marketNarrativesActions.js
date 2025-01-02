@@ -28,19 +28,19 @@ export const fetchMarketNarratives = createAsyncThunk(
     };
 
     try {
-      const data = await getServiceV2(`/narrative-tradings?limit=99`);
+      const data = await getServiceV2(`/analyses?per_page=50&section_id=21`);
       if (data.success) {
         const parsed_data = data.data.map(item => {
           return {
-            content: item.narrative_trading,
-            id: item.narrative_trading_id,
-            coin_bot_id: item.coin_bot_id,
+            content: item.content,
+            id: item.id,
+            coin_bot_id: item.coin_id,
             coin_bot_name: item.coin_name.toLowerCase(),
             created_at: item.created_at,
             category:
               item.category_name !== '' ? item.category_name : 'Bitcoin',
-            title: extractFirstTitleAndImage(item.narrative_trading).title,
-            image: extractFirstTitleAndImage(item.narrative_trading).imageSrc,
+            title: extractFirstTitleAndImage(item.content).title,
+            image: extractFirstTitleAndImage(item.content).imageSrc,
           };
         });
         return parsed_data;

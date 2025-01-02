@@ -28,15 +28,8 @@ import {useScrollToTop} from '@react-navigation/native';
 import {useScreenOrientation} from '../../../../../../hooks/useScreenOrientation';
 import {useFocusEffect, useNavigation} from '@react-navigation/core';
 import useChartsSource from '../../../../../../hooks/useChartsSource';
-import {
-  getService,
-  getServiceV2,
-  getTestService,
-} from '../../../../../../services/aiAlphaApi';
-import CWChart from './NewCharts/CWChart';
 import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
-import VicChart from './VicChart';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   selectActiveCoin,
@@ -99,16 +92,12 @@ const CandlestickChart = ({route}) => {
   const [isPriceUp, setIsPriceUp] = useState(null);
   const [selectedInterval, setSelectedInterval] = useState('1w');
   const [lastPrice, setLastPrice] = useState(undefined);
-  const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeButtons, setActiveButtons] = useState([]);
   const activeCoin = useSelector(selectActiveCoin);
   const activeSubCoin = useSelector(selectActiveSubCoin);
   const {subscribed} = useContext(RevenueCatContext);
   const [activeAlertOption, setActiveAlertOption] = useState('4H');
-  const aboutVisible = useSelector(selectAboutVisible);
-  const aboutDescription = useSelector(selectAboutDescription);
-  const aboutTitle = useSelector(selectAboutTitle);
   const {isDarkMode} = useContext(AppThemeContext);
   const pairings = useChartsSource(
     coinBot.toLowerCase(),
@@ -160,7 +149,6 @@ const CandlestickChart = ({route}) => {
     setLastPrice(undefined);
     setSelectedPairing(pairings[0]);
     setSelectedInterval('1w');
-    fetchChartDataFromServer(pairings[0], '1w');
   }, [activeSubCoin, coinBot]);
 
   const {url, options} = useChartsSource(
@@ -175,90 +163,25 @@ const CandlestickChart = ({route}) => {
     dispatch(handleClose());
   };
 
-  // Function to fetch the data from Binance and from Coingecko for KAS and VELO, since that coins doesn't have data on the first one, and map it for using it with VictoryChart's components
-
-  async function fetchChartDataFromServer(pairing, interval) {
-    setChartData([]);
-    const coinName = activeSubCoin ? activeSubCoin : coinBot;
-    try {
-      const response = await getServiceV2(
-        `chart/ohlc?gecko_id=${
-          coinName.toLowerCase() === 'pol' ? 'polygon' : coinName.toLowerCase()
-        }&symbol=${
-          coinName.toLowerCase() === 'pol' ? 'polygon' : coinName.toLowerCase()
-        }&vs_currency=${
-          pairing === 'USDT' ? 'usd' : pairing.toLowerCase()
-        }&interval=${interval.toLowerCase()}&precision=8`,
-      );
-      const data = response.data;
-      const currentPrice = parseFloat(data[data.length - 1][4]);
-      data[data.length - 1][4] >= data[data.length - 2][4]
-        ? setIsPriceUp(true)
-        : setIsPriceUp(false);
-      setLastPrice(currentPrice);
-      const formattedChartData = data.map(item => ({
-        x: moment(item[0]),
-        open: parseFloat(item[1]),
-        close: parseFloat(item[4]),
-        high: parseFloat(item[2]),
-        low: parseFloat(item[3]),
-      }));
-      setChartData(formattedChartData);
-      console.log(
-        `-  Successfully retrieved charts data for coin: ${coinName}.`,
-      );
-    } catch (error) {
-      console.error(`Failed to fetch data: ${error}`);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  // UseEffects that updates the charts data every 3.5s, before it was every 1s but for performance reasons it was increased
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     fetchChartDataFromServer();
-  //   }, 3500);
-  //   return () => clearInterval(intervalId);
-  // }, [coinBot, selectedInterval, selectedPairing]);
-
-  // [TEMPORARY] Function to manually update the data of the chart
+  // Function to manually update the data of the chart
 
   const handleDataUpdate = (pairing, currentInterval) => {
     setLoading(true);
-    setChartData([]);
-    fetchChartDataFromServer(pairing, currentInterval);
   };
 
   // Function to handle the time interval changes, executing again the data fetching
 
   const changeInterval = async newInterval => {
     setLoading(true);
-    try {
-      setSelectedInterval(newInterval);
-      setChartData([]);
-      fetchChartDataFromServer(selectedPairing, newInterval);
-    } catch (error) {
-      console.error(`Failed to change interval: ${error}`);
-    }
+    setSelectedInterval(newInterval);
   };
 
   // Function to handle the currency-pair for the coins that haves USDT and BTC pairings
   const handlePairingChange = async (pairing, currentInterval) => {
     setLoading(true);
-    try {
-      setSelectedPairing(pairing);
-      if (pairing.toLowerCase() === 'btc' || pairing.toLowerCase() === 'eth') {
-        setSelectedInterval('1d');
-        setChartData([]);
-        fetchChartDataFromServer(pairing, '1d');
-      } else {
-        setChartData([]);
-        fetchChartDataFromServer(pairing, currentInterval);
-      }
-    } catch (error) {
-      console.error(`Failed to change pairing: ${error}`);
+    setSelectedPairing(pairing);
+    if (pairing.toLowerCase() === 'btc' || pairing.toLowerCase() === 'eth') {
+      setSelectedInterval('1d');
     }
   };
 
@@ -349,35 +272,20 @@ const CandlestickChart = ({route}) => {
               changeInterval={changeInterval}
               disabled={loading}
             />
-            <RsButton
+            {/* <RsButton
               activeButtons={activeButtons}
               setActiveButtons={setActiveButtons}
               disabled={loading || supportResistanceLoading}
-            />
+            /> */}
           </View>
-          {/* <ChartWidget /> */}
-          <VicChart
-            candlesToShow={20}
-            symbol={symbol}
-            selectedInterval={selectedInterval}
-            chartData={chartData}
-            loading={loading}
-            activeButtons={activeButtons}
-            coinBot={activeSubCoin ? activeSubCoin : coinBot}
-            selectedPairing={selectedPairing}
-            setSupportResistanceLoading={setSupportResistanceLoading}
+          <ChartWidget
+            symbol={activeSubCoin ? activeSubCoin : coinBot}
+            activeInterval={selectedInterval}
+            pair={selectedPairing}
             handleOnZoom={handleOnZoom}
+            // activeButtons={activeButtons}
+            // setSupportResistanceLoading={setSupportResistanceLoading}
           />
-          {/* <CWChart
-            symbol={symbol}
-            selectedInterval={selectedInterval}
-            chartData={chartData}
-            loading={loading}
-            activeButtons={activeButtons}
-            coinBot={coinBot}
-            selectedPairing={selectedPairing}
-            setSupportResistanceLoading={setSupportResistanceLoading}
-          /> */}
         </View>
         <AlertMenu
           activeAlertOption={activeAlertOption}

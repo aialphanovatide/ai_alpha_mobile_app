@@ -4,12 +4,12 @@ import FastImage from 'react-native-fast-image';
 import useDailyMacroStyles from './DailyMacroStyles';
 import {useNavigation} from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NoContentDisclaimer from '../../../NoContentDisclaimer/NoContentDisclaimer';
-import SkeletonLoader from '../../../Loader/SkeletonLoader';
+import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
+import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {
   selectDailyMacros,
   selectDailyMacrosLoading,
-} from '../../../../actions/dailyDeepDivesActions';
+} from '../../../actions/dailyDeepDivesActions';
 import {useSelector} from 'react-redux';
 
 const MacroNewsCard = ({item, handleCardPress}) => {

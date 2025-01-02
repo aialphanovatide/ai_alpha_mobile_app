@@ -1,8 +1,8 @@
 import {useContext} from 'react';
-import {StyleSheet} from 'react-native';
-import {AppThemeContext} from '../../../context/themeContext';
+import { StyleSheet} from 'react-native';
+import {AppThemeContext} from '../../../../context/themeContext';
 
-const useMarketNarrativeStyles = () => {
+const useDailyDeepsStyles = () => {
   const {theme} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     mainTitle: {
@@ -28,12 +28,21 @@ const useMarketNarrativeStyles = () => {
       alignSelf: 'center',
     },
     item: {
+      // flexDirection: 'row',
       width: '100%',
       paddingVertical: 14,
       paddingLeft: 4,
       backgroundColor: theme.boxesBackgroundColor,
+      // alignItems: 'center',
+      // borderBottomColor: theme.boxesBorderColor,
+      // borderBottomWidth: 0.5,
       borderRadius: 2,
       opacity: 1,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 8,
     },
     itemPreview: {
       flex: 1,
@@ -61,9 +70,15 @@ const useMarketNarrativeStyles = () => {
     background: {
       flex: 1,
     },
-    container: {
+    analysisItemsContainer: {
       flex: 1,
       width: '100%',
+      backgroundColor: theme.mainBackgroundColor,
+    },
+    container: {
+      flex: 1,
+      width: theme.width,
+      padding: 12,
       backgroundColor: theme.mainBackgroundColor,
     },
     article: {
@@ -72,12 +87,9 @@ const useMarketNarrativeStyles = () => {
       backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
     },
-    articleImage: {
-      flex: 1,
-    },
     articleImageContainer: {
       position: 'relative',
-      width: 380,
+      width: 360,
       height: 225,
       margin: 4,
       marginBottom: 0,
@@ -89,7 +101,7 @@ const useMarketNarrativeStyles = () => {
       padding: 14,
       paddingBottom: '10%',
     },
-    articleText: {
+    analysisArticleText: {
       fontSize: theme.responsiveFontSize * 0.825,
       color: theme.textColor,
       marginVertical: theme.boxesVerticalMargin,
@@ -121,6 +133,7 @@ const useMarketNarrativeStyles = () => {
       opacity: 0,
     },
     itemWrapper: {
+      flex: 1,
       flexDirection: 'row',
       position: 'relative',
     },
@@ -129,7 +142,7 @@ const useMarketNarrativeStyles = () => {
       width: 30,
       height: 30,
       position: 'absolute',
-      top: 20,
+      top: '20%',
       right: 20,
       justifyContent: 'center',
       alignItems: 'center',
@@ -156,11 +169,53 @@ const useMarketNarrativeStyles = () => {
       textDecorationColor: theme.secondaryTextColor,
       fontFamily: theme.fontMedium,
     },
-    articleFullImage: {
-      width: theme.width,
-      height: 350,
+    articleImage: {
+      flex: 1,
+    },
+    overlayContainer: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: '75%',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      zIndex: 300,
+    },
+    overlayGradient: {
+      ...StyleSheet.absoluteFillObject,
+    },
+    textContainer: {
+      width: '100%',
+      marginBottom: '45%',
+      padding: 12,
+      backgroundColor: theme.boxesBackgroundColor,
+      alignItems: 'center',
+      justifyContent: 'center',
       alignSelf: 'center',
-      overflow: 'hidden',
+      borderRadius: 5,
+    },
+    mainOverlayTitle: {
+      marginVertical: 8,
+      color: theme.textColor,
+      fontSize: 16,
+      fontFamily: theme.fontSemibold,
+      textAlign: 'center',
+      lineHeight: 25,
+    },
+    orangeText: {
+      color: theme.orange,
+    },
+    overlayText: {
+      color: theme.textColor,
+      fontSize: 16,
+      fontFamily: theme.font,
+      textAlign: 'center',
+      lineHeight: 25,
+    },
+    offeringText: {
+      fontSize: theme.titleFontSize,
+      textAlign: 'left',
     },
     zoomImageBackground: {
       position: 'relative',
@@ -169,6 +224,22 @@ const useMarketNarrativeStyles = () => {
       height: '100%',
       alignItems: 'center',
       alignSelf: 'center',
+    },
+    unsubscribedButton: {
+      width: 300,
+      height: 35,
+      marginVertical: 16,
+      backgroundColor: theme.orange,
+      borderRadius: 4,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 4,
+    },
+    buttonText: {
+      color: theme.activeWhite,
+      fontSize: 14,
+      fontFamily: theme.fontMedium,
+      textAlign: 'center',
     },
     zoomIndicator: {
       position: 'absolute',
@@ -180,8 +251,8 @@ const useMarketNarrativeStyles = () => {
       zIndex: 1000,
     },
     zoomedImage: {
-      width: 380,
-      height: 380,
+      width: 400,
+      height: 400,
       alignSelf: 'center',
     },
     zoomImageDismissOverlay: {
@@ -193,11 +264,6 @@ const useMarketNarrativeStyles = () => {
       backgroundColor: '#00000050',
       opacity: 0.8,
     },
-    row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 8,
-    },
     horizontalLine: {
       width: '90%',
       marginLeft: '5%',
@@ -208,4 +274,4 @@ const useMarketNarrativeStyles = () => {
   return styles;
 };
 
-export default useMarketNarrativeStyles;
+export default useDailyDeepsStyles;
