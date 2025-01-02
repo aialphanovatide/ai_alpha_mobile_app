@@ -45,7 +45,6 @@ target 'ai_alpha_mobile_app' do
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
   pod 'Firebase/AppCheck'  # Include this if you are using App Check features
-  pod 'boost', '1.76.0'
 
 
   use_react_native!(
