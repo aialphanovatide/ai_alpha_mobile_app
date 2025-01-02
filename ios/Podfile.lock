@@ -37,9 +37,6 @@ PODS:
   - Firebase/AppCheck (11.5.0):
     - Firebase/CoreOnly
     - FirebaseAppCheck (~> 11.5.0)
-  - Firebase/Auth (11.5.0):
-    - Firebase/CoreOnly
-    - FirebaseAuth (~> 11.5.0)
   - Firebase/Core (11.5.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (~> 11.5.0)
@@ -73,16 +70,6 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
   - FirebaseAppCheckInterop (11.6.0)
-  - FirebaseAuth (11.5.0):
-    - FirebaseAppCheckInterop (~> 11.0)
-    - FirebaseAuthInterop (~> 11.0)
-    - FirebaseCore (= 11.5)
-    - FirebaseCoreExtension (= 11.5)
-    - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
-    - GoogleUtilities/Environment (~> 8.0)
-    - GTMSessionFetcher/Core (< 5.0, >= 3.4)
-    - RecaptchaInterop (~> 100.0)
-  - FirebaseAuthInterop (11.6.0)
   - FirebaseCore (11.5.0):
     - FirebaseCoreInternal (= 11.5)
     - GoogleUtilities/Environment (~> 8.0)
@@ -647,7 +634,6 @@ PODS:
     - React-perflogger (= 0.72.7)
   - ReactNativeART (1.2.0):
     - React
-  - RecaptchaInterop (100.0.0)
   - RevenueCat (4.32.2)
   - RNAppleAuthentication (2.3.0):
     - React-Core
@@ -666,10 +652,6 @@ PODS:
   - RNFBApp (21.6.1):
     - Firebase/CoreOnly (= 11.5.0)
     - React-Core
-  - RNFBAuth (21.6.1):
-    - Firebase/Auth (= 11.5.0)
-    - React-Core
-    - RNFBApp
   - RNFBMessaging (21.6.1):
     - Firebase/Messaging (= 11.5.0)
     - FirebaseCoreExtension
@@ -782,7 +764,6 @@ DEPENDENCIES:
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
-  - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
@@ -804,8 +785,6 @@ SPEC REPOS:
     - FirebaseAnalytics
     - FirebaseAppCheck
     - FirebaseAppCheckInterop
-    - FirebaseAuth
-    - FirebaseAuthInterop
     - FirebaseCore
     - FirebaseCoreExtension
     - FirebaseCoreInternal
@@ -825,7 +804,6 @@ SPEC REPOS:
     - OpenSSL-Universal
     - PromisesObjC
     - PurchasesHybridCommon
-    - RecaptchaInterop
     - RevenueCat
     - SDWebImage
     - SDWebImageWebPCoder
@@ -959,8 +937,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fast-image"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
-  RNFBAuth:
-    :path: "../node_modules/@react-native-firebase/auth"
   RNFBMessaging:
     :path: "../node_modules/@react-native-firebase/messaging"
   RNGestureHandler:
@@ -997,8 +973,6 @@ SPEC CHECKSUMS:
   FirebaseAnalytics: 2f4a11eeb7a0e9c6fcf642d4e6aaca7fa4d38c28
   FirebaseAppCheck: 1c4adb8028cc5ec6a8d3d10f18b60293cddc45a4
   FirebaseAppCheckInterop: 347aa09a805219a31249b58fc956888e9fcb314b
-  FirebaseAuth: d8ad770642af39d1be932094be5f5230efb0ea74
-  FirebaseAuthInterop: a919d415797d23b7bfe195a04f322b86c65020ef
   FirebaseCore: 93abc05437f8064cd2bc0a53b768fb0bc5a1d006
   FirebaseCoreExtension: ddb2eb987f736b714d30f6386795b52c4670439e
   FirebaseCoreInternal: f47dd28ae7782e6a4738aad3106071a8fe0af604
@@ -1067,7 +1041,6 @@ SPEC CHECKSUMS:
   React-utils: dc51e2c7c2e49d327b90771d8a7acc95918eb485
   ReactCommon: 4ef37cb61335f2c7a29225d754c06857b4cc6361
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
-  RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RevenueCat: 298f40f434e6675ea51744cfca5945f09f7c5a07
   RNAppleAuthentication: e99eaf3c4c01ad8ecb6125dd6f0cfd98871685b5
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
@@ -1076,7 +1049,6 @@ SPEC CHECKSUMS:
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBApp: 1de631bffe154f4f8b56f8dbfb13d6305d658e97
-  RNFBAuth: aa53108a283606c560e4380d75d093c35a13d8dd
   RNFBMessaging: 3b6af169c3caf08af40ca79fa4bdc422c3f1a10c
   RNGestureHandler: c6482695d8c64b1a5e8e1396d3ac196e8cfee26c
   RNGoogleSignin: aac5c1ec73422109dec1da770247a1e410dcc620
