@@ -34,6 +34,7 @@ import {
   findCoinSymbolByName,
 } from './components/Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/SubSections/Competitors/coinsNames';
 import FreeFounders from './components/Popups/FreeFounders';
+import LoginForm from './components/Login/Screens/LoginForm/LoginForm';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 const {width, height} = Dimensions.get('window');
@@ -57,6 +58,8 @@ const App = () => {
     useState(false);
   const [hasSeenFounderPopup, setHasSeenFounderPopup] = useState(false);
   const [founderPopupChecked, setFounderPopupChecked] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -86,6 +89,25 @@ const App = () => {
       darkModeSubscription.remove();
       backgroundColorSubscription.remove();
     };
+  }, []);
+
+  useEffect(() => {
+    // Check if we have stored tokens in AsyncStorage
+    const checkAuth = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        const refreshToken = await AsyncStorage.getItem('refreshToken');
+        // If tokens exist, consider the user logged in
+        if (accessToken && refreshToken) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } finally {
+        setAuthChecked(true);
+      }
+    };
+    checkAuth();
   }, []);
 
   // Check in AsyncStorage if the user has already seen the Founder popup
@@ -280,7 +302,6 @@ const App = () => {
   if (!founderPopupChecked) {
     return null;
   }
-
   return (
     <Auth0Provider domain={AUTH0_DOMAIN_ENVVAR} clientId={AUTH0_CLIENT_ENVVAR}>
       <Provider store={store}>
@@ -295,7 +316,8 @@ const App = () => {
                       upperBackgroundColor === '#FC5404'
                         ? '#FFB76E'
                         : upperBackgroundColor,
-                  }}></SafeAreaView>
+                  }}
+                />
                 <SafeAreaView
                   style={[
                     styles.container,
@@ -308,11 +330,7 @@ const App = () => {
                     },
                   ]}>
                   <StatusBar
-                    barStyle={
-                      isDarkMode
-                        ? 'light-content'
-                        : 'dark-content' /*This changes the font color for SafeAreaView*/
-                    }
+                    barStyle={isDarkMode ? 'light-content' : 'dark-content'}
                   />
                   <Modal
                     animationType="slide"
@@ -320,13 +338,18 @@ const App = () => {
                     visible={!hasSeenFounderPopup}>
                     <FreeFounders onDismiss={handleDismissFounderPopup} />
                   </Modal>
+
                   <SingletonHooksContainer />
                   <GestureHandlerRootView style={{flex: 1}}>
-                    {!initialAnimationFinished ? (
+                    {!authChecked ? null : !initialAnimationFinished ? (
                       <CustomSplashScreen />
                     ) : (
-                      <Navigation />
+                      <Navigation
+                        initialRoute={isLoggedIn ? 'TabsMenu' : 'SignIn'}
+                      />
                     )}
+
+                    {/* Connectivity modals, etc. */}
                     <ConnectivityModal
                       serverError={serverError}
                       setModalVisible={setModalVisible}

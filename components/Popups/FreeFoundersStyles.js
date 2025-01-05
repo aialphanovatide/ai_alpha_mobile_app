@@ -24,12 +24,12 @@ const useFreeFoundersStyles = () => {
 
     // The “card” that sits on top of the background
     contentContainer: {
-      marginTop: 590, // adjust top spacing so text is below rocket
+      marginTop: 550, // adjust top spacing so text is below rocket
       paddingHorizontal: 20,
       alignItems: 'center',
     },
     title: {
-      fontSize: 38,
+      fontSize: 34,
       color: theme.mainTextColor,
       fontWeight: '600',
       marginBottom: 8,
