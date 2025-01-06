@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getServiceV2} from '../services/aiAlphaApi';
+import {getServiceV2, getTestService} from '../services/aiAlphaApi';
 
 export const fetchMarketNarratives = createAsyncThunk(
   'home/fetchMarketNarratives',
@@ -28,7 +28,7 @@ export const fetchMarketNarratives = createAsyncThunk(
     };
 
     try {
-      const data = await getServiceV2(`/analyses?per_page=50&section_id=21`);
+      const data = await getTestService(`/analyses?per_page=50&section_id=46`);
       if (data.success) {
         const parsed_data = data.data.map(item => {
           return {
