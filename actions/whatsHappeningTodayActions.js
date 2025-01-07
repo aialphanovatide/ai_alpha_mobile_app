@@ -1,11 +1,16 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {newsbotGetService} from '../services/aiAlphaApi';
+import {newsbotGetService, newsbotGetTestService} from '../services/aiAlphaApi';
+
+const TOP_3_COINS_ID = [2, 11, 1];
 
 export const fetchTopStories = createAsyncThunk(
   'home/fetchTopStories',
   async ({timeframe}, {rejectWithValue}) => {
     try {
-      const topStoriesData = await newsbotGetService(
+      // const topStoriesData = await newsbotGetService(
+      //   `/top-stories?per_page=10&timeframe=${timeframe}`,
+      // );
+      const topStoriesData = await newsbotGetTestService(
         `/top-stories?per_page=10&timeframe=${timeframe}`,
       );
 
@@ -14,7 +19,6 @@ export const fetchTopStories = createAsyncThunk(
       }
 
       const allTopStories = Object.values(topStoriesData.data).flat();
-
       return allTopStories;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -42,7 +46,15 @@ export const fetchTopStories = createAsyncThunk(
 //   };
 // };
 
-export const selectWhatsHappeningTodayStories = state =>
-  state.home.whatsHappeningToday.stories;
+export const selectTop3CoinsStories = state => {
+  const allStories = state.home.whatsHappeningToday.stories;
+  return allStories.filter(story => TOP_3_COINS_ID.includes(story.bot_id));
+};
+
+export const selectAltCoinsStories = state => {
+  const allStories = state.home.whatsHappeningToday.stories;
+  return allStories.filter(story => !TOP_3_COINS_ID.includes(story.bot_id));
+};
+
 export const selectWhatsHappeningTodayLoading = state =>
   state.home.whatsHappeningToday.loading;

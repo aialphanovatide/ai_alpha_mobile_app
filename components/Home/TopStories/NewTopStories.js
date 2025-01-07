@@ -13,13 +13,13 @@ import {useNavigation} from '@react-navigation/core';
 import {selectCategories} from '../../../actions/categoriesActions';
 import {
   fetchTopStories,
+  selectTop3CoinsStories,
   selectWhatsHappeningTodayLoading,
-  selectWhatsHappeningTodayStories,
 } from '../../../actions/whatsHappeningTodayActions';
-import TopStoryItem from './TopStoryItem/TopStoryItem';
 import StoryHeader from './StoryHeader';
 import StoriesFilter from './StoriesFilter';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
+import StoryCard from './StoryCard/StoryCard';
 
 const INTERVALS = ['1D', '1W', '1M'];
 
@@ -31,7 +31,7 @@ const NewTopStories = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const categories = useSelector(selectCategories);
-  const stories = useSelector(selectWhatsHappeningTodayStories);
+  const stories = useSelector(selectTop3CoinsStories);
   const loading = useSelector(selectWhatsHappeningTodayLoading);
 
   // Function to handle the press of the filter buttons, changing the active filter and displaying the news of the selected time interval
@@ -73,7 +73,6 @@ const NewTopStories = () => {
   };
 
   // Function to simplify the date format of the story item to a more readable format
-
   const simplifyDateTime = dateTimeString => {
     const dateTime = new Date(dateTimeString);
     const year = dateTime.getFullYear();
@@ -120,7 +119,7 @@ const NewTopStories = () => {
             simplifyDate={simplifyDateTime}
           />
           {stories.slice(1, 5).map((item, index) => (
-            <TopStoryItem
+            <StoryCard
               key={index}
               item={item}
               isLastItem={index === stories.length - 1}

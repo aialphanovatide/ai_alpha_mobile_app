@@ -561,6 +561,16 @@ const SkeletonLoader = ({style, type = 'item', quantity = 1}) => {
         ))}
       </View>
     </View>
+  ) : type === 'spotlight' ? (
+    <View style={[style, {padding: 10}]}>
+      <SkeletonContainer style={styles.headerContainer}>
+        <SkeletonItem style={styles.headerImage} />
+        <View style={styles.headerContent}>
+          <SkeletonItem style={styles.headerTitle} />
+          <SkeletonItem style={styles.newsDate} />
+        </View>
+      </SkeletonContainer>
+    </View>
   ) : (
     <></>
   );

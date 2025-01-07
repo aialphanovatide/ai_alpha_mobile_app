@@ -11,12 +11,12 @@ import NewsArticle from '../components/Home/Topmenu/subMenu/Fund_news_chart/News
 import {AppThemeContext} from '../context/themeContext';
 import {Animated, TouchableOpacity, View} from 'react-native';
 import useHomeStyles from '../components/Home/HomeStyles';
-import MarketNarrativesArticle from '../components/Home/HomeNarrativeTradings/MarketNarrativesArticle';
+import MarketNarrativesArticle from '../components/Home/MarketNarratives/MarketNarrativesArticle';
 import {useScreenOrientation} from '../hooks/useScreenOrientation';
 import {useNavigation} from '@react-navigation/native';
 import HomeNotifications from '../components/Home/HomeNotifications/HomeNotifications';
 import StoryArticle from '../components/Home/TopStories/StoryArticle';
-import DailyDeepArticle from '../components/Home/Analysis/DailyDeepArticle';
+import DailyDeepArticle from '../components/Home/Analysis/DailyDeepDives/DailyDeepArticle';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   selectActiveCoin,

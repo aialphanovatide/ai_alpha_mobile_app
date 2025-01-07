@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getServiceV2} from '../services/aiAlphaApi';
+import {getServiceV2, getTestService} from '../services/aiAlphaApi';
 
 export const fetchMarketNarratives = createAsyncThunk(
   'home/fetchMarketNarratives',
@@ -28,19 +28,22 @@ export const fetchMarketNarratives = createAsyncThunk(
     };
 
     try {
-      const data = await getServiceV2(`/narrative-tradings?limit=99`);
+      const data = await getTestService(`/analyses?per_page=50&section_id=46`);
       if (data.success) {
         const parsed_data = data.data.map(item => {
           return {
-            content: item.narrative_trading,
-            id: item.narrative_trading_id,
-            coin_bot_id: item.coin_bot_id,
+            content: item.content,
+            id: item.id,
+            coin_bot_id: item.coin_id,
             coin_bot_name: item.coin_name.toLowerCase(),
             created_at: item.created_at,
             category:
               item.category_name !== '' ? item.category_name : 'Bitcoin',
-            title: extractFirstTitleAndImage(item.narrative_trading).title,
-            image: extractFirstTitleAndImage(item.narrative_trading).imageSrc,
+            title:
+              item.title === ''
+                ? extractFirstTitleAndImage(item.content).title
+                : item.title,
+            image: item.image_url !== '' ? item.image_url : extractFirstTitleAndImage(item.content).imageSrc,
           };
         });
         return parsed_data;

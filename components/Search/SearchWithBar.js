@@ -1,15 +1,9 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {Text, View} from 'react-native';
 import {AppThemeContext} from '../../context/themeContext';
 import useSearchStyles from './SearchStyles';
-import FastImage from 'react-native-fast-image';
-import {
-  findCoinMatch,
-  findCoinNameBySymbol,
-} from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/SubSections/Competitors/coinsNames';
+import {findCoinNameBySymbol} from '../Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/SubSections/Competitors/coinsNames';
 import {useNavigation} from '@react-navigation/core';
-import AlertDetails from '../Alerts/AlertItem';
-import useAlertsStyles from '../Alerts/styles';
 import SkeletonLoader from '../Loader/SkeletonLoader';
 import SearchBar from './SearchBar/SearchBar';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -21,161 +15,12 @@ import {
   updateActiveCoin,
   updateActiveSubCoin,
 } from '../../store/categoriesSlice';
-import {
-  fetchAlertsByCoin,
-  selectAlertsByCoin,
-  selectMatchingAlerts,
-} from '../../actions/alertsActions';
+import {SearchAlertSection} from './SearchAlerts/SearchAlertSection';
+import {SearchNarrativeItem} from './SearchMarketNarratives/SearchNarrativeItem';
+import {SearchArticleItem} from './SearchArticles/SearchArticleItem';
+import {SearchCryptoItem} from './SearchCrypto/SearchCryptoItem';
 
-const SearchCryptoItem = ({
-  crypto,
-  category,
-  styles,
-  handleCryptoItemNavigation,
-  isDarkMode,
-  isLastItem,
-}) => {
-  const name = findCoinNameBySymbol(crypto.bot_name.toUpperCase());
-  return (
-    <TouchableOpacity
-      onPress={() => handleCryptoItemNavigation(category, crypto)}
-      style={[styles.cryptoItem, isLastItem ? {borderBottomWidth: 0} : {}]}>
-      <FastImage
-        source={{
-          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/coins/${crypto.bot_name}.png`,
-          priority: FastImage.priority.normal,
-        }}
-        resizeMode="contain"
-        style={styles.cryptoItemImage}
-      />
-      <View style={styles.row}>
-        <Text style={styles.cryptoName}>{name}</Text>
-        <Text style={styles.cryptoAcronym}>
-          {crypto.bot_name.toUpperCase()}
-        </Text>
-      </View>
-      <Image
-        source={require('../../assets/images/arrow-right.png')}
-        style={styles.rightArrowImage}
-        resizeMode="contain"
-      />
-    </TouchableOpacity>
-  );
-};
-
-const SearchAnalysisItem = ({
-  analysis,
-  handleAnalysisNavigation,
-  styles,
-  isLastItem,
-}) => {
-  const {isDarkMode} = useContext(AppThemeContext);
-  return (
-    <TouchableOpacity
-      onPress={() => handleAnalysisNavigation(analysis)}
-      style={[styles.analysisItem, isLastItem ? {borderBottomWidth: 0} : {}]}>
-      <FastImage
-        source={{
-          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/analysis/${
-            isDarkMode ? 'dark' : 'light'
-          }/${
-            analysis.category !== null &&
-            analysis.category.toLowerCase().replace(/\s/g, '') === 'total3'
-              ? 'total3'
-              : analysis.coin_bot_name
-          }.png`,
-          priority: FastImage.priority.high,
-        }}
-        style={styles.imageStyle}
-        resizeMode="contain"
-        fallback={true}
-      />
-      <View style={styles.analysisRow}>
-        <Text style={styles.analysisTitle} numberOfLines={1}>
-          {analysis.title}
-        </Text>
-      </View>
-      <Image
-        source={require('../../assets/images/arrow-right.png')}
-        style={styles.rightArrowImage}
-        resizeMode="contain"
-      />
-    </TouchableOpacity>
-  );
-};
-
-const SearchAlertSection = ({currentText, loading}) => {
-  const foundAlerts =
-    useSelector(selectMatchingAlerts({search: currentText})) || [];
-  const styles = useSearchStyles();
-  const alertsStyles = useAlertsStyles();
-
-  // useEffect(() => {
-  //   const match = findCoinMatch(currentText.toUpperCase());
-  //   if (match && match !== undefined) {
-  //     console.log('Finding alerts for:', match);
-  //   }
-  // }, [currentText, dispatch]);
-
-  return (
-    <View style={styles.cryptoSearch}>
-      {loading ? (
-        <SkeletonLoader type="alerts" quantity={4} />
-      ) : (
-        foundAlerts &&
-        foundAlerts.length > 0 &&
-        foundAlerts.map(alert => (
-          <AlertDetails
-            key={alert.alert_id}
-            message={alert.alert_message}
-            timeframe={alert.alert_name}
-            price={alert.price}
-            created_at={alert.created_at}
-            styles={alertsStyles}
-          />
-        ))
-      )}
-    </View>
-  );
-};
-
-const SearchNTItem = ({
-  styles,
-  handleNarrativeTradingsNavigation,
-  item,
-  isLastItem,
-}) => {
-  const {isDarkMode} = useContext(AppThemeContext);
-  return (
-    <TouchableOpacity
-      onPress={() => handleNarrativeTradingsNavigation(item)}
-      style={[styles.analysisItem, isLastItem ? {borderBottomWidth: 0} : {}]}>
-      <FastImage
-        source={{
-          uri: `https://aialphaicons.s3.us-east-2.amazonaws.com/${
-            isDarkMode ? 'Dark' : 'Light'
-          }/Inactive/${
-            item.category !== null ? 'ai' : item.category.toLowerCase()
-          }.png`,
-          priority: FastImage.priority.high,
-        }}
-        style={styles.imageStyle}
-        resizeMode="contain"
-        fallback={true}
-      />
-      <View style={styles.analysisRow}>
-        <Text style={styles.analysisTitle} numberOfLines={1}>
-          {item.title}
-        </Text>
-      </View>
-      <Image
-        source={require('../../assets/images/arrow-right.png')}
-        style={styles.rightArrowImage}
-        resizeMode="contain"
-      />
-    </TouchableOpacity>
-  );
-};
+// Component to render the search results with the search bar. It receives the toggleMenuVisible, toggleTextValue, and toggleSearchBar functions, the searchText data of the search input, and the activeSearchBar flag as props. It uses the SearchBar, SearchCryptoItem, SearchArticleItem, and SearchNarrativeItem components to render the search results.
 
 const SearchWithBar = ({
   toggleMenuVisible,
@@ -199,15 +44,20 @@ const SearchWithBar = ({
   // Hook to change the results content based on the text change
   useEffect(() => {
     handleTextChange(searchText);
-  }, [searchText]);
+  }, [searchText, handleTextChange]);
 
   // Function to handle all the content search when typing new values on the search input
-  const handleTextChange = value => {
-    setLoading(true);
-    handleCryptosSearch(categories, value);
-    handleAnalysisSearch(analysisItems, value);
-    handleNTSearch(narrativeTradingData, value);
-  };
+  const handleTextChange = useCallback(
+    value => {
+      setLoading(true);
+      handleCryptosSearch(categories, value);
+      handleAnalysisSearch(analysisItems, value);
+      handleNTSearch(narrativeTradingData, value);
+    },
+    [categories, analysisItems, narrativeTradingData],
+  );
+
+  // Function to filter the cryptocurrencies based on the search input
 
   const handleCryptosSearch = (categories, currentText) => {
     const found_cryptos = [];
@@ -232,6 +82,8 @@ const SearchWithBar = ({
       : setCryptoSearchResult([]);
   };
 
+  // Function to filter the analysis articles (Deep dives, Macros, Spotlight, etc.) based on the search input
+
   const handleAnalysisSearch = (analysis, currentText) => {
     const found_analysis = [];
     analysis.forEach(item => {
@@ -248,6 +100,8 @@ const SearchWithBar = ({
       ? setAnalysisSearchResult(found_analysis)
       : setAnalysisSearchResult([]);
   };
+
+  // Function to filter the market narrative articles based on the search input
 
   const handleNTSearch = (narrativeTradings, currentText) => {
     const found_narrative_tradings = [];
@@ -266,6 +120,8 @@ const SearchWithBar = ({
       : setNtSearchResult([]);
     setLoading(false);
   };
+
+  // Function to handle the navigation to the selected cryptocurrency item, redirecting to the Home screen with the selected coin and category, displaying the Fundamentals section.
 
   const handleCryptoItemNavigation = (category, coin) => {
     const coinBotName = coin.bot_name;
@@ -287,6 +143,8 @@ const SearchWithBar = ({
     });
   };
 
+  // Function to handle the navigation to the selected analysis article, redirecting to the Home screen with the selected article.
+
   const handleAnalysisNavigation = analysisItem => {
     toggleMenuVisible(true);
     toggleTextValue('');
@@ -302,6 +160,8 @@ const SearchWithBar = ({
       },
     });
   };
+
+  // Function to handle the navigation to the selected market narrative article, redirecting to the Home screen.
 
   const handleNarrativeTradingsNavigation = narrativeTrading => {
     toggleMenuVisible(true);
@@ -319,6 +179,8 @@ const SearchWithBar = ({
     });
   };
 
+  // Function to handle the navigation to the selected section, by pressing the subtitle of each type of result.
+
   const handleSubtitleNavigation = (sectionName, options) => {
     navigation.navigate(sectionName, options);
   };
@@ -328,14 +190,6 @@ const SearchWithBar = ({
       cryptos.length + 1 + (analysis.length + 1) + (narratives.length + 1);
     return total;
   };
-
-  useEffect(() => {
-    const totalItems = countTotalItems(
-      cryptoSearchResult,
-      analysisSearchResult,
-      ntSearchResult,
-    );
-  }, [cryptoSearchResult, analysisSearchResult, ntSearchResult]);
 
   return (
     <View
@@ -409,7 +263,7 @@ const SearchWithBar = ({
               analysisSearchResult &&
               analysisSearchResult.length > 0 &&
               analysisSearchResult.map((item, index) => (
-                <SearchAnalysisItem
+                <SearchArticleItem
                   key={index}
                   analysis={item}
                   styles={styles}
@@ -439,7 +293,7 @@ const SearchWithBar = ({
               ntSearchResult &&
               ntSearchResult.length > 0 &&
               ntSearchResult.map((item, index) => (
-                <SearchNTItem
+                <SearchNarrativeItem
                   styles={styles}
                   item={item}
                   key={index}
@@ -459,7 +313,7 @@ const SearchWithBar = ({
             </Text>
             <View style={styles.horizontalLine} />
           </View>
-          <SearchAlertSection currentText={searchText} />
+          <SearchAlertSection currentText={searchText} loading={loading} />
         </ScrollView>
       ) : (
         <></>

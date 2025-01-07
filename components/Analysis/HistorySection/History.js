@@ -18,7 +18,7 @@ import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import {useSelector} from 'react-redux';
-import {selectDailyDeepDives} from '../../../actions/dailyDeepDivesActions';
+import {selectAllContent, selectDailyDeepDives} from '../../../actions/dailyDeepDivesActions';
 
 // HistoryItem component that renders the history item in the history section. It displays the item's image, title, date, and time. The user can click on the item to navigate to the daily deep dives article screen.
 
@@ -131,7 +131,7 @@ const HistoryTimeMenu = ({
 const History = () => {
   const options = ['today', 'last week'];
   // Since the daily deep dives fetching action is dispatched in the Home section, that renders firstly, the data that we get from the store is going to have items in all the cases.
-  const analysisItems = useSelector(selectDailyDeepDives);
+  const analysisItems = useSelector(selectAllContent);
   const [cryptoOptions, setCryptoOptions] = useState(historyFilterData);
   const [activeOption, setActiveOption] = useState(options[0]);
   const [activeCryptoOption, setActiveCryptoOption] = useState(
@@ -175,10 +175,10 @@ const History = () => {
       });
       return filtered_items;
     }
-
     items.forEach(item => {
       if (
-        item.category.toLowerCase() === category.category_name.toLowerCase()
+        item.category.toLowerCase() === category.category_name.toLowerCase() ||
+        item.category.toLowerCase() === category.category.toLowerCase()
       ) {
         filtered_items.push(item);
       }

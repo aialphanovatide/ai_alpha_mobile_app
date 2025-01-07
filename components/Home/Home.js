@@ -9,14 +9,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import TickerTape from './Tickertape/TickerTape';
-import TopTenGainers from './TopTenGainers/TopTenGainers';
 import useHomeStyles from './HomeStyles';
 import AboutModal from '../AboutModal/AboutModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
 import {useFocusEffect, useScrollToTop} from '@react-navigation/native';
-import NarrativeTradings from './HomeNarrativeTradings/MarketNarratives';
-import TopTenLosers from './TopTenLosers/TopTenLosers';
+import NarrativeTradings from './MarketNarratives/MarketNarratives';
 import {RevenueCatContext} from '../../context/RevenueCatContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
@@ -26,8 +24,16 @@ import {throttle} from 'lodash';
 import {useScreenOrientation} from '../../hooks/useScreenOrientation';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchTopStories} from '../../actions/whatsHappeningTodayActions';
-import {fetchTop10Movers} from '../../actions/topTenMoversActions';
-import {fetchDailyDeepDivesData, fetchDailyMacros} from '../../actions/dailyDeepDivesActions';
+import {
+  fetchTop10Movers,
+  selectTopTenGainers,
+  selectTopTenLosers,
+} from '../../actions/topTenMoversActions';
+import {
+  fetchDailyDeepDivesData,
+  fetchDailyMacros,
+  fetchLatestSpotlight,
+} from '../../actions/dailyDeepDivesActions';
 import {fetchMarketNarratives} from '../../actions/marketNarrativesActions';
 import {selectRawUserId} from '../../actions/userActions';
 import {
@@ -37,9 +43,13 @@ import {
   selectAboutTitle,
   selectAboutVisible,
 } from '../../store/aboutSlice';
-import NewDailyDeepDives from './Analysis/NewDailyDeepDives/NewDailyDeepDives';
+import NewDailyDeepDives from './Analysis/DailyDeepDives/NewDailyDeepDives';
 import NewTopStories from './TopStories/NewTopStories';
-import DailyMacroSection from './Analysis/DailyMacro/DailyMacroSection';
+import DailyMacroSection from './DailyMacro/DailyMacroSection';
+import {Spotlight} from './Spotlight/SpotlightSection';
+import {TopTenContainer} from './TopTenGainersAndLosers/TopTenGainersAndLosers';
+import AltCoinsTopStories from './AltCoinsTopStories/AltCoinsTopStories';
+import { fetchAlertsByAllCategories } from '../../actions/alertsActions';
 
 // FreePopup component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 
@@ -132,11 +142,13 @@ const Home = ({route}) => {
   }, []);
 
   useEffect(() => {
+    dispatch(fetchAlertsByAllCategories({timeInterval: '4H'}));
     dispatch(fetchTop10Movers());
     dispatch(fetchTopStories({timeframe: '1D'}));
     dispatch(fetchDailyDeepDivesData());
     dispatch(fetchDailyMacros());
     dispatch(fetchMarketNarratives());
+    dispatch(fetchLatestSpotlight());
   }, [dispatch]);
 
   useFocusEffect(() => {
@@ -266,11 +278,18 @@ const Home = ({route}) => {
           <NewTopStories />
           {/* <WhatsHappeningToday handleAboutPress={toggleAbout} /> */}
           <NewDailyDeepDives />
-          {/* <DailyDeepDives handleAboutPress={toggleAbout} /> */}
           <DailyMacroSection />
           <NarrativeTradings handleAboutPress={toggleAbout} />
-          <TopTenGainers handleAboutPress={toggleAbout} />
-          <TopTenLosers handleAboutPress={toggleAbout} />
+          <Spotlight />
+          <AltCoinsTopStories />
+          <TopTenContainer
+            title={'TOP TEN GAINERS'}
+            itemsState={selectTopTenGainers}
+          />
+          <TopTenContainer
+            title={'TOP TEN LOSERS'}
+            itemsState={selectTopTenLosers}
+          />
         </ScrollView>
       </SafeAreaView>
     </View>
