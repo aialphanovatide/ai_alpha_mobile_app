@@ -90,7 +90,8 @@ const CustomImageRenderer = props => {
 
 const DailyDeepArticle = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
-  const {analysis_content, analysis_id, date, isHistoryArticle} = route?.params;
+  const {analysis_content, analysis_id, date, image, isHistoryArticle} =
+    route?.params;
   const styles = useDailyDeepsStyles();
   const {theme} = useContext(AppThemeContext);
   const isAndroid = Platform.OS === 'android' ? true : false;
@@ -252,8 +253,6 @@ const DailyDeepArticle = ({route}) => {
 
   const imageUri = `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`;
 
-  const images = [{url: imageUri, width: 500, height: 400}];
-
   const handleBackButtonImageClose = () => {
     setImageZoomVisible(false);
   };
@@ -280,7 +279,10 @@ const DailyDeepArticle = ({route}) => {
             style={styles.zoomedImage}
             resizeMode={'contain'}
             source={{
-              uri: `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
+              uri:
+                image !== ''
+                  ? image
+                  : `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
               priority: FastImage.priority.normal,
             }}
             fallback={true}
@@ -306,7 +308,10 @@ const DailyDeepArticle = ({route}) => {
               style={styles.articleImage}
               resizeMode={'cover'}
               source={{
-                uri: `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
+                uri:
+                  image !== ''
+                    ? image
+                    : `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
                 priority: FastImage.priority.normal,
               }}
               fallback={true}

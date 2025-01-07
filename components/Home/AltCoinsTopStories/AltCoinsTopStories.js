@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Text} from 'react-native';
 import {View} from 'react-native';
 import {SafeAreaView} from 'react-native';
-import useNewTopStoriesStyles from './NewTopStoriesStyles';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -13,25 +12,27 @@ import {useNavigation} from '@react-navigation/core';
 import {selectCategories} from '../../../actions/categoriesActions';
 import {
   fetchTopStories,
-  selectTop3CoinsStories,
+  selectAltCoinsStories,
   selectWhatsHappeningTodayLoading,
 } from '../../../actions/whatsHappeningTodayActions';
-import StoryHeader from './StoryHeader';
-import StoriesFilter from './StoriesFilter';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
-import StoryCard from './StoryCard/StoryCard';
+import useNewTopStoriesStyles from '../TopStories/NewTopStoriesStyles';
+import AltCoinStoryCard from './AltCoinTopStoryCard/AltCoinStoryCard';
+import AltCardStoryHeader from './AltCoinStoryHeader';
+import AltCoinsFilter from './AltCoinsFilter';
 
 const INTERVALS = ['1D', '1W', '1M'];
 
-// Component to render the Top Stories section in the home screen. It fetches the stories from the Redux store and renders the items in the list. It also renders the filter buttons to change the time interval of the stories displayed. It uses the StoryHeader and TopStoryItem components to render the header and the story items.
+// Component to render the Alternative coins Top Stories section in the home screen. It fetches the stories from the Redux store, filtered to exclude the BTC, ETH and SOL data, and renders the items in the list. It also renders the filter buttons to change the time interval of the stories displayed. It uses the StoryHeader and TopStoryItem components to render the header and the story items.
 
-const NewTopStories = () => {
+const AltCoinsTopStories = () => {
   const styles = useNewTopStoriesStyles();
   const [activeFilter, setActiveFilter] = useState(INTERVALS[0]);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const categories = useSelector(selectCategories);
-  const stories = useSelector(selectTop3CoinsStories);
+  // const stories = useSelector(selectAltCoinsStories);
+  const stories = useSelector(selectAltCoinsStories);
   const loading = useSelector(selectWhatsHappeningTodayLoading);
 
   // Function to handle the press of the filter buttons, changing the active filter and displaying the news of the selected time interval
@@ -85,8 +86,8 @@ const NewTopStories = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
-        <Text style={styles.topBarText}>TOP STORIES - BIG 3</Text>
-        <StoriesFilter
+        <Text style={styles.topBarText}>TOP STORIES - ALT COINS</Text>
+        <AltCoinsFilter
           filters={INTERVALS}
           activeFilter={activeFilter}
           handleFilterPress={handleFilterPress}
@@ -113,13 +114,13 @@ const NewTopStories = () => {
         />
       ) : (
         <>
-          <StoryHeader
+          <AltCardStoryHeader
             item={stories[0]}
             handleStoryPress={handleStoryPress}
             simplifyDate={simplifyDateTime}
           />
           {stories.slice(1, 5).map((item, index) => (
-            <StoryCard
+            <AltCoinStoryCard
               key={index}
               item={item}
               isLastItem={index === stories.length - 1}
@@ -133,4 +134,4 @@ const NewTopStories = () => {
   );
 };
 
-export default NewTopStories;
+export default AltCoinsTopStories;

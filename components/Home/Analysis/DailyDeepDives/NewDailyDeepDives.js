@@ -10,7 +10,7 @@ import {
   selectDailyDeepDivesLoading,
 } from '../../../../actions/dailyDeepDivesActions';
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
-import DeepDiveCard from './DeepDiveCard';
+import DeepDiveCard from './DeepDiveCard/DeepDiveCard';
 import NoContentDisclaimer from '../../../NoContentDisclaimer/NoContentDisclaimer';
 
 // Component to render the Daily Deep Dives section in the home screen. It receives the function to handle the navigation to the History section as a prop. It uses the Deep dives slice from the Redux store to fetch the articles' data and renders the items in the list.
@@ -18,6 +18,13 @@ import NoContentDisclaimer from '../../../NoContentDisclaimer/NoContentDisclaime
 const NewDailyDeepDives = () => {
   const styles = useNewDailyDeepDivesStyles();
   const totalPages = 5;
+  const WIDTH_PER_SHOWN_CARD = [
+    {min: 0, max: 219, x: 0},
+    {min: 220, max: 439, x: 240},
+    {min: 440, max: 659, x: 400},
+    {min: 660, max: 829, x: 660},
+    {min: 830, max: 1500, x: 860},
+  ];
   const [currentPage, setCurrentPage] = useState(1);
   const scrollViewRef = useRef(null);
   const navigation = useNavigation();
@@ -32,6 +39,7 @@ const NewDailyDeepDives = () => {
       analysis_id: analysis.id,
       category: analysis.category,
       date: analysis.created_at,
+      image: analysis.image,
       isHistoryArticle: false,
     });
     const clickedAt = new Date().toISOString();
@@ -64,12 +72,27 @@ const NewDailyDeepDives = () => {
 
   const handleScroll = event => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const newPage = Math.round(contentOffsetX / styles.deepDiveCard.width) + 1;
-    setCurrentPage(newPage);
+    const newPageIndex = WIDTH_PER_SHOWN_CARD.findIndex(
+      item => contentOffsetX >= item.min && contentOffsetX <= item.max,
+    );
+    const newPage = WIDTH_PER_SHOWN_CARD.find(
+      item => contentOffsetX >= item.min && contentOffsetX <= item.max,
+    );
+    setCurrentPage(newPageIndex + 1);
     scrollViewRef.current.scrollTo({
-      x: (newPage - 1) * styles.deepDiveCard.width,
+      x: newPage.x,
       animated: true,
     });
+    // const newPage =
+    //   Math.round(
+    //     (totalPages * contentOffsetX) /
+    //       (totalPages * styles.deepDiveCard.width),
+    //   ) + 1;
+    // setCurrentPage(newPage);
+    // scrollViewRef.current.scrollTo({
+    //   x: styles.deepDiveCard.width - 18,
+    //   animated: true,
+    // });
   };
 
   return (
@@ -105,7 +128,6 @@ const NewDailyDeepDives = () => {
             nestedScrollEnabled
             showsHorizontalScrollIndicator={false}
             onScrollEndDrag={handleScroll}
-            scrollEventThrottle={50}
             pagingEnabled
             style={styles.deepDivesContainer}>
             {loading === 'idle' ? (

@@ -43,7 +43,6 @@ const ChartWidget = ({
         }&grid_color=${isDarkMode ? 'rgb(212,212,212)' : 'rgb(56,56,56)'}`,
         // &resistance_levels=${resistanceLevels}&support_levels=${supportLevels}`,
       );
-      console.log('Requested data: ', data);
       setWidgetData(data);
     } catch (error) {
       console.error('Error trying to fetch the chart widget data: ', error);

@@ -160,7 +160,8 @@ const NarrativeTrading = () => {
     }
     items.forEach(item => {
       if (
-        item.category.toLowerCase() === category.category_name.toLowerCase()
+        item.category.toLowerCase() === category.category_name.toLowerCase() ||
+        item.category.toLowerCase() === category.category.toLowerCase()
       ) {
         filtered_items.push(item);
       }

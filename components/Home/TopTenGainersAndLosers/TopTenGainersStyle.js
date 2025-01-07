@@ -1,15 +1,14 @@
 /* eslint-disable prettier/prettier */
 import {useContext} from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {AppThemeContext} from '../../../context/themeContext';
 
-const useTopTenLosersStyles = () => {
+const useTopTenGainersStyles = () => {
   const {theme, isDarkMode} = useContext(AppThemeContext);
   const styles = StyleSheet.create({
     topTenGainersContainer: {
       height: 400,
       width: Platform.OS === 'ios' ? '100%' : theme.width,
-      marginBottom: 24,
       borderRadius: 4,
     },
     topTenGainersTitle: {
@@ -25,7 +24,6 @@ const useTopTenLosersStyles = () => {
       borderRadius: 4,
     },
     row: {
-      flex: 1,
       width: '100%',
       marginVertical: 2.5,
       display: 'flex',
@@ -125,15 +123,103 @@ const useTopTenLosersStyles = () => {
       borderRadius: 2,
       backgroundColor: isDarkMode ? '#737373' : '#D4D4D4',
     },
+    // New section styles
     itemsContainer: {
-      flex: 1,
       flexDirection: 'row',
-      paddingRight: Platform.OS === 'ios' ? 7 : 14,
-      backgroundColor: theme.boxesBackgroundColor,
       borderRadius: 4,
+      paddingHorizontal: 8,
+      paddingVertical: 10,
+    },
+    container: {
+      flex: 1,
+      marginVertical: 16,
+      borderRadius: 8,
+      backgroundColor: isDarkMode ? '#000000' : '#FFFFFF',
+    },
+    topBar: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: 10,
+    },
+    topBarTitle: {
+      fontSize: 12,
+      fontFamily: theme.fontFigtreeMedium,
+      color: isDarkMode ? '#52525B' : '#D4D4D8',
+    },
+    itemContainer: {
+      width: 170,
+      height: 60,
+      marginHorizontal: 6,
+      padding: 10,
+      paddingLeft: 4,
+      flexDirection: 'row',
+    },
+    itemPosition: {
+      marginRight: 4,
+      fontFamily: theme.fontFigtreeSemibold,
+      fontSize: 20,
+      color: '#71717A',
+    },
+    icon: {
+      width: 25,
+      height: 25,
+      borderRadius: 12.5,
+      marginHorizontal: 6,
+    },
+    dataRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    itemName: {
+      maxWidth: '65%',
+      marginRight: 4,
+      fontFamily: theme.fontFigtreeSemibold,
+      fontSize: 14,
+      color: isDarkMode ? '#FAFAFA' : '#0A0A0A',
+      textTransform: 'capitalize',
+    },
+    itemSymbol: {
+      fontFamily: theme.fontFigtree,
+      fontSize: 12,
+      color: '#71717A',
+      textTransform: 'uppercase',
+    },
+    price: {
+      fontFamily: theme.fontFigtreeSemibold,
+      fontSize: 14,
+      color: isDarkMode ? '#FAFAFA' : '#0A0A0A',
+    },
+    column: {
+      flex: 1,
+      flexDirection: 'column',
+    },
+    priceChangeContainer: {
+      marginLeft: 6,
+      flexDirection: 'row',
+      padding: 2,
+      borderRadius: 2,
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+    priceChange: {
+      fontFamily: theme.fontFigtree,
+      fontSize: 10,
+    },
+    incrementBackground: {
+      backgroundColor: isDarkMode ? '#002E23' : '#CFFCE5',
+    },
+    decrementBackground: {
+      backgroundColor: isDarkMode ? '#440B0B' : '#FEF1F1',
+    },
+    increment: {
+      color: '#09C283',
+    },
+    decrement: {
+      color: '#E93334',
     },
   });
   return styles;
 };
 
-export default useTopTenLosersStyles;
+export default useTopTenGainersStyles;

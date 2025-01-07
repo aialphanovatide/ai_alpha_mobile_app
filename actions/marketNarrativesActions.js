@@ -39,8 +39,11 @@ export const fetchMarketNarratives = createAsyncThunk(
             created_at: item.created_at,
             category:
               item.category_name !== '' ? item.category_name : 'Bitcoin',
-            title: extractFirstTitleAndImage(item.content).title,
-            image: extractFirstTitleAndImage(item.content).imageSrc,
+            title:
+              item.title === ''
+                ? extractFirstTitleAndImage(item.content).title
+                : item.title,
+            image: item.image_url !== '' ? item.image_url : extractFirstTitleAndImage(item.content).imageSrc,
           };
         });
         return parsed_data;

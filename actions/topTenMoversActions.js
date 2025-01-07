@@ -42,8 +42,14 @@ export const fetchTop10Movers = createAsyncThunk(
           currentPrice: coin.current_price,
           priceChange24H: coin.price_change_percentage_24h || 0.0,
         }));
-
-        return {top10Movers: top10CoinsInfo, top10Losers: top10LosersInfo};
+        return {
+          top10Movers: top10CoinsInfo.sort((a, b) => {
+            return b.priceChange24H - a.priceChange24H;
+          }),
+          top10Losers: top10LosersInfo.sort((a, b) => {
+            return a.priceChange24H - b.priceChange24H;
+          }),
+        };
       } else {
         return rejectWithValue('Error fetching data');
       }

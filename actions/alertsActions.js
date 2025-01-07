@@ -1,4 +1,4 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSelector} from '@reduxjs/toolkit';
 import {postServiceV2} from '../services/aiAlphaApi';
 
 // Async thunk for getting alerts filtered by the active coin
@@ -114,7 +114,7 @@ export const selectAlertsByCoin = state => state.alerts.alertsByCoin;
 
 export const selectAlertsLoading = state => state.alerts.loading;
 
-export const selectMatchingAlerts = (state, {search}) => {
-  const alerts = state.alerts.alerts;
+export const selectMatchingAlerts = search => state => {
+  const alerts = state.alerts.alerts || [];
   return alerts.filter(alert => alert.symbol.includes(search));
 };

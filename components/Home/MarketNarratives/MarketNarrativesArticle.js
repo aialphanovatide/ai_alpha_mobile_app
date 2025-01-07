@@ -60,9 +60,7 @@ const CustomImageRenderer = props => {
         <View style={[styles.zoomImageBg]} />
         <TouchableOpacity
           onPress={() => handleBackButtonImageClose()}
-          style={[
-            styles.zoomImageDismissOverlay,
-          ]}
+          style={[styles.zoomImageDismissOverlay]}
         />
         <ResumableZoom maxScale={1.5} minScale={1}>
           <FastImage
@@ -81,9 +79,7 @@ const CustomImageRenderer = props => {
         </ResumableZoom>
         <TouchableOpacity
           onPress={() => handleBackButtonImageClose()}
-          style={[
-            styles.zoomImageDismissOverlay,
-          ]}
+          style={[styles.zoomImageDismissOverlay]}
         />
       </Modal>
     </View>
@@ -94,7 +90,7 @@ const CustomImageRenderer = props => {
 
 const MarketNarrativesArticle = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
-  const {item_content, id, date, isNavigateFromHome} = route?.params;
+  const {item_content, id, date, image, isNavigateFromHome} = route?.params;
   const styles = useHomeNarrativeTradingStyles();
   const {theme} = useContext(AppThemeContext);
   const isAndroid = Platform.OS === 'android' ? true : false;
@@ -223,8 +219,6 @@ const MarketNarrativesArticle = ({route}) => {
     html: findHtmlContent(item_content),
   };
 
-  const images = [{url: imageUri, width: theme.width, height: 400}];
-
   // Function that handles the closing of the image zoom modal when the back button is pressed.
   const handleBackButtonImageClose = () => {
     setImageZoomVisible(false);
@@ -252,7 +246,10 @@ const MarketNarrativesArticle = ({route}) => {
             style={styles.zoomedImage}
             resizeMode={'contain'}
             source={{
-              uri: `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
+              uri:
+                image !== ''
+                  ? image
+                  : `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
               priority: FastImage.priority.normal,
             }}
             fallback={true}
@@ -273,7 +270,10 @@ const MarketNarrativesArticle = ({route}) => {
               style={styles.articleImage}
               resizeMode={'cover'}
               source={{
-                uri: `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
+                uri:
+                  image !== ''
+                    ? image
+                    : `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
                 priority: FastImage.priority.normal,
               }}
               defaultSource={require('../../../assets/images/home/default_news.png')}

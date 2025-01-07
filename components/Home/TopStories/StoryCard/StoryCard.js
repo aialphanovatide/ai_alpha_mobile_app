@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image';
 
 // Component to render each story item in the Top stories section. It receives the story item, the function to handle the story press, the flag to check if it is the last item, and the function to simplify the date as props. It renders the story image, title, and date.
 
-const TopStoryItem = ({item, isLastItem, handleStoryPress, simplifyDate}) => {
+const StoryCard = ({item, isLastItem, handleStoryPress, simplifyDate}) => {
   const styles = useNewTopStoriesStyles();
   return (
     <>
@@ -36,4 +36,4 @@ const TopStoryItem = ({item, isLastItem, handleStoryPress, simplifyDate}) => {
     </>
   );
 };
-export default TopStoryItem;
+export default StoryCard;

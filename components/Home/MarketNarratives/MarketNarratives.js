@@ -61,6 +61,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
       id: item.id,
       category: item.category,
       date: item.created_at,
+      image: item.image,
       isNavigateFromHome: true,
     });
 
@@ -87,6 +88,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
       screen: 'NarrativeTrading',
       params: {},
     });
+    
   };
 
   return (

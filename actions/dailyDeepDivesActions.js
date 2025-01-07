@@ -6,9 +6,9 @@ export const fetchDailyDeepDivesData = createAsyncThunk(
   async (_, {getState, rejectWithValue}) => {
     try {
       // [PRODUCTION REQUEST]
-      // const data = await getServiceV2(`analyses?per_page=99&section_id=19`);
+      const data = await getServiceV2(`analyses?per_page=99&section_id=19`);
       // [TESTING REQUEST]
-      const data = await getTestService(`analyses?per_page=99&section_id=44`);
+      // const data = await getTestService(`analyses?per_page=99&section_id=44`);
       if (!data.success) {
         return [];
       }
@@ -160,3 +160,10 @@ export const selectDailyMacrosLoading = state => state.home.dailyMacros.loading;
 
 export const selectSpotlight = state => state.home.spotlight.data;
 export const selectSpotlightLoading = state => state.home.spotlight.loading;
+
+// Selector to return all the data of the daily deep dives, daily macros and spotlight sections
+export const selectAllContent = state =>
+  state.home.dailyDeepDives.dailyDeepDives.concat(
+    state.home.dailyMacros.dailyMacros,
+    state.home.spotlight.data,
+  );
