@@ -8,6 +8,7 @@ import {
   Platform,
   Appearance,
   Dimensions,
+  Modal,
 } from 'react-native';
 import {useAuth0, Auth0Provider} from 'react-native-auth0';
 import {TopMenuContextProvider} from './context/topMenuContext';
@@ -32,6 +33,8 @@ import {
   findCoinNameBySymbol,
   findCoinSymbolByName,
 } from './components/Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/SubSections/Competitors/coinsNames';
+import FreeFounders from './components/Popups/FreeFounders';
+import LoginForm from './components/Login/Screens/LoginForm/LoginForm';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 const {width, height} = Dimensions.get('window');
@@ -53,6 +56,10 @@ const App = () => {
   const [serverWentDown, setServerWentDown] = useState(0);
   const [initialAnimationFinished, setInitialAnimationFinished] =
     useState(false);
+  const [hasSeenFounderPopup, setHasSeenFounderPopup] = useState(false);
+  const [founderPopupChecked, setFounderPopupChecked] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -83,6 +90,54 @@ const App = () => {
       backgroundColorSubscription.remove();
     };
   }, []);
+
+  useEffect(() => {
+    // Check if we have stored tokens in AsyncStorage
+    const checkAuth = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        const refreshToken = await AsyncStorage.getItem('refreshToken');
+        // If tokens exist, consider the user logged in
+        if (accessToken && refreshToken) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } finally {
+        setAuthChecked(true);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  // Check in AsyncStorage if the user has already seen the Founder popup
+  useEffect(() => {
+    const checkFounderPopup = async () => {
+      try {
+        const hasSeen = await AsyncStorage.getItem('hasSeenFounderPopup');
+        if (hasSeen) {
+          setHasSeenFounderPopup(true);
+        }
+      } catch (e) {
+        console.warn('Error reading founder popup flag:', e);
+      } finally {
+        setFounderPopupChecked(true);
+      }
+    };
+    checkFounderPopup();
+  }, []);
+
+  // Handler for closing the founder popup
+  const handleDismissFounderPopup = async () => {
+    try {
+      await AsyncStorage.setItem('hasSeenFounderPopup', 'true');
+      setHasSeenFounderPopup(true);
+    } catch (e) {
+      console.warn('Error storing founder popup flag:', e);
+    }
+  };
+
+  // If we haven't finished checking async storage, optionally show a loader or null
 
   const saveNotification = async alertData => {
     const MAX_NOTIFICATIONS = 50;
@@ -244,6 +299,9 @@ const App = () => {
     }
   };
 
+  if (!founderPopupChecked) {
+    return null;
+  }
   return (
     <Auth0Provider domain={AUTH0_DOMAIN_ENVVAR} clientId={AUTH0_CLIENT_ENVVAR}>
       <Provider store={store}>
@@ -258,7 +316,8 @@ const App = () => {
                       upperBackgroundColor === '#FC5404'
                         ? '#FFB76E'
                         : upperBackgroundColor,
-                  }}></SafeAreaView>
+                  }}
+                />
                 <SafeAreaView
                   style={[
                     styles.container,
@@ -271,19 +330,26 @@ const App = () => {
                     },
                   ]}>
                   <StatusBar
-                    barStyle={
-                      isDarkMode
-                        ? 'light-content'
-                        : 'dark-content' /*This changes the font color for SafeAreaView*/
-                    }
+                    barStyle={isDarkMode ? 'light-content' : 'dark-content'}
                   />
+                  <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={!hasSeenFounderPopup}>
+                    <FreeFounders onDismiss={handleDismissFounderPopup} />
+                  </Modal>
+
                   <SingletonHooksContainer />
                   <GestureHandlerRootView style={{flex: 1}}>
-                    {!initialAnimationFinished ? (
+                    {!authChecked ? null : !initialAnimationFinished ? (
                       <CustomSplashScreen />
                     ) : (
-                      <Navigation />
+                      <Navigation
+                        initialRoute={isLoggedIn ? 'TabsMenu' : 'SignIn'}
+                      />
                     )}
+
+                    {/* Connectivity modals, etc. */}
                     <ConnectivityModal
                       serverError={serverError}
                       setModalVisible={setModalVisible}

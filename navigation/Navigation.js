@@ -16,28 +16,11 @@ const Stack = createNativeStackNavigator();
 
 // Navigation component to handle the navigation between the different screens of the app. It uses the NavigationContainer and StackNavigator from the @react-navigation/native library to create the navigation stack.
 
-const Navigation = () => {
-  const [chosenScreen, setChosenScreen] = useState('SignIn');
-
-  useEffect(() => {
-    const checkToken = async () => {
-      const accessToken = await AsyncStorage.getItem('accessToken');
-      const refreshToken = await AsyncStorage.getItem('refreshToken');
-
-      if (accessToken && refreshToken) {
-        setChosenScreen('TabsMenu');
-      } else {
-        setChosenScreen('SignIn');
-      }
-    };
-
-    checkToken();
-  }, []);
-
+const Navigation = ({initialRoute}) => {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator
-        initialRouteName={chosenScreen}
+        initialRouteName={initialRoute}
         screenOptions={{
           headerShown: false,
           animation: 'fade',
@@ -54,7 +37,6 @@ const Navigation = () => {
             gestureEnabled: false,
             animation: 'slide_from_right',
           }}
-          initialParams={{chosenScreen: chosenScreen}}
         />
         <Stack.Screen
           name="SignIn"

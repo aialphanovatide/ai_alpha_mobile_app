@@ -228,7 +228,7 @@ const Slide = ({
 // Component that renders the introductory slides and handles the navigation to the chosen screen after the slides are finished, or the user decides to skip them. The slides are defined by an array of objects that contain the information to be displayed in each slide.
 
 const IntroductorySlides = ({route}) => {
-  const chosenScreen = route.params.chosenScreen;
+  const chosenScreen = route?.params?.chosenScreen || 'SignIn';
   const styles = useIntroductorySlidesStyles();
 
   // Slides static data

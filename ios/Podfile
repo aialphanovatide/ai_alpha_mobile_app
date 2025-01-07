@@ -4,6 +4,13 @@ source 'https://github.com/invertase/react-native-firebase.git'
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '17.0'
 
+pre_install do |installer|
+  puts "Running pre_install hook to remove boost.podspec..."
+  system("ls -la node_modules/react-native/third-party-podspecs")
+  system("rm -f node_modules/react-native/third-party-podspecs/boost.podspec")
+  system("ls -la node_modules/react-native/third-party-podspecs")
+end
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -45,8 +52,6 @@ target 'ai_alpha_mobile_app' do
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
   pod 'Firebase/AppCheck'  # Include this if you are using App Check features
-
-
 
   use_react_native!(
     :path => config[:reactNativePath],

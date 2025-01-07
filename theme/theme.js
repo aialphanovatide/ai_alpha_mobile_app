@@ -139,6 +139,9 @@ export const lightThemeStyles = {
   fontFigtreeMediumItalic: 'Figtree-MediumItalic',
   fontFigtreeSemibold: 'Figtree-SemiBold',
   fontFigtreeSemiboldItalic: 'Figtree-SemiBoldItalic',
+  freeFoundersPopupSlideBg: '#F4F4F5',
+  freeFoundersPopupSlideSubtitle: '#52525B',
+  freeFoundersPopupSlideDotColor: '#D4D4D8',
 };
 
 export const darkThemeStyles = {
@@ -278,4 +281,7 @@ export const darkThemeStyles = {
   fontFigtreeMediumItalic: 'Figtree-MediumItalic',
   fontFigtreeSemibold: 'Figtree-SemiBold',
   fontFigtreeSemiboldItalic: 'Figtree-SemiBoldItalic',
+  freeFoundersPopupSlideBg: '#18181B',
+  freeFoundersPopupSlideSubtitle: '#A1A1AA',
+  freeFoundersPopupSlideDotColor: '#3F3F46',
 };
