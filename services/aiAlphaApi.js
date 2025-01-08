@@ -7,7 +7,7 @@ import {
   OLD_NEWSBOT_BASE_URL_ENVVAR,
   AIALPHA2KEY_ENVVAR,
   AIALPHA2KEYDEV_ENVVAR,
-  NEWSBOTV2_TEST_BASE_URL_ENVVAR
+  NEWSBOTV2_TEST_BASE_URL_ENVVAR,
 } from '@env';
 
 // Function to handle HTTP errors
@@ -58,6 +58,7 @@ export const getTestService = async endpoint => {
         'X-API-Key': AIALPHA2KEYDEV_ENVVAR,
       },
     });
+    //console.log('response is', response);
     if (response.status === 204) {
       return [];
     }
@@ -276,14 +277,18 @@ export const oldNewsbotGetService = async endpoint => {
 // Function to make a get request to the updated (21-10-2024) news Server, for retrieving Top Stories and News
 
 export const newsbotGetTestService = async endpoint => {
+  console.log('endpoint is', endpoint);
   try {
-    const response = await fetch(`${NEWSBOTV2_TEST_BASE_URL_ENVVAR}${endpoint}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${NEWSBOTV2_TEST_BASE_URL_ENVVAR}${endpoint}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    });
-
+    );
+    console.log('response is', response);
     if (response.status === 204) {
       return [];
     }

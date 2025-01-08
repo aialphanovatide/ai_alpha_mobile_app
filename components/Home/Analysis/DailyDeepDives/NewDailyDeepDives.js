@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import useNewDailyDeepDivesStyles from './NewDailyDeepDivesStyles';
 import {PaginationDots} from '../../../General/PaginationDots/PaginationDots';
