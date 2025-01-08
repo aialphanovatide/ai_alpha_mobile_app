@@ -26,16 +26,16 @@ const slidesData = [
   {
     darkImage: require('../../assets/images/popUps/carousel2.png'),
     lightImage: require('../../assets/images/popUps/carousel2Light.png'),
-    title: 'Track your favorites',
+    title: 'Track everything fast',
     description:
-      'Customize watchlists and get instant updates on the coins you care about most.',
+      'Monitor information efficiently to make the most of your day.',
   },
   {
     darkImage: require('../../assets/images/popUps/carousel3.png'),
     lightImage: require('../../assets/images/popUps/carousel3Light.png'),
-    title: 'Stay in the know',
+    title: 'Stay ahead with ease',
     description:
-      'Receive curated articles and real-time alerts for market moves and important news.',
+      'Get real-time notifications tailored to your preferences for smarter decisions.',
   },
   {
     darkImage: require('../../assets/images/popUps/carousel4.png'),
