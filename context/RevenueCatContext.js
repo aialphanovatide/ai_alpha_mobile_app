@@ -73,7 +73,7 @@ const RevenueCatProvider = ({children}) => {
     data.sort(compare);
     return data;
   };
-  /*
+
   // INIT Function prior to 2025 Free Founders Period
   const init = async userId => {
     if (Platform.OS === 'ios') {
@@ -97,7 +97,7 @@ const RevenueCatProvider = ({children}) => {
       updateCustomerInformation(info);
     });
   };
-  */
+  /*
   //New INIT Function for 2025 Free Founders Period
   const init = async userId => {
     if (Platform.OS === 'ios') {
@@ -138,7 +138,7 @@ const RevenueCatProvider = ({children}) => {
     console.log(`Assigned default subscription to user: ${updatedUser.id}`);
 
     setUserInfo(updatedUser);
-  };
+  };*/
   const updateUserEmail = newEmail => {
     let new_user = {
       id: userInfo.id,

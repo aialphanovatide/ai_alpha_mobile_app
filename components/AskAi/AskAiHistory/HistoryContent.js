@@ -62,7 +62,9 @@ const HistoryContent = ({historyOptions, handleActiveResultData}) => {
 
   const handleHistoryClean = async () => {
     try {
+      console.log('Cleaning the ASK AI History data');
       await AsyncStorage.removeItem('askAiData');
+      await AsyncStorage.removeItem('hasSeenFounderPopup'); //uncomment to display freefounders popup after logout
       setFilteredResults([]);
       dispatch(resetSavedResults());
     } catch (error) {
