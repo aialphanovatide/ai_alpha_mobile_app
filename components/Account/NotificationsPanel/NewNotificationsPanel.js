@@ -52,7 +52,7 @@ export const INITIAL_NOTIFICATION_OPTIONS = [
   // },
 ];
 
-const INTERVALS = ['1D', '1W'];
+const INTERVALS = ['1d', '1w'];
 
 // Notifications panel component, it is used to display the notifications settings for the user.
 

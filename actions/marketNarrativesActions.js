@@ -28,7 +28,7 @@ export const fetchMarketNarratives = createAsyncThunk(
     };
 
     try {
-      const data = await getTestService(`/analyses?per_page=50&section_id=46`);
+      const data = await getTestService(`/analyses?per_page=50&section_id=86`);
       if (data.success) {
         const parsed_data = data.data.map(item => {
           return {

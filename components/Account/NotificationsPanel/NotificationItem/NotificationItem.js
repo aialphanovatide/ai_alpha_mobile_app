@@ -73,7 +73,7 @@ const NotificationItem = ({
   useEffect(() => {
     loadActiveIntervals();
     if (allToggled) {
-      setActiveIntervals(['1D', '1W']);
+      setActiveIntervals(['1d', '1w']);
     }
   }, [allToggled, notificationsSubscriptions]);
 

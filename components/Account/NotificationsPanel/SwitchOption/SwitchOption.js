@@ -41,9 +41,9 @@ const SwitchOption = ({
         });
       } else {
         dispatch(
-          toggleSubscription({topic: `${categoryTopic}_${optionTopic}_1D`}),
+          toggleSubscription({topic: `${categoryTopic}_${optionTopic}_1d`}),
         );
-        handleActiveIntervalByAlertSwitch('1D');
+        handleActiveIntervalByAlertSwitch('1d');
       }
       return;
     } else {
@@ -116,7 +116,7 @@ const NotificationsTimeFilter = ({
                 activeIntervals.some(item => item === interval) &&
                   styles.activeTimeIntervalNumber,
               ]}>
-              {interval}
+              {interval.toUpperCase()}
             </Text>
           </TouchableOpacity>
         );
