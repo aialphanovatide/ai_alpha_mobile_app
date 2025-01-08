@@ -337,7 +337,7 @@ const App = () => {
                     animationType="slide"
                     transparent={false}
                     visible={!hasSeenFounderPopup}>
-                    <FreeFoundersEnd onDismiss={handleDismissFounderPopup} />
+                    <FreeFounders onDismiss={handleDismissFounderPopup} />
                   </Modal>
 
                   <SingletonHooksContainer />
