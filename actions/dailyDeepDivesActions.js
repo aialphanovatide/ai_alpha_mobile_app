@@ -1,14 +1,47 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {getService, getServiceV2, getTestService} from '../services/aiAlphaApi';
 
+export const fetchSectionsMetadata = createAsyncThunk(
+  'home/fetchSectionsMetadata',
+  async (_, {rejectWithValue}) => {
+    try {
+      // [PRODUCTION REQUEST]
+      const data = await getServiceV2('sections');
+      // [TESTING REQUEST]
+      // const data = await getTestService('sections');
+
+      // Map the sections metadata to only include the id and name
+      const mappedSectionsMetadata = data.message.map(section => ({
+        id: section.id,
+        name: section.name,
+      }));
+
+      return mappedSectionsMetadata;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+  {
+    condition: (_, thunkApi) => {
+      const data = thunkApi.getState().home.sections.data;
+      const loading = thunkApi.getState().home.sections.loading;
+      if (data.length === 0 || loading === 'idle') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+);
+
 export const fetchDailyDeepDivesData = createAsyncThunk(
   'home/fetchDailyDeepDivesData',
   async (_, {getState, rejectWithValue}) => {
     try {
       // [PRODUCTION REQUEST]
-      const data = await getServiceV2(`analyses?per_page=99&section_id=19`);
+      // const data = await getServiceV2(`analyses?per_page=99&section_id=59`);
       // [TESTING REQUEST]
-      // const data = await getTestService(`analyses?per_page=99&section_id=44`);
+      const data = await getTestService(`analyses?per_page=99&section_id=84`);
       if (!data.success) {
         return [];
       }
@@ -69,7 +102,7 @@ export const fetchDailyMacros = createAsyncThunk(
       // [PRODUCTION REQUEST]
       // const data = await getServiceV2(`analyses?per_page=50&section_id=20`);
       // [TESTING REQUEST]
-      const data = await getTestService(`analyses?per_page=50&section_id=45`);
+      const data = await getTestService(`analyses?per_page=50&section_id=85`);
 
       if (!data.success) {
         return [];
@@ -119,7 +152,7 @@ export const fetchLatestSpotlight = createAsyncThunk(
   async (_, {getState, rejectWithValue}) => {
     try {
       const {categories} = getState().categories; // Use the categories slice for getting the categories data
-      const data = await getTestService(`analyses?per_page=10&section_id=47`);
+      const data = await getTestService(`analyses?per_page=10&section_id=87`);
       if (!data.success) {
         return [];
       }

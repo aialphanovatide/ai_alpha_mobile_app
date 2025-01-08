@@ -23,6 +23,7 @@ import {
   selectActiveSubCoin,
 } from '../actions/categoriesActions';
 import {resetActiveCoin} from '../store/categoriesSlice';
+import {fetchSectionsMetadata} from '../actions/dailyDeepDivesActions';
 
 const HomeStack = createNativeStackNavigator();
 const TopmenuStack = createNativeStackNavigator();
@@ -219,6 +220,10 @@ const HomeStackScreen = () => {
   const {isLandscape, isHorizontal} = useScreenOrientation();
   const {theme} = useContext(AppThemeContext);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchSectionsMetadata());
+  }, [dispatch]);
 
   return (
     <HomeStack.Navigator

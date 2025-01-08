@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -7,8 +7,6 @@ import SignupForm from '../components/Login/Screens/SignUp/SignupForm';
 import ForgotPasswordForm from '../components/Login/Screens/ForgotPassword/ForgotPasswordForm';
 import TabsMenu from '../components/Login/TabsMenu/TabsMenu';
 import TermsAndConditions from '../components/Login/Screens/TermsAndConditions/TermsAndConditions';
-import {AppThemeContext} from '../context/themeContext';
-import {Appearance} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IntroductorySlides from '../components/IntroductorySlides/IntroductorySlides';
 

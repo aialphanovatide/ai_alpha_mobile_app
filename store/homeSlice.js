@@ -5,6 +5,7 @@ import {
   fetchDailyDeepDivesData,
   fetchDailyMacros,
   fetchLatestSpotlight,
+  fetchSectionsMetadata,
 } from '../actions/dailyDeepDivesActions';
 import {fetchMarketNarratives} from '../actions/marketNarrativesActions';
 
@@ -13,6 +14,11 @@ import {fetchMarketNarratives} from '../actions/marketNarrativesActions';
 const homeSlice = createSlice({
   name: 'home',
   initialState: {
+    sections: {
+      data: [],
+      loading: 'idle',
+      error: null,
+    },
     topTenMovers: {
       topTenGainersData: [],
       topTenLosersData: [],
@@ -166,6 +172,19 @@ const homeSlice = createSlice({
       .addCase(fetchLatestSpotlight.rejected, (state, action) => {
         state.spotlight.loading = 'failed';
         state.spotlight.error = action.payload || 'Error fetching data';
+      })
+      // Reducers for handling the pending, fulfilled, and rejected states of the actions for fetching the sections metadata.
+      .addCase(fetchSectionsMetadata.pending, state => {
+        state.sections.loading = 'idle';
+      })
+      .addCase(fetchSectionsMetadata.fulfilled, (state, action) => {
+        state.sections.loading = 'succeeded';
+        state.sections.data = action.payload;
+        state.sections.error = null;
+      })
+      .addCase(fetchSectionsMetadata.rejected, (state, action) => {
+        state.sections.loading = 'failed';
+        state.sections.error = action.payload || 'Error fetching data';
       });
   },
 });
