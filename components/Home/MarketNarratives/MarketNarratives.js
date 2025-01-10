@@ -21,7 +21,7 @@ import {
   selectMarketNarratives,
   selectMarketNarrativesLoading,
 } from '../../../actions/marketNarrativesActions';
-import { MarketNarrativeItem } from './MarketNarrativeItem/MarketNarrativeItem';
+import {MarketNarrativeItem} from './MarketNarrativeItem/MarketNarrativeItem';
 
 if (
   Platform.OS === 'android' &&
@@ -29,7 +29,6 @@ if (
 ) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
-
 
 // Component to render the list of market narratives in the home screen. It receives the function to handle the press on the about icon as props. It uses the NarrativeTradingContext to get the data of the market narratives and renders the items in the list. It also renders the about icon and a "see all" button which navigates to the Dashboard screen.
 const NarrativeTradings = ({handleAboutPress}) => {
@@ -62,6 +61,7 @@ const NarrativeTradings = ({handleAboutPress}) => {
       category: item.category,
       date: item.created_at,
       image: item.image,
+      title: item.title,
       isNavigateFromHome: true,
     });
 
@@ -88,7 +88,6 @@ const NarrativeTradings = ({handleAboutPress}) => {
       screen: 'NarrativeTrading',
       params: {},
     });
-    
   };
 
   return (

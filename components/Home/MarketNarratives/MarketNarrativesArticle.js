@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Image,
   Modal,
@@ -90,7 +90,7 @@ const CustomImageRenderer = props => {
 
 const MarketNarrativesArticle = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
-  const {item_content, id, date, image, isNavigateFromHome} = route?.params;
+  const {item_content, id, date, image, title, isNavigateFromHome} = route?.params;
   const styles = useHomeNarrativeTradingStyles();
   const {theme} = useContext(AppThemeContext);
   const isAndroid = Platform.OS === 'android' ? true : false;
@@ -101,6 +101,32 @@ const MarketNarrativesArticle = ({route}) => {
   ];
   const navigation = useNavigation();
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
+  const [hasImage, setHasImage] = useState('unverified');
+
+  // useeffect to check if the image exists in the server
+  useEffect(() => {
+    const checkImageURL = async url => {
+      try {
+        const imageUri = url.includes('https://')
+          ? url
+          : `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`;
+        const response = await fetch(imageUri);
+        if (
+          (response.headers.map['content-type'] &&
+            response.headers.map['content-type'].startsWith('image/jpeg')) ||
+          response.headers.map['content-type'].startsWith('binary/octet-stream')
+        ) {
+          setHasImage('verified');
+        }
+      } catch (error) {
+        console.error('Error verifying the image URL:', error);
+        setHasImage('error');
+      }
+    };
+    checkImageURL(image);
+  }, []);
+
+  // Function to simplify the date and time of the article.
 
   const simplifyDateTime = dateTimeString => {
     const dateTime = new Date(dateTimeString);
@@ -112,6 +138,8 @@ const MarketNarrativesArticle = ({route}) => {
 
     return `${day}-${month}-${year} ${hours}:${minutes}`;
   };
+
+  // Function to format the HTML content of the article
 
   const findHtmlContent = content => {
     const replacedContent = content.replace(/\\/g, '');
@@ -247,9 +275,13 @@ const MarketNarrativesArticle = ({route}) => {
             resizeMode={'contain'}
             source={{
               uri:
-                image !== ''
-                  ? image
-                  : `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
+                hasImage === 'verified'
+                  ? image.includes('https://')
+                    ? image
+                    : `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`
+                  : hasImage === 'error'
+                  ? 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
+                  : null,
               priority: FastImage.priority.normal,
             }}
             fallback={true}
@@ -271,9 +303,13 @@ const MarketNarrativesArticle = ({route}) => {
               resizeMode={'cover'}
               source={{
                 uri:
-                  image !== ''
-                    ? image
-                    : `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`,
+                  hasImage === 'verified'
+                    ? image.includes('https://')
+                      ? image
+                      : `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`
+                    : hasImage === 'error'
+                    ? 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
+                    : null,
                 priority: FastImage.priority.normal,
               }}
               defaultSource={require('../../../assets/images/home/default_news.png')}
@@ -291,6 +327,7 @@ const MarketNarrativesArticle = ({route}) => {
           )}
         </View>
         <View style={styles.contentContainer}>
+          <Text style={styles.title}>{title}</Text>
           <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>
           <RenderHTML
             source={html_source}

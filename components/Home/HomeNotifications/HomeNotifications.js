@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -11,34 +11,13 @@ import BackButton from '../../BackButton/BackButton';
 import SkeletonLoader from '../../Loader/SkeletonLoader';
 import useHomeNotificationsStyles from './HomeNotificationsStyles';
 import FastImage from 'react-native-fast-image';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
-
-// Function to handle the sorting of the notifications items by the date. It groups the items by date and returns them sorted in descending order.
-
-const groupAndSortByDate = items => {
-  const groupedByDate = {};
-
-  items.forEach(item => {
-    if (!groupedByDate[item.date]) {
-      groupedByDate[item.date] = [];
-    }
-    groupedByDate[item.date].push(item);
-  });
-  const groupedArray = Object.keys(groupedByDate).map(date => ({
-    date,
-    items: groupedByDate[date].reverse(),
-  }));
-
-  return groupedArray.sort((a, b) => {
-    const [dayA, monthA, yearA] = a.date.split('/').map(Number);
-    const [dayB, monthB, yearB] = b.date.split('/').map(Number);
-    const dateA = new Date(yearA, monthA - 1, dayA);
-    const dateB = new Date(yearB, monthB - 1, dayB);
-    return dateB - dateA;
-  });
-};
+import {useSelector} from 'react-redux';
+import {
+  selectFilteredNotificationsByType,
+  selectNotificationsItemsLoading,
+} from '../../../actions/notificationActions';
 
 // NotificationItem component to display the notification item. It receives the imageSource, item and isNew props. The imageSource is the source of the image to be displayed in the notification item. The item prop contains the information of the notification item. The isNew prop is a boolean that indicates if the notification is new. The component returns a View with the notification item content.
 
@@ -122,81 +101,15 @@ const NotificationsMenu = ({options, selectedOption, changeOption}) => {
 // Component to display the notifications section. It receives the route and navigation props. The route prop contains the route information. The navigation prop is used to navigate between screens. The component returns a SafeAreaView with the notifications section content. It displays the notifications menu and the notifications items.
 
 const HomeNotifications = ({route, navigation}) => {
-  const [loading, setLoading] = useState(false);
+  const loading = useSelector(selectNotificationsItemsLoading);
   const options = ['All', 'App', 'Analysis', 'Alerts'];
   const [selectedOption, setSelectedOption] = useState(options[0]);
-  const [notificationsData, setNotificationsData] = useState([]);
   const styles = useHomeNotificationsStyles();
+  const notificationsData = useSelector(selectFilteredNotificationsByType);
+  const [filteredNotifications, setFilteredNotifications] =
+    useState(notificationsData);
 
-  const saveNotifications = async newNotifications => {
-    try {
-      const storedNotifications = await AsyncStorage.getItem('notifications');
-      const currentNotifications = storedNotifications
-        ? JSON.parse(storedNotifications)
-        : [];
-
-      const combinedNotifications = [
-        ...currentNotifications,
-        ...newNotifications,
-      ].filter(
-        (item, index, self) =>
-          index ===
-          self.findIndex(t => t.title === item.title && t.date === item.date),
-      );
-
-      await AsyncStorage.setItem(
-        'notifications',
-        JSON.stringify(combinedNotifications),
-      );
-    } catch (error) {
-      console.error('Error saving notifications:', error);
-    }
-  };
-
-  const loadNotifications = async () => {
-    try {
-      const storedNotifications = await AsyncStorage.getItem('notifications');
-      const currentNotifications = storedNotifications
-        ? JSON.parse(storedNotifications)
-        : [];
-
-      const fifteenDaysAgo = new Date();
-      fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
-
-      const filteredNotifications = currentNotifications.filter(
-        notification => {
-          const [day, month, year] = notification.date.split('/').map(Number);
-          const notificationDate = new Date(year, month - 1, day);
-          return notificationDate >= fifteenDaysAgo;
-        },
-      );
-      return filteredNotifications;
-    } catch (error) {
-      console.error(
-        "Error loading notifications from the user's device: ",
-        error,
-      );
-      return [];
-    }
-  };
-
-  useEffect(() => {
-    const initializeNotifications = async () => {
-      setLoading(true);
-
-      const loadedNotifications = await loadNotifications();
-      let combinedNotifications = [...loadedNotifications];
-
-      await saveNotifications(combinedNotifications);
-
-      setNotificationsData(groupAndSortByDate(combinedNotifications));
-      setLoading(false);
-    };
-
-    initializeNotifications();
-  }, []);
-
-  if (loading) {
+  if (loading === 'idle') {
     return (
       <SafeAreaView style={styles.background}>
         <BackgroundGradient />
@@ -214,17 +127,12 @@ const HomeNotifications = ({route, navigation}) => {
     );
   }
 
-  const changeSelectedOption = async option => {
-    const loadedNotifications = await loadNotifications();
+  const changeSelectedOption = option => {
     setSelectedOption(option);
-    if (option.toLowerCase() === 'all') {
-      setNotificationsData(groupAndSortByDate(loadedNotifications));
-      return;
-    }
-    const filteredItems = loadedNotifications.filter(
-      item => item.type.toLowerCase() === option.toLowerCase(),
-    );
-    setNotificationsData(groupAndSortByDate(filteredItems));
+    const filteredItems = notificationsData.filter(item => {
+      return option === 'All' ? true : item.type === option;
+    });
+    setFilteredNotifications(filteredItems);
   };
 
   // Function to handle the back button navigation when the section is acceeded through the alerts tab
@@ -251,8 +159,8 @@ const HomeNotifications = ({route, navigation}) => {
           style={styles.container}
           bounces={false}
           showsVerticalScrollIndicator={false}>
-          {notificationsData?.length > 0 ? (
-            notificationsData.map(group => {
+          {filteredNotifications?.length > 0 ? (
+            filteredNotifications.map(group => {
               return group.items.map((item, index) => {
                 const isLastItem =
                   group.items.length === 1 || index === group.items.length - 1;

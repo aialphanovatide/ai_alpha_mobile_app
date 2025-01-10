@@ -23,8 +23,9 @@ const NewDailyDeepDives = () => {
     {min: 220, max: 439, x: 240},
     {min: 440, max: 659, x: 400},
     {min: 660, max: 829, x: 660},
-    {min: 830, max: 1500, x: 860},
+    {min: 830, max: 1500, x: 990},
   ];
+  const [contentWidth, setContentWidth] = useState(1500);
   const [currentPage, setCurrentPage] = useState(1);
   const scrollViewRef = useRef(null);
   const navigation = useNavigation();
@@ -40,6 +41,7 @@ const NewDailyDeepDives = () => {
       category: analysis.category,
       date: analysis.created_at,
       image: analysis.image,
+      title: analysis.title,
       isHistoryArticle: false,
     });
     const clickedAt = new Date().toISOString();
@@ -72,27 +74,36 @@ const NewDailyDeepDives = () => {
 
   const handleScroll = event => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const newPageIndex = WIDTH_PER_SHOWN_CARD.findIndex(
-      item => contentOffsetX >= item.min && contentOffsetX <= item.max,
-    );
-    const newPage = WIDTH_PER_SHOWN_CARD.find(
-      item => contentOffsetX >= item.min && contentOffsetX <= item.max,
-    );
-    setCurrentPage(newPageIndex + 1);
-    scrollViewRef.current.scrollTo({
-      x: newPage.x,
-      animated: true,
-    });
-    // const newPage =
-    //   Math.round(
-    //     (totalPages * contentOffsetX) /
-    //       (totalPages * styles.deepDiveCard.width),
-    //   ) + 1;
-    // setCurrentPage(newPage);
+    // const newPageIndex = WIDTH_PER_SHOWN_CARD.findIndex(
+    //   item => contentOffsetX >= item.min && contentOffsetX <= item.max,
+    // );
+    // const newPage = WIDTH_PER_SHOWN_CARD.find(
+    //   item => contentOffsetX >= item.min && contentOffsetX <= item.max,
+    // );
+    // setCurrentPage(newPageIndex + 1);
     // scrollViewRef.current.scrollTo({
-    //   x: styles.deepDiveCard.width - 18,
+    //   x: newPage.x,
     //   animated: true,
     // });
+    const newPage =
+      Math.round((totalPages * contentOffsetX) / contentWidth) + 1;
+    setCurrentPage(newPage);
+    scrollViewRef.current.scrollTo({
+      x:
+        newPage === 1
+          ? 0
+          : newPage === 2
+          ? 180
+          : (newPage - 1) *
+            (styles.deepDiveCard.width + styles.deepDiveCard.margin),
+      animated: true,
+    });
+  };
+
+  // Function to detect what is the total content width of the scroll view that contains the deep dives cards, updating the content width state
+
+  const handleContentSizeChange = newContentWidth => {
+    setContentWidth(newContentWidth);
   };
 
   return (
@@ -129,6 +140,7 @@ const NewDailyDeepDives = () => {
             showsHorizontalScrollIndicator={false}
             onScrollEndDrag={handleScroll}
             pagingEnabled
+            onContentSizeChange={handleContentSizeChange}
             style={styles.deepDivesContainer}>
             {loading === 'idle' ? (
               <SkeletonLoader quantity={totalPages} type="cards" />

@@ -29,6 +29,7 @@ const useNewDailyDeepDivesStyles = () => {
       fontFamily: theme.fontFigtreeMedium,
     },
     deepDivesContainer: {
+      maxWidth: 228 * 5,
       flexDirection: 'row',
       marginVertical: 8,
     },

@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {fetchTopStories} from '../actions/whatsHappeningTodayActions';
 import {fetchTop10Movers} from '../actions/topTenMoversActions';
 import {
@@ -8,6 +8,24 @@ import {
   fetchSectionsMetadata,
 } from '../actions/dailyDeepDivesActions';
 import {fetchMarketNarratives} from '../actions/marketNarrativesActions';
+import { loadNotificationItems } from '../actions/notificationActions';
+import { fetchAlertsByAllCategories } from '../actions/alertsActions';
+
+export const fetchInitialData = createAsyncThunk(
+  'home/fetchInitialData',
+  async (_, {dispatch}) => {
+    await Promise.all([
+      dispatch(loadNotificationItems()),
+      dispatch(fetchAlertsByAllCategories({timeInterval: '4H'})),
+      dispatch(fetchTop10Movers()),
+      dispatch(fetchTopStories({timeframe: '1D'})),
+      dispatch(fetchDailyDeepDivesData()),
+      dispatch(fetchDailyMacros()),
+      dispatch(fetchMarketNarratives()),
+      dispatch(fetchLatestSpotlight()),
+    ]);
+  }
+);
 
 // Store slice for the home screen data, including the data related to the home components: top ten movers and whats happening today stories.
 

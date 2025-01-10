@@ -223,10 +223,12 @@ export const newsbotGetService = async endpoint => {
     });
 
     if (response.status === 204) {
+      console.log('Returning empty array due to 204 status');
       return [];
     }
 
     if (response.status === 404) {
+      console.log('Returning empty array due to 404 status');
       return [];
     }
 

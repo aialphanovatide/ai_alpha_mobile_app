@@ -90,7 +90,7 @@ const CustomImageRenderer = props => {
 
 const DailyDeepArticle = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
-  const {analysis_content, analysis_id, date, image, isHistoryArticle} =
+  const {analysis_content, analysis_id, date, image, title, isHistoryArticle} =
     route?.params;
   const styles = useDailyDeepsStyles();
   const {theme} = useContext(AppThemeContext);
@@ -103,27 +103,29 @@ const DailyDeepArticle = ({route}) => {
   const navigation = useNavigation();
   const {userInfo} = useContext(RevenueCatContext);
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
-  const [hasImage, setHasImage] = useState(false);
+  const [hasImage, setHasImage] = useState('unverified');
 
   // useeffect to check if the image exists in the server
   useEffect(() => {
     const checkImageURL = async url => {
       try {
-        const response = await fetch(url);
+        const imageUri = url.includes('https://')
+          ? url
+          : `https://appanalysisimages.s3.us-east-2.amazonaws.com/${url}`;
+        const response = await fetch(imageUri);
         if (
-          response.headers.map['content-type'] &&
+          (response.headers.map['content-type'] &&
+            response.headers.map['content-type'].startsWith('image/jpeg')) ||
           response.headers.map['content-type'].startsWith('binary/octet-stream')
         ) {
-          setHasImage(true);
+          setHasImage('verified');
         }
       } catch (error) {
         console.error('Error verifying the image URL:', error);
-        setHasImage(false);
+        setHasImage('error');
       }
     };
-    checkImageURL(
-      `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
-    );
+    checkImageURL(image);
   }, []);
 
   // Function to simplify the date and time of the article
@@ -200,6 +202,31 @@ const DailyDeepArticle = ({route}) => {
       color: theme.titleColor,
       fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
     },
+    h1: {
+      fontSize: theme.responsiveFontSize * 1.5,
+      marginVertical: 4,
+      color: theme.titleColor,
+      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+    },
+    h2: {
+      fontSize: theme.responsiveFontSize * 1.25,
+      marginVertical: 4,
+      color: theme.titleColor,
+      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+    },
+    h3: {
+      fontSize: theme.responsiveFontSize * 1.25,
+      marginVertical: 4,
+      color: theme.titleColor,
+      fontFamily: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
+    },
+    h4: {
+      fontSize: theme.responsiveFontSize * 1.25,
+      marginVertical: 4,
+      color: theme.titleColor,
+      fontFamily: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
+    },
+
     ul: {
       color: theme.textColor,
       fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
@@ -251,8 +278,6 @@ const DailyDeepArticle = ({route}) => {
     html: findHtmlContent(analysis_content),
   };
 
-  const imageUri = `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`;
-
   const handleBackButtonImageClose = () => {
     setImageZoomVisible(false);
   };
@@ -280,9 +305,13 @@ const DailyDeepArticle = ({route}) => {
             resizeMode={'contain'}
             source={{
               uri:
-                image !== ''
-                  ? image
-                  : `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
+                hasImage === 'verified'
+                  ? image.includes('https://')
+                    ? image
+                    : `https://appanalysisimages.s3.us-east-2.amazonaws.com/${image}`
+                  : hasImage === 'error'
+                  ? 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
+                  : null,
               priority: FastImage.priority.normal,
             }}
             fallback={true}
@@ -309,9 +338,13 @@ const DailyDeepArticle = ({route}) => {
               resizeMode={'cover'}
               source={{
                 uri:
-                  image !== ''
-                    ? image
-                    : `https://appanalysisimages.s3.us-east-2.amazonaws.com/${analysis_id}.jpg`,
+                  hasImage === 'verified'
+                    ? image.includes('https://')
+                      ? image
+                      : `https://appanalysisimages.s3.us-east-2.amazonaws.com/${image}`
+                    : hasImage === 'error'
+                    ? 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
+                    : null,
                 priority: FastImage.priority.normal,
               }}
               fallback={true}
@@ -328,6 +361,7 @@ const DailyDeepArticle = ({route}) => {
           )}
         </View>
         <View style={styles.contentContainer}>
+          <Text style={styles.title}>{title}</Text>
           <Text style={styles.articleDate}>{simplifyDateTime(date)}</Text>
           <RenderHTML
             source={html_source}

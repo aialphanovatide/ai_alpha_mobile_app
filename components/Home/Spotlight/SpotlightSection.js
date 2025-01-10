@@ -27,6 +27,7 @@ export const Spotlight = () => {
       category: item.category,
       date: item.created_at,
       image: item.image,
+      title: item.title,
       isHistoryArticle: false,
     });
 
@@ -64,7 +65,7 @@ export const Spotlight = () => {
           }}
         />
       ) : (
-        <SpotlightCard item={data[1]} handleCardPress={handleCardPress} />
+        <SpotlightCard item={data[0]} handleCardPress={handleCardPress} />
       )}
     </View>
   );

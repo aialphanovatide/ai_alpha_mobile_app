@@ -156,6 +156,8 @@ const SearchWithBar = ({
         analysis_content: analysisItem.raw_analysis,
         analysis_id: analysisItem.id,
         date: analysisItem.created_at,
+        image: analysisItem.image,
+        title: analysisItem.title,
         isHistoryArticle: false,
       },
     });
@@ -174,6 +176,8 @@ const SearchWithBar = ({
         item_content: narrativeTrading.content,
         id: narrativeTrading.id,
         date: narrativeTrading.created_at,
+        image: narrativeTrading.image,
+        title: narrativeTrading.title,
         isNavigateFromHome: false,
       },
     });

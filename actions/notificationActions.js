@@ -87,7 +87,7 @@ export const toggleAllSubscriptions = createAsyncThunk(
   async (newStatus, thunkApi) => {
     try {
       const subscriptions = thunkApi.getState().user.notifications;
-      const updatedSubscriptions = { ...subscriptions };
+      const updatedSubscriptions = {...subscriptions};
 
       const subscriptionPromises = [];
 
@@ -96,11 +96,15 @@ export const toggleAllSubscriptions = createAsyncThunk(
           if (option.topic_tag === 'alerts') {
             ['1d', '1w'].forEach(interval => {
               const topic = `${item.identifier}_${option.topic_tag}_${interval}`;
-              subscriptionPromises.push(handleSubscription(topic, newStatus, updatedSubscriptions));
+              subscriptionPromises.push(
+                handleSubscription(topic, newStatus, updatedSubscriptions),
+              );
             });
           } else {
             const topic = `${item.identifier}_${option.topic_tag}`;
-            subscriptionPromises.push(handleSubscription(topic, newStatus, updatedSubscriptions));
+            subscriptionPromises.push(
+              handleSubscription(topic, newStatus, updatedSubscriptions),
+            );
           }
         }
       }
@@ -159,6 +163,83 @@ export const loadSubscriptions = createAsyncThunk(
   },
 );
 
+// Load notifications data from the notifications async storage
+
+export const loadNotificationItems = createAsyncThunk(
+  'user/loadNotificationItems',
+  async (_, {}) => {
+    try {
+      const storedNotifications = await AsyncStorage.getItem('notifications');
+      const currentNotifications = storedNotifications
+        ? JSON.parse(storedNotifications)
+        : [];
+      return currentNotifications;
+    } catch (error) {
+      console.error('Failed to load notifications:', error);
+    }
+  },
+);
+
+// Save notifications data to the notifications async storage
+
+export const saveNotificationItems = createAsyncThunk(
+  'user/saveNotificationItems',
+  async (notifications, {}) => {
+    try {
+      // Remove duplicates
+      const filteredNotifications = notifications.filter(
+        (item, index, self) =>
+          index ===
+          self.findIndex(t => t.title === item.title && t.date === item.date),
+      );
+      await AsyncStorage.setItem(
+        'notifications',
+        JSON.stringify(filteredNotifications),
+      );
+    } catch (error) {
+      console.error('Failed to save notifications:', error);
+    }
+  },
+);
+
+// Function to filter the old (more than 15 days) notifications
+
+const filterOldNotifications = items => {
+  const fifteenDaysAgo = new Date();
+  fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+
+  return items.filter(notification => {
+    const [day, month, year] = notification.date.split('/').map(Number);
+    const notificationDate = new Date(year, month - 1, day);
+    return notificationDate >= fifteenDaysAgo;
+  });
+};
+
+// Function to handle the sorting of the notifications items by the date. It groups the items by date and returns them sorted in descending order.
+
+const groupAndSortByDate = items => {
+  const groupedByDate = {};
+
+  items.forEach(item => {
+    if (!groupedByDate[item.date]) {
+      groupedByDate[item.date] = [];
+    }
+    groupedByDate[item.date].push(item);
+  });
+  const groupedArray = Object.keys(groupedByDate).map(date => ({
+    date,
+    items: groupedByDate[date].reverse(),
+  }));
+
+  return groupedArray.sort((a, b) => {
+    const [dayA, monthA, yearA] = a.date.split('/').map(Number);
+    const [dayB, monthB, yearB] = b.date.split('/').map(Number);
+    const dateA = new Date(yearA, monthA - 1, dayA);
+    const dateB = new Date(yearB, monthB - 1, dayB);
+    return dateB - dateA;
+  });
+};
+
 export const selectNotifications = state => state.user.notifications;
 
 export const selectNotificationStatusByTopic = (state, topic) => {
@@ -169,5 +250,18 @@ export const selectNotificationStatusByTopic = (state, topic) => {
     return alertsStatusActive?.length > 1 ? true : false;
   } else {
     return state.user.notifications[topic] || false;
+  }
+};
+
+export const selectNotificationsItemsLoading = state =>
+  state.user.notificationItems.loading;
+
+export const selectFilteredNotificationsByType = state => {
+  const notifications = state.user.notificationItems.data;
+  if (!notifications) {
+    return [];
+  } else {
+    const filteredOldItems = filterOldNotifications(notifications);
+    return groupAndSortByDate(filteredOldItems);
   }
 };

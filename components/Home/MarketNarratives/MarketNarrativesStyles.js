@@ -98,8 +98,7 @@ const useMarketNarrativeStyles = () => {
     title: {
       fontSize: theme.titleFontSize,
       color: theme.titleColor,
-      marginVertical: theme.titlesVerticalMargin * 0.8,
-      marginHorizontal: 8,
+      marginVertical: theme.titlesVerticalMargin,
       lineHeight: 22,
       fontFamily: theme.fontSemibold,
     },

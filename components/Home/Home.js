@@ -49,7 +49,9 @@ import DailyMacroSection from './DailyMacro/DailyMacroSection';
 import {Spotlight} from './Spotlight/SpotlightSection';
 import {TopTenContainer} from './TopTenGainersAndLosers/TopTenGainersAndLosers';
 import AltCoinsTopStories from './AltCoinsTopStories/AltCoinsTopStories';
-import { fetchAlertsByAllCategories } from '../../actions/alertsActions';
+import {fetchAlertsByAllCategories} from '../../actions/alertsActions';
+import {loadNotificationItems} from '../../actions/notificationActions';
+import {fetchInitialData} from '../../store/homeSlice';
 
 // FreePopup component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 
@@ -142,13 +144,7 @@ const Home = ({route}) => {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchAlertsByAllCategories({timeInterval: '4H'}));
-    dispatch(fetchTop10Movers());
-    dispatch(fetchTopStories({timeframe: '1D'}));
-    dispatch(fetchDailyDeepDivesData());
-    dispatch(fetchDailyMacros());
-    dispatch(fetchMarketNarratives());
-    dispatch(fetchLatestSpotlight());
+    dispatch(fetchInitialData());
   }, [dispatch]);
 
   useFocusEffect(() => {

@@ -1,5 +1,9 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
-import {newsbotGetService, oldNewsbotGetService} from '../services/aiAlphaApi';
+import {createAsyncThunk, createSelector} from '@reduxjs/toolkit';
+import {
+  newsbotGetService,
+  newsbotGetTestService,
+  oldNewsbotGetService,
+} from '../services/aiAlphaApi';
 
 // Function to filter the news by the date
 const filterNewsByDate = (news, filter) => {
@@ -34,15 +38,6 @@ export const fetchNews = createAsyncThunk(
   'news/fetchNews',
   async ({botName}, {rejectWithValue}) => {
     try {
-      // const endpoints = ['eth', 'btc'].includes(botName)
-      //   ? {
-      //       Today: `get_articles?bot_name=${botName}&limit=10`,
-      //       'This Week': `get_articles?bot_name=${botName}&limit=20`,
-      //     }
-      //   : {
-      //       Today: `get_articles?bot_name=${botName}&limit=10`,
-      //       'This Month': `get_articles?bot_name=${botName}&limit=20`,
-      //     };
       const endpoints = ['eth', 'btc'].includes(botName)
         ? {
             Today: `articles?bot_name=${botName}&per_page=15`,
@@ -56,9 +51,19 @@ export const fetchNews = createAsyncThunk(
         ? 'This Week'
         : 'This Month';
       const [firstResponse, secondResponse] = await Promise.all([
-        newsbotGetService(endpoints.Today),
-        newsbotGetService(endpoints[secondFilter]),
+        newsbotGetTestService(endpoints.Today),
+        newsbotGetTestService(endpoints[secondFilter]),
       ]);
+
+      if (firstResponse.length === 0 || secondResponse.length === 0) {
+        return {
+          articles: {
+            Today: [],
+            [secondFilter]: [],
+          },
+          botName,
+        };
+      }
 
       if (!firstResponse.success || !secondResponse.success) {
         throw new Error(
@@ -109,8 +114,11 @@ export const selectNewsByBotName = (state, botName) => {
   return state.news.articlesByBotName[botName];
 };
 
-export const selectNews = state => {
-  return state.news.articlesByBotName;
-};
+export const selectNews = createSelector(
+  state => state.news.articlesByBotName,
+  articlesByBotName => {
+    return articlesByBotName;
+  },
+);
 
 export const selectNewsLoading = state => state.news.loading;

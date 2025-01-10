@@ -28,11 +28,39 @@ export const TopTenContainer = ({title, itemsState}) => {
   const TOTAL_PAGES = Math.ceil(
     (items.length * styles.itemContainer.width) / theme.width,
   );
+  // const WIDTHS_PER_INDEX = [
+  //   {min: 0, max: 2 * styles.itemContainer.width, index: 1},
+  //   {
+  //     min: 2 * styles.itemContainer.width,
+  //     max: 4 * styles.itemContainer.width,
+  //     index: 2,
+  //   },
+  //   {
+  //     min: 4 * styles.itemContainer.width,
+  //     max: 6 * styles.itemContainer.width,
+  //     index: 3,
+  //   },
+  //   {
+  //     min: 6 * styles.itemContainer.width,
+  //     max: 8 * styles.itemContainer.width,
+  //     index: 4,
+  //   },
+  //   {
+  //     min: 8 * styles.itemContainer.width,
+  //     max: 10 * styles.itemContainer.width,
+  //     index: 5,
+  //   },
+  // ];
 
   // Function to handle the scrolling on the top ten gainers/losers section, updating the current item rendered in the container
 
   const handleScroll = event => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
+
+    // const newPage = WIDTHS_PER_INDEX.find(
+    //   item => contentOffsetX >= item.min && contentOffsetX <= item.max,
+    // ).index;
+
     const newPage =
       Math.round(
         (TOTAL_PAGES * contentOffsetX) /
@@ -89,7 +117,7 @@ export const TopTenContainer = ({title, itemsState}) => {
             horizontal
             nestedScrollEnabled
             showsHorizontalScrollIndicator={false}
-            onScrollEndDrag={handleScroll}
+            onScroll={handleScroll}
             scrollEventThrottle={50}
             pagingEnabled
             style={styles.itemsContainer}>

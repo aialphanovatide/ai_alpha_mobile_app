@@ -46,6 +46,11 @@ export const GainerLoserCard = ({
           : {
               marginRight: 16,
             },
+        // Separate the item's currentPrice by a dot and detect if the first part has more than 3 characters
+        // If it does, add a margin to the right of the item's currentPrice
+        item.currentPrice.toFixed(2).split('.')[0].length > 3
+          ? {width: 190}
+          : {},
       ]}>
       <Text style={styles.itemPosition}>{position}</Text>
       <FastImage
@@ -59,7 +64,7 @@ export const GainerLoserCard = ({
           <Text style={styles.itemSymbol}>{item.symbol}</Text>
         </View>
         <View style={styles.dataRow}>
-          <Text style={styles.price}>{item.currentPrice.toFixed(2)}</Text>
+          <Text style={styles.price}>{`$${item.currentPrice.toFixed(2)}`}</Text>
           <View
             style={[
               styles.priceChangeContainer,

@@ -26,7 +26,7 @@ const StoryArticle = ({route, navigation}) => {
   const isStory = route.params.isStory;
   const {theme} = useContext(AppThemeContext);
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
-  const [hasImage, setHasImage] = useState(false);
+  const [hasImage, setHasImage] = useState('unverified');
 
   // Animation for the whole article component's first rendering, swiping from the right side of the screen
 
@@ -48,22 +48,23 @@ const StoryArticle = ({route, navigation}) => {
   useEffect(() => {
     const checkImageURL = async url => {
       try {
-        const response = await fetch(url);
+        const imageUri = url.includes('https://')
+          ? url
+          : `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${url}`;
+        const response = await fetch(imageUri);
         if (
-          response.headers.map['content-type'] &&
+          (response.headers.map['content-type'] &&
+            response.headers.map['content-type'].startsWith('image')) ||
           response.headers.map['content-type'].startsWith('binary/octet-stream')
         ) {
-          setHasImage(true);
+          setHasImage('verified');
         }
       } catch (error) {
         console.error('Error verifying the image URL:', error);
-        setHasImage(false);
+        setHasImage('error');
       }
     };
-    checkImageURL(
-      // `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`,
-      item.image,
-    );
+    checkImageURL(item.image);
   }, []);
 
   // Function to handle the return button, which navigates the user back to the TopStories component
@@ -82,8 +83,6 @@ const StoryArticle = ({route, navigation}) => {
 
     return `${day}-${month}-${year} ${hours}:${minutes}`;
   };
-
-  const imageUri = `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`;
 
   // Function to handle the closing of the image zoom view when the user clicks on the back button or the overlay
   const handleBackButtonImageClose = () => {
@@ -107,9 +106,15 @@ const StoryArticle = ({route, navigation}) => {
             style={styles.zoomedImage}
             resizeMode={'contain'}
             source={{
-              // uri: imageUri,
-              uri: item.image,
-              priority: FastImage.priority.normal,
+              uri:
+                hasImage === 'verified'
+                  ? item.image.includes('https://')
+                    ? item.image
+                    : `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`
+                  : hasImage === 'error'
+                  ? 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
+                  : null,
+              priority: FastImage.priority.high,
             }}
             fallback={true}
           />
@@ -127,9 +132,15 @@ const StoryArticle = ({route, navigation}) => {
               style={styles.articleImage}
               resizeMode={'cover'}
               source={{
-                // uri: imageUri,
-                uri: item.image,
-                priority: FastImage.priority.normal,
+                uri:
+                  hasImage === 'verified'
+                    ? item.image.includes('https://')
+                      ? item.image
+                      : `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`
+                    : hasImage === 'error'
+                    ? 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
+                    : null,
+                priority: FastImage.priority.high,
               }}
               fallback={true}
             />

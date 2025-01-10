@@ -30,6 +30,7 @@ const DailyMacroSection = () => {
       category: analysis.category,
       date: analysis.created_at,
       image: analysis.image,
+      title: analysis.title,
       isHistoryArticle: false,
     });
 

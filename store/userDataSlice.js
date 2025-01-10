@@ -1,6 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {fetchUserData} from '../actions/userActions';
 import {
+  loadNotificationItems,
   loadSubscriptions,
   toggleAllSubscriptions,
   toggleSubscription,
@@ -14,6 +15,7 @@ const userDataSlice = createSlice({
     userId: '',
     rawUserId: '',
     notifications: {},
+    notificationItems: {data: [], loading: 'idle', error: null},
     loading: 'idle',
     error: null,
   },
@@ -70,6 +72,21 @@ const userDataSlice = createSlice({
       })
       .addCase(loadSubscriptions.rejected, (state, action) => {
         state.error = action.payload || 'An error occurred';
+      })
+      // States for handling the load of the Notification items
+      .addCase(loadNotificationItems.pending, state => {
+        state.notificationItems.loading = 'pending';
+        state.notificationItems.error = null;
+      })
+      .addCase(loadNotificationItems.fulfilled, (state, action) => {
+        const notifications = action.payload;
+        state.notificationItems.loading = 'succeeded';
+        state.notificationItems.data = notifications;
+        state.notificationItems.error = null;
+      })
+      .addCase(loadNotificationItems.rejected, (state, action) => {
+        state.notificationItems.loading = 'failed';
+        state.notificationItems.error = action.payload || 'An error occurred';
       });
   },
 });
