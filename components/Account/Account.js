@@ -259,7 +259,7 @@ const Account = ({route}) => {
       await AsyncStorage.removeItem('userImage');
       await AsyncStorage.removeItem('signupDate');
       await AsyncStorage.removeItem('signupDateValidator');
-      //await AsyncStorage.removeItem('hasSeenFounderPopup'); //uncomment to display freefounders popup after logout
+      await AsyncStorage.removeItem('hasSeenFounderPopup'); //uncomment to display freefounders popup after logout
       resetLoginForm();
       console.log('After loginForm reset');
       navigation.navigate('SignIn', {resetForm: true});

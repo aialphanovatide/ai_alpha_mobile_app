@@ -52,6 +52,7 @@ import AltCoinsTopStories from './AltCoinsTopStories/AltCoinsTopStories';
 import {fetchAlertsByAllCategories} from '../../actions/alertsActions';
 import {loadNotificationItems} from '../../actions/notificationActions';
 import {fetchInitialData} from '../../store/homeSlice';
+import FreeFoundersEnd from '../Popups/FreeFoundersEnd';
 
 // FreePopup component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 
@@ -130,6 +131,9 @@ const Home = ({route}) => {
   const aboutTitle = useSelector(selectAboutTitle);
   const rawUserId = useSelector(selectRawUserId);
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
+  const [hasSeenFounderPopup, setHasSeenFounderPopup] = useState(false);
+  const [showFoundersPopup, setShowFoundersPopup] = useState(false);
+  const [founderPopupChecked, setFounderPopupChecked] = useState(false);
   const [subscriptionPopUpsVisible, setSubscriptionPopUpsVisible] =
     useState(false);
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
@@ -187,6 +191,43 @@ const Home = ({route}) => {
   }, []);
 
   useScrollToTop(ref);
+
+  useEffect(() => {
+    const checkFounderPopup = async () => {
+      try {
+        const hasSeen = await AsyncStorage.getItem('hasSeenFounderPopup');
+        if (hasSeen) {
+          setHasSeenFounderPopup(true);
+        }
+      } catch (e) {
+        console.warn('Error reading founder popup flag:', e);
+      } finally {
+        setFounderPopupChecked(true);
+      }
+    };
+
+    checkFounderPopup();
+
+    // Delay showing the pop-up by 5 seconds
+    const timer = setTimeout(() => {
+      setShowFoundersPopup(true);
+    }, 5000);
+
+    // Cleanup on unmount
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  // Handler for closing the founder popup
+  const handleDismissFounderPopup = async () => {
+    try {
+      await AsyncStorage.setItem('hasSeenFounderPopup', 'true');
+      setHasSeenFounderPopup(true);
+    } catch (e) {
+      console.warn('Error storing founder popup flag:', e);
+    }
+  };
 
   // Function to handle the about modal visibility and content based on the section that the user clicked on
 
@@ -270,6 +311,16 @@ const Home = ({route}) => {
             visible={subscriptionPopUpsVisible}
             setVisible={setSubscriptionPopUpsVisible}
           />
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={
+              founderPopupChecked && // ensure we've checked the AsyncStorage
+              !hasSeenFounderPopup && // user hasn't dismissed it before
+              showFoundersPopup // 5 second delay has passed
+            }>
+            <FreeFoundersEnd onDismiss={handleDismissFounderPopup} />
+          </Modal>
           <TickerTape />
           <NewTopStories />
           {/* <WhatsHappeningToday handleAboutPress={toggleAbout} /> */}

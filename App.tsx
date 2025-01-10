@@ -138,8 +138,6 @@ const App = () => {
     }
   };
 
-  // If we haven't finished checking async storage, optionally show a loader or null
-
   const saveNotification = async alertData => {
     const MAX_NOTIFICATIONS = 50;
     try {
@@ -333,12 +331,12 @@ const App = () => {
                   <StatusBar
                     barStyle={isDarkMode ? 'light-content' : 'dark-content'}
                   />
-                  <Modal
+                  {/*<Modal
                     animationType="slide"
                     transparent={false}
                     visible={!hasSeenFounderPopup}>
                     <FreeFounders onDismiss={handleDismissFounderPopup} />
-                  </Modal>
+                  </Modal>*/}
 
                   <SingletonHooksContainer />
                   <GestureHandlerRootView style={{flex: 1}}>
