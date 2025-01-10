@@ -34,6 +34,7 @@ import {
   findCoinSymbolByName,
 } from './components/Home/Topmenu/subMenu/Fund_news_chart/Fundamentals/SubSections/Competitors/coinsNames';
 import FreeFounders from './components/Popups/FreeFounders';
+import FreeFoundersEnd from './components/Popups/FreeFoundersEnd';
 import LoginForm from './components/Login/Screens/LoginForm/LoginForm';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);

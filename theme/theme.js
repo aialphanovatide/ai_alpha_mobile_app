@@ -6,6 +6,7 @@ const isAndroid = Platform.OS === 'android' ? true : false;
 export const lightThemeStyles = {
   width: width,
   height: height,
+  baseBackgroundColor: '#FFFFFF',
   mainBackgroundColor: '#EDEDED',
   mainTextColor: '#000000',
   secondaryBgColor: '#F6F7FB',
@@ -147,6 +148,7 @@ export const lightThemeStyles = {
 export const darkThemeStyles = {
   width: width,
   height: height,
+  baseBackgroundColor: '#000000',
   mainBackgroundColor: '#0F0F0F',
   mainTextColor: '#FFFFFF',
   secondaryBgColor: '#171717',
