@@ -191,7 +191,8 @@ const Home = ({route}) => {
   }, []);
 
   useScrollToTop(ref);
-
+  /*
+  //UNCOMMENT TO SHOW END OF 2025 POPUP
   useEffect(() => {
     const checkFounderPopup = async () => {
       try {
@@ -228,6 +229,7 @@ const Home = ({route}) => {
       console.warn('Error storing founder popup flag:', e);
     }
   };
+  */
 
   // Function to handle the about modal visibility and content based on the section that the user clicked on
 
@@ -311,6 +313,7 @@ const Home = ({route}) => {
             visible={subscriptionPopUpsVisible}
             setVisible={setSubscriptionPopUpsVisible}
           />
+          {/* UNCOMMENT TO SHOW END OF 2025 POPUP
           <Modal
             animationType="slide"
             transparent={false}
@@ -320,7 +323,7 @@ const Home = ({route}) => {
               showFoundersPopup // 5 second delay has passed
             }>
             <FreeFoundersEnd onDismiss={handleDismissFounderPopup} />
-          </Modal>
+          </Modal>*/}
           <TickerTape />
           <NewTopStories />
           {/* <WhatsHappeningToday handleAboutPress={toggleAbout} /> */}
