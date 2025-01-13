@@ -108,10 +108,6 @@ android {
             }
         }
     }
-    buildFeatures {
-        // Enable the generation of the BuildConfig class
-        buildConfig = true
-    }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
