@@ -15,15 +15,23 @@ buildscript {
         useExoplayerSmoothStreaming = false
         useExoplayerDash = false
         useExoplayerHls = false
+        kotlinVersion = "1.8.10"
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
+        //classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("com.google.gms:google-services:4.4.0")
+
+        // Pin to AGP 8.0.x (or 8.1.x)
+        classpath("com.android.tools.build:gradle:8.0.2")
+
+        // Pin Kotlin Gradle plugin (same as kotlinVersion above)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
+
     }
 }
 
