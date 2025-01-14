@@ -93,9 +93,6 @@ android {
             }
         }
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
