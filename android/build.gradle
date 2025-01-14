@@ -4,8 +4,8 @@ buildscript {
     ext {
         buildToolsVersion = "33.0.0"
         minSdkVersion = 24
-        compileSdkVersion = 33
-        targetSdkVersion = 33
+        compileSdkVersion = 34
+        targetSdkVersion = 34
         googlePlayServicesAuthVersion = "16.0.1"
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "23.2.8568313"
@@ -24,7 +24,6 @@ buildscript {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("com.google.gms:google-services:4.4.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
 
@@ -37,26 +36,6 @@ allprojects {
     configurations.all {
         resolutionStrategy {
             force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
-        }
-    }
-}
-
-subprojects {
-    afterEvaluate { project ->
-        if (project.hasProperty("android")) {
-            project.android.compileOptions {
-                sourceCompatibility JavaVersion.VERSION_17
-                targetCompatibility JavaVersion.VERSION_17
-            }
-        }
-    }
-    configurations.all { config ->
-        resolutionStrategy.eachDependency { details ->
-            if (details.requested.group == "androidx.media3" &&
-                details.requested.name.startsWith("media3-")) {
-                // Force a version that doesn't require compileSdk=34
-                details.useVersion "1.3.0"
-            }
         }
     }
 }

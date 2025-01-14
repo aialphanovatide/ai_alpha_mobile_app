@@ -1,7 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply plugin: 'com.google.gms.google-services'
-apply plugin: "org.jetbrains.kotlin.android"
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -93,10 +92,6 @@ android {
                 cppFlags "-std=c++20"
             }
         }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = "17"
