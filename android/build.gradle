@@ -50,4 +50,13 @@ subprojects {
             }
         }
     }
+    configurations.all { config ->
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == "androidx.media3" &&
+                details.requested.name.startsWith("media3-")) {
+                // Force a version that doesn't require compileSdk=34
+                details.useVersion "1.3.0"
+            }
+        }
+    }
 }
