@@ -24,7 +24,6 @@ import AboutModal from '../../AboutModal/AboutModal';
 import Clipboard from '@react-native-community/clipboard';
 import {AIALPHA2KEY_ENVVAR} from '@env';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectRawUserId} from '../../../actions/userActions';
 import {
   handleAboutPress,
   handleClose,
@@ -32,6 +31,7 @@ import {
   selectAboutTitle,
   selectAboutVisible,
 } from '../../../store/aboutSlice';
+import {useRawUserId} from '../../../context/RawUserIdContext';
 
 const TextWithIcon = ({text}) => {
   const styles = usePackageSubscriptionStyles();
@@ -101,7 +101,7 @@ const PackageSubscriptions = () => {
   const navigation = useNavigation();
   const {isDarkMode} = useContext(AppThemeContext);
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
-  const rawUserId = useSelector(selectRawUserId);
+  const {rawUserId, setRawUserId} = useRawUserId();
 
   const scrollIndicator = useRef(new Animated.Value(0)).current;
   const [completeScrollBarHeight, setCompleteScrollBarHeight] = useState(1);

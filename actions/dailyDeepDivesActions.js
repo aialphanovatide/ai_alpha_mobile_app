@@ -41,7 +41,7 @@ export const fetchDailyDeepDivesData = createAsyncThunk(
       // [PRODUCTION REQUEST]
       // const data = await getServiceV2(`analyses?per_page=99&section_id=59`);
       // [TESTING REQUEST]
-      const data = await getTestService(`analyses?per_page=99&section_id=84`);
+      const data = await getTestService(`analyses?per_page=99&section_id=104`);
       if (!data.success) {
         return [];
       }
@@ -102,7 +102,7 @@ export const fetchDailyMacros = createAsyncThunk(
       // [PRODUCTION REQUEST]
       // const data = await getServiceV2(`analyses?per_page=50&section_id=20`);
       // [TESTING REQUEST]
-      const data = await getTestService(`analyses?per_page=50&section_id=85`);
+      const data = await getTestService(`analyses?per_page=50&section_id=105`);
 
       if (!data.success) {
         return [];
@@ -152,7 +152,7 @@ export const fetchLatestSpotlight = createAsyncThunk(
   async (_, {getState, rejectWithValue}) => {
     try {
       const {categories} = getState().categories; // Use the categories slice for getting the categories data
-      const data = await getTestService(`analyses?per_page=10&section_id=87`);
+      const data = await getTestService(`analyses?per_page=10&section_id=107`);
       if (!data.success) {
         return [];
       }

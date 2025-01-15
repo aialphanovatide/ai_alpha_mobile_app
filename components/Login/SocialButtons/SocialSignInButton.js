@@ -9,6 +9,7 @@ import {
   AUTH0_DOMAIN_ENVVAR,
   AUTH0_AUDIENCE_ENVVAR,
   AIALPHASERVER_2_BASE_URL_ENVVAR,
+  AIALPHA2KEY_ENVVAR,
   AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
   AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
   GOOGLE_CLIENT_IOS_ID_ENVVAR,
@@ -20,19 +21,19 @@ import Auth0, {useAuth0, Auth0Provider} from 'react-native-auth0';
 
 import {RevenueCatContext} from '../../../context/RevenueCatContext';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {useDispatch} from 'react-redux';
-import {
-  updateEmail,
-  updateRawUserId,
-  updateUserId,
-} from '../../../store/userDataSlice';
+import {useUser} from '../../../context/UserContext';
+import {useUserId} from '../../../context/UserIdContext';
+import {useRawUserId} from '../../../context/RawUserIdContext';
+import {getServiceV2} from '../../../services/aiAlphaApi';
 
 const SocialSignInButton = ({handleLoadingChange}) => {
   const [loggedInUser, setloggedInUser] = useState(null);
   const navigation = useNavigation();
   const {authorize} = useAuth0(); // Using useAuth0 hook
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
-  const dispatch = useDispatch();
+  const {userEmail, setUserEmail} = useUser();
+  const {userId, setUserId} = useUserId();
+  const {rawUserId, setRawUserId} = useRawUserId();
 
   const auth0 = new Auth0({
     domain: 'dev-zoejuo0jssw5jiid.us.auth0.com',
@@ -59,9 +60,9 @@ const SocialSignInButton = ({handleLoadingChange}) => {
 
       if (accessToken) {
         const user_id = formatUserId(userId);
-        dispatch(updateRawUserId(rawUserId));
-        dispatch(updateEmail(userEmail));
-        dispatch(updateUserId(user_id));
+        setUserEmail(userEmail);
+        setRawUserId(rawUserId);
+        setUserId(user_id);
         navigation.navigate('TabsMenu');
       } else {
         navigation.navigate('SignIn');
@@ -87,6 +88,15 @@ const SocialSignInButton = ({handleLoadingChange}) => {
     return data.access_token;
   };
 
+  const verifyRegisteredUser = async user_id => {
+    try {
+      const response = await getServiceV2(`user?auth0id=${user_id}`);
+      return response.data;
+    } catch (error) {
+      console.log('Error trying to fetch the user data:', error);
+    }
+  };
+
   const signInWithGoogle = async () => {
     GoogleSignin.configure({
       webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
@@ -100,16 +110,9 @@ const SocialSignInButton = ({handleLoadingChange}) => {
       try {
         const result = await GoogleSignin.hasPlayServices();
 
-        // if (!result) {
-        //   throw new Error(
-        //     'Error with Google Play Services: ',
-        //     result.toString(),
-        //   );
-        // }
-
         const userInfo = await GoogleSignin.signIn();
 
-        console.log('User Info:', userInfo);
+        console.log('User Info from google sign in:', userInfo);
 
         const userEmail = userInfo.user.email;
         const userName = userInfo.user.name;
@@ -124,31 +127,38 @@ const SocialSignInButton = ({handleLoadingChange}) => {
         await AsyncStorage.setItem('userId', user.id);
 
         updateUserEmail(user.email);
-        dispatch(updateRawUserId(user.id));
-        dispatch(updateEmail(user.email));
-        dispatch(updateUserId(user.id));
+        setUserEmail(user.email);
+        setUserId(user.id);
+        setRawUserId(user.id);
 
         navigation.navigate('TabsMenu');
 
-        const response = await fetch(
-          `${AIALPHASERVER_2_BASE_URL_ENVVAR}/user`,
-          {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              auth0id: userId,
-              birth_date: null,
-              email: userEmail,
-              email_verified: 'false',
-              full_name: userName,
-              nickname: 'undefined',
-              picture: userPhoto,
-              provider: 'google-oauth2-android',
-            }),
-          },
-        );
-        const data = await response.json();
-        console.log('- Successfull response from user registering:', data);
+        const isUserRegistered = await verifyRegisteredUser(userId);
+
+        if (!isUserRegistered) {
+          const response = await fetch(
+            `${AIALPHASERVER_2_BASE_URL_ENVVAR}/user`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-API-KEY': `${AIALPHA2KEY_ENVVAR}`,
+              },
+              body: JSON.stringify({
+                auth0id: userId,
+                birth_date: null,
+                email: userEmail,
+                email_verified: 'false',
+                full_name: userName,
+                nickname: 'undefined',
+                picture: userPhoto,
+                provider: 'google-oauth2-android',
+              }),
+            },
+          );
+          const data = await response.json();
+          console.log('- Successfull response from user registering:', data);
+        }
       } catch (error) {
         console.error(
           'Error during Google sign-in with GoogleSignin library:',
@@ -179,27 +189,35 @@ const SocialSignInButton = ({handleLoadingChange}) => {
         await AsyncStorage.setItem('userId', formatted_id);
 
         updateUserEmail(userProfile.email);
-        dispatch(updateRawUserId(userId));
-        dispatch(updateEmail(userProfile.email));
-        dispatch(updateUserId(formatted_id));
+        setUserEmail(userProfile.email);
+        setUserId(formatted_id);
+        setRawUserId(userId);
 
         navigation.navigate('TabsMenu');
 
-        const response = await fetch(`https://aialpha.ngrok.io/register`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            auth0id: userId,
-            email: userProfile.email,
-            email_verified: userProfile.email_verified,
-            nickname: userProfile.nickname,
-            picture: userProfile.picture,
-            provider: 'google-oauth2',
-          }),
-        });
-        const data = await response.json();
+        const userData = await verifyRegisteredUser(userId);
 
-        console.log('DATA SENT TO BACKEND', data);
+        if (!userData || userData === null) {
+          const response = await fetch(
+            `${AIALPHASERVER_2_BASE_URL_ENVVAR}/user`,
+            {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                auth0id: userId,
+                email: userProfile.email,
+                email_verified: userProfile.email_verified,
+                nickname: userProfile.nickname,
+                picture: userProfile.picture,
+                provider: 'google-oauth2',
+              }),
+            },
+          );
+          const data = await response.json();
+          console.log('- Successfully registered the user with google auth: ', data);
+        } else {
+          console.log('- User already registered, logged in with google auth:', userData);
+        }
       } catch (error) {
         console.error('Error during Google sign-in with Auth0:', error);
       }
@@ -258,25 +276,27 @@ const SocialSignInButton = ({handleLoadingChange}) => {
         await AsyncStorage.setItem('userId', user);
 
         navigation.navigate('TabsMenu');
-        dispatch(updateRawUserId(newUser));
-        dispatch(updateUserId(user));
-        dispatch(updateEmail(email));
+        setUserId(user);
+        setRawUserId(newUser);
 
         //console.log('auth0Response.data._id', auth0Response.data._id);
 
-        const response = await fetch(`https://aialpha.ngrok.io/register`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            auth0id: newUser,
-            email: 'Not specified',
-            email_verified: 'false',
-            full_name: 'undefined',
-            nickname: 'Not specified',
-            picture: 'Not specified',
-            provider: 'apple',
-          }),
-        });
+        const response = await fetch(
+          `${AIALPHASERVER_2_BASE_URL_ENVVAR}/user`,
+          {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              auth0id: newUser,
+              email: 'Not specified',
+              email_verified: 'false',
+              full_name: 'undefined',
+              nickname: 'Not specified',
+              picture: 'Not specified',
+              provider: 'apple',
+            }),
+          },
+        );
         const data = await response.json();
 
         console.log('DATA SENT TO BACKEND', data);

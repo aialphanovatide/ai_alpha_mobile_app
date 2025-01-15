@@ -18,8 +18,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import eventEmitter from '../../../../eventEmitter';
 import {AppThemeContext} from '../../../../context/themeContext';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useDispatch} from 'react-redux';
-import {updateEmail, updateUserId} from '../../../../store/userDataSlice';
+import {useUser} from '../../../../context/UserContext';
+import {useUserId} from '../../../../context/UserIdContext';
 
 // Component to render the sign up form. It contains the fields for the user to input their full name, email, password and repeat password. It also contains the buttons to sign up, go back to the login screen and see the terms and conditions. The logic to validate the form and send the data to the backend is also implemented here.
 
@@ -42,7 +42,8 @@ const SignupForm = () => {
   const [emailInUse, setEmailInUse] = useState(false);
   const {isDarkMode} = useContext(AppThemeContext);
   const {theme} = useContext(AppThemeContext);
-  const dispatch = useDispatch();
+  const {userEmail, setUserEmail} = useUser();
+  const {userId, setUserId} = useUserId();
 
   // useEffect to validate the form. It checks that the email is valid, the password is at least 8 characters long, has at least one lowercase letter, one uppercase letter, one number and one symbol. It also checks that the password and repeat password fields match.
 
@@ -183,7 +184,7 @@ const SignupForm = () => {
           setEmailInUse(true);
         }
       }
-      if (isUsernamePasswordAuthenticationUser == false) {
+      if (isUsernamePasswordAuthenticationUser === false) {
         const response = await axios.post(
           'https://dev-zoejuo0jssw5jiid.us.auth0.com/dbconnections/signup',
           {
@@ -193,8 +194,8 @@ const SignupForm = () => {
             connection: 'Username-Password-Authentication',
           },
         );
-        dispatch(updateUserId(response.data._id));
-        dispatch(updateEmail(email));
+        setUserId(response.data._id);
+        setUserEmail(email);
         setSignupSuccessful(true);
 
         const originalColor = isDarkMode ? '#0b0b0a' : '#fbfbfa';

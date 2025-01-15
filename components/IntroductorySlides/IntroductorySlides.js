@@ -127,9 +127,6 @@ const Slide = ({
             shutterColor="transparent"
             resizeMode="contain"
             paused={activeSlide !== id}
-            onLoad={() =>
-              console.log('Loaded video from slide number: ', activeSlide)
-            }
             onError={e => console.error('Video error', e)}
           />
         </View>

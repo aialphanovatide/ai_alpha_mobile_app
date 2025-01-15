@@ -13,12 +13,10 @@ import {
   Text,
   BackHandler,
 } from 'react-native';
-import moment from 'moment';
 import ChartPriceDetails from './ChartPriceDetails';
 import RsButton from './S&RButtons';
 import AlertMenu from './alerts/AlertMenu';
 import AlertListComponent from './alerts/AlertListComponent';
-import UpgradeOverlay from '../../../../../UpgradeOverlay/UpgradeOverlay';
 import useChartsStyles from './ChartsStyles';
 import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
 import AboutModal from '../../../../../AboutModal/AboutModal';
@@ -108,8 +106,6 @@ const CandlestickChart = ({route}) => {
   const navigation = useNavigation();
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
-  const [supportResistanceLoading, setSupportResistanceLoading] =
-    useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const dispatch = useDispatch();
 
@@ -272,19 +268,20 @@ const CandlestickChart = ({route}) => {
               changeInterval={changeInterval}
               disabled={loading}
             />
-            {/* <RsButton
+            <RsButton
               activeButtons={activeButtons}
               setActiveButtons={setActiveButtons}
-              disabled={loading || supportResistanceLoading}
-            /> */}
+              disabled={loading}
+            />
           </View>
           <ChartWidget
             symbol={activeSubCoin ? activeSubCoin : coinBot}
             activeInterval={selectedInterval}
             pair={selectedPairing}
             handleOnZoom={handleOnZoom}
-            // activeButtons={activeButtons}
-            // setSupportResistanceLoading={setSupportResistanceLoading}
+            activeButtons={activeButtons}
+            loading={loading}
+            setLoading={setLoading}
           />
         </View>
         <AlertMenu

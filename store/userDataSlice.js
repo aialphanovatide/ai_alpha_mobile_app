@@ -26,12 +26,15 @@ const userDataSlice = createSlice({
       state.error = null;
     },
     updateUserId: (state, action) => {
+      console.log('Received user id:', action.payload);
       state.userId = action.payload;
     },
     updateEmail: (state, action) => {
+      console.log('Received email:', action.payload);
       state.email = action.payload;
     },
     updateRawUserId: (state, action) => {
+      console.log('Received rawUserId:', action.payload);
       state.rawUserId = action.payload;
     },
   },

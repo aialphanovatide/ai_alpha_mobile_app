@@ -34,6 +34,9 @@ import {
   updateRawUserId,
   updateUserId,
 } from '../../../store/userDataSlice';
+import { useUserId } from '../../../context/UserIdContext';
+import { useUser } from '../../../context/UserContext';
+import { useRawUserId } from '../../../context/RawUserIdContext';
 
 const SettingsItem = ({
   styles,
@@ -73,9 +76,9 @@ const SettingsScreen = ({route}) => {
   const navigation = useNavigation();
   // Below are the state variables that come from the previous DeleteUserForm
   const [isProcessing, setIsProcessing] = useState(false);
-  const userId = useSelector(selectUserId);
-  const userEmail = useSelector(selectUserEmail);
-  const rawUserId = useSelector(selectRawUserId);
+  const {userId, setUserId} = useUserId();
+  const {userEmail, setUserEmail} = useUser();
+  const {rawUserId, setRawUserId} = useRawUserId();
   const {restorePurchases} = useContext(RevenueCatContext);
   const dispatch = useDispatch();
 
@@ -151,9 +154,9 @@ const SettingsScreen = ({route}) => {
         setFullName('');
         setBirthDate('');
         setIsEditing(null);
-        dispatch(updateRawUserId(''));
-        dispatch(updateUserId(''));
-        dispatch(updateEmail(null));
+        setUserId('');
+        setRawUserId('');
+        setUserEmail(null);
       },
     });
   };

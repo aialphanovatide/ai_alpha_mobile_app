@@ -21,23 +21,22 @@ import {decode as base64decode} from 'base-64';
 import useLoginFormStyles from './LoginFormStyles';
 import {RevenueCatContext} from '../../../../context/RevenueCatContext';
 import BackgroundGradient from '../../../BackgroundGradient/BackgroundGradient';
-import {useDispatch} from 'react-redux';
-import {
-  updateEmail,
-  updateRawUserId,
-  updateUserId,
-} from '../../../../store/userDataSlice';
 import {AppThemeContext} from '../../../../context/themeContext';
+import {useUser} from '../../../../context/UserContext';
+import {useUserId} from '../../../../context/UserIdContext';
+import {useRawUserId} from '../../../../context/RawUserIdContext';
 
 const LoginForm = ({route}) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const navigation = useNavigation();
+  const {setUserEmail} = useUser();
+  const {setUserId} = useUserId();
+  const {setRawUserId} = useRawUserId();
   const [error, setError] = useState('');
   const {userInfo, updateUserEmail} = useContext(RevenueCatContext);
   const [loading, setLoading] = useState(false);
   const styles = useLoginFormStyles();
-  const dispatch = useDispatch();
   const {theme} = useContext(AppThemeContext);
 
   const handleLoadingChange = value => {
@@ -81,9 +80,9 @@ const LoginForm = ({route}) => {
               : null,
           );
           const user_id = formatUserId(userId);
-          dispatch(updateRawUserId(rawUserId));
-          dispatch(updateEmail(userEmail));
-          dispatch(updateUserId(user_id));
+          setUserEmail(userEmail);
+          setUserId(user_id);
+          setRawUserId(rawUserId);
         } else {
           navigation.navigate('SignIn');
         }
@@ -144,9 +143,9 @@ const LoginForm = ({route}) => {
           await AsyncStorage.setItem('loginMethod', 'username-password');
 
           updateUserEmail(username);
-          dispatch(updateRawUserId(userId));
-          dispatch(updateEmail(username));
-          dispatch(updateUserId(formatted_id));
+          setUserEmail(username);
+          setUserId(formatted_id);
+          setRawUserId(userId);
 
           navigation.navigate('TabsMenu');
         }

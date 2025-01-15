@@ -49,6 +49,8 @@ const NewsComponent = ({route}) => {
   const loading = useSelector(selectNewsLoading);
   const dispatch = useDispatch();
 
+  console.log('All news: ', allNews);
+
   useEffect(() => {
     if (
       activeSubCoin &&
@@ -178,9 +180,9 @@ const NewsComponent = ({route}) => {
           <SkeletonLoader type="news" quantity={3} />
         ) : loading !== 'idle' &&
           (!allNews ||
-            Object.keys(allNews).length === 0 ||
             allNews === undefined ||
-            allNews[botName][activeFilter] === undefined ||
+            Object.keys(allNews).length === 0 ||
+            !Object.keys(allNews).includes(botName) ||
             allNews[botName][activeFilter].length === 0) ? (
           // If there's no content to show for the current time interval, show the NoContentDisclaimer component
           <NoContentDisclaimer

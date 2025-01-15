@@ -18,10 +18,6 @@ const CoinMenu = ({subCoins, activeSubCoin, handleCoinPress}) => {
       />
       <View style={styles.subMenu}>
         {subCoins.map((coin, index) => {
-          // TEMPORARY FIX FOR TAO COIN
-          if (coin.bot_name.toLowerCase() === 'tao') {
-            return null;
-          }
           const coinColor = findColorByCoinName(coin.bot_name.toLowerCase());
           return (
             <TouchableOpacity

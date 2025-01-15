@@ -23,19 +23,10 @@ import {HeaderVisibilityContext} from '../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
 import {useScreenOrientation} from '../../hooks/useScreenOrientation';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchTopStories} from '../../actions/whatsHappeningTodayActions';
 import {
-  fetchTop10Movers,
   selectTopTenGainers,
   selectTopTenLosers,
 } from '../../actions/topTenMoversActions';
-import {
-  fetchDailyDeepDivesData,
-  fetchDailyMacros,
-  fetchLatestSpotlight,
-} from '../../actions/dailyDeepDivesActions';
-import {fetchMarketNarratives} from '../../actions/marketNarrativesActions';
-import {selectRawUserId} from '../../actions/userActions';
 import {
   handleAboutPress,
   handleClose,
@@ -49,10 +40,10 @@ import DailyMacroSection from './DailyMacro/DailyMacroSection';
 import {Spotlight} from './Spotlight/SpotlightSection';
 import {TopTenContainer} from './TopTenGainersAndLosers/TopTenGainersAndLosers';
 import AltCoinsTopStories from './AltCoinsTopStories/AltCoinsTopStories';
-import {fetchAlertsByAllCategories} from '../../actions/alertsActions';
-import {loadNotificationItems} from '../../actions/notificationActions';
 import {fetchInitialData} from '../../store/homeSlice';
 import FreeFoundersEnd from '../Popups/FreeFoundersEnd';
+import {useRawUserId} from '../../context/RawUserIdContext';
+import {getServiceV2} from '../../services/aiAlphaApi';
 
 // FreePopup component to render the subscription pop-up that is shown to the user after 3 days of using the app. The user can close the pop-up by clicking on the "Awesome, thanks!" button. The pop-up will not be shown again to the user after they have closed it.
 
@@ -129,7 +120,7 @@ const Home = ({route}) => {
   const aboutVisible = useSelector(selectAboutVisible);
   const aboutDescription = useSelector(selectAboutDescription);
   const aboutTitle = useSelector(selectAboutTitle);
-  const rawUserId = useSelector(selectRawUserId);
+  const {rawUserId} = useRawUserId();
   const {packages, purchasePackage, userInfo} = useContext(RevenueCatContext);
   const [hasSeenFounderPopup, setHasSeenFounderPopup] = useState(false);
   const [showFoundersPopup, setShowFoundersPopup] = useState(false);
@@ -157,26 +148,23 @@ const Home = ({route}) => {
     }
   });
 
-  // This useEffect fetches the user's data from the backend using the rawUserId. This is used to check if the user has already seen the subscription pop-up.
+  // This useEffect fetches the user's data from the backend using the rawUserId.
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const url = `https://aialpha.ngrok.io/user?auth0id=${rawUserId}`;
       try {
-        const userFetch = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const userData = await userFetch.json();
+        const userData = await getServiceV2(
+          `user?auth0id=${rawUserId.toString()}`,
+        );
         console.log("- Successfully retrieved the user's data: ", userData);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
-    fetchUserData();
-  }, []);
+    if (rawUserId) {
+      fetchUserData();
+    }
+  }, [rawUserId]);
 
   // This triggers a function to show a modal-popup
   useEffect(() => {
@@ -272,7 +260,6 @@ const Home = ({route}) => {
   // Function to throttle the scroll event to improve performance and reduce the number of times the function is called.
   const handleScroll = throttle(event => {
     const currentOffset = event.nativeEvent.contentOffset.y;
-    const diff = currentOffset - scrollOffset.current;
 
     if (currentOffset > 100) {
       hideHeader('TopMenu');

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Modal,
@@ -11,6 +11,7 @@ import useIntroductorySlidesStyles from '../IntroductorySlidesStyles';
 import {useNavigation} from '@react-navigation/core';
 import LinearGradient from 'react-native-linear-gradient';
 import {Image} from 'react-native';
+import {RevenueCatContext} from '../../../context/RevenueCatContext';
 
 // Component that renders the pop-up of the introductory slides, with a title, description, and a button that allows the user to render the next pop-up or to start the 7-day free trial. It displays a set of dots that indicate the current pop-up and the total number of pop-ups, and renders a 'Skip' button that allows the user to skip the pop-ups and start using the app. The data for the pop-ups is passed as props, and the component is used in the IntroductoryPopUpsOverlay component.
 
@@ -24,6 +25,7 @@ const IntroductoryPopUp = ({
   activeStyles,
   handleSubscriptionButton,
   opacity,
+  hasFounders,
 }) => {
   const styles = useIntroductorySlidesStyles();
   return (
@@ -59,7 +61,9 @@ const IntroductoryPopUp = ({
         }}>
         <Text style={[styles.buttonText, styles.popUpsButtonText]}>
           {dotIndex === dots.length - 1
-            ? 'Start the 7-day free trial'
+            ? hasFounders
+              ? "Let's explore the app"
+              : 'Start the 30-day free trial'
             : 'Got it'}
         </Text>
       </TouchableOpacity>
@@ -67,11 +71,21 @@ const IntroductoryPopUp = ({
   );
 };
 
-// IntroductoryPopUpsOverlay component is used to display the pop-ups that explain the features of the app at the beginning of the user's journey, rendering only one time per user. 
+// IntroductoryPopUpsOverlay component is used to display the pop-ups that explain the features of the app at the beginning of the user's journey, rendering only one time per user.
 
-const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
+const IntroductoryPopUpsOverlay = ({
+  handleActivePopUps,
+  visible,
+  isFounderUser = false,
+}) => {
   const styles = useIntroductorySlidesStyles();
   const navigation = useNavigation();
+  const {userInfo} = useContext(RevenueCatContext);
+
+  // Check if the user has the RevenueCat Founders subsription, depending on it, the content of the last pop-ups changes.
+  const hasFounders = userInfo.entitlements.some(id =>
+    id.toLowerCase().includes('founders'),
+  );
 
   // Static data for the pop-ups
 
@@ -137,7 +151,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           transform: [{scaleY: -1}],
         },
         navbar: {
-          left: 160,
+          left: '42.5%',
           height: 140,
         },
         askButton: true,
@@ -169,7 +183,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
       sectionName: 'Analysis',
     },
     {
-      title: 'Account',
+      title: hasFounders ? 'Account' : 'Subscribe',
       description:
         'Manage your account settings, subscription options, and custom-tailored notifications here.',
       popUpStyles: {
@@ -233,7 +247,12 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
 
   const handleSubscriptionButton = () => {
     handleActivePopUps();
-    navigation.navigate('Account', {screen: 'Membership'});
+    if (hasFounders) {
+      navigation.navigate('Account');
+      return;
+    } else {
+      navigation.navigate('Account', {screen: 'Membership'});
+    }
   };
 
   // Function that handles the press of the navbar buttons, changing the current pop-up to the one that corresponds to the pressed button.
@@ -273,7 +292,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
                   backgroundColor: 'rgba(10,10,10,0.6)',
                 },
               ]}
-              onPress={() => handleNextPress(activeDotIndex)}
+              onPress={() => handleActivePopUps()}
             />
           </Animated.View>
           <Animated.View style={[{opacity: opacity}]}>
@@ -282,7 +301,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
                 styles.invisiblePressable,
                 {height: Platform.OS === 'android' ? 100 : 120},
               ]}
-              onPress={() => handleNextPress(activeDotIndex)}
+              onPress={() => handleActivePopUps()}
             />
           </Animated.View>
         </>
@@ -297,7 +316,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
         ]}>
         <TouchableOpacity
           style={[styles.popUpPressableOverlay]}
-          onPress={() => handleNextPress(activeDotIndex)}
+          onPress={() => handleActivePopUps()}
         />
 
         <Animated.Image
@@ -319,6 +338,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           activeStyles={POP_UPS_DATA[activeDotIndex].popUpStyles.modal}
           handleSubscriptionButton={handleSubscriptionButton}
           opacity={opacity}
+          hasFounders={hasFounders}
         />
         {POP_UPS_DATA.map((item, index) => {
           return (
@@ -338,11 +358,7 @@ const IntroductoryPopUpsOverlay = ({handleActivePopUps, visible}) => {
           ]}
           delayPressIn={2000}
           onPress={() => handleNavbarPress(2, POP_UPS_DATA[2].sectionName)}>
-          <View
-            style={[
-              styles.buttonWrapper,
-              activeDotIndex === 2 ? styles.focusedButton : {},
-            ]}>
+          <View style={[styles.buttonWrapper]}>
             <LinearGradient
               useAngle={false}
               colors={['#F9B208', '#FC5404']}

@@ -1,7 +1,13 @@
-import {Image, Linking, Platform, Text, View} from 'react-native';
+import {
+  Image,
+  Linking,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import useIntroductionStyles from './IntroductionStyles';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import RenderHTML, {defaultSystemFonts} from 'react-native-render-html';
 import {AppThemeContext} from '../../../../../../../../context/themeContext';
 import SkeletonLoader from '../../../../../../../Loader/SkeletonLoader';
@@ -126,7 +132,7 @@ const Introduction = ({coin, handleSectionContent, loading, globalData}) => {
   useEffect(() => {
     if (
       !loading &&
-      (!globalData || globalData.introduction.message.content === undefined)
+      (!globalData || globalData.introduction.data.content === undefined)
     ) {
       handleSectionContent('introduction', true);
     }
@@ -140,7 +146,7 @@ const Introduction = ({coin, handleSectionContent, loading, globalData}) => {
         <>
           <RenderHTML
             source={{
-              html: parseHtmlTags(globalData?.introduction?.message.content),
+              html: parseHtmlTags(globalData?.introduction?.data.content),
             }}
             contentWidth={theme.width - 50}
             systemFonts={systemFonts}
@@ -155,7 +161,7 @@ const Introduction = ({coin, handleSectionContent, loading, globalData}) => {
                 source={require('../../../../../../../../assets/images/fundamentals/star-icon.png')}
               />
               <ExternalLink
-                url={globalData?.introduction.message.website}
+                url={globalData?.introduction.data.website}
                 text={'Website'}
               />
             </View>
@@ -166,7 +172,7 @@ const Introduction = ({coin, handleSectionContent, loading, globalData}) => {
                 source={require('../../../../../../../../assets/images/fundamentals/star-icon.png')}
               />
               <ExternalLink
-                url={globalData?.introduction.message.whitepaper}
+                url={globalData?.introduction.data.whitepaper}
                 text={'Whitepaper'}
               />
             </View>

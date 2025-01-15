@@ -1,12 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getService, getServiceV2} from '../services/aiAlphaApi';
+import {getServiceV2} from '../services/aiAlphaApi';
 
 // Asynchronous thunk to fetch fundamentals data for a specific coin, and store it in AsyncStorage
 export const fetchFundamentalsData = createAsyncThunk(
   'fundamentals/fetchFundamentalsData',
-  async coin => {
+  async (coin, thunkApi) => {
     try {
+      // Get the categories state from the redux store
+      const categories = thunkApi.getState().categories.categories;
+
+      const coinId = categories.find(
+        category =>
+          category.coin_bots.find(coinBot => coinBot.bot_name === coin) !==
+          undefined,
+      ).coin_bots.find(coinBot => coinBot.bot_name === coin).bot_id;
+      console.log('Found coin id: ', coinId);
+
       const storedFundamentalsData = await AsyncStorage.getItem(
         'fundamentalsData',
       );
@@ -31,14 +41,14 @@ export const fetchFundamentalsData = createAsyncThunk(
             name: 'competitors',
             url: `api/get_competitors_by_coin_name?coin_name=${coin}`,
           },
-          {name: 'tokenomics', url: `api/get_tokenomics?coin_name=${coin}`},
+          {name: 'tokenomics', url: `/api/get_tokenomics?coin_name=${coin}`},
           {
             name: 'introduction',
-            url: `api/get_introduction?coin_name=${coin}`,
+            url: `introduction/${coinId || 1}`,
           },
           {
             name: 'revenueModels',
-            url: `api/get_revenue_models?coin_name=${coin}`,
+            url: `revenue_model/${coinId || 1}`,
           },
           {name: 'hacks', url: `api/hacks?coin_bot_name=${coin}`},
           {name: 'upgrades', url: `api/get_upgrades?coin_name=${coin}`},
@@ -46,7 +56,7 @@ export const fetchFundamentalsData = createAsyncThunk(
         ];
 
         const results = await Promise.all(
-          endpoints.map(endpoint => getService(endpoint.url)),
+          endpoints.map(endpoint => getServiceV2(endpoint.url)),
         );
 
         const data = {
@@ -58,7 +68,6 @@ export const fetchFundamentalsData = createAsyncThunk(
           upgrades: results[5],
           dapps: results[6],
         };
-
         // Save the fetched data in AsyncStorage
         const prevData = await AsyncStorage.getItem('fundamentalsData');
         const parsedPrevData = JSON.parse(prevData) || [];

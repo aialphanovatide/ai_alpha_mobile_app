@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Platform} from 'react-native';
+import {Platform, SafeAreaView} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+// import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from '../../Home/Home';
 import Alerts from '../../Alerts/alerts';
 import {Image, View} from 'react-native';
@@ -17,7 +17,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import useNavbarStyles from './NavbarStyles';
 import IntroductoryPopUpsOverlay from '../../IntroductorySlides/IntroductoryPopUps/IntroductoryPopUpsOverlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {selectUserId} from '../../../actions/userActions';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   selectActiveCoin,
@@ -28,6 +27,8 @@ import {
   fetchAskAiData,
   fetchAvailableCoins,
 } from '../../../actions/askAiActions';
+import {useUserId} from '../../../context/UserIdContext';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Note:
 // isLandscape -> The device is rotated horizontally
@@ -55,14 +56,12 @@ const MenuIcon = ({color, iconSource}) => {
 };
 
 const TabsMenu = () => {
-  // const {updateActiveCoin, updateActiveSubCoin, activeCoin, activeSubCoin} =
-  //   useContext(TopMenuContext);
   const activeCoin = useSelector(selectActiveCoin);
   const activeSubCoin = useSelector(selectActiveSubCoin);
   const navigation = useNavigation();
   const {theme, isDarkMode} = useContext(AppThemeContext);
-  const userId = useSelector(selectUserId);
-  const {init} = useContext(RevenueCatContext);
+  const {userId} = useUserId();
+  const {init, userInfo} = useContext(RevenueCatContext);
   const {isLandscape, isHorizontal} = useScreenOrientation();
   const styles = useNavbarStyles();
   const [activePopUps, setActivePopUps] = useState(false);
@@ -91,7 +90,7 @@ const TabsMenu = () => {
   useEffect(() => {
     init(userId);
     return () => {
-      console.log('RevenueCat data configured succesfully');
+      console.log('RevenueCat data configured succesfully: ', userInfo);
     };
   }, []);
 

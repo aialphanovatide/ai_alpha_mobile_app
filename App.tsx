@@ -36,6 +36,9 @@ import {
 import FreeFounders from './components/Popups/FreeFounders';
 import FreeFoundersEnd from './components/Popups/FreeFoundersEnd';
 import LoginForm from './components/Login/Screens/LoginForm/LoginForm';
+import {UserProvider} from './context/UserContext';
+import {UserIdProvider} from './context/UserIdContext';
+import {RawUserIdProvider} from './context/RawUserIdContext';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 const {width, height} = Dimensions.get('window');
@@ -306,6 +309,9 @@ const App = () => {
       <Provider store={store}>
         <TopMenuContextProvider>
           <RevenueCatProvider>
+            <UserProvider>
+              <UserIdProvider>
+                <RawUserIdProvider>
             <HeaderVisibilityProvider>
               <AppThemeProvider>
                 <SafeAreaView
@@ -329,7 +335,9 @@ const App = () => {
                     },
                   ]}>
                   <StatusBar
-                    barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+                          barStyle={
+                            isDarkMode ? 'light-content' : 'dark-content'
+                          }
                   />
                   {/*<Modal
                     animationType="slide"
@@ -373,6 +381,9 @@ const App = () => {
                 </SafeAreaView>
               </AppThemeProvider>
             </HeaderVisibilityProvider>
+                </RawUserIdProvider>
+              </UserIdProvider>
+            </UserProvider>
           </RevenueCatProvider>
         </TopMenuContextProvider>
       </Provider>

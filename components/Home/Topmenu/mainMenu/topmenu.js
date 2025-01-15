@@ -13,11 +13,16 @@ import {useScreenOrientation} from '../../../../hooks/useScreenOrientation';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchCategories,
+  fetchCategoriesV2,
   selectActiveCoin,
   selectCategories,
   selectCategoriesLoading,
 } from '../../../../actions/categoriesActions';
-import { updateActiveCoin, updateActiveSubCoin } from '../../../../store/categoriesSlice';
+import {
+  updateActiveCoin,
+  updateActiveSubCoin,
+} from '../../../../store/categoriesSlice';
+import {loadNotificationItems} from '../../../../actions/notificationActions';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
@@ -39,7 +44,7 @@ const TopMenu = ({isAlertsMenu}) => {
 
   // Fetch the categories data from the store
   useEffect(() => {
-    dispatch(fetchCategories());
+    dispatch(fetchCategoriesV2());
   }, [dispatch]);
 
   // Function to handle the button pressing of a category, setting it as active and navigating to the corresponding section. In case the category has more coins, set the first coin as active. Also, the top menu scrolls the category to the middle of the view.
@@ -142,7 +147,9 @@ const TopMenu = ({isAlertsMenu}) => {
     setScrollX(offsetX);
   };
 
+  // Function to handle the redirect to the home notifications screen, loading the latest notification items
   const handleNotificationsNavigation = () => {
+    dispatch(loadNotificationItems());
     if (routeName.includes('Alerts')) {
       navigation.navigate('Home', {screen: 'HomeNotificationsScreen'});
     } else {

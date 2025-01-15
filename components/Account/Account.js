@@ -22,14 +22,8 @@ import {
   AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
 } from '@env';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  updateEmail,
-  updateUserId,
-  updateRawUserId,
-} from '../../store/userDataSlice';
-import {selectRawUserId} from '../../actions/userActions';
-import {loadSubscriptions} from '../../actions/notificationActions';
+import {useUser} from '../../context/UserContext';
+import { useRawUserId } from '../../context/RawUserIdContext';
 
 // Component to display an item in the Account screen. It receives the styles, the option to display, a function to handle the touch of the item, and an optional component to display in the item. It returns a view with the logo, name, and an optional component or right arrow that executes the function.
 
@@ -75,9 +69,11 @@ const Account = ({route}) => {
   const styles = useAccountStyles();
   const navigation = useNavigation();
   const {userInfo} = useContext(RevenueCatContext);
-  const rawUserId = useSelector(selectRawUserId);
+  const {rawUserId, setRawUserId} = useRawUserId();
   const [userImage, setUserImage] = useState(null);
   const [username, setUsername] = useState('');
+  const [userId, setUserId] = useState(null);
+  const {userEmail, setUserEmail} = useUser();
   // const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -231,9 +227,9 @@ const Account = ({route}) => {
         setUsername('');
         setBirthDate('');
         setIsEditing(null);
-        dispatch(updateEmail(null));
-        dispatch(updateUserId(''));
-        dispatch(updateRawUserId(''));
+        setUserId('');
+        setRawUserId('');
+        setUserEmail(null);
       },
     });
   };
@@ -261,7 +257,6 @@ const Account = ({route}) => {
       await AsyncStorage.removeItem('signupDateValidator');
       await AsyncStorage.removeItem('hasSeenFounderPopup'); //uncomment to display freefounders popup after logout
       resetLoginForm();
-      console.log('After loginForm reset');
       navigation.navigate('SignIn', {resetForm: true});
       RNRestart.restart();
       console.log('- Successfully removed login data...');

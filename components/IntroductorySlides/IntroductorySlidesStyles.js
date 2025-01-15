@@ -289,10 +289,6 @@ const useIntroductorySlidesStyles = () => {
       backgroundColor: theme.navbarBgColor,
       justifyContent: 'center',
     },
-    focusedButton: {
-      borderWidth: 2,
-      borderColor: '#FF6C0D',
-    },
     buttonImage: {
       width: 38,
       height: 38,

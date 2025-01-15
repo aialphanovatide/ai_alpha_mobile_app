@@ -118,6 +118,7 @@ const RevenueCatProvider = ({children}) => {
 
     // Automatically assign "Founders_14999_m1" subscription to the user
     const customerInfo = await Purchases.getCustomerInfo();
+    console.log('Customer info:', customerInfo);
     await assignDefaultSubscription(customerInfo);
 
     Purchases.addCustomerInfoUpdateListener(async info => {
@@ -139,6 +140,7 @@ const RevenueCatProvider = ({children}) => {
 
     setUserInfo(updatedUser);
   };
+
   const updateUserEmail = newEmail => {
     let new_user = {
       id: userInfo.id,

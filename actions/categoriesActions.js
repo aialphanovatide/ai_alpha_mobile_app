@@ -37,14 +37,29 @@ export const fetchCategoriesV2 = createAsyncThunk(
         category: category.name.toLowerCase(),
         category_id: category.category_id,
         category_name: category.name,
+        alias: category.alias,
         is_active: category.is_active,
         icon: category.icon,
-        coin_bots: category.coins.map(coin => ({
-          bot_id: coin.bot_id,
-          bot_name: coin.name,
-          image: coin.icon,
-          is_active: coin.is_active,
-        })),
+        coin_bots: category.coins
+          .map(coin => {
+            if (
+              ['', 'tao', 'dxy', 'gold', 'sp500', 'total3'].includes(
+                coin.name.toLowerCase(),
+              )
+            ) {
+              return null;
+            } else {
+              return {
+                bot_id: coin.bot_id,
+                bot_name: coin.name,
+                image: coin.icon,
+                is_active: coin.is_active,
+                symbol:
+                  coin.symbol !== '' ? coin.symbol : coin.name.toUpperCase(),
+              };
+            }
+          })
+          .filter(coin => coin !== null),
       }));
     } catch (error) {
       console.error('Error fetching categories:', error.message);

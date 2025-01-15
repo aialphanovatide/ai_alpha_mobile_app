@@ -169,6 +169,7 @@ export const loadNotificationItems = createAsyncThunk(
   'user/loadNotificationItems',
   async (_, {}) => {
     try {
+      console.log('Loading notifications...');
       const storedNotifications = await AsyncStorage.getItem('notifications');
       const currentNotifications = storedNotifications
         ? JSON.parse(storedNotifications)
