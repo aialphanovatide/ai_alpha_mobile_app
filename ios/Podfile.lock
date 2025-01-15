@@ -1,6 +1,6 @@
 PODS:
   - A0Auth0 (3.2.1):
-    - Auth0 (= 2.7.2)
+    - Auth0 (= 2.5.0)
     - JWTDecode (= 3.1.0)
     - React-Core
     - SimpleKeychain (= 1.1.0)
