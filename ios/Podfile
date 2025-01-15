@@ -47,7 +47,7 @@ target 'ai_alpha_mobile_app' do
   # Pods for React Native
   #pod 'Auth0'
   pod 'GoogleSignIn'
-  pod 'PurchasesHybridCommon'
+  #pod 'PurchasesHybridCommon'
   pod 'react-native-config/Extension', :path => '../node_modules/react-native-config'
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
