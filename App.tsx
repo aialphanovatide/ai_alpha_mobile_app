@@ -339,12 +339,12 @@ const App = () => {
                             isDarkMode ? 'light-content' : 'dark-content'
                           }
                   />
-                  {/*<Modal
+                  <Modal
                     animationType="slide"
                     transparent={false}
                     visible={!hasSeenFounderPopup}>
                     <FreeFounders onDismiss={handleDismissFounderPopup} />
-                  </Modal>*/}
+                  </Modal>
 
                   <SingletonHooksContainer />
                   <GestureHandlerRootView style={{flex: 1}}>
