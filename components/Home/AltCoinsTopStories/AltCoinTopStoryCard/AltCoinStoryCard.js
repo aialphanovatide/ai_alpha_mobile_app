@@ -62,9 +62,10 @@ const AltCoinStoryCard = ({
                 ? 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
                 : null,
             priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
           }}
           style={styles.thumbnail}
-          resizeMode="contain"
+          resizeMode={FastImage.resizeMode.contain}
         />
         <View style={styles.newsContent}>
           <Text style={styles.newsTitle}>

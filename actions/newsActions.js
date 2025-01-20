@@ -36,40 +36,56 @@ const filterNewsByDate = (news, filter) => {
 // Async action to fetch the news from the server
 export const fetchNews = createAsyncThunk(
   'news/fetchNews',
-  async ({botName}, {rejectWithValue}) => {
+  async ({botName}, thunkApi) => {
     try {
-      const endpoints = ['eth', 'btc'].includes(botName)
-        ? {
-            Today: `articles?bot_name=${botName}&per_page=15`,
-            'This Week': `articles?bot_name=${botName}&per_page=30`,
-          }
-        : {
-            Today: `articles?bot_name=${botName}&per_page=15`,
-            'This Month': `articles?bot_name=${botName}&per_page=30`,
-          };
-      const secondFilter = ['eth', 'btc'].includes(botName)
-        ? 'This Week'
-        : 'This Month';
-      const [firstResponse, secondResponse] = await Promise.all([
+      const categories = thunkApi.getState().categories.categories;
+
+      const coinId = categories
+        .find(
+          category =>
+            category.coin_bots.find(coinBot => coinBot.bot_name === botName) !==
+            undefined,
+        )
+        .coin_bots.find(coinBot => coinBot.bot_name === botName).bot_id;
+      // Endpoints for using the coin name
+      // const endpoints = {
+      //   Today: `articles?bot_name=${botName}&per_page=15`,
+      //   'This Month': `articles?bot_name=${botName}&per_page=30`,
+      //   'This Week': `articles?bot_name=${botName}&per_page=30`,
+      // };
+      // Endpoints for using the coin id
+      const endpoints = {
+        Today: `articles?bot_id=${coinId}&per_page=15`,
+        'This Month': `articles?bot_id=${coinId}&per_page=30`,
+        'This Week': `articles?bot_id=${coinId}&per_page=30`,
+      };
+      const [firstResponse, secondResponse, thirdResponse] = await Promise.all([
         newsbotGetTestService(endpoints.Today),
-        newsbotGetTestService(endpoints[secondFilter]),
+        newsbotGetTestService(endpoints['This Month']),
+        newsbotGetTestService(endpoints['This Week']),
       ]);
 
-      if (firstResponse.length === 0 || secondResponse.length === 0) {
+      if (
+        firstResponse.length === 0 ||
+        secondResponse.length === 0 ||
+        thirdResponse.length === 0
+      ) {
         return {
           articles: {
             Today: [],
-            [secondFilter]: [],
+            ['This Month']: [],
+            ['This Week']: [],
           },
           botName,
         };
       }
 
-      if (!firstResponse.success || !secondResponse.success) {
+      if (!firstResponse.success || !secondResponse.success || !thirdResponse.success) {
         throw new Error(
           `Error fetching news:
           ${firstResponse.error}
-          ${secondResponse.error}`,
+          ${secondResponse.error},
+          ${thirdResponse.error}`,
         );
       }
 
@@ -77,20 +93,25 @@ export const fetchNews = createAsyncThunk(
         firstResponse.data,
         'Today',
       );
-      const filteredSecondFilterArticles = filterNewsByDate(
+      const filteredThisMonthArticles = filterNewsByDate(
         secondResponse.data,
-        secondFilter,
+        'This Month',
+      );
+      const filteredThisWeekArticles = filterNewsByDate(
+        thirdResponse.data,
+        'This Week',
       );
       return {
         articles: {
           Today: filteredTodayArticles,
-          [secondFilter]: filteredSecondFilterArticles,
+          ['This Month']: filteredThisMonthArticles,
+          ['This Week']: filteredThisWeekArticles,
         },
         botName,
       };
     } catch (error) {
       console.error('Error: ', error);
-      return rejectWithValue(error.message || 'Something went wrong');
+      return thunkApi.rejectWithValue(error.message || 'Something went wrong');
     }
   },
   {

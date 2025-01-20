@@ -54,8 +54,6 @@ const NewsArticle = ({route, navigation}) => {
     return `${day}-${month}-${year} ${hours}:${minutes}`;
   };
 
-  const imageUri = `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${item.image}`;
-
   const handleBackButtonImageClose = () => {
     setImageZoomVisible(false);
   };
@@ -78,8 +76,11 @@ const NewsArticle = ({route, navigation}) => {
             style={styles.zoomedImage}
             resizeMode={'contain'}
             source={{
-              uri: imageUri,
+              uri: item.image
+                ? item.image
+                : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
               priority: FastImage.priority.normal,
+              cache: FastImage.cacheControl.immutable,
             }}
             fallback={true}
           />
@@ -97,8 +98,11 @@ const NewsArticle = ({route, navigation}) => {
               style={styles.articleImage}
               resizeMode={'cover'}
               source={{
-                uri: imageUri,
+                uri: item.image
+                  ? item.image
+                  : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
                 priority: FastImage.priority.normal,
+                cache: FastImage.cacheControl.immutable,
               }}
               fallback={true}
             />

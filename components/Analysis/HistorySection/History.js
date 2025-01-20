@@ -18,7 +18,10 @@ import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import NoContentDisclaimer from '../../NoContentDisclaimer/NoContentDisclaimer';
 import {useSelector} from 'react-redux';
-import {selectAllContent, selectDailyDeepDives} from '../../../actions/dailyDeepDivesActions';
+import {
+  selectAllContent,
+  selectDailyDeepDives,
+} from '../../../actions/dailyDeepDivesActions';
 
 // HistoryItem component that renders the history item in the history section. It displays the item's image, title, date, and time. The user can click on the item to navigate to the daily deep dives article screen.
 
@@ -227,6 +230,8 @@ const History = () => {
         analysis_id: analysis.id,
         date: analysis.created_at,
         coin_bot_id: analysis.coin_bot_id,
+        image: analysis.image,
+        title: analysis.title,
         isHistoryArticle: true,
       },
     });

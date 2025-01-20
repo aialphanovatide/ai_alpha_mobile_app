@@ -30,8 +30,6 @@ const TopMenu = ({isAlertsMenu}) => {
   const [searchText, setSearchText] = useState('');
   const [activeSearchBar, setActiveSearchBar] = useState(false);
   const [menuVisible, setMenuVisible] = useState(true);
-  // const {updateActiveCoin, updateActiveSubCoin, activeCoin} =
-  //   useContext(TopMenuContext);
   const activeCoin = useSelector(selectActiveCoin);
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectCategoriesLoading);

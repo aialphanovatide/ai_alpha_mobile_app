@@ -41,15 +41,15 @@ const NewsComponent = ({route}) => {
       ? 'btc'
       : activeSubCoin,
   );
-  const options = ['btc', 'eth'].includes(botName)
-    ? ['Today', 'This Week']
-    : ['Today', 'This Month'];
+  const [options, setOptions] = useState(
+    ['btc', 'eth'].includes(botName)
+      ? ['Today', 'This Week']
+      : ['Today', 'This Month'],
+  );
   const [activeFilter, setActiveFilter] = useState(options[1]);
   const allNews = useSelector(selectNews);
   const loading = useSelector(selectNewsLoading);
   const dispatch = useDispatch();
-
-  console.log('All news: ', allNews);
 
   useEffect(() => {
     if (
@@ -58,14 +58,22 @@ const NewsComponent = ({route}) => {
       activeCoin &&
       activeCoin !== undefined
     ) {
-      setBotName(activeSubCoin || activeCoin.coin_bots[0].bot_name);
+      const newBotName = activeSubCoin || activeCoin.coin_bots[0].bot_name;
+
+      const newOptions = ['btc', 'eth'].includes(newBotName)
+        ? ['Today', 'This Week']
+        : ['Today', 'This Month'];
+
       dispatch(
         fetchNews({
-          botName: activeSubCoin,
+          botName: newBotName,
         }),
       );
+
+      setOptions(newOptions);
+      setBotName(newBotName);
+      setActiveFilter(newOptions[1]);
     }
-    setActiveFilter(options[1]);
   }, [activeCoin, activeSubCoin]);
 
   // Function to filter the summary or texts of the article, removing the words that are put by the prompt generated, and aren't necessary in the summary or the title.
@@ -178,12 +186,13 @@ const NewsComponent = ({route}) => {
         </View>
         {loading === 'idle' ? (
           <SkeletonLoader type="news" quantity={3} />
-        ) : loading !== 'idle' &&
-          (!allNews ||
-            allNews === undefined ||
-            Object.keys(allNews).length === 0 ||
-            !Object.keys(allNews).includes(botName) ||
-            allNews[botName][activeFilter].length === 0) ? (
+        ) : loading === 'failed' ||
+          (loading === 'succeeded' &&
+            (!allNews ||
+              allNews === undefined ||
+              Object.keys(allNews).length === 0 ||
+              !Object.keys(allNews).includes(botName) ||
+              allNews[botName][activeFilter].length === 0)) ? (
           // If there's no content to show for the current time interval, show the NoContentDisclaimer component
           <NoContentDisclaimer
             title={'Whoops, no matches.'}

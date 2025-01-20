@@ -9,6 +9,7 @@ import NarrativeTrading from '../components/Analysis/NarrativeTrading/NarrativeT
 import FundingRates from '../components/Analysis/FundingRates/FundingRates';
 import Total3CandleChart from '../components/Analysis/Total3Chart/Total3CandleChart.js';
 import Dashboard from '../components/Analysis/Dashboard.js';
+import DashboardChartsWidget from '../components/Analysis/ChartSection/DashboardChartsWidget';
 
 const DashboardStack = createNativeStackNavigator();
 
@@ -41,9 +42,19 @@ const DashboardScreen = () => {
             "Reflects the proportion of the total cryptocurrency market held by Bitcoin. It is a vital indicator for assessing the market's preference for BTC over other altcoins.",
         }}
       />
-      <DashboardStack.Screen
+      {/* <DashboardStack.Screen
         name="EthBtc"
         component={BinanceChart}
+        initialParams={{
+          title: 'ETH/BTC Chart',
+          symbol: 'ETHBTC',
+          description:
+            'The strength of ETH against BTC helps us understand how strong Ethereum and its ecosystem projects are while also telling us how strong the entire altcoin market is too.',
+        }}
+      /> */}
+      <DashboardStack.Screen
+        name="EthBtc"
+        component={DashboardChartsWidget}
         initialParams={{
           title: 'ETH/BTC Chart',
           symbol: 'ETHBTC',

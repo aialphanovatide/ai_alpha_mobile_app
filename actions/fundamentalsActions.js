@@ -15,7 +15,7 @@ export const fetchFundamentalsData = createAsyncThunk(
           category.coin_bots.find(coinBot => coinBot.bot_name === coin) !==
           undefined,
       ).coin_bots.find(coinBot => coinBot.bot_name === coin).bot_id;
-      console.log('Found coin id: ', coinId);
+      // console.log('Found coin id: ', coinId);
 
       const storedFundamentalsData = await AsyncStorage.getItem(
         'fundamentalsData',

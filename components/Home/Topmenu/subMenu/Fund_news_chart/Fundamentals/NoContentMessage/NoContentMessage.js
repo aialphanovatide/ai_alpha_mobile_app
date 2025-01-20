@@ -11,8 +11,6 @@ const NoContentMessage = ({
   const styles = useNoContentMessageStyles();
   const [foundMessage, setFoundMessage] = useState(null);
 
-  console.log(coin);
-
   useEffect(() => {
     if (coin && coin !== undefined) {
       setFoundMessage(findMessageByCoin(coin));

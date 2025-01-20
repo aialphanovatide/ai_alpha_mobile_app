@@ -20,10 +20,12 @@ import {
   AUTH0_DOMAIN_ENVVAR,
   AUTH0_MANAGEMENT_API_CLIENT_ENVVAR,
   AUTH0_MANAGEMENT_API_SECRET_ENVVAR,
+  GOOGLE_CLIENT_IOS_ID_ENVVAR,
 } from '@env';
 import BackgroundGradient from '../BackgroundGradient/BackgroundGradient';
 import {useUser} from '../../context/UserContext';
-import { useRawUserId } from '../../context/RawUserIdContext';
+import {useRawUserId} from '../../context/RawUserIdContext';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 // Component to display an item in the Account screen. It receives the styles, the option to display, a function to handle the touch of the item, and an optional component to display in the item. It returns a view with the logo, name, and an optional component or right arrow that executes the function.
 
@@ -243,6 +245,23 @@ const Account = ({route}) => {
 
   const handleLogout = async () => {
     try {
+      GoogleSignin.configure({
+        // webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
+        // iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
+        // androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
+        webClientId:
+          '689854850545-9j38s9b89c7utbg2n6g78b66k9unusqv.apps.googleusercontent.com',
+        iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
+        androidClientId:
+          '396673673378-mpvlbrqcjrjv7cj4j8hie9km9ab9gbnk.apps.googleusercontent.com',
+        offlineAccess: true,
+      });
+      const isLoggedWithGoogle = await AsyncStorage.getItem('signedWithGoogle');
+
+      if (isLoggedWithGoogle === 'true') {
+        await GoogleSignin.signOut();
+      }
+
       await AsyncStorage.removeItem('accessToken');
       await AsyncStorage.removeItem('refreshToken');
       await AsyncStorage.removeItem('userEmail');
@@ -259,6 +278,7 @@ const Account = ({route}) => {
       resetLoginForm();
       navigation.navigate('SignIn', {resetForm: true});
       RNRestart.restart();
+
       console.log('- Successfully removed login data...');
     } catch (e) {
       console.error('Logout failed', e);

@@ -20,6 +20,7 @@ import {AppThemeContext} from '../../../../context/themeContext';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useUser} from '../../../../context/UserContext';
 import {useUserId} from '../../../../context/UserIdContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Component to render the sign up form. It contains the fields for the user to input their full name, email, password and repeat password. It also contains the buttons to sign up, go back to the login screen and see the terms and conditions. The logic to validate the form and send the data to the backend is also implemented here.
 
@@ -241,6 +242,7 @@ const SignupForm = () => {
           provider: 'Username-Password-Authentication',
         }),
       });
+      await AsyncStorage.setItem('signedWithGoogle', 'false');
       const data = await response.json();
     } catch (error) {
       console.error('Signup error: ', error);

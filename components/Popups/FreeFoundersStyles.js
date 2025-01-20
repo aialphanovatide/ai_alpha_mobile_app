@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import {AppThemeContext} from '../../context/themeContext';
 
 const windowWidth = Dimensions.get('window').width;
@@ -14,17 +14,13 @@ const useFreeFoundersStyles = () => {
     },
     imageBackground: {
       width: '100%',
-      // You could set a minHeight if you want the rocket to fill the top
       minHeight: windowHeight,
-      marginTop: -270,
-      // Because it's the background, you can adjust how the rocket appears:
+      marginTop: Platform.OS === 'android' ? -300 : -270,
       alignItems: 'center',
-      // optionally padding or margin if needed
     },
 
-    // The “card” that sits on top of the background
     contentContainer: {
-      marginTop: 550, // adjust top spacing so text is below rocket
+      marginTop: 550, 
       paddingHorizontal: 20,
       alignItems: 'center',
     },

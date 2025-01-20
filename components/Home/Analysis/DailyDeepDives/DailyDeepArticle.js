@@ -174,7 +174,11 @@ const DailyDeepArticle = ({route}) => {
         isDarkMode ? 'rgb(255, 255, 255) ' : 'rgb(23, 23, 23)'
       };">`,
     );
-    return bullet_lists_updated_content;
+    const br_replaced_content = bullet_lists_updated_content.replace(
+      /<br>/g,
+      '',
+    );
+    return br_replaced_content;
   };
 
   // Function to handle the navigation to the subscription screen

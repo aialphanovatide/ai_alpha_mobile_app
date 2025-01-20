@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {View, Platform} from 'react-native';
+import {View, Platform, Alert} from 'react-native';
 import CustomButton from '../CustomButton/CustomButton';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import axios from 'axios';
@@ -97,29 +97,41 @@ const SocialSignInButton = ({handleLoadingChange}) => {
     }
   };
 
+  const googleAndroidLogin = async () => {
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+    console.log('User info retrieved: ', userInfo);
+    return userInfo;
+  };
+
   const signInWithGoogle = async () => {
     GoogleSignin.configure({
-      webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
+      // webClientId: GOOGLE_CLIENT_WEB_ID_ENVVAR,
+      // iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
+      // androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
+      webClientId:
+        '689854850545-9j38s9b89c7utbg2n6g78b66k9unusqv.apps.googleusercontent.com',
       iosClientId: GOOGLE_CLIENT_IOS_ID_ENVVAR,
-      androidClientId: GOOGLE_CLIENT_ANDROID_ID_ENVVAR,
+      androidClientId:
+        '396673673378-mpvlbrqcjrjv7cj4j8hie9km9ab9gbnk.apps.googleusercontent.com',
       offlineAccess: true,
     });
     if (Platform.OS === 'android') {
       handleLoadingChange(true);
       // Handle Google Sign-In for Android using the Google Sign-In library
       try {
-        const result = await GoogleSignin.hasPlayServices();
+        const response = await googleAndroidLogin();
 
-        const userInfo = await GoogleSignin.signIn();
+        Alert.alert(
+          'Successfully logged in with google with the email:',
+          `${response.user.email}`,
+        );
 
-        console.log('User Info from google sign in:', userInfo);
-
-        const userEmail = userInfo.user.email;
-        const userName = userInfo.user.name;
-        const userPhoto = userInfo.user.photo;
-        const userId = userInfo.user.id;
-
-        const {idToken, user} = userInfo;
+        const {idToken, user} = response;
+        const userEmail = user.email;
+        const userName = user.name;
+        const userPhoto = user.photo;
+        const userId = user.id;
 
         await AsyncStorage.setItem('accessToken', idToken);
         await AsyncStorage.setItem('userEmail', user.email);
@@ -159,11 +171,14 @@ const SocialSignInButton = ({handleLoadingChange}) => {
           const data = await response.json();
           console.log('- Successfull response from user registering:', data);
         }
+        await AsyncStorage.setItem('signedWithGoogle', 'true');
       } catch (error) {
         console.error(
           'Error during Google sign-in with GoogleSignin library:',
           error,
         );
+        await AsyncStorage.setItem('signedWithGoogle', 'false');
+        Alert.alert('Error during google sign-in: ', `${error}`);
       } finally {
         handleLoadingChange(false);
       }
@@ -214,9 +229,15 @@ const SocialSignInButton = ({handleLoadingChange}) => {
             },
           );
           const data = await response.json();
-          console.log('- Successfully registered the user with google auth: ', data);
+          console.log(
+            '- Successfully registered the user with google auth: ',
+            data,
+          );
         } else {
-          console.log('- User already registered, logged in with google auth:', userData);
+          console.log(
+            '- User already registered, logged in with google auth:',
+            userData,
+          );
         }
       } catch (error) {
         console.error('Error during Google sign-in with Auth0:', error);

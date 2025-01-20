@@ -56,9 +56,10 @@ const StoryHeader = ({item, handleStoryPress, simplifyDate}) => {
                 ? 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
                 : null,
             priority: FastImage.priority.high,
+            cache: FastImage.cacheControl.immutable,
           }}
           style={styles.headerImage}
-          resizeMode="cover"
+          resizeMode={FastImage.resizeMode.cover}
         />
         <View style={styles.headerContent}>
           <Text style={styles.headerTitle}>{item.title}</Text>

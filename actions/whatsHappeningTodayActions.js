@@ -29,7 +29,12 @@ export const fetchTopStories = createAsyncThunk(
       const lastTimeframe =
         thunkApi.getState().home.whatsHappeningToday.lastTimeframe;
       const loading = thunkApi.getState().home.whatsHappeningToday.loading;
-      if (loading === 'idle' || lastTimeframe !== timeframe) {
+      const stories = thunkApi.getState().home.whatsHappeningToday.stories;
+      if (
+        loading === 'idle' ||
+        stories[lastTimeframe].length === 0 ||
+        lastTimeframe !== timeframe
+      ) {
         return true;
       } else {
         return false;
@@ -47,13 +52,21 @@ export const fetchTopStories = createAsyncThunk(
 // };
 
 export const selectTop3CoinsStories = state => {
+  const lastTimeframe = state.home.whatsHappeningToday.lastTimeframe || '1D';
   const allStories = state.home.whatsHappeningToday.stories;
-  return allStories.filter(story => TOP_3_COINS_ID.includes(story.bot_id));
+  const timeframeStories = allStories[lastTimeframe];
+  return timeframeStories.length > 0
+    ? timeframeStories.filter(story => TOP_3_COINS_ID.includes(story.bot_id))
+    : [];
 };
 
 export const selectAltCoinsStories = state => {
+  const lastTimeframe = state.home.whatsHappeningToday.lastTimeframe || '1D';
   const allStories = state.home.whatsHappeningToday.stories;
-  return allStories.filter(story => !TOP_3_COINS_ID.includes(story.bot_id));
+  const timeframeStories = allStories[lastTimeframe];
+  return timeframeStories.length > 0
+    ? timeframeStories.filter(story => !TOP_3_COINS_ID.includes(story.bot_id))
+    : [];
 };
 
 export const selectWhatsHappeningTodayLoading = state =>

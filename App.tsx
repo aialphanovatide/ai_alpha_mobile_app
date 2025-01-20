@@ -334,6 +334,12 @@ const App = () => {
                           : backgroundColor,
                     },
                   ]}>
+                        <Modal
+                          animationType="slide"
+                          transparent={false}
+                          visible={!hasSeenFounderPopup}>
+                          <FreeFounders onDismiss={handleDismissFounderPopup} />
+                        </Modal>
                   <StatusBar
                           barStyle={
                             isDarkMode ? 'light-content' : 'dark-content'

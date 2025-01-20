@@ -116,8 +116,6 @@ const LoginForm = ({route}) => {
 
   const onSignInPressed = async () => {
     try {
-      // console.log('jwtDecode:', jwtDecode);
-
       const credentials = await auth0.auth.passwordRealm({
         username: username,
         password: password,
@@ -141,6 +139,7 @@ const LoginForm = ({route}) => {
           await AsyncStorage.setItem('userId', formatted_id);
           await AsyncStorage.setItem('rawUserId', userId);
           await AsyncStorage.setItem('loginMethod', 'username-password');
+          await AsyncStorage.setItem('signedWithGoogle', 'false');
 
           updateUserEmail(username);
           setUserEmail(username);

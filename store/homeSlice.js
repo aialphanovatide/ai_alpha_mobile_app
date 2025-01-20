@@ -8,8 +8,8 @@ import {
   fetchSectionsMetadata,
 } from '../actions/dailyDeepDivesActions';
 import {fetchMarketNarratives} from '../actions/marketNarrativesActions';
-import { loadNotificationItems } from '../actions/notificationActions';
-import { fetchAlertsByAllCategories } from '../actions/alertsActions';
+import {loadNotificationItems} from '../actions/notificationActions';
+import {fetchAlertsByAllCategories} from '../actions/alertsActions';
 
 export const fetchInitialData = createAsyncThunk(
   'home/fetchInitialData',
@@ -24,7 +24,7 @@ export const fetchInitialData = createAsyncThunk(
       dispatch(fetchMarketNarratives()),
       dispatch(fetchLatestSpotlight()),
     ]);
-  }
+  },
 );
 
 // Store slice for the home screen data, including the data related to the home components: top ten movers and whats happening today stories.
@@ -44,7 +44,11 @@ const homeSlice = createSlice({
       error: null,
     },
     whatsHappeningToday: {
-      stories: [],
+      stories: {
+        '1D': [],
+        '1W': [],
+        '1M': [],
+      },
       loading: 'idle',
       lastTimeframe: null,
       error: null,
@@ -83,7 +87,11 @@ const homeSlice = createSlice({
     },
     resetTopStories: state => {
       state.whatsHappeningToday = {
-        stories: [],
+        stories: {
+          '1D': [],
+          '1W': [],
+          '1M': [],
+        },
         loading: 'idle',
         error: null,
         lastTimeframe: null,
@@ -129,10 +137,11 @@ const homeSlice = createSlice({
         state.whatsHappeningToday.loading = 'idle';
       })
       .addCase(fetchTopStories.fulfilled, (state, action) => {
+        const timeframe = action.meta.arg.timeframe;
         state.whatsHappeningToday.loading = 'succeeded';
-        state.whatsHappeningToday.stories = action.payload;
+        state.whatsHappeningToday.stories[timeframe] = action.payload;
         state.whatsHappeningToday.error = null;
-        state.whatsHappeningToday.lastTimeframe = action.meta.arg.timeframe;
+        state.whatsHappeningToday.lastTimeframe = timeframe;
       })
       .addCase(fetchTopStories.rejected, (state, action) => {
         state.whatsHappeningToday.loading = 'failed';

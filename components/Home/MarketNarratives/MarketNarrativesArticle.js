@@ -90,7 +90,8 @@ const CustomImageRenderer = props => {
 
 const MarketNarrativesArticle = ({route}) => {
   const {isDarkMode} = useContext(AppThemeContext);
-  const {item_content, id, date, image, title, isNavigateFromHome} = route?.params;
+  const {item_content, id, date, image, title, isNavigateFromHome} =
+    route?.params;
   const styles = useHomeNarrativeTradingStyles();
   const {theme} = useContext(AppThemeContext);
   const isAndroid = Platform.OS === 'android' ? true : false;
@@ -174,7 +175,12 @@ const MarketNarrativesArticle = ({route}) => {
         isDarkMode ? 'rgb(255, 255, 255) ' : 'rgb(23, 23, 23)'
       };">`,
     );
-    return bullet_lists_updated_content;
+
+    const br_replaced_content = bullet_lists_updated_content.replace(
+      /<br>/g,
+      '',
+    );
+    return br_replaced_content;
   };
 
   // Function that handles the navigation back to the previous screen. If the screen is the InitialHome screen, it navigates to the InitialHome screen. Otherwise, it navigates to the Home screen with the InitialHome and Analysis screens as parameters.
@@ -204,12 +210,47 @@ const MarketNarrativesArticle = ({route}) => {
       color: theme.titleColor,
       fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
     },
+    h1: {
+      fontSize: theme.responsiveFontSize * 1.5,
+      marginVertical: 4,
+      color: theme.titleColor,
+      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+    },
+    h2: {
+      fontSize: theme.responsiveFontSize * 1.25,
+      marginVertical: 4,
+      color: theme.titleColor,
+      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+    },
+    h3: {
+      fontSize: theme.responsiveFontSize * 1.25,
+      marginVertical: 4,
+      color: theme.titleColor,
+      fontFamily: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
+    },
+    h4: {
+      fontSize: theme.responsiveFontSize * 1.25,
+      marginVertical: 4,
+      color: theme.titleColor,
+      fontFamily: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
+    },
+
     ul: {
       color: theme.textColor,
       fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
       fontSize: theme.responsiveFontSize * 0.85,
     },
+    ol: {
+      color: theme.textColor,
+      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+      fontSize: theme.responsiveFontSize * 0.9,
+    },
     span: {
+      color: theme.textColor,
+      fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
+      fontSize: theme.responsiveFontSize * 0.85,
+    },
+    li: {
       color: theme.textColor,
       fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
       fontSize: theme.responsiveFontSize * 0.85,
@@ -227,23 +268,27 @@ const MarketNarrativesArticle = ({route}) => {
       fontSize: theme.responsiveFontSize * 1.25,
       marginVertical: 4,
       color: theme.titleColor,
-      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
-    },
-    bold: {
-      fontSize: theme.responsiveFontSize * 0.8,
-      color: theme.textColor,
-      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+      fontFamily: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
     },
     'ql-size-small': {
       fontSize: theme.responsiveFontSize * 0.65,
       color: theme.textColor,
       fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
     },
+    bold: {
+      fontSize: theme.responsiveFontSize * 0.8,
+      color: theme.textColor,
+      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+    },
   };
 
   const imageUri = `https://sitesnewsposters.s3.us-east-2.amazonaws.com/${id}.jpg`;
 
   const html_source = {
+    // See if the html content has the class= word inside it with regular expressions, if it does, use the fintHtmlContent function, othwerwise, use the item_content as it is.
+    // item_content.match(/class=/)
+    //   ? findHtmlContent(item_content)
+    //   : item_content,
     html: findHtmlContent(item_content),
   };
 

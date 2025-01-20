@@ -214,6 +214,8 @@ const NarrativeTrading = () => {
         item_content: item.content,
         id: item.id,
         date: item.created_at,
+        image: item.image,
+        title: item.title,
         isNavigateFromHome: false,
       },
     });

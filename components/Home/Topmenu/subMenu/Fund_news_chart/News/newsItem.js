@@ -20,9 +20,10 @@ const NewsItem = ({item, onPress}) => {
       <FastImage
         source={{
           uri: item.image
-            ? `https://appnewsposters.s3.us-east-2.amazonaws.com/${item.image}`
+            ? item.image
             : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
-          priority: FastImage.priority.normal,
+          priority: FastImage.priority.high,
+          cache: FastImage.cacheControl.immutable,
         }}
         style={styles.image}
         resizeMode={'contain'}

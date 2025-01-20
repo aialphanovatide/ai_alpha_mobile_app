@@ -75,7 +75,10 @@ export const fetchDailyDeepDivesData = createAsyncThunk(
         coin_bot_name: item.coin_name,
         created_at: item.created_at,
         category: item.category_name,
-        title: extractFirstTitleAndImage(item.content).title,
+        title:
+          item.title !== ''
+            ? item.title
+            : extractFirstTitleAndImage(item.content).title,
         image: item.image_url,
       }));
     } catch (error) {
