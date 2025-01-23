@@ -1,9 +1,11 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {AboutIcon} from '../../../../../AboutModal/AboutIcon';
 import {home_static_data} from '../../../../../../assets/static_data/homeStaticData';
 import {useDispatch} from 'react-redux';
 import {handleAboutPress} from '../../../../../../store/aboutSlice';
+
+// Component to render the pricing details of the chart. It receives the coin, the last price, the interval, the styles, a boolean to check if the price is up, a boolean to check if the chart is loading, the pairings, the selected pairing, the selected interval, the function to handle the pairing change, and the function to handle the data update. It returns a view of the coin symbol, the last price, the pairings menu, and the refresh button.
 
 const ChartPriceDetails = ({
   coin,
@@ -26,7 +28,7 @@ const ChartPriceDetails = ({
     dispatch(handleAboutPress({description, title}));
   };
 
-  // Format the prices
+  // Function to format the price number of the coin, adding commas and decimals to the number and returning it as a string
   const formatNumber = price => {
     const number = parseFloat(price);
     if (isNaN(number)) {
@@ -44,12 +46,6 @@ const ChartPriceDetails = ({
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-  };
-
-  const formatCoin = (coin, pairing) => {
-    const pairing_word_index = coin.indexOf(pairing);
-    const coin_word = coin.slice(0, pairing_word_index).toUpperCase();
-    return `${coin_word}/${coin.slice(pairing_word_index, coin.length)}`;
   };
 
   return pairings.length > 1 ? (

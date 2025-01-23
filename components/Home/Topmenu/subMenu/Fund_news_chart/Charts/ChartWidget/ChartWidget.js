@@ -1,12 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {WebView} from 'react-native-webview';
-import {
-  getHTMLTestService,
-} from '../../../../../../../services/aiAlphaApi';
+import {getHTMLTestService} from '../../../../../../../services/aiAlphaApi';
 import {AppThemeContext} from '../../../../../../../context/themeContext';
 import SkeletonLoader from '../../../../../../Loader/SkeletonLoader';
 import NoContentDisclaimer from '../../../../../../NoContentDisclaimer/NoContentDisclaimer';
+import {useScreenOrientation} from '../../../../../../../hooks/useScreenOrientation';
+import {useNavigation} from '@react-navigation/core';
+import useChartWidgetStyles from './ChartWidgetStyles';
 
 // Component that renders the chart widget, using the symbol, pair, active interval and the theme to get the correct data.
 
@@ -19,8 +20,12 @@ const ChartWidget = ({
   loading,
   setLoading,
 }) => {
+  const styles = useChartWidgetStyles();
   const {theme, isDarkMode} = useContext(AppThemeContext);
   const [widgetData, setWidgetData] = useState([]);
+  const {isLandscape, isHorizontal, handleScreenOrientationChange} =
+    useScreenOrientation();
+  const navigation = useNavigation();
 
   // Function to fetch the chart widget data from the backend, using the symbol, pair, active interval and theme to get the correct data.
 
@@ -49,6 +54,12 @@ const ChartWidget = ({
     fetchChartWidgetData(activeButtons);
   }, [symbol, pair, activeInterval, isDarkMode, activeButtons]);
 
+  // Function to handle the back interaction when the user is in Horizontal mode
+  const handleBackInteraction = () => {
+    handleScreenOrientationChange(false);
+    navigation.canGoBack(false);
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
@@ -63,33 +74,57 @@ const ChartWidget = ({
           }}
         />
       ) : (
-        <WebView
-          originWhitelist={['*']}
-          source={{html: widgetData}}
-          style={{flex: 1, marginBottom: -4}}
-          nestedScrollEnabled={true}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          scalesPageToFit={true}
-          onTouchStart={() => {
-            handleOnZoom(false);
-          }}
-          onTouchEnd={() => {
-            handleOnZoom(true);
-          }}
-        />
+        <>
+          <WebView
+            originWhitelist={['*']}
+            source={{html: widgetData}}
+            style={{flex: 1, marginBottom: -4}}
+            nestedScrollEnabled={true}
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
+            scalesPageToFit={true}
+            onTouchStart={() => {
+              handleOnZoom(false);
+            }}
+            onTouchEnd={() => {
+              handleOnZoom(true);
+            }}
+          />
+          <TouchableOpacity
+            onPress={
+              isLandscape
+                ? () => {
+                    handleBackInteraction();
+                  }
+                : () => {
+                    navigation.canGoBack(false);
+                    handleScreenOrientationChange(true);
+                  }
+            }>
+            <Image
+              style={styles.chartsHorizontalButton}
+              source={
+                isLandscape && isHorizontal
+                  ? require('../../../../../../../assets/images/home/charts/deactivate-horizontal.png')
+                  : require('../../../../../../../assets/images/home/charts/activate-horizontal.png')
+              }
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleBackInteraction()}>
+            <Image
+              style={
+                isLandscape && isHorizontal
+                  ? styles.chartBackButton
+                  : {display: 'none'}
+              }
+              resizeMode="contain"
+              source={require('../../../../../../../assets/images/home/charts/back.png')}
+            />
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: 360,
-    height: 340,
-    marginRight: 16,
-  },
-});
 
 export default ChartWidget;

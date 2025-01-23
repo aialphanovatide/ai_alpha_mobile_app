@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState, useContext} from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import useNewDailyDeepDivesStyles from './NewDailyDeepDivesStyles';
 import {PaginationDots} from '../../../General/PaginationDots/PaginationDots';
@@ -12,11 +12,15 @@ import {
 import SkeletonLoader from '../../../Loader/SkeletonLoader';
 import DeepDiveCard from './DeepDiveCard/DeepDiveCard';
 import NoContentDisclaimer from '../../../NoContentDisclaimer/NoContentDisclaimer';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
+import {AppThemeContext} from '../../../../context/themeContext';
+import {usePaginationDotsStyles} from '../../../General/PaginationDots/usePaginationDotsStyles';
 
 // Component to render the Daily Deep Dives section in the home screen. It receives the function to handle the navigation to the History section as a prop. It uses the Deep dives slice from the Redux store to fetch the articles' data and renders the items in the list.
 
 const NewDailyDeepDives = () => {
   const styles = useNewDailyDeepDivesStyles();
+  const paginationDotsStyles = usePaginationDotsStyles();
   const totalPages = 5;
   const WIDTH_PER_SHOWN_CARD = [
     {min: 0, max: 219, x: 0},
@@ -26,11 +30,13 @@ const NewDailyDeepDives = () => {
     {min: 830, max: 1500, x: 990},
   ];
   const [contentWidth, setContentWidth] = useState(1500);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const scrollViewRef = useRef(null);
   const navigation = useNavigation();
   const loading = useSelector(selectDailyDeepDivesLoading);
   const deepDives = useSelector(selectDailyDeepDives);
+  const {theme} = useContext(AppThemeContext);
+  const [carouselRef, setCarouselRef] = useState(0);
 
   // Function to handle the navigation to the full Analysis article when pressing it, saving the item with the current date for filtering the articles on the History section later
 
@@ -133,7 +139,7 @@ const NewDailyDeepDives = () => {
         />
       ) : (
         <>
-          <ScrollView
+          {/* <ScrollView
             ref={scrollViewRef}
             horizontal
             nestedScrollEnabled
@@ -157,8 +163,29 @@ const NewDailyDeepDives = () => {
                   />
                 ))
             )}
-          </ScrollView>
-          <PaginationDots totalPages={totalPages} currentPage={currentPage} />
+          </ScrollView> */}
+          <Carousel
+            ref={c => {
+              setCarouselRef(c);
+            }}
+            data={deepDives.slice(0, totalPages)}
+            renderItem={({item}) => (
+              <DeepDiveCard item={item} handleCardPress={handleCardPress} />
+            )}
+            sliderWidth={340}
+            itemWidth={styles.deepDiveCard.width}
+            activeSlideAlignment="start"
+            onSnapToItem={index => setCurrentPage(index)}
+          />
+          {/* <PaginationDots totalPages={totalPages} currentPage={currentPage} /> */}
+          <Pagination
+            dotsLength={totalPages}
+            activeDotIndex={currentPage}
+            containerStyle={paginationDotsStyles.dotsContainer}
+            dotStyle={paginationDotsStyles.activeDot}
+            dotColor={paginationDotsStyles.dot.backgroundColor}
+            carouselRef={carouselRef}
+          />
         </>
       )}
     </View>

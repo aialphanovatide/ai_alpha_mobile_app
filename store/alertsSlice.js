@@ -10,6 +10,7 @@ const initialState = {
   alerts: [],
   alertsByCoin: [],
   loading: 'idle',
+  loadingByCoin: 'idle',
   error: null,
   hasSubscription: false,
   lastCoin: null,
@@ -33,16 +34,17 @@ const alertsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchAlertsByCoin.pending, state => {
-        state.loading = 'idle';
+        state.loadingByCoin = 'idle';
         state.error = null;
       })
       .addCase(fetchAlertsByCoin.fulfilled, (state, action) => {
+        state.lastCoin = action.meta.arg.coins;
         state.alerts = action.payload;
         state.alertsByCoin = action.payload;
-        state.loading = 'succeeded';
+        state.loadingByCoin = 'succeeded';
       })
       .addCase(fetchAlertsByCoin.rejected, (state, action) => {
-        state.loading = 'failed';
+        state.loadingByCoin = 'failed';
         state.error = action.payload;
       })
       .addCase(fetchAlertsBySubscriptions.pending, state => {

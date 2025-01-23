@@ -42,7 +42,7 @@ export const SpotlightCard = ({item, handleCardPress}) => {
   return (
     <TouchableOpacity
       style={styles.cardContainer}
-      onPress={() => handleCardPress(item, item.bot_id)}>
+      onPress={() => handleCardPress(item)}>
       <FastImage
         source={{
           uri:
@@ -62,7 +62,7 @@ export const SpotlightCard = ({item, handleCardPress}) => {
         <Text style={styles.cardTitle}>
           {item.title.length > 50
             ? `${item.title.slice(0, 47)}...`
-            : item.title.length}
+            : item.title}
         </Text>
         <Text style={styles.cardDate}>{simplifyDateTime(item.created_at)}</Text>
       </View>

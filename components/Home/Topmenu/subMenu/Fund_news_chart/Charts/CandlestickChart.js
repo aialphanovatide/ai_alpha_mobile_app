@@ -19,7 +19,6 @@ import AlertMenu from './alerts/AlertMenu';
 import AlertListComponent from './alerts/AlertListComponent';
 import useChartsStyles from './ChartsStyles';
 import {RevenueCatContext} from '../../../../../../context/RevenueCatContext';
-import AboutModal from '../../../../../AboutModal/AboutModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../../../../../context/themeContext';
 import {useScrollToTop} from '@react-navigation/native';
@@ -28,18 +27,14 @@ import {useFocusEffect, useNavigation} from '@react-navigation/core';
 import useChartsSource from '../../../../../../hooks/useChartsSource';
 import {HeaderVisibilityContext} from '../../../../../../context/HeadersVisibilityContext';
 import {throttle} from 'lodash';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
   selectActiveCoin,
   selectActiveSubCoin,
 } from '../../../../../../actions/categoriesActions';
-import {
-  handleClose,
-  selectAboutDescription,
-  selectAboutTitle,
-  selectAboutVisible,
-} from '../../../../../../store/aboutSlice';
 import ChartWidget from './ChartWidget/ChartWidget';
+import ChartTimeSelector from './ChartTimeSelector';
+import {getTestService} from '../../../../../../services/aiAlphaApi';
 
 // Component to display the charts time interval selector buttons, allowing the user to change the time interval of the chart. It receives the selected pairing, the selected interval, the function to change the interval and a boolean to disable the buttons when the chart is loading. It returns a view with the buttons for the time intervals.
 
@@ -98,7 +93,7 @@ const CandlestickChart = ({route}) => {
   const [activeAlertOption, setActiveAlertOption] = useState('4H');
   const {isDarkMode} = useContext(AppThemeContext);
   const pairings = useChartsSource(
-    coinBot.toLowerCase(),
+    activeSubCoin.toLowerCase(),
     null,
     selectedInterval,
   ).pairings;
@@ -107,7 +102,6 @@ const CandlestickChart = ({route}) => {
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const [scrollEnabled, setScrollEnabled] = useState(true);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const backAction = navigation.addListener('beforeRemove', e => {
@@ -140,6 +134,7 @@ const CandlestickChart = ({route}) => {
   // Restart the last price on every coin update
 
   useEffect(() => {
+    fetchChartDataFromServer(selectedPairing, selectedInterval);
     setActiveButtons(['Support', 'Resistance']);
     setLoading(true);
     setLastPrice(undefined);
@@ -147,22 +142,38 @@ const CandlestickChart = ({route}) => {
     setSelectedInterval('1w');
   }, [activeSubCoin, coinBot]);
 
-  const {url, options} = useChartsSource(
-    activeSubCoin ? activeSubCoin : coinBot,
-    selectedPairing,
-    selectedInterval,
-  );
+  // Function to fetch the data from Binance and from Coingecko for KAS and VELO, since that coins doesn't have data on the first one, and map it for using it with VictoryChart's components
 
-  // Function to handle the about modal visibility and content based on the section that the user clicked on
-
-  const closeAbout = () => {
-    dispatch(handleClose());
-  };
+  async function fetchChartDataFromServer(pairing, interval) {
+    const coinName = activeSubCoin ? activeSubCoin : coinBot;
+    try {
+      const response = await getTestService(
+        `chart/ohlc?gecko_id=${
+          coinName.toLowerCase() === 'pol' ? 'polygon' : coinName.toLowerCase()
+        }&symbol=${
+          coinName.toLowerCase() === 'pol' ? 'polygon' : coinName.toLowerCase()
+        }&vs_currency=${
+          pairing === 'USDT' ? 'usd' : pairing.toLowerCase()
+        }&interval=${interval.toLowerCase()}&precision=8`,
+      );
+      const data = response.data;
+      const currentPrice = parseFloat(data[data.length - 1][4]);
+      data[data.length - 1][4] >= data[data.length - 2][4]
+        ? setIsPriceUp(true)
+        : setIsPriceUp(false);
+      setLastPrice(currentPrice);
+      console.log(
+        `-  Successfully retrieved last price for coin: ${coinName}.`,
+      );
+    } catch (error) {
+      console.error(`Failed to fetch the last pricing data: ${error}`);
+    }
+  }
 
   // Function to manually update the data of the chart
 
   const handleDataUpdate = (pairing, currentInterval) => {
-    setLoading(true);
+    fetchChartDataFromServer(pairing, currentInterval);
   };
 
   // Function to handle the time interval changes, executing again the data fetching
@@ -170,6 +181,7 @@ const CandlestickChart = ({route}) => {
   const changeInterval = async newInterval => {
     setLoading(true);
     setSelectedInterval(newInterval);
+    fetchChartDataFromServer(selectedPairing, newInterval);
   };
 
   // Function to handle the currency-pair for the coins that haves USDT and BTC pairings
@@ -178,7 +190,10 @@ const CandlestickChart = ({route}) => {
     setSelectedPairing(pairing);
     if (pairing.toLowerCase() === 'btc' || pairing.toLowerCase() === 'eth') {
       setSelectedInterval('1d');
+      fetchChartDataFromServer(pairing, '1d');
+      return;
     }
+    fetchChartDataFromServer(pairing, currentInterval);
   };
 
   // Function to handle enabling and disabling the scroll on the whole section when zooming on the chart, preventing that the scroll from bothering the zoom interaction
@@ -198,7 +213,6 @@ const CandlestickChart = ({route}) => {
 
   const handleScroll = throttle(event => {
     const currentOffset = event.nativeEvent.contentOffset.y;
-    const diff = currentOffset - scrollOffset.current;
     if (currentOffset > 200) {
       hideHeader('TopMenu');
       hideHeader('SubMenu');
@@ -235,14 +249,6 @@ const CandlestickChart = ({route}) => {
         ref={scrollViewRef}
         onScroll={onScroll}
         scrollEventThrottle={16}>
-        {/* {aboutVisible && (
-          <AboutModal
-            title={aboutTitle}
-            description={aboutDescription}
-            onClose={closeAbout}
-            visible={aboutVisible}
-          />
-        )} */}
         <View style={[styles.chartsWrapper]}>
           <ChartPriceDetails
             loading={loading}
@@ -262,11 +268,12 @@ const CandlestickChart = ({route}) => {
               styles.chartsRow,
               {flexDirection: width > 500 ? 'row' : 'column'},
             ]}>
-            <IntervalSelector
+            <ChartTimeSelector
               selectedInterval={selectedInterval}
               selectedPairing={selectedPairing}
               changeInterval={changeInterval}
               disabled={loading}
+              hasHourlyTimes={false}
             />
             <RsButton
               activeButtons={activeButtons}

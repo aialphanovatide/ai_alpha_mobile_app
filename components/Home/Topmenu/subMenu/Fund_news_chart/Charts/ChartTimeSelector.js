@@ -16,8 +16,8 @@ const ChartTimeSelector = ({
     ? ['1h', '4h', '1d', '1w']
     : selectedPairing.toLowerCase() === 'btc' ||
       selectedPairing.toLowerCase() === 'eth'
-    ? ['1D']
-    : ['1D', '1W'];
+    ? ['1d']
+    : ['1d', '1w'];
 
   const styles = useChartsStyles();
 

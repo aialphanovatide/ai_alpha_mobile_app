@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Animated,
   Linking,
+  Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {AppThemeContext} from '../../context/themeContext';
@@ -91,6 +92,11 @@ const Slide = ({
   const styles = useIntroductorySlidesStyles();
   const buttonOpacity = useRef(new Animated.Value(0)).current;
 
+  // Detect the device's screen size to adjust the images and videos accordingly.
+
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
+
   // This useEffect is used to animate the button that redirects to the app on the last slide.
 
   useEffect(() => {
@@ -113,6 +119,11 @@ const Slide = ({
             {
               width: video.style.width,
               height: video.style.height,
+              maxHeight:
+                screenHeight > 800 && id === 1
+                  ? screenHeight * 0.45
+                  : screenHeight * 0.375,
+              maxWidth: screenWidth * 0.9,
               backgroundColor: 'transparent',
             },
           ]}>
@@ -162,7 +173,7 @@ const Slide = ({
           />
         </View>
       )}
-      <View style={styles.contentContainer}>
+      <View style={[styles.contentContainer]}>
         <Text
           style={[
             styles.title,

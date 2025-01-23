@@ -82,6 +82,7 @@ const Fundamentals = () => {
 
   useEffect(() => {
     if (globalLoading === 'idle') {
+      setHasContent(initialContentState);
       setLoadingState(true);
     } else {
       setLoadingState(false);
@@ -90,7 +91,6 @@ const Fundamentals = () => {
 
   useEffect(() => {
     dispatch(fetchFundamentalsData(activeSubCoin));
-
   }, [dispatch, activeSubCoin]);
 
   // Function to handle the about modal visibility and content based on the section that the user clicked on
@@ -120,7 +120,6 @@ const Fundamentals = () => {
 
   const handleScroll = throttle(event => {
     const currentOffset = event.nativeEvent.contentOffset.y;
-    const diff = currentOffset - scrollOffset.current;
 
     if (currentOffset > 200) {
       hideHeader('TopMenu');

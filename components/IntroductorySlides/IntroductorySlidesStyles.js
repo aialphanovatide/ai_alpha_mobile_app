@@ -27,6 +27,7 @@ const useIntroductorySlidesStyles = () => {
     },
     contentContainer: {
       width: '100%',
+      maxHeight: theme.height * 0.45,
       marginVertical: 16,
       alignItems: 'center',
       justifyContent: 'center',

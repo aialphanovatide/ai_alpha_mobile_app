@@ -178,6 +178,11 @@ const DailyDeepArticle = ({route}) => {
       /<br>/g,
       '',
     );
+
+    const em_replaced_content = br_replaced_content.replace(
+      /<em style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);">/g,
+      `<em>`,
+    );
     return br_replaced_content;
   };
 
@@ -204,7 +209,8 @@ const DailyDeepArticle = ({route}) => {
   const html_styles = {
     p: {
       color: theme.titleColor,
-      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+      fontSize: theme.responsiveFontSize,
+      fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
     },
     h1: {
       fontSize: theme.responsiveFontSize * 1.5,
@@ -251,6 +257,13 @@ const DailyDeepArticle = ({route}) => {
       fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
       fontSize: theme.responsiveFontSize * 0.85,
     },
+    em: {
+      color: theme.textColor,
+      fontFamily: isAndroid
+        ? 'prompt_semibold_italic'
+        : 'Prompt-SemiBold-Italic',
+      fontSize: theme.responsiveFontSize * 0.85,
+    },
   };
 
   const classes_styles = {
@@ -264,7 +277,7 @@ const DailyDeepArticle = ({route}) => {
       fontSize: theme.responsiveFontSize * 1.25,
       marginVertical: 4,
       color: theme.titleColor,
-      fontFamily: isAndroid ? 'prompt_medium' : 'Prompt-Medium',
+      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
     },
     'ql-size-small': {
       fontSize: theme.responsiveFontSize * 0.65,

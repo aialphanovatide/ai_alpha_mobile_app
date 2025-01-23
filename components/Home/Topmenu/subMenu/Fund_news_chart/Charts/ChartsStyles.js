@@ -74,6 +74,7 @@ const useChartsStyles = () => {
     },
     activeText: {
       fontFamily: theme.fontMedium,
+      textTransform: 'uppercase',
     },
     rsButtonContainer: {
       flexDirection: 'row',
@@ -106,7 +107,6 @@ const useChartsStyles = () => {
       flex: 1,
       width: '100%',
       marginBottom: 8,
-      marginTop: 10,
       justifyContent: 'flex-start',
     },
     lineLabel: {

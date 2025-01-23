@@ -10,12 +10,14 @@ import {
   selectAlertsLoading,
 } from '../../../../../../../actions/alertsActions';
 
+// Component to render the Alerts list below the Chart. It receives the bot name, the timeframe, and the styles as props. It fetches the alerts for the selected coin and timeframe, and renders the AlertDetails component for each alert. It also renders a SkeletonLoader while the alerts are loading, and a NoContentDisclaimer if there are no alerts to display.
+
 const AlertListComponent = ({botName, timeframe, styles}) => {
   const alerts = useSelector(selectAlertsByCoin);
   const loading = useSelector(selectAlertsLoading);
   const dispatch = useDispatch();
 
-  // Fetches the alerts
+  // Hook to fetch the alerts for the selected coin and timeframe
   useEffect(() => {
     dispatch(fetchAlertsByCoin({coins: botName, timeInterval: timeframe}));
   }, [timeframe, botName, dispatch]);

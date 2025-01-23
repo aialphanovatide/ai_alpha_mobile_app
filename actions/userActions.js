@@ -1,11 +1,13 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {getService} from '../services/aiAlphaApi';
+import {getServiceV2} from '../services/aiAlphaApi';
 
 export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
   async (rawUserId, {rejectWithValue}) => {
     try {
-      const userData = await getService(`user?auth0id=${rawUserId}`);
+      const userData = await getServiceV2(
+        `user?auth0id=${rawUserId.toString()}`,
+      );
       console.log("- Successfully retrieved the user's data: ", userData.data);
       return userData.data;
     } catch (error) {

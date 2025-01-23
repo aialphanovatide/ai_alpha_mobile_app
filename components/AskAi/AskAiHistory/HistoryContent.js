@@ -108,7 +108,7 @@ const HistoryContent = ({historyOptions, handleActiveResultData}) => {
           </TouchableOpacity>
         ))}
       </View>
-      <ScrollView style={styles.historyItemsContainer}>
+      <ScrollView style={styles.historyItemsContainer} showsVerticalScrollIndicator={false}>
         {filteredResults && filteredResults.length > 0 ? (
           filteredResults.map((coin, index) => {
             if (!coin || !coin.content) {

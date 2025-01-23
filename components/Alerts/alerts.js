@@ -7,7 +7,6 @@ import {
   ScrollView,
 } from 'react-native';
 import useAlertsStyles from './styles';
-import {getService, postService} from '../../services/aiAlphaApi';
 import AlertDetails from './AlertItem';
 import TopMenu from '../Home/Topmenu/mainMenu/topmenu';
 import SubMenu from '../Home/Topmenu/subMenu/SubMenu';
@@ -29,11 +28,19 @@ import {
   fetchAlertsByAllCategories,
   fetchAlertsByCoin,
   selectAlerts,
+  selectAlertsByCoin,
   selectAlertsLoading,
+  selectAlertsLoadingByCoin,
 } from '../../actions/alertsActions';
 
 // Component that renders the menu to switch between 'today' and 'this week' alert intervals.
-const AlertMenu = ({options, activeOption, setActiveOption, styles, loading}) => {
+const AlertMenu = ({
+  options,
+  activeOption,
+  setActiveOption,
+  styles,
+  loading,
+}) => {
   const button_width = 100 / options.length;
   return (
     <View style={styles.buttonContainer}>
@@ -74,7 +81,9 @@ const Alerts = ({route, navigation}) => {
   const styles = useAlertsStyles();
   const categories = useSelector(selectCategories);
   const alerts = useSelector(selectAlerts);
+  const alertsByCoin = useSelector(selectAlertsByCoin);
   const loading = useSelector(selectAlertsLoading);
+  const loadingByCoin = useSelector(selectAlertsLoadingByCoin);
   const dispatch = useDispatch();
   const ref = useRef(null);
 
@@ -98,7 +107,7 @@ const Alerts = ({route, navigation}) => {
     }
   }, [activeCoin, activeSubCoin, route.params]);
 
-  // This useEffect handles the content regulation with the user's subscriptions
+  // This useEffect handles the content regulation with the user's subscriptions, detecting if the user has subscribed to the active category, otherwise, find the categories that the user has subscribed to
   useEffect(() => {
     if (Object.keys(activeCoin).length !== 0) {
       let hasCoinSubscription = findCategoryInIdentifiers(
@@ -130,7 +139,10 @@ const Alerts = ({route, navigation}) => {
   useEffect(() => {
     Object.keys(activeCoin).length > 0
       ? dispatch(
-          fetchAlertsByCoin({coins: botName, timeInterval: activeAlertOption}),
+          fetchAlertsByCoin({
+            coins: activeSubCoin,
+            timeInterval: activeAlertOption,
+          }),
         )
       : dispatch(fetchAlertsByAllCategories({timeInterval: activeAlertOption}));
   }, [botName, activeAlertOption, activeCoin, dispatch]);
@@ -148,7 +160,6 @@ const Alerts = ({route, navigation}) => {
 
   const handleScroll = throttle(event => {
     const currentOffset = event.nativeEvent.contentOffset.y;
-    const diff = currentOffset - scrollOffset.current;
 
     if (currentOffset > 100) {
       hideHeader('TopMenu');
@@ -164,6 +175,14 @@ const Alerts = ({route, navigation}) => {
   const onScroll = event => {
     event.persist();
     handleScroll(event);
+  };
+
+  // Function to order the alerts by the date property, to display the most recent alerts first
+
+  const orderAlerts = alerts => {
+    return alerts.sort((a, b) => {
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
   };
 
   return (
@@ -185,20 +204,39 @@ const Alerts = ({route, navigation}) => {
           activeOption={activeAlertOption}
           loading={loading}
         />
-        {loading === 'idle' ? (
-          // Display the loader if the data requests didn't finish
+        {/* If there is a selected category, the activeCoin isn't an empty object, so there should be shown the alerts for the first active coin of it */}
+        {Object.keys(activeCoin).length > 0 ? (
+          loadingByCoin === 'idle' ? (
+            <SkeletonLoader quantity={5} type="alerts" />
+          ) : loadingByCoin === 'succeeded' && alertsByCoin.length > 0 ? (
+            <View>
+              {alertsByCoin.map(item => {
+                return (
+                  <AlertDetails
+                    key={item.alert_id}
+                    message={item.alert_message}
+                    timeframe={item.alert_name}
+                    price={item.price}
+                    styles={styles}
+                    created_at={item.created_at}
+                  />
+                );
+              })}
+            </View>
+          ) : (
+            <NoContentDisclaimer
+              title={'Whoops, no matches.'}
+              description={
+                "We couldn't find any search results.\nGive it another go."
+              }
+            />
+          )
+        ) : // If not, the alerts for all the categories that the user has subscribed should be shown
+        loading === 'idle' ? (
           <SkeletonLoader quantity={5} type="alerts" />
-        ) : !loading !== 'idle' && alerts.length === 0 ? (
-          // Display the disclaimer if there are no alerts
-          <NoContentDisclaimer
-            title={'Whoops, no matches.'}
-            description={
-              "We couldn't find any search results.\nGive it another go."
-            }
-          />
-        ) : (
+        ) : loading === 'succeeded' && alerts.length > 0 ? (
           <View>
-            {alerts.map(item => {
+            {orderAlerts(alerts).map(item => {
               return (
                 <AlertDetails
                   key={item.alert_id}
@@ -211,6 +249,13 @@ const Alerts = ({route, navigation}) => {
               );
             })}
           </View>
+        ) : (
+          <NoContentDisclaimer
+            title={'Whoops, no matches.'}
+            description={
+              "We couldn't find any search results.\nGive it another go."
+            }
+          />
         )}
       </ScrollView>
       {hasSubscription ? (

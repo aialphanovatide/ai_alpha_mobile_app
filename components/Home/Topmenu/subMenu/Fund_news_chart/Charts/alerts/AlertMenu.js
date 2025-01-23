@@ -6,6 +6,8 @@ import {home_static_data} from '../../../../../../../assets/static_data/homeStat
 import {useDispatch} from 'react-redux';
 import {handleAboutPress} from '../../../../../../../store/aboutSlice';
 
+// Component to render the alerts menu, which contains the buttons to select the timeframe of the alerts. It receives the timeframe options, the active alert option, and the function to set the active buttons as props. It returns a view with the title, the buttons, and the about icon.
+
 const AlertMenu = ({timeframeOptions, activeAlertOption, setActiveButtons}) => {
   const styles = useChartsStyles();
   const dispatch = useDispatch();

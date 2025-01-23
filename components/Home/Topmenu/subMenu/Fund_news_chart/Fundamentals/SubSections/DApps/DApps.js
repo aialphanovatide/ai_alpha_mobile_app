@@ -146,26 +146,32 @@ const DApps = ({coin, handleSectionContent, globalData, loading}) => {
   };
 
   useEffect(() => {
-    const fetchDAppsData = coin => {
-      if (!globalData || globalData.dapps.status !== 200) {
-        setMappedData([]);
-      } else {
-        const dapps_response = globalData.dapps.message.map(protocol => {
-          return {
-            id: protocol.id,
-            name: protocol.dapps,
-            description: protocol.description,
-            tvl: protocol.tvl,
-            image: generateImageUri(protocol.dapps),
-          };
-        });
-        setMappedData(dapps_response);
-        setMaxLength(findMaxLengthDescription(dapps_response));
-      }
-    };
-
-    fetchDAppsData(coin);
+    if (!globalData || globalData.dapps.status !== 200) {
+      setMappedData([]);
+    } else {
+      const dapps_response = globalData.dapps.message.map(protocol => {
+        return {
+          id: protocol.id,
+          name: protocol.dapps,
+          description: protocol.description,
+          tvl: protocol.tvl,
+          image: generateImageUri(protocol.dapps),
+        };
+      });
+      setMappedData(dapps_response);
+      setMaxLength(findMaxLengthDescription(dapps_response));
+    }
   }, [globalData, coin]);
+
+  useEffect(() => {
+    if (!loading && mappedData?.length === 0) {
+      handleSectionContent('dapps', true);
+    } else {
+      if (!loading && mappedData?.length > 0) {
+        handleSectionContent('dapps', false);
+      }
+    }
+  }, [mappedData, loading]);
 
   const handleActiveProtocol = protocol => {
     if (activeProtocol && protocol.name === activeProtocol.name) {
@@ -185,12 +191,6 @@ const DApps = ({coin, handleSectionContent, globalData, loading}) => {
     });
     return maxLength;
   };
-
-  useEffect(() => {
-    if (!loading && mappedData?.length === 0) {
-      handleSectionContent('dapps', true);
-    }
-  }, [mappedData, loading, handleSectionContent]);
 
   return (
     <View>

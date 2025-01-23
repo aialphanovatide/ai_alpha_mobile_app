@@ -13,7 +13,6 @@ export const fetchAlertsByCoin = createAsyncThunk(
         timeframe: timeInterval,
       };
       const response = await postServiceV2(`alerts/coins`, body);
-      // console.log(`Response for the value ${coins}:`, response);
       if (!response || !response?.coins) {
         return [];
       }
@@ -24,6 +23,17 @@ export const fetchAlertsByCoin = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
+  },
+  {
+    condition: ({coins}, thunkApi) => {
+      const lastCoin = thunkApi.getState().alerts.lastCoin;
+      const loadingByCoin = thunkApi.getState().alerts.loadingByCoin;
+      if (loadingByCoin === 'idle' || coins !== lastCoin) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
 );
 
@@ -113,6 +123,8 @@ export const selectAlerts = state => state.alerts.alerts;
 export const selectAlertsByCoin = state => state.alerts.alertsByCoin;
 
 export const selectAlertsLoading = state => state.alerts.loading;
+
+export const selectAlertsLoadingByCoin = state => state.alerts.loadingByCoin;
 
 export const selectMatchingAlerts = search => state => {
   const alerts = state.alerts.alerts || [];

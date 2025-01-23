@@ -103,7 +103,7 @@ export const fetchDailyMacros = createAsyncThunk(
     try {
       const {categories} = getState().categories; // Use the categories slice for getting the categories data
       // [PRODUCTION REQUEST]
-      // const data = await getServiceV2(`analyses?per_page=50&section_id=20`);
+      // const data = await getServiceV2(`analyses?per_page=50&section_id=125`);
       // [TESTING REQUEST]
       const data = await getTestService(`analyses?per_page=50&section_id=105`);
 

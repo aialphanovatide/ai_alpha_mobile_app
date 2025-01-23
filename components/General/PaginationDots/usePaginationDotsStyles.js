@@ -15,17 +15,17 @@ export const usePaginationDotsStyles = () => {
       paddingHorizontal: 12,
     },
     dot: {
-      width: 6,
-      height: 6,
-      borderRadius: 3,
-      marginHorizontal: 5,
+      width: 8,
+      height: 8,
+      borderRadius: 4,
       backgroundColor: isDarkMode ? '#52525B' : '#D4D4D8',
-
     },
     activeDot: {
       width: 10,
       height: 10,
       borderRadius: 5,
+      marginHorizontal: -4,
+      backgroundColor: isDarkMode ? '#52525B' : '#D4D4D8',
     },
   });
   return styles;

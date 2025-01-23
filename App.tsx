@@ -16,7 +16,7 @@ import {AppThemeProvider} from './context/themeContext';
 import {RevenueCatProvider} from './context/RevenueCatContext';
 import NetInfo from '@react-native-community/netinfo';
 import RNRestart from 'react-native-restart';
-import {getService, getServiceV2} from './services/aiAlphaApi';
+import {getServiceV2} from './services/aiAlphaApi';
 import {SingletonHooksContainer} from 'react-singleton-hook';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';

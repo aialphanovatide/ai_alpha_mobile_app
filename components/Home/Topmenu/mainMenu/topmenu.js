@@ -23,6 +23,8 @@ import {
   updateActiveSubCoin,
 } from '../../../../store/categoriesSlice';
 import {loadNotificationItems} from '../../../../actions/notificationActions';
+import {setLastCoin} from '../../../../store/alertsSlice';
+import {fetchAlertsByCoin} from '../../../../actions/alertsActions';
 
 const TopMenu = ({isAlertsMenu}) => {
   const routeName = useRoute().name;
@@ -61,6 +63,12 @@ const TopMenu = ({isAlertsMenu}) => {
     } else {
       dispatch(updateActiveCoin(category));
       dispatch(updateActiveSubCoin(category.coin_bots[0].bot_name));
+      // dispatch(
+      //   fetchAlertsByCoin({
+      //     coins: category.coin_bots[0].bot_name,
+      //     timeInterval: '4H',
+      //   }),
+      // );
       if (!isAlertsMenu) {
         navigation.navigate('TopMenuScreen', {
           screen: 'SubMenuScreen',
@@ -118,8 +126,6 @@ const TopMenu = ({isAlertsMenu}) => {
   }, [activeCoin]);
 
   const findIndexByCategory = category => {
-    // console.log('Category received: ', category);
-    // console.log('Categories: ', categories);
     const found = categories.findIndex(
       cat =>
         category.category_name.toLowerCase() ===

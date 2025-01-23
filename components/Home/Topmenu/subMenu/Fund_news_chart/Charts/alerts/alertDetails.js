@@ -2,6 +2,8 @@ import React, {useContext} from 'react';
 import {View, Text, Image} from 'react-native';
 import {AppThemeContext} from '../../../../../../../context/themeContext';
 
+// Component to render each Alert item details. It receives the message, date, price, timeframe, and styles as props. It returns a view with the alert details, including the coin symbol, the price, the timeframe, the message, and the date and hour of the alert.
+
 const AlertDetails = ({
   message,
   date,
@@ -17,18 +19,7 @@ const AlertDetails = ({
     marginTop: 4,
   };
 
-  // Function to get the correct date string from the alert created_at prop
-
-  const simplifyDateTime = dateTimeString => {
-    const dateTime = new Date(dateTimeString);
-    const year = dateTime.getFullYear();
-    const month = String(dateTime.getMonth() + 1).padStart(2, '0');
-    const day = String(dateTime.getDate()).padStart(2, '0');
-    const hours = String(dateTime.getHours()).padStart(2, '0');
-    const minutes = String(dateTime.getMinutes()).padStart(2, '0');
-
-    return {date: `${day}-${month}-${year}`, hour: `${hours}:${minutes}`};
-  };
+  // Function to format the price number of the coin, adding commas and decimals to the number and returning it as a string
 
   const formatNumber = price => {
     const number = parseFloat(price);
@@ -41,6 +32,8 @@ const AlertDetails = ({
     });
   };
 
+  // Function to format the alert title, separating the coin symbol from the chart word and the interval word, and returning this data in the required format
+
   const formatAlertTitle = title => {
     const usdt_word_index = title.indexOf('USDT');
     const coin_word = title.slice(0, usdt_word_index).toUpperCase();
@@ -52,6 +45,8 @@ const AlertDetails = ({
       interval_word: title.slice(chart_word_index - 3, chart_word_index),
     };
   };
+
+  // Function to parse the timeframe string, separating the left text from the word, and returning this data in the required format
 
   const parseTimeframeString = timeFrameString => {
     const match = timeFrameString.match(

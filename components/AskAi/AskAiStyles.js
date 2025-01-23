@@ -251,8 +251,10 @@ const useAskAiStyles = () => {
     },
     historyItemsContainer: {
       width: '100%',
+      height: theme.height * 0.55,
       marginVertical: 8,
       padding: Platform.OS === 'ios' ? 10 : 0,
+      overflow: 'scroll',
     },
     historyItem: {
       position: 'relative',
