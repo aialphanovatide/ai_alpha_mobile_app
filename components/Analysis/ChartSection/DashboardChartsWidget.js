@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -22,10 +22,10 @@ import ChartWidget from '../../Home/Topmenu/subMenu/Fund_news_chart/Charts/Chart
 const DashboardChartsWidget = ({route, navigation}) => {
   const {title, symbol, description} = route.params;
   const styles = useChartSectionStyles();
-  const [selectedInterval, setSelectedInterval] = useState('1D');
+  const [selectedInterval, setSelectedInterval] = useState('1d');
   const [loading, setLoading] = useState(true);
   // S&R State variables
-  const [activeButtons, setActiveButtons] = useState([]);
+  const [activeButtons, setActiveButtons] = useState(['Support', 'Resistance']);
   const {isLandscape, isHorizontal, handleScreenOrientationChange} =
     useScreenOrientation();
   const [supportResistanceLoading, setSupportResistanceLoading] =
@@ -99,7 +99,7 @@ const DashboardChartsWidget = ({route, navigation}) => {
             handleOnZoom={handleOnZoom}
           />
           {/* Horizontal view button */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={
               isLandscape
                 ? () => {
@@ -118,9 +118,9 @@ const DashboardChartsWidget = ({route, navigation}) => {
                   : require('../../../assets/images/home/charts/activate-horizontal.png')
               }
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {/* Horizontal view close button */}
-          <TouchableOpacity onPress={() => handleBackInteraction()}>
+          {/* <TouchableOpacity onPress={() => handleBackInteraction()}>
             <Image
               style={
                 isLandscape && isHorizontal
@@ -130,7 +130,7 @@ const DashboardChartsWidget = ({route, navigation}) => {
               resizeMode="contain"
               source={require('../../../assets/images/home/charts/back.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
       {subscribed ? <></> : <UpgradeOverlay />}

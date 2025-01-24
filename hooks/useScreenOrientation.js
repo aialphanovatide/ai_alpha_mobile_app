@@ -18,7 +18,7 @@ export const useScreenOrientation = singletonHook(
   },
   () => {
     const [screenOrientation, setScreenOrientation] = useState(
-      Orientation.getInitialOrientation(),
+      Orientation.getInitialOrientation() || OrientationType.PORTRAIT,
     );
     const [isManuallyHorizontal, setIsManuallyHorizontal] = useState(false);
 
@@ -36,7 +36,11 @@ export const useScreenOrientation = singletonHook(
         const {width, height} = Dimensions.get('window');
         const isLandscape = width > height;
         setScreenOrientation(
-          isLandscape ? OrientationType.LANDSCAPE : OrientationType.PORTRAIT,
+          isLandscape
+            ? isAndroid
+              ? 'LANDSCAPE-LEFT'
+              : LANDSCAPE
+            : OrientationType.PORTRAIT,
         );
       };
 
@@ -108,7 +112,10 @@ export const useScreenOrientation = singletonHook(
     };
 
     return {
-      isLandscape: screenOrientation.includes(LANDSCAPE), // Tracks actual landscape/portrait state
+      isLandscape:
+        screenOrientation && screenOrientation !== undefined
+          ? screenOrientation.includes(isAndroid ? 'LANDSCAPE-LEFT' : LANDSCAPE)
+          : false, // Tracks actual landscape/portrait state
       isHorizontal: isManuallyHorizontal, // Boolean reflecting manual toggle state
       screenOrientation,
       handleScreenOrientationChange,

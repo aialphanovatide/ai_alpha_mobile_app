@@ -19,6 +19,7 @@ export const COLORS_PER_COIN = {
   ldo: '#00A4C1',
   link: '#2588D2',
   pol: '#634597',
+  polygon: '#634597',
   near: '#01C981',
   ocean: '#353535',
   op: '#DF3845',

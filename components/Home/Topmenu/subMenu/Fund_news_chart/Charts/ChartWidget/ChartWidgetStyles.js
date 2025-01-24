@@ -7,6 +7,7 @@ const useChartWidgetStyles = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+      position: 'relative',
       width: 360,
       height: 340,
       marginRight: 16,
@@ -14,8 +15,8 @@ const useChartWidgetStyles = () => {
     chartsHorizontalButton: {
       width: 24,
       height: 24,
-      position: 'relative',
-      bottom: Platform.OS === 'android' ? 100 : 120,
+      position: 'absolute',
+      bottom: Platform.OS === 'android' ? 20 : 40,
       left: Platform.OS === 'android' ? 10 : 10,
       tintColor: theme.textColor,
       zIndex: 1,

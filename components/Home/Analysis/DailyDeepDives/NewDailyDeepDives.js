@@ -1,7 +1,6 @@
 import React, {useRef, useEffect, useState, useContext} from 'react';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import useNewDailyDeepDivesStyles from './NewDailyDeepDivesStyles';
-import {PaginationDots} from '../../../General/PaginationDots/PaginationDots';
 import {useNavigation} from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
@@ -137,33 +136,10 @@ const NewDailyDeepDives = () => {
             disclaimer: {marginVertical: '5%', paddingVertical: 16},
           }}
         />
+      ) : loading === 'idle' ? (
+        <SkeletonLoader quantity={totalPages} type="cards" />
       ) : (
         <>
-          {/* <ScrollView
-            ref={scrollViewRef}
-            horizontal
-            nestedScrollEnabled
-            showsHorizontalScrollIndicator={false}
-            onScrollEndDrag={handleScroll}
-            pagingEnabled
-            onContentSizeChange={handleContentSizeChange}
-            style={styles.deepDivesContainer}>
-            {loading === 'idle' ? (
-              <SkeletonLoader quantity={totalPages} type="cards" />
-            ) : (
-              deepDives
-                ?.slice(0, totalPages)
-                .map((item, index) => (
-                  <DeepDiveCard
-                    key={item.id}
-                    item={item}
-                    handleCardPress={handleCardPress}
-                    itemNumber={index}
-                    itemsAmount={totalPages}
-                  />
-                ))
-            )}
-          </ScrollView> */}
           <Carousel
             ref={c => {
               setCarouselRef(c);
@@ -177,7 +153,6 @@ const NewDailyDeepDives = () => {
             activeSlideAlignment="start"
             onSnapToItem={index => setCurrentPage(index)}
           />
-          {/* <PaginationDots totalPages={totalPages} currentPage={currentPage} /> */}
           <Pagination
             dotsLength={totalPages}
             activeDotIndex={currentPage}

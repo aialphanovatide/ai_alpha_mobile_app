@@ -99,6 +99,8 @@ const MarketNarrativesArticle = ({route}) => {
     ...defaultSystemFonts,
     isAndroid ? 'prompt_regular' : 'Prompt-Regular',
     isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+    isAndroid ? 'prompt_italic' : 'Prompt-Italic',
+    isAndroid ? 'prompt_medium' : 'Prompt-Medium',
   ];
   const navigation = useNavigation();
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
@@ -180,7 +182,13 @@ const MarketNarrativesArticle = ({route}) => {
       /<br>/g,
       '',
     );
-    return br_replaced_content;
+
+    const em_replaced_content = br_replaced_content.replace(
+      /<em style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);">/g,
+      `<em>`,
+    );
+
+    return em_replaced_content;
   };
 
   // Function that handles the navigation back to the previous screen. If the screen is the InitialHome screen, it navigates to the InitialHome screen. Otherwise, it navigates to the Home screen with the InitialHome and Analysis screens as parameters.
@@ -208,7 +216,8 @@ const MarketNarrativesArticle = ({route}) => {
   const html_styles = {
     p: {
       color: theme.titleColor,
-      fontFamily: isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+      fontSize: theme.responsiveFontSize,
+      fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
     },
     h1: {
       fontSize: theme.responsiveFontSize * 1.5,
@@ -253,6 +262,11 @@ const MarketNarrativesArticle = ({route}) => {
     li: {
       color: theme.textColor,
       fontFamily: isAndroid ? 'prompt_regular' : 'Prompt-Regular',
+      fontSize: theme.responsiveFontSize * 0.85,
+    },
+    em: {
+      color: theme.textColor,
+      fontFamily: isAndroid ? 'prompt_italic' : 'Prompt-Italic',
       fontSize: theme.responsiveFontSize * 0.85,
     },
   };
@@ -324,9 +338,9 @@ const MarketNarrativesArticle = ({route}) => {
                   ? image.includes('https://')
                     ? image
                     : `https://appnarrativetradingimages.s3.us-east-2.amazonaws.com/${id}.jpg`
-                  : hasImage === 'error'
-                  ? 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg'
-                  : null,
+                  : hasImage === 'unverified'
+                  ? null
+                  : 'https://static.vecteezy.com/system/resources/thumbnails/006/299/370/original/world-breaking-news-digital-earth-hud-rotating-globe-rotating-free-video.jpg',
               priority: FastImage.priority.normal,
             }}
             fallback={true}

@@ -392,7 +392,7 @@ const ChartSection = ({route, navigation}) => {
         <Text style={styles.sectionDescription}>{description}</Text>
         <View style={styles.timeframeContainer}>
           <ChartTimeSelector
-            selectedInterval={selectedInterval}
+            selectedInterval={selectedInterval.toLowerCase()}
             changeInterval={changeInterval}
             selectedPairing={'usdt'}
             disabled={loading}

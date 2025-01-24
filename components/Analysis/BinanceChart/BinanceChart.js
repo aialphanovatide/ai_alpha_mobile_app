@@ -22,7 +22,6 @@ import UpgradeOverlay from '../../UpgradeOverlay/UpgradeOverlay';
 import {useScreenOrientation} from '../../../hooks/useScreenOrientation';
 import BackgroundGradient from '../../BackgroundGradient/BackgroundGradient';
 import {getService} from '../../../services/aiAlphaApi';
-import ChartButtons from '../ChartSection/ChartButtons';
 import {TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native';
 
@@ -324,7 +323,7 @@ const BinanceChart = ({route, navigation}) => {
             <View style={styles.timeframeContainer}>
               <ChartTimeSelector
                 selectedPairing={'null'}
-                selectedInterval={selectedInterval}
+                selectedInterval={selectedInterval.toLowerCase()}
                 changeInterval={changeInterval}
                 additionalStyles={{marginVertical: 0}}
               />

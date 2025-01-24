@@ -61,7 +61,11 @@ const ChartWidget = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        isLandscape && isHorizontal ? {width: '100%', padding: 36} : {},
+      ]}>
       {loading ? (
         <SkeletonLoader type="chart" style={{height: 300}} />
       ) : widgetData.length === 0 ? (

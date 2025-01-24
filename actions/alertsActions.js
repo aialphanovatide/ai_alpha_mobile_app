@@ -16,9 +16,11 @@ export const fetchAlertsByCoin = createAsyncThunk(
       if (!response || !response?.coins) {
         return [];
       }
-      const mappedAlerts = Object.values(response.coins).flatMap(
-        coin => coin.data,
-      );
+      const mappedAlerts = Object.values(response.coins)
+        .flatMap(coin => coin.data)
+        .sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
       return mappedAlerts;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -94,9 +96,11 @@ export const fetchAlertsByAllCategories = createAsyncThunk(
       if (!response || Object.keys(response).length === 0) {
         return [];
       }
-      const mappedAlerts = Object.values(response.categories).flatMap(
-        category => category.data,
-      );
+      const mappedAlerts = Object.values(response.categories)
+        .flatMap(category => category.data)
+        .sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
       return mappedAlerts;
     } catch (error) {
       return rejectWithValue(error.message);

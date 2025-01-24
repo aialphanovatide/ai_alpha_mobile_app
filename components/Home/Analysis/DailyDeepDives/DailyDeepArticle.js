@@ -99,6 +99,8 @@ const DailyDeepArticle = ({route}) => {
     ...defaultSystemFonts,
     isAndroid ? 'prompt_regular' : 'Prompt-Regular',
     isAndroid ? 'prompt_semibold' : 'Prompt-SemiBold',
+    isAndroid ? 'prompt_italic' : 'Prompt-Italic',
+    isAndroid ? 'prompt_medium' : 'Prompt-Medium',
   ];
   const navigation = useNavigation();
   const {userInfo} = useContext(RevenueCatContext);
@@ -183,7 +185,7 @@ const DailyDeepArticle = ({route}) => {
       /<em style="color: rgb\([0-9]+, [0-9]+, [0-9]+\);">/g,
       `<em>`,
     );
-    return br_replaced_content;
+    return em_replaced_content;
   };
 
   // Function to handle the navigation to the subscription screen
@@ -259,9 +261,7 @@ const DailyDeepArticle = ({route}) => {
     },
     em: {
       color: theme.textColor,
-      fontFamily: isAndroid
-        ? 'prompt_semibold_italic'
-        : 'Prompt-SemiBold-Italic',
+      fontFamily: isAndroid ? 'prompt_italic' : 'Prompt-Italic',
       fontSize: theme.responsiveFontSize * 0.85,
     },
   };

@@ -236,7 +236,7 @@ const Alerts = ({route, navigation}) => {
           <SkeletonLoader quantity={5} type="alerts" />
         ) : loading === 'succeeded' && alerts.length > 0 ? (
           <View>
-            {orderAlerts(alerts).map(item => {
+            {alerts.map(item => {
               return (
                 <AlertDetails
                   key={item.alert_id}

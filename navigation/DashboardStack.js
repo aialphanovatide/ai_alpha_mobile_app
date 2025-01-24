@@ -42,16 +42,6 @@ const DashboardScreen = () => {
             "Reflects the proportion of the total cryptocurrency market held by Bitcoin. It is a vital indicator for assessing the market's preference for BTC over other altcoins.",
         }}
       />
-      {/* <DashboardStack.Screen
-        name="EthBtc"
-        component={BinanceChart}
-        initialParams={{
-          title: 'ETH/BTC Chart',
-          symbol: 'ETHBTC',
-          description:
-            'The strength of ETH against BTC helps us understand how strong Ethereum and its ecosystem projects are while also telling us how strong the entire altcoin market is too.',
-        }}
-      /> */}
       <DashboardStack.Screen
         name="EthBtc"
         component={DashboardChartsWidget}
